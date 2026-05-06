@@ -636,11 +636,7 @@ export async function publishHook({
     keyringController,
   );
 
-  if (
-    keyringSupports7702 &&
-    !isUpgradeOnly7702Transaction &&
-    (!isSmartTransaction || !sendBundleSupport || isExternalSign)
-  ) {
+  if (keyringSupports7702 && !isUpgradeOnly7702Transaction) {
     const hook = new Delegation7702PublishHook({
       isAtomicBatchSupported: transactionController.isAtomicBatchSupported.bind(
         transactionController,
@@ -669,6 +665,7 @@ export async function publishHook({
   }
 
   if (
+    !keyringSupports7702 &&
     !isUpgradeOnly7702Transaction &&
     isSmartTransaction &&
     (sendBundleSupport || transactionMeta.selectedGasFeeToken === undefined)

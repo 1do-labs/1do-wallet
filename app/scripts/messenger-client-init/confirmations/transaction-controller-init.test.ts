@@ -496,6 +496,53 @@ describe('Transaction Controller Init', () => {
       expect(jest.mocked(Delegation7702PublishHook)).toHaveBeenCalled();
     });
 
+    it('skips submitSmartTransactionHook for 7702-capable accounts even when smart transactions are enabled', async () => {
+      jest
+        .mocked(smartTransactionsModule.getSmartTransactionCommonParams)
+        .mockReturnValue({
+          isSmartTransaction: true,
+          featureFlags: {
+            extensionReturnTxHashAsap: false,
+            extensionReturnTxHashAsapBatch: false,
+            extensionSkipTransactionStatusPage: false,
+            mobileActive: false,
+            extensionActive: false,
+          },
+          isHardwareWalletAccount: false,
+        });
+      jest
+        .mocked(sentinelApiModule.isSendBundleSupported)
+        .mockResolvedValue(true);
+
+      const requestMock = buildInitRequestMock();
+      requestMock.getMessengerClient.mockImplementation(((
+        name: MessengerClientName,
+      ) => {
+        if (name === 'KeyringController') {
+          return {
+            getKeyringForAccount: jest.fn().mockResolvedValue({
+              type: 'HD Key Tree',
+            }),
+          };
+        }
+        return buildControllerMock();
+      }) as unknown as MessengerClientInitRequest<
+        TransactionControllerMessenger,
+        TransactionControllerInitMessenger
+      >['getMessengerClient']);
+
+      TransactionControllerInit(requestMock);
+
+      const { hooks } = transactionControllerClassMock.mock.calls[0][0];
+
+      await hooks?.publish?.(mockTransactionMeta);
+
+      expect(jest.mocked(Delegation7702PublishHook)).toHaveBeenCalled();
+      expect(
+        jest.mocked(smartTransactionsModule.submitSmartTransactionHook),
+      ).not.toHaveBeenCalled();
+    });
+
     it('skips Delegation7702PublishHook for upgrade-only 7702 transactions', async () => {
       const requestMock = buildInitRequestMock();
       requestMock.getMessengerClient.mockImplementation(((
