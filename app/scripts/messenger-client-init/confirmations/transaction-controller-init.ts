@@ -540,6 +540,20 @@ export function publishBatchHook({
     transactionMeta.chainId,
   );
 
+  const isUpgradeOnly7702Transaction = Boolean(
+    transactionMeta.txParams?.authorizationList?.length &&
+      (!transactionMeta.txParams?.data ||
+        transactionMeta.txParams.data === '0x') &&
+      transactionMeta.selectedGasFeeToken === undefined &&
+      !transactionMeta.gasFeeTokens?.length &&
+      !transactionMeta.isGasFeeIncluded &&
+      !transactionMeta.isGasFeeSponsored,
+  );
+
+  if (isUpgradeOnly7702Transaction) {
+    return undefined;
+  }
+
   if (!isSmartTransaction) {
     return undefined;
   }

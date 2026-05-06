@@ -28,6 +28,7 @@ import * as selectorsModule from '../../../../shared/lib/selectors';
 import { Delegation7702PublishHook } from '../../lib/transaction/hooks/delegation-7702-publish';
 import {
   TransactionControllerInit,
+  publishBatchHook,
   publishHook,
 } from './transaction-controller-init';
 
@@ -725,6 +726,61 @@ describe('Transaction Controller Init', () => {
       },
       networkClientId: 'test-network',
     };
+
+    it('returns undefined for upgrade-only 7702 batch transactions', async () => {
+      jest
+        .mocked(smartTransactionsModule.getSmartTransactionCommonParams)
+        .mockReturnValue({
+          isSmartTransaction: true,
+          featureFlags: {
+            extensionReturnTxHashAsap: false,
+            extensionReturnTxHashAsapBatch: false,
+            extensionSkipTransactionStatusPage: false,
+            mobileActive: false,
+            extensionActive: false,
+          },
+          isHardwareWalletAccount: false,
+        });
+
+      const transactionMeta = {
+        ...mockTransactionMeta,
+        txParams: {
+          from: '0x0000000000000000000000000000000000000000',
+          authorizationList: [
+            { address: '0x1234567890123456789012345678901234567890' },
+          ],
+          data: '0x',
+        },
+        selectedGasFeeToken: undefined,
+        gasFeeTokens: [],
+        isGasFeeIncluded: false,
+        isGasFeeSponsored: false,
+      } as unknown as TransactionMeta;
+
+      const transactionControllerMock = {
+        state: {
+          transactions: [transactionMeta],
+        },
+      } as unknown as TransactionController;
+
+      const result = await publishBatchHook({
+        transactionController: transactionControllerMock,
+        smartTransactionsController: {} as never,
+        hookControllerMessenger: {} as never,
+        flatState: {} as never,
+        transactions: [
+          {
+            id: transactionMeta.id,
+            signedTx: '0xsigned',
+          } as PublishBatchHookTransaction,
+        ],
+      });
+
+      expect(result).toBeUndefined();
+      expect(
+        jest.mocked(smartTransactionsModule.submitBatchSmartTransactionHook),
+      ).not.toHaveBeenCalled();
+    });
 
     it('calls upsertTransactionUIMetricsFragment with sentinel_stx for each batch tx with an id on STX success', async () => {
       jest
