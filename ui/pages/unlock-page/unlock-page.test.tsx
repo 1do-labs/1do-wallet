@@ -76,6 +76,13 @@ describe('Unlock Page', () => {
     expect(container).toMatchSnapshot();
   });
 
+  it('renders centered 1Do branding on the unlock page', () => {
+    const { getByTestId } = renderWithProvider(<UnlockPage />, mockStore);
+
+    expect(getByTestId('unlock-page-brand-title')).toHaveTextContent('1Do');
+    expect(getByTestId('unlock-page-brand-logo')).toBeInTheDocument();
+  });
+
   it('changes password and submits', async () => {
     const props = {
       onSubmit: jest.fn(),

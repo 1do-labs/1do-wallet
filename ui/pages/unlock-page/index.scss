@@ -3,6 +3,29 @@
 .unlock-page {
   max-width: 400px;
 
+  &__brand {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 24px;
+  }
+
+  &__brand-title {
+    letter-spacing: -0.04em;
+    margin-bottom: 16px;
+  }
+
+  &__brand-logo {
+    filter: drop-shadow(0 10px 24px rgb(18 18 18 / 0.18));
+    height: 72px;
+    width: 72px;
+
+    &--popup {
+      height: 56px;
+      width: 56px;
+    }
+  }
+
   &__container {
     &--light {
       background-color: var(--welcome-bg-light);
@@ -46,4 +69,3 @@
     }
   }
 }
-

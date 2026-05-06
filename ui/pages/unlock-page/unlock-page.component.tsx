@@ -58,7 +58,7 @@ import { captureException } from '../../../shared/lib/sentry';
 import { getCaretCoordinates } from './unlock-page.util';
 import ResetPasswordModal from './reset-password-modal';
 import FormattedCounter from './formatted-counter';
-import { MetamaskWordmarkLogo } from './metamask-wordmark-logo';
+import { OneDoUnlockLogo } from './one-do-unlock-logo';
 
 type UnlockPageProps = {
   navigate: NavigateFunction;
@@ -634,7 +634,23 @@ class UnlockPage extends Component<UnlockPageProps, UnlockPageState> {
                 {isRehydrationFlow ? (
                   this.renderMascot()
                 ) : (
-                  <MetamaskWordmarkLogo isPopup={this.props.isPopup ?? false} />
+                  <Box
+                    className="unlock-page__brand"
+                    flexDirection={BoxFlexDirection.Column}
+                    alignItems={BoxAlignItems.Center}
+                  >
+                    <Text
+                      data-testid="unlock-page-brand-title"
+                      variant={TextVariant.DisplayMd}
+                      fontWeight={FontWeight.Medium}
+                      color={TextColor.TextDefault}
+                      textAlign={TextAlign.Center}
+                      className="unlock-page__brand-title"
+                    >
+                      1Do
+                    </Text>
+                    <OneDoUnlockLogo isPopup={this.props.isPopup ?? false} />
+                  </Box>
                 )}
                 {isBeta() ? (
                   <Text
