@@ -472,6 +472,7 @@ export async function publishHook({
   }
 
   if (
+    !isUpgradeOnly7702Transaction &&
     isSmartTransaction &&
     (sendBundleSupport || transactionMeta.selectedGasFeeToken === undefined)
   ) {

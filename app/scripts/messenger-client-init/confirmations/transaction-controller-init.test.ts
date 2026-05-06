@@ -622,6 +622,64 @@ describe('Transaction Controller Init', () => {
       });
     });
 
+    it('does not call submitSmartTransactionHook for upgrade-only 7702 transactions', async () => {
+      jest
+        .mocked(smartTransactionsModule.getSmartTransactionCommonParams)
+        .mockReturnValue({
+          isSmartTransaction: true,
+          featureFlags: {
+            extensionReturnTxHashAsap: false,
+            extensionReturnTxHashAsapBatch: false,
+            extensionSkipTransactionStatusPage: false,
+            mobileActive: false,
+            extensionActive: false,
+          },
+          isHardwareWalletAccount: false,
+        });
+
+      type PHArgs = Parameters<typeof publishHook>[0];
+      const result = await publishHook({
+        flatState: {} as PHArgs['flatState'],
+        getTransactionMetricsRequest: () =>
+          ({
+            upsertTransactionUIMetricsFragment: jest.fn(),
+          }) as unknown as ReturnType<PHArgs['getTransactionMetricsRequest']>,
+        initMessenger: {
+          call: jest.fn(),
+        } as unknown as TransactionControllerInitMessenger,
+        keyringController: {
+          getKeyringForAccount: jest
+            .fn()
+            .mockResolvedValue({ type: 'HD Key Tree' }),
+        },
+        signedTx: '0xsigned',
+        smartTransactionsController:
+          {} as PHArgs['smartTransactionsController'],
+        transactionController: {
+          isAtomicBatchSupported: jest.fn(),
+        } as unknown as PHArgs['transactionController'],
+        transactionMeta: {
+          ...mockTransactionMeta,
+          txParams: {
+            ...mockTransactionMeta.txParams,
+            authorizationList: [
+              { address: '0x1234567890123456789012345678901234567890' },
+            ],
+            data: '0x',
+          },
+          selectedGasFeeToken: undefined,
+          gasFeeTokens: [],
+          isGasFeeIncluded: false,
+          isGasFeeSponsored: false,
+        } as TransactionMeta,
+      });
+
+      expect(result).toStrictEqual({ transactionHash: undefined });
+      expect(
+        jest.mocked(smartTransactionsModule.submitSmartTransactionHook),
+      ).not.toHaveBeenCalled();
+    });
+
     it('returns transaction hash even if upsertTransactionUIMetricsFragment throws on sentinel_relay path', async () => {
       const delegation7702HookFn: jest.MockedFn<PublishHook> = jest.fn();
       delegation7702HookFn.mockResolvedValue({ transactionHash: '0xdelHash' });
