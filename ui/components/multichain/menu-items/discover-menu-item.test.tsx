@@ -44,7 +44,7 @@ describe('DiscoverMenuItem', () => {
     expect(openTabSpy).toHaveBeenCalled();
     expect(openTabSpy).toHaveBeenCalledWith(
       expect.objectContaining({
-        url: expect.stringContaining('explore/tokens'),
+        url: expect.stringContaining('https://debank.com/profile/'),
       }),
     );
     expect(closeMenu).toHaveBeenCalled();

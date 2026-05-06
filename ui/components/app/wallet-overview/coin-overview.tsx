@@ -8,7 +8,7 @@ import type { Hex } from '@metamask/utils';
 import { InternalAccount } from '@metamask/keyring-internal-api';
 import { Box, ButtonLink, IconName } from '../../component-library';
 import { TextVariant } from '../../../helpers/constants/design-system';
-import { getPortfolioUrl } from '../../../helpers/utils/portfolio';
+import { getDebankProfileUrl } from '../../../helpers/utils/debank';
 import { MetaMetricsContext } from '../../../contexts/metametrics';
 import {
   MetaMetricsEventCategory,
@@ -31,11 +31,9 @@ import {
   getIsTestnet,
   getIsTokenNetworkFilterEqualCurrentNetwork,
   getChainIdsToPoll,
-  getDataCollectionForMarketing,
-  getMetaMetricsId,
-  getParticipateInMetaMetrics,
   getEnabledNetworksByNamespace,
   selectAnyEnabledNetworksAreAvailable,
+  getSelectedAddress,
 } from '../../../selectors';
 
 import { AccountGroupBalance } from '../assets/account-group-balance/account-group-balance';
@@ -191,10 +189,6 @@ export const CoinOverview = ({
 
   const { trackEvent } = useContext(MetaMetricsContext);
 
-  const metaMetricsId = useSelector(getMetaMetricsId);
-  const isMetaMetricsEnabled = useSelector(getParticipateInMetaMetrics);
-  const isMarketingEnabled = useSelector(getDataCollectionForMarketing);
-
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -203,6 +197,7 @@ export const CoinOverview = ({
   const selectedAccountGroup = useSelector(getSelectedAccountGroup);
 
   const isRewardsEnabled = useSelector(selectRewardsEnabled);
+  const selectedAddress = useSelector(getSelectedAddress);
 
   const hasBalance = useSelector(selectAccountGroupBalanceForEmptyState);
   const isTestnet = useSelector(getMultichainIsTestnet);
@@ -220,13 +215,7 @@ export const CoinOverview = ({
   };
 
   const handlePortfolioOnClick = useCallback(() => {
-    const url = getPortfolioUrl(
-      'explore/tokens',
-      'ext_portfolio_button',
-      metaMetricsId,
-      isMetaMetricsEnabled,
-      isMarketingEnabled,
-    );
+    const url = getDebankProfileUrl(selectedAddress);
     global.platform.openTab({ url });
     trackEvent({
       category: MetaMetricsEventCategory.Navigation,
@@ -236,7 +225,7 @@ export const CoinOverview = ({
         text: 'Portfolio',
       },
     });
-  }, [isMarketingEnabled, isMetaMetricsEnabled, metaMetricsId, trackEvent]);
+  }, [selectedAddress, trackEvent]);
 
   const handleReceiveOnClick = useCallback(() => {
     trace({ name: TraceName.ReceiveModal });
