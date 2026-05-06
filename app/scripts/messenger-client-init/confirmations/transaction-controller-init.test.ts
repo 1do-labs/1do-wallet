@@ -30,6 +30,7 @@ import {
   TransactionControllerInit,
   publishBatchHook,
   publishHook,
+  recoverSignedTransactions,
 } from './transaction-controller-init';
 
 jest.mock('@metamask/transaction-controller');
@@ -520,7 +521,9 @@ describe('Transaction Controller Init', () => {
         ...mockTransactionMeta,
         txParams: {
           ...mockTransactionMeta.txParams,
-          authorizationList: [{ address: '0x1234567890123456789012345678901234567890' }],
+          authorizationList: [
+            { address: '0x1234567890123456789012345678901234567890' },
+          ],
           data: '0x',
         },
       } as TransactionMeta);
@@ -1087,6 +1090,160 @@ describe('Transaction Controller Init', () => {
       } as unknown as PublishBatchHookRequest);
 
       expect(result).toStrictEqual(expectedResult);
+    });
+  });
+
+  describe('recoverSignedTransactions', () => {
+    const signedRawTx =
+      '0x04f8ce83aa36a7048459682f008459682f4b82b56594a0224a3d1fb66134d2af1afa0b5862e39ac4bdd88080c0f85ff85d83aa36a79469d2927735c3e57c512177b32e216431b1aba1ff0580a032ed4021cae0e5eada1cd11de13c3f85ce5ba14da9f6d4e7ce32b9a277eee81fa01f6629bbf3f4feab226a760c66226e432281470511e05b80a84cbecd4784a7f201a0a5081230481ea8b03beb9fdb5fb965b557a761c8f7c5db2a8eecc8c73b7dd73aa04af4bfaf607c284b593d4dcc6e3ce3082725e39d473910eb8386ad4d4ab17b93';
+    const signedTxHash =
+      '0xaa03bb9ff360f322e6a8e21ab7c49638e969084686ea5cb459150ca2cd289c8f';
+
+    function buildSignedTransactionMeta(
+      overrides: Partial<TransactionMeta> = {},
+    ): TransactionMeta {
+      return {
+        id: 'signed-tx-id',
+        chainId: CHAIN_ID_MOCK,
+        networkClientId: 'sepolia',
+        status: TransactionStatus.signed,
+        time: Date.now(),
+        rawTx: signedRawTx,
+        txParams: {
+          from: '0x0000000000000000000000000000000000000000',
+          nonce: '0x4',
+        },
+        ...overrides,
+      } as TransactionMeta;
+    }
+
+    it('rebroadcasts signed transactions without a hash on startup', async () => {
+      const providerRequestMock = jest
+        .fn()
+        .mockResolvedValueOnce(null)
+        .mockResolvedValueOnce(signedTxHash);
+      const updateTransactionMock = jest.fn();
+      const publishMock = jest.fn();
+
+      await recoverSignedTransactions({
+        initMessenger: {
+          publish: publishMock,
+        } as unknown as TransactionControllerInitMessenger,
+        networkController: {
+          getNetworkClientById: jest.fn().mockReturnValue({
+            provider: {
+              request: providerRequestMock,
+            },
+          }),
+        } as unknown as NetworkController,
+        transactionController: {
+          state: {
+            transactions: [buildSignedTransactionMeta()],
+          },
+          updateTransaction: updateTransactionMock,
+        } as unknown as TransactionController,
+      });
+
+      expect(providerRequestMock).toHaveBeenNthCalledWith(1, {
+        method: 'eth_getTransactionByHash',
+        params: [signedTxHash],
+      });
+      expect(providerRequestMock).toHaveBeenNthCalledWith(2, {
+        method: 'eth_sendRawTransaction',
+        params: [signedRawTx],
+      });
+      expect(updateTransactionMock).toHaveBeenCalledWith(
+        expect.objectContaining({
+          id: 'signed-tx-id',
+          hash: signedTxHash,
+          status: TransactionStatus.submitted,
+        }),
+        'Recovered signed transaction after extension restart',
+      );
+      expect(publishMock).toHaveBeenCalledWith(
+        'TransactionController:transactionSubmitted',
+        expect.objectContaining({
+          transactionMeta: expect.objectContaining({
+            id: 'signed-tx-id',
+            hash: signedTxHash,
+            status: TransactionStatus.submitted,
+          }),
+        }),
+      );
+    });
+
+    it('only backfills hash if signed transaction already exists on chain', async () => {
+      const providerRequestMock = jest.fn().mockResolvedValueOnce({
+        hash: signedTxHash,
+      });
+      const updateTransactionMock = jest.fn();
+
+      await recoverSignedTransactions({
+        initMessenger: {
+          publish: jest.fn(),
+        } as unknown as TransactionControllerInitMessenger,
+        networkController: {
+          getNetworkClientById: jest.fn().mockReturnValue({
+            provider: {
+              request: providerRequestMock,
+            },
+          }),
+        } as unknown as NetworkController,
+        transactionController: {
+          state: {
+            transactions: [buildSignedTransactionMeta()],
+          },
+          updateTransaction: updateTransactionMock,
+        } as unknown as TransactionController,
+      });
+
+      expect(providerRequestMock).toHaveBeenCalledTimes(1);
+      expect(providerRequestMock).toHaveBeenCalledWith({
+        method: 'eth_getTransactionByHash',
+        params: [signedTxHash],
+      });
+      expect(updateTransactionMock).toHaveBeenCalledWith(
+        expect.objectContaining({
+          hash: signedTxHash,
+          status: TransactionStatus.submitted,
+        }),
+        'Recovered signed transaction after extension restart',
+      );
+    });
+
+    it('ignores transactions that are not signed or already have a hash', async () => {
+      const providerRequestMock = jest.fn();
+      const updateTransactionMock = jest.fn();
+
+      await recoverSignedTransactions({
+        initMessenger: {
+          publish: jest.fn(),
+        } as unknown as TransactionControllerInitMessenger,
+        networkController: {
+          getNetworkClientById: jest.fn().mockReturnValue({
+            provider: {
+              request: providerRequestMock,
+            },
+          }),
+        } as unknown as NetworkController,
+        transactionController: {
+          state: {
+            transactions: [
+              buildSignedTransactionMeta({
+                status: TransactionStatus.submitted,
+              }),
+              buildSignedTransactionMeta({
+                id: 'signed-with-hash',
+                hash: signedTxHash,
+              }),
+            ],
+          },
+          updateTransaction: updateTransactionMock,
+        } as unknown as TransactionController,
+      });
+
+      expect(providerRequestMock).not.toHaveBeenCalled();
+      expect(updateTransactionMock).not.toHaveBeenCalled();
     });
   });
 });

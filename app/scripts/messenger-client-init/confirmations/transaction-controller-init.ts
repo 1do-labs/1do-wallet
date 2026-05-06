@@ -1,5 +1,6 @@
 import { PRODUCT_TYPES } from '@metamask/subscription-controller';
 import { ORIGIN_METAMASK } from '@metamask/controller-utils';
+import { keccak256 } from 'ethereum-cryptography/keccak';
 import {
   type PublishBatchHookRequest,
   type PublishBatchHookTransaction,
@@ -7,9 +8,11 @@ import {
   TransactionController,
   TransactionControllerMessenger,
   TransactionMeta,
+  TransactionStatus,
   TransactionType,
 } from '@metamask/transaction-controller';
 import {
+  type NetworkController,
   SmartTransactionsController,
   SmartTransactionStatuses,
 } from '@metamask/smart-transactions-controller';
@@ -17,7 +20,7 @@ import {
   TransactionPayControllerMessenger,
   TransactionPayPublishHook,
 } from '@metamask/transaction-pay-controller';
-import { Hex } from '@metamask/utils';
+import { bytesToHex, Hex, hexToBytes } from '@metamask/utils';
 import { trace } from '../../../../shared/lib/trace';
 import { hasTransactionType } from '../../../../shared/lib/transactions.utils';
 import { getIsSmartTransaction } from '../../../../shared/lib/selectors';
@@ -70,6 +73,9 @@ const TRANSACTION_SUBMISSION_METHOD = {
   SENTINEL_STX: 'sentinel_stx',
   SENTINEL_RELAY: 'sentinel_relay',
 };
+
+const SIGNED_TRANSACTION_RECOVERY_NOTE =
+  'Recovered signed transaction after extension restart';
 
 export const TransactionControllerInit: MessengerClientInitFunction<
   TransactionController,
@@ -255,6 +261,14 @@ export const TransactionControllerInit: MessengerClientInitFunction<
     getTransactionMetricsRequest,
   );
 
+  recoverSignedTransactions({
+    initMessenger,
+    networkController: networkController(),
+    transactionController: messengerClient,
+  }).catch((error) => {
+    console.error('Failed to recover signed transactions', error);
+  });
+
   const api = getApi(messengerClient);
 
   return { messengerClient, api, memStateKey: 'TxController' };
@@ -385,6 +399,124 @@ function addTransactionControllerListeners(
 
 function getUIState(flatState: MessengerClientFlatState) {
   return { metamask: flatState };
+}
+
+export async function recoverSignedTransactions({
+  initMessenger,
+  networkController,
+  transactionController,
+}: {
+  initMessenger: TransactionControllerInitMessenger;
+  networkController: NetworkController;
+  transactionController: TransactionController;
+}) {
+  const signedTransactions =
+    transactionController.state?.transactions?.filter(
+      (transaction) =>
+        transaction.status === TransactionStatus.signed &&
+        Boolean(transaction.rawTx) &&
+        !transaction.hash &&
+        Boolean(transaction.networkClientId),
+    ) ?? [];
+
+  await Promise.allSettled(
+    signedTransactions.map(async (transactionMeta) => {
+      const recoveredHash = await recoverSignedTransactionHash({
+        networkController,
+        transactionMeta,
+      });
+
+      if (!recoveredHash) {
+        return;
+      }
+
+      const recoveredTransactionMeta = {
+        ...transactionMeta,
+        hash: recoveredHash,
+        status: TransactionStatus.submitted,
+        submittedTime: Date.now(),
+      };
+
+      transactionController.updateTransaction(
+        recoveredTransactionMeta,
+        SIGNED_TRANSACTION_RECOVERY_NOTE,
+      );
+
+      initMessenger.publish('TransactionController:transactionSubmitted', {
+        transactionMeta: recoveredTransactionMeta,
+      });
+    }),
+  );
+}
+
+async function recoverSignedTransactionHash({
+  networkController,
+  transactionMeta,
+}: {
+  networkController: NetworkController;
+  transactionMeta: TransactionMeta;
+}): Promise<string | undefined> {
+  if (!transactionMeta.rawTx || !transactionMeta.networkClientId) {
+    return undefined;
+  }
+
+  const { provider } = networkController.getNetworkClientById(
+    transactionMeta.networkClientId,
+  );
+  const expectedHash = getRawTransactionHash(transactionMeta.rawTx);
+
+  if (expectedHash) {
+    const existingTransaction = await provider.request({
+      method: 'eth_getTransactionByHash',
+      params: [expectedHash],
+    });
+
+    if (existingTransaction) {
+      return expectedHash;
+    }
+  }
+
+  try {
+    return (await provider.request({
+      method: 'eth_sendRawTransaction',
+      params: [transactionMeta.rawTx],
+    })) as string;
+  } catch (error) {
+    if (!expectedHash || !isRecoverableSignedTransactionError(error)) {
+      return undefined;
+    }
+
+    const existingTransaction = await provider.request({
+      method: 'eth_getTransactionByHash',
+      params: [expectedHash],
+    });
+
+    return existingTransaction ? expectedHash : undefined;
+  }
+}
+
+function getRawTransactionHash(rawTransaction: string): string | undefined {
+  try {
+    return bytesToHex(keccak256(hexToBytes(rawTransaction)));
+  } catch {
+    return undefined;
+  }
+}
+
+function isRecoverableSignedTransactionError(error: unknown): boolean {
+  const message = String(
+    (error as { data?: { message?: string }; message?: string })?.data
+      ?.message ??
+      (error as { message?: string })?.message ??
+      error,
+  ).toLowerCase();
+
+  return [
+    'already known',
+    'already imported',
+    'nonce too low',
+    'replacement transaction underpriced',
+  ].some((match) => message.includes(match));
 }
 
 export async function publishHook({
