@@ -6,7 +6,6 @@ const { ENVIRONMENT } = require('./constants');
  * Sets environment variables to inject in the current build.
  *
  * @param {object} options - Build options.
- * @param {string} options.buildName - The name of the build.
  * @param {boolean} options.isDevBuild - Whether the build is a development build.
  * @param {boolean} options.isTestBuild - Whether the build is a test build.
  * @param {string} options.buildType - The current build type (e.g. "main",
@@ -16,7 +15,6 @@ const { ENVIRONMENT } = require('./constants');
  * @param {ENVIRONMENT[keyof ENVIRONMENT]} options.environment - The build environment.
  */
 function setEnvironmentVariables({
-  buildName,
   isDevBuild,
   isTestBuild,
   buildType,
@@ -121,7 +119,9 @@ function getBuildIcon({ buildType }) {
  * @returns {string} The build app ID.
  */
 function getBuildAppId({ buildType }) {
-  const baseDomain = 'io.1do';
+  // EIP-6963 provider discovery validates rdns as an FQDN, so purely numeric
+  // labels like `1do` are rejected and the wallet won't appear as a connector.
+  const baseDomain = 'io.onedo.wallet';
   return buildType === 'main' ? baseDomain : `${baseDomain}.${buildType}`;
 }
 
