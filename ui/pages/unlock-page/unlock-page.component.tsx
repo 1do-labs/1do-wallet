@@ -2,8 +2,6 @@ import { EventEmitter } from 'events';
 import React, {
   Component,
   ComponentType,
-  lazy,
-  Suspense,
   FormEvent,
   ChangeEvent,
   MutableRefObject,
@@ -104,17 +102,6 @@ type LoginError = {
     remainingTime?: number;
   };
 };
-
-const FoxAppearAnimation = lazy(
-  () =>
-    // @ts-expect-error - Build system resolves without extension, but TS wants .js
-    import('../onboarding-flow/welcome/fox-appear-animation') as Promise<{
-      default: ComponentType<{
-        isLoader?: boolean;
-        skipTransition?: boolean;
-      }>;
-    }>,
-);
 
 class UnlockPage extends Component<UnlockPageProps, UnlockPageState> {
   static contextTypes = {
@@ -649,7 +636,6 @@ class UnlockPage extends Component<UnlockPageProps, UnlockPageState> {
                     >
                       1Do
                     </Text>
-                    <OneDoUnlockLogo isPopup={this.props.isPopup ?? false} />
                   </Box>
                 )}
                 {isBeta() ? (
@@ -772,9 +758,9 @@ class UnlockPage extends Component<UnlockPageProps, UnlockPageState> {
           </form>
         </Box>
         {!isRehydrationFlow && (
-          <Suspense fallback={<Box />}>
-            <FoxAppearAnimation />
-          </Suspense>
+          <Box className="unlock-page__bottom-logo">
+            <OneDoUnlockLogo isPopup={this.props.isPopup ?? false} />
+          </Box>
         )}
       </Box>
     );
