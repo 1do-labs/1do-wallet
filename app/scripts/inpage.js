@@ -109,9 +109,8 @@ if (shouldInjectProvider()) {
     providerInfo: {
       uuid: uuid(),
       name: process.env.METAMASK_BUILD_NAME,
-      icon: chrome.runtime.getURL('images/icon-128.png'),
+      icon: process.env.METAMASK_BUILD_ICON,
       rdns: process.env.METAMASK_BUILD_APP_ID,
     },
   });
-
 }
