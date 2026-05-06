@@ -77,6 +77,11 @@ const TRANSACTION_SUBMISSION_METHOD = {
 const SIGNED_TRANSACTION_RECOVERY_NOTE =
   'Recovered signed transaction after extension restart';
 
+const RECOVERABLE_STARTUP_TRANSACTION_ERRORS = [
+  'Transaction incomplete at startup',
+  'Transaction incomplete at startup with all required transactions confirmed',
+];
+
 export const TransactionControllerInit: MessengerClientInitFunction<
   TransactionController,
   TransactionControllerMessenger,
@@ -99,6 +104,11 @@ export const TransactionControllerInit: MessengerClientInitFunction<
     preferencesController,
     smartTransactionsController,
   } = getControllers(request);
+
+  const recoveredPersistedTransactionState =
+    getRecoverableTransactionControllerState(
+      persistedState.TransactionController,
+    );
 
   const messengerClient: TransactionController = new TransactionController({
     getCurrentNetworkEIP1559Compatibility: () =>
@@ -253,7 +263,7 @@ export const TransactionControllerInit: MessengerClientInitFunction<
     },
     // @ts-expect-error Keyring controller expects TxData returned but TransactionController expects TypedTransaction
     sign: (...args) => keyringController().signTransaction(...args),
-    state: persistedState.TransactionController,
+    state: recoveredPersistedTransactionState,
   });
 
   addTransactionControllerListeners(
@@ -411,12 +421,8 @@ export async function recoverSignedTransactions({
   transactionController: TransactionController;
 }) {
   const signedTransactions =
-    transactionController.state?.transactions?.filter(
-      (transaction) =>
-        transaction.status === TransactionStatus.signed &&
-        Boolean(transaction.rawTx) &&
-        !transaction.hash &&
-        Boolean(transaction.networkClientId),
+    transactionController.state?.transactions?.filter((transaction) =>
+      isRecoverableIncompleteTransaction(transaction),
     ) ?? [];
 
   await Promise.allSettled(
@@ -447,6 +453,43 @@ export async function recoverSignedTransactions({
       });
     }),
   );
+}
+
+export function getRecoverableTransactionControllerState(
+  transactionControllerState: TransactionController['state'] | undefined,
+) {
+  if (!transactionControllerState?.transactions?.length) {
+    return transactionControllerState;
+  }
+
+  const recoveredAt = Date.now();
+  let hasRecoveredTransactions = false;
+
+  const transactions = transactionControllerState.transactions.map(
+    (transactionMeta) => {
+      if (!isRecoverableIncompleteTransaction(transactionMeta)) {
+        return transactionMeta;
+      }
+
+      hasRecoveredTransactions = true;
+
+      return {
+        ...transactionMeta,
+        error: undefined,
+        status: TransactionStatus.submitted,
+        submittedTime: transactionMeta.submittedTime ?? recoveredAt,
+      };
+    },
+  );
+
+  if (!hasRecoveredTransactions) {
+    return transactionControllerState;
+  }
+
+  return {
+    ...transactionControllerState,
+    transactions,
+  };
 }
 
 async function recoverSignedTransactionHash({
@@ -517,6 +560,28 @@ function isRecoverableSignedTransactionError(error: unknown): boolean {
     'nonce too low',
     'replacement transaction underpriced',
   ].some((match) => message.includes(match));
+}
+
+function isRecoverableIncompleteTransaction(transaction: TransactionMeta) {
+  if (!transaction.rawTx || transaction.hash || !transaction.networkClientId) {
+    return false;
+  }
+
+  return (
+    transaction.status === TransactionStatus.signed ||
+    transaction.status === TransactionStatus.submitted ||
+    (transaction.status === TransactionStatus.failed &&
+      isStartupIncompleteTransactionError(transaction.error))
+  );
+}
+
+function isStartupIncompleteTransactionError(error: TransactionMeta['error']) {
+  const message = error?.message;
+
+  return (
+    typeof message === 'string' &&
+    RECOVERABLE_STARTUP_TRANSACTION_ERRORS.includes(message)
+  );
 }
 
 export async function publishHook({
