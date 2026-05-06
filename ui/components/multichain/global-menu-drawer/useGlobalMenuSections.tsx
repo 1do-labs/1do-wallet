@@ -1,5 +1,5 @@
 import React, { useCallback, useContext, useMemo } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   Box,
@@ -9,19 +9,9 @@ import {
   IconColor,
   IconName,
   TextColor,
-  TextVariant,
 } from '@metamask/design-system-react';
 import {
-  useReadNotificationsCounter,
-  useUnreadNotificationsCounter,
-} from '../../../hooks/metamask-notifications/useCounter';
-import { NotificationsTagCounter } from '../notifications-tag-counter';
-import { NewFeatureTag } from '../../../pages/notifications/NewFeatureTag';
-import {
   SETTINGS_ROUTE,
-  // SETTINGS_V2_ROUTE,
-  NOTIFICATIONS_ROUTE,
-  SNAPS_ROUTE,
   PERMISSIONS,
   GATOR_PERMISSIONS,
   CONTACTS_ROUTE,
@@ -29,7 +19,6 @@ import {
 import {
   lockMetamask,
   setShowSupportDataConsentModal,
-  showConfirmTurnOnMetamaskNotifications,
   toggleNetworkMenu,
   toggleDefaultView,
 } from '../../../store/actions';
@@ -37,12 +26,6 @@ import { isGatorPermissionsRevocationFeatureEnabled } from '../../../../shared/l
 import { useI18nContext } from '../../../hooks/useI18nContext';
 import { useSidePanelEnabled } from '../../../hooks/useSidePanelEnabled';
 import { useBrowserSupportsSidePanel } from '../../../hooks/useBrowserSupportsSidePanel';
-import {
-  selectIsMetamaskNotificationsEnabled,
-  selectIsMetamaskNotificationsFeatureSeen,
-} from '../../../selectors/metamask-notifications/metamask-notifications';
-import { selectIsBackupAndSyncEnabled } from '../../../selectors/identity/backup-and-sync';
-import { Tag } from '../../component-library';
 // TODO: Remove restricted import
 // eslint-disable-next-line import-x/no-restricted-paths
 import { getEnvironmentType } from '../../../../app/scripts/lib/util';
@@ -63,21 +46,10 @@ import {
 
 import {
   getUnapprovedTransactions,
-  getAnySnapUpdateAvailable,
-  getThirdPartyNotifySnaps,
-  getUseExternalServices,
   getMetaMetricsId,
   getParticipateInMetaMetrics,
   getDataCollectionForMarketing,
 } from '../../../selectors';
-import { useUserSubscriptions } from '../../../hooks/subscription/useSubscription';
-import {
-  getIsShieldSubscriptionActive,
-  getIsShieldSubscriptionPaused,
-  getShieldSubscription,
-  getSubscriptionPaymentData,
-} from '../../../../shared/lib/shield';
-import { useSubscriptionMetrics } from '../../../hooks/shield/metrics/useSubscriptionMetrics';
 import { getPortfolioUrl } from '../../../helpers/utils/portfolio';
 import type { GlobalMenuSection } from '../global-menu/global-menu-list.types';
 import { isBeta, isFlask } from '../../../../shared/lib/build-types';
@@ -96,49 +68,17 @@ export function useGlobalMenuSections(
   const t = useI18nContext();
   const dispatch = useDispatch();
   const { trackEvent } = useContext(MetaMetricsContext);
-  const { captureCommonExistingShieldSubscriptionEvents } =
-    useSubscriptionMetrics();
   const location = useLocation();
-  const navigate = useNavigate();
 
-  const basicFunctionality = useSelector(getUseExternalServices);
-  const { notificationsUnreadCount } = useUnreadNotificationsCounter();
-  const { notificationsReadCount } = useReadNotificationsCounter();
-  const isMetamaskNotificationFeatureSeen = useSelector(
-    selectIsMetamaskNotificationsFeatureSeen,
-  );
-  const isMetamaskNotificationsEnabled = useSelector(
-    selectIsMetamaskNotificationsEnabled,
-  );
-  const isBackupAndSyncEnabled = useSelector(selectIsBackupAndSyncEnabled);
   const unapprovedTransactions = useSelector(getUnapprovedTransactions);
   const hasUnapprovedTransactions =
     Object.keys(unapprovedTransactions).length > 0;
-  let hasThirdPartyNotifySnaps = false;
-  const snapsUpdatesAvailable = useSelector(getAnySnapUpdateAvailable);
-  hasThirdPartyNotifySnaps = useSelector(getThirdPartyNotifySnaps).length > 0;
 
   const isSidePanelEnabled = useSidePanelEnabled();
   const browserSupportsSidePanel = useBrowserSupportsSidePanel();
   const currentEnvironment = getEnvironmentType();
   const isSidepanel = currentEnvironment === ENVIRONMENT_TYPE_SIDEPANEL;
   const isPopup = currentEnvironment === ENVIRONMENT_TYPE_POPUP;
-
-  const { subscriptions } = useUserSubscriptions();
-  const isActiveShieldSubscription =
-    getIsShieldSubscriptionActive(subscriptions);
-  const isPausedShieldSubscription =
-    getIsShieldSubscriptionPaused(subscriptions);
-  const showPriorityTag = useMemo(
-    () =>
-      (isActiveShieldSubscription || isPausedShieldSubscription) &&
-      basicFunctionality,
-    [
-      isActiveShieldSubscription,
-      isPausedShieldSubscription,
-      basicFunctionality,
-    ],
-  );
 
   const metaMetricsId = useSelector(getMetaMetricsId);
   const isMetaMetricsEnabled = useSelector(getParticipateInMetaMetrics);
@@ -147,56 +87,6 @@ export function useGlobalMenuSections(
   const supportText =
     isBeta() || isFlask() ? t('needHelpSubmitTicket') : t('support');
   const supportLink = SUPPORT_LINK || '';
-
-  const handleNotificationsClick = useCallback(() => {
-    const shouldShowEnableModal =
-      !hasThirdPartyNotifySnaps && !isMetamaskNotificationsEnabled;
-
-    if (shouldShowEnableModal) {
-      trackEvent({
-        category: MetaMetricsEventCategory.NotificationsActivationFlow,
-        event: MetaMetricsEventName.NotificationsActivated,
-        properties: {
-          // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-          // eslint-disable-next-line @typescript-eslint/naming-convention
-          action_type: 'started',
-          // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-          // eslint-disable-next-line @typescript-eslint/naming-convention
-          is_profile_syncing_enabled: isBackupAndSyncEnabled,
-        },
-      });
-      dispatch(showConfirmTurnOnMetamaskNotifications());
-      onClose();
-      return;
-    }
-
-    trackEvent({
-      category: MetaMetricsEventCategory.NotificationInteraction,
-      event: MetaMetricsEventName.NotificationsMenuOpened,
-      properties: {
-        // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        unread_count: notificationsUnreadCount,
-        // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        read_count: notificationsReadCount,
-      },
-    });
-    navigate(
-      `${NOTIFICATIONS_ROUTE}?from=${encodeURIComponent(location.pathname)}`,
-    );
-  }, [
-    hasThirdPartyNotifySnaps,
-    isMetamaskNotificationsEnabled,
-    trackEvent,
-    isBackupAndSyncEnabled,
-    dispatch,
-    onClose,
-    navigate,
-    notificationsUnreadCount,
-    notificationsReadCount,
-    location.pathname,
-  ]);
 
   const handleSupportMenuClick = useCallback(() => {
     dispatch(setShowSupportDataConsentModal(true));
@@ -213,88 +103,14 @@ export function useGlobalMenuSections(
         contextPropsIntoEventProperties: [MetaMetricsContextProp.PageTitle],
       },
     );
-    if (showPriorityTag) {
-      const shieldSubscription = getShieldSubscription(subscriptions);
-      const { cryptoPaymentChain, cryptoPaymentCurrency } =
-        getSubscriptionPaymentData(shieldSubscription);
-      if (shieldSubscription) {
-        captureCommonExistingShieldSubscriptionEvents(
-          {
-            subscriptionStatus: shieldSubscription.status,
-            paymentType: shieldSubscription.paymentMethod.type,
-            billingInterval: shieldSubscription.interval,
-            cryptoPaymentChain,
-            cryptoPaymentCurrency,
-          },
-          MetaMetricsEventName.ShieldPrioritySupportClicked,
-        );
-      }
-    }
     onClose();
-  }, [
-    dispatch,
-    trackEvent,
-    supportLink,
-    showPriorityTag,
-    subscriptions,
-    captureCommonExistingShieldSubscriptionEvents,
-    onClose,
-  ]);
+  }, [dispatch, trackEvent, supportLink, onClose]);
 
   return useMemo(() => {
-    const section1: GlobalMenuSection = {
-      id: 'global-menu-section-1',
-      items: [],
-    };
-
-    if (basicFunctionality) {
-      section1.items.push({
-        id: 'notifications-menu-item',
-        iconName: IconName.Notification,
-        showChevron: true,
-        label: (
-          <Box
-            flexDirection={BoxFlexDirection.Row}
-            alignItems={BoxAlignItems.Center}
-            justifyContent={BoxJustifyContent.Between}
-          >
-            {t('notifications')}
-            {notificationsUnreadCount === 0 &&
-              !isMetamaskNotificationFeatureSeen && <NewFeatureTag />}
-            <NotificationsTagCounter />
-          </Box>
-        ),
-        onClick: handleNotificationsClick,
-      });
-    }
-
     const section2: GlobalMenuSection = {
       id: 'global-menu-section-2',
-      hideDividerAbove: true, // No divider between notifications and this section
       items: [],
     };
-
-    section2.items.push({
-      id: 'discover',
-      iconName: IconName.Export,
-      label: t('discover'),
-      onClick: () => {
-        const url = getPortfolioUrl(
-          'explore/tokens',
-          'ext_portfolio_button',
-          metaMetricsId,
-          isMetaMetricsEnabled,
-          isMarketingEnabled,
-        );
-        global.platform.openTab({ url });
-        trackEvent({
-          category: MetaMetricsEventCategory.Navigation,
-          event: MetaMetricsEventName.PortfolioLinkClicked,
-          properties: { location: METRICS_LOCATION, text: 'Portfolio' },
-        });
-        onClose();
-      },
-    });
 
     if (isPopup || isSidepanel) {
       section2.items.push({
@@ -375,13 +191,6 @@ export function useGlobalMenuSections(
             onClose();
           },
         },
-        {
-          id: 'global-menu-snaps',
-          iconName: IconName.Snaps,
-          label: t('snaps'),
-          to: `${SNAPS_ROUTE}?from=${encodeURIComponent(location.pathname)}`,
-          showInfoDot: snapsUpdatesAvailable,
-        },
       ],
     };
 
@@ -421,29 +230,7 @@ export function useGlobalMenuSections(
         {
           id: 'global-menu-support',
           iconName: IconName.MessageQuestion,
-          label: (
-            <Box
-              flexDirection={BoxFlexDirection.Row}
-              alignItems={BoxAlignItems.Center}
-              justifyContent={BoxJustifyContent.Between}
-            >
-              {supportText}
-              {showPriorityTag && (
-                <Tag
-                  label={t('priority')}
-                  textVariant={TextVariant.BodySm}
-                  className="rounded-lg border-0 bg-success-muted"
-                  labelProps={{
-                    className: 'text-success-default',
-                  }}
-                  iconName={IconName.Sparkle}
-                  startIconProps={{
-                    className: 'text-success-default',
-                  }}
-                />
-              )}
-            </Box>
-          ),
+          label: supportText,
           onClick: handleSupportMenuClick,
         },
       ],
@@ -473,9 +260,6 @@ export function useGlobalMenuSections(
     };
 
     const sections: GlobalMenuSection[] = [];
-    if (section1.items.length > 0) {
-      sections.push(section1);
-    }
     if (section2.items.length > 0) {
       sections.push(section2);
     }
@@ -487,17 +271,10 @@ export function useGlobalMenuSections(
   }, [
     t,
     location.pathname,
-    basicFunctionality,
     isPopup,
     isSidepanel,
     hasUnapprovedTransactions,
-    snapsUpdatesAvailable,
-    showPriorityTag,
-    notificationsUnreadCount,
-    notificationsReadCount,
-    isMetamaskNotificationFeatureSeen,
     onClose,
-    navigate,
     dispatch,
     trackEvent,
     metaMetricsId,
@@ -506,7 +283,6 @@ export function useGlobalMenuSections(
     browserSupportsSidePanel,
     isSidePanelEnabled,
     supportText,
-    handleNotificationsClick,
     handleSupportMenuClick,
   ]);
 }

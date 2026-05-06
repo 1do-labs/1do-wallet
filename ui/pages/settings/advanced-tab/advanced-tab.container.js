@@ -12,7 +12,6 @@ import {
   setShowTestNetworks,
   setSmartTransactionsPreferenceEnabled,
   showModal,
-  setManageInstitutionalWallets,
 } from '../../../store/actions';
 import { getSmartTransactionsPreferenceEnabled } from '../../../../shared/lib/selectors';
 import {
@@ -26,11 +25,8 @@ export const mapStateToProps = (state) => {
     appState: { errorInSettings },
     metamask,
   } = state;
-  const {
-    featureFlags: { sendHexData } = {},
-    dismissSeedBackUpReminder,
-    manageInstitutionalWallets,
-  } = metamask;
+  const { featureFlags: { sendHexData } = {}, dismissSeedBackUpReminder } =
+    metamask;
   const {
     showFiatInTestnets,
     showTestNetworks,
@@ -48,7 +44,6 @@ export const mapStateToProps = (state) => {
     smartTransactionsEnabled: getSmartTransactionsPreferenceEnabled(state),
     autoLockTimeLimit,
     dismissSeedBackUpReminder,
-    manageInstitutionalWallets,
     dismissSmartAccountSuggestionEnabled,
   };
 };
@@ -80,9 +75,6 @@ export const mapDispatchToProps = (dispatch) => {
     },
     setDismissSeedBackUpReminder: (value) => {
       return dispatch(setDismissSeedBackUpReminder(value));
-    },
-    setManageInstitutionalWallets: (value) => {
-      return dispatch(setManageInstitutionalWallets(value));
     },
     setDismissSmartAccountSuggestionEnabled: (value) => {
       return dispatch(setDismissSmartAccountSuggestionEnabled(value));

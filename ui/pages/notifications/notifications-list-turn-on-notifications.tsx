@@ -6,6 +6,7 @@ import {
   MetaMetricsEventCategory,
   MetaMetricsEventName,
 } from '../../../shared/constants/metametrics';
+import { PRIVACY_POLICY_LINK } from '../../../shared/lib/ui-utils';
 import { useEnableNotifications } from '../../hooks/metamask-notifications/useNotifications';
 import { getIsUpdatingMetamaskNotifications } from '../../selectors/metamask-notifications/metamask-notifications';
 import { useMetamaskNotificationsContext } from '../../contexts/metamask-notifications/metamask-notifications';
@@ -72,7 +73,7 @@ export const NotificationsListTurnOnNotifications = () => {
   const privacyLink = (
     <Text
       as="a"
-      href="https://metamask.io/privacy.html"
+      href={PRIVACY_POLICY_LINK}
       target="_blank"
       rel="noopener noreferrer"
       key="privacy-link"

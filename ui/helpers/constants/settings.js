@@ -1,6 +1,5 @@
 /* eslint-disable @metamask/design-tokens/color-no-hex*/
 import { PLATFORM_FIREFOX } from '../../../shared/constants/app';
-import { isExperimental, isFlask } from '../../../shared/lib/build-types';
 import { getBrowserName } from '../../../shared/lib/browser-runtime.utils';
 import { IconName } from '../../components/component-library';
 import {
@@ -9,10 +8,7 @@ import {
   GENERAL_ROUTE,
   ABOUT_US_ROUTE,
   NETWORKS_ROUTE,
-  EXPERIMENTAL_ROUTE,
   DEVELOPER_OPTIONS_ROUTE,
-  BACKUPANDSYNC_ROUTE,
-  NOTIFICATIONS_SETTINGS_ROUTE,
   SECURITY_PASSWORD_CHANGE_ROUTE,
   TRANSACTION_SHIELD_ROUTE,
   TRANSACTION_SHIELD_CLAIM_ROUTES,
@@ -172,34 +168,6 @@ const SETTINGS_CONSTANTS = [
     icon: 'fas fa-sliders-h',
     hidden: getBrowserName() !== PLATFORM_FIREFOX,
   },
-  {
-    tabMessage: (t) => t('backupAndSync'),
-    sectionMessage: (t) => t('backupAndSyncEnable'),
-    descriptionMessage: (t) => t('backupAndSyncEnable'),
-    route: `${BACKUPANDSYNC_ROUTE}#backup-and-sync-toggle`,
-    iconName: IconName.SecurityTime,
-  },
-  {
-    tabMessage: (t) => t('backupAndSync'),
-    sectionMessage: (t) => t('backupAndSyncFeatureAccounts'),
-    descriptionMessage: (t) => t('backupAndSyncFeatureAccounts'),
-    route: `${BACKUPANDSYNC_ROUTE}#backup-and-sync-features-toggles-account-syncing`,
-    iconName: IconName.SecurityTime,
-  },
-  {
-    tabMessage: (t) => t('backupAndSync'),
-    sectionMessage: (t) => t('backupAndSyncFeatureContacts'),
-    descriptionMessage: (t) => t('backupAndSyncFeatureContacts'),
-    route: `${BACKUPANDSYNC_ROUTE}#backup-and-sync-features-toggles-contact-syncing`,
-    iconName: IconName.SecurityTime,
-  },
-  {
-    tabMessage: (t) => t('notifications'),
-    sectionMessage: (t) => t('notifications'),
-    descriptionMessage: (t) => t('notifications'),
-    route: NOTIFICATIONS_SETTINGS_ROUTE,
-    iconName: IconName.Notification,
-  },
   // securityAndPrivacy settingsRefs[0]
   {
     tabMessage: (t) => t('securityAndPrivacy'),
@@ -249,14 +217,6 @@ const SETTINGS_CONSTANTS = [
     icon: 'fa fa-lock',
   },
   // securityAndPrivacy settingsRefs[6]
-  {
-    tabMessage: (t) => t('securityAndPrivacy'),
-    sectionMessage: (t) => t('participateInMetaMetrics'),
-    descriptionMessage: (t) => t('participateInMetaMetricsDescription'),
-    route: `${SECURITY_ROUTE}#metametrics`,
-    icon: 'fa fa-lock',
-  },
-  // securityAndPrivacy settingsRefs[7]
   {
     tabMessage: (t) => t('securityAndPrivacy'),
     sectionMessage: (t) => t('networkProvider'),
@@ -354,22 +314,6 @@ const SETTINGS_CONSTANTS = [
     route: `${SECURITY_ROUTE}#transaction-simulations`,
     icon: 'fa fa-lock',
   },
-  // securityAndPrivacy settingsRefs[19]
-  {
-    tabMessage: (t) => t('securityAndPrivacy'),
-    sectionMessage: (t) => t('dataCollectionForMarketing'),
-    descriptionMessage: (t) => t('dataCollectionForMarketingDescription'),
-    route: `${SECURITY_ROUTE}#dataCollectionForMarketing`,
-    icon: 'fa fa-lock',
-  },
-  // securityAndPrivacy settingsRefs[20]
-  {
-    tabMessage: (t) => t('securityAndPrivacy'),
-    sectionMessage: (t) => t('deleteMetaMetricsData'),
-    descriptionMessage: (t) => t('deleteMetaMetricsDataDescription'),
-    route: `${SECURITY_ROUTE}#delete-metametrics-data`,
-    icon: 'fa fa-lock',
-  },
   {
     tabMessage: (t) => t('networks'),
     sectionMessage: (t) => t('mainnet'),
@@ -421,7 +365,7 @@ const SETTINGS_CONSTANTS = [
   },
   {
     tabMessage: (t) => t('about'),
-    sectionMessage: (t) => t('metamaskVersion'),
+    sectionMessage: () => '1do',
     descriptionMessage: (t) => t('builtAroundTheWorld'),
     route: `${ABOUT_US_ROUTE}#version`,
     iconName: IconName.Info,
@@ -502,22 +446,6 @@ const SETTINGS_CONSTANTS = [
     route: `${TRANSACTION_SHIELD_CLAIM_ROUTES.NEW.FULL}`,
     iconName: IconName.ShieldLock,
   },
-  // experimental settingsRefs[0]
-  {
-    tabMessage: (t) => t('experimental'),
-    sectionMessage: (t) => t('notificationsFeatureToggle'),
-    descriptionMessage: (t) => t('notificationsFeatureToggleDescription'),
-    route: `${EXPERIMENTAL_ROUTE}#notifications`,
-    icon: 'fas fa-flask',
-  },
-  // experimental settingsRefs[4]
-  {
-    tabMessage: (t) => t('experimental'),
-    sectionMessage: (t) => t('snaps'),
-    descriptionMessage: (t) => t('addSnapAccountToggle'),
-    route: `${EXPERIMENTAL_ROUTE}#snaps`,
-    icon: 'fas fa-flask',
-  },
   // developerOptions settingsRefs[0]
   {
     featureFlag: 'ENABLE_SETTINGS_PAGE_DEV_OPTIONS',
@@ -556,14 +484,6 @@ const SETTINGS_CONSTANTS = [
       'Results in a timestamp being continuously saved to session.storage',
     route: `${DEVELOPER_OPTIONS_ROUTE}#service-worker-keep-alive`,
     iconName: IconName.CodeCircle,
-  },
-  {
-    tabMessage: (t) => t('experimental'),
-    sectionMessage: (t) => t('watchEthereumAccountsToggle'),
-    descriptionMessage: (t) => t('watchEthereumAccountsDescription'),
-    route: `${EXPERIMENTAL_ROUTE}#watch-only`,
-    icon: 'fas fa-flask',
-    hidden: !isFlask() && !isExperimental(),
   },
 ];
 

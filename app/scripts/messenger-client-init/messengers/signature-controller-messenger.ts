@@ -2,7 +2,6 @@ import { Messenger } from '@metamask/messenger';
 import type { AccountsControllerGetStateAction } from '@metamask/accounts-controller';
 import type { ApprovalControllerAddRequestAction } from '@metamask/approval-controller';
 import type { LoggingControllerAddAction } from '@metamask/logging-controller';
-import type { GatorPermissionsControllerDecodePermissionFromPermissionContextForOriginAction } from '@metamask/gator-permissions-controller';
 import { NetworkControllerGetNetworkClientByIdAction } from '@metamask/network-controller';
 import type {
   KeyringControllerSignMessageAction,
@@ -17,7 +16,6 @@ type AllowedActions =
   | AccountsControllerGetStateAction
   | ApprovalControllerAddRequestAction
   | LoggingControllerAddAction
-  | GatorPermissionsControllerDecodePermissionFromPermissionContextForOriginAction
   | NetworkControllerGetNetworkClientByIdAction
   | KeyringControllerSignMessageAction
   | KeyringControllerSignPersonalMessageAction
@@ -56,7 +54,6 @@ export function getSignatureControllerMessenger(
       'KeyringController:signTypedMessage',
       'LoggingController:add',
       'NetworkController:getNetworkClientById',
-      'GatorPermissionsController:decodePermissionFromPermissionContextForOrigin',
     ],
   });
   return controllerMessenger;

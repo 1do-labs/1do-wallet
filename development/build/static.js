@@ -107,11 +107,12 @@ module.exports = function createStaticAssetTasks({
 };
 
 function getCopyTargets(shouldIncludeLockdown, shouldIncludeSnow) {
+  const supportedLocales = ['en', 'zh_CN'];
   const allCopyTargets = [
-    {
-      src: `./app/_locales/`,
-      dest: `_locales`,
-    },
+    ...supportedLocales.map((locale) => ({
+      src: `./app/_locales/${locale}/`,
+      dest: `_locales/${locale}`,
+    })),
     {
       src: `./app/images/`,
       dest: `images`,
@@ -195,26 +196,6 @@ function getCopyTargets(shouldIncludeLockdown, shouldIncludeSnow) {
       pattern: '*.wasm',
       dest: isManifestV3 ? 'scripts/' : '',
     },
-    ...(isManifestV3
-      ? [
-          {
-            src: getPathInsideNodeModules(
-              '@metamask/snaps-execution-environments',
-              'dist/webpack/iframe/index.html',
-            ),
-            dest: `snaps/index.html`,
-            pattern: '',
-          },
-          {
-            src: getPathInsideNodeModules(
-              '@metamask/snaps-execution-environments',
-              'dist/webpack/iframe/bundle.js',
-            ),
-            dest: `snaps/bundle.js`,
-            pattern: '',
-          },
-        ]
-      : []),
   ];
 
   const copyTargetsDev = [

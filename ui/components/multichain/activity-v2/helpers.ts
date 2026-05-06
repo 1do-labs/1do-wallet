@@ -1,4 +1,3 @@
-import type { Transaction } from '@metamask/keyring-api';
 import type { CaipChainId } from '@metamask/utils';
 import { TransactionType } from '@metamask/transaction-controller';
 import type {
@@ -23,8 +22,7 @@ export type ActivityListFilter = {
 export type FlattenedItem =
   | { type: 'date-header'; date: number }
   | { type: 'local'; transactionGroup: TransactionGroup; id: string }
-  | { type: 'completed'; data: TransactionViewModel; id: string }
-  | { type: 'non-evm'; transaction: Transaction; id: string };
+  | { type: 'completed'; data: TransactionViewModel; id: string };
 
 function parseDate(timestamp: string | number) {
   const date = new Date(timestamp);
@@ -92,13 +90,11 @@ export function filterLocalNotInApi(
 
 type MergedItem =
   | { type: 'local'; group: TransactionGroup; time: number; nonce: number }
-  | { type: 'completed'; tx: TransactionViewModel; time: number; nonce: number }
-  | { type: 'non-evm'; transaction: Transaction; time: number; nonce: number };
+  | { type: 'completed'; tx: TransactionViewModel; time: number; nonce: number };
 
 export function mergeAllTransactionsByTime(
   localTransactionGroups: TransactionGroup[],
   apiTransactions: TransactionViewModel[],
-  nonEvmTransactions: Transaction[] = [],
 ): MergedItem[] {
   const localItems = localTransactionGroups.map((group) => ({
     type: 'local' as const,
@@ -116,15 +112,8 @@ export function mergeAllTransactionsByTime(
     nonce: tx.nonce,
   }));
 
-  const nonEvmItems = nonEvmTransactions.map((transaction) => ({
-    type: 'non-evm' as const,
-    transaction,
-    time: (transaction.timestamp ?? 0) * 1000,
-    nonce: 0,
-  }));
-
   // Sort by time (newest first), then by nonce (highest first) for same-block txs
-  return [...localItems, ...completedItems, ...nonEvmItems].sort(
+  return [...localItems, ...completedItems].sort(
     (a, b) => b.time - a.time || b.nonce - a.nonce,
   );
 }
@@ -154,12 +143,6 @@ export function groupAndFlattenMergedTransactions(
         type: 'local',
         id: item.group.primaryTransaction.id,
         transactionGroup: item.group,
-      });
-    } else if (item.type === 'non-evm') {
-      flattened.push({
-        type: 'non-evm',
-        id: item.transaction.id,
-        transaction: item.transaction,
       });
     } else {
       flattened.push({
@@ -237,39 +220,6 @@ export function matchesLocalTransaction(
     return nested.some((call) => call.to?.toLowerCase() === addr);
   }
   return false;
-}
-
-/**
- * Returns true if the non-EVM transaction involves the given asset scope
- * by checking the CAIP asset type in from/to asset entries.
- *
- * @param tx - The non-EVM transaction to check.
- * @param scope - The asset scope to filter by.
- * @returns Whether the transaction involves the scoped asset.
- */
-export function matchesNonEvmTransaction(
-  tx: Transaction,
-  scope: AssetScope,
-): boolean {
-  const addr =
-    scope.kind === 'native'
-      ? scope.caipAssetType?.toLowerCase()
-      : scope.tokenAddress.toLowerCase();
-
-  if (!addr) {
-    return false;
-  }
-
-  const assetEntries = [...(tx.from ?? []), ...(tx.to ?? [])];
-  return assetEntries.some((entry) => {
-    if (!entry.asset) {
-      return false;
-    }
-    if (entry.asset.fungible) {
-      return entry.asset.type?.toLowerCase() === addr;
-    }
-    return 'id' in entry.asset && entry.asset.id.toLowerCase().includes(addr);
-  });
 }
 
 export function calculateFiatFromMarketRates(

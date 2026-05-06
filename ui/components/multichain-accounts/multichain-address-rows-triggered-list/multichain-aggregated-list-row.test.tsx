@@ -24,7 +24,6 @@ const TEST_STRINGS = {
   COPY_MESSAGE: 'Copied!',
   EMPTY_STRING: '',
   ETHEREUM_GROUP_NAME: 'Ethereum',
-  SOLANA_NETWORK_NAME: 'Solana Mainnet',
 } as const;
 
 const TEST_CHAIN_IDS = {
@@ -39,7 +38,6 @@ const TEST_CHAIN_IDS = {
   ETHEREUM_CAIP: 'eip155:1',
   POLYGON_CAIP: 'eip155:137',
   ARBITRUM_CAIP: 'eip155:42161',
-  SOLANA_CAIP: 'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp',
 } as const;
 
 const TEST_IDS = {
@@ -122,14 +120,7 @@ const createMockState = () => ({
         defaultRpcEndpointIndex: 0,
       },
     },
-    multichainNetworkConfigurationsByChainId: {
-      'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp': {
-        chainId: 'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp',
-        name: 'Solana Mainnet',
-        nativeCurrency: 'SOL',
-        isEvm: false,
-      },
-    },
+    multichainNetworkConfigurationsByChainId: {},
     internalAccounts: {
       accounts: {
         'test-account-1': {
@@ -141,20 +132,6 @@ const createMockState = () => ({
             keyring: { type: 'HD Key Tree' },
             importTime: Date.now(),
             lastSelected: Date.now(),
-          },
-        },
-        'test-account-2': {
-          id: 'test-account-2',
-          address: 'DfGj1XfVTbfM7VZvqLkVNvDhFb4Nt8xBpGpH5f2r3Dqq',
-          scopes: ['solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp'],
-          metadata: {
-            name: 'Test Account 2',
-            keyring: { type: 'Snap' },
-            importTime: Date.now(),
-            lastSelected: Date.now(),
-            snap: {
-              enabled: true,
-            },
           },
         },
       },
@@ -411,25 +388,9 @@ describe('MultichainAggregatedAddressListRow', () => {
       ).toBeInTheDocument();
     });
 
-    it('displays network name for non-EVM chain IDs', () => {
+    it('displays "Ethereum" when multiple EVM chains are grouped together', () => {
       const props = createTestProps({
-        chainIds: [TEST_CHAIN_IDS.SOLANA_CAIP],
-      });
-
-      render(
-        <Provider store={store}>
-          <MultichainAggregatedAddressListRow {...props} />
-        </Provider>,
-      );
-
-      expect(
-        screen.getByText(TEST_STRINGS.SOLANA_NETWORK_NAME),
-      ).toBeInTheDocument();
-    });
-
-    it('displays "Ethereum" for mixed EVM and non-EVM chains with at least one EVM chain', () => {
-      const props = createTestProps({
-        chainIds: [TEST_CHAIN_IDS.ETHEREUM_CAIP, TEST_CHAIN_IDS.SOLANA_CAIP],
+        chainIds: [TEST_CHAIN_IDS.ETHEREUM_CAIP, TEST_CHAIN_IDS.POLYGON_CAIP],
       });
 
       render(

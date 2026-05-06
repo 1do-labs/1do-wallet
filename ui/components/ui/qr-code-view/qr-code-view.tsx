@@ -99,7 +99,7 @@ function QrCodeView({
           }}
         />
         <Box className="qr-code__logo">
-          <img src="images/logo/metamask-fox.svg" alt="Logo" />
+          <img src="images/logo/1do-mark.svg" alt="Logo" />
         </Box>
       </Box>
       {accountName ? (

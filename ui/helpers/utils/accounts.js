@@ -1,4 +1,3 @@
-import { IconName } from '@metamask/snaps-sdk/jsx';
 import { KnownCaipNamespace, parseCaipChainId } from '@metamask/utils';
 import { InvisibleCharacter } from '../../components/component-library';
 import {
@@ -11,7 +10,6 @@ import { BackgroundColor } from '../constants/design-system';
 import { KeyringType } from '../../../shared/constants/keyring';
 import { HardwareKeyringNames } from '../../../shared/constants/hardware-wallets';
 import { t } from '../../../shared/lib/translate';
-import { isSnapPreinstalled } from '../../../shared/lib/snaps/snaps';
 import { MULTICHAIN_ACCOUNT_TYPE_TO_NAME } from '../../../shared/constants/multichain/accounts';
 
 export function getAccountNameErrorMessage(
@@ -79,7 +77,7 @@ const toSrpLabel = (index) =>
   // Index starts at 1, for SRPs.
   `SRP #${index + 1}`;
 
-export function getAccountLabels(type, account, keyrings, snapName) {
+export function getAccountLabels(type, account, keyrings) {
   if (!account) {
     return [];
   }
@@ -140,34 +138,6 @@ export function getAccountLabels(type, account, keyrings, snapName) {
       });
       break;
     case KeyringType.snap: {
-      const { entropySource } = account.options;
-      if (entropySource && hdKeyrings.length > 1) {
-        const hdKeyringIndex = hdKeyrings.findIndex(
-          (kr) => kr.metadata.id === entropySource,
-        );
-        labels.push({
-          label: toSrpLabel(hdKeyringIndex),
-          icon: null,
-        });
-      }
-
-      const isPreinstalled = isSnapPreinstalled(account.metadata.snap.id);
-
-      if (isPreinstalled) {
-        break;
-      }
-
-      if (snapName) {
-        labels.push({
-          label: `${snapName} (${t('beta')})`,
-          icon: IconName.Snaps,
-        });
-        break;
-      }
-      labels.push({
-        label: `${t('snaps')} (${t('beta')})`,
-        icon: IconName.Snaps,
-      });
       break;
     }
     default: {

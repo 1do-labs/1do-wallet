@@ -1,4 +1,5 @@
 import ZENDESK_URLS from './zendesk-url';
+import { ONEDO_WEBSITE_LINK } from '../../../shared/lib/ui-utils';
 
 export const PRIMARY = 'PRIMARY';
 export const SECONDARY = 'SECONDARY';
@@ -7,7 +8,7 @@ const _contractAddressLink = ZENDESK_URLS.CONTRACT_ADDRESS_WARNING;
 
 export const TRANSACTION_SHIELD_SUPPORT_LINK = ZENDESK_URLS.TRANSACTION_SHIELD;
 
-export const TRANSACTION_SHIELD_LINK = 'https://metamask.io/transaction-shield';
+export const TRANSACTION_SHIELD_LINK = ONEDO_WEBSITE_LINK;
 
 export const FIND_TRANSACTION_HASH_LINK = ZENDESK_URLS.FIND_TRANSACTION_HASH;
 // eslint-disable-next-line prefer-destructuring

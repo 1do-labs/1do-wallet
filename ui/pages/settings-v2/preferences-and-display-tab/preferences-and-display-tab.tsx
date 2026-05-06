@@ -1,15 +1,8 @@
 import React from 'react';
 import { SettingItemConfig } from '../types';
 import { SettingsTab, createToggleItem, createSelectItem } from '../shared';
-import {
-  getManageInstitutionalWallets,
-  getShowExtensionInFullSizeView,
-  getTheme,
-} from '../../../selectors';
-import {
-  setManageInstitutionalWallets,
-  setShowExtensionInFullSizeView,
-} from '../../../store/actions';
+import { getShowExtensionInFullSizeView, getTheme } from '../../../selectors';
+import { setShowExtensionInFullSizeView } from '../../../store/actions';
 import { MetaMetricsEventName } from '../../../../shared/constants/metametrics';
 import { ThemeType } from '../../../../shared/constants/preferences';
 import { THEME_ROUTE, LANGUAGE_ROUTE } from '../../../helpers/constants/routes';
@@ -63,16 +56,6 @@ const ShowExtensionItem = createToggleItem({
   },
 });
 
-const ManageInstitutionalWalletItem = createToggleItem({
-  name: 'ManageInstitutionalWalletItem',
-  titleKey: PREFERENCES_ITEMS['manage-institutional-wallet'],
-  descriptionKey: 'manageInstitutionalWalletsDescription',
-  selector: getManageInstitutionalWallets,
-  action: setManageInstitutionalWallets,
-  dataTestId: 'manage-institutional-wallets',
-  trackEventProperty: 'manage_institutional_wallets',
-});
-
 /** Registry of setting items for the Preferences and Display page. Add new items here */
 const PREFERENCES_AND_DISPLAY_SETTING_ITEMS: SettingItemConfig[] = [
   { id: 'theme', component: ThemeItem },
@@ -83,10 +66,6 @@ const PREFERENCES_AND_DISPLAY_SETTING_ITEMS: SettingItemConfig[] = [
     id: 'show-extension',
     component: ShowExtensionItem,
     hasDividerBefore: true,
-  },
-  {
-    id: 'manage-institutional-wallet',
-    component: ManageInstitutionalWalletItem,
   },
 ];
 

@@ -8,8 +8,7 @@ import {
   parseCaipChainId,
   toCaipAccountId,
 } from '@metamask/utils';
-import { base58, isAddress as isEvmAddress } from 'ethers/lib/utils';
-import { SnapControllerHandleRequestAction } from '@metamask/snaps-controllers';
+import { isAddress as isEvmAddress } from 'ethers/lib/utils';
 import { detectSIWE } from '@metamask/controller-utils';
 import {
   isBtcMainnetAddress,
@@ -47,9 +46,6 @@ import {
   InvalidTimestampError,
   SeasonNotFoundError,
 } from './rewards-data-service';
-import { signSolanaRewardsMessage } from './utils/solana-snap';
-import { signBitcoinRewardsMessage } from './utils/bitcoin-snap';
-import { signTronRewardsMessage } from './utils/tron-snap';
 import { sortAccounts } from './utils/sortAccounts';
 import { isHardwareAccount } from './utils/isHardwareAccount';
 
@@ -617,19 +613,7 @@ export class RewardsController extends BaseController<
     const hotWalletMessage = `rewards,${account.address},${timestamp}`;
 
     if (isSolanaAddress(account.address)) {
-      const result = await signSolanaRewardsMessage(
-        this.messenger.call.bind(
-          this.messenger,
-          'SnapController:handleRequest',
-        ) as unknown as SnapControllerHandleRequestAction['handler'],
-        account.id,
-        Buffer.from(hotWalletMessage, 'utf8').toString('base64'),
-      );
-      return {
-        signature: `0x${Buffer.from(base58.decode(result.signature)).toString(
-          'hex',
-        )}`,
-      };
+      throw new Error('Unsupported account type for signing rewards message');
     } else if (
       isBtcMainnetAddress(account.address) ||
       isBtcTestnetAddress(account.address)
@@ -637,38 +621,12 @@ export class RewardsController extends BaseController<
       if (this.#isBitcoinDisabled()) {
         throw new Error('Unsupported account type for signing rewards message');
       }
-      const result = await signBitcoinRewardsMessage(
-        this.messenger.call.bind(
-          this.messenger,
-          'SnapController:handleRequest',
-        ) as unknown as SnapControllerHandleRequestAction['handler'],
-        account.id,
-        Buffer.from(hotWalletMessage, 'utf8').toString('base64'),
-      );
-      // Bitcoin signatures are typically hex-encoded, return as-is or convert if needed
-      return {
-        signature: result.signature.startsWith('0x')
-          ? result.signature
-          : `0x${result.signature}`,
-      };
+      throw new Error('Unsupported account type for signing rewards message');
     } else if (isTronAddress(account.address)) {
       if (this.#isTronDisabled()) {
         throw new Error('Unsupported account type for signing rewards message');
       }
-      const result = await signTronRewardsMessage(
-        this.messenger.call.bind(
-          this.messenger,
-          'SnapController:handleRequest',
-        ) as unknown as SnapControllerHandleRequestAction['handler'],
-        account.id,
-        Buffer.from(hotWalletMessage, 'utf8').toString('base64'),
-      );
-      // Tron signatures are typically hex-encoded, return as-is or convert if needed
-      return {
-        signature: result.signature.startsWith('0x')
-          ? result.signature
-          : `0x${result.signature}`,
-      };
+      throw new Error('Unsupported account type for signing rewards message');
     } else if (isEvm) {
       const result = await this.#signEvmMessage(account, hotWalletMessage);
       return { signature: result };

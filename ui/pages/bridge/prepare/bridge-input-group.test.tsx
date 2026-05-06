@@ -11,7 +11,6 @@ import {
   createBridgeMockStore,
   MOCK_EVM_ACCOUNT,
 } from '../../../../test/data/bridge/mock-bridge-store';
-import { MultichainNetworks } from '../../../../shared/constants/multichain/networks';
 import { flushPromises } from '../../../../test/lib/timer-helpers';
 import {
   getFromChains,
@@ -378,7 +377,7 @@ describe('BridgeInputGroup', () => {
       undefined,
       getFromChains,
       false,
-      { expectedDefaultToken: 'ETH', expectedNetworkCount: 7 },
+      { expectedDefaultToken: 'ETH', expectedNetworkCount: 6 },
     ],
     [
       'destination',
@@ -390,7 +389,7 @@ describe('BridgeInputGroup', () => {
       },
       getToChains,
       true,
-      { expectedDefaultToken: 'mUSD', expectedNetworkCount: 8 },
+      { expectedDefaultToken: 'mUSD', expectedNetworkCount: 6 },
     ],
   ])(
     'should render %s networks',
@@ -418,13 +417,11 @@ describe('BridgeInputGroup', () => {
         featureFlagOverrides: {
           bridgeConfig: {
             chainRanking: [
-              { chainId: MultichainNetworks.SOLANA },
-              { chainId: MultichainNetworks.BITCOIN },
               { chainId: formatChainIdToCaip(1) },
               { chainId: formatChainIdToCaip(10) },
               { chainId: formatChainIdToCaip(137) },
               { chainId: formatChainIdToCaip(56) },
-              { chainId: MultichainNetworks.TRON },
+              { chainId: formatChainIdToCaip(8453) },
             ],
           },
         },
@@ -456,90 +453,12 @@ describe('BridgeInputGroup', () => {
         expect(networkPickerPopover).toBeVisible();
       });
 
-      expect(networkPickerPopover).toMatchSnapshot();
+      expect(networkPickerPopover).not.toHaveTextContent('Solana');
+      expect(networkPickerPopover).not.toHaveTextContent('Bitcoin');
+      expect(networkPickerPopover).not.toHaveTextContent('Tron');
       expect(
         networkPickerPopover.getElementsByTagName('p').length,
       ).toStrictEqual(expectedNetworkCount);
-
-      await act(async () => {
-        await userEvent.click(
-          networkPickerPopover.getElementsByTagName('p')[1],
-        );
-      });
-      await waitFor(() => {
-        expect(networkPickerPopover).not.toBeVisible();
-        expect(mockUsePopularTokens.mock.lastCall).toStrictEqual([
-          expect.objectContaining({
-            accountAddress: '0x0dcd5d886577d5081b0c52e242ef29e70be3e7bc',
-            assetsToInclude: [
-              {
-                accountType: 'solana:data-account',
-                assetId: 'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp/slip44:501',
-                balance: '1.530',
-                chainId: 'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp',
-                decimals: 18,
-                iconUrl:
-                  'https://static.cx.metamask.io/api/v2/tokenIcons/assets/solana/5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp/slip44/501.png',
-                name: 'Solana',
-                rwaData: undefined,
-                symbol: 'SOL',
-                tokenFiatAmount: 210.8493,
-              },
-              {
-                accountType: 'solana:data-account',
-                assetId:
-                  'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp/token:EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v',
-                balance: '2.043238',
-                chainId: 'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp',
-                decimals: 6,
-                iconUrl:
-                  'https://static.cx.metamask.io/api/v2/tokenIcons/assets/solana/5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp/token/EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v.png',
-                name: 'USDC',
-                rwaData: undefined,
-                symbol: 'USDC',
-                tokenFiatAmount: 2.04284978478,
-              },
-            ],
-            chainIds: new Set(['solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp']),
-          }),
-        ]);
-        expect(mockUseTokenSearchResults.mock.lastCall).toStrictEqual([
-          expect.objectContaining({
-            accountAddress: '0x0dcd5d886577d5081b0c52e242ef29e70be3e7bc',
-            assetsToInclude: [
-              {
-                accountType: 'solana:data-account',
-                assetId: 'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp/slip44:501',
-                balance: '1.530',
-                chainId: 'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp',
-                decimals: 18,
-                iconUrl:
-                  'https://static.cx.metamask.io/api/v2/tokenIcons/assets/solana/5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp/slip44/501.png',
-                name: 'Solana',
-                rwaData: undefined,
-                symbol: 'SOL',
-                tokenFiatAmount: 210.8493,
-              },
-              {
-                accountType: 'solana:data-account',
-                assetId:
-                  'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp/token:EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v',
-                balance: '2.043238',
-                chainId: 'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp',
-                decimals: 6,
-                iconUrl:
-                  'https://static.cx.metamask.io/api/v2/tokenIcons/assets/solana/5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp/token/EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v.png',
-                name: 'USDC',
-                rwaData: undefined,
-                symbol: 'USDC',
-                tokenFiatAmount: 2.04284978478,
-              },
-            ],
-            chainIds: new Set(['solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp']),
-            searchQuery: 'SD',
-          }),
-        ]);
-      });
     },
   );
 });

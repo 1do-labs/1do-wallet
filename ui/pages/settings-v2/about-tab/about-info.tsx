@@ -16,6 +16,10 @@ import { MetaMetricsContext } from '../../../contexts/metametrics';
 import { SUPPORT_LINK } from '../../../helpers/constants/common';
 import { isBeta } from '../../../../shared/lib/build-types';
 import {
+  ONEDO_WEBSITE_LINK,
+  PRIVACY_POLICY_LINK,
+} from '../../../../shared/lib/ui-utils';
+import {
   getNumberOfSettingRoutesInTab,
   handleSettingsRefs,
 } from '../../../helpers/utils/settings-search';
@@ -68,8 +72,8 @@ export default function AboutInfo(): React.ReactElement {
   }, [trackEvent]);
 
   function renderInfoLinks(): React.ReactElement {
-    const privacyUrl = 'https://metamask.io/privacy.html';
-    const siteUrl = 'https://metamask.io/';
+    const privacyUrl = PRIVACY_POLICY_LINK;
+    const siteUrl = ONEDO_WEBSITE_LINK;
 
     const linkProps = {
       size: TextButtonSize.BodyMd,
@@ -100,7 +104,7 @@ export default function AboutInfo(): React.ReactElement {
         <Box ref={settingsRefs[3]} {...linkItemProps}>
           <TextButton asChild {...linkProps}>
             <a
-              href="https://metamask.io/terms.html"
+              href={ONEDO_WEBSITE_LINK}
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -112,7 +116,7 @@ export default function AboutInfo(): React.ReactElement {
           <Box ref={settingsRefs[8]} {...linkItemProps}>
             <TextButton asChild {...linkProps}>
               <a
-                href="https://metamask.io/beta-terms"
+                href={ONEDO_WEBSITE_LINK}
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -164,9 +168,7 @@ export default function AboutInfo(): React.ReactElement {
     );
   }
 
-  const versionLabel = isBeta()
-    ? t('betaMetamaskVersion')
-    : t('metamaskVersion');
+  const versionLabel = isBeta() ? '1do Beta' : '1do';
 
   return (
     <Box
@@ -179,8 +181,8 @@ export default function AboutInfo(): React.ReactElement {
     >
       <Box>
         <img
-          src="./images/logo/metamask-fox.svg"
-          alt="MetaMask Logo"
+          src="./images/logo/1do-mark.svg"
+          alt="1do Logo"
           className="info-tab__logo w-24 h-24"
         />
       </Box>

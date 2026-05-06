@@ -1,6 +1,6 @@
 # Development
 
-Several files which are needed for developing on MetaMask.
+Several files needed for developing on 1do.
 
 Usually each file or directory contains information about its scope / usage.
 
@@ -42,7 +42,7 @@ To debug in a production Segment environment:
 
 Events triggered whilst using the extension will be displayed in Segment's Debugger.
 
-### Debugging Segment requests in MetaMask
+### Debugging Segment requests in 1do
 
 To opt in to MetaMetrics;
 
@@ -60,7 +60,7 @@ or `https://api.segment.io/v1/batch` respectively.
 
 ### Overview
 
-MetaMask uses Sentry for error tracking and performance monitoring. Events are
+1do uses Sentry for error tracking and performance monitoring. Events are
 automatically categorized by environment based on build target and GitHub context.
 
 ### Sentry Projects
@@ -150,7 +150,7 @@ To enable Sentry error reporting for local development:
 
 2. Enable Sentry debug logs (optional): add `DEBUG=metamask:sentry:*` to `.metamaskrc`
 
-3. Enable MetaMetrics via `Settings > Security & privacy > Participate in MetaMetrics`
+3. Enable 1do Metrics via `Settings > Security & privacy > Participate in 1do Metrics`
 
 4. To test Sentry errors:
    - Add `ENABLE_SETTINGS_PAGE_DEV_OPTIONS=true` to `.metamaskrc` and use Developer Options in Settings
@@ -170,7 +170,7 @@ To enable Sentry error reporting for local development:
 
 #### Sentry-Cli Setup
 
-1. Go to your terminal, inside the `metamask-extension` project
+1. Go to your terminal, inside the `1do-wallet` project
 2. Login to Sentry using the command line `yarn sentry-cli login --auth-token YOUR_TOKEN`
 3. List your organizations and copy the id for the organization you want to see `yarn sentry-cli organizations list`
 4. List your organization projects and copy the id for the you created `yarn sentry-cli projects list --org YOUR_ORG_ID`
@@ -179,7 +179,7 @@ To enable Sentry error reporting for local development:
 
 #### Publish a Release to Sentry
 
-1.  Build your desired MetaMask project. Examples:
+1.  Build your desired 1do Wallet project. Examples:
     1.  `yarn dist` to create an MV3 build
     2.  `yarn dist:mv2` to create an MV2 build
     3.  (and so on)
@@ -216,7 +216,7 @@ chrome-extension://{EXTENSION_ID}/common-0.js
 - Enter the path to the corresponding source map file, and Click `Add`
 
 ```
-file:///{LOCAL_FILE_SYSTEM}/metamask-extension/dist/sourcemaps/common-0.js.map
+file:///{LOCAL_FILE_SYSTEM}/1do-wallet/dist/sourcemaps/common-0.js.map
 ```
 
 - Repeat the steps above as necessary adding all the relevant source map files

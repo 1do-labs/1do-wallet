@@ -27,7 +27,7 @@
     "message": "Trebate odabrati račun!"
   },
   "addAcquiredTokens": {
-    "message": "Dodajte tokene koje ste kupili uslugom MetaMask"
+    "message": "Dodajte tokene koje ste kupili uslugom 1do"
   },
   "addAlias": {
     "message": "Dodaj pseudonim"
@@ -52,15 +52,15 @@
     "description": "The description of the application"
   },
   "appName": {
-    "message": "MetaMask",
+    "message": "1do",
     "description": "The name of the application"
   },
   "appNameBeta": {
-    "message": "MetaMask Beta",
+    "message": "1do Beta",
     "description": "The name of the application (Beta)"
   },
   "appNameFlask": {
-    "message": "MetaMask Flask",
+    "message": "1do Flask",
     "description": "The name of the application (Flask)"
   },
   "approve": {
@@ -79,7 +79,7 @@
     "message": "Brojač za automatsko odjavljivanje (minute)"
   },
   "autoLockTimeLimitDescription": {
-    "message": "Postavite stanje u mirovanju u minutama prije nego što se MetaMask automatski odjavi"
+    "message": "Postavite stanje u mirovanju u minutama prije nego što se 1do automatski odjavi"
   },
   "average": {
     "message": "Prosječno"
@@ -88,7 +88,7 @@
     "message": "Natrag"
   },
   "backupApprovalInfo": {
-    "message": "Ovaj je sigurnosni kôd potreban za obnavljanje novčanika ako izgubite svoj uređaj, zaboravite svoju lozinku, morate ponovno instalirati MetaMask ili želite pristupiti svojem novčaniku na drugom uređaju."
+    "message": "Ovaj je sigurnosni kôd potreban za obnavljanje novčanika ako izgubite svoj uređaj, zaboravite svoju lozinku, morate ponovno instalirati 1do ili želite pristupiti svojem novčaniku na drugom uređaju."
   },
   "backupApprovalNotice": {
     "message": "Sigurnosno kopirajte svoj sigurnosni kôd za obnavljanje kako biste zaštitili svoj novčanik i sredstva."
@@ -128,7 +128,7 @@
     "message": "Identifikacijska oznaka bloka"
   },
   "chromeRequiredForHardwareWallets": {
-    "message": "Trebate upotrebljavati MetaMask u pregledniku Google Chrome kako biste ga povezali s vašim hardverskim novčanikom."
+    "message": "Trebate upotrebljavati 1do u pregledniku Google Chrome kako biste ga povezali s vašim hardverskim novčanikom."
   },
   "close": {
     "message": "Zatvori"
@@ -270,7 +270,7 @@
     "message": "Poveži hardverski novčanik"
   },
   "hardwareWalletsMsg": {
-    "message": "Odaberite hardverski novčanik koji biste željeli upotrebljavati s uslugom MetaMask"
+    "message": "Odaberite hardverski novčanik koji biste željeli upotrebljavati s uslugom 1do"
   },
   "here": {
     "message": "ovdje",
@@ -293,7 +293,7 @@
     "description": "Button to import an account from a selected file"
   },
   "importAccountMsg": {
-    "message": "Uvezeni se računi ne pridružuju vašoj izvorno stvorenoj početnoj rečenici za MetaMask. Saznajte više o uvezenim računima"
+    "message": "Uvezeni se računi ne pridružuju vašoj izvorno stvorenoj početnoj rečenici za 1do. Saznajte više o uvezenim računima"
   },
   "imported": {
     "message": "Uvezeno",
@@ -364,7 +364,7 @@
     "message": "Poruka"
   },
   "metamaskVersion": {
-    "message": "Inačica usluge MetaMask"
+    "message": "Inačica usluge 1do"
   },
   "mustSelectOne": {
     "message": "Mora se odabrati barem jedan token."
@@ -423,10 +423,10 @@
     "message": "Podrijetlo"
   },
   "participateInMetaMetrics": {
-    "message": "Sudjelujte u anketi MetaMetrics"
+    "message": "Sudjelujte u anketi 1do Metrics"
   },
   "participateInMetaMetricsDescription": {
-    "message": "Sudjelujte u anketi MetaMetrics kako biste nam pomogli poboljšati uslugu MetaMask"
+    "message": "Sudjelujte u anketi 1do Metrics kako biste nam pomogli poboljšati uslugu 1do"
   },
   "password": {
     "message": "Zaporka"

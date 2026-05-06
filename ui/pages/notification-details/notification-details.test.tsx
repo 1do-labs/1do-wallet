@@ -27,12 +27,6 @@ jest.mock('../../hooks/metamask-notifications/useNotifications', () => ({
   }),
 }));
 
-jest.mock('../../hooks/useNotificationTimeouts', () => ({
-  useSnapNotificationTimeouts: () => ({
-    setNotificationTimeout: jest.fn(),
-  }),
-}));
-
 describe('NotificationDetails', () => {
   beforeEach(() => {
     mockUseNavigate.mockClear();

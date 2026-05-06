@@ -141,14 +141,14 @@ export const DEFAULT_MUSD_BLOCKED_COUNTRIES: string[] = ['GB'];
  * Displayed in the education screen
  */
 export const MUSD_CONVERSION_BONUS_TERMS_OF_USE =
-  'https://metamask.io/musd-bonus-terms-of-use';
+  'https://www.1do.io/terms';
 
 /**
  * URL for the mUSD Help Center article
  * Linked from the asset details bonus and convert sections
  */
 export const MUSD_SUPPORT_ARTICLE_URL =
-  'https://support.metamask.io/manage-crypto/tokens/musd';
+  'https://www.1do.io/';
 
 /**
  * Minimum asset balance required in USD for a token to be eligible for conversion

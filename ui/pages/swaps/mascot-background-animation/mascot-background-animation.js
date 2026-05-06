@@ -13,7 +13,7 @@ export default function MascotBackgroundAnimation({ height, width }) {
     if (isFlask()) {
       return (
         <img
-          src="./images/logo/metamask-fox.svg"
+          src="./images/logo/1do-mark.svg"
           width={width ?? '42'}
           height={height ?? '42'}
         />
@@ -22,7 +22,7 @@ export default function MascotBackgroundAnimation({ height, width }) {
     if (isBeta()) {
       return (
         <img
-          src="./images/logo/metamask-fox.svg"
+          src="./images/logo/1do-mark.svg"
           width={width ?? '42'}
           height={height ?? '42'}
         />

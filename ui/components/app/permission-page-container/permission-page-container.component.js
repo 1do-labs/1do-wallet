@@ -1,10 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import {
-  SnapCaveatType,
-  WALLET_SNAP_PERMISSION_KEY,
-} from '@metamask/snaps-rpc-methods';
-import {
   Caip25EndowmentPermissionName,
   generateCaip25Caveat,
   getCaipAccountIdsFromCaip25CaveatValue,
@@ -13,10 +9,6 @@ import {
 import { SubjectType } from '@metamask/permission-controller';
 import { MetaMetricsEventCategory } from '../../../../shared/constants/metametrics';
 import PermissionsConnectFooter from '../permissions-connect-footer';
-import { RestrictedMethods } from '../../../../shared/constants/permissions';
-
-import SnapPrivacyWarning from '../snaps/snap-privacy-warning';
-import { getDedupedSnaps } from '../../../helpers/utils/util';
 
 import {
   Display,
@@ -41,7 +33,7 @@ export default class PermissionPageContainer extends Component {
     /**
      * Full CAIP account IDs for chain-agnostic permission approval.
      * When provided, these are used instead of selectedAccounts for building
-     * the CAIP-25 permission response. This supports non-EVM chains like Solana.
+     * the CAIP-25 permission response.
      */
     selectedCaipAccountIds: PropTypes.arrayOf(PropTypes.string),
     /**
@@ -51,8 +43,6 @@ export default class PermissionPageContainer extends Component {
     selectedCaipChainIds: PropTypes.arrayOf(PropTypes.string),
     allAccountsSelected: PropTypes.bool,
     currentPermissions: PropTypes.object,
-    snapsInstallPrivacyWarningShown: PropTypes.bool.isRequired,
-    setSnapsInstallPrivacyWarningShownStatus: PropTypes.func,
     request: PropTypes.object,
     requestMetadata: PropTypes.object,
     targetSubjectMetadata: PropTypes.shape({
@@ -87,44 +77,7 @@ export default class PermissionPageContainer extends Component {
     const { request } = this.props;
 
     // if the request contains a diff this means its an incremental permission request
-    const permissions =
-      request?.diff?.permissionDiffMap ?? request.permissions ?? {};
-
-    return Object.entries(permissions).reduce(
-      (acc, [permissionName, permissionValue]) => {
-        if (permissionName === RestrictedMethods.wallet_snap) {
-          acc[permissionName] = this.getDedupedSnapPermissions();
-          return acc;
-        }
-        acc[permissionName] = permissionValue;
-        return acc;
-      },
-      {},
-    );
-  }
-
-  getDedupedSnapPermissions() {
-    const { request, currentPermissions } = this.props;
-    const snapKeys = getDedupedSnaps(request, currentPermissions);
-    const permission = request?.permissions?.[WALLET_SNAP_PERMISSION_KEY] || {};
-    return {
-      ...permission,
-      caveats: [
-        {
-          type: SnapCaveatType.SnapIds,
-          value: snapKeys.reduce((caveatValue, snapId) => {
-            caveatValue[snapId] = {};
-            return caveatValue;
-          }, {}),
-        },
-      ],
-    };
-  }
-
-  showSnapsPrivacyWarning() {
-    this.setState({
-      isShowingSnapsPrivacyWarning: true,
-    });
+    return request?.diff?.permissionDiffMap ?? request.permissions ?? {};
   }
 
   componentDidMount() {
@@ -136,12 +89,6 @@ export default class PermissionPageContainer extends Component {
         legacy_event: true,
       },
     });
-
-    if (this.props.request.permissions[WALLET_SNAP_PERMISSION_KEY]) {
-      if (this.props.snapsInstallPrivacyWarningShown === false) {
-        this.showSnapsPrivacyWarning();
-      }
-    }
   }
 
   goBack() {
@@ -175,8 +122,8 @@ export default class PermissionPageContainer extends Component {
       selectedCaipAccountIds?.length > 0 &&
       selectedCaipChainIds?.length > 0
     ) {
-      // Use chain-agnostic approach when CAIP account IDs are provided
-      // This supports non-EVM chains like Solana, Bitcoin, etc.
+      // Use the CAIP-25 selection directly when the connect flow already
+      // resolved CAIP account IDs and EVM chain IDs.
       permissionsResponse = generateCaip25Caveat(
         requestedCaip25CaveatValue,
         selectedCaipAccountIds,
@@ -249,17 +196,6 @@ export default class PermissionPageContainer extends Component {
 
     const requestedPermissions = this.getRequestedPermissions();
 
-    const setIsShowingSnapsPrivacyWarning = (value) => {
-      this.setState({
-        isShowingSnapsPrivacyWarning: value,
-      });
-    };
-
-    const confirmSnapsPrivacyWarning = () => {
-      setIsShowingSnapsPrivacyWarning(false);
-      this.props.setSnapsInstallPrivacyWarningShownStatus(true);
-    };
-
     const footerLeftActionText = requestedPermissions[
       Caip25EndowmentPermissionName
     ]
@@ -271,12 +207,6 @@ export default class PermissionPageContainer extends Component {
         onSubmit={() => this.onSubmit()}
         confirmationId={request?.metadata?.id}
       >
-        {this.state.isShowingSnapsPrivacyWarning && (
-          <SnapPrivacyWarning
-            onAccepted={() => confirmSnapsPrivacyWarning()}
-            onCanceled={() => this.onCancel()}
-          />
-        )}
         <PermissionPageContainerContent
           request={request}
           requestMetadata={requestMetadata}

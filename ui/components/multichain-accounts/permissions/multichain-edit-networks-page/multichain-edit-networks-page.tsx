@@ -31,13 +31,13 @@ import {
 } from '../../../../../shared/constants/metametrics';
 import { MetaMetricsContext } from '../../../../contexts/metametrics';
 import { Content, Footer, Header, Page } from '../../../multichain/pages/page';
-import { EvmAndMultichainNetworkConfigurationsWithCaipChainId } from '../../../../selectors/selectors.types';
+import { EvmNetworkConfigurationWithCaipChainId } from '../../../../selectors/selectors.types';
 import { NetworkListItem } from '../../../multichain/network-list-item';
 import { CHAIN_ID_TO_NETWORK_IMAGE_URL_MAP } from '../../../../../shared/constants/network';
 
 type MultichainEditNetworksPageProps = {
-  nonTestNetworks: EvmAndMultichainNetworkConfigurationsWithCaipChainId[];
-  testNetworks: EvmAndMultichainNetworkConfigurationsWithCaipChainId[];
+  nonTestNetworks: EvmNetworkConfigurationWithCaipChainId[];
+  testNetworks: EvmNetworkConfigurationWithCaipChainId[];
   defaultSelectedChainIds: CaipChainId[];
   onClose: () => void;
   onSubmit: (chainIds: CaipChainId[]) => void;

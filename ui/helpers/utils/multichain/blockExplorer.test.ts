@@ -1,8 +1,4 @@
 import {
-  MULTICHAIN_PROVIDER_CONFIGS,
-  MultichainNetworks,
-} from '../../../../shared/constants/multichain/networks';
-import {
   CHAIN_IDS,
   MAINNET_DISPLAY_NAME,
   CHAIN_ID_TO_RPC_URL_MAP,
@@ -35,27 +31,12 @@ const mockEvmNetwork: MultichainNetwork = {
   },
 };
 
-const mockNonEvmNetwork: MultichainNetwork = {
-  nickname: 'Bitcoin',
-  isEvmNetwork: false,
-  chainId: MultichainNetworks.BITCOIN,
-  network: MULTICHAIN_PROVIDER_CONFIGS[MultichainNetworks.BITCOIN],
-};
-
 describe('Block Explorer Tests', () => {
   describe('getMultichainBlockExplorerUrl', () => {
     it('returns the correct block explorer URL for Ethereum mainnet', () => {
       const expectedUrl = mockEvmNetwork.network?.rpcPrefs?.blockExplorerUrl;
 
       const result = getMultichainBlockExplorerUrl(mockEvmNetwork);
-
-      expect(result).toBe(expectedUrl);
-    });
-
-    it('returns the correct block explorer URL for Bitcoin mainnet', () => {
-      const expectedUrl = mockNonEvmNetwork.network?.rpcPrefs?.blockExplorerUrl;
-
-      const result = getMultichainBlockExplorerUrl(mockNonEvmNetwork);
 
       expect(result).toBe(expectedUrl);
     });
@@ -67,15 +48,6 @@ describe('Block Explorer Tests', () => {
       const expectedUrl = `https://etherscan.io/address/${address}#asset-multichain`;
 
       const result = getMultichainAccountUrl(address, mockEvmNetwork);
-
-      expect(result).toBe(expectedUrl);
-    });
-
-    it('returns the correct account URL for BNB Chain', () => {
-      const address = 'bc1qar0srrr7xfkvy5l643lydnw9re59gtzzwf5mdq';
-      const expectedUrl = `https://mempool.space/address/${address}`;
-
-      const result = getMultichainAccountUrl(address, mockNonEvmNetwork);
 
       expect(result).toBe(expectedUrl);
     });
@@ -108,15 +80,6 @@ describe('Block Explorer Tests', () => {
       const expectedUrl = `https://etherscan.io/address/${address}`;
 
       const result = getAssetDetailsAccountUrl(address, networkWithoutExplorer);
-
-      expect(result).toBe(expectedUrl);
-    });
-
-    it('returns the correct account URL for non-EVM networks', () => {
-      const address = 'bc1qar0srrr7xfkvy5l643lydnw9re59gtzzwf5mdq';
-      const expectedUrl = `https://mempool.space/address/${address}`;
-
-      const result = getAssetDetailsAccountUrl(address, mockNonEvmNetwork);
 
       expect(result).toBe(expectedUrl);
     });

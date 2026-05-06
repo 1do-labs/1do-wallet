@@ -27,7 +27,7 @@
     "message": "Jums reikia pasirinkti paskyrą!"
   },
   "addAcquiredTokens": {
-    "message": "Pridėkite žetonus, kuriuos gavote naudodamiesi „MetaMask“"
+    "message": "Pridėkite žetonus, kuriuos gavote naudodamiesi „1do“"
   },
   "addAlias": {
     "message": "Pridėti alternatyvųjį vardą"
@@ -52,15 +52,15 @@
     "description": "The description of the application"
   },
   "appName": {
-    "message": "MetaMask",
+    "message": "1do",
     "description": "The name of the application"
   },
   "appNameBeta": {
-    "message": "MetaMask Beta",
+    "message": "1do Beta",
     "description": "The name of the application (Beta)"
   },
   "appNameFlask": {
-    "message": "MetaMask Flask",
+    "message": "1do Flask",
     "description": "The name of the application (Flask)"
   },
   "approve": {
@@ -79,7 +79,7 @@
     "message": "Automatinio atjungimo laikmatis (minutės)"
   },
   "autoLockTimeLimitDescription": {
-    "message": "Nustatykite laukimo  trukmę minutėmis iki „MetaMask“ automatinio atsijungimo"
+    "message": "Nustatykite laukimo  trukmę minutėmis iki „1do“ automatinio atsijungimo"
   },
   "average": {
     "message": "Vidurkis"
@@ -88,7 +88,7 @@
     "message": "Grįžti"
   },
   "backupApprovalInfo": {
-    "message": "Šis slaptas kodas reikalingas norint atkurti jūsų slaptažodinę, jeigu pamestumėte savo įrenginį, pamirštumėte savo slaptažodį, iš naujo įdiegtumėte „MetaMask“, taip pat norint pasiekti slaptažodinę iš kito įrenginio."
+    "message": "Šis slaptas kodas reikalingas norint atkurti jūsų slaptažodinę, jeigu pamestumėte savo įrenginį, pamirštumėte savo slaptažodį, iš naujo įdiegtumėte „1do“, taip pat norint pasiekti slaptažodinę iš kito įrenginio."
   },
   "backupApprovalNotice": {
     "message": "Pasidarykite atsarginę savo slapto atkūrimo kodo kopiją, kad jūsų slaptažodinė ir fondai būtų saugūs."
@@ -128,7 +128,7 @@
     "message": "Grandinės ID"
   },
   "chromeRequiredForHardwareWallets": {
-    "message": "Norėdami prisijungti prie aparatinės įrangos slaptažodinės, „MetaMask“ naudokitės „Google Chrome“ naršyklėje."
+    "message": "Norėdami prisijungti prie aparatinės įrangos slaptažodinės, „1do“ naudokitės „Google Chrome“ naršyklėje."
   },
   "close": {
     "message": "Uždaryti"
@@ -293,7 +293,7 @@
     "description": "Button to import an account from a selected file"
   },
   "importAccountMsg": {
-    "message": "Importuotos paskyros nebus susietos su pirmiau sukurta „MetaMask“ paskyros atkūrimo fraze. Sužinokite daugiau apie importuotas paskyras"
+    "message": "Importuotos paskyros nebus susietos su pirmiau sukurta „1do“ paskyros atkūrimo fraze. Sužinokite daugiau apie importuotas paskyras"
   },
   "imported": {
     "message": "Importuota",
@@ -367,7 +367,7 @@
     "message": "Pranešimas"
   },
   "metamaskVersion": {
-    "message": "„MetaMask“ versija"
+    "message": "„1do“ versija"
   },
   "mustSelectOne": {
     "message": "Turite pasirinkti bent 1 žetoną."
@@ -426,10 +426,10 @@
     "message": "Kilmė"
   },
   "participateInMetaMetrics": {
-    "message": "Dalyvaukite „MetaMetrics“"
+    "message": "Dalyvaukite „1do Metrics“"
   },
   "participateInMetaMetricsDescription": {
-    "message": "Dalyvaukite „MetaMetrics“ ir padėkite mums tobulinti „MetaMask“"
+    "message": "Dalyvaukite „1do Metrics“ ir padėkite mums tobulinti „1do“"
   },
   "password": {
     "message": "Slaptažodis"

@@ -15,6 +15,9 @@ import {
 import { useAsyncResult } from '../../../hooks/useAsync';
 import { isAtomicBatchSupported } from '../../../store/controller-actions/transaction-controller';
 
+const ONE_DO_7702_DELEGATE =
+  '0x69d2927735c3E57c512177B32e216431B1Aba1fF' as Hex;
+
 export type EIP7702NetworkConfiguration = MultichainNetworkConfiguration & {
   chainIdHex: Hex;
   isSupported: boolean;
@@ -97,6 +100,7 @@ export const useEIP7702Networks = (address: string) => {
               ...atomicBatchResult,
               ...network,
               chainIdHex,
+              upgradeContractAddress: ONE_DO_7702_DELEGATE,
             });
           }
         } catch (err: unknown) {

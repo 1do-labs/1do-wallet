@@ -15,7 +15,6 @@ import {
   type TxAlert,
   MessageScanResponse,
 } from '../../types/security-alerts-api';
-import { MultichainNetworks } from '../../constants/multichain/networks';
 import { decimalToPrefixedHex } from '../conversion.utils';
 
 const DOMAIN = 'https://metamask.io';
@@ -152,12 +151,6 @@ const CHAIN_ID_TO_SECURITY_API_NAME: Record<string, string | null> = {
   [CHAIN_IDS.BASE]: 'base',
   [CHAIN_IDS.SEI]: 'sei',
   [CHAIN_IDS.MONAD]: 'monad',
-  [MultichainNetworks.SOLANA]: 'solana',
-  [MultichainNetworks.BITCOIN]: 'bitcoin',
-  [MultichainNetworks.BITCOIN_TESTNET]: null, // not supported
-  [MultichainNetworks.BITCOIN_SIGNET]: null, // not supported
-  [MultichainNetworks.SOLANA_DEVNET]: null, // not supported
-  [MultichainNetworks.SOLANA_TESTNET]: null, // not supported
 };
 
 export function convertChainIdToBlockAidChainName(

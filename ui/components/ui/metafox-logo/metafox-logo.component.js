@@ -27,7 +27,7 @@ export default class MetaFoxLogo extends PureComponent {
 
     const iconProps = unsetIconHeight ? {} : { height: 42, width: 42 };
 
-    iconProps.src = './images/logo/metamask-fox.svg';
+    iconProps.src = './images/logo/1do-mark.svg';
 
     let renderHorizontalLogo = () => (
       <MetaFoxHorizontalLogo
@@ -39,7 +39,7 @@ export default class MetaFoxLogo extends PureComponent {
       />
     );
 
-    let imageSrc = './images/logo/metamask-fox.svg';
+    let imageSrc = './images/logo/1do-mark.svg';
 
     if (src) {
       renderHorizontalLogo = () => (

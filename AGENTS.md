@@ -16,6 +16,7 @@ Instructions for AI coding agents working on MetaMask Browser Extension.
 
 ### Critical Rules for Agents
 
+0. **ALWAYS reply to the user in Chinese** unless the user explicitly requests another language
 1. **ALWAYS use TypeScript** for new files (never JavaScript)
 2. **ALWAYS run `yarn lint:changed:fix`** before committing
 3. **ALWAYS update LavaMoat policies** after dependency changes: `yarn lavamoat:auto`

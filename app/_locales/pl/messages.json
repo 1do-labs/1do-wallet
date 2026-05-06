@@ -27,7 +27,7 @@
     "message": "Należy wybrać konto!"
   },
   "addAcquiredTokens": {
-    "message": "Dodaj tokeny pozyskane przy pomocy MetaMask"
+    "message": "Dodaj tokeny pozyskane przy pomocy 1do"
   },
   "addAlias": {
     "message": "Dodaj alias"
@@ -52,15 +52,15 @@
     "description": "The description of the application"
   },
   "appName": {
-    "message": "MetaMask",
+    "message": "1do",
     "description": "The name of the application"
   },
   "appNameBeta": {
-    "message": "MetaMask Beta",
+    "message": "1do Beta",
     "description": "The name of the application (Beta)"
   },
   "appNameFlask": {
-    "message": "MetaMask Flask",
+    "message": "1do Flask",
     "description": "The name of the application (Flask)"
   },
   "approve": {
@@ -79,7 +79,7 @@
     "message": "Czas automatycznego wylogowania (w minutach)"
   },
   "autoLockTimeLimitDescription": {
-    "message": "Ustaw czas bezczynności w minutach, po którym MetaMask wyloguje Cię automatycznie"
+    "message": "Ustaw czas bezczynności w minutach, po którym 1do wyloguje Cię automatycznie"
   },
   "average": {
     "message": "Średnia"
@@ -88,7 +88,7 @@
     "message": "Wstecz"
   },
   "backupApprovalInfo": {
-    "message": "Ten tajny kod jest wymagany do odzyskania portfela w przypadku zgubienia urządzenia, zapomnienia hasła, ponownego zainstalowania MetaMask lub potrzeby uzyskania dostępu do portfela na innym urządzeniu."
+    "message": "Ten tajny kod jest wymagany do odzyskania portfela w przypadku zgubienia urządzenia, zapomnienia hasła, ponownego zainstalowania 1do lub potrzeby uzyskania dostępu do portfela na innym urządzeniu."
   },
   "backupApprovalNotice": {
     "message": "Utwórz kopię zapasową tajnego kodu odzyskiwania, aby zapewnić bezpieczeństwo swojego portfela i środków."
@@ -128,7 +128,7 @@
     "message": "Identyfikator łańcucha"
   },
   "chromeRequiredForHardwareWallets": {
-    "message": "Żeby połączyć się z portfelem sprzętowym, należy uruchomić MetaMask z przeglądarką Google Chrome."
+    "message": "Żeby połączyć się z portfelem sprzętowym, należy uruchomić 1do z przeglądarką Google Chrome."
   },
   "close": {
     "message": "Zamknij"
@@ -270,7 +270,7 @@
     "message": "Podłącz sprzętowy portfel"
   },
   "hardwareWalletsMsg": {
-    "message": "Wybierz portfel sprzętowy, którego chcesz użyć z MetaMaskiem"
+    "message": "Wybierz portfel sprzętowy, którego chcesz użyć z 1doiem"
   },
   "here": {
     "message": "tutaj",
@@ -293,7 +293,7 @@
     "description": "Button to import an account from a selected file"
   },
   "importAccountMsg": {
-    "message": " Importowane konta nie będą powiązane z Twoją pierwotną frazą seed MetaMask. Dowiedz się więcej o importowaniu kont "
+    "message": " Importowane konta nie będą powiązane z Twoją pierwotną frazą seed 1do. Dowiedz się więcej o importowaniu kont "
   },
   "imported": {
     "message": "Zaimportowane",
@@ -364,7 +364,7 @@
     "message": "Wiadomość"
   },
   "metamaskVersion": {
-    "message": "Wersja MetaMask"
+    "message": "Wersja 1do"
   },
   "mustSelectOne": {
     "message": "Należy wybrać co najmniej 1 token."
@@ -420,10 +420,10 @@
     "message": "Pochodzenie"
   },
   "participateInMetaMetrics": {
-    "message": "Weź udział w MetaMetrics"
+    "message": "Weź udział w 1do Metrics"
   },
   "participateInMetaMetricsDescription": {
-    "message": "Weź udział w MetaMetrics, aby pomóc nam ulepszyć MetaMask"
+    "message": "Weź udział w 1do Metrics, aby pomóc nam ulepszyć 1do"
   },
   "password": {
     "message": "Hasło"

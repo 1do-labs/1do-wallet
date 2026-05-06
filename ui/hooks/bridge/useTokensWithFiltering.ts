@@ -41,10 +41,8 @@ import type {
 } from '../../components/multichain/asset-picker-amount/asset-picker-modal/types';
 import { getNativeAssetForChainIdSafe } from '../../ducks/bridge/utils';
 import { getBearerToken } from '../../store/actions';
-import { MULTICHAIN_TOKEN_IMAGE_MAP } from '../../../shared/constants/multichain/networks';
 import {
   getAssetImageUrl,
-  isTronSpecialAsset,
   toAssetId,
 } from '../../../shared/lib/asset-utils';
 
@@ -70,14 +68,10 @@ const buildTokenData = (
   };
 
   if (isNativeAddress(token.address)) {
-    // Use MULTICHAIN_TOKEN_IMAGE_MAP for non-EVM chains
-    const image = isNonEvmChainId(chainId)
-      ? MULTICHAIN_TOKEN_IMAGE_MAP[
-          sharedFields.chainId as keyof typeof MULTICHAIN_TOKEN_IMAGE_MAP
-        ]
-      : CHAIN_ID_TOKEN_IMAGE_MAP[
-          sharedFields.chainId as keyof typeof CHAIN_ID_TOKEN_IMAGE_MAP
-        ];
+    const image =
+      CHAIN_ID_TOKEN_IMAGE_MAP[
+        sharedFields.chainId as keyof typeof CHAIN_ID_TOKEN_IMAGE_MAP
+      ];
 
     return {
       ...sharedFields,
@@ -272,10 +266,6 @@ export const useTokensWithFiltering = (
 
         // Yield multichain tokens with balances and are not blocked
         for (const token of multichainTokensWithBalance) {
-          // Filter out Tron special assets (resources, staking state, etc.)
-          if (isTronSpecialAsset(token.assetId)) {
-            continue;
-          }
           if (shouldAddToken(token.symbol, token.address, token.chainId)) {
             if (isNativeAddress(token.address) || token.isNative) {
               const nativeAsset = getNativeAssetForChainIdSafe(token.chainId);
@@ -300,9 +290,6 @@ export const useTokensWithFiltering = (
                 image:
                   CHAIN_ID_TOKEN_IMAGE_MAP[
                     token.chainId as keyof typeof CHAIN_ID_TOKEN_IMAGE_MAP
-                  ] ??
-                  MULTICHAIN_TOKEN_IMAGE_MAP[
-                    token.chainId as keyof typeof MULTICHAIN_TOKEN_IMAGE_MAP
                   ] ??
                   // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing -- empty string must fall through (https://github.com/MetaMask/metamask-extension/issues/31880)
                   (nativeAsset?.icon || nativeAsset?.iconUrl || assetImageUrl),
@@ -344,10 +331,8 @@ export const useTokensWithFiltering = (
             tokenList?.[token_.address] ??
             tokenList?.[token_.address.toLowerCase()];
           const token = buildTokenData(chainId, matchedToken);
-          // Filter out Tron special assets (resources, staking state, etc.)
           if (
             token &&
-            !isTronSpecialAsset(token.assetId) &&
             shouldAddToken(token.symbol, token.address ?? undefined, chainId)
           ) {
             yield token;
@@ -363,7 +348,6 @@ export const useTokensWithFiltering = (
           if (
             token &&
             token.symbol.indexOf('$') === -1 &&
-            !isTronSpecialAsset(token.assetId) &&
             shouldAddToken(token.symbol, token.address ?? undefined, chainId)
           ) {
             yield token;

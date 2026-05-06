@@ -17,7 +17,6 @@ import { createMockInternalAccount } from '../../test/jest/mocks';
 import { mockNetworkState } from '../../test/stub/networks';
 import { DeleteRegulationStatus } from '../../shared/constants/metametrics';
 import * as networkSelectors from '../../shared/lib/selectors/networks';
-import { MultichainNetworks } from '../../shared/constants/multichain/networks';
 import {
   DEFAULT_FEATURE_FLAG_VALUES,
   FeatureFlagNames,
@@ -1174,82 +1173,6 @@ describe('Selectors', () => {
     });
     expect(isFantomSupported).toBeFalsy();
 
-    const isSolanaSupported = selectors.getIsBridgeChain({
-      metamask: {
-        ...mockNetworkState({ chainId: MultichainNetworks.SOLANA }),
-        internalAccounts: {
-          selectedAccount: '0xabc',
-          accounts: {
-            '0xabc': { metadata: { keyring: {} } },
-            type: 'solana',
-          },
-        },
-      },
-    });
-    expect(isSolanaSupported).toBeTruthy();
-  });
-
-  it('returns proper values for snaps privacy warning shown status', () => {
-    mockState.metamask.snapsInstallPrivacyWarningShown = false;
-    expect(selectors.getSnapsInstallPrivacyWarningShown(mockState)).toBe(false);
-
-    mockState.metamask.snapsInstallPrivacyWarningShown = true;
-    expect(selectors.getSnapsInstallPrivacyWarningShown(mockState)).toBe(true);
-
-    mockState.metamask.snapsInstallPrivacyWarningShown = undefined;
-    expect(selectors.getSnapsInstallPrivacyWarningShown(mockState)).toBe(false);
-
-    mockState.metamask.snapsInstallPrivacyWarningShown = null;
-    expect(selectors.getSnapsInstallPrivacyWarningShown(mockState)).toBe(false);
-  });
-
-  it('#getSnapRegistryData', () => {
-    const mockSnapId = 'npm:@metamask/test-snap-bip44';
-    expect(selectors.getSnapRegistryData(mockState, mockSnapId)).toStrictEqual(
-      expect.objectContaining({
-        id: mockSnapId,
-        versions: {
-          '5.1.2': {
-            checksum: 'L1k+dT9Q+y3KfIqzaH09MpDZVPS9ZowEh9w01ZMTWMU=',
-          },
-          '5.1.3': {
-            checksum: '21k+dT9Q+y3KfIqzaH09MpDZVPS9ZowEh9w01ZMTWMU=',
-          },
-          '6.0.0': {
-            checksum: '31k+dT9Q+y3KfIqzaH09MpDZVPS9ZowEh9w01ZMTWMU=',
-          },
-        },
-        metadata: expect.objectContaining({
-          website: 'https://snaps.consensys.io/',
-          name: 'BIP-44',
-        }),
-      }),
-    );
-  });
-
-  it('#getSnapLatestVersion', () => {
-    const mockSnapId = 'npm:@metamask/test-snap-bip44';
-    expect(selectors.getSnapLatestVersion(mockState, mockSnapId)).toStrictEqual(
-      '6.0.0',
-    );
-  });
-
-  it('#getAllSnapAvailableUpdates', () => {
-    const snapMap = selectors.getAllSnapAvailableUpdates(mockState);
-    expect(Object.fromEntries(snapMap)).toStrictEqual({
-      'npm:@metamask/test-snap-bip32': false,
-      'npm:@metamask/test-snap-bip44': true,
-      'npm:@metamask/test-snap-dialog': false,
-      'npm:@metamask/test-snap-getEntropy': false,
-      'npm:@metamask/test-snap-networkAccess': false,
-      'npm:@metamask/test-snap-notify': false,
-      'npm:@metamask/test-snap-wasm': false,
-      'local:snap-id': false,
-    });
-  });
-
-  it('#getAnySnapUpdateAvailable', () => {
-    expect(selectors.getAnySnapUpdateAvailable(mockState)).toStrictEqual(true);
   });
 
   it('#getTargetSubjectMetadata', () => {
@@ -1562,97 +1485,6 @@ describe('Selectors', () => {
   });
 });
 
-describe('#getKeyringSnapAccounts', () => {
-  it('returns an empty array if no keyring snap accounts exist', () => {
-    const state = {
-      metamask: {
-        internalAccounts: {
-          accounts: {
-            1: {
-              address: '0x123456789',
-              metadata: {
-                name: 'Account 1',
-                keyring: {
-                  type: 'HD Key Tree',
-                },
-              },
-            },
-            2: {
-              address: '0x987654321',
-              metadata: {
-                name: 'Account 2',
-                keyring: {
-                  type: 'Simple Key Pair',
-                },
-              },
-            },
-          },
-        },
-      },
-    };
-
-    expect(selectors.getKeyringSnapAccounts(state)).toStrictEqual([]);
-  });
-
-  it('returns an array of keyring snap accounts', () => {
-    const state = {
-      metamask: {
-        internalAccounts: {
-          accounts: {
-            'mock-id-1': {
-              address: '0x123456789',
-              metadata: {
-                name: 'Account 1',
-                keyring: {
-                  type: 'Ledger',
-                },
-              },
-            },
-            'mock-id-2': {
-              address: '0x987654321',
-              metadata: {
-                name: 'Account 2',
-                keyring: {
-                  type: 'Snap Keyring',
-                },
-              },
-            },
-            'mock-id-3': {
-              address: '0xabcdef123',
-              metadata: {
-                name: 'Account 3',
-                keyring: {
-                  type: 'Snap Keyring',
-                },
-              },
-            },
-          },
-        },
-      },
-    };
-
-    expect(selectors.getKeyringSnapAccounts(state)).toStrictEqual([
-      {
-        address: '0x987654321',
-        metadata: {
-          name: 'Account 2',
-          keyring: {
-            type: 'Snap Keyring',
-          },
-        },
-      },
-      {
-        address: '0xabcdef123',
-        metadata: {
-          name: 'Account 3',
-          keyring: {
-            type: 'Snap Keyring',
-          },
-        },
-      },
-    ]);
-  });
-});
 describe('#getConnectedSitesListWithNetworkInfo', () => {
   it('returns the sites list with network information', () => {
     const sitesList = {
@@ -3303,20 +3135,6 @@ describe('#getConnectedSitesList', () => {
     });
   });
 
-  describe('getManageInstitutionalWallets', () => {
-    it('returns the manageInstitutionalWallets state', () => {
-      const state = {
-        ...mockState,
-        metamask: {
-          ...mockState.metamask.metamask,
-          manageInstitutionalWallets: true,
-        },
-      };
-
-      expect(selectors.getManageInstitutionalWallets(state)).toBe(true);
-    });
-  });
-
   describe('#getHDEntropyIndex', () => {
     const selectedAddress = '0xSelectedAddress';
     const otherAddress = '0xOtherAddress';
@@ -3823,8 +3641,8 @@ describe('getInternalAccountsSortedByKeyring', () => {
     );
     expect(result).toStrictEqual([
       hdAccountFromHdKeyring1,
-      solanaAccount1,
       hdAccountFromHdKeyring2,
+      solanaAccount1,
       solanaAccount2,
     ]);
   });

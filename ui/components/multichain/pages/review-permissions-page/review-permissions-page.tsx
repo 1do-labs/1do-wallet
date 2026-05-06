@@ -52,7 +52,7 @@ import { CONNECT_ROUTE } from '../../../../helpers/constants/routes';
 import { DisconnectAllModal } from '../../disconnect-all-modal/disconnect-all-modal';
 import { PermissionsHeader } from '../../permissions-header/permissions-header';
 import {
-  EvmAndMultichainNetworkConfigurationsWithCaipChainId,
+  EvmNetworkConfigurationWithCaipChainId,
   MergedInternalAccountWithCaipAccountId,
 } from '../../../../selectors/selectors.types';
 import { CAIP_FORMATTED_TEST_CHAINS } from '../../../../../shared/constants/network';
@@ -138,8 +138,8 @@ export const ReviewPermissions = () => {
           return [nonTestNetworksList, testNetworksList];
         },
         [
-          [] as EvmAndMultichainNetworkConfigurationsWithCaipChainId[],
-          [] as EvmAndMultichainNetworkConfigurationsWithCaipChainId[],
+          [] as EvmNetworkConfigurationWithCaipChainId[],
+          [] as EvmNetworkConfigurationWithCaipChainId[],
         ],
       ),
     [networkConfigurationsByCaipChainId],
@@ -168,10 +168,8 @@ export const ReviewPermissions = () => {
     getAllPermittedAccountsForSelectedTab(state, activeTabOrigin),
   ) as CaipAccountId[];
 
-  // This remaps EVM caip account addresses to match the 'eip155:0'
-  // value that is currently set in InternalAccount.scopes[0] for
-  // EOA EVM accounts. This logic will need to be updated to
-  // support non EOA accounts.
+  // This remaps EVM CAIP account addresses to match the `eip155:0`
+  // scope shape currently used by EVM accounts in this wallet.
   const connectedAccountAddresses = uniq(
     nonRemappedConnectedAccountAddresses.map((caipAccountId) => {
       const {

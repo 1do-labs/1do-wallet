@@ -1,0 +1,70 @@
+diff --git a/dist/utils/validation.cjs b/dist/utils/validation.cjs
+index 4800b8bf6c1e2c39009fba244bc707d43973368a..a9fe321697fca97168557beb9bc985744ea76395 100644
+--- a/dist/utils/validation.cjs
++++ b/dist/utils/validation.cjs
+@@ -125,6 +125,7 @@ function validateTypedSignatureRequestV3V4({ currentChainId, internalAccounts, m
+         data,
+         internalAccounts,
+         origin,
++        signerAddress: messageData.from,
+     });
+     validateDelegation({
+         data,
+@@ -152,13 +153,20 @@ function validateAddress(address, propertyName) {
+  * @param options.internalAccounts - The internal accounts.
+  * @param options.origin - The origin of the request.
+  */
+-function validateVerifyingContract({ data, internalAccounts, origin, }) {
++function validateVerifyingContract({ data, internalAccounts, origin, signerAddress, }) {
+     const verifyingContract = data?.domain?.verifyingContract;
+     const isExternal = origin && origin !== approval_controller_1.ORIGIN_METAMASK;
++    const isInternalVerifyingContract = verifyingContract &&
++        typeof verifyingContract === 'string' &&
++        internalAccounts.some((internalAccount) => internalAccount.toLowerCase() === verifyingContract.toLowerCase());
++    const isSelfVerifyingContractSignature = typeof signerAddress === 'string' &&
++        typeof verifyingContract === 'string' &&
++        signerAddress.toLowerCase() === verifyingContract.toLowerCase();
+     if (verifyingContract &&
+         typeof verifyingContract === 'string' &&
+         isExternal &&
+-        internalAccounts.some((internalAccount) => internalAccount.toLowerCase() === verifyingContract.toLowerCase())) {
++        isInternalVerifyingContract &&
++        !isSelfVerifyingContractSignature) {
+         throw new Error(`External signature requests cannot use internal accounts as the verifying contract.`);
+     }
+ }
+diff --git a/dist/utils/validation.mjs b/dist/utils/validation.mjs
+index 72887088a1f87407e0a2506649c143c246b60155..66b74889ca0c58c40d47ce13d442882f5b4591d1 100644
+--- a/dist/utils/validation.mjs
++++ b/dist/utils/validation.mjs
+@@ -120,6 +120,7 @@ function validateTypedSignatureRequestV3V4({ currentChainId, internalAccounts, m
+         data,
+         internalAccounts,
+         origin,
++        signerAddress: messageData.from,
+     });
+     validateDelegation({
+         data,
+@@ -147,13 +148,20 @@ function validateAddress(address, propertyName) {
+  * @param options.internalAccounts - The internal accounts.
+  * @param options.origin - The origin of the request.
+  */
+-function validateVerifyingContract({ data, internalAccounts, origin, }) {
++function validateVerifyingContract({ data, internalAccounts, origin, signerAddress, }) {
+     const verifyingContract = data?.domain?.verifyingContract;
+     const isExternal = origin && origin !== ORIGIN_METAMASK;
++    const isInternalVerifyingContract = verifyingContract &&
++        typeof verifyingContract === 'string' &&
++        internalAccounts.some((internalAccount) => internalAccount.toLowerCase() === verifyingContract.toLowerCase());
++    const isSelfVerifyingContractSignature = typeof signerAddress === 'string' &&
++        typeof verifyingContract === 'string' &&
++        signerAddress.toLowerCase() === verifyingContract.toLowerCase();
+     if (verifyingContract &&
+         typeof verifyingContract === 'string' &&
+         isExternal &&
+-        internalAccounts.some((internalAccount) => internalAccount.toLowerCase() === verifyingContract.toLowerCase())) {
++        isInternalVerifyingContract &&
++        !isSelfVerifyingContractSignature) {
+         throw new Error(`External signature requests cannot use internal accounts as the verifying contract.`);
+     }
+ }

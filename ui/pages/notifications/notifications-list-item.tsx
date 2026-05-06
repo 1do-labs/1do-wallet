@@ -1,6 +1,5 @@
 import React, { useContext, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { hasProperty } from '@metamask/utils';
 import type { INotification } from '@metamask/notification-services-controller/notification-services';
 import { MetaMetricsContext } from '../../contexts/metametrics';
 import {
@@ -15,10 +14,8 @@ import {
 } from '../../helpers/constants/design-system';
 import { NOTIFICATIONS_ROUTE } from '../../helpers/constants/routes';
 import { useMarkNotificationAsRead } from '../../hooks/metamask-notifications/useNotifications';
-import { useSnapNotificationTimeouts } from '../../hooks/useNotificationTimeouts';
 import {
   NotificationComponents,
-  TRIGGER_TYPES,
   hasNotificationComponents,
 } from './notification-components';
 
@@ -31,7 +28,6 @@ export function NotificationsListItem({
 }) {
   const navigate = useNavigate();
   const { trackEvent } = useContext(MetaMetricsContext);
-  const { setNotificationTimeout } = useSnapNotificationTimeouts();
 
   const { markNotificationAsRead } = useMarkNotificationAsRead();
 
@@ -73,14 +69,6 @@ export function NotificationsListItem({
       },
     ]);
 
-    if (
-      notification.type === TRIGGER_TYPES.SNAP &&
-      !hasProperty(notification.data, 'detailedView')
-    ) {
-      setNotificationTimeout(notification.id);
-      return;
-    }
-
     // If details component, perform navigation
     if (
       hasNotificationComponents(notification.type) &&
@@ -88,13 +76,7 @@ export function NotificationsListItem({
     ) {
       navigate(`${NOTIFICATIONS_ROUTE}/${notification.id}`);
     }
-  }, [
-    trackEvent,
-    notification,
-    markNotificationAsRead,
-    navigate,
-    setNotificationTimeout,
-  ]);
+  }, [trackEvent, notification, markNotificationAsRead, navigate]);
 
   if (!hasNotificationComponents(notification.type)) {
     return null;

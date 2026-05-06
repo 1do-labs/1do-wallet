@@ -88,9 +88,9 @@ export default function PermissionsRedirect({ subjectMetadata }) {
             />
           </Box>
           <AvatarToken
-            src="/images/logo/metamask-fox.svg"
+            src="/images/logo/1do-mark.svg"
             size={AvatarTokenSize.Lg}
-            name="metamask-fox"
+            name="1do-logo"
           />
         </Box>
       </Box>

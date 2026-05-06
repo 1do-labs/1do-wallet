@@ -1,13 +1,10 @@
 import React from 'react';
 import { screen, fireEvent } from '@testing-library/react';
 import { RpcEndpointType } from '@metamask/network-controller';
-import { SolScope } from '@metamask/keyring-api';
-import { NetworkEnablementControllerState } from '@metamask/network-enablement-controller';
 import { renderWithProvider } from '../../../../test/lib/render-helpers-navigate';
 import { enLocale as messages } from '../../../../test/lib/i18n-helpers';
 import configureStore from '../../../store/store';
 import mockState from '../../../../test/data/mock-state.json';
-import { SOLANA_WALLET_SNAP_ID } from '../../../../shared/lib/accounts';
 import { NetworkManager } from './network-manager';
 
 // Mock the store actions
@@ -156,48 +153,6 @@ describe('NetworkManager Component', () => {
     return renderWithProvider(<NetworkManager />, store, pathname);
   };
 
-  const renderNetworkManagerWithNonEvmNetworkSelected = (stateOverrides?: {
-    enabledNetworkMap?: NetworkEnablementControllerState['enabledNetworkMap'];
-  }) => {
-    const store = configureStore({
-      ...mockState,
-      metamask: {
-        ...mockState.metamask,
-        networkConfigurationsByChainId: mockNetworkConfigurations,
-        selectedNetworkClientId: 'mainnet',
-        multichainNetworkConfigurationsByChainId: {
-          'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp': {
-            chainId: 'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp',
-            isEvm: false,
-            name: 'Solana Mainnet',
-            nativeCurrency:
-              'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp/token:EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v',
-          },
-        },
-        enabledNetworkMap: stateOverrides?.enabledNetworkMap ?? {
-          solana: {
-            'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp': true,
-          },
-        },
-      },
-      internalAccounts: {
-        accounts: {
-          'cf8dace4-9439-4bd4-b3a8-88c821c8fcb3': {
-            address: '0x0',
-            id: 'cf8dace4-9439-4bd4-b3a8-88c821c8fcb3',
-            type: 'solana:data-account',
-            metadata: {
-              snap: {
-                id: SOLANA_WALLET_SNAP_ID,
-              },
-            },
-          },
-        },
-        selectedAccount: 'cf8dace4-9439-4bd4-b3a8-88c821c8fcb3',
-      },
-    });
-    return renderWithProvider(<NetworkManager />, store);
-  };
   beforeEach(() => {
     jest.clearAllMocks();
   });
@@ -223,22 +178,16 @@ describe('NetworkManager Component', () => {
     expect(screen.getByText('Base')).toBeInTheDocument();
   });
 
-  it('should render popular networks tab when non-EVM popular network is selected', () => {
-    renderNetworkManagerWithNonEvmNetworkSelected();
+  it('should render popular networks tab with the default EVM selection', () => {
+    renderNetworkManager();
     expect(
       screen.queryByText(messages.allPopularNetworks.message),
     ).toBeInTheDocument();
   });
 
-  it('should render custom networks tab when non-EVM devnet is selected', () => {
-    renderNetworkManagerWithNonEvmNetworkSelected({
-      enabledNetworkMap: {
-        solana: {
-          [SolScope.Devnet]: true,
-        },
-      },
-    });
-
+  it('should render custom networks tab after switching tabs', () => {
+    renderNetworkManager();
+    fireEvent.click(screen.getByText(messages.networkTabCustom.message));
     expect(
       screen.queryByText(messages.allPopularNetworks.message),
     ).not.toBeInTheDocument();

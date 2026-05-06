@@ -106,10 +106,6 @@ export const ERC_4337_ACCOUNT_SALT = '0x1';
 export const SIMPLE_ACCOUNT_FACTORY =
   '0x4aFf835038b16dccDb1670103C4877A8F93E5219';
 
-/* URL of the Snap Simple Keyring site. */
-export const TEST_SNAPS_SIMPLE_KEYRING_WEBSITE_URL =
-  'https://metamask.github.io/snap-simple-keyring/1.1.6/';
-
 /* Address of the VerifyingPaymaster smart contract deployed to the local node. */
 export const VERIFYING_PAYMASTER = '0xbdbDEc38ed168331b1F7004cc9e5392A2272C1D7';
 
@@ -141,7 +137,6 @@ const mm = (pkg: string, ...rest: string[]): readonly string[] => [
 /** Mapping of dapp keys to relative path segments from this repo's test root */
 export const DAPP_PATHS: Readonly<Record<string, readonly string[]>> =
   Object.freeze({
-    'snap-simple-keyring-site': mm('snap-simple-keyring-site', 'public'),
     'snap-account-abstraction-keyring': mm(
       'snap-account-abstraction-keyring-site',
       'public',
@@ -149,8 +144,6 @@ export const DAPP_PATHS: Readonly<Record<string, readonly string[]>> =
     'test-dapp': mm('test-dapp', 'dist'),
     'test-dapp-multichain': mm('test-dapp-multichain', 'build'),
     'test-dapp-mm-connect': mm('browser-playground', 'build'),
-    'test-dapp-solana': mm('test-dapp-solana', 'dist'),
-    'test-dapp-tron': mm('test-dapp-tron', 'dist'),
     'test-snaps': mm('test-snaps', 'dist'),
   });
 
@@ -159,21 +152,9 @@ export const DAPP_PATH = Object.freeze({
   TEST_DAPP: 'test-dapp',
   TEST_DAPP_MULTICHAIN: 'test-dapp-multichain',
   TEST_DAPP_MM_CONNECT: 'test-dapp-mm-connect',
-  TEST_DAPP_SOLANA: 'test-dapp-solana',
-  TEST_DAPP_TRON: 'test-dapp-tron',
   TEST_SNAPS: 'test-snaps',
-  SNAP_SIMPLE_KEYRING_SITE: 'snap-simple-keyring-site',
   SNAP_ACCOUNT_ABSTRACTION_KEYRING: 'snap-account-abstraction-keyring',
 } as const);
-
-/* Default BTC address created using test SRP (E2E_SRP) with BIP84 derivation */
-export const DEFAULT_BTC_ADDRESS = 'bc1qg6whd6pc0cguh6gpp3ewujm53hv32ta9hdp252';
-
-/* Default BTC Account name */
-export const DEFAULT_BTC_ACCOUNT_NAME = 'Bitcoin Account 1';
-
-/* Default (mocked) BTC balance used by the Bitcoin RPC provider */
-export const DEFAULT_BTC_BALANCE = 1; // BTC
 
 /* Default BTC fee rate */
 export const DEFAULT_BTC_FEE_RATE = 2.0060000000000002; // sat/vB

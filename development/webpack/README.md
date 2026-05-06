@@ -1,6 +1,6 @@
-# MetaMask Development Build Tool
+# 1do Wallet Development Build Tool
 
-This tool is used to build the MetaMask extension for development purposes. It is not (yet) intended for production builds.
+This tool is used to build the 1do Wallet extension for development purposes. It is not (yet) intended for production builds.
 
 ## Usage
 
@@ -10,7 +10,7 @@ For usage, examples, and options, run the following command:
 yarn webpack --help
 ```
 
-To build the MetaMask extension, run the following command:
+To build the 1do Wallet extension, run the following command:
 
 ```bash
 yarn webpack

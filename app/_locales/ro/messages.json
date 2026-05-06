@@ -27,7 +27,7 @@
     "message": "Trebuie să selectați un cont!"
   },
   "addAcquiredTokens": {
-    "message": "Adăugați token-urile pe care le-ați achiziționat folosind MetaMask"
+    "message": "Adăugați token-urile pe care le-ați achiziționat folosind 1do"
   },
   "addAlias": {
     "message": "Adăugare alias"
@@ -52,15 +52,15 @@
     "description": "The description of the application"
   },
   "appName": {
-    "message": "MetaMask",
+    "message": "1do",
     "description": "The name of the application"
   },
   "appNameBeta": {
-    "message": "MetaMask Beta",
+    "message": "1do Beta",
     "description": "The name of the application (Beta)"
   },
   "appNameFlask": {
-    "message": "MetaMask Flask",
+    "message": "1do Flask",
     "description": "The name of the application (Flask)"
   },
   "approve": {
@@ -79,7 +79,7 @@
     "message": "Temporizator deconectare automată (minute)"
   },
   "autoLockTimeLimitDescription": {
-    "message": "Setați perioada de inactivitate în minute înainte ca MetaMask să se deconecteze automat"
+    "message": "Setați perioada de inactivitate în minute înainte ca 1do să se deconecteze automat"
   },
   "average": {
     "message": "Mediu"
@@ -88,7 +88,7 @@
     "message": "Înapoi"
   },
   "backupApprovalInfo": {
-    "message": "Acest cod secret este necesar pentru recuperarea portofelului în cazul în care pierdeți dispozitivul, uitați parola, trebuie să reinstalați MetaMask sau vreți să accesați portofelul de pe alt dispozitiv."
+    "message": "Acest cod secret este necesar pentru recuperarea portofelului în cazul în care pierdeți dispozitivul, uitați parola, trebuie să reinstalați 1do sau vreți să accesați portofelul de pe alt dispozitiv."
   },
   "backupApprovalNotice": {
     "message": "Creați o copie de rezervă a codului de recuperare secret pentru a vă menține portofelul și fondurile în siguranță."
@@ -128,7 +128,7 @@
     "message": "ID lanț"
   },
   "chromeRequiredForHardwareWallets": {
-    "message": "Trebuie să folosiți MetaMask în Google Chrome pentru a vă conecta la portofelul hardware."
+    "message": "Trebuie să folosiți 1do în Google Chrome pentru a vă conecta la portofelul hardware."
   },
   "close": {
     "message": "Închide"
@@ -264,7 +264,7 @@
     "message": "Conectați un portofel hardware"
   },
   "hardwareWalletsMsg": {
-    "message": "Selectați un portofel hardware pe care doriți să îl folosiți cu MetaMask"
+    "message": "Selectați un portofel hardware pe care doriți să îl folosiți cu 1do"
   },
   "here": {
     "message": "aici",
@@ -287,7 +287,7 @@
     "description": "Button to import an account from a selected file"
   },
   "importAccountMsg": {
-    "message": "Conturile importate nu vor fi asociate cu seedphrase-ul contului dumneavoastră MetaMask creat inițial. Aflați mai multe despre conturile importate"
+    "message": "Conturile importate nu vor fi asociate cu seedphrase-ul contului dumneavoastră 1do creat inițial. Aflați mai multe despre conturile importate"
   },
   "imported": {
     "message": "Importate",
@@ -358,7 +358,7 @@
     "message": "Mesaj"
   },
   "metamaskVersion": {
-    "message": "Versiune MetaMask"
+    "message": "Versiune 1do"
   },
   "mustSelectOne": {
     "message": "Trebuie să selectați cel puțin 1 simbol."
@@ -417,10 +417,10 @@
     "message": "Origine"
   },
   "participateInMetaMetrics": {
-    "message": "Participați la MetaMetrics"
+    "message": "Participați la 1do Metrics"
   },
   "participateInMetaMetricsDescription": {
-    "message": "Alăturați-vă MetaMetrics pentru a ne ajuta să îmbunătățim MetaMask."
+    "message": "Alăturați-vă 1do Metrics pentru a ne ajuta să îmbunătățim 1do."
   },
   "password": {
     "message": "Parolă"

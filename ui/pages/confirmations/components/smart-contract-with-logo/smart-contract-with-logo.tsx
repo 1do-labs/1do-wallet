@@ -20,7 +20,7 @@ function SmartContractWithLogo() {
       alignItems={AlignItems.center}
       borderRadius={BorderRadius.pill}
     >
-      <img src="images/logo/metamask-fox.svg" width="16" height="16" />
+      <img src="images/logo/1do-mark.svg" width="16" height="16" />
       <Text marginLeft={2} color={TextColor.inherit}>
         {t('interactWithSmartContract')}
       </Text>

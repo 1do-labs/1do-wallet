@@ -138,7 +138,6 @@ export type AppStateControllerState = {
   showTestnetMessageInDropdown: boolean;
   signatureSecurityAlertResponses: Record<string, SecurityAlertResponse>;
   slides: CarouselSlide[];
-  snapsInstallPrivacyWarningShown?: boolean;
   surveyLinkLastClickedOrClosed: number | null;
   shieldSubscriptionError: ShieldSubscriptionError | null;
   shieldEndingToastLastClickedOrClosed: number | null;
@@ -580,12 +579,6 @@ const controllerMetadata: StateMetadata<AppStateControllerState> = {
     includeInDebugSnapshot: true,
     usedInUi: true,
   },
-  snapsInstallPrivacyWarningShown: {
-    includeInStateLogs: true,
-    persist: true,
-    includeInDebugSnapshot: true,
-    usedInUi: true,
-  },
   surveyLinkLastClickedOrClosed: {
     includeInStateLogs: true,
     persist: true,
@@ -782,7 +775,6 @@ const MESSENGER_EXPOSED_METHODS = [
   'setShowPermissionsTour',
   'setShowShieldEntryModalOnce',
   'setShowTestnetMessageInDropdown',
-  'setSnapsInstallPrivacyWarningShownStatus',
   'setStorageWriteErrorType',
   'setSurveyLinkLastClickedOrClosed',
   'setTermsOfUseLastAgreed',
@@ -1098,18 +1090,6 @@ export class AppStateController extends BaseController<
   setTermsOfUseLastAgreed(lastAgreed: number): void {
     this.update((state) => {
       state.termsOfUseLastAgreed = lastAgreed;
-    });
-  }
-
-  /**
-   * Record if popover for snaps privacy warning has been shown
-   * on the first install of a snap.
-   *
-   * @param shown - shown status
-   */
-  setSnapsInstallPrivacyWarningShownStatus(shown: boolean): void {
-    this.update((state) => {
-      state.snapsInstallPrivacyWarningShown = shown;
     });
   }
 

@@ -318,7 +318,7 @@ export const DeepLink = () => {
             <img
               className="metamask-deep-link-logo"
               alt="MetaMask logo"
-              src="./images/logo/metamask-fox.svg"
+              src="./images/logo/1do-mark.svg"
               style={{ width: '160px', height: '160px' }}
             />
           )}

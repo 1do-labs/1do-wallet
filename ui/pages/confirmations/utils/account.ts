@@ -30,18 +30,6 @@ export const isEVMAccountForSend = (account: InternalAccount): boolean => {
  * @returns true if the account can be used for Solana transactions
  */
 export const isSolanaAccountForSend = (account: InternalAccount): boolean => {
-  if (!account) {
-    return false;
-  }
-
-  if (account.type.startsWith('solana:')) {
-    return true;
-  }
-
-  if (account.scopes?.some((scope) => scope.startsWith('solana:'))) {
-    return true;
-  }
-
   return false;
 };
 
@@ -52,18 +40,6 @@ export const isSolanaAccountForSend = (account: InternalAccount): boolean => {
  * @returns true if the account can be used for Bitcoin transactions
  */
 export const isBitcoinAccountForSend = (account: InternalAccount): boolean => {
-  if (!account) {
-    return false;
-  }
-
-  if (account.type.startsWith('bip122:')) {
-    return true;
-  }
-
-  if (account.scopes?.some((scope) => scope.startsWith('bip122:'))) {
-    return true;
-  }
-
   return false;
 };
 
@@ -74,17 +50,5 @@ export const isBitcoinAccountForSend = (account: InternalAccount): boolean => {
  * @returns true if the account can be used for Solana transactions
  */
 export const isTronAccountForSend = (account: InternalAccount): boolean => {
-  if (!account) {
-    return false;
-  }
-
-  if (account.type.startsWith('tron:')) {
-    return true;
-  }
-
-  if (account.scopes?.some((scope) => scope.startsWith('tron:'))) {
-    return true;
-  }
-
   return false;
 };

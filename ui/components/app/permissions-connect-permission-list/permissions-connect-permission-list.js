@@ -1,10 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { useSelector } from 'react-redux';
 import { getWeightedPermissions } from '../../../helpers/utils/permission';
 import { useI18nContext } from '../../../hooks/useI18nContext';
-import { getSnapsMetadata } from '../../../selectors';
-import { getSnapName } from '../../../helpers/utils/util';
 import PermissionCell from '../permission-cell';
 import { Box } from '../../component-library';
 
@@ -50,7 +47,6 @@ export default function PermissionsConnectPermissionList({
   caipChainIds,
 }) {
   const t = useI18nContext();
-  const snapsMetadata = useSelector(getSnapsMetadata);
 
   return (
     <Box as="span">
@@ -58,7 +54,6 @@ export default function PermissionsConnectPermissionList({
         t,
         isRequestApprovalPermittedChains,
         permissions,
-        getSubjectName: getSnapName(snapsMetadata),
         subjectName,
       }).map((permission, index) => {
         return getDescriptionNode({

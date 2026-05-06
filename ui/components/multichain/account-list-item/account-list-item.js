@@ -19,7 +19,7 @@ import {
   TextVariant,
 } from '@metamask/design-system-react';
 import { useI18nContext } from '../../../hooks/useI18nContext';
-import { getSnapName, shortenAddress } from '../../../helpers/utils/util';
+import { shortenAddress } from '../../../helpers/utils/util';
 
 import { AccountListItemMenu } from '../account-list-item-menu';
 import { Tag } from '../../component-library';
@@ -39,12 +39,9 @@ import {
   getIsTokenNetworkFilterEqualCurrentNetwork,
   getShowFiatInTestnets,
   getChainIdsToPoll,
-  getSnapsMetadata,
   getMetaMaskKeyrings,
-  isSolanaAccount,
 } from '../../../selectors';
 import {
-  getMultichainBalances,
   getMultichainIsTestnet,
   getMultichainNetwork,
   getMultichainShouldShowFiat,
@@ -62,7 +59,6 @@ import { getAccountLabels } from '../../../helpers/utils/accounts';
 import { getMultichainAggregatedBalance } from '../../../selectors/assets';
 
 import { AccountNetworkIndicator } from '../account-network-indicator';
-import { MULTICHAIN_NETWORK_TO_ASSET_TYPES } from '../../../../shared/constants/multichain/assets';
 import { AccountListItemMenuTypes } from './account-list-item.types';
 
 const MAXIMUM_CURRENCY_DECIMALS = 3;
@@ -91,20 +87,11 @@ const AccountListItem = ({
   const [accountOptionsMenuOpen, setAccountOptionsMenuOpen] = useState(false);
   const [accountListItemMenuElement, setAccountListItemMenuElement] =
     useState();
-  const snapMetadata = useSelector(getSnapsMetadata);
   const keyrings = useSelector(getMetaMaskKeyrings);
 
   const accountLabels = useMemo(
-    () =>
-      getAccountLabels(
-        account.metadata.keyring.type,
-        account,
-        keyrings,
-        account.metadata.keyring.type === KeyringType.snap
-          ? getSnapName(snapMetadata)(account.metadata?.snap?.id)
-          : null,
-      ),
-    [account, keyrings, snapMetadata],
+    () => getAccountLabels(account.metadata.keyring.type, account, keyrings),
+    [account, keyrings],
   );
 
   const { isEvmNetwork, chainId: multichainChainId } = useMultichainSelector(
@@ -129,12 +116,6 @@ const AccountListItem = ({
     getMultichainAggregatedBalance(state, account),
   );
 
-  const multichainBalances = useSelector(getMultichainBalances);
-  const accountMultichainBalances = multichainBalances?.[account.id];
-  const accountMultichainNativeBalance =
-    accountMultichainBalances?.[
-      `${MULTICHAIN_NETWORK_TO_ASSET_TYPES[multichainChainId]}`
-    ]?.amount;
   // cross chain agg balance
   const shouldHideZeroBalanceTokens = useSelector(
     getShouldHideZeroBalanceTokens,
@@ -160,10 +141,7 @@ const AccountListItem = ({
         ? account.balance
         : totalFiatBalance;
   } else {
-    balanceToTranslate =
-      !shouldShowFiat || isTestnet
-        ? accountMultichainNativeBalance
-        : multichainAggregatedBalance;
+    balanceToTranslate = multichainAggregatedBalance;
   }
 
   // If this is the selected item in the Account menu,
@@ -374,10 +352,7 @@ const AccountListItem = ({
             account={account}
             onClose={() => setAccountOptionsMenuOpen(false)}
             isOpen={accountOptionsMenuOpen}
-            isRemovable={
-              account.metadata.keyring.type !== KeyringType.hdKeyTree &&
-              !isSolanaAccount(account)
-            }
+            isRemovable={account.metadata.keyring.type !== KeyringType.hdKeyTree}
             closeMenu={closeMenu}
             isPinned={isPinned}
             isHidden={isHidden}

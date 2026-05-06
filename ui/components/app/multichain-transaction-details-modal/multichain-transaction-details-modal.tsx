@@ -50,7 +50,6 @@ import {
 } from '../../../hooks/useMultichainTransactionDisplay';
 import {
   getInternalAccountsObject,
-  isNonEvmAccount,
 } from '../../../selectors/accounts';
 import { selectAccountGroupNameByAddress } from '../../../selectors/multichain-accounts/account-tree';
 import {
@@ -140,14 +139,11 @@ export function MultichainTransactionDetailsModal({
 
   const internalAccountsById = useSelector(getInternalAccountsObject);
   const txInternalAccount = internalAccountsById?.[transaction.account];
-  const nonEvmSenderAddress = isNonEvmAccount(txInternalAccount)
-    ? txInternalAccount?.address
-    : undefined;
 
   // Derive addresses
   const fromAddress =
     type === TransactionType.Send
-      ? nonEvmSenderAddress || userAddress
+      ? txInternalAccount?.address || userAddress
       : from?.address;
   const toAddress = to?.address;
 

@@ -34,10 +34,6 @@ function getInitRequestMock(): jest.Mocked<
       };
     }
 
-    if (name === 'SnapsNameProvider') {
-      return {};
-    }
-
     throw new Error(`Controller ${name} not found.`);
   });
 

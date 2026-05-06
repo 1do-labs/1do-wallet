@@ -1,4 +1,3 @@
-import { MultichainNetworks } from '../../../../shared/constants/multichain/networks';
 import { getBlockExplorerInfo } from './getBlockExplorerInfo';
 
 describe('getBlockExplorerInfo utility functions', () => {
@@ -7,32 +6,6 @@ describe('getBlockExplorerInfo utility functions', () => {
   const testAddress = '0x1234567890abcdef';
 
   describe('getBlockExplorerInfo function', () => {
-    it('returns correct info for Bitcoin network', () => {
-      const result = getBlockExplorerInfo(mockT, testAddress, {
-        networkName: 'Bitcoin',
-        chainId: MultichainNetworks.BITCOIN,
-      });
-
-      expect(result).toEqual({
-        addressUrl: 'https://mempool.space/address/0x1234567890abcdef',
-        name: 'Mempool',
-        buttonText: 'translated_viewAddressOnExplorer_Mempool',
-      });
-    });
-
-    it('returns correct info for Solana network', () => {
-      const result = getBlockExplorerInfo(mockT, testAddress, {
-        networkName: 'Solana',
-        chainId: MultichainNetworks.SOLANA,
-      });
-
-      expect(result).toEqual({
-        addressUrl: 'https://solscan.io/account/0x1234567890abcdef',
-        name: 'Solscan',
-        buttonText: 'translated_viewAddressOnExplorer_Solscan',
-      });
-    });
-
     it('returns correct info for Ethereum EVM network', () => {
       const result = getBlockExplorerInfo(mockT, testAddress, {
         networkName: 'Ethereum Mainnet',
@@ -146,7 +119,7 @@ describe('getBlockExplorerInfo utility functions', () => {
       expect(result).toBeNull();
     });
 
-    it('handles multichain network without format URLs', () => {
+    it('handles non-EVM network without explorer support', () => {
       const result = getBlockExplorerInfo(mockT, testAddress, {
         networkName: 'Bitcoin',
         chainId: 'bitcoin:999999', // Unknown Bitcoin chain ID

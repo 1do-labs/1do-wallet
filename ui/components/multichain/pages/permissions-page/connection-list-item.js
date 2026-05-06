@@ -1,6 +1,5 @@
 import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
-import { SubjectType } from '@metamask/permission-controller';
 import { useSelector } from 'react-redux';
 import {
   AlignItems,
@@ -24,13 +23,11 @@ import {
   Text,
 } from '../../../component-library';
 import { getURLHost } from '../../../../helpers/utils/util';
-import { SnapIcon } from '../../../app/snaps/snap-icon';
 import { getAllPermittedChainsForSelectedTab } from '../../../../selectors';
 import { getAccountGroupWithInternalAccounts } from '../../../../selectors/multichain-accounts/account-tree';
 
 export const ConnectionListItem = ({ connection, onClick }) => {
   const t = useI18nContext();
-  const isSnap = connection.subjectType === SubjectType.Snap;
   const permittedChains = useSelector((state) =>
     getAllPermittedChainsForSelectedTab(state, connection.origin),
   );
@@ -78,18 +75,10 @@ export const ConnectionListItem = ({ connection, onClick }) => {
         alignItems={AlignItems.center}
         style={{ alignSelf: 'center' }}
       >
-        {isSnap ? (
-          <SnapIcon
-            className="connection-list-item__snap-avatar"
-            snapId={connection.id}
-            avatarSize={IconSize.Md}
-          />
-        ) : (
-          <AvatarFavicon
-            data-testid="connection-list-item__avatar-favicon"
-            src={connection.iconUrl}
-          />
-        )}
+        <AvatarFavicon
+          data-testid="connection-list-item__avatar-favicon"
+          src={connection.iconUrl}
+        />
       </Box>
       <Box
         display={Display.Flex}
@@ -98,41 +87,39 @@ export const ConnectionListItem = ({ connection, onClick }) => {
         style={{ alignSelf: 'center', flexGrow: '1' }}
       >
         <Text variant={TextVariant.bodyMd} textAlign={TextAlign.Left} ellipsis>
-          {isSnap ? connection.packageName : getURLHost(connection.origin)}
+          {getURLHost(connection.origin)}
         </Text>
-        {isSnap ? null : (
-          <Box
-            display={Display.Flex}
-            flexDirection={FlexDirection.Row}
-            alignItems={AlignItems.center}
-            gap={1}
+        <Box
+          display={Display.Flex}
+          flexDirection={FlexDirection.Row}
+          alignItems={AlignItems.center}
+          gap={1}
+        >
+          <Text
+            as="span"
+            width={BlockSize.Max}
+            color={TextColor.textAlternative}
+            variant={TextVariant.bodyMd}
           >
-            <Text
-              as="span"
-              width={BlockSize.Max}
-              color={TextColor.textAlternative}
-              variant={TextVariant.bodyMd}
-            >
-              {accountsToShow === 0 && permittedChains.length === 0 ? (
-                <>
-                  {connection.advancedPermissionsCount}{' '}
-                  {connection.advancedPermissionsCount === 1
-                    ? t('advancedPermissionSmallCase')
-                    : t('advancedPermissionsSmallCase')}
-                </>
-              ) : (
-                <>
-                  {accountsToShow}{' '}
-                  {accountsToShow === 1
-                    ? t('accountSmallCase')
-                    : t('accountsSmallCase')}
-                  •&nbsp;
-                  {permittedChains.length} {t('networksSmallCase')}
-                </>
-              )}
-            </Text>
-          </Box>
-        )}
+            {accountsToShow === 0 && permittedChains.length === 0 ? (
+              <>
+                {connection.advancedPermissionsCount}{' '}
+                {connection.advancedPermissionsCount === 1
+                  ? t('advancedPermissionSmallCase')
+                  : t('advancedPermissionsSmallCase')}
+              </>
+            ) : (
+              <>
+                {accountsToShow}{' '}
+                {accountsToShow === 1
+                  ? t('accountSmallCase')
+                  : t('accountsSmallCase')}
+                •&nbsp;
+                {permittedChains.length} {t('networksSmallCase')}
+              </>
+            )}
+          </Text>
+        </Box>
       </Box>
 
       <Box

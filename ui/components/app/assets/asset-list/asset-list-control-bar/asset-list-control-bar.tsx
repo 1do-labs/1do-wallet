@@ -9,7 +9,6 @@ import React, {
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { isStrictHexString } from '@metamask/utils';
-import { toEvmCaipChainId } from '@metamask/multichain-network-controller';
 import {
   getAllChainsToPoll,
   getIsLineaMainnet,
@@ -24,7 +23,6 @@ import {
   getEnabledNetworksByNamespace,
 } from '../../../../../selectors/multichain/networks';
 import {
-  getAllNetworkConfigurationsByCaipChainId,
   getNetworkConfigurationsByChainId,
 } from '../../../../../../shared/lib/selectors/networks';
 import {
@@ -109,7 +107,6 @@ const AssetListControlBar = ({
   const useNftDetection = useSelector(getUseNftDetection);
   const currentMultichainNetwork = useSelector(getMultichainNetwork);
   const allNetworks = useSelector(getNetworkConfigurationsByChainId);
-  const allCaipNetworks = useSelector(getAllNetworkConfigurationsByCaipChainId);
   const isMainnet = useSelector(getIsMainnet);
   const isLineaMainnet = useSelector(getIsLineaMainnet);
   const allChainIds = useSelector(getAllChainsToPoll);
@@ -292,10 +289,9 @@ const AssetListControlBar = ({
   const networkButtonText = useMemo(() => {
     if (totalEnabledNetworkCount === 1) {
       const chainId = allEnabledNetworksForAllNamespaces[0];
-      const caipChainId = isStrictHexString(chainId)
-        ? toEvmCaipChainId(chainId)
-        : chainId;
-      return allCaipNetworks[caipChainId]?.name ?? t('currentNetwork');
+      return isStrictHexString(chainId)
+        ? allNetworks[chainId]?.name ?? t('currentNetwork')
+        : t('currentNetwork');
     }
 
     // > 1 network selected, show "all networks"
@@ -312,7 +308,7 @@ const AssetListControlBar = ({
     allEnabledNetworksForAllNamespaces,
     totalEnabledNetworkCount,
     t,
-    allCaipNetworks,
+    allNetworks,
   ]);
 
   const singleNetworkIconUrl = useMemo(() => {

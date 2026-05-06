@@ -20,7 +20,6 @@ const {
   getServerMochaToBackground,
 } = require('./background-socket/server-mocha-to-background');
 const WebSocketRegistry = require('./websocket/registry').default;
-const { solanaWebSocketConfig } = require('./websocket/solana-mocks');
 const {
   accountActivityWebSocketConfig,
 } = require('./websocket/account-activity-mocks');
@@ -28,7 +27,6 @@ const { perpsWebSocketConfig } = require('./websocket/perps-mocks');
 const { WEBSOCKET_SERVICES } = require('./websocket/constants');
 
 // Register each WebSocket service explicitly.
-WebSocketRegistry.register(solanaWebSocketConfig);
 WebSocketRegistry.register(accountActivityWebSocketConfig);
 WebSocketRegistry.register(perpsWebSocketConfig);
 

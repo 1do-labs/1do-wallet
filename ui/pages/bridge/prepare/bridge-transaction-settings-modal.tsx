@@ -27,7 +27,7 @@ import {
   SEVERITIES,
   BorderRadius,
 } from '../../../helpers/constants/design-system';
-import { getIsSolanaSwap, getSlippage } from '../../../ducks/bridge/selectors';
+import { getSlippage } from '../../../ducks/bridge/selectors';
 import { setSlippage } from '../../../ducks/bridge/actions';
 import { SlippageValue } from '../utils/slippage-service';
 import { Column, Row, Tooltip } from '../layout';
@@ -49,14 +49,10 @@ export const BridgeTransactionSettingsModal = ({
    * The current slippage value in the quote request
    */
   const slippage = useSelector(getSlippage);
+  const effectiveSlippage = slippage ?? SlippageValue.BridgeDefault;
 
   const [showCustomInput, setShowCustomInput] = useState(false);
   const [inputValue, setInputValue] = useState<string>('');
-
-  /**
-   * AUTO option should only show for Solana-to-Solana swaps
-   */
-  const shouldShowAutoOption = useSelector(getIsSolanaSwap);
 
   const [slippageValue, setSlippageValue] = useState<number | undefined>(
     undefined,
@@ -65,11 +61,11 @@ export const BridgeTransactionSettingsModal = ({
   // Initialize UI state when modal opens
   useEffect(() => {
     if (isOpen) {
-      setSlippageValue(slippage);
+      setSlippageValue(effectiveSlippage);
       setInputValue('');
       setShowCustomInput(false);
     }
-  }, [slippage, shouldShowAutoOption, isOpen]);
+  }, [effectiveSlippage, isOpen]);
 
   const getNotificationConfig = () => {
     if (slippageValue === undefined) {
@@ -109,7 +105,7 @@ export const BridgeTransactionSettingsModal = ({
   };
 
   const isCustomSlippage = !(
-    slippageValue === undefined ||
+    slippageValue !== undefined &&
     HARDCODED_SLIPPAGE_OPTIONS.includes(slippageValue)
   );
 
@@ -137,23 +133,6 @@ export const BridgeTransactionSettingsModal = ({
             </Tooltip>
           </Row>
           <Row gap={2} justifyContent={JustifyContent.flexStart}>
-            {shouldShowAutoOption && (
-              <Button
-                size={ButtonSize.Md}
-                variant={
-                  slippageValue === undefined
-                    ? ButtonVariant.Primary
-                    : ButtonVariant.Secondary
-                }
-                onClick={(e: React.MouseEvent<HTMLAnchorElement>) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  setSlippageValue(undefined);
-                }}
-              >
-                {t('swapSlippageAutoDescription')}
-              </Button>
-            )}
             {HARDCODED_SLIPPAGE_OPTIONS.map((hardcodedSlippage) => {
               const isSelected = slippageValue === hardcodedSlippage;
               return (
@@ -250,7 +229,7 @@ export const BridgeTransactionSettingsModal = ({
             data-testid="bridge__tx-settings-modal-submit-button"
             disabled={
               // Disable Submit if there is no change in slippage value
-              slippageValue === slippage ||
+              slippageValue === effectiveSlippage ||
               // Disable Submit if custom input is shown and value is invalid
               (showCustomInput &&
                 (isNaN(Number(inputValue)) || inputValue === ''))

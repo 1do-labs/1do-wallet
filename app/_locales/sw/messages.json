@@ -27,7 +27,7 @@
     "message": "Unatakiwa kuchagua akaunti!"
   },
   "addAcquiredTokens": {
-    "message": "Ongeza vianzio ulivyopata kwa kutumia MetaMask"
+    "message": "Ongeza vianzio ulivyopata kwa kutumia 1do"
   },
   "addAlias": {
     "message": "Ongeza jina jingine"
@@ -52,15 +52,15 @@
     "description": "The description of the application"
   },
   "appName": {
-    "message": "MetaMask",
+    "message": "1do",
     "description": "The name of the application"
   },
   "appNameBeta": {
-    "message": "MetaMask Beta",
+    "message": "1do Beta",
     "description": "The name of the application (Beta)"
   },
   "appNameFlask": {
-    "message": "MetaMask Flask",
+    "message": "1do Flask",
     "description": "The name of the application (Flask)"
   },
   "approve": {
@@ -79,7 +79,7 @@
     "message": "Kihesabu Muda wa Kuondoka Kwenye Akaunti Kiotomatiki (dakika)"
   },
   "autoLockTimeLimitDescription": {
-    "message": "Weka muda katika dakika kabla MetaMask haijaondoa kwenye akaunti kiotomatiki."
+    "message": "Weka muda katika dakika kabla 1do haijaondoa kwenye akaunti kiotomatiki."
   },
   "average": {
     "message": "Wastani"
@@ -88,7 +88,7 @@
     "message": "Nyuma"
   },
   "backupApprovalInfo": {
-    "message": "Msimbo huu wa siri unahitajika ili kurejesha waleti yako ikitokea umepoteza kifaa chako, umesahau nenosiri lako, umelazimika kusakinisha MetaMask, au unataka kufikia waleti yako kwenye kifaa kingine."
+    "message": "Msimbo huu wa siri unahitajika ili kurejesha waleti yako ikitokea umepoteza kifaa chako, umesahau nenosiri lako, umelazimika kusakinisha 1do, au unataka kufikia waleti yako kwenye kifaa kingine."
   },
   "backupApprovalNotice": {
     "message": "Hifadhi msimbo wa Siri wa Kurejesha data ili kuweka salama waleti yako na fedha."
@@ -122,7 +122,7 @@
     "message": "Utambulisho wa Mnyororo"
   },
   "chromeRequiredForHardwareWallets": {
-    "message": "Unapaswa kutumia MetaMask kwenye Google Chrome ili kuungnisha kwenye Waleti yako ya Programu Maunzi."
+    "message": "Unapaswa kutumia 1do kwenye Google Chrome ili kuungnisha kwenye Waleti yako ya Programu Maunzi."
   },
   "close": {
     "message": "Funga"
@@ -264,7 +264,7 @@
     "message": "Unganisha waleti ya programu maunzi"
   },
   "hardwareWalletsMsg": {
-    "message": "Chagua waleti ya programu maunzi ambayo ungependa kutumia kwenye MetaMask"
+    "message": "Chagua waleti ya programu maunzi ambayo ungependa kutumia kwenye 1do"
   },
   "here": {
     "message": "hapa",
@@ -284,7 +284,7 @@
     "description": "Button to import an account from a selected file"
   },
   "importAccountMsg": {
-    "message": "Akaunti zilizoingizwa hazitahusishwa na kirai chako cha kianzio cha akaunti ya MetaMask iliyoundwa awali. Pata maelezo zaidi kuhusu akaunti zilizoingizwa"
+    "message": "Akaunti zilizoingizwa hazitahusishwa na kirai chako cha kianzio cha akaunti ya 1do iliyoundwa awali. Pata maelezo zaidi kuhusu akaunti zilizoingizwa"
   },
   "imported": {
     "message": "Zilizoingizwa",
@@ -349,7 +349,7 @@
     "message": "Ujumbe"
   },
   "metamaskVersion": {
-    "message": "Toleo la MetaMask"
+    "message": "Toleo la 1do"
   },
   "mustSelectOne": {
     "message": "Lazima uchague angalau kianzio 1."
@@ -408,10 +408,10 @@
     "message": "Asili"
   },
   "participateInMetaMetrics": {
-    "message": "Shiriki katika MetaMetrics"
+    "message": "Shiriki katika 1do Metrics"
   },
   "participateInMetaMetricsDescription": {
-    "message": "Shiriki katika MetaMetrics ili kutusaidia kufanya MetaMask kuwa bora zaidi"
+    "message": "Shiriki katika 1do Metrics ili kutusaidia kufanya 1do kuwa bora zaidi"
   },
   "password": {
     "message": "Nenosiri"

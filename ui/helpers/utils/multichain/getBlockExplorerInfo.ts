@@ -3,8 +3,6 @@ import {
   CHAINID_DEFAULT_BLOCK_EXPLORER_HUMAN_READABLE_URL_MAP,
   CHAINID_DEFAULT_BLOCK_EXPLORER_URL_MAP,
 } from '../../../../shared/constants/common';
-import { MULTICHAIN_NETWORK_BLOCK_EXPLORER_FORMAT_URLS_MAP } from '../../../../shared/constants/multichain/networks';
-import { formatBlockExplorerAddressUrl } from '../../../../shared/lib/multichain/networks';
 
 export type BlockExplorerInfo = {
   addressUrl: string;
@@ -32,25 +30,6 @@ export const getBlockExplorerInfo = (
   networkInfo: NetworkInfo,
 ): BlockExplorerInfo | null => {
   const { chainId, blockExplorerUrl } = networkInfo;
-
-  // For multichain networks (Bitcoin, Solana), use CaipChainId for reliable detection
-  if (chainId) {
-    // Non-EVM networks (Bitcoin, Solana, Tron)
-    const blockExplorerFormatUrls =
-      MULTICHAIN_NETWORK_BLOCK_EXPLORER_FORMAT_URLS_MAP[chainId];
-    if (blockExplorerFormatUrls) {
-      const { name: explorerName } = blockExplorerFormatUrls;
-      const addressUrl = formatBlockExplorerAddressUrl(
-        blockExplorerFormatUrls,
-        address,
-      );
-      return {
-        addressUrl,
-        name: explorerName,
-        buttonText: t('viewAddressOnExplorer', [explorerName]),
-      };
-    }
-  }
 
   // For EVM networks, use CaipChainId for reliable detection
   if (chainId?.startsWith(KnownCaipNamespace.Eip155)) {

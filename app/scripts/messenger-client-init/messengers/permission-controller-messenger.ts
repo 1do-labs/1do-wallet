@@ -8,13 +8,6 @@ import type {
 } from '@metamask/approval-controller';
 import type { GetSubjectMetadata } from '@metamask/permission-controller';
 import { AccountsControllerListAccountsAction } from '@metamask/accounts-controller';
-import {
-  SnapControllerGetPermittedSnapsAction,
-  SnapControllerInstallSnapsAction,
-  MultichainRoutingServiceGetSupportedAccountsAction,
-  MultichainRoutingServiceIsSupportedScopeAction,
-} from '@metamask/snaps-controllers';
-import { SnapPermissionSpecificationsActions } from '../../controllers/permissions/snaps/specifications';
 import { RootMessenger } from '../../lib/messenger';
 
 type AllowedActions =
@@ -22,9 +15,7 @@ type AllowedActions =
   | ApprovalControllerHasRequestAction
   | ApprovalControllerAcceptRequestAction
   | ApprovalControllerRejectRequestAction
-  | GetSubjectMetadata
-  | SnapControllerGetPermittedSnapsAction
-  | SnapControllerInstallSnapsAction;
+  | GetSubjectMetadata;
 
 export type PermissionControllerMessenger = ReturnType<
   typeof getPermissionControllerMessenger
@@ -56,8 +47,6 @@ export function getPermissionControllerMessenger(
       'ApprovalController:hasRequest',
       'ApprovalController:acceptRequest',
       'ApprovalController:rejectRequest',
-      'SnapController:getPermittedSnaps',
-      'SnapController:installSnaps',
       'SubjectMetadataController:getSubjectMetadata',
     ],
   });
@@ -66,10 +55,7 @@ export function getPermissionControllerMessenger(
 
 type AllowedInitializationActions =
   | AccountsControllerListAccountsAction
-  | MultichainRoutingServiceGetSupportedAccountsAction
-  | MultichainRoutingServiceIsSupportedScopeAction
-  | NetworkControllerFindNetworkClientIdByChainIdAction
-  | SnapPermissionSpecificationsActions;
+  | NetworkControllerFindNetworkClientIdByChainIdAction;
 
 export type PermissionControllerInitMessenger = ReturnType<
   typeof getPermissionControllerInitMessenger
@@ -97,26 +83,8 @@ export function getPermissionControllerInitMessenger(
   messenger.delegate({
     messenger: controllerInitMessenger,
     actions: [
-      'AppStateController:getUnlockPromise',
       'AccountsController:listAccounts',
-      'CurrencyRateController:getState',
-      'KeyringController:getKeyringsByType',
-      'KeyringController:withKeyring',
-      'MultichainRoutingService:isSupportedScope',
-      'MultichainRoutingService:getSupportedAccounts',
       'NetworkController:findNetworkClientIdByChainId',
-      'PhishingController:maybeUpdateState',
-      'PhishingController:testOrigin',
-      'PreferencesController:getState',
-      'RateLimitController:call',
-      'SnapController:clearSnapState',
-      'SnapController:getSnap',
-      'SnapController:getSnapState',
-      'SnapController:handleRequest',
-      'SnapController:updateSnapState',
-      'SnapInterfaceController:createInterface',
-      'SnapInterfaceController:getInterface',
-      'SnapInterfaceController:setInterfaceDisplayed',
     ],
   });
   return controllerInitMessenger;

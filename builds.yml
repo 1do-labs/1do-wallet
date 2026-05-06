@@ -16,10 +16,7 @@ buildTypes:
   main:
     id: 10
     features:
-      - keyring-snaps
       - multi-srp
-      - bitcoin
-      - tron
     # Additional env variables that are specific to this build
     env:
       - INFURA_PROD_PROJECT_ID
@@ -29,29 +26,26 @@ buildTypes:
       - ALLOW_LOCAL_SNAPS: false
       - REQUIRE_SNAPS_ALLOWLIST: true
       - REJECT_INVALID_SNAPS_PLATFORM_VERSION: true
-      - IFRAME_EXECUTION_ENVIRONMENT_URL: https://execution.metamask.io/iframe/11.0.1/index.html
-      - ACCOUNT_SNAPS_DIRECTORY_URL: https://snaps.metamask.io/account-management
+      - IFRAME_EXECUTION_ENVIRONMENT_URL: https://www.1do.io/
+      - ACCOUNT_SNAPS_DIRECTORY_URL: https://www.1do.io/
       - EXTENSION_UX_PNA25: true
       # for seedless onboarding (social login)
       - GOOGLE_PROD_CLIENT_ID
       - APPLE_PROD_CLIENT_ID
       - GOOGLE_CLIENT_ID_REF: GOOGLE_PROD_CLIENT_ID
       - APPLE_CLIENT_ID_REF: APPLE_PROD_CLIENT_ID
-      - PERPS_ENABLED: true
+      - PERPS_ENABLED: false
     # Main build uses the default browser manifest
     manifestOverrides: false
     # Build name used in multiple user-readable places
     # eg. eip6963
-    buildNameOverride: MetaMask
+    buildNameOverride: 1Do
 
   beta:
     id: 11
     features:
       - build-beta
-      - keyring-snaps
-      - bitcoin
       - multi-srp
-      - tron
     env:
       - INFURA_BETA_PROJECT_ID
       - SEGMENT_BETA_WRITE_KEY
@@ -61,8 +55,8 @@ buildTypes:
       - ALLOW_LOCAL_SNAPS: false
       - REQUIRE_SNAPS_ALLOWLIST: true
       - REJECT_INVALID_SNAPS_PLATFORM_VERSION: true
-      - IFRAME_EXECUTION_ENVIRONMENT_URL: https://execution.metamask.io/iframe/11.0.1/index.html
-      - ACCOUNT_SNAPS_DIRECTORY_URL: https://snaps.metamask.io/account-management
+      - IFRAME_EXECUTION_ENVIRONMENT_URL: https://www.1do.io/
+      - ACCOUNT_SNAPS_DIRECTORY_URL: https://www.1do.io/
       - EXTENSION_UX_PNA25: true
       # for seedless onboarding (social login)
       - GOOGLE_BETA_CLIENT_ID
@@ -74,16 +68,13 @@ buildTypes:
     isPrerelease: true
     # Folder which contains overrides to browser manifests
     manifestOverrides: ./app/build-types/beta/manifest/
-    buildNameOverride: MetaMask Beta
+    buildNameOverride: 1Do Beta
 
   experimental:
     id: 12
     features:
       - build-experimental
-      - keyring-snaps
       - multi-srp
-      - bitcoin
-      - tron
     env:
       - INFURA_EXPERIMENTAL_PROJECT_ID
       - SEGMENT_EXPERIMENTAL_WRITE_KEY
@@ -92,8 +83,8 @@ buildTypes:
       - ALLOW_LOCAL_SNAPS: false
       - REQUIRE_SNAPS_ALLOWLIST: true
       - REJECT_INVALID_SNAPS_PLATFORM_VERSION: true
-      - IFRAME_EXECUTION_ENVIRONMENT_URL: https://execution.metamask.io/iframe/11.0.1/index.html
-      - ACCOUNT_SNAPS_DIRECTORY_URL: https://snaps.metamask.io/account-management
+      - IFRAME_EXECUTION_ENVIRONMENT_URL: https://www.1do.io/
+      - ACCOUNT_SNAPS_DIRECTORY_URL: https://www.1do.io/
       - EXTENSION_UX_PNA25: true
       # for seedless onboarding (social login)
       - GOOGLE_EXPERIMENTAL_CLIENT_ID
@@ -101,10 +92,10 @@ buildTypes:
       - GOOGLE_CLIENT_ID_REF: GOOGLE_EXPERIMENTAL_CLIENT_ID
       - APPLE_CLIENT_ID_REF: APPLE_EXPERIMENTAL_CLIENT_ID
       - ENABLE_SETTINGS_PAGE_DEV_OPTIONS: true
-      - PERPS_ENABLED: true
+      - PERPS_ENABLED: false
     isPrerelease: true
     manifestOverrides: app/build-types/experimental/manifest
-    buildNameOverride: MetaMask Experimental
+    buildNameOverride: 1Do Experimental
 
   flask:
     id: 15
@@ -112,9 +103,6 @@ buildTypes:
     # will not be removed
     features:
       - build-flask
-      - keyring-snaps
-      - bitcoin
-      - tron
       - multi-srp
     env:
       - INFURA_FLASK_PROJECT_ID
@@ -122,11 +110,11 @@ buildTypes:
       - ALLOW_LOCAL_SNAPS: true
       - REQUIRE_SNAPS_ALLOWLIST: false
       - REJECT_INVALID_SNAPS_PLATFORM_VERSION: false
-      - IFRAME_EXECUTION_ENVIRONMENT_URL: https://execution.metamask.io/iframe/11.0.1/index.html
-      - SUPPORT_LINK: https://support.metamask.io/?utm_source=extension
+      - IFRAME_EXECUTION_ENVIRONMENT_URL: https://www.1do.io/
+      - SUPPORT_LINK: ''
       - INFURA_ENV_KEY_REF: INFURA_FLASK_PROJECT_ID
       - SEGMENT_WRITE_KEY_REF: SEGMENT_FLASK_WRITE_KEY
-      - ACCOUNT_SNAPS_DIRECTORY_URL: https://metamask.github.io/snaps-directory-staging/main/account-management
+      - ACCOUNT_SNAPS_DIRECTORY_URL: https://www.1do.io/
       - EIP_4337_ENTRYPOINT: '0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789'
       - EXTENSION_UX_PNA25: true
       # for seedless onboarding (social login)
@@ -139,7 +127,7 @@ buildTypes:
 
     isPrerelease: true
     manifestOverrides: ./app/build-types/flask/manifest/
-    buildNameOverride: MetaMask Flask
+    buildNameOverride: 1Do Flask
 
 # Build types are composed of a set of features.
 # Each feature can have code fences that add new code
@@ -166,32 +154,6 @@ features:
       - src: ./app/build-types/flask/images/
         dest: images
       - ./{app,shared,ui}/**/flask/**
-  # TODO: remove keyring-snaps section
-  keyring-snaps:
-    assets:
-      - src: ./node_modules/@metamask/message-signing-snap/dist/preinstalled-snap.json
-        dest: snaps/message-signing-snap.json
-      - src: ./node_modules/@metamask/ens-resolver-snap/dist/preinstalled-snap.json
-        dest: snaps/ens-resolver-snap.json
-      - src: ./node_modules/@metamask/institutional-wallet-snap/dist/preinstalled-snap.json
-        dest: snaps/institutional-wallet-snap.json
-      - src: ./node_modules/@metamask/solana-wallet-snap/dist/preinstalled-snap.json
-        dest: snaps/solana-wallet-snap.json
-      - src: ./node_modules/@metamask/permissions-kernel-snap/dist/preinstalled-snap.json
-        dest: snaps/permissions-kernel-snap.json
-      - src: ./node_modules/@metamask/gator-permissions-snap/dist/preinstalled-snap.json
-        dest: snaps/gator-permissions-snap.json
-      - ./{app,shared,ui}/**/keyring-snaps/**
-  # TODO: remove bitcoin section
-  bitcoin:
-    assets:
-      - src: ./node_modules/@metamask/bitcoin-wallet-snap/dist/preinstalled-snap.json
-        dest: snaps/bitcoin-wallet-snap.json
-  # TODO: remove tron section
-  tron:
-    assets:
-      - src: ./node_modules/@metamask/tron-wallet-snap/dist/preinstalled-snap.json
-        dest: snaps/tron-wallet-snap.json
   multi-srp:
     assets:
       # srp-list is a special case and is used in the srp recovery flow now.
@@ -210,7 +172,7 @@ env:
   - ACCOUNTS_USE_DEV_APIS: false
   - BRIDGE_USE_DEV_APIS: false
   - SWAPS_USE_DEV_APIS: false
-  - PORTFOLIO_URL: https://app.metamask.io
+  - PORTFOLIO_URL: https://www.1do.io/
   - TOKEN_ALLOWANCE_IMPROVEMENTS: false
   - TRANSACTION_SECURITY_PROVIDER: false
   # The unlock password
@@ -220,7 +182,7 @@ env:
   # Also see METAMASK_DEBUG and NODE_DEBUG
   - DEBUG: null
   - METAMASK_REACT_REDUX_DEVTOOLS: null
-  - SUPPORT_LINK: https://support.metamask.io/?utm_source=extension
+  - SUPPORT_LINK: https://www.1do.io/
   - SKIP_BACKGROUND_INITIALIZATION: false
   - PPOM_URI: ./ppom_bg.wasm
   # CDN for blockaid files

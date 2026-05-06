@@ -24,7 +24,7 @@ export const useDestinationAccount = () => {
     useState(false);
   const toChain = useSelector(getToChain);
 
-  // For bridges, use the appropriate account type for the destination chain
+  // For EVM-only bridging, use the destination chain's internal account.
   const defaultInternalDestinationAccount = useSelector((state) =>
     toChain?.chainId
       ? getInternalAccountBySelectedAccountGroupAndCaip(
@@ -60,8 +60,7 @@ export const useDestinationAccount = () => {
       });
       setIsDestinationAccountPickerOpen(false);
     } else {
-      // Open account picker when bridging between non-EVM and EVM chains and there is no matching account (edge case)
-      // Cases: non-EVM -> EVM, EVM -> non-EVM, or switching between different non-EVM chains
+      // Open the account picker when no matching destination account is available.
       setSelectedDestinationAccount(null);
       setIsDestinationAccountPickerOpen(true);
     }

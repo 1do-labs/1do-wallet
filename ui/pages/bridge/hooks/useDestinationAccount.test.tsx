@@ -5,7 +5,6 @@ import {
   createBridgeMockStore,
   MOCK_EVM_ACCOUNT,
   MOCK_LEDGER_ACCOUNT,
-  MOCK_SOLANA_ACCOUNT,
 } from '../../../../test/data/bridge/mock-bridge-store';
 import { renderHookWithProvider } from '../../../../test/lib/render-helpers-navigate';
 import {
@@ -15,7 +14,6 @@ import {
   getToChain,
   type BridgeAppState,
 } from '../../../ducks/bridge/selectors';
-import { MultichainNetworks } from '../../../../shared/constants/multichain/networks';
 import { toBridgeToken } from '../../../ducks/bridge/utils';
 import { useDestinationAccount } from './useDestinationAccount';
 
@@ -48,20 +46,15 @@ describe('useDestinationAccount', () => {
     expect(result.current.isDestinationAccountPickerOpen).toBe(false);
   });
 
-  it('returns the default internal destination account when solana is selected as the toChain', () => {
+  it('returns the default internal destination account when a different EVM chain is selected as the toChain', () => {
     const { result } = renderUseDestinationAccount({
       featureFlagOverrides: {
         bridgeConfig: {
-          chainRanking: [
-            { chainId: 'eip155:1' },
-            { chainId: MultichainNetworks.SOLANA },
-          ],
+          chainRanking: [{ chainId: 'eip155:1' }, { chainId: 'eip155:59144' }],
         },
       },
       bridgeSliceOverrides: {
-        toToken: toBridgeToken(
-          getNativeAssetForChainId(MultichainNetworks.SOLANA),
-        ),
+        toToken: toBridgeToken(getNativeAssetForChainId(ChainId.LINEA)),
       },
       metamaskStateOverrides: {
         internalAccounts: {
@@ -72,7 +65,7 @@ describe('useDestinationAccount', () => {
     });
 
     expect(result.current.selectedDestinationAccount).toStrictEqual({
-      ...MOCK_SOLANA_ACCOUNT,
+      ...MOCK_EVM_ACCOUNT,
       isExternal: false,
       displayName: 'Account 1',
       walletName: 'Wallet 1',
@@ -80,33 +73,25 @@ describe('useDestinationAccount', () => {
     expect(result.current.isDestinationAccountPickerOpen).toBe(false);
   });
 
-  it('returns the default destination account when the fromChain and toChain are in different namespaces', async () => {
+  it('opens the picker when there is no matching destination account', () => {
     const { result } = renderUseDestinationAccount({
       featureFlagOverrides: {
         bridgeConfig: {
-          chainRanking: [
-            { chainId: MultichainNetworks.SOLANA },
-            { chainId: 'eip155:1' },
-          ],
+          chainRanking: [{ chainId: 'eip155:1' }, { chainId: 'eip155:59144' }],
         },
       },
       bridgeSliceOverrides: {
-        toToken: toBridgeToken(getNativeAssetForChainId(ChainId.ETH)),
+        toToken: toBridgeToken(getNativeAssetForChainId(ChainId.LINEA)),
       },
       metamaskStateOverrides: {
         internalAccounts: {
-          selectedAccount: MOCK_SOLANA_ACCOUNT.id,
+          selectedAccount: MOCK_EVM_ACCOUNT.id,
         },
-        selectedAccountGroup: 'entropy:01K2FF18CTTXJYD34R78X4N1N1/0',
+        selectedAccountGroup: 'entropy:missing/0',
       },
     });
-    expect(result.current.selectedDestinationAccount).toStrictEqual({
-      ...MOCK_EVM_ACCOUNT,
-      isExternal: false,
-      displayName: 'Account 1',
-      walletName: 'Wallet 1',
-    });
-    expect(result.current.isDestinationAccountPickerOpen).toBe(false);
+    expect(result.current.selectedDestinationAccount).toBeNull();
+    expect(result.current.isDestinationAccountPickerOpen).toBe(true);
   });
 
   it('returns source account when the toChain is in the same namespace as the fromChain', async () => {
@@ -210,61 +195,19 @@ describe('useDestinationAccount', () => {
     expect(result.current.isDestinationAccountPickerOpen).toBe(false);
   });
 
-  it('opens the modal when a HW wallet is selected by the user and the dest chain is solana', () => {
+  it('returns the selected HW account when the user overrides the EVM destination account', () => {
     const { result } = renderUseDestinationAccount({
       featureFlagOverrides: {
         bridgeConfig: {
-          chainRanking: [
-            { chainId: 'eip155:1' },
-            { chainId: MultichainNetworks.SOLANA },
-          ],
+          chainRanking: [{ chainId: 'eip155:1' }, { chainId: 'eip155:59144' }],
         },
       },
       bridgeSliceOverrides: {
-        toToken: toBridgeToken(
-          getNativeAssetForChainId(MultichainNetworks.SOLANA),
-        ),
+        toToken: toBridgeToken(getNativeAssetForChainId(ChainId.LINEA)),
       },
       metamaskStateOverrides: {
         internalAccounts: {
-          selectedAccount: MOCK_LEDGER_ACCOUNT.id,
-        },
-        selectedAccountGroup:
-          'keyring:Ledger Hardware/0xb3864b298f4fddbbbd2fa5cf1a2a2748932b3b82',
-      },
-    });
-    expect(result.current.selectedDestinationAccount).toBeNull();
-    expect(result.current.isDestinationAccountPickerOpen).toBe(true);
-    const newDestinationAccount = {
-      address: 'ABCDEu4xsyvDpnqL5DQMVrh8AXxZKJPKJw5QsM7KEF8J',
-      displayName: 'Solana Account 1',
-      isExternal: false,
-      type: 'solana:data-account',
-    };
-    act(() => {
-      result.current.setSelectedDestinationAccount(newDestinationAccount);
-    });
-    expect(result.current.selectedDestinationAccount).toStrictEqual(
-      newDestinationAccount,
-    );
-  });
-
-  it('returns the selected HW account when fromChain is solana and toChain is EVM', () => {
-    const { result } = renderUseDestinationAccount({
-      featureFlagOverrides: {
-        bridgeConfig: {
-          chainRanking: [
-            { chainId: MultichainNetworks.SOLANA },
-            { chainId: 'eip155:1' },
-          ],
-        },
-      },
-      bridgeSliceOverrides: {
-        toToken: toBridgeToken(getNativeAssetForChainId(ChainId.ETH)),
-      },
-      metamaskStateOverrides: {
-        internalAccounts: {
-          selectedAccount: MOCK_SOLANA_ACCOUNT.id,
+          selectedAccount: MOCK_EVM_ACCOUNT.id,
         },
         selectedAccountGroup: 'entropy:01K2FF18CTTXJYD34R78X4N1N1/0',
       },

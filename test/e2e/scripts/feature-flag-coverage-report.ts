@@ -65,7 +65,6 @@ const SCAN_DIRS = [
   'test/e2e/tests',
   'test/e2e/benchmarks',
   'test/e2e/flask',
-  'test/e2e/snaps',
   'test/e2e/json-rpc',
   'test/e2e/accounts',
   'test/e2e/provider',

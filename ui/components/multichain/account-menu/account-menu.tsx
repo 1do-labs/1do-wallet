@@ -1,13 +1,6 @@
-import React, {
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { CaipChainId } from '@metamask/utils';
 import {
   Box,
   ButtonLink,
@@ -33,14 +26,7 @@ import {
 import { useI18nContext } from '../../../hooks/useI18nContext';
 import { MetaMetricsContext } from '../../../contexts/metametrics';
 import {
-  getIsAddSnapAccountEnabled,
-  getIsWatchEthereumAccountEnabled,
-  getIsBitcoinSupportEnabled,
-  getIsSolanaSupportEnabled,
-  getIsTronSupportEnabled,
   getHdKeyringOfSelectedAccountOrPrimaryKeyring,
-  getMetaMaskHdKeyrings,
-  getManageInstitutionalWallets,
   getHDEntropyIndex,
 } from '../../../selectors';
 import {
@@ -56,26 +42,10 @@ import {
 // eslint-disable-next-line import-x/no-restricted-paths
 import { getEnvironmentType } from '../../../../app/scripts/lib/util';
 import { ENVIRONMENT_TYPE_POPUP } from '../../../../shared/constants/app';
-import {
-  ACCOUNT_WATCHER_NAME,
-  ACCOUNT_WATCHER_SNAP_ID,
-  // TODO: Remove restricted import
-  // eslint-disable-next-line import-x/no-restricted-paths
-} from '../../../../app/scripts/lib/snap-keyring/account-watcher-snap';
-import {
-  MultichainWalletSnapClient,
-  useMultichainWalletSnapClient,
-  WalletClientType,
-} from '../../../hooks/accounts/useMultichainWalletSnapClient';
 import { endTrace, TraceName } from '../../../../shared/lib/trace';
-import { getSnapRoute } from '../../../helpers/utils/util';
 import { CreateEthAccount } from '../create-eth-account';
-import { CreateSnapAccount } from '../create-snap-account';
-import { CreateAccountSnapOptions } from '../../../../shared/lib/accounts';
 import { ImportAccount } from '../import-account';
 import { SrpList } from '../multi-srp/srp-list';
-import { INSTITUTIONAL_WALLET_SNAP_ID } from '../../../../shared/lib/accounts/institutional-wallet-snap';
-import { MultichainNetworks } from '../../../../shared/constants/multichain/networks';
 import { useSyncSRPs } from '../../../hooks/social-sync/useSyncSRPs';
 
 // TODO: Should we use an enum for this instead?
@@ -86,14 +56,6 @@ export const ACTION_MODES = {
   MENU: 'menu',
   // Displays the add account form controls
   ADD: 'add',
-  // Displays the add account form controls (for watch-only account)
-  ADD_WATCH_ONLY: 'add-watch-only',
-  // Displays the add account form controls (for bitcoin account)
-  ADD_BITCOIN: 'add-bitcoin',
-  // Displays the add account form controls (for solana account)
-  ADD_SOLANA: 'add-solana',
-  // Displays the add account form controls (for tron account)
-  ADD_TRON: 'add-tron',
   // Displays the import account form controls
   IMPORT: 'import',
   CREATE_SRP: 'create-srp',
@@ -102,24 +64,6 @@ export const ACTION_MODES = {
 } as const;
 
 export type ActionMode = (typeof ACTION_MODES)[keyof typeof ACTION_MODES];
-
-export const SNAP_CLIENT_CONFIG_MAP: Record<
-  string,
-  { clientType: WalletClientType | null; chainId: CaipChainId | null }
-> = {
-  [ACTION_MODES.ADD_BITCOIN]: {
-    clientType: WalletClientType.Bitcoin,
-    chainId: MultichainNetworks.BITCOIN,
-  },
-  [ACTION_MODES.ADD_SOLANA]: {
-    clientType: WalletClientType.Solana,
-    chainId: MultichainNetworks.SOLANA,
-  },
-  [ACTION_MODES.ADD_TRON]: {
-    clientType: WalletClientType.Tron,
-    chainId: MultichainNetworks.TRON,
-  },
-};
 
 /**
  * Gets the title for a given action mode.
@@ -137,14 +81,6 @@ export const getActionTitle = (
       return t('addAccountFromNetwork', [t('networkNameEthereum')]);
     case ACTION_MODES.MENU:
       return t('addAccount');
-    case ACTION_MODES.ADD_WATCH_ONLY:
-      return t('addAccountFromNetwork', [t('networkNameEthereum')]);
-    case ACTION_MODES.ADD_BITCOIN:
-      return t('addAccountFromNetwork', [t('networkNameBitcoin')]);
-    case ACTION_MODES.ADD_SOLANA:
-      return t('addAccountFromNetwork', [t('networkNameSolana')]);
-    case ACTION_MODES.ADD_TRON:
-      return t('addAccountFromNetwork', [t('networkNameTron')]);
     case ACTION_MODES.IMPORT:
       return t('importPrivateKey');
     case ACTION_MODES.CREATE_SRP:
@@ -184,84 +120,6 @@ export const AccountMenu = ({
   const [previousActionMode, setPreviousActionMode] = useState<ActionMode>(
     ACTION_MODES.LIST,
   );
-  const addSnapAccountEnabled = useSelector(getIsAddSnapAccountEnabled);
-  const isAddWatchEthereumAccountEnabled = useSelector(
-    getIsWatchEthereumAccountEnabled,
-  );
-
-  const handleAddWatchAccount = useCallback(async () => {
-    await trackEvent({
-      category: MetaMetricsEventCategory.Navigation,
-      event: MetaMetricsEventName.AccountAddSelected,
-      properties: {
-        // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        account_type: MetaMetricsEventAccountType.Snap,
-        // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        snap_id: ACCOUNT_WATCHER_SNAP_ID,
-        // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        snap_name: ACCOUNT_WATCHER_NAME,
-        location: 'Main Menu',
-        // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        hd_entropy_index: hdEntropyIndex,
-      },
-    });
-    onClose();
-    navigate(getSnapRoute(ACCOUNT_WATCHER_SNAP_ID));
-  }, [trackEvent, hdEntropyIndex, onClose, navigate]);
-
-  const bitcoinSupportEnabled = useSelector(getIsBitcoinSupportEnabled);
-  const bitcoinWalletSnapClient = useMultichainWalletSnapClient(
-    WalletClientType.Bitcoin,
-  );
-
-  const solanaSupportEnabled = useSelector(getIsSolanaSupportEnabled);
-  const solanaWalletSnapClient = useMultichainWalletSnapClient(
-    WalletClientType.Solana,
-  );
-
-  const tronSupportEnabled = useSelector(getIsTronSupportEnabled);
-  const tronWalletSnapClient = useMultichainWalletSnapClient(
-    WalletClientType.Tron,
-  );
-
-  const [primaryKeyring] = useSelector(getMetaMaskHdKeyrings);
-
-  const handleMultichainSnapAccountCreation = async (
-    client: MultichainWalletSnapClient,
-    _options: CreateAccountSnapOptions,
-    action: ActionMode,
-  ) => {
-    trackEvent({
-      category: MetaMetricsEventCategory.Navigation,
-      event: MetaMetricsEventName.AccountAddSelected,
-      properties: {
-        // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        account_type: MetaMetricsEventAccountType.Snap,
-        // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        snap_id: client.getSnapId(),
-        // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        snap_name: client.getSnapName(),
-        location: 'Main Menu',
-        // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        hd_entropy_index: hdEntropyIndex,
-        // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        chain_id_caip: _options.scope,
-      },
-    });
-
-    return setActionMode(action);
-  };
-
-  const manageInstitutionalWallets = useSelector(getManageInstitutionalWallets);
 
   // Here we are getting the keyring of the last selected account
   // if it is not an hd keyring, we will use the primary keyring
@@ -270,10 +128,7 @@ export const AccountMenu = ({
     hdKeyring.metadata.id,
   );
 
-  const title = useMemo(
-    () => getActionTitle(t as (text: string) => string, actionMode),
-    [actionMode, t],
-  );
+  const title = getActionTitle(t as (text: string) => string, actionMode);
 
   // eslint-disable-next-line no-empty-function
   let onBack;
@@ -311,12 +166,6 @@ export const AccountMenu = ({
     setPreviousActionMode(actionMode);
     setActionMode(ACTION_MODES.SELECT_SRP);
   }, [setActionMode, actionMode, trackEvent]);
-
-  const { clientType, chainId } = SNAP_CLIENT_CONFIG_MAP[actionMode] || {
-    clientType: null,
-    chainId: null,
-  };
-
   return (
     <Modal isOpen onClose={onClose}>
       <ModalOverlay />
@@ -338,17 +187,6 @@ export const AccountMenu = ({
               onActionComplete={onActionComplete}
               selectedKeyringId={selectedKeyringId}
               onSelectSrp={onSelectSrp}
-            />
-          </Box>
-        ) : null}
-        {clientType && chainId ? (
-          <Box paddingLeft={4} paddingRight={4} paddingBottom={4}>
-            <CreateSnapAccount
-              onActionComplete={onActionComplete}
-              selectedKeyringId={selectedKeyringId}
-              onSelectSrp={onSelectSrp}
-              clientType={clientType}
-              chainId={chainId}
             />
           </Box>
         ) : null}
@@ -407,80 +245,6 @@ export const AccountMenu = ({
                 {t('addNewEthereumAccountLabel')}
               </ButtonLink>
             </Box>
-            {solanaSupportEnabled && (
-              <Box marginTop={4}>
-                <ButtonLink
-                  size={ButtonLinkSize.Sm}
-                  startIconName={IconName.Add}
-                  startIconProps={{ size: IconSize.Md }}
-                  // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31879
-                  // eslint-disable-next-line @typescript-eslint/no-misused-promises
-                  onClick={async () => {
-                    await handleMultichainSnapAccountCreation(
-                      solanaWalletSnapClient,
-                      {
-                        scope: MultichainNetworks.SOLANA,
-                        entropySource: primaryKeyring.metadata.id,
-                      },
-                      ACTION_MODES.ADD_SOLANA,
-                    );
-                  }}
-                  data-testid="multichain-account-menu-popover-add-solana-account"
-                >
-                  {t('addNewSolanaAccountLabel')}
-                </ButtonLink>
-              </Box>
-            )}
-            {bitcoinSupportEnabled && (
-              <Box marginTop={4}>
-                <ButtonLink
-                  size={ButtonLinkSize.Sm}
-                  startIconName={IconName.Add}
-                  startIconProps={{ size: IconSize.Md }}
-                  // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31879
-                  // eslint-disable-next-line @typescript-eslint/no-misused-promises
-                  onClick={async () => {
-                    return await handleMultichainSnapAccountCreation(
-                      bitcoinWalletSnapClient,
-                      {
-                        scope: MultichainNetworks.BITCOIN,
-                        entropySource: primaryKeyring.metadata.id,
-                      },
-                      ACTION_MODES.ADD_BITCOIN,
-                    );
-                  }}
-                  data-testid="multichain-account-menu-popover-add-btc-account"
-                >
-                  {t('addBitcoinAccountLabel')}
-                </ButtonLink>
-              </Box>
-            )}
-
-            {tronSupportEnabled && (
-              <Box marginTop={4}>
-                <ButtonLink
-                  size={ButtonLinkSize.Sm}
-                  startIconName={IconName.Add}
-                  startIconProps={{ size: IconSize.Md }}
-                  // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31879
-                  // eslint-disable-next-line @typescript-eslint/no-misused-promises
-                  onClick={async () => {
-                    return await handleMultichainSnapAccountCreation(
-                      tronWalletSnapClient,
-                      {
-                        scope: MultichainNetworks.TRON,
-                        entropySource: primaryKeyring.metadata.id,
-                      },
-                      ACTION_MODES.ADD_TRON,
-                    );
-                  }}
-                  data-testid="multichain-account-menu-popover-add-tron-account"
-                >
-                  {t('addNewTronAccountLabel')}
-                </ButtonLink>
-              </Box>
-            )}
-
             <Text
               variant={TextVariant.bodySmMedium}
               marginTop={4}
@@ -580,66 +344,6 @@ export const AccountMenu = ({
                 {t('addHardwareWalletLabel')}
               </ButtonLink>
             </Box>
-            {addSnapAccountEnabled ? (
-              <Box marginTop={4}>
-                <ButtonLink
-                  size={ButtonLinkSize.Sm}
-                  startIconName={IconName.Snaps}
-                  startIconProps={{ size: IconSize.Md }}
-                  onClick={() => {
-                    onClose();
-                    trackEvent({
-                      category: MetaMetricsEventCategory.Navigation,
-                      event: MetaMetricsEventName.AccountAddSelected,
-                      properties: {
-                        // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-                        // eslint-disable-next-line @typescript-eslint/naming-convention
-                        account_type: MetaMetricsEventAccountType.Snap,
-                        location: 'Main Menu',
-                        // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-                        // eslint-disable-next-line @typescript-eslint/naming-convention
-                        hd_entropy_index: hdEntropyIndex,
-                      },
-                    });
-                    global.platform.openTab({
-                      url: process.env.ACCOUNT_SNAPS_DIRECTORY_URL as string,
-                    });
-                  }}
-                >
-                  {t('settingAddSnapAccount')}
-                </ButtonLink>
-              </Box>
-            ) : null}
-            {isAddWatchEthereumAccountEnabled && (
-              <Box marginTop={4}>
-                <ButtonLink
-                  disabled={!isAddWatchEthereumAccountEnabled}
-                  size={ButtonLinkSize.Sm}
-                  startIconName={IconName.Eye}
-                  startIconProps={{ size: IconSize.Md }}
-                  // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31879
-                  // eslint-disable-next-line @typescript-eslint/no-misused-promises
-                  onClick={handleAddWatchAccount}
-                  data-testid="multichain-account-menu-popover-add-watch-only-account"
-                >
-                  {t('addEthereumWatchOnlyAccount')}
-                </ButtonLink>
-              </Box>
-            )}
-            {manageInstitutionalWallets && (
-              <Box marginTop={4}>
-                <ButtonLink
-                  size={ButtonLinkSize.Sm}
-                  startIconName={IconName.Add}
-                  onClick={() => {
-                    onClose();
-                    navigate(getSnapRoute(INSTITUTIONAL_WALLET_SNAP_ID));
-                  }}
-                >
-                  {t('manageInstitutionalWallets')}
-                </ButtonLink>
-              </Box>
-            )}
           </Box>
         ) : null}
         {actionMode === ACTION_MODES.LIST ? (

@@ -8,11 +8,6 @@ import {
   AccountsControllerListMultichainAccountsAction,
 } from '@metamask/accounts-controller';
 import {
-  SnapControllerStateChangeEvent,
-  SnapControllerGetStateAction,
-  SnapControllerHandleRequestAction,
-} from '@metamask/snaps-controllers';
-import {
   KeyringControllerWithKeyringAction,
   KeyringControllerGetStateAction,
   KeyringControllerStateChangeEvent,
@@ -40,8 +35,6 @@ type Actions =
   | AccountsControllerGetAccountAction
   | AccountsControllerGetAccountsAction
   | AccountsControllerGetAccountByAddressAction
-  | SnapControllerGetStateAction
-  | SnapControllerHandleRequestAction
   | KeyringControllerGetStateAction
   | KeyringControllerWithKeyringAction
   | KeyringControllerAddNewKeyringAction
@@ -52,12 +45,10 @@ type Actions =
   | NetworkControllerFindNetworkClientIdByChainIdAction;
 
 type Events =
-  | SnapControllerStateChangeEvent
   | KeyringControllerStateChangeEvent
   | AccountsControllerAccountAddedEvent
   | AccountsControllerAccountRemovedEvent
-  | RemoteFeatureFlagControllerStateChangeEvent
-  | SnapControllerStateChangeEvent;
+  | RemoteFeatureFlagControllerStateChangeEvent;
 
 export type MultichainAccountServiceMessenger = ReturnType<
   typeof getMultichainAccountServiceMessenger
@@ -86,7 +77,6 @@ export function getMultichainAccountServiceMessenger(
     messenger: serviceMessenger,
     events: [
       'KeyringController:stateChange',
-      'SnapController:stateChange',
       'AccountsController:accountAdded',
       'AccountsController:accountRemoved',
       'RemoteFeatureFlagController:stateChange',
@@ -96,8 +86,6 @@ export function getMultichainAccountServiceMessenger(
       'AccountsController:getAccountByAddress',
       'AccountsController:getAccount',
       'AccountsController:getAccounts',
-      'SnapController:getState',
-      'SnapController:handleRequest',
       'KeyringController:getState',
       'KeyringController:withKeyring',
       'KeyringController:addNewKeyring',

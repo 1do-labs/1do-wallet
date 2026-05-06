@@ -1,6 +1,6 @@
 {
   "CSS_loadingTakingTooLongActionText": {
-    "message": "Επανεκκινήστε το MetaMask αν το πρόβλημα συνεχιστεί.",
+    "message": "Επανεκκινήστε το 1do αν το πρόβλημα συνεχιστεί.",
     "description": "Second line of the message that is shown when the initial loading of the MetaMask UI takes a very long time."
   },
   "CSS_loadingTakingTooLongMessageText": {
@@ -70,7 +70,7 @@
     "message": "Σχετικά"
   },
   "aboutMetaMask": {
-    "message": "Σχετικά με το MetaMask"
+    "message": "Σχετικά με το 1do"
   },
   "accept": {
     "message": "Αποδοχή"
@@ -207,7 +207,7 @@
     "message": "Προσθήκη λογαριασμού ή πορτοφολιού"
   },
   "addAcquiredTokens": {
-    "message": "Προσθέστε τα tokens που αποκτήσατε χρησιμοποιώντας το MetaMask"
+    "message": "Προσθέστε τα tokens που αποκτήσατε χρησιμοποιώντας το 1do"
   },
   "addAlias": {
     "message": "Προσθήκη ψευδωνύμου"
@@ -665,15 +665,15 @@
     "description": "The description of the application"
   },
   "appName": {
-    "message": "MetaMask",
+    "message": "1do",
     "description": "The name of the application"
   },
   "appNameBeta": {
-    "message": "MetaMask Beta",
+    "message": "1do Beta",
     "description": "The name of the application (Beta)"
   },
   "appNameFlask": {
-    "message": "MetaMask Flask",
+    "message": "1do Flask",
     "description": "The name of the application (Flask)"
   },
   "apply": {
@@ -727,7 +727,7 @@
     "message": "Αυτόματος εντοπισμός των tokens στο πορτοφόλι σας, εμφάνιση NFT και ομαδοποιημένες ενημερώσεις υπολοίπων λογαριασμών"
   },
   "asterdexReferralSubtitle": {
-    "message": "Λάβετε 4% επιστροφή στις συναλλαγές με έναν κωδικό παραπομπής στο MetaMask.",
+    "message": "Λάβετε 4% επιστροφή στις συναλλαγές με έναν κωδικό παραπομπής στο 1do.",
     "description": "The subtitle of the AsterDEX referral confirmation screen"
   },
   "attemptToCancelSwapForFree": {
@@ -777,7 +777,7 @@
     "message": "Χρονόμετρο Αυτόματης Αποσύνδεσης (λεπτά)"
   },
   "autoLockTimeLimitDescription": {
-    "message": "Ρυθμίστε τον χρόνο αδράνειας σε λεπτά πριν αποσυνδεθεί αυτόματα το MetaMask."
+    "message": "Ρυθμίστε τον χρόνο αδράνειας σε λεπτά πριν αποσυνδεθεί αυτόματα το 1do."
   },
   "available": {
     "message": "διαθέσιμο"
@@ -811,7 +811,7 @@
     "description": "$1 is backupAndSyncBasicFunctionalityNameMention in bold."
   },
   "backupAndSyncEnableDescription": {
-    "message": "Η δημιουργία αντιγράφων ασφαλείας και συγχρονισμού μάς επιτρέπει να αποθηκεύουμε κρυπτογραφημένα δεδομένα για τις προσαρμοσμένες ρυθμίσεις και λειτουργίες σας. Αυτό διατηρεί την εμπειρία σας στο MetaMask ίδια σε όλες τις συσκευές και επαναφέρει τις ρυθμίσεις και λειτουργίες έαν χρειαστεί να επανεγκατασταστήσετε το MetaMask. Δεν θα δημιουργήσει αντίγραφο ασφαλείας της Μυστικής σας Φράσης Ανάκτησης. $1.",
+    "message": "Η δημιουργία αντιγράφων ασφαλείας και συγχρονισμού μάς επιτρέπει να αποθηκεύουμε κρυπτογραφημένα δεδομένα για τις προσαρμοσμένες ρυθμίσεις και λειτουργίες σας. Αυτό διατηρεί την εμπειρία σας στο 1do ίδια σε όλες τις συσκευές και επαναφέρει τις ρυθμίσεις και λειτουργίες έαν χρειαστεί να επανεγκατασταστήσετε το 1do. Δεν θα δημιουργήσει αντίγραφο ασφαλείας της Μυστικής σας Φράσης Ανάκτησης. $1.",
     "description": "$1 is link to the backup and sync privacy policy."
   },
   "backupAndSyncEnableDescriptionUpdatePreferences": {
@@ -837,7 +837,7 @@
     "message": "Μάθετε πώς προστατεύουμε το απόρρητό σας"
   },
   "backupApprovalInfo": {
-    "message": "Αυτός ο μυστικός κωδικός απαιτείται για ανάκτηση του πορτοφολιού σας σε περίπτωση που χάσετε τη συσκευή σας, ξεχάσετε τον κωδικό πρόσβασης, πρέπει να κάνετε επανεγκατάσταση του MetaMask, ή θέλετε να έχετε πρόσβαση στο πορτοφόλι σας από μια άλλη συσκευή."
+    "message": "Αυτός ο μυστικός κωδικός απαιτείται για ανάκτηση του πορτοφολιού σας σε περίπτωση που χάσετε τη συσκευή σας, ξεχάσετε τον κωδικό πρόσβασης, πρέπει να κάνετε επανεγκατάσταση του 1do, ή θέλετε να έχετε πρόσβαση στο πορτοφόλι σας από μια άλλη συσκευή."
   },
   "backupApprovalNotice": {
     "message": "Δημιουργήστε αντίγραφο ασφαλείας της Μυστικής σας Φράσης Ανάκτησης για να διατηρήσετε το πορτοφόλι και τα χρήματά σας ασφαλή."
@@ -861,7 +861,7 @@
     "message": "Βασική"
   },
   "basicConfigurationDescription": {
-    "message": "Το MetaMask παρέχει βασικές λειτουργίες, όπως λεπτομέρειες για τα tokens και ρυθμίσεις τελών συναλλαγών μέσω υπηρεσιών διαδικτύου. Όταν χρησιμοποιείτε υπηρεσίες διαδικτύου, η διεύθυνση IP σας κοινοποιείται, σε αυτή την περίπτωση με στο MetaMask. Αυτό συμβαίνει ακριβώς όπως όταν επισκέπτεστε οποιονδήποτε ιστότοπο. Το MetaMask χρησιμοποιεί αυτά τα δεδομένα προσωρινά και δεν πωλεί ποτέ τα δεδομένα σας. Μπορείτε να χρησιμοποιήσετε ένα VPN ή να απενεργοποιήσετε αυτές τις υπηρεσίες, αλλά αυτό μπορεί να επηρεάσει την εμπειρία σας στο MetaMask. Για να μάθετε περισσότερα διαβάστε την $1.",
+    "message": "Το 1do παρέχει βασικές λειτουργίες, όπως λεπτομέρειες για τα tokens και ρυθμίσεις τελών συναλλαγών μέσω υπηρεσιών διαδικτύου. Όταν χρησιμοποιείτε υπηρεσίες διαδικτύου, η διεύθυνση IP σας κοινοποιείται, σε αυτή την περίπτωση με στο 1do. Αυτό συμβαίνει ακριβώς όπως όταν επισκέπτεστε οποιονδήποτε ιστότοπο. Το 1do χρησιμοποιεί αυτά τα δεδομένα προσωρινά και δεν πωλεί ποτέ τα δεδομένα σας. Μπορείτε να χρησιμοποιήσετε ένα VPN ή να απενεργοποιήσετε αυτές τις υπηρεσίες, αλλά αυτό μπορεί να επηρεάσει την εμπειρία σας στο 1do. Για να μάθετε περισσότερα διαβάστε την $1.",
     "description": "$1 is to be replaced by the message for privacyMsg, and will link to https://consensys.io/privacy-policy"
   },
   "basicConfigurationDescriptionV2": {
@@ -875,13 +875,13 @@
     "message": "Το κατανοώ και θέλω να συνεχίσω"
   },
   "basicConfigurationModalDisclaimerOffPart1": {
-    "message": "Αυτό σημαίνει ότι δεν θα βελτιστοποιήσετε πλήρως το χρόνο σας στο MetaMask. Βασικές λειτουργίες (όπως λεπτομέρειες των tokens, βέλτιστες ρυθμίσεις τελών συναλλαγών και άλλα) δεν θα είναι διαθέσιμες σε εσάς."
+    "message": "Αυτό σημαίνει ότι δεν θα βελτιστοποιήσετε πλήρως το χρόνο σας στο 1do. Βασικές λειτουργίες (όπως λεπτομέρειες των tokens, βέλτιστες ρυθμίσεις τελών συναλλαγών και άλλα) δεν θα είναι διαθέσιμες σε εσάς."
   },
   "basicConfigurationModalDisclaimerOffPart2": {
     "message": "Αν απενεργοποιήσετε αυτή τη ρύθμιση, θα απενεργοποιηθούν επίσης ορισμένες λειτουργίες που σχετίζονται με το απόρρητο, τα αντίγραφα ασφαλείας και τον συγχρονισμό, καθώς και τις ειδοποιήσεις."
   },
   "basicConfigurationModalDisclaimerOn": {
-    "message": "Για να βελτιστοποιήσετε το χρόνο σας στο MetaMask, θα πρέπει να ενεργοποιήσετε αυτή τη λειτουργία. Οι βασικές λειτουργίες (όπως οι λεπτομέρειες των tokens, οι βέλτιστες ρυθμίσεις τελών συναλλαγών και άλλα) είναι σημαντικές για την εμπειρία στο web3."
+    "message": "Για να βελτιστοποιήσετε το χρόνο σας στο 1do, θα πρέπει να ενεργοποιήσετε αυτή τη λειτουργία. Οι βασικές λειτουργίες (όπως οι λεπτομέρειες των tokens, οι βέλτιστες ρυθμίσεις τελών συναλλαγών και άλλα) είναι σημαντικές για την εμπειρία στο web3."
   },
   "basicConfigurationModalHeadingOff": {
     "message": "Απενεργοποίηση βασικών λειτουργιών"
@@ -935,13 +935,13 @@
     "message": "Καλύτερη προσφορά"
   },
   "bestQuoteTooltip": {
-    "message": "Η καλύτερη προσφορά που βρήκαμε από τους παρόχους, συμπεριλαμβανομένων των χρεώσεων παρόχου και μιας χρέωσης 0,25% του MetaMask. Το ελάχιστο ποσό που θα λάβετε αν αλλάξει η τιμή είναι $1."
+    "message": "Η καλύτερη προσφορά που βρήκαμε από τους παρόχους, συμπεριλαμβανομένων των χρεώσεων παρόχου και μιας χρέωσης 0,25% του 1do. Το ελάχιστο ποσό που θα λάβετε αν αλλάξει η τιμή είναι $1."
   },
   "beta": {
     "message": "Δοκιμαστική έκδοση"
   },
   "betaMetamaskVersion": {
-    "message": "Δοκιμαστική έκδοση MetaMask"
+    "message": "Δοκιμαστική έκδοση 1do"
   },
   "betaTerms": {
     "message": "Όροι Χρήσης για τη δοκιμαστική (Beta) λειτουργία"
@@ -1123,7 +1123,7 @@
     "description": "Tooltip title when there's an error fetching estimated points"
   },
   "bridgePoints_error_content": {
-    "message": "Μην ανησυχείτε, εξακολουθείτε να κερδίζετε πόντους. Θα εμφανιστούν σύντομα στον λογαριασμό σας ή μπορείτε να τους δείτε στην καρτέλα Ανταμοιβές στο MetaMask Mobile.",
+    "message": "Μην ανησυχείτε, εξακολουθείτε να κερδίζετε πόντους. Θα εμφανιστούν σύντομα στον λογαριασμό σας ή μπορείτε να τους δείτε στην καρτέλα Ανταμοιβές στο 1do Mobile.",
     "description": "Error message when points estimation fails"
   },
   "bridgePoints_tooltip": {
@@ -1131,7 +1131,7 @@
     "description": "Tooltip title for points"
   },
   "bridgePoints_tooltip_content_1": {
-    "message": "Οι πόντοι είναι ο τρόπος με τον οποίο κερδίζετε ανταμοιβές στο MetaMask Rewards, ολοκληρώνοντας συναλλαγές όπως ανταλλαγές, μεταφορές ή συμβόλαια αορίστου διάρκειας (perps).",
+    "message": "Οι πόντοι είναι ο τρόπος με τον οποίο κερδίζετε ανταμοιβές στο 1do Rewards, ολοκληρώνοντας συναλλαγές όπως ανταλλαγές, μεταφορές ή συμβόλαια αορίστου διάρκειας (perps).",
     "description": "First part of tooltip content explaining rewards points"
   },
   "bridgePoints_tooltip_content_2": {
@@ -1151,7 +1151,7 @@
     "message": "Λόγω του μεγέθους της συναλλαγής σας και της διαθέσιμης ρευστότητας, θα λάβετε περίπου $1 λιγότερο από την τιμή αγοράς. Αυτό έχει ήδη υπολογιστεί στην προσφορά σας."
   },
   "bridgePriceImpactNormalDescription": {
-    "message": "Έτσι επηρεάζει η συναλλαγή σας την τιμή ενός token. Αυτό εξαρτάται από το μέγεθος της συναλλαγής, τη διαθέσιμη ρευστότητα και τις χρεώσεις του παρόχου. Το MetaMask δεν ελέγχει την επίδραση στην τιμή."
+    "message": "Έτσι επηρεάζει η συναλλαγή σας την τιμή ενός token. Αυτό εξαρτάται από το μέγεθος της συναλλαγής, τη διαθέσιμη ρευστότητα και τις χρεώσεις του παρόχου. Το 1do δεν ελέγχει την επίδραση στην τιμή."
   },
   "bridgePriceImpactTooltipTitle": {
     "message": "Επίδραση στην τιμή"
@@ -1280,7 +1280,7 @@
     "message": "Επικοινωνήστε με την"
   },
   "bridgeTxDetailsDelayedDescriptionSupport": {
-    "message": "Υποστήριξη του MetaMask"
+    "message": "Υποστήριξη του 1do"
   },
   "bridgeTxDetailsDelayedTitle": {
     "message": "Έχουν περάσει πάνω από 3 ώρες;"
@@ -1336,7 +1336,7 @@
     "message": "Το Πρόγραμμα Περιήγησής σας δεν υποστηρίζεται..."
   },
   "builtAroundTheWorld": {
-    "message": "Το MetaMask έχει σχεδιαστεί και λειτουργεί σε όλο τον κόσμο."
+    "message": "Το 1do έχει σχεδιαστεί και λειτουργεί σε όλο τον κόσμο."
   },
   "busy": {
     "message": "Απασχολημένο"
@@ -1418,7 +1418,7 @@
     "message": "Είστε σίγουροι;"
   },
   "changePasswordWarningDescription": {
-    "message": "Αν αλλάξετε τον κωδικό πρόσβασής σας εδώ, το MetaMask θα αποσυνδεθεί από άλλες συσκευές. Θα πρέπει να συνδεθείτε ξανά με τον νέο σας κωδικό πρόσβασης."
+    "message": "Αν αλλάξετε τον κωδικό πρόσβασής σας εδώ, το 1do θα αποσυνδεθεί από άλλες συσκευές. Θα πρέπει να συνδεθείτε ξανά με τον νέο σας κωδικό πρόσβασης."
   },
   "checkNetworkConnectivity": {
     "message": "Ελέγξτε τη συνδεσιμότητα δικτύου."
@@ -1438,7 +1438,7 @@
     "message": "κάντε κλικ εδώ"
   },
   "chromeRequiredForHardwareWallets": {
-    "message": "Θα πρέπει να χρησιμοποιήσετε το MetaMask στο Google Chrome για να συνδεθείτε στο Πορτοφόλι Υλικού."
+    "message": "Θα πρέπει να χρησιμοποιήσετε το 1do στο Google Chrome για να συνδεθείτε στο Πορτοφόλι Υλικού."
   },
   "circulatingSupply": {
     "message": "Διαθέσιμη προσφορά"
@@ -1499,10 +1499,10 @@
     "message": "Συγκεντρωμένη κατανομή προσφοράς"
   },
   "configureSnapPopupDescription": {
-    "message": "Τώρα αποχωρείτε από το MetaMask για να ρυθμίσετε αυτό το snap."
+    "message": "Τώρα αποχωρείτε από το 1do για να ρυθμίσετε αυτό το snap."
   },
   "configureSnapPopupInstallDescription": {
-    "message": "Τώρα αποχωρείτε από το MetaMask για να εγκαταστήσετε αυτό το snap."
+    "message": "Τώρα αποχωρείτε από το 1do για να εγκαταστήσετε αυτό το snap."
   },
   "configureSnapPopupInstallTitle": {
     "message": "Εγκατάσταση του snap"
@@ -1587,7 +1587,7 @@
     "message": "Περιλαμβάνει $1 τέλη"
   },
   "confirmGasFeeTokenModalNativeToggleMetaMask": {
-    "message": "Το MetaMask θα συμπληρώσει το υπόλοιπο για να ολοκληρωθεί αυτή η συναλλαγή."
+    "message": "Το 1do θα συμπληρώσει το υπόλοιπο για να ολοκληρωθεί αυτή η συναλλαγή."
   },
   "confirmGasFeeTokenModalNativeToggleWallet": {
     "message": "Πληρώστε τα τέλη δικτύου χρησιμοποιώντας το υπόλοιπο του πορτοφολιού σας."
@@ -1605,7 +1605,7 @@
     "message": "Θα πληρώσετε αυτά τα τέλη δικτύου με $1"
   },
   "confirmGasFeeTokenTooltip": {
-    "message": "Το ποσό αυτό καταβάλλεται στο δίκτυο για την επεξεργασία της συναλλαγής σας. Περιλαμβάνει μια χρέωση $1 στο MetaMask για tokens εκτός ETH ή προχρηματοδοτημένα ETH."
+    "message": "Το ποσό αυτό καταβάλλεται στο δίκτυο για την επεξεργασία της συναλλαγής σας. Περιλαμβάνει μια χρέωση $1 στο 1do για tokens εκτός ETH ή προχρηματοδοτημένα ETH."
   },
   "confirmInfoAccountNow": {
     "message": "Τώρα"
@@ -1754,7 +1754,7 @@
     "description": "$1 is the snap for which a connection is being requested."
   },
   "connectWithMetaMask": {
-    "message": "Σύνδεση με το MetaMask"
+    "message": "Σύνδεση με το 1do"
   },
   "connectedAccountsDescriptionPlural": {
     "message": "Έχετε $1 λογαριασμούς συνδεδεμένους με αυτόν τον ιστότοπο.",
@@ -1764,7 +1764,7 @@
     "message": "Έχετε 1 λογαριασμό συνδεδεμένο σε αυτόν τον ιστότοπο."
   },
   "connectedAccountsEmptyDescription": {
-    "message": "To MetaMask δεν είναι συνδεδεμένo σε αυτόν τον ιστότοπο. Για να συνδεθείτε σε έναν ιστότοπο web3, βρείτε και κάντε κλικ στο κουμπί σύνδεσης."
+    "message": "To 1do δεν είναι συνδεδεμένo σε αυτόν τον ιστότοπο. Για να συνδεθείτε σε έναν ιστότοπο web3, βρείτε και κάντε κλικ στο κουμπί σύνδεσης."
   },
   "connectedAccountsListTooltip": {
     "message": "Το $1 μπορεί να δει το υπόλοιπο του λογαριασμού, τη διεύθυνση, τη δραστηριότητα και να προτείνει συναλλαγές προς έγκριση για συνδεδεμένους λογαριασμούς.",
@@ -1785,7 +1785,7 @@
     "description": "$1 is the account name"
   },
   "connectedSnapAndNoAccountDescription": {
-    "message": "Το MetaMask είναι συνδεδεμένο σε αυτόν τον ιστότοπο, αλλά δεν έχουν συνδεθεί ακόμα λογαριασμοί"
+    "message": "Το 1do είναι συνδεδεμένο σε αυτόν τον ιστότοπο, αλλά δεν έχουν συνδεθεί ακόμα λογαριασμοί"
   },
   "connectedSnaps": {
     "message": "Συνδεδεμένα Snaps"
@@ -1831,7 +1831,7 @@
     "message": "Σύνδεση στο δίκτυο δοκιμών Sepolia"
   },
   "connectionDescription": {
-    "message": "Συνδέστε αυτόν τον ιστότοπο με το MetaMask"
+    "message": "Συνδέστε αυτόν τον ιστότοπο με το 1do"
   },
   "connectionFailed": {
     "message": "Η σύνδεση απέτυχε"
@@ -1841,7 +1841,7 @@
     "description": "$1 is the name of the snap being fetched."
   },
   "connectionPopoverDescription": {
-    "message": "Για να συνδεθείτε σε έναν ιστότοπο, επιλέξτε το κουμπί σύνδεσης. Το MetaMask μπορεί να συνδεθεί μόνο με ιστότοπους web3."
+    "message": "Για να συνδεθείτε σε έναν ιστότοπο, επιλέξτε το κουμπί σύνδεσης. Το 1do μπορεί να συνδεθεί μόνο με ιστότοπους web3."
   },
   "connectionRequest": {
     "message": "Αίτημα σύνδεσης"
@@ -1890,7 +1890,7 @@
     "message": "Αλληλεπίδραση συμβολαίου"
   },
   "convertTokenToNFTDescription": {
-    "message": "Εντοπίσαμε ότι αυτό το περιουσιακό στοιχείο είναι NFT. Το MetaMask υποστηρίζει πλέον εξ'ορισμού πλήρως τα NFT. Θέλετε να το αφαιρέσετε από τη λίστα των token σας και να το προσθέσετε ως NFT;"
+    "message": "Εντοπίσαμε ότι αυτό το περιουσιακό στοιχείο είναι NFT. Το 1do υποστηρίζει πλέον εξ'ορισμού πλήρως τα NFT. Θέλετε να το αφαιρέσετε από τη λίστα των token σας και να το προσθέσετε ως NFT;"
   },
   "convertTokenToNFTExistDescription": {
     "message": "Εντοπίσαμε ότι αυτό το περιουσιακό στοιχείο προστέθηκε ως NFT. Θέλετε να το αφαιρέσετε από τη λίστα των token σας;"
@@ -1937,26 +1937,26 @@
     "message": "Δημιουργία νέου λογαριασμού"
   },
   "createPassword": {
-    "message": "Κωδικός πρόσβασης στο MetaMask"
+    "message": "Κωδικός πρόσβασης στο 1do"
   },
   "createPasswordCreate": {
     "message": "Δημιουργία κωδικού πρόσβασης"
   },
   "createPasswordDetails": {
-    "message": "Ξεκλειδώνει το MetaMask μόνο σε αυτή τη συσκευή."
+    "message": "Ξεκλειδώνει το 1do μόνο σε αυτή τη συσκευή."
   },
   "createPasswordDetailsSocial": {
     "message": "Αν χάσετε τον κωδικό πρόσβασης, δεν θα έχετε πρόσβαση στο πορτοφόλι από καμία συσκευή, $1",
     "description": "$1 is the text 'MetaMask can't reset it.'"
   },
   "createPasswordDetailsSocialReset": {
-    "message": "Το MetaMask δεν μπορεί να την επαναφέρει."
+    "message": "Το 1do δεν μπορεί να την επαναφέρει."
   },
   "createPasswordMarketing": {
     "message": "Λάβετε ενημερώσεις προϊόντος, συμβουλές και νέα, συμπεριλαμβανομένων μέσω email. Ενδέχεται να χρησιμοποιήσουμε τις αλληλεπιδράσεις σας για να βελτιώσουμε το περιεχόμενο που παρέχουμε."
   },
   "createSnapAccountDescription": {
-    "message": "Το $1 θέλει να προσθέσει έναν νέο λογαριασμό στο MetaMask."
+    "message": "Το $1 θέλει να προσθέσει έναν νέο λογαριασμό στο 1do."
   },
   "createSnapAccountTitle": {
     "message": "Δημιουργία λογαριασμού"
@@ -2077,10 +2077,10 @@
     "message": "Υπόδειξη ιστότοπου"
   },
   "dappSwapAdvantage": {
-    "message": "Εξοικονομήστε και κερδίστε με το MetaMask Swaps"
+    "message": "Εξοικονομήστε και κερδίστε με το 1do Swaps"
   },
   "dappSwapAdvantageSaveOnly": {
-    "message": "Κερδίστε περισσότερα με τα MetaMask Swaps"
+    "message": "Κερδίστε περισσότερα με τα 1do Swaps"
   },
   "dappSwapBenefits": {
     "message": "Τα τέλη δικτύου επιστρέφονται σε αποτυχημένες ανταλλαγές"
@@ -2101,7 +2101,7 @@
     "message": "Συγκέντρωση δεδομένων για μάρκετινγκ"
   },
   "dataCollectionForMarketingDescription": {
-    "message": "Θα χρησιμοποιήσουμε το MetaMetrics για να μάθουμε πώς αλληλεπιδράτε με τις επικοινωνίες μάρκετινγκ. Ενδέχεται να κοινοποιησούμε σχετικές πληροφορίες (όπως χαρακτηριστικά προϊόντων και άλλο υλικό)."
+    "message": "Θα χρησιμοποιήσουμε το 1do Metrics για να μάθουμε πώς αλληλεπιδράτε με τις επικοινωνίες μάρκετινγκ. Ενδέχεται να κοινοποιησούμε σχετικές πληροφορίες (όπως χαρακτηριστικά προϊόντων και άλλο υλικό)."
   },
   "dataCollectionForMarketingDescriptionSocialLogin": {
     "message": "Λάβετε ενημερώσεις προϊόντων, συμβουλές και νέα – και μέσω email. Ενδέχεται να χρησιμοποιήσουμε τις αλληλεπιδράσεις σας για τη βελτίωση του περιεχομένου που κοινοποιούμε."
@@ -2110,7 +2110,7 @@
     "message": "Εντάξει"
   },
   "dataCollectionWarningPopoverDescription": {
-    "message": "Απενεργοποιήσατε τη συλλογή δεδομένων για σκοπούς μάρκετινγκ. Αυτό ισχύει μόνο για αυτή τη συσκευή. Εάν χρησιμοποιείτε το MetaMask και σε άλλες συσκευές, βεβαιωθείτε ότι έχετε επιλέξει την απενεργοποίηση και εκεί."
+    "message": "Απενεργοποιήσατε τη συλλογή δεδομένων για σκοπούς μάρκετινγκ. Αυτό ισχύει μόνο για αυτή τη συσκευή. Εάν χρησιμοποιείτε το 1do και σε άλλες συσκευές, βεβαιωθείτε ότι έχετε επιλέξει την απενεργοποίηση και εκεί."
   },
   "dataUnavailable": {
     "message": "μη διαθέσιμα δεδομένα"
@@ -2180,14 +2180,14 @@
     "description": "$1 is a link with the text found in `deepLink_Error404_CTA_LinkText`"
   },
   "deepLink_Error404_CTA_LinkText": {
-    "message": "Ενημερώστε στην πιο πρόσφατη έκδοση του MetaMask",
+    "message": "Ενημερώστε στην πιο πρόσφατη έκδοση του 1do",
     "description": "Part of `deepLink_Error404_CTA`. The text links to https://support.metamask.io/configure/wallet/how-to-update-the-version-of-metamask/"
   },
   "deepLink_ErrorMissingUrl": {
     "message": "Δεν δόθηκε διεύθυνση URL για μετάβαση."
   },
   "deepLink_ErrorOtherDescription": {
-    "message": "Πρόκειται για σφάλμα και πρέπει να το αναφέρετε στο MetaMask."
+    "message": "Πρόκειται για σφάλμα και πρέπει να το αναφέρετε στο 1do."
   },
   "deepLink_ErrorOtherTitle": {
     "message": "Παρουσιάστηκε σφάλμα κατά την επεξεργασία του ειδικού συνδέσμου (deep link)"
@@ -2196,10 +2196,10 @@
     "message": "Μεταβείτε στην αρχική σελίδα"
   },
   "deepLink_RedirectingToMetaMask": {
-    "message": "Γίνεται ανακατεύθυνση στο MetaMask"
+    "message": "Γίνεται ανακατεύθυνση στο 1do"
   },
   "deepLink_ThirdPartyDescription": {
-    "message": "Μεταφερθήκατε εδώ από τρίτους, όχι από το MetaMask. $1",
+    "message": "Μεταφερθήκατε εδώ από τρίτους, όχι από το 1do. $1",
     "description": "$1 is the message 'deepLink_ContinueDescription'"
   },
   "deepLink_theAssetPage": {
@@ -2209,7 +2209,7 @@
     "message": "σελίδα αγορών"
   },
   "deepLink_theCardOnboardingPage": {
-    "message": "η σελίδα εγγραφής της MetaMask Card"
+    "message": "η σελίδα εγγραφής της 1do Card"
   },
   "deepLink_theHomePage": {
     "message": "αρχική σελίδα"
@@ -2239,7 +2239,7 @@
     "message": "η σελίδα των αγορών προβλέψεων"
   },
   "deepLink_theRewardsPage": {
-    "message": "η σελίδα Ανταμοιβών του MetaMask"
+    "message": "η σελίδα Ανταμοιβών του 1do"
   },
   "deepLink_theSellPage": {
     "message": "η σελίδα πώλησης"
@@ -2260,7 +2260,7 @@
     "message": "Προεπιλεγμένη διεύθυνση URL RPC"
   },
   "defaultSettingsSubTitle": {
-    "message": "Το MetaMask χρησιμοποιεί προεπιλεγμένες ρυθμίσεις για την καλύτερη δυνατή ισορροπία μεταξύ ασφάλειας και ευκολίας χρήσης. Αλλάξτε αυτές τις ρυθμίσεις για να ενισχύσετε περαιτέρω το απόρρητό σας."
+    "message": "Το 1do χρησιμοποιεί προεπιλεγμένες ρυθμίσεις για την καλύτερη δυνατή ισορροπία μεταξύ ασφάλειας και ευκολίας χρήσης. Αλλάξτε αυτές τις ρυθμίσεις για να ενισχύσετε περαιτέρω το απόρρητό σας."
   },
   "defaultSettingsTitle": {
     "message": "Προεπιλεγμένες ρυθμίσεις απορρήτου"
@@ -2272,11 +2272,11 @@
     "message": "Δανείστε, αποκτήστε και κάντε συναλλαγές, απευθείας στο πορτοφόλι σας."
   },
   "defiReferralCheckboxLabel": {
-    "message": "Επιτρέψτε στο MetaMask να προσθέσει έναν κωδικό παραπομπής. Αυτό είναι μόνιμο. Ο ιστότοπος προσφέρει εκπτώσεις σύμφωνα με τους όρους του. Το MetaMask λαμβάνει προμήθεια.",
+    "message": "Επιτρέψτε στο 1do να προσθέσει έναν κωδικό παραπομπής. Αυτό είναι μόνιμο. Ο ιστότοπος προσφέρει εκπτώσεις σύμφωνα με τους όρους του. Το 1do λαμβάνει προμήθεια.",
     "description": "The text for the checkbox label in the DeFi referral confirmation screen"
   },
   "defiReferralTitle": {
-    "message": "MetaMask x $1",
+    "message": "1do x $1",
     "description": "The title of the DeFi referral confirmation screen. $1 is the name of the partner"
   },
   "defiTabErrorContent": {
@@ -2292,14 +2292,14 @@
     "message": "Διαγραφή δεδομένων δραστηριότητας και nonce"
   },
   "deleteMetaMetricsData": {
-    "message": "Διαγραφή δεδομένων MetaMetrics"
+    "message": "Διαγραφή δεδομένων 1do Metrics"
   },
   "deleteMetaMetricsDataDescription": {
-    "message": "Αυτό θα διαγράψει τα ιστορικά δεδομένα από το MetaMetrics που σχετίζονται με τη χρήση σας σε αυτή τη συσκευή. Το πορτοφόλι και οι λογαριασμοί σας θα παραμείνουν ακριβώς όπως είναι τώρα μετά τη διαγραφή αυτών των δεδομένων. Η διαδικασία αυτή μπορεί να διαρκέσει έως και 30 ημέρες. Δείτε την $1.",
+    "message": "Αυτό θα διαγράψει τα ιστορικά δεδομένα από το 1do Metrics που σχετίζονται με τη χρήση σας σε αυτή τη συσκευή. Το πορτοφόλι και οι λογαριασμοί σας θα παραμείνουν ακριβώς όπως είναι τώρα μετά τη διαγραφή αυτών των δεδομένων. Η διαδικασία αυτή μπορεί να διαρκέσει έως και 30 ημέρες. Δείτε την $1.",
     "description": "$1 will have text saying Privacy Policy "
   },
   "deleteMetaMetricsDataDescriptionV2": {
-    "message": "Η ενέργεια αυτή θα διαγράψει τα ιστορικά δεδομένα MetaMetrics του πορτοφολιού σας. Τα MetaMetrics περιλαμβάνουν ανώνυμα δεδομένα χρήσης και διαγνωστικά στοιχεία. Το πορτοφόλι και οι λογαριασμοί σας δεν θα επηρεαστούν. Η διαδικασία μπορεί να διαρκέσει έως και 30 ημέρες. Δείτε την $1.",
+    "message": "Η ενέργεια αυτή θα διαγράψει τα ιστορικά δεδομένα 1do Metrics του πορτοφολιού σας. Τα 1do Metrics περιλαμβάνουν ανώνυμα δεδομένα χρήσης και διαγνωστικά στοιχεία. Το πορτοφόλι και οι λογαριασμοί σας δεν θα επηρεαστούν. Η διαδικασία μπορεί να διαρκέσει έως και 30 ημέρες. Δείτε την $1.",
     "description": "$1 will have text saying Privacy Policy "
   },
   "deleteMetaMetricsDataErrorDesc": {
@@ -2312,10 +2312,10 @@
     "message": "Δεν είναι δυνατή η διαγραφή"
   },
   "deleteMetaMetricsDataModalDesc": {
-    "message": "Πρόκειται να αφαιρέσουμε όλα τα δεδομένα σας στο MetaMetrics. Είστε σίγουροι;"
+    "message": "Πρόκειται να αφαιρέσουμε όλα τα δεδομένα σας στο 1do Metrics. Είστε σίγουροι;"
   },
   "deleteMetaMetricsDataModalTitle": {
-    "message": "Διαγραφή δεδομένων MetaMetrics;"
+    "message": "Διαγραφή δεδομένων 1do Metrics;"
   },
   "deleteMetaMetricsDataRequestedDescription": {
     "message": "Ξεκινήσατε τη διαγραφή στις $1. Η διαδικασία μπορεί να διαρκέσει έως και 30 ημέρες. Δείτε την $2.",
@@ -2341,7 +2341,7 @@
     "message": "Κατανοητό"
   },
   "deprecatedNetworkDescription": {
-    "message": "Το δίκτυο στο οποίο προσπαθείτε να συνδεθείτε δεν υποστηρίζεται πλέον από το MetaMask.$1"
+    "message": "Το δίκτυο στο οποίο προσπαθείτε να συνδεθείτε δεν υποστηρίζεται πλέον από το 1do.$1"
   },
   "description": {
     "message": "Περιγραφή"
@@ -2459,7 +2459,7 @@
     "message": "Λήψη"
   },
   "downloadAppDescription": {
-    "message": "Έχετε το MetaMask μαζί σας όπου κι αν πάτε. Ενεργοποιήστε το Face ID ώστε να έχετε πάντα πρόσβαση, ακόμη κι αν ξεχάσετε τον κωδικό σας."
+    "message": "Έχετε το 1do μαζί σας όπου κι αν πάτε. Ενεργοποιήστε το Face ID ώστε να έχετε πάντα πρόσβαση, ακόμη κι αν ξεχάσετε τον κωδικό σας."
   },
   "downloadAppTitle": {
     "message": "Σαρώστε τον QR κωδικό και κατεβάστε την εφαρμογή"
@@ -2468,7 +2468,7 @@
     "message": "Κατεβάστε το Google Chrome"
   },
   "downloadMetaMaskMobileDescription": {
-    "message": "Η λειτουργία Face ID στην εφαρμογή μας σας επιτρέπει να συνδέεστε ακόμα κι αν ξεχάσετε τον κωδικό πρόσβασής σας. Πάρτε το MetaMask παντού μαζί σας!"
+    "message": "Η λειτουργία Face ID στην εφαρμογή μας σας επιτρέπει να συνδέεστε ακόμα κι αν ξεχάσετε τον κωδικό πρόσβασής σας. Πάρτε το 1do παντού μαζί σας!"
   },
   "downloadMetaMaskMobileQrNote": {
     "message": "Σαρώστε αυτόν τον QR κωδικό για να ξεκινήσετε."
@@ -2647,13 +2647,13 @@
     "message": "Ο βελτιωμένος εντοπισμός για token είναι επί του παρόντος διαθέσιμος στο $1. $2"
   },
   "ensDomainsSettingDescriptionIntroduction": {
-    "message": "Το MetaMask σας επιτρέπει να βλέπετε τους τομείς ENS ακριβώς στη γραμμή διευθύνσεων του προγράμματος περιήγησής σας. Δείτε πώς λειτουργεί:"
+    "message": "Το 1do σας επιτρέπει να βλέπετε τους τομείς ENS ακριβώς στη γραμμή διευθύνσεων του προγράμματος περιήγησής σας. Δείτε πώς λειτουργεί:"
   },
   "ensDomainsSettingDescriptionOutroduction": {
     "message": "Να έχετε υπόψη ότι η χρήση αυτής της λειτουργίας εκθέτει τη διεύθυνση IP σας σε υπηρεσίες τρίτων με IPFS."
   },
   "ensDomainsSettingDescriptionPart1": {
-    "message": "Το MetaMask ελέγχει το συμβόλαιο ENS του Ethereum για να βρει τον κώδικα που συνδέεται με το όνομα ENS."
+    "message": "Το 1do ελέγχει το συμβόλαιο ENS του Ethereum για να βρει τον κώδικα που συνδέεται με το όνομα ENS."
   },
   "ensDomainsSettingDescriptionPart2": {
     "message": "Εάν ο κωδικός παραπέμπει σε IPFS, μπορείτε να δείτε το περιεχόμενο που σχετίζεται με αυτόν (συνήθως έναν ιστότοπο)."
@@ -2698,7 +2698,7 @@
     "message": "Εισάγετε τον κωδικό πρόσβασης για να συνεχίσετε"
   },
   "enterYourPasswordSocialLoginFlow": {
-    "message": "Εισάγετε τον κωδικό πρόσβασης στο MetaMask"
+    "message": "Εισάγετε τον κωδικό πρόσβασης στο 1do"
   },
   "errorCode": {
     "message": "Κωδικός: $1",
@@ -2718,7 +2718,7 @@
     "message": "Δεν θα συλλεχθούν προσωπικές πληροφορίες ή άλλες πληροφορίες συσκευής."
   },
   "errorLegalTextSecondInfo": {
-    "message": "Η έκδοση του προγράμματος περιήγησής σας, του λειτουργικού σας συστήματος και του MetaMask."
+    "message": "Η έκδοση του προγράμματος περιήγησής σας, του λειτουργικού σας συστήματος και του 1do."
   },
   "errorLegalTextSummary": {
     "message": "Θα λάβουμε μία αναφορά σφάλματος, που θα περιλαμβάνει:"
@@ -2760,7 +2760,7 @@
     "description": "In sentry feedback form, The message displayed after a successful feedback submission."
   },
   "errorPageTitle": {
-    "message": "Το MetaMask αντιμετώπισε ένα σφάλμα",
+    "message": "Το 1do αντιμετώπισε ένα σφάλμα",
     "description": "Title of generic error page"
   },
   "errorPageTryAgain": {
@@ -2897,11 +2897,11 @@
     "description": "This explains the risks of using MetaMask Flask"
   },
   "flaskWelcomeWarning3": {
-    "message": "Όλα τα APIs του Flask είναι πειραματικά. Μπορούν να αλλάξουν ή να αφαιρεθούν χωρίς προειδοποίηση, ή μπορεί να μείνουν στο Flask επ' αόριστον χωρίς ποτέ να μετεγκατασταθούν σε σταθερή έκδοση MetaMask. Χρησιμοποιήστε τα με δική σας ευθύνη.",
+    "message": "Όλα τα APIs του Flask είναι πειραματικά. Μπορούν να αλλάξουν ή να αφαιρεθούν χωρίς προειδοποίηση, ή μπορεί να μείνουν στο Flask επ' αόριστον χωρίς ποτέ να μετεγκατασταθούν σε σταθερή έκδοση 1do. Χρησιμοποιήστε τα με δική σας ευθύνη.",
     "description": "This message warns developers about unstable Flask APIs"
   },
   "flaskWelcomeWarning4": {
-    "message": "Βεβαιωθείτε ότι έχετε απενεργοποιήσει την κανονική σας επέκταση MetaMask όταν χρησιμοποιείτε το Flask.",
+    "message": "Βεβαιωθείτε ότι έχετε απενεργοποιήσει την κανονική σας επέκταση 1do όταν χρησιμοποιείτε το Flask.",
     "description": "This message calls to pay attention about multiple versions of MetaMask running on the same site (Flask + Prod)"
   },
   "flaskWelcomeWarningAcceptButton": {
@@ -2937,7 +2937,7 @@
     "message": "Δεν μπορούμε να ανακτήσουμε τον κωδικό σας."
   },
   "forgotPasswordModalDescription2": {
-    "message": "Προσθέστε ξανά το πορτοφόλι σας στο MetaMask εισάγοντας τη Μυστική Φράση Ανάκτησης που συνδέεται με αυτό."
+    "message": "Προσθέστε ξανά το πορτοφόλι σας στο 1do εισάγοντας τη Μυστική Φράση Ανάκτησης που συνδέεται με αυτό."
   },
   "forgotPasswordModalTitle": {
     "message": "Ξεχάσατε τον κωδικό πρόσβασης;"
@@ -3120,7 +3120,7 @@
     "description": "Subtitle text for the balance empty state component explaining the purpose of adding funds"
   },
   "gmxReferralSubtitle": {
-    "message": "Κερδίστε έως και 5% στις συναλλαγές με έναν κωδικό παραπομπής στο MetaMask.",
+    "message": "Κερδίστε έως και 5% στις συναλλαγές με έναν κωδικό παραπομπής στο 1do.",
     "description": "The subtitle of the GMX referral confirmation screen"
   },
   "goToSite": {
@@ -3234,7 +3234,7 @@
     "message": "Οι ενσωματώσεις πορτοφολιών υλικού χρησιμοποιούν κλήσεις API σε εξωτερικούς διακομιστές, οι οποίοι μπορούν να δουν τη διεύθυνση IP σας και τις διευθύνσεις έξυπνων συμβολαίων με τις οποίες αλληλεπιδράτε."
   },
   "hardwareWalletsMsg": {
-    "message": "Επιλέξτε ένα πορτοφόλι υλικού το οποίο θέλετε να χρησιμοποιήσετε με το MetaMask."
+    "message": "Επιλέξτε ένα πορτοφόλι υλικού το οποίο θέλετε να χρησιμοποιήσετε με το 1do."
   },
   "helpAndSettings": {
     "message": "Βοήθεια και ρυθμίσεις"
@@ -3306,7 +3306,7 @@
     "description": "$1 is a message from 'holdToRevealContent4' and $2 is a text link with the message from 'holdToRevealContent5'"
   },
   "holdToRevealContent4": {
-    "message": "Η Υποστήριξη του MetaMask δεν θα σας το ζητήσει ποτέ,",
+    "message": "Η Υποστήριξη του 1do δεν θα σας το ζητήσει ποτέ,",
     "description": "Part of 'holdToRevealContent3'"
   },
   "holdToRevealContent5": {
@@ -3346,7 +3346,7 @@
     "message": "Απάτη"
   },
   "hyperliquidReferralSubtitle": {
-    "message": "Κερδίστε έως και 4% στις συναλλαγές με έναν κωδικό παραπομπής στο MetaMask.",
+    "message": "Κερδίστε έως και 4% στις συναλλαγές με έναν κωδικό παραπομπής στο 1do.",
     "description": "The subtitle of the Hyperliquid referral confirmation screen"
   },
   "iUnderstand": {
@@ -3378,7 +3378,7 @@
     "message": "Αυτό δεν είναι ένα έγκυρο ιδιωτικό κλειδί. Πρέπει να πληκτρολογήσετε μια δεκαεξαδική συμβολοσειρά μήκους 64 χαρακτήρων."
   },
   "importAccountJsonLoading1": {
-    "message": "Υπολογίστε ότι αυτή η εισαγωγή JSON θα διαρκέσει μερικά λεπτά και το MetaMask θα «παγώσει»."
+    "message": "Υπολογίστε ότι αυτή η εισαγωγή JSON θα διαρκέσει μερικά λεπτά και το 1do θα «παγώσει»."
   },
   "importAccountJsonLoading2": {
     "message": "Ζητάμε συγγνώμη και θα το κάνουμε πιο γρήγορα στο μέλλον."
@@ -3444,7 +3444,7 @@
     "message": "Λάθος"
   },
   "infuraBlockedNotification": {
-    "message": "Το MetaMask δεν μπορεί να συνδεθεί με τον διακομιστή του blockchain. Εξετάστε τους πιθανούς λόγους $1.",
+    "message": "Το 1do δεν μπορεί να συνδεθεί με τον διακομιστή του blockchain. Εξετάστε τους πιθανούς λόγους $1.",
     "description": "$1 is a clickable link with with text defined by the 'here' key"
   },
   "insights": {
@@ -3461,7 +3461,7 @@
     "message": "Προέλευση εγκατάστασης"
   },
   "installRequest": {
-    "message": "Προσθήκη στο MetaMask"
+    "message": "Προσθήκη στο 1do"
   },
   "installedOn": {
     "message": "Εγκαταστάθηκε στο $1",
@@ -3563,7 +3563,7 @@
     "message": "Πύλη IPFS"
   },
   "ipfsGatewayDescription": {
-    "message": "Το MetaMask χρησιμοποιεί υπηρεσίες τρίτων για να προβάλει εικόνες των NFT σας που είναι αποθηκευμένα στο IPFS, εμφάνιζει πληροφορίες σχετικά με τις διευθύνσεις ENS που έχουν εισαχθεί στη γραμμή διευθύνσεων του προγράμματος περιήγησής σας και αντλεί εικονίδια για διαφορετικά tokens. Η διεύθυνση IP σας ενδέχεται να είναι εκτεθειμένη σε αυτές τις υπηρεσίες όταν τις χρησιμοποιείτε."
+    "message": "Το 1do χρησιμοποιεί υπηρεσίες τρίτων για να προβάλει εικόνες των NFT σας που είναι αποθηκευμένα στο IPFS, εμφάνιζει πληροφορίες σχετικά με τις διευθύνσεις ENS που έχουν εισαχθεί στη γραμμή διευθύνσεων του προγράμματος περιήγησής σας και αντλεί εικονίδια για διαφορετικά tokens. Η διεύθυνση IP σας ενδέχεται να είναι εκτεθειμένη σε αυτές τις υπηρεσίες όταν τις χρησιμοποιείτε."
   },
   "ipfsGatewayDescriptionV2": {
     "message": "Χρησιμοποιεί υπηρεσίες τρίτων για να εμφανίζει εικόνες των NFT σας που είναι αποθηκευμένα στο IPFS, να προβάλλει πληροφορίες για ENS διευθύνσεις που πληκτρολογήσατε στη γραμμή διευθύνσεων του προγράμματος περιήγησης και να ανακτά εικονίδια για διαφορετικά tokens. Επιλέξτε τον προτιμώμενο κόμβο IPFS παρακάτω."
@@ -3660,10 +3660,10 @@
     "message": "απάτες και κινδύνους για την ασφάλεια."
   },
   "leaveMetaMask": {
-    "message": "Αποχώρηση από το MetaMask;"
+    "message": "Αποχώρηση από το 1do;"
   },
   "leaveMetaMaskDesc": {
-    "message": "Πρόκειται να επισκεφθείτε έναν ιστότοπο εκτός του MetaMask. Ελέγξτε ξανά τη διεύθυνση URL προτού συνεχίσετε."
+    "message": "Πρόκειται να επισκεφθείτε έναν ιστότοπο εκτός του 1do. Ελέγξτε ξανά τη διεύθυνση URL προτού συνεχίσετε."
   },
   "ledger": {
     "message": "Ledger",
@@ -3758,7 +3758,7 @@
     "message": "Σύνδεσμος"
   },
   "linkCentralizedExchanges": {
-    "message": "Συνδέστε τους λογαριασμούς σας στο Coinbase ή Binance για να μεταφέρετε κρυπτονομίσματα στο MetaMask δωρεάν."
+    "message": "Συνδέστε τους λογαριασμούς σας στο Coinbase ή Binance για να μεταφέρετε κρυπτονομίσματα στο 1do δωρεάν."
   },
   "links": {
     "message": "Σύνδεσμοι"
@@ -3782,7 +3782,7 @@
     "message": "Κλείδωμα"
   },
   "lockMetaMaskLoadingMessage": {
-    "message": "Γίνεται κλείδωμα του MetaMask..."
+    "message": "Γίνεται κλείδωμα του 1do..."
   },
   "lockTimeInvalid": {
     "message": "Ο χρόνος κλειδώματος πρέπει να είναι ένας αριθμός μεταξύ 0 και 10080"
@@ -3807,13 +3807,13 @@
     "description": "$1 is the key 'loginErrorGenericSupport'"
   },
   "loginErrorGenericSupport": {
-    "message": "Υποστήριξη του MetaMask"
+    "message": "Υποστήριξη του 1do"
   },
   "loginErrorGenericTitle": {
     "message": "Κάτι πήγε στραβά"
   },
   "loginErrorResetWalletDescription": {
-    "message": "Παρουσιάστηκε πρόβλημα κατά το ξεκλείδωμα. Συνδεθείτε ξανά με $1 και τον κωδικό πρόσβασής σας στο MetaMask.",
+    "message": "Παρουσιάστηκε πρόβλημα κατά το ξεκλείδωμα. Συνδεθείτε ξανά με $1 και τον κωδικό πρόσβασής σας στο 1do.",
     "description": "$1 is the social login method"
   },
   "loginErrorSessionExpiredButton": {
@@ -3852,7 +3852,7 @@
     "message": "Κάντε τα έξυπνα συμβόλαια πιο εύκολα στην ανάγνωση"
   },
   "makeSmartContractsEasierDescription": {
-    "message": "Το MetaMask χρησιμοποιεί τα 4byte.directory και Sourcify για να ερμηνεύει αυτές τις πληροφορίες."
+    "message": "Το 1do χρησιμοποιεί τα 4byte.directory και Sourcify για να ερμηνεύει αυτές τις πληροφορίες."
   },
   "manage": {
     "message": "Διαχείριση"
@@ -3939,7 +3939,7 @@
     "message": "Μήνυμα"
   },
   "metaMaskConnectStatusParagraphOne": {
-    "message": "Έχετε τώρα περισσότερο έλεγχο των συνδέσεων του λογαριασμού σας στο MetaMask."
+    "message": "Έχετε τώρα περισσότερο έλεγχο των συνδέσεων του λογαριασμού σας στο 1do."
   },
   "metaMaskConnectStatusParagraphThree": {
     "message": "Κάντε κλικ για να διαχειριστείτε τους συνδεδεμένους λογαριασμούς σας."
@@ -3948,26 +3948,26 @@
     "message": "Το κουμπί Κατάστασης Σύνδεσης δείχνει αν ο ιστότοπος που επισκέπτεστε είναι συνδεδεμένος με τον τρέχοντα επιλεγμένο λογαριασμό σας."
   },
   "metaMetricsIdNotAvailableError": {
-    "message": "Εφόσον δεν έχετε επιλέξει ποτέ το MetaMetrics, δεν υπάρχουν δεδομένα προς διαγραφή εδώ."
+    "message": "Εφόσον δεν έχετε επιλέξει ποτέ το 1do Metrics, δεν υπάρχουν δεδομένα προς διαγραφή εδώ."
   },
   "metadataModalSourceTooltip": {
     "message": "Το $1 φιλοξενείται στο npm και το $2 είναι το μοναδικό αναγνωριστικό αυτού του Snap.",
     "description": "$1 is the snap name and $2 is the snap NPM id."
   },
   "metamaskFee": {
-    "message": "Χρεώσεις στο MetaMask"
+    "message": "Χρεώσεις στο 1do"
   },
   "metamaskNotificationsAreOff": {
     "message": "Οι ειδοποιήσεις του πορτοφολιού δεν είναι προς το παρόν ενεργές."
   },
   "metamaskSwap": {
-    "message": "MetaMask Swap"
+    "message": "1do Swap"
   },
   "metamaskSwapsOfflineDescription": {
-    "message": "Το MetaMask Swaps βρίσκεται υπό συντήρηση. Προσπαθήστε ξανά αργότερα."
+    "message": "Το 1do Swaps βρίσκεται υπό συντήρηση. Προσπαθήστε ξανά αργότερα."
   },
   "metamaskVersion": {
-    "message": "Έκδοση του MetaMask"
+    "message": "Έκδοση του 1do"
   },
   "methodData": {
     "message": "Μέθοδος"
@@ -4045,7 +4045,7 @@
     "description": "Button text to learn more about multichain accounts"
   },
   "multichainAccountIntroSameAddressDescription": {
-    "message": "Ομαδοποιήσαμε τους λογαριασμούς σας, οπότε συνεχίστε να χρησιμοποιείτε το MetaMask όπως πριν. Τα κεφάλαιά σας παραμένουν ασφαλή και αμετάβλητα.",
+    "message": "Ομαδοποιήσαμε τους λογαριασμούς σας, οπότε συνεχίστε να χρησιμοποιείτε το 1do όπως πριν. Τα κεφάλαιά σας παραμένουν ασφαλή και αμετάβλητα.",
     "description": "Description explaining that accounts have been merged"
   },
   "multichainAccountIntroSameAddressTitle": {
@@ -4061,7 +4061,7 @@
     "description": "Button text to view accounts from the intro modal"
   },
   "multichainAccountIntroWhatDescription": {
-    "message": "Ένας λογαριασμός πολλαπλών αλυσίδων (multichain account) είναι λογαριασμός με διευθύνσεις σε πολλά δίκτυα, που υποστηρίζεται από το MetaMask. Τώρα μπορείτε να χρησιμοποιείτε Ethereum, Solana και άλλα δίκτυα χωρίς να αλλάζετε λογαριασμούς.",
+    "message": "Ένας λογαριασμός πολλαπλών αλυσίδων (multichain account) είναι λογαριασμός με διευθύνσεις σε πολλά δίκτυα, που υποστηρίζεται από το 1do. Τώρα μπορείτε να χρησιμοποιείτε Ethereum, Solana και άλλα δίκτυα χωρίς να αλλάζετε λογαριασμούς.",
     "description": "Description explaining what multichain accounts are"
   },
   "multichainAccountIntroWhatTitle": {
@@ -4077,7 +4077,7 @@
     "description": "Title for the multichain accounts introduction modal."
   },
   "multichainAddEthereumChainConfirmationDescription": {
-    "message": "Προσθέτετε αυτό το δίκτυο στο MetaMask και δίνετε σε αυτόν τον ιστότοπο την άδεια να το χρησιμοποιεί."
+    "message": "Προσθέτετε αυτό το δίκτυο στο 1do και δίνετε σε αυτόν τον ιστότοπο την άδεια να το χρησιμοποιεί."
   },
   "multichainAddressViewAll": {
     "message": "Προβολή όλων"
@@ -4087,7 +4087,7 @@
     "description": "The parameter is the name of the requesting origin"
   },
   "multichainQuoteCardRateExplanation": {
-    "message": "Η καλύτερη τιμή που βρήκαμε από τους παρόχους, συμπεριλαμβανομένων των χρεώσεων τους και προμήθειας $1% του MetaMask."
+    "message": "Η καλύτερη τιμή που βρήκαμε από τους παρόχους, συμπεριλαμβανομένων των χρεώσεων τους και προμήθειας $1% του 1do."
   },
   "multichainQuoteCardRateLabel": {
     "message": "Τιμή"
@@ -4148,7 +4148,7 @@
     "description": "Accessible name for the info control that opens the mUSD conversion bonus explanation popover"
   },
   "musdConversionFeeTooltipDescription": {
-    "message": "Τα τέλη μετατροπής σε mUSD περιλαμβάνουν τα έξοδα δικτύου και ενδέχεται να περιλαμβάνουν τα τέλη παρόχου. Δεν υπάρχει χρέωση στο MetaMask όταν μετατρέπετε σε mUSD.",
+    "message": "Τα τέλη μετατροπής σε mUSD περιλαμβάνουν τα έξοδα δικτύου και ενδέχεται να περιλαμβάνουν τα τέλη παρόχου. Δεν υπάρχει χρέωση στο 1do όταν μετατρέπετε σε mUSD.",
     "description": "Body text shown above the fee breakdown in the transaction fee tooltip for mUSD conversion"
   },
   "musdConversionTitle": {
@@ -4197,7 +4197,7 @@
     "message": "Αποκτήστε mUSD"
   },
   "musdMetaMaskUsd": {
-    "message": "MetaMask USD",
+    "message": "1do USD",
     "description": "Product name shown as the title line on the home token list mUSD Buy/Get CTA"
   },
   "musdTermsApply": {
@@ -4286,7 +4286,7 @@
     "message": "Lens Protocol"
   },
   "nameProvider_token": {
-    "message": "MetaMask"
+    "message": "1do"
   },
   "nameResolutionFailedError": {
     "message": "Δεν βρέθηκε αντιστοίχιση διεύθυνσης για αυτό το όνομα."
@@ -4329,7 +4329,7 @@
     "message": "Μοιραστείτε τα σχόλιά σας"
   },
   "needHelpLinkText": {
-    "message": "υποστήριξη του MetaMask"
+    "message": "υποστήριξη του 1do"
   },
   "needHelpSubmitTicket": {
     "message": "Υποβάλετε ένα αίτημα υποστήριξης"
@@ -4478,7 +4478,7 @@
     "description": "$1 is used for newNFTDetectedInImportNFTsMessageStrongText"
   },
   "newNFTDetectedInNFTsTabMessage": {
-    "message": "Επιτρέψτε στο MetaMask να ανιχνεύει και να εμφανίζει αυτόματα τα NFT στο πορτοφόλι σας."
+    "message": "Επιτρέψτε στο 1do να ανιχνεύει και να εμφανίζει αυτόματα τα NFT στο πορτοφόλι σας."
   },
   "newNFTsAutodetected": {
     "message": "Αυτόματος εντοπισμός των NFT"
@@ -4572,7 +4572,7 @@
     "message": "Δεν βρέθηκαν λογαριασμοί για το συγκεκριμένο αίτημα αναζήτησης"
   },
   "noConnectionDescription": {
-    "message": "Το MetaMask δεν είναι συνδεδεμένο με αυτόν τον ιστότοπο. Για να ξεκινήσετε, επιλέξτε το κουμπί Σύνδεση του ιστότοπου."
+    "message": "Το 1do δεν είναι συνδεδεμένο με αυτόν τον ιστότοπο. Για να ξεκινήσετε, επιλέξτε το κουμπί Σύνδεση του ιστότοπου."
   },
   "noDefaultAddress": {
     "message": "Δεν υπάρχει διεύθυνση $1",
@@ -4585,7 +4585,7 @@
     "message": "Τα Snaps και τα περισσότερα πορτοφόλια υλικού δεν θα λειτουργούν με την τρέχουσα έκδοση του προγράμματος περιήγησής σας."
   },
   "noMMFeeSwapping": {
-    "message": "Χωρίς τέλη στο MetaMask"
+    "message": "Χωρίς τέλη στο 1do"
   },
   "noNetworkFee": {
     "message": "Χωρίς τέλη δικτύου"
@@ -4832,7 +4832,7 @@
     "message": "Άλλο σχετικό προωθητικό υλικό"
   },
   "onboardedMetametricsLink": {
-    "message": "MetaMetrics"
+    "message": "1do Metrics"
   },
   "onboardedMetametricsParagraph1": {
     "message": "Εκτός από το $1, θα θέλαμε να χρησιμοποιήσουμε δεδομένα για να κατανοήσουμε πώς αλληλεπιδράτε με τις επικοινωνίες μάρκετινγκ.",
@@ -4879,7 +4879,7 @@
     "message": "Έχω ήδη ένα πορτοφόλι"
   },
   "onboardingLoginFooter": {
-    "message": "Συνεχίζοντας, αποδέχομαι την $1 και τους $2 του MetaMask"
+    "message": "Συνεχίζοντας, αποδέχομαι την $1 και τους $2 του 1do"
   },
   "onboardingLoginFooterPrivacyNotice": {
     "message": "Δήλωση απορρήτου"
@@ -4909,7 +4909,7 @@
     "message": "Θα θέλαμε να ζητήσουμε αυτές τις άδειες. Μπορείτε να εξαιρεθείτε ή να διαγράψετε τα δεδομένα χρήσης σας οποιαδήποτε στιγμή."
   },
   "onboardingMetametricsTitle": {
-    "message": "Βοηθήστε στη βελτίωση του MetaMask"
+    "message": "Βοηθήστε στη βελτίωση του 1do"
   },
   "onboardingOptionIcon": {
     "message": "εικονίδιο $1",
@@ -5006,7 +5006,7 @@
     "message": "άλλα"
   },
   "outdatedBrowserNotification": {
-    "message": "Το πρόγραμμα περιήγησής σας δεν είναι ενημερωμένο. Εάν δεν ενημερώσετε το πρόγραμμα περιήγησής σας, δεν θα μπορείτε να λαμβάνετε διορθώσεις ασφαλείας και νέες λειτουργίες από το MetaMask."
+    "message": "Το πρόγραμμα περιήγησής σας δεν είναι ενημερωμένο. Εάν δεν ενημερώσετε το πρόγραμμα περιήγησής σας, δεν θα μπορείτε να λαμβάνετε διορθώσεις ασφαλείας και νέες λειτουργίες από το 1do."
   },
   "overrideContentSecurityPolicyHeader": {
     "message": "Επικεφαλίδα Παράκαμψης Περιεχομένου-Ασφάλεια-Πολιτική"
@@ -5018,16 +5018,16 @@
     "message": "Padlock"
   },
   "paidByMetaMask": {
-    "message": "Πληρωμή μέσω MetaMask"
+    "message": "Πληρωμή μέσω 1do"
   },
   "paidWith": {
     "message": "Πληρώθηκε με"
   },
   "participateInMetaMetrics": {
-    "message": "Πάρτε μέρος στα MetaMetrics"
+    "message": "Πάρτε μέρος στα 1do Metrics"
   },
   "participateInMetaMetricsDescription": {
-    "message": "Πάρτε μέρος στα MetaMetrics για να μας βοηθήσετε να κάνουμε καλύτερο το MetaMask"
+    "message": "Πάρτε μέρος στα 1do Metrics για να μας βοηθήσετε να κάνουμε καλύτερο το 1do"
   },
   "password": {
     "message": "Κωδικός πρόσβασης"
@@ -5036,16 +5036,16 @@
     "message": "Ο κωδικός πρόσβασής σας άλλαξε"
   },
   "passwordChangedRecentlyDescription": {
-    "message": "Εισάγετε τον νέο σας κωδικό πρόσβασης για να παραμείνετε συνδεδεμένοι στο MetaMask."
+    "message": "Εισάγετε τον νέο σας κωδικό πρόσβασης για να παραμείνετε συνδεδεμένοι στο 1do."
   },
   "passwordNotLongEnough": {
     "message": "Πρέπει να έχει τουλάχιστον 8 χαρακτήρες"
   },
   "passwordTermsWarning": {
-    "message": "Αν χάσω τον κωδικό πρόσβασης, το MetaMask δεν μπορεί να τον επαναφέρει."
+    "message": "Αν χάσω τον κωδικό πρόσβασης, το 1do δεν μπορεί να τον επαναφέρει."
   },
   "passwordTermsWarningSocial": {
-    "message": "Αν ξεχάσω τον κωδικό πρόσβασης, θα χάσω οριστικά την πρόσβαση στο πορτοφόλι μου. Το MetaMask δεν μπορεί να τον επαναφέρει για μένα."
+    "message": "Αν ξεχάσω τον κωδικό πρόσβασης, θα χάσω οριστικά την πρόσβαση στο πορτοφόλι μου. Το 1do δεν μπορεί να τον επαναφέρει για μένα."
   },
   "passwordToggleHide": {
     "message": "Απόκρυψη κωδικού πρόσβασης"
@@ -5137,11 +5137,11 @@
     "description": "The description for the `wallet_snap_*` permission. $1 is the name of the Snap."
   },
   "permission_assets": {
-    "message": "Εμφάνιση των περιουσιακών στοιχείων του λογαριασμού στο MetaMask.",
+    "message": "Εμφάνιση των περιουσιακών στοιχείων του λογαριασμού στο 1do.",
     "description": "The description for the `endowment:assets` permission."
   },
   "permission_assetsDescription": {
-    "message": "Επιτρέπει στο $1 να παρέχει πληροφορίες για περιουσιακά στοιχεία στο πρόγραμμα του MetaMask. Τα περιουσιακά στοιχεία μπορούν να είναι εντός ή εκτός αλυσίδας.",
+    "message": "Επιτρέπει στο $1 να παρέχει πληροφορίες για περιουσιακά στοιχεία στο πρόγραμμα του 1do. Τα περιουσιακά στοιχεία μπορούν να είναι εντός ή εκτός αλυσίδας.",
     "description": "An extended description for the `endowment:assets` permission. $1 is the name of the Snap."
   },
   "permission_cronjob": {
@@ -5153,11 +5153,11 @@
     "description": "An extended description for the `snap_cronjob` permission. $1 is the snap name."
   },
   "permission_dialog": {
-    "message": "Εμφάνιση παραθύρων διαλόγου στο MetaMask.",
+    "message": "Εμφάνιση παραθύρων διαλόγου στο 1do.",
     "description": "The description for the `snap_dialog` permission"
   },
   "permission_dialogDescription": {
-    "message": "Επιτρέψτε στο $1 να εμφανίζει αναδυόμενα παράθυρα του MetaMask με προσαρμοσμένο κείμενο, πεδίο εισαγωγής και κουμπιά για την έγκριση ή την απόρριψη μιας ενέργειας.\nΜπορεί να χρησιμοποιηθεί για τη δημιουργία π.χ. ειδοποιήσεων, επιβεβαιώσεων και ροών επιλογής για το snap.",
+    "message": "Επιτρέψτε στο $1 να εμφανίζει αναδυόμενα παράθυρα του 1do με προσαρμοσμένο κείμενο, πεδίο εισαγωγής και κουμπιά για την έγκριση ή την απόρριψη μιας ενέργειας.\nΜπορεί να χρησιμοποιηθεί για τη δημιουργία π.χ. ειδοποιήσεων, επιβεβαιώσεων και ροών επιλογής για το snap.",
     "description": "An extended description for the `snap_dialog` permission. $1 is the snap name."
   },
   "permission_ethereumAccounts": {
@@ -5169,7 +5169,7 @@
     "description": "The description for the `endowment:ethereum-provider` permission"
   },
   "permission_ethereumProviderDescription": {
-    "message": "Επιτρέψτε στο $1 να επικοινωνεί απευθείας με το MetaMask, προκειμένου να διαβάζει δεδομένα από το blockchain και να προτείνει μηνύματα και συναλλαγές.",
+    "message": "Επιτρέψτε στο $1 να επικοινωνεί απευθείας με το 1do, προκειμένου να διαβάζει δεδομένα από το blockchain και να προτείνει μηνύματα και συναλλαγές.",
     "description": "An extended description for the `endowment:ethereum-provider` permission. $1 is the snap name."
   },
   "permission_getEntropy": {
@@ -5177,7 +5177,7 @@
     "description": "The description for the `snap_getEntropy` permission. $1 is the snap name."
   },
   "permission_getEntropyDescription": {
-    "message": "Επιτρέψτε στο $1 να παράγει τυχαία κλειδιά μοναδικά για αυτό το $1, χωρίς να τα εκθέτει. Αυτά τα κλειδιά είναι ξεχωριστά από τον λογαριασμό (-ους) σας στο MetaMask και δεν σχετίζονται με τα ιδιωτικά σας κλειδιά ή τη Μυστική Φράση Ανάκτησης. Άλλα snaps δεν μπορούν να έχουν πρόσβαση σε αυτές τις πληροφορίες.",
+    "message": "Επιτρέψτε στο $1 να παράγει τυχαία κλειδιά μοναδικά για αυτό το $1, χωρίς να τα εκθέτει. Αυτά τα κλειδιά είναι ξεχωριστά από τον λογαριασμό (-ους) σας στο 1do και δεν σχετίζονται με τα ιδιωτικά σας κλειδιά ή τη Μυστική Φράση Ανάκτησης. Άλλα snaps δεν μπορούν να έχουν πρόσβαση σε αυτές τις πληροφορίες.",
     "description": "An extended description for the `snap_getEntropy` permission. $1 is the snap name."
   },
   "permission_getLocale": {
@@ -5185,7 +5185,7 @@
     "description": "The description for the `snap_getLocale` permission"
   },
   "permission_getLocaleDescription": {
-    "message": "Επιτρέψτε στο $1 να έχει πρόσβαση στη γλώσσα προτίμησής σας από τις ρυθμίσεις του MetaMask. Αυτό μπορεί να χρησιμεύει για την τοπική προσαρμογή και την εμφάνιση του περιεχομένου του $1 στη γλώσσα σας.",
+    "message": "Επιτρέψτε στο $1 να έχει πρόσβαση στη γλώσσα προτίμησής σας από τις ρυθμίσεις του 1do. Αυτό μπορεί να χρησιμεύει για την τοπική προσαρμογή και την εμφάνιση του περιεχομένου του $1 στη γλώσσα σας.",
     "description": "An extended description for the `snap_getLocale` permission. $1 is the snap name."
   },
   "permission_getPreferences": {
@@ -5193,7 +5193,7 @@
     "description": "The description for the `snap_getPreferences` permission"
   },
   "permission_getPreferencesDescription": {
-    "message": "Επιτρέψτε στο $1 να έχει πρόσβαση σε πληροφορίες όπως η προτιμώμενη γλώσσα και το νόμισμα στις ρυθμίσεις του MetaMask. Αυτό βοηθά το $1 να εμφανίζει περιεχόμενο προσαρμοσμένο στις προτιμήσεις σας. ",
+    "message": "Επιτρέψτε στο $1 να έχει πρόσβαση σε πληροφορίες όπως η προτιμώμενη γλώσσα και το νόμισμα στις ρυθμίσεις του 1do. Αυτό βοηθά το $1 να εμφανίζει περιεχόμενο προσαρμοσμένο στις προτιμήσεις σας. ",
     "description": "An extended description for the `snap_getPreferences` permission. $1 is the snap name."
   },
   "permission_homePage": {
@@ -5201,7 +5201,7 @@
     "description": "The description for the `endowment:page-home` permission"
   },
   "permission_homePageDescription": {
-    "message": "Επιτρέψτε στο $1 να εμφανίσει μια προσαρμοσμένη αρχική οθόνη στο MetaMask. Αυτή μπορεί να χρησιμοποιηθεί για διεπαφές χρήστη, διαμόρφωση και πίνακες οργάνων.",
+    "message": "Επιτρέψτε στο $1 να εμφανίσει μια προσαρμοσμένη αρχική οθόνη στο 1do. Αυτή μπορεί να χρησιμοποιηθεί για διεπαφές χρήστη, διαμόρφωση και πίνακες οργάνων.",
     "description": "An extended description for the `endowment:page-home` permission. $1 is the snap name."
   },
   "permission_keyring": {
@@ -5253,7 +5253,7 @@
     "description": "The description for the `endowment:multichain-provider` permission"
   },
   "permission_multichainProviderDescription": {
-    "message": "Επιτρέψτε στο $1 να επικοινωνεί απευθείας με το MetaMask, προκειμένου να διαβάζει δεδομένα από το blockchain και να προτείνει μηνύματα και συναλλαγές.",
+    "message": "Επιτρέψτε στο $1 να επικοινωνεί απευθείας με το 1do, προκειμένου να διαβάζει δεδομένα από το blockchain και να προτείνει μηνύματα και συναλλαγές.",
     "description": "An extended description for the `endowment:multichain-provider` permission. $1 is the snap name."
   },
   "permission_nameLookup": {
@@ -5261,7 +5261,7 @@
     "description": "The description for the `endowment:name-lookup` permission."
   },
   "permission_nameLookupDescription": {
-    "message": "Επιτρέψτε στο snap να αντλεί και να εμφανίζει αναζητήσεις διευθύνσεων και τομέων σε διαφορετικά μέρη του MetaMask UI.",
+    "message": "Επιτρέψτε στο snap να αντλεί και να εμφανίζει αναζητήσεις διευθύνσεων και τομέων σε διαφορετικά μέρη του 1do UI.",
     "description": "An extended description for the `endowment:name-lookup` permission."
   },
   "permission_notifications": {
@@ -5269,7 +5269,7 @@
     "description": "The description for the `snap_notify` permission"
   },
   "permission_notificationsDescription": {
-    "message": "Επιτρέψτε στο $1 να εμφανίζει ειδοποιήσεις εντός του MetaMask. Ένα σύντομο κείμενο ειδοποίησης μπορεί να ενεργοποιηθεί από το snap για πληροφορίες που μπορούν να ληφθούν υπόψη ή σχετίζονται με το χρόνο.",
+    "message": "Επιτρέψτε στο $1 να εμφανίζει ειδοποιήσεις εντός του 1do. Ένα σύντομο κείμενο ειδοποίησης μπορεί να ενεργοποιηθεί από το snap για πληροφορίες που μπορούν να ληφθούν υπόψη ή σχετίζονται με το χρόνο.",
     "description": "An extended description for the `snap_notify` permission. $1 is the snap name."
   },
   "permission_protocol": {
@@ -5277,7 +5277,7 @@
     "description": "The description for the `endowment:protocol` permission."
   },
   "permission_protocolDescription": {
-    "message": "Επιτρέψτε στο $1 να παρέχει στο MetaMask δεδομένα πρωτοκόλλου, όπως εκτιμήσεις τελών συναλλαγών ή πληροφορίες για tokens.",
+    "message": "Επιτρέψτε στο $1 να παρέχει στο 1do δεδομένα πρωτοκόλλου, όπως εκτιμήσεις τελών συναλλαγών ή πληροφορίες για tokens.",
     "description": "An extended description for the `endowment:protocol` permission. $1 is the name of the Snap."
   },
   "permission_rpc": {
@@ -5313,7 +5313,7 @@
     "description": "The description for the `endowment:transaction-insight` permission"
   },
   "permission_transactionInsightDescription": {
-    "message": "Επιτρέψτε στο $1 να αποκωδικοποιεί τις συναλλαγές και να εμφανίζει πληροφορίες εντός του MetaMask UI. Αυτό μπορεί να χρησιμοποιηθεί για λύσεις προστασίας κατά της εξαπάτησης και της ασφάλειας.",
+    "message": "Επιτρέψτε στο $1 να αποκωδικοποιεί τις συναλλαγές και να εμφανίζει πληροφορίες εντός του 1do UI. Αυτό μπορεί να χρησιμοποιηθεί για λύσεις προστασίας κατά της εξαπάτησης και της ασφάλειας.",
     "description": "An extended description for the `endowment:transaction-insight` permission. $1 is the snap name."
   },
   "permission_transactionInsightOrigin": {
@@ -6028,7 +6028,7 @@
     "message": "Προσέξτε τη ρευστοποίηση"
   },
   "perpsTutorialWhatArePerpsDescription": {
-    "message": "Το MetaMask υποστηρίζει πλέον τα perpetual futures - αλλιώς perps - επιτρέποντάς σας να κάνετε συναλλαγές στην κίνηση της τιμής ενός token χωρίς να το αγοράσετε."
+    "message": "Το 1do υποστηρίζει πλέον τα perpetual futures - αλλιώς perps - επιτρέποντάς σας να κάνετε συναλλαγές στην κίνηση της τιμής ενός token χωρίς να το αγοράσετε."
   },
   "perpsTutorialWhatArePerpsSubtitle": {
     "message": "Να πώς λειτουργούν."
@@ -6107,7 +6107,7 @@
     "description": "Pin label used in multichain account menu"
   },
   "pinMetaMask": {
-    "message": "Καρφιτσώστε την επέκταση του MetaMask"
+    "message": "Καρφιτσώστε την επέκταση του 1do"
   },
   "pinMetaMaskDescription": {
     "message": "Κάντε κλικ στο $1 και μετά στο $2 για να το καρφιτσώσετε."
@@ -6125,7 +6125,7 @@
     "message": "ανάρτηση στο blog."
   },
   "pna25ModalBody1": {
-    "message": "Για να σας εξυπηρετούμε καλύτερα, ενημερώνουμε τα εργαλεία ανάλυσής μας ώστε δημόσια διαθέσιμα δεδομένα, όπως διευθύνσεις πορτοφολιών και σχετική δραστηριότητα εντός αλυσίδας, να μπορούν να συσχετιστούν με τις ενέργειες που πραγματοποιείτε στο MetaMask. Αυτό μας βοηθά να βελτιώσουμε την απόδοση, την ασφάλεια και τις λειτουργίες του MetaMask, ώστε να προσφέρουμε ένα καλύτερο και πιο ασφαλές πορτοφόλι."
+    "message": "Για να σας εξυπηρετούμε καλύτερα, ενημερώνουμε τα εργαλεία ανάλυσής μας ώστε δημόσια διαθέσιμα δεδομένα, όπως διευθύνσεις πορτοφολιών και σχετική δραστηριότητα εντός αλυσίδας, να μπορούν να συσχετιστούν με τις ενέργειες που πραγματοποιείτε στο 1do. Αυτό μας βοηθά να βελτιώσουμε την απόδοση, την ασφάλεια και τις λειτουργίες του 1do, ώστε να προσφέρουμε ένα καλύτερο και πιο ασφαλές πορτοφόλι."
   },
   "pna25ModalBody2": {
     "message": "Λαμβάνουμε σοβαρά υπόψη το απόρρητό σας. Δεν χρησιμοποιούμε αυτές τις πληροφορίες για διαφημιστικούς σκοπούς ούτε πουλάμε τα δεδομένα σας σε τρίτους. Μπορείτε να εξαιρεθείτε οποιαδήποτε στιγμή από τις Ρυθμίσεις."
@@ -6265,7 +6265,7 @@
     "message": "Η συνδρομή σας έχει τεθεί σε παύση λόγω αποτυχίας πληρωμής."
   },
   "pushNotificationShieldSubscriptionTitle": {
-    "message": "MetaMask Transaction Shield"
+    "message": "1do Transaction Shield"
   },
   "pushNotificationShieldUpdatePaymentCta": {
     "message": "Ενημέρωση πληρωμής"
@@ -6359,7 +6359,7 @@
     "message": "Ολοκλήρωση ακύρωσης πονταρίσματος"
   },
   "pushPlatformNotificationsSwapCompletedDescription": {
-    "message": "Η ανταλλαγή σας στο MetaMask ήταν επιτυχής"
+    "message": "Η ανταλλαγή σας στο 1do ήταν επιτυχής"
   },
   "pushPlatformNotificationsSwapCompletedTitle": {
     "message": "Η ανταλλαγή ολοκληρώθηκε"
@@ -6393,7 +6393,7 @@
     "description": "Title when camera access is persistently blocked for QR scanning."
   },
   "qrCameraAccessNeededBody": {
-    "message": "Το MetaMask χρειάζεται πρόσβαση στην κάμερα για να σαρώσει τον QR κωδικό στη συσκευή σας.",
+    "message": "Το 1do χρειάζεται πρόσβαση στην κάμερα για να σαρώσει τον QR κωδικό στη συσκευή σας.",
     "description": "Body when the user dismissed the camera permission prompt but it can be requested again."
   },
   "qrCameraAccessNeededTitle": {
@@ -6481,17 +6481,17 @@
     "description": "Make sure you have the Secret Recovery Phrase or private key for this account before removing."
   },
   "removeAccountModalBannerTitle": {
-    "message": "Αυτός ο λογαριασμός θα αφαιρεθεί από το MetaMask.",
+    "message": "Αυτός ο λογαριασμός θα αφαιρεθεί από το 1do.",
     "description": "Title of a banner alert used on account remove modal."
   },
   "removeAll": {
     "message": "Αφαίρεση όλων"
   },
   "removeKeyringSnap": {
-    "message": "Η αφαίρεση αυτού του Snap αφαιρεί αυτούς τους λογαριασμούς από το MetaMask:"
+    "message": "Η αφαίρεση αυτού του Snap αφαιρεί αυτούς τους λογαριασμούς από το 1do:"
   },
   "removeKeyringSnapToolTip": {
-    "message": "Το snap ελέγχει τους λογαριασμούς και με την αφαίρεσή του, οι λογαριασμοί θα αφαιρεθούν και από το MetaMask, αλλά θα παραμείνουν στην αλυσίδα συστοιχιών (blockchain)."
+    "message": "Το snap ελέγχει τους λογαριασμούς και με την αφαίρεσή του, οι λογαριασμοί θα αφαιρεθούν και από το 1do, αλλά θα παραμείνουν στην αλυσίδα συστοιχιών (blockchain)."
   },
   "removeNFT": {
     "message": "Αφαίρεση του NFT"
@@ -6506,7 +6506,7 @@
     "message": "Αφαίρεση Snap"
   },
   "removeSnapAccountDescription": {
-    "message": "Εάν προχωρήσετε, αυτός ο λογαριασμός δεν θα είναι πλέον διαθέσιμος στο MetaMask."
+    "message": "Εάν προχωρήσετε, αυτός ο λογαριασμός δεν θα είναι πλέον διαθέσιμος στο 1do."
   },
   "removeSnapAccountTitle": {
     "message": "Διαγραφή λογαριασμού"
@@ -6580,7 +6580,7 @@
     "message": "Δεν μπορούμε να ανακτήσουμε τη Μυστική Φράση Ανάκτησής σας. Μπορείτε να επαναφέρετε το πορτοφόλι για να δημιουργήσετε μια νέα και να εισαγάγετε τους λογαριασμούς σας χρησιμοποιώντας ιδιωτικά κλειδιά."
   },
   "resetWalletDescriptionTwo": {
-    "message": "Η επαναφορά θα $1 διαγράψει όλα τα δεδομένα του πορτοφολιού στο MetaMask σε αυτή τη συσκευή. $2",
+    "message": "Η επαναφορά θα $1 διαγράψει όλα τα δεδομένα του πορτοφολιού στο 1do σε αυτή τη συσκευή. $2",
     "description": "$1 is the bolded text 'permanently' and $2 is the bolded text 'It will not impact the assets within your wallet.'"
   },
   "resetWalletTitle": {
@@ -6591,7 +6591,7 @@
     "description": "$1 is the protocol name."
   },
   "restartMetamask": {
-    "message": "Επανεκκίνηση του MetaMask"
+    "message": "Επανεκκίνηση του 1do"
   },
   "restore": {
     "message": "Επαναφορά"
@@ -6652,7 +6652,7 @@
     "message": "Κείμενο"
   },
   "revealSeedWordsWarning": {
-    "message": "Βεβαιωθείτε ότι κανείς δεν κοιτάζει την οθόνη σας. Η υποστήριξη του MetaMask δεν θα σας ζητήσει ποτέ κάτι τέτοιο."
+    "message": "Βεβαιωθείτε ότι κανείς δεν κοιτάζει την οθόνη σας. Η υποστήριξη του 1do δεν θα σας ζητήσει ποτέ κάτι τέτοιο."
   },
   "revealSensitiveContent": {
     "message": "Αποκάλυψη ευαίσθητου περιεχομένου"
@@ -6752,13 +6752,13 @@
     "message": "Η περιοχή δεν υποστηρίζεται"
   },
   "rewardsOnboardingStep1Description": {
-    "message": "Κάθε ανταλλαγή και συναλλαγή σε perps που κάνετε στο MetaMask σας φέρνει πιο κοντά σε ανταμοιβές.\nΠροσθέστε τους λογαριασμούς σας και δείτε τους πόντους σας να αυξάνονται."
+    "message": "Κάθε ανταλλαγή και συναλλαγή σε perps που κάνετε στο 1do σας φέρνει πιο κοντά σε ανταμοιβές.\nΠροσθέστε τους λογαριασμούς σας και δείτε τους πόντους σας να αυξάνονται."
   },
   "rewardsOnboardingStep1Title": {
     "message": "Κερδίστε πόντους σε κάθε συναλλαγή"
   },
   "rewardsOnboardingStep2Description": {
-    "message": "Επιτύχετε ορόσημα πόντων για να αποκτήσετε προνόμια όπως 50% έκπτωση σε χρεώσεις συμβολαίων αορίστου διάρκειας (perps), αποκλειστικά tokens και δωρεάν μια MetaMask Metal Card."
+    "message": "Επιτύχετε ορόσημα πόντων για να αποκτήσετε προνόμια όπως 50% έκπτωση σε χρεώσεις συμβολαίων αορίστου διάρκειας (perps), αποκλειστικά tokens και δωρεάν μια 1do Metal Card."
   },
   "rewardsOnboardingStep2Title": {
     "message": "Ανεβείτε επίπεδο για περισσότερα προνόμια"
@@ -6934,7 +6934,7 @@
     "message": "Αλλαγή κωδικού πρόσβασης"
   },
   "securityChangePasswordDescription": {
-    "message": "Επιλέξτε έναν ισχυρό κωδικό πρόσβασης για να ξεκλειδώσετε την εφαρμογή MetaMask στη συσκευή σας. Αν χάσετε τον κωδικό πρόσβασης, θα πρέπει να επαναφέρετε το πορτοφόλι σας χρησιμοποιώντας τη Μυστική Φράση Ανάκτησης."
+    "message": "Επιλέξτε έναν ισχυρό κωδικό πρόσβασης για να ξεκλειδώσετε την εφαρμογή 1do στη συσκευή σας. Αν χάσετε τον κωδικό πρόσβασης, θα πρέπει να επαναφέρετε το πορτοφόλι σας χρησιμοποιώντας τη Μυστική Φράση Ανάκτησης."
   },
   "securityChangePasswordTitle": {
     "message": "Κωδικός πρόσβασης"
@@ -6975,7 +6975,7 @@
     "message": "Ενεργοποιημένο"
   },
   "securitySocialLoginEnabledDescription": {
-    "message": "Χρησιμοποιήστε τα στοιχεία σύνδεσης στο $1 και τον κωδικό πρόσβασης στο MetaMask για να ανακτήσετε τον λογαριασμό σας και τη Μυστική Φράση Ανάκτησης.",
+    "message": "Χρησιμοποιήστε τα στοιχεία σύνδεσης στο $1 και τον κωδικό πρόσβασης στο 1do για να ανακτήσετε τον λογαριασμό σας και τη Μυστική Φράση Ανάκτησης.",
     "description": "The $1 is the text 'Google' or 'Apple'"
   },
   "securitySocialLoginLabel": {
@@ -7024,7 +7024,7 @@
     "message": "Επιλέξτε έναν λογαριασμό"
   },
   "selectAnAccountAlreadyConnected": {
-    "message": "Αυτός ο λογαριασμός έχει ήδη συνδεθεί με το MetaMask"
+    "message": "Αυτός ο λογαριασμός έχει ήδη συνδεθεί με το 1do"
   },
   "selectEnableDisplayMediaPrivacyPreference": {
     "message": "Ενεργοποίηση της \"Προβολής μέσων NFT\""
@@ -7235,7 +7235,7 @@
     "message": "Χρειάζεστε βοήθεια για να το βρείτε;"
   },
   "shieldClaimImpactedTxHashNotEligible": {
-    "message": "Αυτή η συναλλαγή δεν πραγματοποιήθηκε μέσω MetaMask, επομένως δεν είναι επιλέξιμη για αξιώσεις"
+    "message": "Αυτή η συναλλαγή δεν πραγματοποιήθηκε μέσω 1do, επομένως δεν είναι επιλέξιμη για αξιώσεις"
   },
   "shieldClaimImpactedWalletAddress": {
     "message": "Διεύθυνση πορτοφολιού που επηρεάστηκε"
@@ -7343,28 +7343,28 @@
     "message": "Επιβεβαίωση συνδρομής"
   },
   "shieldCoverageAlertCovered": {
-    "message": "Είστε προστατευμένοι έως και $2 με το MetaMask Transaction Shield. $1."
+    "message": "Είστε προστατευμένοι έως και $2 με το 1do Transaction Shield. $1."
   },
   "shieldCoverageAlertHighRiskTransaction": {
-    "message": "Πρόκειται για συναλλαγή υψηλού κινδύνου και δεν προστατεύεται από το MetaMask Transaction Shield. $1."
+    "message": "Πρόκειται για συναλλαγή υψηλού κινδύνου και δεν προστατεύεται από το 1do Transaction Shield. $1."
   },
   "shieldCoverageAlertMessageChainNotSupported": {
-    "message": "Αυτή η αλυσίδα δεν υποστηρίζεται, επομένως δεν προστατεύεται από το MetaMask Transaction Shield. $1"
+    "message": "Αυτή η αλυσίδα δεν υποστηρίζεται, επομένως δεν προστατεύεται από το 1do Transaction Shield. $1"
   },
   "shieldCoverageAlertMessageLearnHowCoverageWorks": {
     "message": "Δείτε τι καλύπτει"
   },
   "shieldCoverageAlertMessagePaused": {
-    "message": "Παρουσιάστηκε πρόβλημα με την πληρωμή της συνδρομής σας στο MetaMask Transaction Shield. Παρακαλούμε ενημερώστε τη μέθοδο πληρωμής σας για να συνεχίσετε να έχετε προστασία."
+    "message": "Παρουσιάστηκε πρόβλημα με την πληρωμή της συνδρομής σας στο 1do Transaction Shield. Παρακαλούμε ενημερώστε τη μέθοδο πληρωμής σας για να συνεχίσετε να έχετε προστασία."
   },
   "shieldCoverageAlertMessagePausedAcknowledgeButton": {
     "message": "Ενημέρώστε την μέθοδο πληρωμής"
   },
   "shieldCoverageAlertMessagePotentialRisks": {
-    "message": "Αυτή η συναλλαγή ενέχει πιθανούς κινδύνους, επομένως δεν προστατεύεται από το MetaMask Transaction Shield. $1"
+    "message": "Αυτή η συναλλαγή ενέχει πιθανούς κινδύνους, επομένως δεν προστατεύεται από το 1do Transaction Shield. $1"
   },
   "shieldCoverageAlertMessageSignatureNotSupported": {
-    "message": "Αυτή η υπογραφή δεν υποστηρίζεται, επομένως δεν προστατεύεται από το MetaMask Transaction Shield. $1"
+    "message": "Αυτή η υπογραφή δεν υποστηρίζεται, επομένως δεν προστατεύεται από το 1do Transaction Shield. $1"
   },
   "shieldCoverageAlertMessageTitle": {
     "message": "Αυτή η συναλλαγή δεν προστατεύεται"
@@ -7385,10 +7385,10 @@
     "message": "Αυτό το token εμφανίζει έντονα σημάδια κακόβουλης συμπεριφοράς. Αν συνεχίσετε ενδέχεται να οδηγήσει σε απώλεια κεφαλαίων. $1."
   },
   "shieldCoverageAlertMessageTxTypeNotSupported": {
-    "message": "Αυτός ο τύπος συναλλαγής δεν υποστηρίζεται, επομένως δεν προστατεύεται από το MetaMask Transaction Shield. $1"
+    "message": "Αυτός ο τύπος συναλλαγής δεν υποστηρίζεται, επομένως δεν προστατεύεται από το 1do Transaction Shield. $1"
   },
   "shieldCoverageAlertMessageUnknown": {
-    "message": "Αυτό το αίτημα δεν μπορεί να επαληθευτεί, επομένως δεν προστατεύεται από το MetaMask Transaction Shield. $1."
+    "message": "Αυτό το αίτημα δεν μπορεί να επαληθευτεί, επομένως δεν προστατεύεται από το 1do Transaction Shield. $1."
   },
   "shieldCoverageEnding": {
     "message": "Η προστασία συναλλαγών λήγει σύντομα"
@@ -7576,7 +7576,7 @@
     "description": "The $1 is the number of days and the $2 is the price of the plan"
   },
   "shieldTxDetails1Title": {
-    "message": "MetaMask Transaction Shield"
+    "message": "1do Transaction Shield"
   },
   "shieldTxDetails2Description": {
     "message": "$1, επόμενη χρέωση στις $2",
@@ -7796,7 +7796,7 @@
     "message": "Επιλέξτε το για να εμφανίζονται τα δοκιμαστικά δίκτυα στη λίστα δικτύων"
   },
   "sidePanelMigrationToast": {
-    "message": "Το MetaMask ανοίγει πλέον στο πλευρικό πάνελ από προεπιλογή. Το $1 είναι διαθέσιμο οποιαδήποτε στιγμή από το μενού.",
+    "message": "Το 1do ανοίγει πλέον στο πλευρικό πάνελ από προεπιλογή. Το $1 είναι διαθέσιμο οποιαδήποτε στιγμή από το μενού.",
     "description": "Shown when the extension opens in the side panel after migration. $1 is an inline link to switch back to the popup view."
   },
   "sign": {
@@ -7924,13 +7924,13 @@
     "message": "Μην εμφανίζετε το παράθυρο προειδοποίησης κατά το άνοιγμα ειδικών συνδέσμων"
   },
   "skipDeepLinkInterstitialDescription": {
-    "message": "Επιλέγοντας αυτήν την επιλογή, δεν θα εμφανίζεται το παράθυρο προειδοποίησης όταν ανοίγετε ειδικούς συνδέσμους στο MetaMask. Ένας 'ειδικός σύνδεσμος' είναι όπως το https://link.metamask.io/home που ανοίγει το MetaMask, αυτοί οι σύνδεσμοι μπορούν να παραποιηθούν από τρίτους. Το παράθυρο προειδοποίησης έχει σχεδιαστεί για να σας προστατεύει από το να ανοίγετε κατά λάθος σελίδες μέσα στο MetaMask που μπορεί να εμφανίζουν τους λογαριασμούς σας, tokens, ιστορικό, υπόλοιπα, ρυθμίσεις ή άλλες ενδεχομένως ευαίσθητες πληροφορίες. Αυτή η ρύθμιση αφορά μόνο τους συνδέσμους που έχουν πιστοποιηθεί από το MetaMask."
+    "message": "Επιλέγοντας αυτήν την επιλογή, δεν θα εμφανίζεται το παράθυρο προειδοποίησης όταν ανοίγετε ειδικούς συνδέσμους στο 1do. Ένας 'ειδικός σύνδεσμος' είναι όπως το https://link.metamask.io/home που ανοίγει το 1do, αυτοί οι σύνδεσμοι μπορούν να παραποιηθούν από τρίτους. Το παράθυρο προειδοποίησης έχει σχεδιαστεί για να σας προστατεύει από το να ανοίγετε κατά λάθος σελίδες μέσα στο 1do που μπορεί να εμφανίζουν τους λογαριασμούς σας, tokens, ιστορικό, υπόλοιπα, ρυθμίσεις ή άλλες ενδεχομένως ευαίσθητες πληροφορίες. Αυτή η ρύθμιση αφορά μόνο τους συνδέσμους που έχουν πιστοποιηθεί από το 1do."
   },
   "skipLinkConfirmationScreens": {
     "message": "Παράκαμψη οθονών επιβεβαίωσης συνδέσμων"
   },
   "skipLinkConfirmationScreensDescription": {
-    "message": "Όταν ανοίγετε έναν σύνδεσμο από το MetaMask, εμφανίζουμε μια οθόνη επιβεβαίωσης για να σας προστατεύσουμε από το να δείτε κατά λάθος ευαίσθητες πληροφορίες, όπως οι λογαριασμοί, τα διαθέσιμα κεφάλαια ή το ιστορικό συναλλαγών σας. Ενεργοποιήστε αυτήν την επιλογή για να παρακάμψετε αυτή την οθόνη για συνδέσμους που προέρχονται από το MetaMask."
+    "message": "Όταν ανοίγετε έναν σύνδεσμο από το 1do, εμφανίζουμε μια οθόνη επιβεβαίωσης για να σας προστατεύσουμε από το να δείτε κατά λάθος ευαίσθητες πληροφορίες, όπως οι λογαριασμοί, τα διαθέσιμα κεφάλαια ή το ιστορικό συναλλαγών σας. Ενεργοποιήστε αυτήν την επιλογή για να παρακάμψετε αυτή την οθόνη για συνδέσμους που προέρχονται από το 1do."
   },
   "slippage": {
     "message": "Απόκλιση"
@@ -7993,7 +7993,7 @@
     "message": "Η συναλλαγή σας απέτυχε"
   },
   "smartTransactionErrorDescription": {
-    "message": "Οι ξαφνικές αλλαγές στην αγορά μπορεί να προκαλέσουν αποτυχίες. Εάν το πρόβλημα συνεχίζεται, επικοινωνήστε με την υποστήριξη πελατών του MetaMask."
+    "message": "Οι ξαφνικές αλλαγές στην αγορά μπορεί να προκαλέσουν αποτυχίες. Εάν το πρόβλημα συνεχίζεται, επικοινωνήστε με την υποστήριξη πελατών του 1do."
   },
   "smartTransactionPending": {
     "message": "Η συναλλαγή σας υποβλήθηκε"
@@ -8043,7 +8043,7 @@
     "message": "Ο λογαριασμός αφαιρέθηκε"
   },
   "snapAccountRemovedDescription": {
-    "message": "Αυτός ο λογαριασμός δεν θα είναι πλέον διαθέσιμος για χρήση στο MetaMask."
+    "message": "Αυτός ο λογαριασμός δεν θα είναι πλέον διαθέσιμος για χρήση στο 1do."
   },
   "snapConnectTo": {
     "message": "Σύνδεση με $1",
@@ -8259,7 +8259,7 @@
     "message": "Έχει ήδη γίνει εισαγωγή αυτής της Μυστικής Φράσης Ανάκτησης."
   },
   "srpDetailsDescription": {
-    "message": "Η Μυστική Φράση Ανάκτησης, που ονομάζεται επίσης \"seed phrase\" ή μνημονική φράση, είναι ένα σύνολο λέξεων που σας επιτρέπει να έχετε πρόσβαση και να ελέγχετε το πορτοφόλι κρυπτονομισμάτων σας. Για να μεταφέρετε το πορτοφόλι σας στο MetaMask, χρειάζεστε αυτή τη φράση."
+    "message": "Η Μυστική Φράση Ανάκτησης, που ονομάζεται επίσης \"seed phrase\" ή μνημονική φράση, είναι ένα σύνολο λέξεων που σας επιτρέπει να έχετε πρόσβαση και να ελέγχετε το πορτοφόλι κρυπτονομισμάτων σας. Για να μεταφέρετε το πορτοφόλι σας στο 1do, χρειάζεστε αυτή τη φράση."
   },
   "srpDetailsOwnsAccessListItemOne": {
     "message": "Πάρτε όλα τα χρήματά σας"
@@ -8322,7 +8322,7 @@
     "message": "Για να αποκαλύψετε τη Μυστική Φράση Ανάκτησης, πρέπει να απαντήσετε σωστά σε δύο ερωτήσεις"
   },
   "srpSecurityQuizQuestionOneQuestion": {
-    "message": "Αν χάσετε τη Μυστική Φράση Ανάκτησης, το MetaMask..."
+    "message": "Αν χάσετε τη Μυστική Φράση Ανάκτησης, το 1do..."
   },
   "srpSecurityQuizQuestionOneRightAnswer": {
     "message": "Δεν μπορεί να σας βοηθήσει"
@@ -8407,7 +8407,7 @@
     "description": "$1 represents the `stateCorruptionTheseInstructions` localization key"
   },
   "stateCorruptionCopyAndRestoreBeforeReset": {
-    "message": "Μπορείτε να δοκιμάσετε να αντιγράψετε και να επαναφέρετε το αρχείο κατάστασής σας χειροκίνητα, πριν αποφασίσετε να επαναφέρετε το MetaMask, ακολουθώντας $1.",
+    "message": "Μπορείτε να δοκιμάσετε να αντιγράψετε και να επαναφέρετε το αρχείο κατάστασής σας χειροκίνητα, πριν αποφασίσετε να επαναφέρετε το 1do, ακολουθώντας $1.",
     "description": "$1 represents the `stateCorruptionTheseInstructions` localization key"
   },
   "stateCorruptionDetectedNoBackup": {
@@ -8420,7 +8420,7 @@
     "message": "Εσωτερικό σφάλμα: δεν είναι δυνατή η πρόσβαση στη βάση δεδομένων"
   },
   "stateCorruptionResetMetaMaskState": {
-    "message": "Επαναφορά κατάστασης του MetaMask"
+    "message": "Επαναφορά κατάστασης του 1do"
   },
   "stateCorruptionResettingDatabase": {
     "message": "Γίνεται επαναφορά της βάσης δεδομένων…"
@@ -8442,7 +8442,7 @@
     "message": "Σφάλμα κατά την ανάκτηση των αρχείων καταγραφών κατάστασης, προσπαθήστε ξανά αργότερα."
   },
   "stateLogFileName": {
-    "message": "Αρχεία καταγραφής κατάστασης του MetaMask"
+    "message": "Αρχεία καταγραφής κατάστασης του 1do"
   },
   "stateLogs": {
     "message": "Αρχεία καταγραφής κατάστασης"
@@ -8451,7 +8451,7 @@
     "message": "Τα αρχεία καταγραφής κατάστασης περιέχουν τις διευθύνσεις του δημόσιου λογαριασμού σας και τις συναλλαγές οι οποίες έχουν αποσταλεί."
   },
   "stateLogsModalDescription": {
-    "message": "Τα αρχεία καταγραφών κατάστασης μπορούν να μας βοηθήσουν να εντοπίσουμε και να διορθώσουμε προβλήματα που ίσως αντιμετωπίσετε. Στείλτε τα μόνο στο MetaMask για υποστήριξη, γιατί τα αρχεία καταγραφών κατάστασης περιέχουν τη δημόσια διεύθυνση του λογαριασμού σας και τις συναλλαγές σας."
+    "message": "Τα αρχεία καταγραφών κατάστασης μπορούν να μας βοηθήσουν να εντοπίσουμε και να διορθώσουμε προβλήματα που ίσως αντιμετωπίσετε. Στείλτε τα μόνο στο 1do για υποστήριξη, γιατί τα αρχεία καταγραφών κατάστασης περιέχουν τη δημόσια διεύθυνση του λογαριασμού σας και τις συναλλαγές σας."
   },
   "status": {
     "message": "Κατάσταση"
@@ -8463,7 +8463,7 @@
     "message": "Συνδέστε το Lattice1 σας"
   },
   "step1LatticeWalletMsg": {
-    "message": "Μπορείτε να συνδέσετε το MetaMask στη συσκευή Lattice1 μόλις αυτή ρυθμιστεί και συνδεθεί. Ξεκλειδώστε τη συσκευή σας και έχετε έτοιμο το αναγνωριστικό συσκευής σας.",
+    "message": "Μπορείτε να συνδέσετε το 1do στη συσκευή Lattice1 μόλις αυτή ρυθμιστεί και συνδεθεί. Ξεκλειδώστε τη συσκευή σας και έχετε έτοιμο το αναγνωριστικό συσκευής σας.",
     "description": "$1 represents the `hardwareWalletSupportLinkConversion` localization key"
   },
   "step1LedgerWallet": {
@@ -8498,7 +8498,7 @@
     "message": "Δημιουργήστε αντίγραφο ασφαλείας της Μυστικής Φράσης Ανάκτησης"
   },
   "storageErrorDescriptionDefault": {
-    "message": "Δημιουργήστε αντίγραφο ασφαλείας της Μυστικής Φράσης Ανάκτησής σας και εγκαταστήστε ξανά το MetaMask αν το πρόβλημα συνεχιστεί."
+    "message": "Δημιουργήστε αντίγραφο ασφαλείας της Μυστικής Φράσης Ανάκτησής σας και εγκαταστήστε ξανά το 1do αν το πρόβλημα συνεχιστεί."
   },
   "storageErrorDescriptionNoSpace": {
     "message": "Η συσκευή σας δεν έχει διαθέσιμο χώρο. Ελευθερώστε χώρο τώρα, αλλιώς ενδέχεται να χαθούν μη αποθηκευμένες αλλαγές στο πορτοφόλι."
@@ -8602,7 +8602,7 @@
     "message": "Πάρτε μέρος στην έρευνά μας"
   },
   "surveyTitle": {
-    "message": "Διαμορφώστε το μέλλον του MetaMask"
+    "message": "Διαμορφώστε το μέλλον του 1do"
   },
   "swap": {
     "message": "Ανταλλαγή"
@@ -8662,7 +8662,7 @@
     "message": "Επεξεργασία ορίου"
   },
   "swapEnableDescription": {
-    "message": "Αυτό είναι απαραίτητο και δίνει στο MetaMask την άδεια να ανταλλάξει τα $1 σας.",
+    "message": "Αυτό είναι απαραίτητο και δίνει στο 1do την άδεια να ανταλλάξει τα $1 σας.",
     "description": "Gives the user info about the required approval transaction for swaps. $1 will be the symbol of a token being approved for swaps."
   },
   "swapEnableTokenForSwapping": {
@@ -8700,7 +8700,7 @@
     "description": "Tells a user that they need to confirm on their hardware wallet a swap of 2 tokens. $1 is a source token and $2 is a destination token"
   },
   "swapGasFeesExplanation": {
-    "message": "Το MetaMask δεν κερδίζει χρήματα από τα τέλη συναλλαγών. Αυτές οι χρεώσεις είναι εκτιμήσεις και μπορούν να αλλάξουν ανάλογα με το πόσο απασχολημένο είναι το δίκτυο και πόσο περίπλοκη είναι μια συναλλαγή. Μάθετε περισσότερα $1.",
+    "message": "Το 1do δεν κερδίζει χρήματα από τα τέλη συναλλαγών. Αυτές οι χρεώσεις είναι εκτιμήσεις και μπορούν να αλλάξουν ανάλογα με το πόσο απασχολημένο είναι το δίκτυο και πόσο περίπλοκη είναι μια συναλλαγή. Μάθετε περισσότερα $1.",
     "description": "$1 is a link (text in link can be found at 'swapGasFeesSummaryLinkText')"
   },
   "swapGasFeesExplanationLinkText": {
@@ -8714,13 +8714,13 @@
     "message": "Τα τέλη συναλλαγών στην προηγούμενη οθόνη κατανέμονται μεταξύ αυτών των δύο συναλλαγών."
   },
   "swapGasFeesSponsored": {
-    "message": "Πληρωμή μέσω MetaMask"
+    "message": "Πληρωμή μέσω 1do"
   },
   "swapGasFeesSponsoredExplanation": {
-    "message": "Το MetaMask περιλαμβάνει αυτά τα τέλη δικτύου, οπότε μπορείτε να συνεχίσετε τις συναλλαγές ακόμη κι αν δεν έχετε $1 στον λογαριασμό σας."
+    "message": "Το 1do περιλαμβάνει αυτά τα τέλη δικτύου, οπότε μπορείτε να συνεχίσετε τις συναλλαγές ακόμη κι αν δεν έχετε $1 στον λογαριασμό σας."
   },
   "swapIncludesMMFee": {
-    "message": "Περιλαμβάνει μια χρέωση $1% στο MetaMask.",
+    "message": "Περιλαμβάνει μια χρέωση $1% στο 1do.",
     "description": "Provides information about the fee that MetaMask takes for swaps. $1 is a decimal number."
   },
   "swapLearnMore": {
@@ -8733,10 +8733,10 @@
     "message": "Μέγιστη απόκλιση"
   },
   "swapMetaMaskFee": {
-    "message": "Χρεώσεις στο MetaMask"
+    "message": "Χρεώσεις στο 1do"
   },
   "swapMetaMaskFeeDescription": {
-    "message": "Μια χρέωση $1% συνυπολογίζεται αυτόματα σε αυτή την προσφορά. Την καταβάλλετε ως αντάλλαγμα για την άδεια χρήσης του λογισμικού συγκέντρωσης πληροφοριών για τους παρόχους ρευστότητας του MetaMask.",
+    "message": "Μια χρέωση $1% συνυπολογίζεται αυτόματα σε αυτή την προσφορά. Την καταβάλλετε ως αντάλλαγμα για την άδεια χρήσης του λογισμικού συγκέντρωσης πληροφοριών για τους παρόχους ρευστότητας του 1do.",
     "description": "Provides information about the fee that MetaMask takes for swaps. $1 is a decimal number."
   },
   "swapNQuotesWithDot": {
@@ -8897,7 +8897,7 @@
     "message": "Επιστροφή στο αναδυόμενο παράθυρο"
   },
   "switchEthereumChainConfirmationDescription": {
-    "message": "Αυτό θα αλλάξει το επιλεγμένο δίκτυο στο MetaMask σε ένα δίκτυο που έχει προστεθεί προηγουμένως:"
+    "message": "Αυτό θα αλλάξει το επιλεγμένο δίκτυο στο 1do σε ένα δίκτυο που έχει προστεθεί προηγουμένως:"
   },
   "switchEthereumChainConfirmationTitle": {
     "message": "Επιτρέπετε σε αυτόν τον ιστότοπο να αλλάξει το δίκτυο;"
@@ -8906,7 +8906,7 @@
     "message": "Αλλαγή δικτύου"
   },
   "switchToMetaMaskDefaultRpc": {
-    "message": "Εναλλαγή στο προεπιλεγμένο RPC του MetaMask",
+    "message": "Εναλλαγή στο προεπιλεγμένο RPC του 1do",
     "description": "Button text to switch the default RPC endpoint to MetaMask default RPC"
   },
   "switchToPopup": {
@@ -8949,7 +8949,7 @@
     "message": "Συμφωνώ"
   },
   "termsOfUseAgreeText": {
-    "message": "Συμφωνώ με τους Όρους Χρήσης, οι οποίοι ισχύουν για τη χρήση του MetaMask και όλων των λειτουργιών του."
+    "message": "Συμφωνώ με τους Όρους Χρήσης, οι οποίοι ισχύουν για τη χρήση του 1do και όλων των λειτουργιών του."
   },
   "termsOfUseFooterText": {
     "message": "Μετακινηθείτε προς τα κάτω για να διαβάσετε όλα τα τμήματα"
@@ -8967,13 +8967,13 @@
     "message": "Θέμα"
   },
   "themeDescription": {
-    "message": "Επιλέξτε το προτιμώμενο θέμα σας MetaMask."
+    "message": "Επιλέξτε το προτιμώμενο θέμα σας 1do."
   },
   "thirdPartyApis": {
     "message": "API τρίτων"
   },
   "thirdPartyApisDescription": {
-    "message": "Επιλέξτε πώς θα κοινοποιείτε τη διεύθυνση IP ή τη διεύθυνση Ethereum σας σε API τρίτων. Οι αλλαγές θα επηρεάσουν την εμπειρία σας στο MetaMask."
+    "message": "Επιλέξτε πώς θα κοινοποιείτε τη διεύθυνση IP ή τη διεύθυνση Ethereum σας σε API τρίτων. Οι αλλαγές θα επηρεάσουν την εμπειρία σας στο 1do."
   },
   "thirdPartySoftware": {
     "message": "Ειδοποίηση για λογισμικό τρίτων",
@@ -9220,7 +9220,7 @@
     "message": "Αυτό το σφάλμα μπορεί να είναι περιστασιακό, οπότε δοκιμάστε να επανεκκινήσετε την επέκταση."
   },
   "troubleStartingTitle": {
-    "message": "Το MetaMask αντιμετώπισε πρόβλημα κατά την εκκίνηση."
+    "message": "Το 1do αντιμετώπισε πρόβλημα κατά την εκκίνηση."
   },
   "trustSignalBlockDescription": {
     "message": "Εάν συνδεθείτε σε αυτόν τον ιστότοπο, ενδέχεται να χάσετε όλα τα περιουσιακά σας στοιχεία."
@@ -9389,7 +9389,7 @@
     "message": "Ενημέρωση του RPC δικτύου"
   },
   "updatedToMetaMaskDefault": {
-    "message": "Ενημερώθηκε στο προεπιλεγμένο MetaMask",
+    "message": "Ενημερώθηκε στο προεπιλεγμένο 1do",
     "description": "Toast message confirming that the default RPC endpoint has been updated to MetaMask default"
   },
   "uploadDropFile": {
@@ -9426,7 +9426,7 @@
     "message": "Εμφανίζει όλα τα NFT, συμπεριλαμβανομένων και των ψεύτικων που αποστέλλονται μέσω airdrop από απατεώνες."
   },
   "useNftDetectionDescriptionText": {
-    "message": "Επιτρέψτε στο MetaMask να προσθέτει NFT που σας ανήκουν χρησιμοποιώντας υπηρεσίες τρίτων. Ο αυτόματος εντοπισμός NFT εκθέτει τη διεύθυνση IP και την διεύθυνση του λογαριασμού σας σε αυτές τις υπηρεσίες. Η ενεργοποίηση αυτής της λειτουργίας θα μπορούσε να συσχετίσει τη διεύθυνση IP σας με τη διεύθυνση Ethereum σας και να εμφανίσει ψεύτικα NFT τακτικής airdrop που διοχετεύουν οι απατεώνες. Μπορείτε να προσθέσετε tokens μη αυτόματα για να αποφύγετε αυτόν τον κίνδυνο."
+    "message": "Επιτρέψτε στο 1do να προσθέτει NFT που σας ανήκουν χρησιμοποιώντας υπηρεσίες τρίτων. Ο αυτόματος εντοπισμός NFT εκθέτει τη διεύθυνση IP και την διεύθυνση του λογαριασμού σας σε αυτές τις υπηρεσίες. Η ενεργοποίηση αυτής της λειτουργίας θα μπορούσε να συσχετίσει τη διεύθυνση IP σας με τη διεύθυνση Ethereum σας και να εμφανίσει ψεύτικα NFT τακτικής airdrop που διοχετεύουν οι απατεώνες. Μπορείτε να προσθέσετε tokens μη αυτόματα για να αποφύγετε αυτόν τον κίνδυνο."
   },
   "usePhishingDetection": {
     "message": "Χρήση ανίχνευσης phishing"
@@ -9438,10 +9438,10 @@
     "message": "Ο έλεγχος λεπτομερειών δικτύου"
   },
   "useSafeChainsListValidationDescription": {
-    "message": "Το MetaMask χρησιμοποιεί μια υπηρεσία τρίτων που ονομάζεται $1 για να εμφανίζει ακριβείς και τυποποιημένες λεπτομέρειες δικτύου. Αυτό μειώνει τις πιθανότητες σύνδεσής σας με κακόβουλο ή λανθασμένο δίκτυο. Όταν χρησιμοποιείτε αυτή τη λειτουργία, η διεύθυνση IP σας εκτίθεται στο chainid.network."
+    "message": "Το 1do χρησιμοποιεί μια υπηρεσία τρίτων που ονομάζεται $1 για να εμφανίζει ακριβείς και τυποποιημένες λεπτομέρειες δικτύου. Αυτό μειώνει τις πιθανότητες σύνδεσής σας με κακόβουλο ή λανθασμένο δίκτυο. Όταν χρησιμοποιείτε αυτή τη λειτουργία, η διεύθυνση IP σας εκτίθεται στο chainid.network."
   },
   "useSafeChainsListValidationDescriptionV2": {
-    "message": "Μειώνει τις πιθανότητες να συνδεθείτε σε κακόβουλο ή μη αξιόπιστο δίκτυο. Το MetaMask χρησιμοποιεί το $1 για να εμφανίζει ακριβείς και τυποποιημένες πληροφορίες δικτύου."
+    "message": "Μειώνει τις πιθανότητες να συνδεθείτε σε κακόβουλο ή μη αξιόπιστο δίκτυο. Το 1do χρησιμοποιεί το $1 για να εμφανίζει ακριβείς και τυποποιημένες πληροφορίες δικτύου."
   },
   "useSafeChainsListValidationWebsite": {
     "message": "chainid.network",
@@ -9509,7 +9509,7 @@
     "message": "Επιβεβαίωση"
   },
   "visitSupportDataConsentModalDescription": {
-    "message": "Μπορείτε να μας δώσετε το MetaMask Identifier καθώς και την έκδοση της εφαρμογής σας στο Κέντρο Υποστήριξης; Αυτό θα μας βοηθήσει να κατανοήσουμε καλύτερα το πρόβλημά σας, αλλά είναι προαιρετικό."
+    "message": "Μπορείτε να μας δώσετε το 1do Identifier καθώς και την έκδοση της εφαρμογής σας στο Κέντρο Υποστήριξης; Αυτό θα μας βοηθήσει να κατανοήσουμε καλύτερα το πρόβλημά σας, αλλά είναι προαιρετικό."
   },
   "visitSupportDataConsentModalReject": {
     "message": "Δεν θέλω"

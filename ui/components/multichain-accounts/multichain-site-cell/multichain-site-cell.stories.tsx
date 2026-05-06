@@ -7,7 +7,7 @@ import type { AccountGroupId } from '@metamask/account-api';
 import { AccountGroupWithInternalAccounts } from '../../../selectors/multichain-accounts/account-tree.types';
 import { createMockInternalAccount } from '../../../../test/jest/mocks';
 import { CaipChainId, Hex } from '@metamask/utils';
-import { EvmAndMultichainNetworkConfigurationsWithCaipChainId } from '../../../selectors/selectors.types';
+import { EvmNetworkConfigurationWithCaipChainId } from '../../../selectors/selectors.types';
 
 // Helper function to create mock network configurations
 const createMockNetwork = (
@@ -18,6 +18,7 @@ const createMockNetwork = (
   networkClientId: string,
   mockUrl?: string,
 ): EvmAndMultichainNetworkConfigurationsWithCaipChainId => {
+): EvmNetworkConfigurationWithCaipChainId => {
   const url = mockUrl || `mock-${networkClientId}-url`;
   return {
     name,
@@ -253,7 +254,7 @@ const mockAccountGroups: AccountGroupWithInternalAccounts[] = [
   createMockAccountGroup(1, 'Account 2'),
 ];
 
-const mockNonTestNetworks: EvmAndMultichainNetworkConfigurationsWithCaipChainId[] =
+const mockNonTestNetworks: EvmNetworkConfigurationWithCaipChainId[] =
   [
     createMockNetwork(
       'Ethereum Mainnet',
@@ -272,7 +273,7 @@ const mockNonTestNetworks: EvmAndMultichainNetworkConfigurationsWithCaipChainId[
     ),
   ];
 
-const mockTestNetworks: EvmAndMultichainNetworkConfigurationsWithCaipChainId[] =
+const mockTestNetworks: EvmNetworkConfigurationWithCaipChainId[] =
   [
     createMockNetwork(
       'Sepolia',
@@ -301,7 +302,7 @@ const mockManyAccountGroups: AccountGroupWithInternalAccounts[] = Array.from(
   (_, index) => createMockAccountGroup(index),
 );
 
-const mockManyNonTestNetworks: EvmAndMultichainNetworkConfigurationsWithCaipChainId[] =
+const mockManyNonTestNetworks: EvmNetworkConfigurationWithCaipChainId[] =
   MAINNET_NETWORKS.map(({ name, chainId, caipChainId, currency, clientId }) =>
     createMockNetwork(
       name,
@@ -312,7 +313,7 @@ const mockManyNonTestNetworks: EvmAndMultichainNetworkConfigurationsWithCaipChai
     ),
   );
 
-const mockManyTestNetworks: EvmAndMultichainNetworkConfigurationsWithCaipChainId[] =
+const mockManyTestNetworks: EvmNetworkConfigurationWithCaipChainId[] =
   TESTNET_NETWORKS.map(
     ({ name, chainId, caipChainId, currency, clientId, url }) =>
       createMockNetwork(

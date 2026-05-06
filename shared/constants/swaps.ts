@@ -1,8 +1,3 @@
-import { MULTICHAIN_NATIVE_CURRENCY_TO_CAIP19 } from './multichain/assets';
-import {
-  MULTICHAIN_TOKEN_IMAGE_MAP,
-  MultichainNetworks,
-} from './multichain/networks';
 import {
   ETH_TOKEN_IMAGE_URL,
   TEST_ETH_TOKEN_IMAGE_URL,
@@ -163,14 +158,6 @@ export const HYPE_SWAPS_TOKEN_OBJECT: SwapsTokenObject = {
   iconUrl: HYPEREVM_IMAGE_URL,
 } as const;
 
-const SOLANA_SWAPS_TOKEN_OBJECT: SwapsTokenObject = {
-  symbol: 'SOL',
-  name: 'Solana',
-  address: MULTICHAIN_NATIVE_CURRENCY_TO_CAIP19.SOL,
-  decimals: 9,
-  iconUrl: MULTICHAIN_TOKEN_IMAGE_MAP[MultichainNetworks.SOLANA],
-};
-
 // A gas value for ERC20 approve calls that should be sufficient for all ERC20 approve implementations
 export const DEFAULT_ERC20_APPROVE_GAS = '0x1d4c0';
 
@@ -244,7 +231,6 @@ export const ALLOWED_PROD_SWAPS_CHAIN_IDS = [
   CHAIN_IDS.MONAD,
   CHAIN_IDS.HYPE,
   CHAIN_IDS.MEGAETH_MAINNET,
-  MultichainNetworks.SOLANA,
 ] as const;
 
 export const ALLOWED_DEV_SWAPS_CHAIN_IDS = [
@@ -373,7 +359,6 @@ export const SWAPS_CHAINID_DEFAULT_TOKEN_MAP = {
   [CHAIN_IDS.MONAD]: MONAD_SWAPS_TOKEN_OBJECT,
   [CHAIN_IDS.HYPE]: HYPE_SWAPS_TOKEN_OBJECT,
   [CHAIN_IDS.MEGAETH_MAINNET]: MEGAETH_SWAPS_TOKEN_OBJECT,
-  [MultichainNetworks.SOLANA]: SOLANA_SWAPS_TOKEN_OBJECT,
 } as const;
 
 export const ETHEREUM = 'ethereum';
@@ -493,16 +478,6 @@ const ZKSYNC_USDT_TOKEN_OBJECT = {
     'https://static.cx.metamask.io/api/v1/tokenIcons/324/0x493257fd37edb34451f62edf8d2a0c418852ba4c.png',
 };
 
-const SOLANA_USDC_TOKEN_OBJECT = {
-  address:
-    'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp/token:EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v',
-  symbol: 'USDC',
-  name: 'USD Coin',
-  decimals: 6,
-  iconUrl:
-    'https://static.cx.metamask.io/api/v2/tokenIcons/assets/solana/5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp/token/EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v.png',
-};
-
 /**
  * The most common token pair for each chain
  * ex: for mainnet, the main token is ETH and the most common swap is USDC
@@ -517,7 +492,6 @@ export const SWAPS_CHAINID_COMMON_TOKEN_PAIR = {
   [CHAIN_IDS.BASE]: BASE_USDC_TOKEN_OBJECT,
   [CHAIN_IDS.LINEA_MAINNET]: LINEA_USDC_TOKEN_OBJECT,
   [CHAIN_IDS.ZKSYNC_ERA]: ZKSYNC_USDT_TOKEN_OBJECT,
-  [MultichainNetworks.SOLANA]: SOLANA_USDC_TOKEN_OBJECT,
 };
 
 export const STABLE_PAIRS: Record<string, boolean> = {

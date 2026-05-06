@@ -10,9 +10,6 @@ import {
   type NetworkConfiguration as InternalNetworkConfiguration,
 } from '@metamask/network-controller';
 import {
-  BtcScope,
-  SolScope,
-  TrxScope,
   isEvmAccountType,
 } from '@metamask/keyring-api';
 import type { InternalAccount } from '@metamask/keyring-internal-api';
@@ -24,10 +21,6 @@ import {
   parseCaipChainId,
 } from '@metamask/utils';
 import { createSelector } from 'reselect';
-import {
-  MULTICHAIN_PROVIDER_CONFIGS,
-  type MultichainProviderConfig,
-} from '../../../shared/constants/multichain/networks';
 import {
   CHAIN_ID_TO_NETWORK_IMAGE_URL_MAP,
   infuraProjectId,
@@ -55,10 +48,7 @@ import {
 import {
   getIsBitcoinSupportEnabled,
   getIsSolanaSupportEnabled,
-  getIsSolanaTestnetSupportEnabled,
-  getIsBitcoinTestnetSupportEnabled,
   getIsTronSupportEnabled,
-  getIsTronTestnetSupportEnabled,
 } from './feature-flags';
 
 // Selector types
@@ -106,38 +96,8 @@ const getIsNonEvmNetworksEnabled = createSelector(
   getIsSolanaSupportEnabled,
   getIsTronSupportEnabled,
   getInternalAccounts,
-  (isBitcoinEnabled, isSolanaEnabled, isTronEnabled, internalAccounts) => {
-    if (isBitcoinEnabled && isSolanaEnabled && isTronEnabled) {
-      return { bitcoinEnabled: true, solanaEnabled: true, tronEnabled: true };
-    }
-
-    let bitcoinEnabled = isBitcoinEnabled;
-    let solanaEnabled = isSolanaEnabled;
-    let tronEnabled = isTronEnabled;
-
-    // The scopes have been set to optional because the first time
-    // they're used we can't guarantee that the scopes will be set
-    // during the keyring migration execution.
-    for (const { scopes } of internalAccounts) {
-      if (
-        scopes?.includes(
-          BtcScope.Mainnet || BtcScope.Testnet || BtcScope.Signet,
-        )
-      ) {
-        bitcoinEnabled = true;
-      }
-      if (scopes?.includes(SolScope.Mainnet)) {
-        solanaEnabled = true;
-      }
-      if (scopes?.includes(TrxScope.Mainnet)) {
-        tronEnabled = true;
-      }
-      if (bitcoinEnabled && solanaEnabled && tronEnabled) {
-        break;
-      }
-    }
-
-    return { bitcoinEnabled, solanaEnabled, tronEnabled };
+  () => {
+    return { bitcoinEnabled: false, solanaEnabled: false, tronEnabled: false };
   },
 );
 
@@ -146,92 +106,11 @@ export const getNonEvmMultichainNetworkConfigurationsByChainId =
     (state: MultichainNetworkConfigurationsByChainIdState) =>
       state.metamask.multichainNetworkConfigurationsByChainId,
     getIsNonEvmNetworksEnabled,
-    getIsSolanaTestnetSupportEnabled,
-    getIsBitcoinTestnetSupportEnabled,
-    getIsTronTestnetSupportEnabled,
     (
-      multichainNetworkConfigurationsByChainId,
-      isNonEvmNetworksEnabled,
-      isSolanaTestnetSupportEnabled,
-      isBitcoinTestnetSupportEnabled,
-      isTronTestnetSupportEnabled,
+      _multichainNetworkConfigurationsByChainId,
+      _isNonEvmNetworksEnabled,
     ): Record<CaipChainId, InternalMultichainNetworkConfiguration> => {
-      const filteredNonEvmNetworkConfigurationsByChainId: Record<
-        CaipChainId,
-        InternalMultichainNetworkConfiguration
-      > = {};
-
-      // This is not ideal but since there are only three non EVM networks
-      // we can just filter them out based on the support enabled
-      const { bitcoinEnabled, solanaEnabled, tronEnabled } =
-        isNonEvmNetworksEnabled;
-
-      if (
-        bitcoinEnabled &&
-        multichainNetworkConfigurationsByChainId &&
-        multichainNetworkConfigurationsByChainId[BtcScope.Mainnet]
-      ) {
-        filteredNonEvmNetworkConfigurationsByChainId[BtcScope.Mainnet] =
-          multichainNetworkConfigurationsByChainId[BtcScope.Mainnet];
-      }
-
-      if (
-        bitcoinEnabled &&
-        isBitcoinTestnetSupportEnabled &&
-        multichainNetworkConfigurationsByChainId
-      ) {
-        if (multichainNetworkConfigurationsByChainId[BtcScope.Testnet]) {
-          filteredNonEvmNetworkConfigurationsByChainId[BtcScope.Testnet] =
-            multichainNetworkConfigurationsByChainId[BtcScope.Testnet];
-        }
-        if (multichainNetworkConfigurationsByChainId[BtcScope.Signet]) {
-          filteredNonEvmNetworkConfigurationsByChainId[BtcScope.Signet] =
-            multichainNetworkConfigurationsByChainId[BtcScope.Signet];
-        }
-      }
-
-      if (
-        solanaEnabled &&
-        multichainNetworkConfigurationsByChainId &&
-        multichainNetworkConfigurationsByChainId[SolScope.Mainnet]
-      ) {
-        filteredNonEvmNetworkConfigurationsByChainId[SolScope.Mainnet] =
-          multichainNetworkConfigurationsByChainId[SolScope.Mainnet];
-      }
-
-      if (
-        solanaEnabled &&
-        isSolanaTestnetSupportEnabled &&
-        multichainNetworkConfigurationsByChainId &&
-        multichainNetworkConfigurationsByChainId[SolScope.Devnet]
-      ) {
-        filteredNonEvmNetworkConfigurationsByChainId[SolScope.Devnet] =
-          multichainNetworkConfigurationsByChainId[SolScope.Devnet];
-      }
-
-      if (
-        tronEnabled &&
-        multichainNetworkConfigurationsByChainId &&
-        multichainNetworkConfigurationsByChainId[TrxScope.Mainnet]
-      ) {
-        filteredNonEvmNetworkConfigurationsByChainId[TrxScope.Mainnet] =
-          multichainNetworkConfigurationsByChainId[TrxScope.Mainnet];
-      }
-
-      if (
-        tronEnabled &&
-        isTronTestnetSupportEnabled &&
-        multichainNetworkConfigurationsByChainId &&
-        multichainNetworkConfigurationsByChainId[TrxScope.Nile] &&
-        multichainNetworkConfigurationsByChainId[TrxScope.Shasta]
-      ) {
-        filteredNonEvmNetworkConfigurationsByChainId[TrxScope.Nile] =
-          multichainNetworkConfigurationsByChainId[TrxScope.Nile];
-        filteredNonEvmNetworkConfigurationsByChainId[TrxScope.Shasta] =
-          multichainNetworkConfigurationsByChainId[TrxScope.Shasta];
-      }
-
-      return filteredNonEvmNetworkConfigurationsByChainId;
+      return {};
     },
   );
 
@@ -303,6 +182,10 @@ export const getMultichainNetworkConfigurationsByChainId = createSelector(
     return [networks, networkConfigurationsByChainId];
   },
 );
+
+// Backward-compatible alias used by the network manager UI and tests.
+export const getMultichainNetworkConfigurationsTuple =
+  getMultichainNetworkConfigurationsByChainId;
 
 export const getIsEvmMultichainNetworkSelected = (state: IsEvmSelectedState) =>
   state.metamask.isEvmSelected;
@@ -537,14 +420,7 @@ export type MultichainNetwork = {
   isEvmNetwork: boolean;
   chainId: CaipChainId;
   network: // TODO: Maybe updates ProviderConfig to add rpcPrefs.imageUrl field
-  ProviderConfigWithImageUrlAndExplorerUrl | MultichainProviderConfig;
-};
-
-function getMultichainNetworkProviders(
-  _state: MultichainNetworkConfigState,
-): MultichainProviderConfig[] {
-  // TODO: need state from the ChainController?
-  return Object.values(MULTICHAIN_PROVIDER_CONFIGS);
+  ProviderConfigWithImageUrlAndExplorerUrl;
 }
 
 // FIXME: All the following might have side-effect, like if the current account is a bitcoin one and that
@@ -604,51 +480,24 @@ export function getMultichainNetwork(
     };
   }
 
-  // Non-EVM networks:
-  // (Hardcoded for testing)
-  // HACK: For now, we rely on the account type being "sort-of" CAIP compliant, so use
-  // this as a CAIP-2 namespace and apply our filter with it
-  // For non-EVM, we know we have a selected account, since the logic `isEvm` is based
-  // on having a non-EVM account being selected!
-  const selectedAccount = account ?? getSelectedInternalAccount(state);
-  const nonEvmNetworks = getMultichainNetworkProviders(state);
+  const fallbackChainId: Hex = getCurrentChainId(state);
+  const fallbackNetwork: ProviderConfigWithImageUrlAndExplorerUrl =
+    getProviderConfig(state) as ProviderConfigWithImageUrlAndExplorerUrl;
+  const fallbackChainIdKey =
+    fallbackChainId as keyof typeof CHAIN_ID_TO_NETWORK_IMAGE_URL_MAP;
 
-  const selectedChainId = state.metamask.selectedMultichainNetworkChainId;
+  fallbackNetwork.rpcPrefs = {
+    ...fallbackNetwork.rpcPrefs,
+    imageUrl: CHAIN_ID_TO_NETWORK_IMAGE_URL_MAP[fallbackChainIdKey],
+  };
 
-  let nonEvmNetwork: MultichainProviderConfig | undefined;
-
-  // FIRST: Try to find network by account scopes (most specific)
-  if (selectedAccount.scopes.length > 0) {
-    nonEvmNetwork = nonEvmNetworks.find((provider) => {
-      return selectedAccount.scopes.includes(provider.chainId);
-    });
-  }
-
-  // SECOND: If no network found by scopes, try selectedChainId
-  if (!nonEvmNetwork && selectedChainId) {
-    nonEvmNetwork = nonEvmNetworks.find(
-      (provider) => provider.chainId === selectedChainId,
-    );
-  }
-
-  // THIRD: Final fallback - address compatibility check
-  if (!nonEvmNetwork) {
-    nonEvmNetwork = nonEvmNetworks.find((provider) => {
-      return provider.isAddressCompatible(selectedAccount.address);
-    });
-  }
-
-  if (!nonEvmNetwork) {
-    throw new Error(
-      'Could not find non-EVM provider for the current configuration. This should never happen.',
-    );
-  }
-
+  const networkConfigurations = getNetworkConfigurationsByChainId(state);
   return {
-    // TODO: Adapt this for other non-EVM networks
-    nickname: nonEvmNetwork.nickname,
-    isEvmNetwork: false,
-    chainId: nonEvmNetwork.chainId,
-    network: nonEvmNetwork,
+    nickname: networkConfigurations[fallbackChainId]?.name ?? fallbackNetwork.rpcUrl,
+    isEvmNetwork: true,
+    chainId: `${KnownCaipNamespace.Eip155}:${Number(
+      fallbackChainId,
+    )}` as CaipChainId,
+    network: fallbackNetwork,
   };
 }

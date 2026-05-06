@@ -1,6 +1,5 @@
 import { createSelector } from 'reselect';
 import { isEvmAccountType } from '@metamask/keyring-api';
-import { SnapId } from '@metamask/snaps-sdk';
 import { InternalAccount } from '@metamask/keyring-internal-api';
 import { KeyringObject } from '@metamask/keyring-controller';
 import {
@@ -10,9 +9,7 @@ import {
   getInternalAccounts,
 } from '..';
 import { getMultichainAggregatedBalance } from '../assets';
-import { isMultichainWalletSnap } from '../../../shared/lib/accounts/snaps';
 import { isEqualCaseInsensitive } from '../../../shared/lib/string-utils';
-import { isSnapPreinstalled } from '../../../shared/lib/snaps/snaps';
 
 type AccountsByChainId = {
   [chainId: string]: {
@@ -26,7 +23,7 @@ type TokensByChainId = {
   }[];
 };
 
-const isPrimaryHdAndFirstPartySnapAccount = createSelector(
+const isPrimaryHdAccount = createSelector(
   (_state, account) => account,
   getMetaMaskHdKeyrings,
   (account, hdKeyrings: KeyringObject[]) => {
@@ -45,14 +42,6 @@ const isPrimaryHdAndFirstPartySnapAccount = createSelector(
       return true;
     }
 
-    if (
-      account.metadata.snap &&
-      isMultichainWalletSnap(account.metadata.snap.id as SnapId) &&
-      account.options?.entropySource === primaryKeyring.metadata.id
-    ) {
-      return true;
-    }
-
     return false;
   },
 );
@@ -63,21 +52,20 @@ export const getShouldShowSeedPhraseReminder = createSelector(
   getSelectedAccountTokensAcrossChains,
   getCrossChainMetaMaskCachedBalances,
   (state, account) => getMultichainAggregatedBalance(state, account),
-  (state, account) => isPrimaryHdAndFirstPartySnapAccount(state, account),
+  (state, account) => isPrimaryHdAccount(state, account),
   (
     state,
     account: InternalAccount,
     tokens: TokensByChainId,
     crossChainBalances: AccountsByChainId,
     aggregatedBalance,
-    isAccountAPrimaryHdOrFirstPartySnapAccount,
+    isAccountFromPrimaryHdKeyring,
   ) => {
     const { seedPhraseBackedUp, dismissSeedBackUpReminder } = state.metamask;
 
-    // If there is no account, we don't need to show the seed phrase reminder
-    // or if the account is not a primary HD or first party snap account
-    // It is assumed that imported srp accounts are backed up
-    if (!account || !isAccountAPrimaryHdOrFirstPartySnapAccount) {
+    // Imported accounts are treated as already backed up. Only the primary HD
+    // SRP account set participates in this reminder flow.
+    if (!account || !isAccountFromPrimaryHdKeyring) {
       return false;
     }
 
@@ -106,18 +94,5 @@ export const getShouldShowSeedPhraseReminder = createSelector(
       dismissSeedBackUpReminder === false;
 
     return showMessage;
-  },
-);
-
-export const getSnapAccountsByKeyringId = createSelector(
-  getInternalAccounts,
-  (_state, keyringId) => keyringId,
-  (accounts, keyringId) => {
-    return accounts.filter(
-      (account: InternalAccount) =>
-        account.metadata.snap &&
-        isSnapPreinstalled(account.metadata.snap.id as SnapId) &&
-        account.options?.entropySource === keyringId,
-    );
   },
 );

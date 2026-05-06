@@ -57,7 +57,6 @@ import { isEvmChainId } from '../../../../shared/lib/asset-utils';
 import { ALL_ALLOWED_BRIDGE_CHAIN_IDS } from '../../../../shared/constants/bridge';
 import { trace, TraceName } from '../../../../shared/lib/trace';
 import { navigateToSendRoute } from '../../../pages/confirmations/utils/send';
-import { useHandleSendNonEvm } from './hooks/useHandleSendNonEvm';
 
 const TabOpenedToast = ({ onClose }: { onClose: () => void }) => {
   const t = useContext(I18nContext);
@@ -124,8 +123,6 @@ const CoinButtons = ({
   if (isSwapsChain && defaultSwapsToken === undefined) {
     throw new Error('defaultSwapsToken is required');
   }
-
-  const handleSendNonEvm = useHandleSendNonEvm();
 
   const location = useLocation();
 
@@ -267,7 +264,7 @@ const CoinButtons = ({
     const params =
       trackingLocation === 'home' ? undefined : { chainId: chainId.toString() };
     transitionForward(() => navigateToSendRoute(navigate, params));
-  }, [chainId, account, setCorrectChain, handleSendNonEvm, trackingLocation]);
+  }, [chainId, account, setCorrectChain, trackingLocation]);
 
   const handleBuyAndSellOnClick = useCallback(() => {
     setShowTabOpenedToast(true);

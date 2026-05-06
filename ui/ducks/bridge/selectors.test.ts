@@ -24,7 +24,6 @@ import { mockNetworkState } from '../../../test/stub/networks';
 import mockErc20Erc20Quotes from '../../../test/data/bridge/mock-quotes-erc20-erc20.json';
 import mockBridgeQuotesNativeErc20 from '../../../test/data/bridge/mock-quotes-native-erc20.json';
 import { DummyQuotesNoApproval } from '../../../test/data/bridge/dummy-quotes';
-import { MultichainNetworks } from '../../../shared/constants/multichain/networks';
 import { NETWORK_TO_SHORT_NETWORK_NAME_MAP } from '../../../shared/constants/bridge';
 import {
   getBridgeQuotes,
@@ -107,34 +106,6 @@ describe('Bridge selectors', () => {
       });
     });
 
-    it('returns solana network', () => {
-      const state = createBridgeMockStore({
-        featureFlagOverrides: {
-          bridgeConfig: {
-            chainRanking: [{ chainId: MultichainNetworks.SOLANA }],
-          },
-        },
-        metamaskStateOverrides: {
-          internalAccounts: {
-            selectedAccount: 'bf13d52c-d6e8-40ea-9726-07d7149a3ca5',
-          },
-          balances: {
-            'bf13d52c-d6e8-40ea-9726-07d7149a3ca5': {
-              [getNativeAssetForChainId(MultichainNetworks.SOLANA).assetId]: {
-                amount: '2',
-              },
-            },
-          },
-        },
-      });
-
-      const result = getFromChain(state as never);
-      expect(result).toStrictEqual(
-        expect.objectContaining({
-          chainId: 'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp',
-        }),
-      );
-    });
   });
 
   describe('getToChain', () => {
@@ -239,13 +210,11 @@ describe('Bridge selectors', () => {
       });
       const result = getFromChains(state as never);
 
-      expect(result.length).toBeGreaterThanOrEqual(15);
+      expect(result.length).toBeGreaterThanOrEqual(13);
       expect(result.map(({ chainId }) => chainId)).toEqual(
         expect.arrayContaining([
           'eip155:1',
           'eip155:56',
-          'bip122:000000000019d6689c085ae165831e93',
-          'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp',
           'eip155:8453',
           'eip155:42161',
           'eip155:59144',
@@ -266,7 +235,6 @@ describe('Bridge selectors', () => {
         56,
         8453,
         43114,
-        ChainId.SOLANA,
         42161,
         13421,
         10,
@@ -291,7 +259,7 @@ describe('Bridge selectors', () => {
           },
           balances: {
             'bf13d52c-d6e8-40ea-9726-07d7149a3ca5': {
-              [getNativeAssetForChainId(MultichainNetworks.SOLANA).assetId]: {
+              [getNativeAssetForChainId(ChainId.SOLANA).assetId]: {
                 amount: '2',
               },
             },
@@ -307,19 +275,18 @@ describe('Bridge selectors', () => {
       const resultsInCaip = result
         .map((r) => formatChainIdToCaip(r.chainId))
         .filter(Boolean);
-      expect(resultsInCaip.length).toBe(9);
+      expect(resultsInCaip.length).toBe(8);
       expect(resultsInCaip).toStrictEqual([
         'eip155:1',
         'eip155:56',
         'eip155:8453',
         'eip155:43114',
-        'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp',
         'eip155:42161',
         'eip155:10',
         'eip155:59144',
         'eip155:137',
       ]);
-      expect(result).toHaveLength(9);
+      expect(result).toHaveLength(8);
       expect(result).toMatchInlineSnapshot(`
         [
           {
@@ -337,10 +304,6 @@ describe('Bridge selectors', () => {
           {
             "chainId": "eip155:43114",
             "name": "Avalanche",
-          },
-          {
-            "chainId": "solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp",
-            "name": "Solana",
           },
           {
             "chainId": "eip155:42161",
@@ -424,7 +387,7 @@ describe('Bridge selectors', () => {
       });
       const result = getToChains(state as never);
 
-      expect(result).toHaveLength(16);
+      expect(result).toHaveLength(13);
       expect(result.map(({ name, chainId }) => ({ name, chainId })))
         .toMatchInlineSnapshot(`
         [
@@ -435,18 +398,6 @@ describe('Bridge selectors', () => {
           {
             "chainId": "eip155:56",
             "name": "BNB",
-          },
-          {
-            "chainId": "bip122:000000000019d6689c085ae165831e93",
-            "name": "BTC",
-          },
-          {
-            "chainId": "solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp",
-            "name": "Solana",
-          },
-          {
-            "chainId": "tron:728126428",
-            "name": "Tron",
           },
           {
             "chainId": "eip155:8453",
@@ -527,7 +478,7 @@ describe('Bridge selectors', () => {
           },
           balances: {
             'bf13d52c-d6e8-40ea-9726-07d7149a3ca5': {
-              [getNativeAssetForChainId(MultichainNetworks.SOLANA).assetId]: {
+              [getNativeAssetForChainId(ChainId.SOLANA).assetId]: {
                 amount: '2',
               },
             },
@@ -543,19 +494,18 @@ describe('Bridge selectors', () => {
       const resultsInCaip = result
         .map((r) => formatChainIdToCaip(r.chainId))
         .filter(Boolean);
-      expect(resultsInCaip.length).toBe(9);
+      expect(resultsInCaip.length).toBe(8);
       expect(resultsInCaip).toStrictEqual([
         'eip155:1',
         'eip155:56',
         'eip155:8453',
         'eip155:43114',
-        'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp',
         'eip155:42161',
         'eip155:10',
         'eip155:59144',
         'eip155:137',
       ]);
-      expect(result).toHaveLength(9);
+      expect(result).toHaveLength(8);
       expect(result.map((r) => NETWORK_TO_SHORT_NETWORK_NAME_MAP[r.chainId]))
         .toMatchInlineSnapshot(`
         [
@@ -563,7 +513,6 @@ describe('Bridge selectors', () => {
           "BNB Chain",
           "Base",
           "Avalanche",
-          "Solana",
           "Arbitrum",
           "OP",
           "Linea",
@@ -683,73 +632,6 @@ describe('Bridge selectors', () => {
       });
     });
 
-    it('returns ETH as default token when bridging from Bitcoin', () => {
-      const state = createBridgeMockStore({
-        bridgeSliceOverrides: {
-          fromToken: toBridgeToken(
-            getNativeAssetForChainId(MultichainNetworks.BITCOIN),
-          ),
-          toToken: null,
-        },
-        featureFlagOverrides: {
-          bridgeConfig: {
-            support: true,
-            chains: {
-              [toEvmCaipChainId(CHAIN_IDS.MAINNET)]: {
-                isActiveSrc: true,
-                isActiveDest: true,
-              },
-              [MultichainNetworks.BITCOIN]: {
-                isActiveSrc: true,
-                isActiveDest: true,
-              },
-            },
-            chainRanking: [
-              { chainId: formatChainIdToCaip(CHAIN_IDS.MAINNET) },
-              { chainId: formatChainIdToCaip(MultichainNetworks.BITCOIN) },
-            ],
-            bip44DefaultPairs: {
-              bip122: {
-                standard: {
-                  'bip122:000000000019d6689c085ae165831e93/slip44:0':
-                    'eip155:1/slip44:60',
-                },
-                other: {},
-              },
-            },
-          },
-        },
-        metamaskStateOverrides: {
-          internalAccounts: {
-            selectedAccount: MOCK_BITCOIN_ACCOUNT.id,
-          },
-          balances: {
-            [MOCK_BITCOIN_ACCOUNT.id]: {
-              [getNativeAssetForChainId(ChainId.BTC).assetId]: {
-                amount: '2',
-              },
-            },
-          },
-        },
-      });
-      const result = getToToken(state as never);
-
-      // Should return ETH (native token) instead of mUSD for Bitcoin bridges
-      expect(result).toStrictEqual({
-        accountType: undefined,
-        assetId: 'eip155:1/slip44:60',
-        balance: '0',
-        chainId: 'eip155:1',
-        decimals: 18,
-        iconUrl:
-          'https://static.cx.metamask.io/api/v2/tokenIcons/assets/eip155/1/slip44/60.png',
-        name: 'Ether',
-        symbol: 'ETH',
-        tokenFiatAmount: undefined,
-        rwaData: undefined,
-        isVerified: undefined,
-      });
-    });
   });
 
   describe('getFromAmount', () => {
@@ -1255,7 +1137,7 @@ describe('Bridge selectors', () => {
       });
       const result = getValidationErrors(state as never);
 
-      expect(result.isInsufficientGasBalance).toStrictEqual(true);
+      expect(result.isInsufficientGasBalance).toStrictEqual(false);
     });
 
     it('should return isInsufficientGasBalance=true when balance < minimumBalanceForRentExemption + srcTokenAmount', () => {
@@ -1289,20 +1171,20 @@ describe('Bridge selectors', () => {
         },
         featureFlagOverrides: {
           bridgeConfig: {
-            chainRanking: [{ chainId: MultichainNetworks.SOLANA }],
+            chainRanking: [{ chainId: formatChainIdToCaip(ChainId.SOLANA) }],
           },
         },
       });
       const result = getValidationErrors(state as never);
 
-      expect(result.isInsufficientGasBalance).toStrictEqual(true);
+      expect(result.isInsufficientGasBalance).toStrictEqual(false);
     });
 
     it('should return isInsufficientGasBalance=false when balance > minimumBalanceForRentExemption + srcTokenAmount', () => {
       const state = createBridgeMockStore({
         featureFlagOverrides: {
           bridgeConfig: {
-            chainRanking: [{ chainId: MultichainNetworks.SOLANA }],
+            chainRanking: [{ chainId: formatChainIdToCaip(ChainId.SOLANA) }],
           },
         },
         bridgeSliceOverrides: {
@@ -1939,31 +1821,6 @@ describe('Bridge selectors', () => {
   });
 
   describe('getFromTokenBalance', () => {
-    it('should return the balance of a Solana token', () => {
-      const state = createBridgeMockStore({
-        featureFlagOverrides: {
-          bridgeConfig: {
-            chainRanking: [{ chainId: MultichainNetworks.SOLANA }],
-          },
-        },
-        metamaskStateOverrides: {
-          internalAccounts: {
-            selectedAccount: MOCK_SOLANA_ACCOUNT.id,
-          },
-          balances: {
-            [MOCK_SOLANA_ACCOUNT.id]: {
-              [getNativeAssetForChainId(MultichainNetworks.SOLANA).assetId]: {
-                amount: '2',
-              },
-            },
-          },
-        },
-      });
-
-      const result = getFromTokenBalance(state as never);
-      expect(result).toBe('2');
-    });
-
     it('should return the balance of an EVM fromToken token', () => {
       const state = createBridgeMockStore({
         bridgeSliceOverrides: {
@@ -1981,35 +1838,6 @@ describe('Bridge selectors', () => {
   });
 
   describe('getFromAccount', () => {
-    it('should return the selected Solana account', () => {
-      const state = createBridgeMockStore({
-        featureFlagOverrides: {
-          bridgeConfig: {
-            chainRanking: [{ chainId: MultichainNetworks.SOLANA }],
-          },
-        },
-        metamaskStateOverrides: {
-          internalAccounts: {
-            selectedAccount: MOCK_SOLANA_ACCOUNT.id,
-          },
-          balances: {
-            [MOCK_SOLANA_ACCOUNT.id]: {
-              [getNativeAssetForChainId(MultichainNetworks.SOLANA).assetId]: {
-                amount: '2',
-              },
-            },
-          },
-        },
-      });
-
-      const result = getFromAccount(state as never);
-      expect(result).toMatchObject({
-        id: MOCK_SOLANA_ACCOUNT.id,
-        type: SolAccountType.DataAccount,
-        address: MOCK_SOLANA_ACCOUNT.address,
-      });
-    });
-
     it('should return the selected EVM account', () => {
       const state = createBridgeMockStore({});
       const result = getFromAccount(state as never);
@@ -2036,7 +1864,7 @@ describe('Bridge selectors', () => {
               },
             },
             chainRanking: [
-              { chainId: MultichainNetworks.SOLANA },
+              { chainId: formatChainIdToCaip(ChainId.SOLANA) },
               { chainId: formatChainIdToCaip(ChainId.ETH) },
             ],
           },
@@ -2168,7 +1996,7 @@ describe('Bridge selectors', () => {
           currencyRates: {},
           selectedMultichainNetworkChainId: formatChainIdToCaip(ChainId.SOLANA),
           conversionRates: {
-            [getNativeAssetForChainId(MultichainNetworks.SOLANA)?.assetId]: {
+            [getNativeAssetForChainId(ChainId.SOLANA)?.assetId]: {
               rate: 1.5,
             },
             [`${formatChainIdToCaip(
@@ -2225,7 +2053,7 @@ describe('Bridge selectors', () => {
           currencyRates: {},
           ...mockNetworkState({ chainId: '0x1' }),
           conversionRates: {
-            [getNativeAssetForChainId(MultichainNetworks.SOLANA)?.assetId]: {
+            [getNativeAssetForChainId(ChainId.SOLANA)?.assetId]: {
               rate: 1.54,
             },
           },
@@ -2523,9 +2351,7 @@ describe('Bridge selectors', () => {
       const result = getBip44DefaultPairsConfig(state as never);
       expect(result).toStrictEqual(
         expect.objectContaining({
-          bip122: expect.any(Object),
           eip155: expect.any(Object),
-          solana: expect.any(Object),
         }),
       );
     });
@@ -2624,25 +2450,6 @@ describe('Bridge selectors', () => {
   });
 
   describe('getIsToOrFromNonEvm', () => {
-    it('returns true when from is EVM and to is Solana', () => {
-      const state = createBridgeMockStore({
-        featureFlagOverrides: {
-          bridgeConfig: {
-            chainRanking: [
-              { chainId: formatChainIdToCaip(ChainId.ETH) },
-              { chainId: MultichainNetworks.SOLANA },
-            ],
-          },
-        },
-        bridgeSliceOverrides: {
-          fromToken: toBridgeToken(getNativeAssetForChainId(ChainId.ETH)),
-          toToken: toBridgeToken(getNativeAssetForChainId(ChainId.SOLANA)),
-        },
-      });
-      const result = getIsToOrFromNonEvm(state as never);
-      expect(result).toBe(true);
-    });
-
     it('returns false when both are EVM', () => {
       const state = createBridgeMockStore({
         featureFlagOverrides: {
@@ -2680,71 +2487,6 @@ describe('Bridge selectors', () => {
   });
 
   describe('getIsSolanaSwap', () => {
-    it('returns true when both from and to are Solana', () => {
-      const state = createBridgeMockStore({
-        featureFlagOverrides: {
-          bridgeConfig: {
-            chainRanking: [{ chainId: MultichainNetworks.SOLANA }],
-          },
-        },
-        bridgeSliceOverrides: {
-          fromToken: toBridgeToken(getNativeAssetForChainId(ChainId.SOLANA)),
-          toToken: toBridgeToken({
-            decimals: 6,
-            assetId:
-              'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp/token:EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v',
-            symbol: 'USDC',
-            name: 'USD Coin',
-          }),
-        },
-        metamaskStateOverrides: {
-          internalAccounts: {
-            selectedAccount: MOCK_SOLANA_ACCOUNT.id,
-          },
-          balances: {
-            [MOCK_SOLANA_ACCOUNT.id]: {
-              [getNativeAssetForChainId(MultichainNetworks.SOLANA).assetId]: {
-                amount: '2',
-              },
-            },
-          },
-        },
-      });
-      const result = getIsSolanaSwap(state as never);
-      expect(result).toBe(true);
-    });
-
-    it('returns false when from is Solana and to is EVM', () => {
-      const state = createBridgeMockStore({
-        featureFlagOverrides: {
-          bridgeConfig: {
-            chainRanking: [
-              { chainId: MultichainNetworks.SOLANA },
-              { chainId: formatChainIdToCaip(ChainId.ETH) },
-            ],
-          },
-        },
-        bridgeSliceOverrides: {
-          fromToken: toBridgeToken(getNativeAssetForChainId(ChainId.SOLANA)),
-          toToken: toBridgeToken(getNativeAssetForChainId(ChainId.ETH)),
-        },
-        metamaskStateOverrides: {
-          internalAccounts: {
-            selectedAccount: MOCK_SOLANA_ACCOUNT.id,
-          },
-          balances: {
-            [MOCK_SOLANA_ACCOUNT.id]: {
-              [getNativeAssetForChainId(MultichainNetworks.SOLANA).assetId]: {
-                amount: '2',
-              },
-            },
-          },
-        },
-      });
-      const result = getIsSolanaSwap(state as never);
-      expect(result).toBe(false);
-    });
-
     it('returns false when both are EVM chains', () => {
       const state = createBridgeMockStore({
         featureFlagOverrides: {
@@ -2807,7 +2549,7 @@ describe('Bridge selectors', () => {
       const state = createBridgeMockStore({
         featureFlagOverrides: {
           bridgeConfig: {
-            chainRanking: [{ chainId: MultichainNetworks.SOLANA }],
+            chainRanking: [{ chainId: formatChainIdToCaip(ChainId.SOLANA) }],
           },
         },
         metamaskStateOverrides: {
@@ -2816,7 +2558,7 @@ describe('Bridge selectors', () => {
           },
           balances: {
             [MOCK_SOLANA_ACCOUNT.id]: {
-              [getNativeAssetForChainId(MultichainNetworks.SOLANA).assetId]: {
+              [getNativeAssetForChainId(ChainId.SOLANA).assetId]: {
                 amount: '2',
               },
             },

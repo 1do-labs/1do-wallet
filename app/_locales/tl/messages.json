@@ -1,6 +1,6 @@
 {
   "CSS_loadingTakingTooLongActionText": {
-    "message": "Muling ilunsad ang MetaMask kung magpatuloy ang problema.",
+    "message": "Muling ilunsad ang 1do kung magpatuloy ang problema.",
     "description": "Second line of the message that is shown when the initial loading of the MetaMask UI takes a very long time."
   },
   "CSS_loadingTakingTooLongMessageText": {
@@ -70,7 +70,7 @@
     "message": "Tungkol Dito"
   },
   "aboutMetaMask": {
-    "message": "Tungkol sa MetaMask"
+    "message": "Tungkol sa 1do"
   },
   "accept": {
     "message": "Tanggapin"
@@ -207,7 +207,7 @@
     "message": "Magdagdag ng account o wallet"
   },
   "addAcquiredTokens": {
-    "message": "Idagdag ang mga token na nakuha mo gamit ang MetaMask"
+    "message": "Idagdag ang mga token na nakuha mo gamit ang 1do"
   },
   "addAlias": {
     "message": "Magdagdag ng alias"
@@ -665,15 +665,15 @@
     "description": "The description of the application"
   },
   "appName": {
-    "message": "MetaMask",
+    "message": "1do",
     "description": "The name of the application"
   },
   "appNameBeta": {
-    "message": "MetaMask Beta",
+    "message": "1do Beta",
     "description": "The name of the application (Beta)"
   },
   "appNameFlask": {
-    "message": "MetaMask Flask",
+    "message": "1do Flask",
     "description": "The name of the application (Flask)"
   },
   "apply": {
@@ -727,7 +727,7 @@
     "message": "I-autodetect ang mga token sa wallet mo, ipakita ang mga NFT, at kumuha ng naka-batch na mga update sa balanse ng account"
   },
   "asterdexReferralSubtitle": {
-    "message": "Makakuha ng 4% sa mga trade na gumagamit ng referral code ng MetaMask.",
+    "message": "Makakuha ng 4% sa mga trade na gumagamit ng referral code ng 1do.",
     "description": "The subtitle of the AsterDEX referral confirmation screen"
   },
   "attemptToCancelSwapForFree": {
@@ -777,7 +777,7 @@
     "message": "Timer sa Awtomatikong Pag-lock (minuto)"
   },
   "autoLockTimeLimitDescription": {
-    "message": "Itakda ang oras ng pag-idle sa ilang minuto bago ma-lock ang MetaMask."
+    "message": "Itakda ang oras ng pag-idle sa ilang minuto bago ma-lock ang 1do."
   },
   "available": {
     "message": "available"
@@ -811,7 +811,7 @@
     "description": "$1 is backupAndSyncBasicFunctionalityNameMention in bold."
   },
   "backupAndSyncEnableDescription": {
-    "message": "Sa backup at sync, makakapagtago ka ng na-encrypt na data para sa mga custom na setting at feature mo. Pinapanatili nitong pareho ang karanasan mo sa MetaMask sa lahat ng device at ibinabalik ang mga setting at feature kung kailangan mong i-install muli ang MetaMask. Hindi nito naiba-back up ang iyong Secret Recovery Phrase. $1.",
+    "message": "Sa backup at sync, makakapagtago ka ng na-encrypt na data para sa mga custom na setting at feature mo. Pinapanatili nitong pareho ang karanasan mo sa 1do sa lahat ng device at ibinabalik ang mga setting at feature kung kailangan mong i-install muli ang 1do. Hindi nito naiba-back up ang iyong Secret Recovery Phrase. $1.",
     "description": "$1 is link to the backup and sync privacy policy."
   },
   "backupAndSyncEnableDescriptionUpdatePreferences": {
@@ -837,7 +837,7 @@
     "message": "Matutunan kung paano namin protektahan ang iyong privacy"
   },
   "backupApprovalInfo": {
-    "message": "Ang lihim na code na ito ay kinakailangan para ma-recover ang iyong wallet sakaling maiwala mo ang iyong device, makalimutan ang iyong password, kailanganin mong i-install ulit ang MetaMask, o gusto mong i-access ang iyong wallet sa ibang device."
+    "message": "Ang lihim na code na ito ay kinakailangan para ma-recover ang iyong wallet sakaling maiwala mo ang iyong device, makalimutan ang iyong password, kailanganin mong i-install ulit ang 1do, o gusto mong i-access ang iyong wallet sa ibang device."
   },
   "backupApprovalNotice": {
     "message": "I-back up ang iyong Lihim na Parirala sa Pagbawi para mapanatiling secure ang iyong wallet at mga pondo."
@@ -861,7 +861,7 @@
     "message": "Basic"
   },
   "basicConfigurationDescription": {
-    "message": "Nag-aalok ang MetaMask ng mga batayang tampok tulad ng mga detalye ng token at mga setting ng gas sa pamamagitan ng serbisyo sa internet. Kapag gumamit ka ng serbisyo sa internet, ibabahagi ang iyong IP address, sa kasong ito sa MetaMask. Tulad ito ng pagbisita mo sa anumang website. Ang MetaMask ay pansamantalang ginagamit ang datos na ito at hindi ibebenta ang iyong datos. Maaari kang gumamit ng VPN o i-off ang mga serbisyon ito, ngunit maaari itong makaapekto sa iyong karanasan sa MetaMask. Upang matuto pa basahin ang aming $1.",
+    "message": "Nag-aalok ang 1do ng mga batayang tampok tulad ng mga detalye ng token at mga setting ng gas sa pamamagitan ng serbisyo sa internet. Kapag gumamit ka ng serbisyo sa internet, ibabahagi ang iyong IP address, sa kasong ito sa 1do. Tulad ito ng pagbisita mo sa anumang website. Ang 1do ay pansamantalang ginagamit ang datos na ito at hindi ibebenta ang iyong datos. Maaari kang gumamit ng VPN o i-off ang mga serbisyon ito, ngunit maaari itong makaapekto sa iyong karanasan sa 1do. Upang matuto pa basahin ang aming $1.",
     "description": "$1 is to be replaced by the message for privacyMsg, and will link to https://consensys.io/privacy-policy"
   },
   "basicConfigurationDescriptionV2": {
@@ -875,13 +875,13 @@
     "message": "Nauunawaan ko at nais kong magpatuloy"
   },
   "basicConfigurationModalDisclaimerOffPart1": {
-    "message": "Ibig sabihin nito hindi mo lubos na mao-optimize ang iyong oras sa MetaMask. Ang mga batayang tampok (tulad ng mga detalye ng token, optimal na settings ng gas, at iba pa) ay hindi magiging available para sa iyo."
+    "message": "Ibig sabihin nito hindi mo lubos na mao-optimize ang iyong oras sa 1do. Ang mga batayang tampok (tulad ng mga detalye ng token, optimal na settings ng gas, at iba pa) ay hindi magiging available para sa iyo."
   },
   "basicConfigurationModalDisclaimerOffPart2": {
     "message": "Ang pag-off dito ay hindi rin magpapagana sa ilang mga feature sa loob ng pagkapribado, backup at sync, at mga notipikasyon."
   },
   "basicConfigurationModalDisclaimerOn": {
-    "message": "Upang ma-optimize ang iyong oras sa MetaMask, kailangan mong i-on ang tampok na ito. Ang mga batayang function (tulad ng mga detalye ng token, optimal na settings ng gas, at iba pa) ay mahalaga sa karanasan sa web3."
+    "message": "Upang ma-optimize ang iyong oras sa 1do, kailangan mong i-on ang tampok na ito. Ang mga batayang function (tulad ng mga detalye ng token, optimal na settings ng gas, at iba pa) ay mahalaga sa karanasan sa web3."
   },
   "basicConfigurationModalHeadingOff": {
     "message": "I-off ang batayang kapakinabangan"
@@ -935,13 +935,13 @@
     "message": "Pinakamagandang quote"
   },
   "bestQuoteTooltip": {
-    "message": "Pinakamagandang quote na nahanap namin mula sa mga provider, kasama ang mga bayarin ng provider at bayad sa MetaMask na 0.25%. Ang pinakamababang matatanggap mo kapag nagbago ang presyo ay $1."
+    "message": "Pinakamagandang quote na nahanap namin mula sa mga provider, kasama ang mga bayarin ng provider at bayad sa 1do na 0.25%. Ang pinakamababang matatanggap mo kapag nagbago ang presyo ay $1."
   },
   "beta": {
     "message": "Beta"
   },
   "betaMetamaskVersion": {
-    "message": "Bersyon ng MetaMask Beta"
+    "message": "Bersyon ng 1do Beta"
   },
   "betaTerms": {
     "message": "Mga tuntunin sa paggamit ng Beta"
@@ -1123,7 +1123,7 @@
     "description": "Tooltip title when there's an error fetching estimated points"
   },
   "bridgePoints_error_content": {
-    "message": "Huwag mag-alala, nakakakuha ka pa rin ng mga point. Lalabas ang mga iyon sa account mo sa lalong madaling panahon, o puwede mong tingnan ang tab ng Mga Reward sa MetaMask Mobile.",
+    "message": "Huwag mag-alala, nakakakuha ka pa rin ng mga point. Lalabas ang mga iyon sa account mo sa lalong madaling panahon, o puwede mong tingnan ang tab ng Mga Reward sa 1do Mobile.",
     "description": "Error message when points estimation fails"
   },
   "bridgePoints_tooltip": {
@@ -1131,7 +1131,7 @@
     "description": "Tooltip title for points"
   },
   "bridgePoints_tooltip_content_1": {
-    "message": "Ang Mga Puntos ay kung paano ka nakakakuha ng mga Reward sa MetaMask para sa pagkumpleto ng mga transaksyon, gaya ng kapag nagsu-swap, nagbi-bridge, o nagti-trade ka ng perps.",
+    "message": "Ang Mga Puntos ay kung paano ka nakakakuha ng mga Reward sa 1do para sa pagkumpleto ng mga transaksyon, gaya ng kapag nagsu-swap, nagbi-bridge, o nagti-trade ka ng perps.",
     "description": "First part of tooltip content explaining rewards points"
   },
   "bridgePoints_tooltip_content_2": {
@@ -1151,7 +1151,7 @@
     "message": "Dahil sa laki ng trade at available na liquidity mo, mas mababa nang $1 sa market price ang makukuha mo. Naibilang na ito sa quote mo. "
   },
   "bridgePriceImpactNormalDescription": {
-    "message": "Sa ganitong paraan nababago ng trade mo ang market pirce ng isang token. Nakadepende ito sa laki ng trade, available na liquidity, at mga bayarin sa provider. Hindi kinokontrol ng MetaMask ang epekto sa presyo."
+    "message": "Sa ganitong paraan nababago ng trade mo ang market pirce ng isang token. Nakadepende ito sa laki ng trade, available na liquidity, at mga bayarin sa provider. Hindi kinokontrol ng 1do ang epekto sa presyo."
   },
   "bridgePriceImpactTooltipTitle": {
     "message": "Epekto ng presyo"
@@ -1280,7 +1280,7 @@
     "message": "Makipag-ugnayan sa"
   },
   "bridgeTxDetailsDelayedDescriptionSupport": {
-    "message": "Suporta sa MetaMask"
+    "message": "Suporta sa 1do"
   },
   "bridgeTxDetailsDelayedTitle": {
     "message": "Nagtagal na ba ito nang higit sa 3 oras?"
@@ -1336,7 +1336,7 @@
     "message": "Hindi sinusuportahan ang iyong browser..."
   },
   "builtAroundTheWorld": {
-    "message": "Ang MetaMask ay dinisenyo at itinatag sa buong mundo."
+    "message": "Ang 1do ay dinisenyo at itinatag sa buong mundo."
   },
   "busy": {
     "message": "Busy"
@@ -1418,7 +1418,7 @@
     "message": "Sigurado ka ba?"
   },
   "changePasswordWarningDescription": {
-    "message": "Kapag pinalitan mo ang password dito, mala-lock ang MetaMask sa ibang mga device na ginagamit mo. Kailangan mong mag-log in muli gamit ang iyong bagong password."
+    "message": "Kapag pinalitan mo ang password dito, mala-lock ang 1do sa ibang mga device na ginagamit mo. Kailangan mong mag-log in muli gamit ang iyong bagong password."
   },
   "checkNetworkConnectivity": {
     "message": "Suriin ang pagkakakonekta ng network."
@@ -1438,7 +1438,7 @@
     "message": "mag-click dito"
   },
   "chromeRequiredForHardwareWallets": {
-    "message": "Kailangan mong gamitin ang MetaMask sa Google Chrome para maikonekta sa iyong Wallet na Hardware."
+    "message": "Kailangan mong gamitin ang 1do sa Google Chrome para maikonekta sa iyong Wallet na Hardware."
   },
   "circulatingSupply": {
     "message": "Umiikot na supply"
@@ -1499,10 +1499,10 @@
     "message": "Nakatuong pamamahagi ng supply"
   },
   "configureSnapPopupDescription": {
-    "message": "Papaalis ka na ngayon sa MetaMask para ma-configure ang snap na ito."
+    "message": "Papaalis ka na ngayon sa 1do para ma-configure ang snap na ito."
   },
   "configureSnapPopupInstallDescription": {
-    "message": "Papaalis ka na ngayon sa MetaMask para ma-install ang snap na ito."
+    "message": "Papaalis ka na ngayon sa 1do para ma-install ang snap na ito."
   },
   "configureSnapPopupInstallTitle": {
     "message": "I-install ang snap"
@@ -1587,7 +1587,7 @@
     "message": "Kasama ang bayad na $1"
   },
   "confirmGasFeeTokenModalNativeToggleMetaMask": {
-    "message": "Dinadagdagan ng MetaMask ang balanse para makumpleto ang transaksyong ito."
+    "message": "Dinadagdagan ng 1do ang balanse para makumpleto ang transaksyong ito."
   },
   "confirmGasFeeTokenModalNativeToggleWallet": {
     "message": "Bayaran ang bayad sa network gamit ang balanse sa iyong wallet."
@@ -1605,7 +1605,7 @@
     "message": "Babayaran mo ang bayad sa network na ito ng $1"
   },
   "confirmGasFeeTokenTooltip": {
-    "message": "Ibabayad ito sa network para iproseso ang transaksyon mo. Kasama rito ang bayad sa MetaMask na $1 para sa mga hindi ETH na token o pre-funded na ETH."
+    "message": "Ibabayad ito sa network para iproseso ang transaksyon mo. Kasama rito ang bayad sa 1do na $1 para sa mga hindi ETH na token o pre-funded na ETH."
   },
   "confirmInfoAccountNow": {
     "message": "Ngayon"
@@ -1754,7 +1754,7 @@
     "description": "$1 is the snap for which a connection is being requested."
   },
   "connectWithMetaMask": {
-    "message": "Kumonekta sa MetaMask"
+    "message": "Kumonekta sa 1do"
   },
   "connectedAccountsDescriptionPlural": {
     "message": "Mayroon kang $1 account na nakakonekta sa site na ito.",
@@ -1764,7 +1764,7 @@
     "message": "Mayroon kang 1 account na nakakonekta sa site na ito."
   },
   "connectedAccountsEmptyDescription": {
-    "message": "Ang MetaMask ay hindi konektado sa site na ito. Upang kumonekta sa isang web3 site, hanapin at i-click ang button na kumonekta."
+    "message": "Ang 1do ay hindi konektado sa site na ito. Upang kumonekta sa isang web3 site, hanapin at i-click ang button na kumonekta."
   },
   "connectedAccountsListTooltip": {
     "message": "Maaaring makita ng $1 ang balanse ng account, address, aktibidad, at magmungkahi ng mga transaksyon na aprubahan para sa mga konektadong account.",
@@ -1785,7 +1785,7 @@
     "description": "$1 is the account name"
   },
   "connectedSnapAndNoAccountDescription": {
-    "message": "Konektado ang MetaMask sa site na ito, ngunit wala pang mga account ang konektado"
+    "message": "Konektado ang 1do sa site na ito, ngunit wala pang mga account ang konektado"
   },
   "connectedSnaps": {
     "message": "Mga konektadong Snap"
@@ -1841,7 +1841,7 @@
     "description": "$1 is the name of the snap being fetched."
   },
   "connectionPopoverDescription": {
-    "message": "Upang kumonekta sa isang site, piliin ang button para sa pagkonekta. Sa mga web3 site lang puwedeng kumonekta ang MetaMask."
+    "message": "Upang kumonekta sa isang site, piliin ang button para sa pagkonekta. Sa mga web3 site lang puwedeng kumonekta ang 1do."
   },
   "connectionRequest": {
     "message": "Kahilingan sa koneksyon"
@@ -1890,7 +1890,7 @@
     "message": "Interaksyon ng kontrata"
   },
   "convertTokenToNFTDescription": {
-    "message": "Natukoy namin na ang asset na ito ay isang NFT. Ang MetaMask ay mayroon na ngayong ganap na native support para sa mga NFT. Gusto mo bang alisin ito sa iyong listahan ng token at idagdag ito bilang isang NFT?"
+    "message": "Natukoy namin na ang asset na ito ay isang NFT. Ang 1do ay mayroon na ngayong ganap na native support para sa mga NFT. Gusto mo bang alisin ito sa iyong listahan ng token at idagdag ito bilang isang NFT?"
   },
   "convertTokenToNFTExistDescription": {
     "message": "Napansin namin na naidagdag ang asset na ito bilang NFT. Gusto mo ba itong alisin mula sa listahan ng iyong token?"
@@ -1943,20 +1943,20 @@
     "message": "Gumawa ng password"
   },
   "createPasswordDetails": {
-    "message": "I-unlock ang MetaMask sa device lang na ito."
+    "message": "I-unlock ang 1do sa device lang na ito."
   },
   "createPasswordDetailsSocial": {
     "message": "Ang pagkawala ng password na ito ay nangangahulungan ng pagkawala ng access sa wallet sa lahat ng device, $1",
     "description": "$1 is the text 'MetaMask can't reset it.'"
   },
   "createPasswordDetailsSocialReset": {
-    "message": "Hindi ito maire-reset ng MetaMask."
+    "message": "Hindi ito maire-reset ng 1do."
   },
   "createPasswordMarketing": {
     "message": "Kumuha ng mga update ng produkto, tip at kabilang ang balita sa pamamagitan ng email. Maaari naming gamitin ang mga interaksyon mo upang mapahusay ang ibinabahagi namin."
   },
   "createSnapAccountDescription": {
-    "message": "Ang $1 ay nais na magdagdag ng bagong account sa MetaMask."
+    "message": "Ang $1 ay nais na magdagdag ng bagong account sa 1do."
   },
   "createSnapAccountTitle": {
     "message": "Gumawa ng account"
@@ -2077,10 +2077,10 @@
     "message": "Iminungkahing site"
   },
   "dappSwapAdvantage": {
-    "message": "Makatipid at kumita sa MetaMask Swaps"
+    "message": "Makatipid at kumita sa 1do Swaps"
   },
   "dappSwapAdvantageSaveOnly": {
-    "message": "Makatipid sa MetaMask Swaps"
+    "message": "Makatipid sa 1do Swaps"
   },
   "dappSwapBenefits": {
     "message": "Mga bayarin sa network na na-refund mula sa mga nabigong swap"
@@ -2101,7 +2101,7 @@
     "message": "Koleksyon ng data para sa marketing"
   },
   "dataCollectionForMarketingDescription": {
-    "message": "Gagamit kami ng MetaMetrics upang matutunan kung paano ka nakikipag-ugnayan sa aming komunikasyon sa marketing. Maaari naming ibahagi ang mga may kaugnayang balita (tulad ng mga tampok ng produkto at iba pang materyal)."
+    "message": "Gagamit kami ng 1do Metrics upang matutunan kung paano ka nakikipag-ugnayan sa aming komunikasyon sa marketing. Maaari naming ibahagi ang mga may kaugnayang balita (tulad ng mga tampok ng produkto at iba pang materyal)."
   },
   "dataCollectionForMarketingDescriptionSocialLogin": {
     "message": "Tumanggap ng mga update ng produkto, tip at balita - kabilang sa pamamagitan ng email. Maaari naming gamitin ang mga interaksyon mo para mapahusay ang mga ibinabahagi namin."
@@ -2110,7 +2110,7 @@
     "message": "Okay"
   },
   "dataCollectionWarningPopoverDescription": {
-    "message": "In-off mo ang koleksyon ng data para sa layunin sa marketing. Ito ay inilalapat lamang sa device na ito. Kung gumagamit ka ng MetaMask sa ibang mga device, siguraduhing mag-opt out din doon."
+    "message": "In-off mo ang koleksyon ng data para sa layunin sa marketing. Ito ay inilalapat lamang sa device na ito. Kung gumagamit ka ng 1do sa ibang mga device, siguraduhing mag-opt out din doon."
   },
   "dataUnavailable": {
     "message": "hindi available ang data"
@@ -2180,14 +2180,14 @@
     "description": "$1 is a link with the text found in `deepLink_Error404_CTA_LinkText`"
   },
   "deepLink_Error404_CTA_LinkText": {
-    "message": "I-update ang pinakabagong bersyon ng MetaMask",
+    "message": "I-update ang pinakabagong bersyon ng 1do",
     "description": "Part of `deepLink_Error404_CTA`. The text links to https://support.metamask.io/configure/wallet/how-to-update-the-version-of-metamask/"
   },
   "deepLink_ErrorMissingUrl": {
     "message": "Walang ibinigay na url para sa pag-navigate."
   },
   "deepLink_ErrorOtherDescription": {
-    "message": "Ito ay isang bug at dapat iulat sa MetaMask."
+    "message": "Ito ay isang bug at dapat iulat sa 1do."
   },
   "deepLink_ErrorOtherTitle": {
     "message": "Nagkaroon ng error habang pinoproseso ang deep link"
@@ -2196,10 +2196,10 @@
     "message": "Magpunta sa home page"
   },
   "deepLink_RedirectingToMetaMask": {
-    "message": "Inire-redirect sa MetaMask"
+    "message": "Inire-redirect sa 1do"
   },
   "deepLink_ThirdPartyDescription": {
-    "message": "Ipinadala ka rito ng third party, hindi ng MetaMask.$1",
+    "message": "Ipinadala ka rito ng third party, hindi ng 1do.$1",
     "description": "$1 is the message 'deepLink_ContinueDescription'"
   },
   "deepLink_theAssetPage": {
@@ -2209,7 +2209,7 @@
     "message": "ang pahina sa pagbili"
   },
   "deepLink_theCardOnboardingPage": {
-    "message": "ang onboarding page ng MetaMask Card"
+    "message": "ang onboarding page ng 1do Card"
   },
   "deepLink_theHomePage": {
     "message": "ang home page"
@@ -2239,7 +2239,7 @@
     "message": "ang page ng mga market ng prediksyon"
   },
   "deepLink_theRewardsPage": {
-    "message": "ang page ng Mga Reward sa MetaMask"
+    "message": "ang page ng Mga Reward sa 1do"
   },
   "deepLink_theSellPage": {
     "message": "ang page ng pagbebenta"
@@ -2260,7 +2260,7 @@
     "message": "Default na RPC URL"
   },
   "defaultSettingsSubTitle": {
-    "message": "Ginagamit ng MetaMask ang mga default na setting upang pinakamahusay na mabalanse ang kaligtasan at dali ng paggamit. Baguhin ang mga setting na ito para maging mahigpit ang iyong pagkapribado."
+    "message": "Ginagamit ng 1do ang mga default na setting upang pinakamahusay na mabalanse ang kaligtasan at dali ng paggamit. Baguhin ang mga setting na ito para maging mahigpit ang iyong pagkapribado."
   },
   "defaultSettingsTitle": {
     "message": "Mga default na setting sa pagkapribado"
@@ -2272,11 +2272,11 @@
     "message": "Magpahiram, humiram at mag-trade, sa mismong wallet mo."
   },
   "defiReferralCheckboxLabel": {
-    "message": "Pahintulutan ang MetaMask na maglagay ng referral code. Permanente ito. Mag-aalok ng diskwento ang site batay sa kanilang mga tuntunin. May bayad ang MetaMask.",
+    "message": "Pahintulutan ang 1do na maglagay ng referral code. Permanente ito. Mag-aalok ng diskwento ang site batay sa kanilang mga tuntunin. May bayad ang 1do.",
     "description": "The text for the checkbox label in the DeFi referral confirmation screen"
   },
   "defiReferralTitle": {
-    "message": "MetaMask x $1",
+    "message": "1do x $1",
     "description": "The title of the DeFi referral confirmation screen. $1 is the name of the partner"
   },
   "defiTabErrorContent": {
@@ -2292,14 +2292,14 @@
     "message": "Tanggalin ang aktibidad at data ng nonce"
   },
   "deleteMetaMetricsData": {
-    "message": "Tanggalin ang data ng MetaMetrics"
+    "message": "Tanggalin ang data ng 1do Metrics"
   },
   "deleteMetaMetricsDataDescription": {
-    "message": "Tatanggalin nito ang kasaysayan ng data ng MetaMetrics na may kaugnayan sa paggamit mo sa device na ito. Hindi magbabago ang wallet at mga account mo sa kung ano ito ngayon pagkatapos mabura ang data na ito. Ang prosesong ito ay maaaring tumagal nang hanggang 30 araw. Tingnan ang aming $1.",
+    "message": "Tatanggalin nito ang kasaysayan ng data ng 1do Metrics na may kaugnayan sa paggamit mo sa device na ito. Hindi magbabago ang wallet at mga account mo sa kung ano ito ngayon pagkatapos mabura ang data na ito. Ang prosesong ito ay maaaring tumagal nang hanggang 30 araw. Tingnan ang aming $1.",
     "description": "$1 will have text saying Privacy Policy "
   },
   "deleteMetaMetricsDataDescriptionV2": {
-    "message": "Tatanggalin nito ang kasaysayan ng data ng MetaMetrics na may kaugnayan sa iyong wallet. Kabilang sa MetaMetrics ang walang pagkakakilanlan na paggamit at diagnostic data. Hindi magbabago ang wallet at mga account mo. Ang proseso na ito ay maaaring tumagal ng 30 araw. Tingnan ang aming $1.",
+    "message": "Tatanggalin nito ang kasaysayan ng data ng 1do Metrics na may kaugnayan sa iyong wallet. Kabilang sa 1do Metrics ang walang pagkakakilanlan na paggamit at diagnostic data. Hindi magbabago ang wallet at mga account mo. Ang proseso na ito ay maaaring tumagal ng 30 araw. Tingnan ang aming $1.",
     "description": "$1 will have text saying Privacy Policy "
   },
   "deleteMetaMetricsDataErrorDesc": {
@@ -2312,10 +2312,10 @@
     "message": "Hindi matanggal"
   },
   "deleteMetaMetricsDataModalDesc": {
-    "message": "Aalisin na namin ang lahat ng iyong data ng MetaMetrics. Sigurado ka ba?"
+    "message": "Aalisin na namin ang lahat ng iyong data ng 1do Metrics. Sigurado ka ba?"
   },
   "deleteMetaMetricsDataModalTitle": {
-    "message": "Tanggalin ang data ng MetaMetrics?"
+    "message": "Tanggalin ang data ng 1do Metrics?"
   },
   "deleteMetaMetricsDataRequestedDescription": {
     "message": "Pinasimulan mo ang pagtatanggal sa $1. Ang prosesong ito ay maaaring tumagal nang hanggang 30 araw. Tingnan ang $2.",
@@ -2459,7 +2459,7 @@
     "message": "I-download"
   },
   "downloadAppDescription": {
-    "message": "Dalhin ang MetaMask saan ka man magpunta. Paganahin ang Face ID para lagi kang may access, kahit makalimutan mo ang iyong password."
+    "message": "Dalhin ang 1do saan ka man magpunta. Paganahin ang Face ID para lagi kang may access, kahit makalimutan mo ang iyong password."
   },
   "downloadAppTitle": {
     "message": "I-scan ang QR code at i-download ang app"
@@ -2468,7 +2468,7 @@
     "message": "I-download ang Google Chrome"
   },
   "downloadMetaMaskMobileDescription": {
-    "message": "Pinahihintulutan ka ng Face ID na makapag-log in kahit nakalimutan mo ang iyong password. Dalhin ang MetaMask saan ka man magpunta!"
+    "message": "Pinahihintulutan ka ng Face ID na makapag-log in kahit nakalimutan mo ang iyong password. Dalhin ang 1do saan ka man magpunta!"
   },
   "downloadMetaMaskMobileQrNote": {
     "message": "I-scan ang QR code na ito para makapagsimula."
@@ -2647,13 +2647,13 @@
     "message": "Ang pinahusay na pagtuklas ng token ay kasalukuyang magagamit sa $1. $2"
   },
   "ensDomainsSettingDescriptionIntroduction": {
-    "message": "Pinahihintulutan ng MetaMask na makita mo ang mga ENS mula mismo sa address bar ng iyong browser. Here's how it works:"
+    "message": "Pinahihintulutan ng 1do na makita mo ang mga ENS mula mismo sa address bar ng iyong browser. Here's how it works:"
   },
   "ensDomainsSettingDescriptionOutroduction": {
     "message": "Mangyaring tandaan na ang paggamit ng tampok na ito ay naglalantad sa iyong IP address sa serbisyong third party."
   },
   "ensDomainsSettingDescriptionPart1": {
-    "message": "Sinusuri ng MetaMask ang kontrata ng ENS ng Ethereum para mahanap ang code na konektado sa pangalan ng ENS."
+    "message": "Sinusuri ng 1do ang kontrata ng ENS ng Ethereum para mahanap ang code na konektado sa pangalan ng ENS."
   },
   "ensDomainsSettingDescriptionPart2": {
     "message": "Kung ang code ay naka-link sa IPFS, maaari mong makita ang content na kaugnay rito (kadalasan ay website)."
@@ -2698,7 +2698,7 @@
     "message": "Ilagay ang password para magpatuloy"
   },
   "enterYourPasswordSocialLoginFlow": {
-    "message": "Ilagay ang MetaMask password"
+    "message": "Ilagay ang 1do password"
   },
   "errorCode": {
     "message": "Code: $1",
@@ -2718,7 +2718,7 @@
     "message": "Hindi kokolektahin ang anumang personal na impormasyon o impormasyon ng device."
   },
   "errorLegalTextSecondInfo": {
-    "message": "Ang iyong browser, operating system, at mga bersyon ng MetaMask."
+    "message": "Ang iyong browser, operating system, at mga bersyon ng 1do."
   },
   "errorLegalTextSummary": {
     "message": "Makakatanggap kami ng ulat ng isang error na naglalaman ng:"
@@ -2760,7 +2760,7 @@
     "description": "In sentry feedback form, The message displayed after a successful feedback submission."
   },
   "errorPageTitle": {
-    "message": "Nagkaroon ng error sa MetaMask",
+    "message": "Nagkaroon ng error sa 1do",
     "description": "Title of generic error page"
   },
   "errorPageTryAgain": {
@@ -2897,11 +2897,11 @@
     "description": "This explains the risks of using MetaMask Flask"
   },
   "flaskWelcomeWarning3": {
-    "message": "Ang lahat ng API ng Flask ay eksperimental. Maaaring baguhin o alisin ang mga ito nang walang abiso, o maaari silang manatili sa Flask nang walang katapusan nang hindi nalilipat sa matatag na MetaMask. Gamitin ang mga ito sa iyong sariling pananagutan.",
+    "message": "Ang lahat ng API ng Flask ay eksperimental. Maaaring baguhin o alisin ang mga ito nang walang abiso, o maaari silang manatili sa Flask nang walang katapusan nang hindi nalilipat sa matatag na 1do. Gamitin ang mga ito sa iyong sariling pananagutan.",
     "description": "This message warns developers about unstable Flask APIs"
   },
   "flaskWelcomeWarning4": {
-    "message": "Siguraduhing hindi mo pagaganahin ang iyong regular na extension ng MetaMask kapag ginagamit ang Flask.",
+    "message": "Siguraduhing hindi mo pagaganahin ang iyong regular na extension ng 1do kapag ginagamit ang Flask.",
     "description": "This message calls to pay attention about multiple versions of MetaMask running on the same site (Flask + Prod)"
   },
   "flaskWelcomeWarningAcceptButton": {
@@ -2937,7 +2937,7 @@
     "message": "Hindi namin mababawi ang password mo para sa iyo."
   },
   "forgotPasswordModalDescription2": {
-    "message": "Ibalik ang iyong wallet sa MetaMask sa pamamagitan ng paglalagay ng Lihim na Parirala sa Pagbawi na nauugnay dito."
+    "message": "Ibalik ang iyong wallet sa 1do sa pamamagitan ng paglalagay ng Lihim na Parirala sa Pagbawi na nauugnay dito."
   },
   "forgotPasswordModalTitle": {
     "message": "Nakalimutan ang iyong password?"
@@ -3120,7 +3120,7 @@
     "description": "Subtitle text for the balance empty state component explaining the purpose of adding funds"
   },
   "gmxReferralSubtitle": {
-    "message": "Makatipid ng hanggang 5% sa mga trade na gumagamit ng referral code ng MetaMask.",
+    "message": "Makatipid ng hanggang 5% sa mga trade na gumagamit ng referral code ng 1do.",
     "description": "The subtitle of the GMX referral confirmation screen"
   },
   "goToSite": {
@@ -3234,7 +3234,7 @@
     "message": "Gumagamit ng mga API call ang mga integration ng wallet na hardware sa mga external server, na nakakakita sa IP address mo at sa mga address ng smart na kontrata kung saan ka nakikipag-ugnayan."
   },
   "hardwareWalletsMsg": {
-    "message": "Pumili ng wallet na hardware na gusto mong gamitin kasama ng MetaMask."
+    "message": "Pumili ng wallet na hardware na gusto mong gamitin kasama ng 1do."
   },
   "helpAndSettings": {
     "message": "Tulong at mga setting"
@@ -3306,7 +3306,7 @@
     "description": "$1 is a message from 'holdToRevealContent4' and $2 is a text link with the message from 'holdToRevealContent5'"
   },
   "holdToRevealContent4": {
-    "message": "Hindi ito hihilingin ng Suporta sa MetaMask,",
+    "message": "Hindi ito hihilingin ng Suporta sa 1do,",
     "description": "Part of 'holdToRevealContent3'"
   },
   "holdToRevealContent5": {
@@ -3346,7 +3346,7 @@
     "message": "Honey pot"
   },
   "hyperliquidReferralSubtitle": {
-    "message": "Makatipid ng hanggang 4% sa mga trade na gumagamit ng referral code ng MetaMask.",
+    "message": "Makatipid ng hanggang 4% sa mga trade na gumagamit ng referral code ng 1do.",
     "description": "The subtitle of the Hyperliquid referral confirmation screen"
   },
   "iUnderstand": {
@@ -3378,13 +3378,13 @@
     "message": "Ito ay hindi wastong pribadong key. Dapat kang maglagay ng hexadecimal string na 64 ang haba."
   },
   "importAccountJsonLoading1": {
-    "message": "Asahan ang pag-import ng JSON na ito ay tatagal ng ilang minuto at i-freeze ang MetaMask."
+    "message": "Asahan ang pag-import ng JSON na ito ay tatagal ng ilang minuto at i-freeze ang 1do."
   },
   "importAccountJsonLoading2": {
     "message": "Humihingi kami ng paumanhin, at gagawin namin itong mas mabilis sa hinaharap."
   },
   "importAccountMsg": {
-    "message": "Ang mga na-import na account ay hindi mauugnay sa iyong Lihim na Parirala sa Pagbawi ng MetaMask. Matuto pa tungkol sa mga na-import na account"
+    "message": "Ang mga na-import na account ay hindi mauugnay sa iyong Lihim na Parirala sa Pagbawi ng 1do. Matuto pa tungkol sa mga na-import na account"
   },
   "importAccountWithSocialMsg": {
     "message": "Naka-back up ang mga na-import na pribadong key sa iyong account at awtomatikong nagsi-sync ang mga ito kapag nag-sign in ka gamit ang parehong Google o Apple login."
@@ -3444,7 +3444,7 @@
     "message": "Mali"
   },
   "infuraBlockedNotification": {
-    "message": "Hindi makakonekta ang MetaMask sa blockchain host. I-review ang posibleng mga dahilan $1.",
+    "message": "Hindi makakonekta ang 1do sa blockchain host. I-review ang posibleng mga dahilan $1.",
     "description": "$1 is a clickable link with with text defined by the 'here' key"
   },
   "insights": {
@@ -3461,7 +3461,7 @@
     "message": "I-install ang pinagmulan"
   },
   "installRequest": {
-    "message": "Idagdag sa MetaMask"
+    "message": "Idagdag sa 1do"
   },
   "installedOn": {
     "message": "Na-install sa $1",
@@ -3563,7 +3563,7 @@
     "message": "IPFS gateway"
   },
   "ipfsGatewayDescription": {
-    "message": "Ang MetaMask ay gumagamit ng mga serbisyo ng third-party para ipakita ang mga imahe sa iyong mga NFT na nakaimbak sa IPFS, nagpapakita ng impormasyong nauugnay sa mga ENS address na ipinakita sa address bar ng iyong browser, at kinukuha ang mga icon para sa iba't ibang token. Ang iyong IP address ay maaaring ipakita sa mga serbisyong ito kapag ginagamit mo ang mga iyon."
+    "message": "Ang 1do ay gumagamit ng mga serbisyo ng third-party para ipakita ang mga imahe sa iyong mga NFT na nakaimbak sa IPFS, nagpapakita ng impormasyong nauugnay sa mga ENS address na ipinakita sa address bar ng iyong browser, at kinukuha ang mga icon para sa iba't ibang token. Ang iyong IP address ay maaaring ipakita sa mga serbisyong ito kapag ginagamit mo ang mga iyon."
   },
   "ipfsGatewayDescriptionV2": {
     "message": "Gumagamit ng mga serbisyo ng third-party para ipakita ang mga imahe ng iyong mga NFT na nakaimbak sa IPFS, ipinapakita ang impormasyong nauugnay sa mga ENS address na inilagay sa address bar ng iyong browser, at kinukuha ang mga icon para sa iba't ibang token. Piliin ang gusto mong IPFS gateway sa ibaba."
@@ -3660,10 +3660,10 @@
     "message": "mga panloloko at panganib sa seguridad."
   },
   "leaveMetaMask": {
-    "message": "Umalis sa MetaMask?"
+    "message": "Umalis sa 1do?"
   },
   "leaveMetaMaskDesc": {
-    "message": "Bibisita ka sa isang site sa labas ng MetaMask. I-double-check ang URL bago magpatuloy."
+    "message": "Bibisita ka sa isang site sa labas ng 1do. I-double-check ang URL bago magpatuloy."
   },
   "ledger": {
     "message": "Ledger",
@@ -3758,7 +3758,7 @@
     "message": "Link"
   },
   "linkCentralizedExchanges": {
-    "message": "I-link ang iyong Coinbase o mga account sa Binance para maglipat ng crypto sa MetaMask nang libre."
+    "message": "I-link ang iyong Coinbase o mga account sa Binance para maglipat ng crypto sa 1do nang libre."
   },
   "links": {
     "message": "Mga Link"
@@ -3782,7 +3782,7 @@
     "message": "I-lock"
   },
   "lockMetaMaskLoadingMessage": {
-    "message": "Nila-lock ang MetaMask..."
+    "message": "Nila-lock ang 1do..."
   },
   "lockTimeInvalid": {
     "message": "Ang lock time ay dapat na isang numero sa pagitan ng 0 at 10080"
@@ -3807,13 +3807,13 @@
     "description": "$1 is the key 'loginErrorGenericSupport'"
   },
   "loginErrorGenericSupport": {
-    "message": "Suporta sa MetaMask"
+    "message": "Suporta sa 1do"
   },
   "loginErrorGenericTitle": {
     "message": "Nagkaproblema"
   },
   "loginErrorResetWalletDescription": {
-    "message": "Nagkaroon ng isyu habang nag-a-unlock. Mag-log in ulit gamit ang $1 at ang password mo sa MetaMask.",
+    "message": "Nagkaroon ng isyu habang nag-a-unlock. Mag-log in ulit gamit ang $1 at ang password mo sa 1do.",
     "description": "$1 is the social login method"
   },
   "loginErrorSessionExpiredButton": {
@@ -3852,7 +3852,7 @@
     "message": "Pinakadali ang pagbasas sa mga smart contract"
   },
   "makeSmartContractsEasierDescription": {
-    "message": "Ginagamit ng MetaMask ang 4byte.directory at Sourcify para isalin ang impormasyong ito."
+    "message": "Ginagamit ng 1do ang 4byte.directory at Sourcify para isalin ang impormasyong ito."
   },
   "manage": {
     "message": "Pamahalaan"
@@ -3939,7 +3939,7 @@
     "message": "Mensahe"
   },
   "metaMaskConnectStatusParagraphOne": {
-    "message": "Mas may kontrol ka na ngayon sa mga koneksyon ng iyong account sa MetaMask."
+    "message": "Mas may kontrol ka na ngayon sa mga koneksyon ng iyong account sa 1do."
   },
   "metaMaskConnectStatusParagraphThree": {
     "message": "I-click ito para pamahalaan ang mga nakakonekta mong account."
@@ -3948,26 +3948,26 @@
     "message": "Makikita sa button ng katayuan ng koneksyon kung nakakonekta ang website na binibisita mo sa kasalukuyan mong napiling account."
   },
   "metaMetricsIdNotAvailableError": {
-    "message": "Dahil hindi mo kailanman sinubukan ang MetaMetrics, walang data na tatanggalin dito."
+    "message": "Dahil hindi mo kailanman sinubukan ang 1do Metrics, walang data na tatanggalin dito."
   },
   "metadataModalSourceTooltip": {
     "message": "Ang $1 ay naka-host sa npm at $2 ang natatanging pagkakailanlan ng Snap.",
     "description": "$1 is the snap name and $2 is the snap NPM id."
   },
   "metamaskFee": {
-    "message": "Bayad sa MetaMask"
+    "message": "Bayad sa 1do"
   },
   "metamaskNotificationsAreOff": {
     "message": "Hindi active sa kasalukuyan ang mga notipikasyon sa wallet."
   },
   "metamaskSwap": {
-    "message": "Pag-swap sa MetaMask"
+    "message": "Pag-swap sa 1do"
   },
   "metamaskSwapsOfflineDescription": {
-    "message": "Kasalukuyang minementina ang MetaMask Swaps. Bumalik sa ibang pagkakataon."
+    "message": "Kasalukuyang minementina ang 1do Swaps. Bumalik sa ibang pagkakataon."
   },
   "metamaskVersion": {
-    "message": "Bersyon ng MetaMask"
+    "message": "Bersyon ng 1do"
   },
   "methodData": {
     "message": "Pamamaraan"
@@ -4045,7 +4045,7 @@
     "description": "Button text to learn more about multichain accounts"
   },
   "multichainAccountIntroSameAddressDescription": {
-    "message": "Pinagsama-sama na namin ang iyong mga accout, kaya ipagpatuloy lang ang paggamit ng MetaMask gaya ng dati. Ligtas at hindi nagbabago ang iyong mga pondo.",
+    "message": "Pinagsama-sama na namin ang iyong mga accout, kaya ipagpatuloy lang ang paggamit ng 1do gaya ng dati. Ligtas at hindi nagbabago ang iyong mga pondo.",
     "description": "Description explaining that accounts have been merged"
   },
   "multichainAccountIntroSameAddressTitle": {
@@ -4061,7 +4061,7 @@
     "description": "Button text to view accounts from the intro modal"
   },
   "multichainAccountIntroWhatDescription": {
-    "message": "Ang account na multichain ay isang account na may mga address sa maraming network, na sinusuportahan ng MetaMask. Kaya maaari mo na ngayong gamitin ang Ethereum, Solana at iba pa nang hindi lumilipat sa mga account.",
+    "message": "Ang account na multichain ay isang account na may mga address sa maraming network, na sinusuportahan ng 1do. Kaya maaari mo na ngayong gamitin ang Ethereum, Solana at iba pa nang hindi lumilipat sa mga account.",
     "description": "Description explaining what multichain accounts are"
   },
   "multichainAccountIntroWhatTitle": {
@@ -4077,7 +4077,7 @@
     "description": "Title for the multichain accounts introduction modal."
   },
   "multichainAddEthereumChainConfirmationDescription": {
-    "message": "Idinadagdag mo ang network na ito sa MetaMask at binibigyan ng pahintulot ang site na ito na gamitin ito."
+    "message": "Idinadagdag mo ang network na ito sa 1do at binibigyan ng pahintulot ang site na ito na gamitin ito."
   },
   "multichainAddressViewAll": {
     "message": "Tingnan lahat"
@@ -4087,7 +4087,7 @@
     "description": "The parameter is the name of the requesting origin"
   },
   "multichainQuoteCardRateExplanation": {
-    "message": "Ang pinakamagandang rate na nakita namin mula sa mga provider, kabilang ang bayad sa provider at $1% bayad sa MetaMask."
+    "message": "Ang pinakamagandang rate na nakita namin mula sa mga provider, kabilang ang bayad sa provider at $1% bayad sa 1do."
   },
   "multichainQuoteCardRateLabel": {
     "message": "Rate"
@@ -4148,7 +4148,7 @@
     "description": "Accessible name for the info control that opens the mUSD conversion bonus explanation popover"
   },
   "musdConversionFeeTooltipDescription": {
-    "message": "Kasama sa mga bayarin sa pag-convert ng mUSD ang mga bayad sa network at posible ring kasama ang mga bayarin sa provider. Walang hihinging bayad sa MetaMask kapag nag-convert ka sa mUSD.",
+    "message": "Kasama sa mga bayarin sa pag-convert ng mUSD ang mga bayad sa network at posible ring kasama ang mga bayarin sa provider. Walang hihinging bayad sa 1do kapag nag-convert ka sa mUSD.",
     "description": "Body text shown above the fee breakdown in the transaction fee tooltip for mUSD conversion"
   },
   "musdConversionTitle": {
@@ -4197,7 +4197,7 @@
     "message": "Kumuha ng mUSD"
   },
   "musdMetaMaskUsd": {
-    "message": "MetaMask USD",
+    "message": "1do USD",
     "description": "Product name shown as the title line on the home token list mUSD Buy/Get CTA"
   },
   "musdTermsApply": {
@@ -4286,7 +4286,7 @@
     "message": "Lens Protocol"
   },
   "nameProvider_token": {
-    "message": "MetaMask"
+    "message": "1do"
   },
   "nameResolutionFailedError": {
     "message": "Walang nahanap na resolusyon ng address para sa pangalang ito."
@@ -4329,7 +4329,7 @@
     "message": "Ibahagi ang iyong Feedback"
   },
   "needHelpLinkText": {
-    "message": "suporta ng MetaMask"
+    "message": "suporta ng 1do"
   },
   "needHelpSubmitTicket": {
     "message": "Magsumite ng ticket"
@@ -4478,7 +4478,7 @@
     "description": "$1 is used for newNFTDetectedInImportNFTsMessageStrongText"
   },
   "newNFTDetectedInNFTsTabMessage": {
-    "message": "Hayaan ang MetaMask na awtomatikong i-detect at ipakita ang mga NFT sa iyong wallet."
+    "message": "Hayaan ang 1do na awtomatikong i-detect at ipakita ang mga NFT sa iyong wallet."
   },
   "newNFTsAutodetected": {
     "message": "Awtomatikong pagtuklas ng NFT"
@@ -4572,7 +4572,7 @@
     "message": "Walang nakitang account para sa ibinigay na query sa paghahanap"
   },
   "noConnectionDescription": {
-    "message": "Para kumonekta sa site, hanapin at piliin ang \"connect\" button. Tandaan na ang MetaMask ay maaari lamang kumonekta sa mga site sa web3"
+    "message": "Para kumonekta sa site, hanapin at piliin ang \"connect\" button. Tandaan na ang 1do ay maaari lamang kumonekta sa mga site sa web3"
   },
   "noDefaultAddress": {
     "message": "Walang $1 address",
@@ -4585,7 +4585,7 @@
     "message": "Ang mga Snap, at karamihan sa mga hardware wallet, ay hindi gagana sa iyong kasalukuyang bersyon ng browser."
   },
   "noMMFeeSwapping": {
-    "message": "Walang bayad sa MetaMask"
+    "message": "Walang bayad sa 1do"
   },
   "noNetworkFee": {
     "message": "Walanag bayad sa network"
@@ -4832,7 +4832,7 @@
     "message": "Iba pang kaugnay na mga materyal sa promosyon"
   },
   "onboardedMetametricsLink": {
-    "message": "MetaMetrics"
+    "message": "1do Metrics"
   },
   "onboardedMetametricsParagraph1": {
     "message": "Dagdag pa sa $1, nais naming gamitin ang data upang maunawaan kung paano ka nakikipag-ugnayan sa komunikasyon sa marketing.",
@@ -4879,7 +4879,7 @@
     "message": "Mag-import ng umiiral na wallet"
   },
   "onboardingLoginFooter": {
-    "message": "Sa pagpapatuloy, sumasang-ayon ako sa $1 and $2 ng MetaMask"
+    "message": "Sa pagpapatuloy, sumasang-ayon ako sa $1 and $2 ng 1do"
   },
   "onboardingLoginFooterPrivacyNotice": {
     "message": "Patakaran sa pagkapribado"
@@ -4906,10 +4906,10 @@
     "message": "Magpatuloy"
   },
   "onboardingMetametricsDescription": {
-    "message": "Nais naming mangalap ng data para sa batayang paggamit upang mapahusay ang MetaMask. Dapat mong malaman na hindi namin ibebenta ang data na iyong ibibigay rito."
+    "message": "Nais naming mangalap ng data para sa batayang paggamit upang mapahusay ang 1do. Dapat mong malaman na hindi namin ibebenta ang data na iyong ibibigay rito."
   },
   "onboardingMetametricsTitle": {
-    "message": "Tulungan kaming mapahusay ang MetaMask"
+    "message": "Tulungan kaming mapahusay ang 1do"
   },
   "onboardingOptionIcon": {
     "message": "$1 icon",
@@ -5006,7 +5006,7 @@
     "message": "mga iba pa"
   },
   "outdatedBrowserNotification": {
-    "message": "Hindi na updated ang iyong browser. Kapag hindi mo inupdate ang iyong browser, hindi ka makakakuha ng mga security patch at bagong feature mula sa MetaMask."
+    "message": "Hindi na updated ang iyong browser. Kapag hindi mo inupdate ang iyong browser, hindi ka makakakuha ng mga security patch at bagong feature mula sa 1do."
   },
   "overrideContentSecurityPolicyHeader": {
     "message": "Override Content-Security-Policy header"
@@ -5018,16 +5018,16 @@
     "message": "Padlock"
   },
   "paidByMetaMask": {
-    "message": "Binayaran ng MetaMask"
+    "message": "Binayaran ng 1do"
   },
   "paidWith": {
     "message": "Magbayad gamit ang"
   },
   "participateInMetaMetrics": {
-    "message": "Sumali sa MetaMetrics"
+    "message": "Sumali sa 1do Metrics"
   },
   "participateInMetaMetricsDescription": {
-    "message": "Sumali sa MetaMetrics para mas mapahusay namin ang MetaMask"
+    "message": "Sumali sa 1do Metrics para mas mapahusay namin ang 1do"
   },
   "password": {
     "message": "Password"
@@ -5036,16 +5036,16 @@
     "message": "Napalitan ang iyong password"
   },
   "passwordChangedRecentlyDescription": {
-    "message": "Ilagay ang iyong bagong password para manatiling naka-log in sa MetaMask."
+    "message": "Ilagay ang iyong bagong password para manatiling naka-log in sa 1do."
   },
   "passwordNotLongEnough": {
     "message": "Hindi sapat ang haba ng password"
   },
   "passwordTermsWarning": {
-    "message": "Kapag naiwala ko ang password na ito, hindi ito maire-reset ng MetaMask."
+    "message": "Kapag naiwala ko ang password na ito, hindi ito maire-reset ng 1do."
   },
   "passwordTermsWarningSocial": {
-    "message": "Kung makakalimutan ko ang password na ito, permanente akong mawawalan ng access sa aking wallet. Hindi ito mare-reset ng MetaMask para sa akin."
+    "message": "Kung makakalimutan ko ang password na ito, permanente akong mawawalan ng access sa aking wallet. Hindi ito mare-reset ng 1do para sa akin."
   },
   "passwordToggleHide": {
     "message": "Itago ang password"
@@ -5137,11 +5137,11 @@
     "description": "The description for the `wallet_snap_*` permission. $1 is the name of the Snap."
   },
   "permission_assets": {
-    "message": "Ipakita ang mga asset ng account sa MetaMask.",
+    "message": "Ipakita ang mga asset ng account sa 1do.",
     "description": "The description for the `endowment:assets` permission."
   },
   "permission_assetsDescription": {
-    "message": "Pahintulutan ang $1 na ibigay ang impormasyon ng asset sa kliyente ng MetaMask. Ang mga asset ay maaaring onchain o offchain.",
+    "message": "Pahintulutan ang $1 na ibigay ang impormasyon ng asset sa kliyente ng 1do. Ang mga asset ay maaaring onchain o offchain.",
     "description": "An extended description for the `endowment:assets` permission. $1 is the name of the Snap."
   },
   "permission_cronjob": {
@@ -5153,11 +5153,11 @@
     "description": "An extended description for the `snap_cronjob` permission. $1 is the snap name."
   },
   "permission_dialog": {
-    "message": "Ipakita ang mga dialog window sa MetaMask.",
+    "message": "Ipakita ang mga dialog window sa 1do.",
     "description": "The description for the `snap_dialog` permission"
   },
   "permission_dialogDescription": {
-    "message": "Payagan ang $1 na magpakita ng mga popup ng MetaMask na may custom na teksto, input field, at mga button para aprubahan o tanggihan ang isang aksyon. \nMaaaring gamitin para gumawa ng hal. mga alerto, kumpirmasyon, at opt-in flow para sa isang snap.",
+    "message": "Payagan ang $1 na magpakita ng mga popup ng 1do na may custom na teksto, input field, at mga button para aprubahan o tanggihan ang isang aksyon. \nMaaaring gamitin para gumawa ng hal. mga alerto, kumpirmasyon, at opt-in flow para sa isang snap.",
     "description": "An extended description for the `snap_dialog` permission. $1 is the snap name."
   },
   "permission_ethereumAccounts": {
@@ -5169,7 +5169,7 @@
     "description": "The description for the `endowment:ethereum-provider` permission"
   },
   "permission_ethereumProviderDescription": {
-    "message": "Payagan ang $1 na makipag-ugnayan sa MetaMask nang direkta, para mabasa nito ang datos mula sa blockchain at makapagmungkahi ng mga mensahe at transaksyon.",
+    "message": "Payagan ang $1 na makipag-ugnayan sa 1do nang direkta, para mabasa nito ang datos mula sa blockchain at makapagmungkahi ng mga mensahe at transaksyon.",
     "description": "An extended description for the `endowment:ethereum-provider` permission. $1 is the snap name."
   },
   "permission_getEntropy": {
@@ -5177,7 +5177,7 @@
     "description": "The description for the `snap_getEntropy` permission. $1 is the snap name."
   },
   "permission_getEntropyDescription": {
-    "message": "Payagan ang $1 na humango ng mga arbitrary key na natatangi sa $1, nang hindi inilalantad ang mga ito. Ang mga key na ito ay hiwalay sa iyong (mga) MetaMask account at hindi nauugnay sa iyong mga pribadong key o Lihim na Parirala sa Pagbawi. Hindi maa-access ng ibang mga snap ang impormasyong ito.",
+    "message": "Payagan ang $1 na humango ng mga arbitrary key na natatangi sa $1, nang hindi inilalantad ang mga ito. Ang mga key na ito ay hiwalay sa iyong (mga) 1do account at hindi nauugnay sa iyong mga pribadong key o Lihim na Parirala sa Pagbawi. Hindi maa-access ng ibang mga snap ang impormasyong ito.",
     "description": "An extended description for the `snap_getEntropy` permission. $1 is the snap name."
   },
   "permission_getLocale": {
@@ -5185,7 +5185,7 @@
     "description": "The description for the `snap_getLocale` permission"
   },
   "permission_getLocaleDescription": {
-    "message": "Payagan ang $1 na i-access ang iyong mas gustong wika mula sa iyong mga setting sa MetaMask. Maaari itong gamitin para i-localize at ipakita ang content ng $1 gamit ang iyong wika.",
+    "message": "Payagan ang $1 na i-access ang iyong mas gustong wika mula sa iyong mga setting sa 1do. Maaari itong gamitin para i-localize at ipakita ang content ng $1 gamit ang iyong wika.",
     "description": "An extended description for the `snap_getLocale` permission. $1 is the snap name."
   },
   "permission_getPreferences": {
@@ -5193,7 +5193,7 @@
     "description": "The description for the `snap_getPreferences` permission"
   },
   "permission_getPreferencesDescription": {
-    "message": "Pahintulutan ang $1 na ma-access ang impormasyon tulad ng gusto mong wika at fiat na salapi sa iyong mga setting ng MetaMask. Tumutulong ito sa $1 na magpakita ng content na nakaayon sa iyong mga kagustuhan. ",
+    "message": "Pahintulutan ang $1 na ma-access ang impormasyon tulad ng gusto mong wika at fiat na salapi sa iyong mga setting ng 1do. Tumutulong ito sa $1 na magpakita ng content na nakaayon sa iyong mga kagustuhan. ",
     "description": "An extended description for the `snap_getPreferences` permission. $1 is the snap name."
   },
   "permission_homePage": {
@@ -5201,7 +5201,7 @@
     "description": "The description for the `endowment:page-home` permission"
   },
   "permission_homePageDescription": {
-    "message": "Hayaan ang $1 na magpakita ng custom na home screen sa MetaMask. Maaari itong gamitin para sa mga user interface, configuration, at mga dashboard.",
+    "message": "Hayaan ang $1 na magpakita ng custom na home screen sa 1do. Maaari itong gamitin para sa mga user interface, configuration, at mga dashboard.",
     "description": "An extended description for the `endowment:page-home` permission. $1 is the snap name."
   },
   "permission_keyring": {
@@ -5253,7 +5253,7 @@
     "description": "The description for the `endowment:multichain-provider` permission"
   },
   "permission_multichainProviderDescription": {
-    "message": "Payagan ang $1 na makipag-ugnayan sa MetaMask nang direkta, para mabasa nito ang datos mula sa blockchain at makapagmungkahi ng mga mensahe at transaksyon.",
+    "message": "Payagan ang $1 na makipag-ugnayan sa 1do nang direkta, para mabasa nito ang datos mula sa blockchain at makapagmungkahi ng mga mensahe at transaksyon.",
     "description": "An extended description for the `endowment:multichain-provider` permission. $1 is the snap name."
   },
   "permission_nameLookup": {
@@ -5261,7 +5261,7 @@
     "description": "The description for the `endowment:name-lookup` permission."
   },
   "permission_nameLookupDescription": {
-    "message": "Payagan ang snap na kumuha at magpakita ng mga address at domain lookup sa iba't ibang bahagi ng MetaMask UI.",
+    "message": "Payagan ang snap na kumuha at magpakita ng mga address at domain lookup sa iba't ibang bahagi ng 1do UI.",
     "description": "An extended description for the `endowment:name-lookup` permission."
   },
   "permission_notifications": {
@@ -5269,7 +5269,7 @@
     "description": "The description for the `snap_notify` permission"
   },
   "permission_notificationsDescription": {
-    "message": "Payagan ang $1 na magpakita ng mga notipikasyon sa loob ng MetaMask. Isang maikling tekstong notipikasyon ang maaaring mapaumpisa ng isang snap para sa naaaksyunan o sensitibo sa oras na impormasyon.",
+    "message": "Payagan ang $1 na magpakita ng mga notipikasyon sa loob ng 1do. Isang maikling tekstong notipikasyon ang maaaring mapaumpisa ng isang snap para sa naaaksyunan o sensitibo sa oras na impormasyon.",
     "description": "An extended description for the `snap_notify` permission. $1 is the snap name."
   },
   "permission_protocol": {
@@ -5277,7 +5277,7 @@
     "description": "The description for the `endowment:protocol` permission."
   },
   "permission_protocolDescription": {
-    "message": "Pahintulutan ang $1 na bigyan ang MetaMask ng protocol data gaya ng mga pagtatantya sa gas o impormasyon ng token.",
+    "message": "Pahintulutan ang $1 na bigyan ang 1do ng protocol data gaya ng mga pagtatantya sa gas o impormasyon ng token.",
     "description": "An extended description for the `endowment:protocol` permission. $1 is the name of the Snap."
   },
   "permission_rpc": {
@@ -5313,7 +5313,7 @@
     "description": "The description for the `endowment:transaction-insight` permission"
   },
   "permission_transactionInsightDescription": {
-    "message": "Payagan ang $1 na mag-decode ng mga transaksyon at magpakita ng mga insight sa loob ng MetaMask UI. Maaari itong gamitin para sa anti-phishing at mga solusyon sa seguridad.",
+    "message": "Payagan ang $1 na mag-decode ng mga transaksyon at magpakita ng mga insight sa loob ng 1do UI. Maaari itong gamitin para sa anti-phishing at mga solusyon sa seguridad.",
     "description": "An extended description for the `endowment:transaction-insight` permission. $1 is the snap name."
   },
   "permission_transactionInsightOrigin": {
@@ -6028,7 +6028,7 @@
     "message": "Bantayan ang liquidation"
   },
   "perpsTutorialWhatArePerpsDescription": {
-    "message": "Nakakasuporta na ngayon ang MetaMask sa mga perpetual future na tinatawag ding perps. Nagbibigay-daan ito sa iyong mag-trade sa paggalaw ng presyo ng isang token nang hindi ito binibili."
+    "message": "Nakakasuporta na ngayon ang 1do sa mga perpetual future na tinatawag ding perps. Nagbibigay-daan ito sa iyong mag-trade sa paggalaw ng presyo ng isang token nang hindi ito binibili."
   },
   "perpsTutorialWhatArePerpsSubtitle": {
     "message": "Narito kung paano ito gumagana."
@@ -6107,7 +6107,7 @@
     "description": "Pin label used in multichain account menu"
   },
   "pinMetaMask": {
-    "message": "I-pin ang extension ng MetaMask"
+    "message": "I-pin ang extension ng 1do"
   },
   "pinMetaMaskDescription": {
     "message": "I-click ang $1 at pagkatapos ay ang $2 para i-pin ito."
@@ -6125,7 +6125,7 @@
     "message": "blog post."
   },
   "pna25ModalBody1": {
-    "message": "Para makapagbigay kami ng mas mahusay na serbisyo sa iyo, ina-update namin ang aming analytics para maiugnay sa mga ginagawa mo sa MetaMask ang mga data na nakapubliko gaya ng mga address ng wallet at nauugnay na aktibidad sa chain. Nakakatulong ito sa aming pahusayin ang performance, seguridad, at mga feature ng MetaMask para sa mas maganda at mas ligtas na wallet."
+    "message": "Para makapagbigay kami ng mas mahusay na serbisyo sa iyo, ina-update namin ang aming analytics para maiugnay sa mga ginagawa mo sa 1do ang mga data na nakapubliko gaya ng mga address ng wallet at nauugnay na aktibidad sa chain. Nakakatulong ito sa aming pahusayin ang performance, seguridad, at mga feature ng 1do para sa mas maganda at mas ligtas na wallet."
   },
   "pna25ModalBody2": {
     "message": "Seryoso kami pagdating sa pagkapribado. Hindi namin ginagamit ang impormasyong ito para sa advertising at hindi rin namin ibinebenta ang data mo sa mga third party. Puwede kang mag-opt out anumang oras sa Mga Setting."
@@ -6265,7 +6265,7 @@
     "message": "Inihinto ang plan mo dahil sa hindi pagbabayad."
   },
   "pushNotificationShieldSubscriptionTitle": {
-    "message": "Transaction Shield ng MetaMask"
+    "message": "Transaction Shield ng 1do"
   },
   "pushNotificationShieldUpdatePaymentCta": {
     "message": "I-update ang paraan ng pagbabayad"
@@ -6359,7 +6359,7 @@
     "message": "Nakumpleto ang pag-unstake"
   },
   "pushPlatformNotificationsSwapCompletedDescription": {
-    "message": "Matagumpay ang Pag-swap mo sa MetaMask"
+    "message": "Matagumpay ang Pag-swap mo sa 1do"
   },
   "pushPlatformNotificationsSwapCompletedTitle": {
     "message": "Nakumpleto ang pag-swap"
@@ -6393,7 +6393,7 @@
     "description": "Title when camera access is persistently blocked for QR scanning."
   },
   "qrCameraAccessNeededBody": {
-    "message": "Kailangan ng MetaMask ng access sa camera para i-scan ang QR code sa device mo.",
+    "message": "Kailangan ng 1do ng access sa camera para i-scan ang QR code sa device mo.",
     "description": "Body when the user dismissed the camera permission prompt but it can be requested again."
   },
   "qrCameraAccessNeededTitle": {
@@ -6481,17 +6481,17 @@
     "description": "Make sure you have the Secret Recovery Phrase or private key for this account before removing."
   },
   "removeAccountModalBannerTitle": {
-    "message": "Ang account na ito ay aalisin sa MetaMask.",
+    "message": "Ang account na ito ay aalisin sa 1do.",
     "description": "Title of a banner alert used on account remove modal."
   },
   "removeAll": {
     "message": "Alisin lahat"
   },
   "removeKeyringSnap": {
-    "message": "Ang pag-aalis sa Snap na ito ay nag-aalis ng mga account na ito sa MetaMask:"
+    "message": "Ang pag-aalis sa Snap na ito ay nag-aalis ng mga account na ito sa 1do:"
   },
   "removeKeyringSnapToolTip": {
-    "message": "Kinokontrol ng snap ang mga account, at sa pag-alis nito, ang mga account ay aalisin din sa MetaMask, ngunit mananatili ang mga ito sa blockchain."
+    "message": "Kinokontrol ng snap ang mga account, at sa pag-alis nito, ang mga account ay aalisin din sa 1do, ngunit mananatili ang mga ito sa blockchain."
   },
   "removeNFT": {
     "message": "Alisin ang NFT"
@@ -6506,7 +6506,7 @@
     "message": "Alisin ang Snap"
   },
   "removeSnapAccountDescription": {
-    "message": "Kung magpatuloy ka, ang account na ito ay hindi na available sa MetaMask."
+    "message": "Kung magpatuloy ka, ang account na ito ay hindi na available sa 1do."
   },
   "removeSnapAccountTitle": {
     "message": "Tanggalin ang account"
@@ -6580,7 +6580,7 @@
     "message": "Hindi namin mababawi ang Lihim na Parirala sa Pagbawi mo. Puwede mong i-reset ang wallet para gumawa ng panibago at i-import ang iyong mga account gamit ang mga pribadong key."
   },
   "resetWalletDescriptionTwo": {
-    "message": "Kapag nag-reset ka, mabubura $1 ang lahat ng data ng wallet sa MetaMask sa device na ito. $2",
+    "message": "Kapag nag-reset ka, mabubura $1 ang lahat ng data ng wallet sa 1do sa device na ito. $2",
     "description": "$1 is the bolded text 'permanently' and $2 is the bolded text 'It will not impact the assets within your wallet.'"
   },
   "resetWalletTitle": {
@@ -6591,7 +6591,7 @@
     "description": "$1 is the protocol name."
   },
   "restartMetamask": {
-    "message": "I-restart ang MetaMask"
+    "message": "I-restart ang 1do"
   },
   "restore": {
     "message": "Ibalik"
@@ -6652,7 +6652,7 @@
     "message": "Text"
   },
   "revealSeedWordsWarning": {
-    "message": "Siguraduhing walang nakatingin sa screen mo. Hindi ito kailanman hihingin ng Suporta ng MetaMask."
+    "message": "Siguraduhing walang nakatingin sa screen mo. Hindi ito kailanman hihingin ng Suporta ng 1do."
   },
   "revealSensitiveContent": {
     "message": "Ipakita ang sensitibong nilalaman"
@@ -6752,13 +6752,13 @@
     "message": "Hindi sinusuportahan ang rehiyon"
   },
   "rewardsOnboardingStep1Description": {
-    "message": "Ang bawat pag-swap at pag-trade sa perps na isinasagawa mo sa MetaMask ay nagpapalapit sa iyo sa mga reward. Idagdag ang iyong mga account at makikita mong nadaragdagan ang iyong mga point."
+    "message": "Ang bawat pag-swap at pag-trade sa perps na isinasagawa mo sa 1do ay nagpapalapit sa iyo sa mga reward. Idagdag ang iyong mga account at makikita mong nadaragdagan ang iyong mga point."
   },
   "rewardsOnboardingStep1Title": {
     "message": "Makakakuha ng mga point sa bawat pag-trade"
   },
   "rewardsOnboardingStep2Description": {
-    "message": "Abutin ang milestones ng mga point para makuha ang perks gaya ng 50% off na bayad sa perps, mga eksklusibong token, at libreng MetaMask Metal Card."
+    "message": "Abutin ang milestones ng mga point para makuha ang perks gaya ng 50% off na bayad sa perps, mga eksklusibong token, at libreng 1do Metal Card."
   },
   "rewardsOnboardingStep2Title": {
     "message": "Mag-level up para sa mas malalaking perk"
@@ -6934,7 +6934,7 @@
     "message": "Palitan ang password"
   },
   "securityChangePasswordDescription": {
-    "message": "Pumili ng password na mahirap hulaan para i-unlock ang MetaMask app sa iyong device. Kung mawawala mo ang password na ito, kakailanganin mo ang iyong Lihim na Parirala sa Pagbawi para muling i-import ang iyong wallet."
+    "message": "Pumili ng password na mahirap hulaan para i-unlock ang 1do app sa iyong device. Kung mawawala mo ang password na ito, kakailanganin mo ang iyong Lihim na Parirala sa Pagbawi para muling i-import ang iyong wallet."
   },
   "securityChangePasswordTitle": {
     "message": "Password"
@@ -6975,7 +6975,7 @@
     "message": "Pinagana"
   },
   "securitySocialLoginEnabledDescription": {
-    "message": "Gamitin ng iyong $1 na login at password sa MetaMask para mabawi ang iyong account at mga Lihim na Parirala sa Pagbawi.",
+    "message": "Gamitin ng iyong $1 na login at password sa 1do para mabawi ang iyong account at mga Lihim na Parirala sa Pagbawi.",
     "description": "The $1 is the text 'Google' or 'Apple'"
   },
   "securitySocialLoginLabel": {
@@ -7024,7 +7024,7 @@
     "message": "Pumili ng account"
   },
   "selectAnAccountAlreadyConnected": {
-    "message": "Ang acount na ito ay nakakonekta na sa MetaMask"
+    "message": "Ang acount na ito ay nakakonekta na sa 1do"
   },
   "selectEnableDisplayMediaPrivacyPreference": {
     "message": "I-on ang Ipakita ang NFT media"
@@ -7235,7 +7235,7 @@
     "message": "Kailangan mo ba ng tulong sa paghahanap nito?"
   },
   "shieldClaimImpactedTxHashNotEligible": {
-    "message": "Hindi ginawa sa MetaMask ang transaksyong ito, kaya hindi ito kwalipikado para sa mga claim"
+    "message": "Hindi ginawa sa 1do ang transaksyong ito, kaya hindi ito kwalipikado para sa mga claim"
   },
   "shieldClaimImpactedWalletAddress": {
     "message": "Apektadong wallet address"
@@ -7343,28 +7343,28 @@
     "message": "Kumpirmahin ang plan"
   },
   "shieldCoverageAlertCovered": {
-    "message": "Protektado ka ng Transaction Shield ng MetaMask nang hanggang $2. $1."
+    "message": "Protektado ka ng Transaction Shield ng 1do nang hanggang $2. $1."
   },
   "shieldCoverageAlertHighRiskTransaction": {
-    "message": "Isa itong transaksyon na mataas ang panganib, kaya hindi ito pinoprotektahan ng Transaction Shield ng MetaMask. $1."
+    "message": "Isa itong transaksyon na mataas ang panganib, kaya hindi ito pinoprotektahan ng Transaction Shield ng 1do. $1."
   },
   "shieldCoverageAlertMessageChainNotSupported": {
-    "message": "Hindi sinusuportahan ang chain na ito, kaya hindi ito pinoprotektahan ng Transaction Shield ng MetaMask. $1"
+    "message": "Hindi sinusuportahan ang chain na ito, kaya hindi ito pinoprotektahan ng Transaction Shield ng 1do. $1"
   },
   "shieldCoverageAlertMessageLearnHowCoverageWorks": {
     "message": "Tingnan kung ano ang saklaw"
   },
   "shieldCoverageAlertMessagePaused": {
-    "message": "Nagkaroon ng isyu sa pagbabayad ng plan mo ng Transaction Shield ng MetaMask. I-update ang paraan ng pagbabayad mo para maibalik ang pagsaklaw."
+    "message": "Nagkaroon ng isyu sa pagbabayad ng plan mo ng Transaction Shield ng 1do. I-update ang paraan ng pagbabayad mo para maibalik ang pagsaklaw."
   },
   "shieldCoverageAlertMessagePausedAcknowledgeButton": {
     "message": "I-update ang paraan ng pagbabayad"
   },
   "shieldCoverageAlertMessagePotentialRisks": {
-    "message": "May mga potensyal na panganib ang transaksyong ito, kaya hindi ito pinoprotektahan ng Transaction Shield ng MetaMask. $1"
+    "message": "May mga potensyal na panganib ang transaksyong ito, kaya hindi ito pinoprotektahan ng Transaction Shield ng 1do. $1"
   },
   "shieldCoverageAlertMessageSignatureNotSupported": {
-    "message": "Hindi sinusuportahan ang lagdang ito, kaya hindi ito pinoprotektahan ng Transaction Shield ng MetaMask. $1"
+    "message": "Hindi sinusuportahan ang lagdang ito, kaya hindi ito pinoprotektahan ng Transaction Shield ng 1do. $1"
   },
   "shieldCoverageAlertMessageTitle": {
     "message": "Hindi saklaw ang transaksyong ito"
@@ -7385,10 +7385,10 @@
     "message": "Nagpapakita ng matibay na senyales ng panganib ang token na ito. Maaaring magdulot ng pagkawala ng pondo ang pagpapatuloy. $1."
   },
   "shieldCoverageAlertMessageTxTypeNotSupported": {
-    "message": "Hindi sinusuportahan ang uri ng transaksyong ito, kaya hindi ito protektado ng Transaction Shield ng MetaMask. $1"
+    "message": "Hindi sinusuportahan ang uri ng transaksyong ito, kaya hindi ito protektado ng Transaction Shield ng 1do. $1"
   },
   "shieldCoverageAlertMessageUnknown": {
-    "message": "Hindi ma-verify ang kahilingang ito, kaya hindi ito pinoprotektahan ng Transaction Shield ng MetaMask. $1."
+    "message": "Hindi ma-verify ang kahilingang ito, kaya hindi ito pinoprotektahan ng Transaction Shield ng 1do. $1."
   },
   "shieldCoverageEnding": {
     "message": "Malapit nang magtapos ang pagsaklaw ng shield"
@@ -7576,7 +7576,7 @@
     "description": "The $1 is the number of days and the $2 is the price of the plan"
   },
   "shieldTxDetails1Title": {
-    "message": "Transaction Shield ng MetaMask"
+    "message": "Transaction Shield ng 1do"
   },
   "shieldTxDetails2Description": {
     "message": "$1, sa $2 ang susunod na billing",
@@ -7796,7 +7796,7 @@
     "message": "Piliin ito upang ipakita ang mga test network sa listahan ng network"
   },
   "sidePanelMigrationToast": {
-    "message": "Nagbubukas na ngayon ang MetaMask sa panel sa gilid nang default. $1 anumang oras mula sa menu.",
+    "message": "Nagbubukas na ngayon ang 1do sa panel sa gilid nang default. $1 anumang oras mula sa menu.",
     "description": "Shown when the extension opens in the side panel after migration. $1 is an inline link to switch back to the popup view."
   },
   "sign": {
@@ -7924,13 +7924,13 @@
     "message": "Huwag ipakita ang interstitial screen kapag binubuksan ang mga deep link"
   },
   "skipDeepLinkInterstitialDescription": {
-    "message": "Lalaktawan ng pagpapagana sa opsyon na ito ang interstitial screen na ipinapakita kapag binubuksan ang mga deep link sa MetaMask. Ang \"deep link\" ay isang link gaya ng https://link.metamask.io/home na magbubukas sa MetaMask; ang mga link na ito ay maaaring guluhin ng iba. Ang interstitial screen ay idinisenyo para protektahan ka mula sa aksidenteng pagbubukas ng mga pahina sa loob ng MetaMask na maaaring magpakita ng iyong mga account, token, talaan, balanse, setting, o iba pang potensyal na sensitibong impormasyon. Ang setting na ito ay inilalapat lamang sa mga link na nilagdaan ng MetaMask."
+    "message": "Lalaktawan ng pagpapagana sa opsyon na ito ang interstitial screen na ipinapakita kapag binubuksan ang mga deep link sa 1do. Ang \"deep link\" ay isang link gaya ng https://link.metamask.io/home na magbubukas sa 1do; ang mga link na ito ay maaaring guluhin ng iba. Ang interstitial screen ay idinisenyo para protektahan ka mula sa aksidenteng pagbubukas ng mga pahina sa loob ng 1do na maaaring magpakita ng iyong mga account, token, talaan, balanse, setting, o iba pang potensyal na sensitibong impormasyon. Ang setting na ito ay inilalapat lamang sa mga link na nilagdaan ng 1do."
   },
   "skipLinkConfirmationScreens": {
     "message": "Laktawan ang pag-link ng mga screen ng kumpirmasyon"
   },
   "skipLinkConfirmationScreensDescription": {
-    "message": "Kapag nagbukas ka ng link mula sa MetaMask, nagpapakita kami ng screen ng kumpirmasyon para hindi mo aksidenteng makita ang mga sensitibong impormasyon gaya ng iyong mga account, balanse, o history ng transaksyon. I-on ito para laktawan ang screen na iyon para sa mga link na nagmumula sa MetaMask."
+    "message": "Kapag nagbukas ka ng link mula sa 1do, nagpapakita kami ng screen ng kumpirmasyon para hindi mo aksidenteng makita ang mga sensitibong impormasyon gaya ng iyong mga account, balanse, o history ng transaksyon. I-on ito para laktawan ang screen na iyon para sa mga link na nagmumula sa 1do."
   },
   "slippage": {
     "message": "Slippage"
@@ -7993,7 +7993,7 @@
     "message": "Nabigo ang transaksyon mo"
   },
   "smartTransactionErrorDescription": {
-    "message": "Maaaring magdulot ng pagkabigo ang biglaang pagbabago sa merkado. Kung magpatuloy ang problema, makipag-ugnayan sa customer support ng MetaMask."
+    "message": "Maaaring magdulot ng pagkabigo ang biglaang pagbabago sa merkado. Kung magpatuloy ang problema, makipag-ugnayan sa customer support ng 1do."
   },
   "smartTransactionPending": {
     "message": "Isinumite ang iyong transaksyon"
@@ -8043,7 +8043,7 @@
     "message": "Naalis ang account"
   },
   "snapAccountRemovedDescription": {
-    "message": "Ang account na ito ay hindi na magiging available para gamitin sa MetaMask."
+    "message": "Ang account na ito ay hindi na magiging available para gamitin sa 1do."
   },
   "snapConnectTo": {
     "message": "Kumonekta sa $1",
@@ -8259,7 +8259,7 @@
     "message": "Na-import na ang Lihim na Parirala sa Pagbawi na ito."
   },
   "srpDetailsDescription": {
-    "message": "Ang Lihim na Parirala sa Pagbawi (Secret Recovery Phrase), na tinatawag ding pariralang binhi o mnemonic, ay isang pangkat ng mga salita na nagpapahintulot sa iyo na i-access at kontrolin ang iyong crypto wallet. Para mailipat ang iyong wallet sa MetaMask, kailangan mo ang pariralang ito."
+    "message": "Ang Lihim na Parirala sa Pagbawi (Secret Recovery Phrase), na tinatawag ding pariralang binhi o mnemonic, ay isang pangkat ng mga salita na nagpapahintulot sa iyo na i-access at kontrolin ang iyong crypto wallet. Para mailipat ang iyong wallet sa 1do, kailangan mo ang pariralang ito."
   },
   "srpDetailsOwnsAccessListItemOne": {
     "message": "Kunin lahat ng iyong pera"
@@ -8322,7 +8322,7 @@
     "message": "Upang ibunyag ang iyong Lihim na Parirala sa Pagbawi, kailangan mong sagutin nang tama ang dalawang tanong"
   },
   "srpSecurityQuizQuestionOneQuestion": {
-    "message": "Kung mawala mo ang iyong Lihim na Parirala sa Pagbawi, ang MetaMask ay..."
+    "message": "Kung mawala mo ang iyong Lihim na Parirala sa Pagbawi, ang 1do ay..."
   },
   "srpSecurityQuizQuestionOneRightAnswer": {
     "message": "Hindi ka matutulungan"
@@ -8407,7 +8407,7 @@
     "description": "$1 represents the `stateCorruptionTheseInstructions` localization key"
   },
   "stateCorruptionCopyAndRestoreBeforeReset": {
-    "message": "Puwede mong subukang kopyahin at ibalik ang iyong file ng estado nang manu-mano bago ka magpasyang i-reset ang MetaMask sa pamamagitan ng pagsunod sa $1.",
+    "message": "Puwede mong subukang kopyahin at ibalik ang iyong file ng estado nang manu-mano bago ka magpasyang i-reset ang 1do sa pamamagitan ng pagsunod sa $1.",
     "description": "$1 represents the `stateCorruptionTheseInstructions` localization key"
   },
   "stateCorruptionDetectedNoBackup": {
@@ -8420,7 +8420,7 @@
     "message": "Panloob na error: hindi ma-access ang database"
   },
   "stateCorruptionResetMetaMaskState": {
-    "message": "I-reset ang Estado ng MetaMask"
+    "message": "I-reset ang Estado ng 1do"
   },
   "stateCorruptionResettingDatabase": {
     "message": "Nire-reset ang database…"
@@ -8442,7 +8442,7 @@
     "message": "Error sa pagbabalik ng mga state log, pakisubukan muli mamaya."
   },
   "stateLogFileName": {
-    "message": "Mga log ng estado ng MetaMask"
+    "message": "Mga log ng estado ng 1do"
   },
   "stateLogs": {
     "message": "Mga log ng estado"
@@ -8451,7 +8451,7 @@
     "message": "Naglalaman ang mga log ng estado ng iyong mga address ng pampublikong account at ipinadalang transaksyon."
   },
   "stateLogsModalDescription": {
-    "message": "Matutulungan kami ng mga state log na i-debug ang mga isyung maaari mong makaharap. Ipadala lamang ito sa MetaMask para sa suporta, dahil naglalaman ang mga state log ng pampublikong account address at mga transaksyon mo."
+    "message": "Matutulungan kami ng mga state log na i-debug ang mga isyung maaari mong makaharap. Ipadala lamang ito sa 1do para sa suporta, dahil naglalaman ang mga state log ng pampublikong account address at mga transaksyon mo."
   },
   "status": {
     "message": "Lagay"
@@ -8463,7 +8463,7 @@
     "message": "Ikonekta ang iyong Lattice1"
   },
   "step1LatticeWalletMsg": {
-    "message": "Maaari mong ikonekta ang MetaMask sa iyong Lattice1 device kapag na-set up na ito at online. I-unlock ang iyong device at ihanda ang iyong Device ID.",
+    "message": "Maaari mong ikonekta ang 1do sa iyong Lattice1 device kapag na-set up na ito at online. I-unlock ang iyong device at ihanda ang iyong Device ID.",
     "description": "$1 represents the `hardwareWalletSupportLinkConversion` localization key"
   },
   "step1LedgerWallet": {
@@ -8498,7 +8498,7 @@
     "message": "I-back up ang Lihim na Parirala sa Pagbawi (Secret Recovery Phrase)"
   },
   "storageErrorDescriptionDefault": {
-    "message": "I-back up ang Secret Recovery Phrase mo at muling i-install ang MetaMask kung magpapatuloy ang problema."
+    "message": "I-back up ang Secret Recovery Phrase mo at muling i-install ang 1do kung magpapatuloy ang problema."
   },
   "storageErrorDescriptionNoSpace": {
     "message": "Naubusan ng storage ang device mo. Magbakante ng espasyo ngayon o maaaring mawala ang mga pagbabago sa wallet na hindi pa nai-save."
@@ -8602,7 +8602,7 @@
     "message": "Sagutan ang aming survey"
   },
   "surveyTitle": {
-    "message": "Hubugin ang hinaharap ng MetaMask"
+    "message": "Hubugin ang hinaharap ng 1do"
   },
   "swap": {
     "message": "Mag-swap"
@@ -8662,7 +8662,7 @@
     "message": "I-edit ang limitasyon"
   },
   "swapEnableDescription": {
-    "message": "Kinakailangan ito at nagbibigay ito ng pahintulot sa MetaMask na i-swap ang iyong $1.",
+    "message": "Kinakailangan ito at nagbibigay ito ng pahintulot sa 1do na i-swap ang iyong $1.",
     "description": "Gives the user info about the required approval transaction for swaps. $1 will be the symbol of a token being approved for swaps."
   },
   "swapEnableTokenForSwapping": {
@@ -8700,7 +8700,7 @@
     "description": "Tells a user that they need to confirm on their hardware wallet a swap of 2 tokens. $1 is a source token and $2 is a destination token"
   },
   "swapGasFeesExplanation": {
-    "message": "Hindi kumikita ang MetaMask mula sa mga bayad sa gas. Ang mga bayarin na ito ay pagtatantiya at maaaring mabago batay sa kung gaano kaabala ang network at kung gaano kakumplikado ang transaksyon. Alamin pa ang $1.",
+    "message": "Hindi kumikita ang 1do mula sa mga bayad sa gas. Ang mga bayarin na ito ay pagtatantiya at maaaring mabago batay sa kung gaano kaabala ang network at kung gaano kakumplikado ang transaksyon. Alamin pa ang $1.",
     "description": "$1 is a link (text in link can be found at 'swapGasFeesSummaryLinkText')"
   },
   "swapGasFeesExplanationLinkText": {
@@ -8714,13 +8714,13 @@
     "message": "Ang mga bayad sa gas sa nakaraang screen ay hinati sa dalawang transaksyon."
   },
   "swapGasFeesSponsored": {
-    "message": "Binayaran ng MetaMask"
+    "message": "Binayaran ng 1do"
   },
   "swapGasFeesSponsoredExplanation": {
-    "message": "MetaMask ang nagbabayad sa network na ito, kaya puwede kang makipagtransaksyon kahit wala kang $1 sa account mo."
+    "message": "1do ang nagbabayad sa network na ito, kaya puwede kang makipagtransaksyon kahit wala kang $1 sa account mo."
   },
   "swapIncludesMMFee": {
-    "message": "Kabilang ang $1% na bayad sa MetaMask.",
+    "message": "Kabilang ang $1% na bayad sa 1do.",
     "description": "Provides information about the fee that MetaMask takes for swaps. $1 is a decimal number."
   },
   "swapLearnMore": {
@@ -8733,10 +8733,10 @@
     "message": "Pinakamataas na slippage"
   },
   "swapMetaMaskFee": {
-    "message": "Bayad sa MetaMask"
+    "message": "Bayad sa 1do"
   },
   "swapMetaMaskFeeDescription": {
-    "message": "Ang bayad na $1% ay awtomatikong isinasali sa quote na ito. Babayaran mo ito bilang kapalit ng isang lisensya para gamitin ang software ng pagsasama-sama ng impormasyon ng tagapagbigay ng liquidity ng MetaMask.",
+    "message": "Ang bayad na $1% ay awtomatikong isinasali sa quote na ito. Babayaran mo ito bilang kapalit ng isang lisensya para gamitin ang software ng pagsasama-sama ng impormasyon ng tagapagbigay ng liquidity ng 1do.",
     "description": "Provides information about the fee that MetaMask takes for swaps. $1 is a decimal number."
   },
   "swapNQuotesWithDot": {
@@ -8897,7 +8897,7 @@
     "message": "Bumalik sa popup"
   },
   "switchEthereumChainConfirmationDescription": {
-    "message": "Ililipat nito ang napiling network sa loob ng MetaMask sa dating idinagdag na network:"
+    "message": "Ililipat nito ang napiling network sa loob ng 1do sa dating idinagdag na network:"
   },
   "switchEthereumChainConfirmationTitle": {
     "message": "Payagan ang site na ito para lumipat ng network?"
@@ -8906,7 +8906,7 @@
     "message": "Lumipat ng network"
   },
   "switchToMetaMaskDefaultRpc": {
-    "message": "Lumipat sa default na RPC ng MetaMask",
+    "message": "Lumipat sa default na RPC ng 1do",
     "description": "Button text to switch the default RPC endpoint to MetaMask default RPC"
   },
   "switchToPopup": {
@@ -8949,7 +8949,7 @@
     "message": "Sumang-ayon"
   },
   "termsOfUseAgreeText": {
-    "message": " Sumasang-ayon ako sa Mga Tuntunin sa Paggamit, na nalalapat sa aking paggamit ng MetaMask at lahat ng feature nito"
+    "message": " Sumasang-ayon ako sa Mga Tuntunin sa Paggamit, na nalalapat sa aking paggamit ng 1do at lahat ng feature nito"
   },
   "termsOfUseFooterText": {
     "message": "Mag-scroll upang basahin ang lahat ng seksyon"
@@ -8967,13 +8967,13 @@
     "message": "Tema"
   },
   "themeDescription": {
-    "message": "Piliin ang mas gusto mong tema ng MetaMask."
+    "message": "Piliin ang mas gusto mong tema ng 1do."
   },
   "thirdPartyApis": {
     "message": "Mga Third-party API"
   },
   "thirdPartyApisDescription": {
-    "message": "Piliin kung paano mo ibabahagi ang iyong IP address o Ethereum address sa mga third-party API. Maaapektuhan ng mga pagbabago ang iyong karanasan sa MetaMask."
+    "message": "Piliin kung paano mo ibabahagi ang iyong IP address o Ethereum address sa mga third-party API. Maaapektuhan ng mga pagbabago ang iyong karanasan sa 1do."
   },
   "thirdPartySoftware": {
     "message": "Paunawa ng third-party na software",
@@ -9220,7 +9220,7 @@
     "message": "Maaaring paulit-ulit ang error na ito, kaya subukang i-restart ang extension."
   },
   "troubleStartingTitle": {
-    "message": "Nagkakaproblema ang MetaMask sa pagsisimula."
+    "message": "Nagkakaproblema ang 1do sa pagsisimula."
   },
   "trustSignalBlockDescription": {
     "message": "Kapag kumonekta ka sa site na ito, maaaring mawala sa iyo ang lahat ng asset mo."
@@ -9389,7 +9389,7 @@
     "message": "Na-update ang mga RPC ng Network"
   },
   "updatedToMetaMaskDefault": {
-    "message": "Na-update sa MetaMask default",
+    "message": "Na-update sa 1do default",
     "description": "Toast message confirming that the default RPC endpoint has been updated to MetaMask default"
   },
   "uploadDropFile": {
@@ -9426,7 +9426,7 @@
     "message": "Ipinapakita ang lahat ng NFT, kabilang ang mga pekeng NFT na in-airdrop ng mga scammer."
   },
   "useNftDetectionDescriptionText": {
-    "message": "Hayaan ang MetaMask na magdagdag ng mga NFT na iyong pag-aari gamit ang mga third-party na serbisyo. Ang awtomatikong pagtuklas ng mga NFT ay naglalantad sa iyong IP at address ng account sa mga serbisyong ito. Ang pag-enable sa tampok na ito ay maaaring mag-ugnay sa iyong IP sa iyong Ethereum address at magpakita ng pekeng NFT na in-airdrop ng mga scammer. Maaari kang magdagdag ng token sa manu-manong paraan para iwasan ang panganib na ito."
+    "message": "Hayaan ang 1do na magdagdag ng mga NFT na iyong pag-aari gamit ang mga third-party na serbisyo. Ang awtomatikong pagtuklas ng mga NFT ay naglalantad sa iyong IP at address ng account sa mga serbisyong ito. Ang pag-enable sa tampok na ito ay maaaring mag-ugnay sa iyong IP sa iyong Ethereum address at magpakita ng pekeng NFT na in-airdrop ng mga scammer. Maaari kang magdagdag ng token sa manu-manong paraan para iwasan ang panganib na ito."
   },
   "usePhishingDetection": {
     "message": "Gumamit ng phishing detection"
@@ -9438,10 +9438,10 @@
     "message": "Pagsusuri ng detalye ng network"
   },
   "useSafeChainsListValidationDescription": {
-    "message": "Ang MetaMask ay gumagamit ng serbisyong third-party na tinatawag na $1 para magpakita ng tumpak at naka-standardized na detalye ng network. Binabawasan nito ang iyong tiyansa sa pagkonekta sa malisiyoso o malitang network. Kapag ginagamit ang tampok na ito, ang iyong IP address ay nakalantad sa chainid.network."
+    "message": "Ang 1do ay gumagamit ng serbisyong third-party na tinatawag na $1 para magpakita ng tumpak at naka-standardized na detalye ng network. Binabawasan nito ang iyong tiyansa sa pagkonekta sa malisiyoso o malitang network. Kapag ginagamit ang tampok na ito, ang iyong IP address ay nakalantad sa chainid.network."
   },
   "useSafeChainsListValidationDescriptionV2": {
-    "message": "Binabawasan ang tsansa na maikonekta ka sa mapaminsala o maling network. Ginagamit ng MetaMask ang $1 para ipakita ang tumpak at mga pamantayang detalye ng network."
+    "message": "Binabawasan ang tsansa na maikonekta ka sa mapaminsala o maling network. Ginagamit ng 1do ang $1 para ipakita ang tumpak at mga pamantayang detalye ng network."
   },
   "useSafeChainsListValidationWebsite": {
     "message": "chainid.network",
@@ -9509,7 +9509,7 @@
     "message": "Kumpirmahin"
   },
   "visitSupportDataConsentModalDescription": {
-    "message": "Gusto mo bang ibahagi ang Identifier at bersyon ng app ng MetaMask sa aming Sentro ng Suporta? Makakatulong ito sa amin na malutas ang problema mo, pero opsyonal ito."
+    "message": "Gusto mo bang ibahagi ang Identifier at bersyon ng app ng 1do sa aming Sentro ng Suporta? Makakatulong ito sa amin na malutas ang problema mo, pero opsyonal ito."
   },
   "visitSupportDataConsentModalReject": {
     "message": "Huwag ibahagi"

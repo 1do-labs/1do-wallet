@@ -11,7 +11,6 @@ import {
   getAllNamespacesFromCaip25CaveatValue,
   getAllScopesFromCaip25CaveatValue,
   getCaipAccountIdsFromCaip25CaveatValue,
-  KnownSessionProperties,
 } from '@metamask/chain-agnostic-permission';
 import {
   CaipAccountId,
@@ -72,7 +71,7 @@ import {
   MetaMetricsEventName,
 } from '../../../../shared/constants/metametrics';
 import { MetaMetricsContext } from '../../../contexts/metametrics';
-import { EvmAndMultichainNetworkConfigurationsWithCaipChainId } from '../../../selectors/selectors.types';
+import { EvmNetworkConfigurationWithCaipChainId } from '../../../selectors/selectors.types';
 import { mergeCaip25CaveatValues } from '../../../../shared/lib/caip25-caveat-merger';
 import { MultichainAccountCell } from '../../../components/multichain-accounts/multichain-account-cell';
 import { useAccountGroupsForPermissions } from '../../../hooks/useAccountGroupsForPermissions';
@@ -90,7 +89,6 @@ import { AccountGroupWithInternalAccounts } from '../../../selectors/multichain-
 import { getMultichainNetwork } from '../../../selectors/multichain';
 import { TrustSignalDisplayState } from '../../../hooks/useTrustSignals';
 import { useOriginTrustSignals } from '../../../hooks/useOriginTrustSignals';
-import { MultichainNetworks } from '../../../../shared/constants/multichain/networks';
 
 export type MultichainAccountsConnectPageRequest = {
   permissions?: PermissionsRequest;
@@ -162,24 +160,6 @@ export const MultichainAccountsConnectPage: React.FC<
     [request.permissions],
   );
 
-  const requestedScopes = getAllScopesFromCaip25CaveatValue(
-    requestedCaip25CaveatValue,
-  );
-
-  const isSolanaWalletStandardRequest =
-    requestedScopes.length === 1 &&
-    requestedScopes[0] === MultichainNetworks.SOLANA &&
-    requestedCaip25CaveatValue.sessionProperties[
-      KnownSessionProperties.SolanaAccountChangedNotifications
-    ];
-
-  const isTronWalletAdapterRequest =
-    requestedScopes.length === 1 &&
-    requestedScopes[0] === MultichainNetworks.TRON &&
-    requestedCaip25CaveatValue.sessionProperties[
-      KnownSessionProperties.TronAccountChangedNotifications
-    ];
-
   const requestedCaip25CaveatValueWithExistingPermissions = useMemo(
     () =>
       existingCaip25CaveatValue
@@ -206,7 +186,7 @@ export const MultichainAccountsConnectPage: React.FC<
   const requestedNamespacesWithoutWallet = useMemo(
     () =>
       requestedNamespaces.filter(
-        (namespace) => namespace !== KnownCaipNamespace.Wallet,
+        (namespace) => namespace === KnownCaipNamespace.Eip155,
       ),
     [requestedNamespaces],
   );
@@ -229,8 +209,8 @@ export const MultichainAccountsConnectPage: React.FC<
           return [nonTestNetworksList, testNetworksList];
         },
         [
-          [] as EvmAndMultichainNetworkConfigurationsWithCaipChainId[],
-          [] as EvmAndMultichainNetworkConfigurationsWithCaipChainId[],
+          [] as EvmNetworkConfigurationWithCaipChainId[],
+          [] as EvmNetworkConfigurationWithCaipChainId[],
         ],
       ),
     [networkConfigurationsByCaipChainId],
@@ -248,7 +228,7 @@ export const MultichainAccountsConnectPage: React.FC<
       getAllScopesFromCaip25CaveatValue(requestedCaip25CaveatValue).filter(
         (chainId) => {
           const { namespace } = parseCaipChainId(chainId);
-          return namespace !== KnownCaipNamespace.Wallet;
+          return namespace === KnownCaipNamespace.Eip155;
         },
       ),
     [requestedCaip25CaveatValue],
@@ -273,30 +253,10 @@ export const MultichainAccountsConnectPage: React.FC<
         )
       : nonTestNetworkConfigurations.map(({ caipChainId }) => caipChainId);
 
-    // If the request is an EIP-1193 request (with no specific chains requested), a Solana wallet standard or a tronWallet library request , return the default selected network list
-    if (
-      (requestedCaipChainIds.length === 0 && isEip1193Request) ||
-      isSolanaWalletStandardRequest ||
-      isTronWalletAdapterRequest
-    ) {
+    // If the request is an EIP-1193 request with no specific chains requested,
+    // default to the wallet's selected EVM network set.
+    if (requestedCaipChainIds.length === 0 && isEip1193Request) {
       return defaultSelectedNetworkList;
-    }
-
-    const walletRequest =
-      requestedCaipChainIds.filter(
-        (caipChainId) =>
-          parseCaipChainId(caipChainId).namespace === KnownCaipNamespace.Wallet,
-      ).length > 0;
-
-    let additionalChains: CaipChainId[] = [];
-    if (walletRequest && isEip1193Request) {
-      additionalChains = nonTestNetworkConfigurations
-        .map(({ caipChainId }) => caipChainId)
-        .filter((caipChainId) =>
-          requestedNamespacesWithoutWallet.includes(
-            parseCaipChainId(caipChainId).namespace,
-          ),
-        );
     }
 
     const supportedRequestedCaipChainIds = Array.from(
@@ -304,11 +264,11 @@ export const MultichainAccountsConnectPage: React.FC<
         ...requestedCaipChainIds.filter((requestedCaipChainId) =>
           allNetworksList.includes(requestedCaipChainId as CaipChainId),
         ),
-        ...additionalChains,
       ]),
     );
 
-    // if we have specifically requested chains, return the supported requested chains plus the already connected chains
+    // If we have specifically requested EVM chains, return those plus the
+    // already connected chains. Non-EVM namespaces are intentionally ignored.
     if (supportedRequestedCaipChainIds.length > 0) {
       return Array.from(
         new Set([
@@ -318,12 +278,12 @@ export const MultichainAccountsConnectPage: React.FC<
       );
     }
 
-    if (requestedNamespaces.length > 0) {
+    if (requestedNamespacesWithoutWallet.length > 0) {
       return Array.from(
         new Set(
           defaultSelectedNetworkList.filter((caipChainId) => {
             const { namespace } = parseCaipChainId(caipChainId);
-            return requestedNamespaces.includes(namespace);
+            return requestedNamespacesWithoutWallet.includes(namespace);
           }),
         ),
       );
@@ -336,7 +296,6 @@ export const MultichainAccountsConnectPage: React.FC<
     requestedCaipChainIds,
     isEip1193Request,
     currentlySelectedNetwork.chainId,
-    requestedNamespaces,
     requestedNamespacesWithoutWallet,
     alreadyConnectedCaipChainIds,
   ]);

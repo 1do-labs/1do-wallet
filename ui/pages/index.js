@@ -14,10 +14,8 @@ import {
   MetaMetricsProvider,
   LegacyMetaMetricsProvider,
 } from '../contexts/metametrics';
-import { MetamaskNotificationsProvider } from '../contexts/metamask-notifications';
 import { AssetPollingProvider } from '../contexts/assetPolling';
 import { MetamaskIdentityProvider } from '../contexts/identity';
-import { ShieldSubscriptionProvider } from '../contexts/shield/shield-subscription';
 import RiveWasmProvider from '../contexts/rive-wasm';
 import { queryClient } from '../contexts/query-client';
 import { HardwareWalletErrorProvider } from '../contexts/hardware-wallets';
@@ -34,15 +32,11 @@ function AppProviders() {
             <QueryClientProvider client={queryClient}>
               <AssetPollingProvider>
                 <MetamaskIdentityProvider>
-                  <MetamaskNotificationsProvider>
-                    <HardwareWalletErrorProvider>
-                      <ShieldSubscriptionProvider>
-                        <RiveWasmProvider>
-                          <Routes />
-                        </RiveWasmProvider>
-                      </ShieldSubscriptionProvider>
-                    </HardwareWalletErrorProvider>
-                  </MetamaskNotificationsProvider>
+                  <HardwareWalletErrorProvider>
+                    <RiveWasmProvider>
+                      <Routes />
+                    </RiveWasmProvider>
+                  </HardwareWalletErrorProvider>
                 </MetamaskIdentityProvider>
               </AssetPollingProvider>
             </QueryClientProvider>

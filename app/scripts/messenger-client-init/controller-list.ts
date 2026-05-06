@@ -36,11 +36,6 @@ import { MultichainTransactionsController } from '@metamask/multichain-transacti
 import {
   CronjobController,
   ExecutionService,
-  MultichainRoutingService,
-  SnapController,
-  SnapInsightsController,
-  SnapInterfaceController,
-  SnapRegistryController,
   WebSocketService,
 } from '@metamask/snaps-controllers';
 import {
@@ -57,7 +52,6 @@ import { RemoteFeatureFlagController } from '@metamask/remote-feature-flag-contr
 import { AccountTreeController } from '@metamask/account-tree-controller';
 import { SeedlessOnboardingController } from '@metamask/seedless-onboarding-controller';
 import { EncryptionKey } from '@metamask/browser-passworder';
-import { GatorPermissionsController } from '@metamask/gator-permissions-controller';
 import { ShieldController } from '@metamask/shield-controller';
 import { SubscriptionController } from '@metamask/subscription-controller';
 import { EnsController } from '@metamask/ens-controller';
@@ -97,13 +91,10 @@ import {
 import { PerpsController } from '@metamask/perps-controller';
 import { OnboardingController } from '../controllers/onboarding';
 import { PreferencesController } from '../controllers/preferences-controller';
-import { InstitutionalSnapController } from '../controllers/institutional-snap/InstitutionalSnapController';
 import { NetworkOrderController } from '../controllers/network-order';
 import { MetaMetricsController } from '../controllers/metametrics-controller';
 import { OAuthService } from '../services/oauth/oauth-service';
-import { SnapsNameProvider } from '../lib/SnapsNameProvider';
 import { AppStateController } from '../controllers/app-state-controller';
-import { SnapKeyringBuilder } from '../lib/snap-keyring/snap-keyring';
 import { SubscriptionService } from '../services/subscription/subscription-service';
 import { AccountOrderController } from '../controllers/account-order';
 import { AlertController } from '../controllers/alert-controller';
@@ -148,7 +139,6 @@ export type MessengerClient =
   | StorageService
   | ExecutionService
   | GasFeeController
-  | GatorPermissionsController
   | GeolocationApiService
   | GeolocationController
   | KeyringController
@@ -161,7 +151,6 @@ export type MessengerClient =
   | MultichainBalancesController
   | MultichainTransactionsController
   | MultichainNetworkController
-  | MultichainRoutingService
   | NameController
   | NetworkController
   | NetworkOrderController
@@ -188,13 +177,7 @@ export type MessengerClient =
   | ShieldController
   | SignatureController
   | SmartTransactionsController
-  | SnapController
-  | SnapInterfaceController
-  | SnapInsightsController
-  | SnapKeyringBuilder
-  | SnapRegistryController
   | SubscriptionController
-  | SnapsNameProvider
   | SubjectMetadataController
   | SubscriptionService
   | TokenBalancesController
@@ -203,7 +186,6 @@ export type MessengerClient =
   | TokensController
   | TransactionController
   | TransactionPayController
-  | InstitutionalSnapController
   | UserOperationController
   | UserStorageController
   | TokenRatesController
@@ -248,7 +230,6 @@ export type MessengerClientFlatState = AccountOrderController['state'] &
   DelegationController['state'] &
   EnsController['state'] &
   GasFeeController['state'] &
-  GatorPermissionsController['state'] &
   GeolocationController['state'] &
   KeyringController['state'] &
   LoggingController['state'] &
@@ -280,10 +261,6 @@ export type MessengerClientFlatState = AccountOrderController['state'] &
   ShieldController['state'] &
   SignatureController['state'] &
   SmartTransactionsController['state'] &
-  SnapController['state'] &
-  SnapInsightsController['state'] &
-  SnapInterfaceController['state'] &
-  SnapRegistryController['state'] &
   SubscriptionController['state'] &
   TokenBalancesController['state'] &
   TokenDetectionController['state'] &

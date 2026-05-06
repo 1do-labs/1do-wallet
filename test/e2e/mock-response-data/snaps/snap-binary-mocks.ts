@@ -95,7 +95,6 @@ const snapConfigurations: Record<string, string> = {
   mockInteractiveUiSnap: 'interactive-ui-example-snap',
   mockJsonRpcSnap: 'json-rpc-example-snap',
   mockJsxSnap: 'jsx-example-snap',
-  mockLifecycleHooksSnap: 'lifecycle-hooks-example-snap',
   mockLocalizationSnap: 'localization-example-snap',
   mockLookupSnap: 'name-lookup-example-snap',
   mockManageStateSnap: 'manage-state-example-snap',
@@ -104,7 +103,6 @@ const snapConfigurations: Record<string, string> = {
   mockPreferencesSnap: 'preferences-example-snap',
   mockProtocolSnap: 'protocol-example-snap',
   mockSignatureInsightsSnap: 'signature-insights-example-snap',
-  mockSimpleKeyringSnap: 'snap-simple-keyring-snap',
   mockWasmSnap: 'wasm-example-snap',
   mockWebpackPluginSnap: 'webpack-plugin-example-snap',
   mockBackgroundEventsSnap: 'background-events-example-snap',
@@ -230,13 +228,6 @@ export async function mockJsxSnap(mockServer: Mockttp) {
   });
 }
 
-export async function mockLifecycleHooksSnap(mockServer: Mockttp) {
-  return createSnapMock({
-    mockServer,
-    snapNamePrefix: snapConfigurations.mockLifecycleHooksSnap,
-  });
-}
-
 export async function mockLocalizationSnap(mockServer: Mockttp) {
   return createSnapMock({
     mockServer,
@@ -290,13 +281,6 @@ export async function mockSignatureInsightsSnap(mockServer: Mockttp) {
   return createSnapMock({
     mockServer,
     snapNamePrefix: snapConfigurations.mockSignatureInsightsSnap,
-  });
-}
-
-export async function mockSimpleKeyringSnap(mockServer: Mockttp) {
-  return createSnapMock({
-    mockServer,
-    snapNamePrefix: snapConfigurations.mockSimpleKeyringSnap,
   });
 }
 

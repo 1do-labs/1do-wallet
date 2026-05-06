@@ -1,63 +1,49 @@
 import { DateTime } from 'luxon';
-import {
-  MULTICHAIN_NETWORK_BLOCK_EXPLORER_FORMAT_URLS_MAP,
-  MultichainNetworks,
-} from '../../../../shared/constants/multichain/networks';
+import { formatChainIdToHex } from '@metamask/bridge-controller';
+import { CHAINID_DEFAULT_BLOCK_EXPLORER_URL_MAP } from '../../../../shared/constants/common';
 import {
   formatDateWithYearContext,
   shortenAddress,
 } from '../../../helpers/utils/util';
-import {
-  formatBlockExplorerAddressUrl,
-  formatBlockExplorerTransactionUrl,
-} from '../../../../shared/lib/multichain/networks';
 
 /**
- * Creates a transaction URL for block explorer based on network type
- * Different networks have different URL patterns:
- * Bitcoin Mainnet: https://mempool.space/tx/{txId}
- * Bitcoin Testnet: https://mempool.space/testnet/tx/{txId}
- * Solana Mainnet: https://solscan.io/tx/{txId}
- * Solana Devnet: https://solscan.io/tx/{txId}?cluster=devnet
+ * Creates a transaction URL for an EVM block explorer.
  *
  * @param txId - Transaction ID
  * @param chainId - Network chain ID
  * @returns Full URL to transaction in block explorer, or empty string if no explorer URL
  */
 export const getTransactionUrl = (txId: string, chainId: string): string => {
-  const explorerUrls =
-    MULTICHAIN_NETWORK_BLOCK_EXPLORER_FORMAT_URLS_MAP[
-      chainId as MultichainNetworks
-    ];
-  if (!explorerUrls) {
+  try {
+    const baseUrl =
+      CHAINID_DEFAULT_BLOCK_EXPLORER_URL_MAP[formatChainIdToHex(chainId)];
+    if (!baseUrl) {
+      return '';
+    }
+    return `${baseUrl}tx/${txId}`;
+  } catch {
     return '';
   }
-
-  return formatBlockExplorerTransactionUrl(explorerUrls, txId);
 };
 
 /**
- * Creates an address URL for block explorer based on network type
- * Different networks have different URL patterns:
- * Bitcoin Mainnet: https://mempool.space/address/{address}
- * Bitcoin Testnet: https://mempool.space/testnet/address/{address}
- * Solana Mainnet: https://solscan.io/account/{address}
- * Solana Devnet: https://solscan.io/account/{address}?cluster=devnet
+ * Creates an address URL for an EVM block explorer.
  *
  * @param address - Wallet address
  * @param chainId - Network chain ID
  * @returns Full URL to address in block explorer, or empty string if no explorer URL
  */
 export const getAddressUrl = (address: string, chainId: string): string => {
-  const explorerUrls =
-    MULTICHAIN_NETWORK_BLOCK_EXPLORER_FORMAT_URLS_MAP[
-      chainId as MultichainNetworks
-    ];
-  if (!explorerUrls) {
+  try {
+    const baseUrl =
+      CHAINID_DEFAULT_BLOCK_EXPLORER_URL_MAP[formatChainIdToHex(chainId)];
+    if (!baseUrl) {
+      return '';
+    }
+    return `${baseUrl}address/${address}`;
+  } catch {
     return '';
   }
-
-  return formatBlockExplorerAddressUrl(explorerUrls, address);
 };
 
 /**

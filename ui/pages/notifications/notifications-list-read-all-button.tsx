@@ -1,6 +1,5 @@
 import React, { useContext } from 'react';
 import type { NotificationServicesController } from '@metamask/notification-services-controller';
-import { TRIGGER_TYPES } from '@metamask/notification-services-controller/notification-services';
 import { MetaMetricsContext } from '../../contexts/metametrics';
 import {
   MetaMetricsEventCategory,
@@ -10,7 +9,6 @@ import { useI18nContext } from '../../hooks/useI18nContext';
 import { useMarkNotificationAsRead } from '../../hooks/metamask-notifications/useNotifications';
 import { Box, Button, ButtonVariant } from '../../components/component-library';
 import { BlockSize } from '../../helpers/constants/design-system';
-import { useSnapNotificationTimeouts } from '../../hooks/useNotificationTimeouts';
 
 type Notification = NotificationServicesController.Types.INotification;
 type MarkAsReadNotificationsParam =
@@ -26,7 +24,6 @@ export const NotificationsListReadAllButton = ({
   const t = useI18nContext();
   const { markNotificationAsRead } = useMarkNotificationAsRead();
   const { trackEvent } = useContext(MetaMetricsContext);
-  const { setNotificationTimeout } = useSnapNotificationTimeouts();
 
   const handleOnClick = () => {
     let notificationsRead: MarkAsReadNotificationsParam = [];
@@ -42,12 +39,6 @@ export const NotificationsListReadAllButton = ({
           type: notification.type,
           isRead: notification.isRead,
         }));
-
-      notificationsRead
-        .filter((notification) => notification.type === TRIGGER_TYPES.SNAP)
-        .forEach((snapNotification) =>
-          setNotificationTimeout(snapNotification.id),
-        );
     }
 
     trackEvent({

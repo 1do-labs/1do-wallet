@@ -19,12 +19,6 @@ import {
   isNativeAddress,
   isNonEvmChainId,
 } from '@metamask/bridge-controller';
-
-import { MultichainNetworks } from '../constants/multichain/networks';
-import {
-  TRON_SPECIAL_ASSET_CAIP_TYPES_SET,
-  type TronSpecialAssetCaipType,
-} from '../constants/multichain/assets';
 import getFetchWithTimeout from './fetch-with-timeout';
 import { decimalToPrefixedHex } from './conversion.utils';
 import { TEN_SECONDS_IN_MILLISECONDS } from './transactions-controller-utils';
@@ -52,6 +46,10 @@ export const toAssetId = (
     return undefined;
   }
 
+  if (isNonEvmChainId(chainIdToUse)) {
+    return undefined;
+  }
+
   if (isNativeAddress(addressToUse)) {
     try {
       return getNativeAssetForChainId(chainIdToUse)?.assetId;
@@ -61,12 +59,6 @@ export const toAssetId = (
       // Format normalization in isEvmChainId should prevent most errors, but this is a defensive fallback
       return undefined;
     }
-  }
-  if (chainIdToUse === MultichainNetworks.SOLANA) {
-    return CaipAssetTypeStruct.create(`${chainIdToUse}/token:${addressToUse}`);
-  }
-  if (chainIdToUse === MultichainNetworks.TRON) {
-    return CaipAssetTypeStruct.create(`${chainIdToUse}/trc20:${addressToUse}`);
   }
   // EVM assets
   const checksummedAddress = toChecksumHexAddress(addressToUse) ?? addressToUse;
@@ -197,7 +189,10 @@ export const fetchAssetMetadataForAssetIds = async (
         if (!assetId) {
           return null;
         }
-        const { assetReference } = parseCaipAssetType(assetId);
+        const { assetReference, chainId } = parseCaipAssetType(assetId);
+        if (isNonEvmChainId(chainId)) {
+          return null;
+        }
         if (isStrictHexString(assetReference)) {
           return assetId.toLowerCase();
         }
@@ -206,7 +201,7 @@ export const fetchAssetMetadataForAssetIds = async (
       .filter(Boolean)
       .join(',');
     if (!assetIdsString) {
-      return {};
+      return null;
     }
     const assetMetadata: AssetMetadata[] = await (
       await fetchWithTimeout(
@@ -259,29 +254,4 @@ export const isEvmChainId = (chainId: CaipChainId | Hex) => {
   // TODO Replace with isEvmCaipChainId from @metamask/multichain-network-controller when it is exported
   const { namespace } = parseCaipChainId(chainIdInCaip);
   return namespace === KnownCaipNamespace.Eip155;
-};
-
-/**
- * Checks if the given CAIP asset ID represents a Tron special asset
- * (resources, staking state, etc.) that should be filtered out from
- * user-facing asset lists.
- *
- * @param assetId - The CAIP asset ID to check.
- * @returns `true` if the asset is a Tron special asset, `false` otherwise.
- */
-export const isTronSpecialAsset = (
-  assetId: CaipAssetType | string | undefined,
-): boolean => {
-  if (!assetId || !isCaipAssetType(assetId)) {
-    return false;
-  }
-  const { chain, assetNamespace, assetReference } = parseCaipAssetType(assetId);
-
-  if (chain.namespace !== KnownCaipNamespace.Tron) {
-    return false;
-  }
-
-  return TRON_SPECIAL_ASSET_CAIP_TYPES_SET.has(
-    `${assetNamespace}:${assetReference}` as TronSpecialAssetCaipType,
-  );
 };

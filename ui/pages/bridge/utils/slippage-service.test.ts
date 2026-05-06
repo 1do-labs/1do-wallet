@@ -1,6 +1,5 @@
 import type { CaipChainId, CaipAssetType } from '@metamask/utils';
 import type { BridgeToken } from '../../../ducks/bridge/types';
-import { MultichainNetworks } from '../../../../shared/constants/multichain/networks';
 import { toAssetId } from '../../../../shared/lib/asset-utils';
 import {
   calculateSlippage,
@@ -53,17 +52,6 @@ describe('Slippage Service', () => {
     name: 'WETH',
   });
 
-  const mockSolanaToken: BridgeToken = {
-    chainId: MultichainNetworks.SOLANA,
-    assetId:
-      'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp/token:So11111111111111111111111111111111111111112',
-    symbol: 'SOL',
-    decimals: 9,
-    iconUrl: '',
-    balance: '0',
-    name: 'SOL',
-  };
-
   describe('calculateSlippage', () => {
     describe('Bridge transactions', () => {
       it('returns 0.5% for all bridge routes', () => {
@@ -84,18 +72,6 @@ describe('Slippage Service', () => {
 
         const result = calculateSlippage(context);
         expect(result).toBe(SlippageValue.BridgeDefault);
-      });
-    });
-
-    describe('Solana swaps', () => {
-      it('returns undefined (AUTO mode) for Solana to Solana swaps', () => {
-        const context: SlippageContext = {
-          fromToken: mockSolanaToken,
-          toToken: mockSolanaToken,
-        };
-
-        const result = calculateSlippage(context);
-        expect(result).toBe(undefined);
       });
     });
 
@@ -243,16 +219,6 @@ describe('Slippage Service', () => {
 
       const reason = getSlippageReason(context);
       expect(reason).toBe('Incomplete chain setup - using bridge default');
-    });
-
-    it('returns correct reason for Solana swap', () => {
-      const context: SlippageContext = {
-        fromToken: mockSolanaToken,
-        toToken: mockSolanaToken,
-      };
-
-      const reason = getSlippageReason(context);
-      expect(reason).toBe('Solana swap (AUTO mode)');
     });
 
     it('returns correct reason for stablecoin pair', () => {

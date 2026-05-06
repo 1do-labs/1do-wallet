@@ -43,7 +43,6 @@ export const SKIP_STX_RPC_URL_CHECK_CHAIN_IDS: string[] = [CHAIN_IDS.SEPOLIA];
 export const CANCEL_GAS_LIMIT_DEC = 21000;
 
 export const SMART_TRANSACTIONS_LEARN_MORE_URL =
-  'https://support.metamask.io/transactions-and-gas/transactions/smart-transactions/?utm_source=extension';
+  'https://www.1do.io/';
 
-export const SMART_ACCOUNT_LEARN_MORE_URL =
-  'https://support.metamask.io/configure/accounts/what-is-a-smart-account/?utm_source=extension#what-are-metamask-smart-accounts';
+export const SMART_ACCOUNT_LEARN_MORE_URL = 'https://www.1do.io/';

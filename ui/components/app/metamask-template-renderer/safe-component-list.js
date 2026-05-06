@@ -28,39 +28,6 @@ import {
   ConfirmInfoRowValueDouble,
 } from '../confirm/info/row';
 import MetaMaskTranslation from '../metamask-translation';
-import { Copyable } from '../snaps/copyable';
-import { SnapDelineator } from '../snaps/snap-delineator';
-import { SnapUIAddress } from '../snaps/snap-ui-address';
-import { SnapUIAvatar } from '../snaps/snap-ui-avatar';
-import { SnapUIBanner } from '../snaps/snap-ui-banner';
-import { SnapUIButton } from '../snaps/snap-ui-button';
-import { SnapUICard } from '../snaps/snap-ui-card';
-import { SnapUICheckbox } from '../snaps/snap-ui-checkbox';
-import { SnapUIDropdown } from '../snaps/snap-ui-dropdown';
-import { SnapUIFileInput } from '../snaps/snap-ui-file-input';
-import { SnapUIFooterButton } from '../snaps/snap-ui-footer-button';
-import { SnapUIForm } from '../snaps/snap-ui-form';
-import { SnapUIIcon } from '../snaps/snap-ui-icon';
-import { SnapUIImage } from '../snaps/snap-ui-image';
-import { SnapUIInput } from '../snaps/snap-ui-input';
-import { SnapUILink } from '../snaps/snap-ui-link';
-import { SnapUIAddressInput } from '../snaps/snap-ui-address-input';
-import { SnapUIMarkdown } from '../snaps/snap-ui-markdown';
-import { SnapUIRadioGroup } from '../snaps/snap-ui-radio-group';
-import { SnapUISelector } from '../snaps/snap-ui-selector';
-import { SnapUITooltip } from '../snaps/snap-ui-tooltip';
-import { SnapUIAssetSelector } from '../snaps/snap-ui-asset-selector';
-import { SnapUIAccountSelector } from '../snaps/snap-ui-account-selector';
-import { SnapUIDateTimePicker } from '../snaps/snap-ui-date-time-picker';
-import { SnapAccountErrorMessage } from '../../../pages/confirmations/components/snap-account-error-message';
-import { SnapAccountSuccessMessage } from '../../../pages/confirmations/components/snap-account-success-message';
-import { CreateSnapAccount } from '../../../pages/create-snap-account';
-import {
-  RemoveSnapAccount,
-  SnapAccountCard,
-} from '../../../pages/remove-snap-account';
-import { SnapAccountRedirect } from '../../../pages/snap-account-redirect';
-import SnapAuthorshipHeader from '../snaps/snap-authorship-header';
 import { Skeleton } from '../../component-library/skeleton';
 import { DefiReferralConsent } from '../../../pages/core/defi-referral-consent';
 import { Delineator } from '../../ui/delineator';
@@ -79,7 +46,6 @@ export const safeComponentList = {
   ConfirmInfoRow,
   ConfirmInfoRowAddress,
   ConfirmInfoRowValueDouble,
-  Copyable,
   DefiReferralConsent,
   DefinitionList,
   div: 'div',
@@ -90,29 +56,6 @@ export const safeComponentList = {
   p: 'p',
   Popover,
   Preloader,
-  SnapDelineator,
-  SnapUIAccountSelector,
-  SnapUIAddress,
-  SnapUIAvatar,
-  SnapUIBanner,
-  SnapUIButton,
-  SnapUICard,
-  SnapUICheckbox,
-  SnapUIDropdown,
-  SnapUIFileInput,
-  SnapUIForm,
-  SnapUIFooterButton,
-  SnapUIIcon,
-  SnapUIImage,
-  SnapUIInput,
-  SnapUIAddressInput,
-  SnapUILink,
-  SnapUIMarkdown,
-  SnapUIRadioGroup,
-  SnapUISelector,
-  SnapUITooltip,
-  SnapUIAssetSelector,
-  SnapUIDateTimePicker,
   span: 'span',
   Spinner,
   Skeleton,
@@ -124,12 +67,5 @@ export const safeComponentList = {
   Typography,
   SmartTransactionStatusPage,
   UrlIcon,
-  CreateSnapAccount,
-  RemoveSnapAccount,
-  SnapAccountCard,
-  SnapAccountErrorMessage,
-  SnapAccountRedirect,
-  SnapAccountSuccessMessage,
-  SnapAuthorshipHeader,
   Delineator,
 };

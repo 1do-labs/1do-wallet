@@ -19,7 +19,6 @@ import {
   LINEA,
   BASE,
 } from '../../../shared/constants/swaps';
-import { MultichainNetworks } from '../../../shared/constants/multichain/networks';
 import {
   fetchTokens,
   fetchAggregatorMetadata,
@@ -126,9 +125,9 @@ describe('Swaps Util', () => {
     });
 
     it('should not fetch top assets for solana', async () => {
-      expect(await fetchTopAssetsList(MultichainNetworks.SOLANA)).toStrictEqual(
-        [],
-      );
+      expect(
+        await fetchTopAssetsList('solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp'),
+      ).toStrictEqual([]);
       expect(await fetchTopAssetsList(ChainId.SOLANA)).toStrictEqual([]);
       expect(await fetchTopAssetsList('0x416EDEF1601BE')).toStrictEqual([]);
     });

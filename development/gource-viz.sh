@@ -18,7 +18,7 @@ gource \
   --date-format "%b %d, %Y" \
   --highlight-dirs \
   --user-friction 0.1 \
-  --title "MetaMask Development History" \
+  --title "1do Wallet Development History" \
   --output-ppm-stream - \
   --output-framerate 30 \
   | \
@@ -30,4 +30,4 @@ ffmpeg \
   -i \
   - \
   -b:v 65536K \
-  metamask-dev-history.mp4
+  1do-wallet-dev-history.mp4

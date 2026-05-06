@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React from 'react';
 import { isSnapId } from '@metamask/snaps-utils';
 import {
   Box,
@@ -17,8 +17,6 @@ import {
   TextVariant,
   BackgroundColor,
 } from '../../../../../helpers/constants/design-system';
-import SnapAuthorshipPill from '../../../snaps/snap-authorship-pill';
-import { SnapMetadataModal } from '../../../snaps/snap-metadata-modal';
 import { useOriginTrustSignals } from '../../../../../hooks/useOriginTrustSignals';
 import { TrustSignalDisplayState } from '../../../../../hooks/useTrustSignals';
 import Tooltip from '../../../../ui/tooltip';
@@ -51,30 +49,11 @@ const HttpWarning = () => (
 
 export const ConfirmInfoRowUrl = ({ url }: ConfirmInfoRowUrlProps) => {
   const t = useI18nContext();
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const handlePillClick = useCallback(
-    () => setIsModalOpen(true),
-    [setIsModalOpen],
-  );
-  const handleModalClose = useCallback(
-    () => setIsModalOpen(false),
-    [setIsModalOpen],
-  );
-
   const originTrustSignals = useOriginTrustSignals(url);
 
   // Check if it's a Snap ID first to avoid unnecessary processing
   if (isSnapId(url)) {
-    return (
-      <>
-        <SnapAuthorshipPill snapId={url} onClick={handlePillClick} />
-        <SnapMetadataModal
-          snapId={url}
-          isOpen={isModalOpen}
-          onClose={handleModalClose}
-        />
-      </>
-    );
+    return <Text color={TextColor.inherit}>{url}</Text>;
   }
 
   let urlObject;

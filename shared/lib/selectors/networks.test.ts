@@ -1,5 +1,3 @@
-import { AccountsControllerState } from '@metamask/accounts-controller';
-import { CaipChainId } from '@metamask/utils';
 import mockState from '../../../test/data/mock-state.json';
 import {
   ARBITRUM_DISPLAY_NAME,
@@ -17,66 +15,16 @@ import {
 const typedMockState =
   mockState as unknown as MultichainNetworkConfigurationsByChainIdState & {
     metamask: {
-      internalAccounts: AccountsControllerState['internalAccounts'];
+      internalAccounts: import('@metamask/accounts-controller').AccountsControllerState['internalAccounts'];
     };
   };
-
-const extendedMockState = {
-  ...typedMockState,
-  metamask: {
-    ...typedMockState.metamask,
-    internalAccounts: {
-      ...typedMockState.metamask.internalAccounts,
-      accounts: {
-        ...typedMockState.metamask.internalAccounts.accounts,
-        '499e262e-eed1-4743-b9bf-92b1a23b4a98': {
-          type: 'solana:data-account' as const,
-          id: '499e262e-eed1-4743-b9bf-92b1a23b4a98',
-          address: '7sN9JNHfJNcj6gNv3UgeGY6qpwHeA4pis1Sk2pskvGjQ',
-          options: {
-            scope: 'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp' as CaipChainId,
-            entropySource: '01JN20TXMMZWAMCBGB8J6VA4HD',
-            imported: false,
-          },
-          methods: [
-            'signAndSendTransaction',
-            'signTransaction',
-            'signMessage',
-            'signIn',
-          ],
-          scopes: [
-            'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp',
-            'solana:4uhcVJyU9pJkvQyS88uRDiswHXSCkY3z',
-            'solana:EtWTRABZaYq6iMfeYKouRu166VU2xqa1',
-          ] as CaipChainId[],
-          metadata: {
-            name: 'Solana Account 2',
-            importTime: 1741868741042,
-            keyring: {
-              type: 'Snap Keyring',
-            },
-            snap: {
-              id: 'npm:@metamask/solana-wallet-snap',
-              name: 'Solana',
-              enabled: true,
-            },
-            lastSelected: 1747401519439,
-          },
-        },
-      },
-      selectedAccount:
-        typedMockState.metamask.internalAccounts.selectedAccount ||
-        '499e262e-eed1-4743-b9bf-92b1a23b4a98',
-    },
-  },
-};
 
 describe('Network Selectors', () => {
   describe('getNonTestNetworks', () => {
     it('returns non-test networks from the state', () => {
-      const result = getNonTestNetworks(extendedMockState);
+      const result = getNonTestNetworks(typedMockState);
 
-      expect(result).toHaveLength(6);
+      expect(result).toHaveLength(5);
       expect(result).toStrictEqual([
         {
           blockExplorerUrls: [],
@@ -161,13 +109,6 @@ describe('Network Selectors', () => {
             },
           ],
         },
-        {
-          caipChainId: 'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp',
-          chainId: 'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp',
-          isEvm: false,
-          name: 'Solana',
-          nativeCurrency: 'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp/slip44:501',
-        },
       ]);
 
       const testNetworkIds = result.filter(
@@ -182,17 +123,17 @@ describe('Network Selectors', () => {
   describe('getNetworksByScopes', () => {
     it('returns empty array if scopes is undefined', () => {
       // @ts-expect-error Passing wrong type is intentional for testing
-      const result = getNetworksByScopes(extendedMockState, undefined);
+      const result = getNetworksByScopes(typedMockState, undefined);
       expect(result).toStrictEqual([]);
     });
 
     it('returns empty array if scopes is empty array', () => {
-      const result = getNetworksByScopes(extendedMockState, []);
+      const result = getNetworksByScopes(typedMockState, []);
       expect(result).toStrictEqual([]);
     });
 
     it('returns specific network by caip chainId scope', () => {
-      const result = getNetworksByScopes(extendedMockState, ['eip155:1']);
+      const result = getNetworksByScopes(typedMockState, ['eip155:1']);
 
       expect(result).toContainEqual(
         expect.objectContaining({
@@ -203,7 +144,7 @@ describe('Network Selectors', () => {
     });
 
     it('returns all EVM networks when scope is eip155:0', () => {
-      const result = getNetworksByScopes(extendedMockState, ['eip155:0']);
+      const result = getNetworksByScopes(typedMockState, ['eip155:0']);
 
       expect(result).toHaveLength(5);
 
@@ -217,9 +158,9 @@ describe('Network Selectors', () => {
 
     it('returns multiple networks for multiple scopes', () => {
       const scopes = ['eip155:0', 'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp'];
-      const result = getNetworksByScopes(extendedMockState, scopes);
+      const result = getNetworksByScopes(typedMockState, scopes);
 
-      expect(result).toHaveLength(6);
+      expect(result).toHaveLength(5);
       expect(result).toStrictEqual([
         {
           chainId: '0x1',
@@ -240,10 +181,6 @@ describe('Network Selectors', () => {
         {
           chainId: '0xa4b1',
           name: ARBITRUM_DISPLAY_NAME,
-        },
-        {
-          chainId: 'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp',
-          name: 'Solana',
         },
       ]);
     });

@@ -1,4 +1,4 @@
-# Automated Testing in the MetaMask Extension Repository
+# Automated Testing in the 1do Wallet Extension Repository
 
 The purpose of this document is to summarize the testing tactics we want to align on for this repository.
 

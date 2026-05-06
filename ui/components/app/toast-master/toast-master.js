@@ -7,7 +7,6 @@ import {
   AvatarNetwork,
   AvatarNetworkSize,
 } from '@metamask/design-system-react';
-import { PRODUCT_TYPES } from '@metamask/subscription-controller';
 import { SECOND } from '../../../../shared/constants/time';
 import { ENVIRONMENT_TYPE_SIDEPANEL } from '../../../../shared/constants/app';
 // eslint-disable-next-line import-x/no-restricted-paths
@@ -26,7 +25,6 @@ import {
   REVEAL_SEED_ROUTE,
   REVIEW_PERMISSIONS,
   SETTINGS_ROUTE,
-  TRANSACTION_SHIELD_ROUTE,
 } from '../../../helpers/constants/routes';
 import { getURLHost } from '../../../helpers/utils/util';
 import { useI18nContext } from '../../../hooks/useI18nContext';
@@ -43,39 +41,16 @@ import {
 import { Icon, IconName, IconSize } from '../../component-library';
 import { Toast, ToastContainer } from '../../multichain';
 import { SurveyToast } from '../../ui/survey-toast';
-import { PerpsDepositToast } from '../perps/perps-deposit-toast';
 import {
   ClaimSubmitToastType,
   StorageWriteErrorType,
 } from '../../../../shared/constants/app-state';
-import { MerklClaimToast, MusdConversionToast } from '../musd';
-import { PerpsWithdrawToast } from '../perps/perps-withdraw-toast';
 import { getDappActiveNetwork } from '../../../selectors/dapp';
-import {
-  useUserSubscriptionByProduct,
-  useUserSubscriptions,
-} from '../../../hooks/subscription/useSubscription';
-import { getShortDateFormatterV2 } from '../../../pages/asset/util';
-import {
-  getIsShieldSubscriptionEndingSoon,
-  getIsShieldSubscriptionPaused,
-  getSubscriptionPaymentData,
-} from '../../../../shared/lib/shield';
-import {
-  isCardPaymentMethod,
-  isCryptoPaymentMethod,
-} from '../../../pages/settings/transaction-shield-tab/types';
-import { useSubscriptionMetrics } from '../../../hooks/shield/metrics/useSubscriptionMetrics';
 import { MetaMetricsContext } from '../../../contexts/metametrics';
 import {
   MetaMetricsEventCategory,
   MetaMetricsEventName,
 } from '../../../../shared/constants/metametrics';
-import {
-  ShieldErrorStateActionClickedEnum,
-  ShieldErrorStateLocationEnum,
-  ShieldErrorStateViewEnum,
-} from '../../../../shared/constants/subscriptions';
 import {
   selectNftDetectionEnablementToast,
   selectShowPrivacyPolicyToast,
@@ -83,8 +58,6 @@ import {
   selectNewSrpAdded,
   selectShowCopyAddressToast,
   selectClaimSubmitToast,
-  selectShowShieldPausedToast,
-  selectShowShieldEndingToast,
   selectShowStorageErrorToast,
   selectStorageWriteErrorType,
   selectShowInfuraSwitchToast,
@@ -99,8 +72,6 @@ import {
   setShowCopyAddressToast,
   setShowClaimSubmitToast,
   setShowInfuraSwitchToast,
-  setShieldPausedToastLastClickedOrClosed,
-  setShieldEndingToastLastClickedOrClosed,
   dismissSidePanelMigrationToast,
 } from './utils';
 
@@ -131,12 +102,6 @@ export function ToastMaster() {
         <NewSrpAddedToast />
         <InfuraSwitchToast />
         <CopyAddressToast />
-        <PerpsDepositToast />
-        <MerklClaimToast />
-        <MusdConversionToast />
-        <PerpsWithdrawToast />
-        <ShieldPausedToast />
-        <ShieldEndingToast />
         <SidePanelMigrationToast />
       </ToastContainer>
     );
@@ -526,138 +491,6 @@ const ClaimSubmitToast = () => {
     )
   );
 };
-
-function ShieldPausedToast() {
-  const t = useI18nContext();
-  const navigate = useNavigate();
-
-  const showShieldPausedToast = useSelector(selectShowShieldPausedToast);
-  const { captureShieldErrorStateClickedEvent } = useSubscriptionMetrics();
-  const { subscriptions } = useUserSubscriptions();
-
-  const shieldSubscription = useUserSubscriptionByProduct(
-    PRODUCT_TYPES.SHIELD,
-    subscriptions,
-  );
-
-  const isPaused = getIsShieldSubscriptionPaused(shieldSubscription);
-
-  const isCardPayment =
-    shieldSubscription &&
-    isCardPaymentMethod(shieldSubscription?.paymentMethod);
-  const isCryptoPaymentWithError =
-    shieldSubscription &&
-    isCryptoPaymentMethod(shieldSubscription.paymentMethod) &&
-    Boolean(shieldSubscription.paymentMethod.crypto.error);
-
-  // default text to unexpected error case
-  let descriptionText = 'shieldPaymentPausedDescriptionUnexpectedError';
-  let actionText = 'shieldPaymentPausedActionUnexpectedError';
-  if (isCardPayment) {
-    descriptionText = 'shieldPaymentPausedDescriptionCardPayment';
-    actionText = 'shieldPaymentPausedActionCardPayment';
-  }
-  if (isCryptoPaymentWithError) {
-    descriptionText = 'shieldPaymentPausedDescriptionCryptoPayment';
-    actionText = 'shieldPaymentPausedActionCryptoPayment';
-  }
-
-  const trackShieldErrorStateClickedEvent = (actionClicked) => {
-    const { cryptoPaymentChain, cryptoPaymentCurrency } =
-      getSubscriptionPaymentData(shieldSubscription);
-    // capture error state clicked event
-    captureShieldErrorStateClickedEvent({
-      subscriptionStatus: shieldSubscription.status,
-      paymentType: shieldSubscription.paymentMethod.type,
-      billingInterval: shieldSubscription.interval,
-      cryptoPaymentChain,
-      cryptoPaymentCurrency,
-      errorCause: 'payment_error',
-      actionClicked,
-      location: ShieldErrorStateLocationEnum.Homepage,
-      view: ShieldErrorStateViewEnum.Toast,
-    });
-  };
-
-  const handleActionClick = async () => {
-    // capture error state clicked event
-    trackShieldErrorStateClickedEvent(ShieldErrorStateActionClickedEnum.Cta);
-    setShieldPausedToastLastClickedOrClosed(Date.now());
-    navigate(TRANSACTION_SHIELD_ROUTE);
-  };
-
-  const handleToastClose = () => {
-    // capture error state clicked event
-    trackShieldErrorStateClickedEvent(
-      ShieldErrorStateActionClickedEnum.Dismiss,
-    );
-    setShieldPausedToastLastClickedOrClosed(Date.now());
-  };
-
-  return (
-    Boolean(isPaused) &&
-    showShieldPausedToast && (
-      <Toast
-        key="shield-payment-declined-toast"
-        text={t('shieldPaymentPaused')}
-        description={t(descriptionText)}
-        actionText={t(actionText)}
-        onActionClick={handleActionClick}
-        startAdornment={
-          <Icon
-            name={IconName.CircleX}
-            color={IconColor.errorDefault}
-            size={IconSize.Lg}
-          />
-        }
-        onClose={handleToastClose}
-      />
-    )
-  );
-}
-
-function ShieldEndingToast() {
-  const t = useI18nContext();
-  const navigate = useNavigate();
-
-  const showShieldEndingToast = useSelector(selectShowShieldEndingToast);
-
-  const { subscriptions } = useUserSubscriptions();
-  const shieldSubscription = useUserSubscriptionByProduct(
-    PRODUCT_TYPES.SHIELD,
-    subscriptions,
-  );
-  const isSubscriptionEndingSoon =
-    getIsShieldSubscriptionEndingSoon(subscriptions);
-
-  return (
-    isSubscriptionEndingSoon &&
-    showShieldEndingToast && (
-      <Toast
-        key="shield-coverage-ending-toast"
-        text={t('shieldCoverageEnding')}
-        description={t('shieldCoverageEndingDescription', [
-          getShortDateFormatterV2().format(
-            new Date(shieldSubscription.currentPeriodEnd),
-          ),
-        ])}
-        actionText={t('shieldCoverageEndingAction')}
-        onActionClick={async () => {
-          setShieldEndingToastLastClickedOrClosed(Date.now());
-          navigate(TRANSACTION_SHIELD_ROUTE);
-        }}
-        startAdornment={
-          <Icon
-            name={IconName.Clock}
-            color={IconColor.warningDefault}
-            size={IconSize.Lg}
-          />
-        }
-        onClose={() => setShieldEndingToastLastClickedOrClosed(Date.now())}
-      />
-    )
-  );
-}
 
 function StorageErrorToast() {
   const t = useI18nContext();

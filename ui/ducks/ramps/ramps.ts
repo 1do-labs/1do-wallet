@@ -1,5 +1,10 @@
 import { createSelector } from 'reselect';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import {
+  isCaipChainId,
+  KnownCaipNamespace,
+  parseCaipChainId,
+} from '@metamask/utils';
 import { getCurrentChainId } from '../../../shared/lib/selectors/networks';
 import { getUseExternalServices } from '../../selectors';
 import RampAPI from '../../helpers/ramps/rampApi/rampAPI';
@@ -8,9 +13,27 @@ import {
   getMultichainIsBitcoin,
   getMultichainIsSolana,
 } from '../../selectors/multichain';
-import { MultichainNetworks } from '../../../shared/constants/multichain/networks';
 import { defaultBuyableChains } from './constants';
 import { AggregatorNetwork } from './types';
+
+const isEvmAggregatorChain = (chainId: AggregatorNetwork['chainId']) => {
+  if (typeof chainId === 'number') {
+    return true;
+  }
+
+  if (typeof chainId === 'string' && chainId.startsWith('0x')) {
+    return true;
+  }
+
+  if (!isCaipChainId(chainId)) {
+    return false;
+  }
+
+  return parseCaipChainId(chainId).namespace === KnownCaipNamespace.Eip155;
+};
+
+const filterEvmBuyableChains = (networks?: AggregatorNetwork[]) =>
+  (networks ?? []).filter((network) => isEvmAggregatorChain(network?.chainId));
 
 export const fetchBuyableChains = createAsyncThunk(
   'ramps/fetchBuyableChains',
@@ -23,10 +46,10 @@ export const fetchBuyableChains = createAsyncThunk(
       return defaultBuyableChains;
     }
     if (!isFetched) {
-      return await RampAPI.getNetworks();
+      return filterEvmBuyableChains(await RampAPI.getNetworks());
     }
     // @ts-expect-error: TS doesn't know about the root state interface yet
-    return state.ramps.buyableChains;
+    return filterEvmBuyableChains(state.ramps.buyableChains);
   },
 );
 
@@ -43,7 +66,7 @@ const rampsSlice = createSlice({
         action.payload.length > 0 &&
         action.payload.every((network) => network?.chainId)
       ) {
-        state.buyableChains = action.payload;
+        state.buyableChains = filterEvmBuyableChains(action.payload);
         state.isFetched = true;
       } else {
         state.buyableChains = defaultBuyableChains;
@@ -55,7 +78,7 @@ const rampsSlice = createSlice({
       .addCase(fetchBuyableChains.fulfilled, (state, action) => {
         const networks = action.payload;
         if (networks && networks.length > 0) {
-          state.buyableChains = networks;
+          state.buyableChains = filterEvmBuyableChains(networks);
         } else {
           state.buyableChains = defaultBuyableChains;
         }
@@ -78,26 +101,13 @@ export const getBuyableChains = (state: any) =>
   state.ramps?.buyableChains ?? defaultBuyableChains;
 
 export const getIsBitcoinBuyable = createSelector(
-  [getBuyableChains],
-  (buyableChains) =>
-    buyableChains
-      .filter(Boolean)
-      .some(
-        (network: AggregatorNetwork) =>
-          network.chainId === MultichainNetworks.BITCOIN && network.active,
-      ),
+  [],
+  () => false,
 );
 
 export const getIsSolanaBuyable = createSelector(
-  [getBuyableChains],
-  (buyableChains) => {
-    return buyableChains
-      .filter(Boolean)
-      .some(
-        (network: AggregatorNetwork) =>
-          network.chainId === MultichainNetworks.SOLANA && network.active,
-      );
-  },
+  [],
+  () => false,
 );
 
 export const getIsNativeTokenBuyable = createSelector(

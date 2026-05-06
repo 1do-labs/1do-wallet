@@ -160,10 +160,8 @@ const PermissionCell = ({
         )}
       </Box>
       <Box display={Display.Flex}>
-        {showOptions && snapId ? (
+        {showOptions ? (
           <PermissionCellOptions
-            snapId={snapId}
-            permissionName={permissionName}
             description={description}
           />
         ) : (

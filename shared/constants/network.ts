@@ -1,6 +1,5 @@
 import type { AddNetworkFields } from '@metamask/network-controller';
 import { RpcEndpointType } from '@metamask/network-controller';
-import { BtcScope, SolScope, TrxScope } from '@metamask/keyring-api';
 import { capitalize, pick } from 'lodash';
 import {
   CaipChainId,
@@ -9,8 +8,6 @@ import {
   KnownCaipNamespace,
   toCaipChainId,
 } from '@metamask/utils';
-import { NON_EVM_TESTNET_IDS } from '@metamask/multichain-network-controller';
-import { MultichainNetworks } from './multichain/networks';
 
 /**
  * A type representing built-in network types, used as an identifier.
@@ -759,7 +756,6 @@ export const CAIP_FORMATTED_TEST_CHAINS: CaipChainId[] = [
   ...TEST_CHAINS.map((chainId) =>
     toCaipChainId(KnownCaipNamespace.Eip155, hexToNumber(chainId).toString()),
   ),
-  ...NON_EVM_TESTNET_IDS,
 ];
 
 export const MAINNET_CHAINS = [
@@ -1237,15 +1233,6 @@ export const CHAIN_ID_TO_NETWORK_IMAGE_URL_MAP: Record<string, string> = {
   [CHAINLIST_CHAIN_IDS_MAP.SHAPE_SEPOLIA]: SHAPE_SEPOLIA_IMAGE_URL,
   [CHAINLIST_CHAIN_IDS_MAP.UNICHAIN]: UNICHAIN_IMAGE_URL,
   [CHAINLIST_CHAIN_IDS_MAP.UNICHAIN_SEPOLIA]: UNICHAIN_IMAGE_URL,
-  [MultichainNetworks.SOLANA]: SOLANA_IMAGE_URL,
-  [MultichainNetworks.SOLANA_TESTNET]: SOLANA_TESTNET_IMAGE_URL,
-  [MultichainNetworks.SOLANA_DEVNET]: SOLANA_DEVNET_IMAGE_URL,
-  [MultichainNetworks.BITCOIN]: BITCOIN_IMAGE_URL,
-  [MultichainNetworks.BITCOIN_TESTNET]: BITCOIN_TESTNET_IMAGE_URL,
-  [MultichainNetworks.BITCOIN_SIGNET]: BITCOIN_SIGNET_IMAGE_URL,
-  [MultichainNetworks.TRON]: TRON_IMAGE_URL,
-  [MultichainNetworks.TRON_NILE]: TRON_NILE_IMAGE_URL,
-  [MultichainNetworks.TRON_SHASTA]: TRON_SHASTA_IMAGE_URL,
   [CHAINLIST_CHAIN_IDS_MAP.XRPLEVM_TESTNET]: XRPLEVM_TESTNET_IMAGE_URL,
   [CHAIN_IDS.LENS]: LENS_IMAGE_URL,
   [CHAIN_IDS.PLUME]: PLUME_IMAGE_URL,
@@ -1380,15 +1367,6 @@ export const CHAIN_ID_TOKEN_IMAGE_MAP = {
   [CHAIN_IDS.STABLE_MAINNET]: STABLE_NATIVE_TOKEN_IMAGE_URL,
   [CHAIN_IDS.TEMPO_MAINNET]: TEMPO_NATIVE_TOKEN_IMAGE_URL,
   [CHAIN_IDS.TEMPO_TESTNET]: TEMPO_NATIVE_TOKEN_IMAGE_URL,
-  [MultichainNetworks.SOLANA]: SOLANA_IMAGE_URL,
-  [MultichainNetworks.SOLANA_TESTNET]: SOLANA_TESTNET_IMAGE_URL,
-  [MultichainNetworks.SOLANA_DEVNET]: SOLANA_DEVNET_IMAGE_URL,
-  [MultichainNetworks.BITCOIN]: BITCOIN_IMAGE_URL,
-  [MultichainNetworks.BITCOIN_TESTNET]: BITCOIN_TESTNET_IMAGE_URL,
-  [MultichainNetworks.BITCOIN_SIGNET]: BITCOIN_SIGNET_IMAGE_URL,
-  [MultichainNetworks.TRON]: TRON_IMAGE_URL,
-  [MultichainNetworks.TRON_NILE]: TRON_NILE_IMAGE_URL,
-  [MultichainNetworks.TRON_SHASTA]: TRON_SHASTA_IMAGE_URL,
 } as const;
 
 /**
@@ -1401,9 +1379,6 @@ export const CHAIN_ID_PORTFOLIO_LANDING_PAGE_URL_MAP: Record<
   [CHAIN_IDS.LINEA_MAINNET]: 'https://app.metamask.io/explore/networks/linea',
   [CHAIN_IDS.SEI]: 'https://app.metamask.io/explore/networks/sei',
   [CHAIN_IDS.MONAD]: 'https://app.metamask.io/explore/networks/monad',
-  [MultichainNetworks.SOLANA]:
-    'https://app.metamask.io/explore/networks/solana',
-  [MultichainNetworks.TRON]: 'https://app.metamask.io/explore/networks/tron',
 } as const;
 
 export const INFURA_BLOCKED_KEY = 'countryBlocked';
@@ -1735,9 +1710,6 @@ export const FEATURED_NETWORK_CHAIN_IDS = [
 ];
 
 export const FEATURED_NETWORK_CHAIN_IDS_MULTICHAIN = [
-  SolScope.Mainnet,
-  BtcScope.Mainnet,
-  TrxScope.Mainnet,
   CHAIN_IDS.MAINNET,
   ...FEATURED_RPCS.map((rpc) => rpc.chainId),
 ];

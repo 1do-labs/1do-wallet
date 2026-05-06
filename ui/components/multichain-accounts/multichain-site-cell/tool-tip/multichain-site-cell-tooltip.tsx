@@ -27,7 +27,7 @@ import {
   AccountGroupWithInternalAccounts,
   MultichainAccountsState,
 } from '../../../../selectors/multichain-accounts/account-tree.types';
-import { EvmAndMultichainNetworkConfigurationsWithCaipChainId } from '../../../../selectors/selectors.types';
+import { EvmNetworkConfigurationWithCaipChainId } from '../../../../selectors/selectors.types';
 import {
   MultichainAvatarGroup,
   MultichainAvatarGroupType,
@@ -37,7 +37,7 @@ import { getAvatarType } from '../../../app/preferred-avatar/preferred-avatar';
 
 export type MultichainSiteCellTooltipProps = {
   accountGroups?: AccountGroupWithInternalAccounts[];
-  networks?: EvmAndMultichainNetworkConfigurationsWithCaipChainId[];
+  networks?: EvmNetworkConfigurationWithCaipChainId[];
 };
 
 const TOOLTIP_LIMIT = 4;
@@ -45,7 +45,7 @@ const AVATAR_GROUP_LIMIT = 4;
 
 type TooltipContentProps = {
   accountGroups?: AccountGroupWithInternalAccounts[];
-  networks?: EvmAndMultichainNetworkConfigurationsWithCaipChainId[];
+  networks?: EvmNetworkConfigurationWithCaipChainId[];
   moreAccountsText?: string;
   moreNetworksText?: string;
   avatarAccountVariant?: AvatarAccountVariant;

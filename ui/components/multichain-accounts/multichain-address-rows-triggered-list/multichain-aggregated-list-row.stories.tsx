@@ -6,10 +6,7 @@ import { InternalAccount } from '@metamask/keyring-internal-api';
 import mockState from '../../../../test/data/mock-state.json';
 import {
   MOCK_ACCOUNT_EOA,
-  MOCK_ACCOUNT_BIP122_P2WPKH,
-  MOCK_ACCOUNT_SOLANA_MAINNET,
 } from '../../../../test/data/mock-accounts';
-import { MultichainNetworks } from '../../../../shared/constants/multichain/networks';
 import { MultichainAggregatedAddressListRow } from './multichain-aggregated-list-row';
 
 const mockStore = configureStore([]);
@@ -22,36 +19,11 @@ const accounts: Record<string, InternalAccount> = {
     address: '0xabcdef1234567890abcdef1234567890abcdef12',
     scopes: ['eip155:137'],
   },
-  solana: {
-    ...MOCK_ACCOUNT_SOLANA_MAINNET,
-    scopes: [MultichainNetworks.SOLANA],
-    metadata: {
-      ...MOCK_ACCOUNT_SOLANA_MAINNET.metadata,
-      snap: {
-        enabled: true,
-        name: 'Solana Snap',
-        id: 'npm:@consensys/solana-snap',
-      },
-    },
-  },
-  solanaTestnet: {
-    ...MOCK_ACCOUNT_SOLANA_MAINNET,
-    id: 'solana-testnet-account',
-    address: '9A4AptCThfbuknsbteHgGKXczfJpfjuVA9SLTSGaaLGD',
-    scopes: [MultichainNetworks.SOLANA_TESTNET],
-    metadata: {
-      ...MOCK_ACCOUNT_SOLANA_MAINNET.metadata,
-      name: 'Solana Testnet Account',
-      snap: {
-        enabled: true,
-        name: 'Solana Snap',
-        id: 'npm:@consensys/solana-snap',
-      },
-    },
-  },
-  bitcoin: {
-    ...MOCK_ACCOUNT_BIP122_P2WPKH,
-    scopes: ['bip122:000000000019d6689c085ae165831e93'],
+  arbitrum: {
+    ...MOCK_ACCOUNT_EOA,
+    id: '3',
+    address: '0x1111111111111111111111111111111111111111',
+    scopes: ['eip155:42161'],
   },
 };
 
@@ -61,8 +33,8 @@ const createMockState = () => ({
     ...mockState.metamask,
     remoteFeatureFlags: {
       ...mockState.metamask.remoteFeatureFlags,
-      solanaAccounts: { enabled: true, minimumVersion: '13.6.0' },
-      bitcoinAccounts: { enabled: true, minimumVersion: '13.6.0' },
+      solanaAccounts: { enabled: false, minimumVersion: '13.6.0' },
+      bitcoinAccounts: { enabled: false, minimumVersion: '13.6.0' },
     },
     // Override the EVM network configurations to have proper names
     networkConfigurationsByChainId: {
@@ -106,20 +78,6 @@ const createMockState = () => ({
         ).filter(([chainId]) => !['0x1'].includes(chainId)),
       ),
     },
-    multichainNetworkConfigurationsByChainId: {
-      [MultichainNetworks.SOLANA]: {
-        chainId: MultichainNetworks.SOLANA,
-        name: 'Solana Mainnet',
-        nativeCurrency: 'SOL',
-        isEvm: false,
-      },
-      [MultichainNetworks.SOLANA_TESTNET]: {
-        chainId: MultichainNetworks.SOLANA_TESTNET,
-        name: 'Solana Testnet',
-        nativeCurrency: 'SOL',
-        isEvm: false,
-      },
-    },
     internalAccounts: {
       selectedAccount: accounts.ethereum.id,
       accounts: Object.fromEntries(
@@ -136,7 +94,7 @@ const meta: Meta<typeof MultichainAggregatedAddressListRow> = {
     docs: {
       description: {
         component:
-          'A component that displays an aggregated list row with multiple network avatars, truncated address, and a copy action. The group name is automatically derived from the chain IDs - "Ethereum" for EVM chains or the network name for non-EVM chains.',
+          'A component that displays an aggregated list row with multiple network avatars, truncated address, and a copy action for EVM networks.',
       },
     },
   },
@@ -205,17 +163,17 @@ export const ManyNetworks: Story = {
   },
 };
 
-export const NonEvmNetwork: Story = {
+export const ArbitrumNetwork: Story = {
   args: {
-    chainIds: [MultichainNetworks.SOLANA],
-    address: 'DfGj1XfVTbfM7VZvqLkVNvDhFb4Nt8xBpGpH5f2r3Dqq',
+    chainIds: ['eip155:42161'],
+    address: '0x1111111111111111111111111111111111111111',
     copyActionParams: {
       message: 'Address copied!',
       callback: () => {
         navigator.clipboard.writeText(
-          'DfGj1XfVTbfM7VZvqLkVNvDhFb4Nt8xBpGpH5f2r3Dqq',
+          '0x1111111111111111111111111111111111111111',
         );
-        console.log('Solana address copied to clipboard');
+        console.log('Address copied to clipboard');
       },
     },
   },

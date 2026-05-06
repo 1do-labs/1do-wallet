@@ -1,20 +1,12 @@
-import {
-  BtcAccountType,
-  SolAccountType,
-  TrxAccountType,
-  isEvmAccountType,
-} from '@metamask/keyring-api';
+import { isEvmAccountType } from '@metamask/keyring-api';
 import { KeyringTypes } from '@metamask/keyring-controller';
 import { InternalAccount } from '@metamask/keyring-internal-api';
 
 export type AccountTypeCategory =
   | 'evm'
-  | 'solana'
+  | 'institutional'
   | 'hardware'
   | 'private-key'
-  | 'institutional-evm'
-  | 'bitcoin'
-  | 'tron'
   | 'unknown';
 
 /**
@@ -52,32 +44,13 @@ export const getAccountTypeCategory = (
     return 'private-key';
   }
 
-  // Institutional-EVM accounts (must be checked before EVM check)
-  if (
-    keyringType === KeyringTypes.snap &&
-    snapId === 'npm:@metamask/institutional-wallet-snap'
-  ) {
-    return 'institutional-evm';
+  if (snapId === 'npm:@metamask/institutional-wallet-snap') {
+    return 'institutional';
   }
 
   // EVM accounts (EOA and ERC-4337) - general fallback
   if (isEvmAccountType(type)) {
     return 'evm';
-  }
-
-  // Solana accounts
-  if (type === SolAccountType.DataAccount) {
-    return 'solana';
-  }
-
-  // Bitcoin accounts
-  if (Object.values(BtcAccountType).includes(type as BtcAccountType)) {
-    return 'bitcoin';
-  }
-
-  // TRON accounts
-  if (type === TrxAccountType.Eoa) {
-    return 'tron';
   }
 
   return 'unknown';
@@ -90,15 +63,6 @@ export const getAccountTypeCategory = (
  */
 export const isEVMAccount = (account: InternalAccount): boolean => {
   return getAccountTypeCategory(account) === 'evm';
-};
-
-/**
- * Checks if an account is a Solana account
- *
- * @param account - The internal account object to check.
- */
-export const isSolanaAccount = (account: InternalAccount): boolean => {
-  return getAccountTypeCategory(account) === 'solana';
 };
 
 /**
@@ -127,23 +91,5 @@ export const isPrivateKeyAccount = (account: InternalAccount): boolean => {
 export const isInstitutionalEVMAccount = (
   account: InternalAccount,
 ): boolean => {
-  return getAccountTypeCategory(account) === 'institutional-evm';
-};
-
-/**
- * Checks if an account is a Bitcoin account
- *
- * @param account - The internal account object to check.
- */
-export const isBitcoinAccount = (account: InternalAccount): boolean => {
-  return getAccountTypeCategory(account) === 'bitcoin';
-};
-
-/**
- * Checks if an account is a Tron account
- *
- * @param account - The internal account object to check.
- */
-export const isTronAccount = (account: InternalAccount): boolean => {
-  return getAccountTypeCategory(account) === 'tron';
+  return getAccountTypeCategory(account) === 'institutional';
 };

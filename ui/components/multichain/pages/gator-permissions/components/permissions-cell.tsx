@@ -7,13 +7,13 @@ import {
   IconName,
 } from '@metamask/design-system-react';
 import { useI18nContext } from '../../../../../hooks/useI18nContext';
-import { EvmAndMultichainNetworkConfigurationsWithCaipChainId } from '../../../../../selectors/selectors.types';
+import { EvmNetworkConfigurationWithCaipChainId } from '../../../../../selectors/selectors.types';
 import { TOKEN_TRANSFER_ROUTE } from '../../../../../helpers/constants/routes';
 import { PermissionsCellConnectionListItem } from './permissions-cell-connection-list-item';
 
 type PermissionsCellProps = {
-  nonTestNetworks: EvmAndMultichainNetworkConfigurationsWithCaipChainId[];
-  testNetworks: EvmAndMultichainNetworkConfigurationsWithCaipChainId[];
+  nonTestNetworks: EvmNetworkConfigurationWithCaipChainId[];
+  testNetworks: EvmNetworkConfigurationWithCaipChainId[];
   totalCount: number;
   chainIds: string[];
   paddingTop?: BoxSpacing;

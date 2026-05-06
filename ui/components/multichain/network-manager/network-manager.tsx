@@ -11,7 +11,7 @@ import { useI18nContext } from '../../../hooks/useI18nContext';
 import { useNetworkFormState } from '../../../pages/settings/networks-tab/networks-form/networks-form-state';
 import {
   getEditedNetwork,
-  getMultichainNetworkConfigurationsByChainId,
+  getMultichainNetworkConfigurationsTuple,
 } from '../../../selectors';
 import { hideModal, setEditedNetwork } from '../../../store/actions';
 import {
@@ -41,7 +41,7 @@ export const NetworkManager = () => {
   };
 
   const [, evmNetworks] = useSelector(
-    getMultichainNetworkConfigurationsByChainId,
+    getMultichainNetworkConfigurationsTuple,
   );
   const { chainId: editingChainId, editCompleted } =
     useSelector(getEditedNetwork) ?? {};

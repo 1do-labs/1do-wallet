@@ -1,5 +1,3 @@
-import { BtcAccountType } from '@metamask/keyring-api';
-
 import { cloneDeep } from 'lodash';
 import { renderHookWithProvider } from '../../../../../test/lib/render-helpers-navigate';
 import mockState from '../../../../../test/data/mock-state.json';
@@ -29,12 +27,6 @@ const mockGetWalletsWithAccounts = jest.spyOn(
 );
 const mockUseSendContext = jest.spyOn(useSendContextModule, 'useSendContext');
 const mockIsEVMAccountForSend = jest.mocked(accountUtils.isEVMAccountForSend);
-const mockIsSolanaAccountForSend = jest.mocked(
-  accountUtils.isSolanaAccountForSend,
-);
-const mockIsBitcoinAccountForSend = jest.mocked(
-  accountUtils.isBitcoinAccountForSend,
-);
 
 describe('useAccountRecipients', () => {
   const mockWalletsWithAccounts = {
@@ -77,6 +69,7 @@ describe('useAccountRecipients', () => {
     mockUseSendContext.mockReturnValue({
       from: '0xfrom1234567890abcdef1234567890abcdef123456',
     } as unknown as ReturnType<typeof useSendContext>);
+    mockIsEVMAccountForSend.mockReturnValue(true);
   });
 
   it('returns EVM account recipients when isEvmSendType is true', () => {
@@ -84,8 +77,6 @@ describe('useAccountRecipients', () => {
       isEvmSendType: true,
       isSolanaSendType: false,
     } as unknown as ReturnType<typeof useSendType>);
-    mockIsEVMAccountForSend.mockReturnValue(true);
-    mockIsSolanaAccountForSend.mockReturnValue(false);
 
     const { result } = renderHookWithProvider(
       () => useAccountRecipients(),
@@ -100,88 +91,6 @@ describe('useAccountRecipients', () => {
       },
       {
         accountGroupName: 'Account Group 1',
-        address: '0xabcdef1234567890abcdef1234567890abcdef12',
-        walletName: 'MetaMask Wallet',
-      },
-      {
-        accountGroupName: 'Account Group 2',
-        address: '5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty',
-        walletName: 'Hardware Wallet',
-      },
-    ]);
-  });
-
-  it('returns Solana account recipients when isSolanaSendType is true', () => {
-    mockUseSendType.mockReturnValue({
-      isEvmSendType: false,
-      isSolanaSendType: true,
-    } as unknown as ReturnType<typeof useSendType>);
-    mockIsEVMAccountForSend.mockReturnValue(false);
-    mockIsSolanaAccountForSend.mockReturnValue(true);
-
-    const { result } = renderHookWithProvider(
-      () => useAccountRecipients(),
-      mockState,
-    );
-
-    expect(result.current).toEqual([
-      {
-        accountGroupName: 'Account Group 1',
-        address: '0x1234567890abcdef1234567890abcdef12345678',
-        walletName: 'MetaMask Wallet',
-      },
-      {
-        accountGroupName: 'Account Group 1',
-        address: '0xabcdef1234567890abcdef1234567890abcdef12',
-        walletName: 'MetaMask Wallet',
-      },
-      {
-        accountGroupName: 'Account Group 2',
-        address: '5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty',
-        walletName: 'Hardware Wallet',
-      },
-    ]);
-  });
-
-  it('returns Bitcoin account recipients when isBitcoinSendType is true', () => {
-    mockUseSendType.mockReturnValue({
-      isEvmSendType: false,
-      isSolanaSendType: false,
-      isBitcoinSendType: true,
-    } as unknown as ReturnType<typeof useSendType>);
-    const accountsWithAccountType = cloneDeep(mockWalletsWithAccounts);
-    (
-      accountsWithAccountType.wallet1.groups.group1.accounts[0] as {
-        address: string;
-        type: BtcAccountType;
-      }
-    ).type = BtcAccountType.P2wpkh;
-    (
-      accountsWithAccountType.wallet1.groups.group1.accounts[1] as {
-        address: string;
-        type: BtcAccountType;
-      }
-    ).type = BtcAccountType.P2sh;
-    mockGetWalletsWithAccounts.mockReturnValue(accountsWithAccountType);
-    mockIsEVMAccountForSend.mockReturnValue(false);
-    mockIsSolanaAccountForSend.mockReturnValue(false);
-    mockIsBitcoinAccountForSend.mockReturnValue(true);
-
-    const { result } = renderHookWithProvider(
-      () => useAccountRecipients(),
-      mockState,
-    );
-
-    expect(result.current).toEqual([
-      {
-        accountGroupName: 'Account Group 1',
-        accountType: BtcAccountType.P2wpkh,
-        address: '0x1234567890abcdef1234567890abcdef12345678',
-        walletName: 'MetaMask Wallet',
-      },
-      {
-        accountGroupName: 'Account Group 1',
-        accountType: BtcAccountType.P2sh,
         address: '0xabcdef1234567890abcdef1234567890abcdef12',
         walletName: 'MetaMask Wallet',
       },
@@ -201,8 +110,6 @@ describe('useAccountRecipients', () => {
       isEvmSendType: true,
       isSolanaSendType: false,
     } as unknown as ReturnType<typeof useSendType>);
-    mockIsEVMAccountForSend.mockReturnValue(true);
-
     const { result } = renderHookWithProvider(
       () => useAccountRecipients(),
       mockState,
@@ -222,7 +129,7 @@ describe('useAccountRecipients', () => {
     ]);
   });
 
-  it('returns empty array when neither EVM nor Solana send type', () => {
+  it('returns empty array when send type is not EVM', () => {
     mockUseSendType.mockReturnValue({
       isEvmSendType: false,
       isSolanaSendType: false,
@@ -297,7 +204,6 @@ describe('useAccountRecipients', () => {
       isNonEvmSendType: boolean;
       isNonEvmNativeSendType: boolean;
     });
-    mockIsEVMAccountForSend.mockReturnValue(true);
 
     const { result } = renderHookWithProvider(
       () => useAccountRecipients(),

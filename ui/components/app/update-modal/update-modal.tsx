@@ -91,7 +91,7 @@ function UpdateModal() {
             borderRadius={BorderRadius.SM}
             padding={10}
           >
-            <img src="/images/logo/metamask-fox.svg" width={160} height={160} />
+            <img src="/images/logo/1do-mark.svg" width={160} height={160} />
           </Box>
           <Text variant={TextVariant.headingMd} textAlign={TextAlign.Center}>
             {t('getTheNewestFeatures')}

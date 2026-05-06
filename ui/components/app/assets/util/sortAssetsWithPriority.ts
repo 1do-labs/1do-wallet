@@ -1,7 +1,6 @@
 import type { Asset } from '@metamask/assets-controllers';
 import { CHAIN_IDS } from '@metamask/transaction-controller';
 import type { CaipChainId, Hex } from '@metamask/utils';
-import { BtcScope, SolScope, TrxScope } from '@metamask/keyring-api';
 import { sortAssets, type SortCriteria } from './sort';
 
 // These are the only two options for sorting assets
@@ -29,9 +28,6 @@ const defaultNativeAssetOrder: (Hex | CaipChainId)[] = [
   CHAIN_IDS.BSC,
   CHAIN_IDS.ARBITRUM,
   CHAIN_IDS.BASE,
-  TrxScope.Mainnet,
-  BtcScope.Mainnet,
-  SolScope.Mainnet,
   CHAIN_IDS.LINEA_MAINNET,
   CHAIN_IDS.MAINNET,
 ];

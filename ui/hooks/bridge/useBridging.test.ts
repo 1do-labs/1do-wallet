@@ -7,7 +7,6 @@ import {
 import { MetaMetricsSwapsEventSource } from '../../../shared/constants/metametrics';
 import { renderHookWithProvider } from '../../../test/lib/render-helpers-navigate';
 import { createBridgeMockStore } from '../../../test/data/bridge/mock-bridge-store';
-import { MultichainNetworks } from '../../../shared/constants/multichain/networks';
 import { mockNetworkState } from '../../../test/stub/networks';
 import { CHAIN_IDS } from '../../../shared/constants/network';
 import * as bridgeSelectors from '../../ducks/bridge/selectors';
@@ -158,15 +157,6 @@ describe('useBridging', () => {
                   '10': true,
                   '56': true,
                 },
-                bip122: {
-                  'bip122:000000000019d6689c085ae165831e93': true,
-                },
-                solana: {
-                  'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp': true,
-                },
-                tron: {
-                  'tron:728126428': true,
-                },
               },
             },
             featureFlagOverrides: {
@@ -177,9 +167,6 @@ describe('useBridging', () => {
                 chainRanking: [
                   { chainId: formatChainIdToCaip(CHAIN_IDS.MAINNET) },
                   { chainId: formatChainIdToCaip(CHAIN_IDS.OPTIMISM) },
-                  { chainId: MultichainNetworks.SOLANA },
-                  { chainId: MultichainNetworks.TRON },
-                  { chainId: MultichainNetworks.BITCOIN },
                   { chainId: formatChainIdToCaip(CHAIN_IDS.BSC) },
                 ],
               },
@@ -303,53 +290,6 @@ describe('useBridging', () => {
         },
         MetaMetricsSwapsEventSource.TokenView,
       ],
-      // Should use bip44 default asset for BTC
-      [
-        `/`,
-        {
-          pathname: BRIDGE_PREPARE_PATH,
-          search: '',
-        },
-        getNativeAssetForChainId(MultichainNetworks.BITCOIN),
-        MetaMetricsSwapsEventSource.TokenView,
-        {
-          token: getNativeAssetForChainId(MultichainNetworks.BITCOIN),
-        },
-      ],
-      // Should use bip44 default asset for SOLANA
-      [
-        '/',
-        {
-          pathname: BRIDGE_PREPARE_PATH,
-          search: '',
-        },
-        getNativeAssetForChainId(MultichainNetworks.SOLANA),
-        MetaMetricsSwapsEventSource.TokenView,
-        {
-          token: getNativeAssetForChainId(MultichainNetworks.SOLANA),
-        },
-      ],
-      // test account has no TRON account
-      [
-        '/',
-        {
-          pathname: BRIDGE_PREPARE_PATH,
-          search: '',
-        },
-        getNativeAssetForChainId(MultichainNetworks.TRON),
-        MetaMetricsSwapsEventSource.TokenView,
-        {
-          token: {
-            address: '0x0000000000000000000000000000000000000000',
-            assetId: 'tron:728126428/slip44:195',
-            chainId: 'tron:728126428',
-            decimals: 6,
-            iconUrl: '',
-            name: 'Tron',
-            symbol: 'TRX',
-          },
-        },
-      ],
     ])(
       'should open swap with correct token pair when pathname is %s',
       async (
@@ -384,15 +324,6 @@ describe('useBridging', () => {
                   '10': true,
                   '56': true,
                 },
-                bip122: {
-                  'bip122:000000000019d6689c085ae165831e93': true,
-                },
-                solana: {
-                  'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp': true,
-                },
-                tron: {
-                  [MultichainNetworks.TRON]: true,
-                },
               },
               pathname,
             },
@@ -403,9 +334,6 @@ describe('useBridging', () => {
                 maxRefreshCount: 5,
                 chainRanking: [
                   { chainId: formatChainIdToCaip(CHAIN_IDS.OPTIMISM) },
-                  { chainId: MultichainNetworks.SOLANA },
-                  { chainId: MultichainNetworks.TRON },
-                  { chainId: MultichainNetworks.BITCOIN },
                   { chainId: formatChainIdToCaip(CHAIN_IDS.BSC) },
                 ],
               },

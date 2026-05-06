@@ -34,7 +34,6 @@ const CONNECT_APPROVAL_TYPES = [
   ApprovalType.WalletRequestPermissions,
   'wallet_installSnap',
   'wallet_updateSnap',
-  'wallet_installSnapResult',
 ];
 
 export type ConfirmationNavigationOptions = {

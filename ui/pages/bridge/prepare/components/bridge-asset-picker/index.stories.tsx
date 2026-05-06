@@ -7,7 +7,6 @@ import {
   getFromToken,
 } from '../../../../../ducks/bridge/selectors';
 import { setFromToken } from '../../../../../ducks/bridge/actions';
-import { MultichainNetworks } from '../../../../../../shared/constants/multichain/networks';
 import { CHAIN_IDS } from '../../../../../../shared/constants/network';
 import { formatChainIdToCaip } from '@metamask/bridge-controller';
 import configureStore from '../../../../../store/store';
@@ -31,9 +30,9 @@ const mockFeatureFlags = {
       { chainId: formatChainIdToCaip(CHAIN_IDS.MAINNET) },
       { chainId: formatChainIdToCaip(CHAIN_IDS.OPTIMISM) },
       { chainId: formatChainIdToCaip(CHAIN_IDS.POLYGON) },
-      { chainId: MultichainNetworks.SOLANA },
-      { chainId: MultichainNetworks.BITCOIN },
-      { chainId: MultichainNetworks.TRON },
+      { chainId: formatChainIdToCaip(CHAIN_IDS.ARBITRUM) },
+      { chainId: formatChainIdToCaip(CHAIN_IDS.BASE) },
+      { chainId: formatChainIdToCaip(CHAIN_IDS.LINEA_MAINNET) },
     ],
   },
 };

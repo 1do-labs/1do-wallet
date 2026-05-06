@@ -13,29 +13,18 @@ import {
   Routes,
   Route,
 } from 'react-router-dom';
-import { providerErrors, serializeError } from '@metamask/rpc-errors';
 import {
   SubjectType,
   PermissionsRequest as ControllerPermissionsRequest,
 } from '@metamask/permission-controller';
-import { isSnapId } from '@metamask/snaps-utils';
-import { WALLET_SNAP_PERMISSION_KEY } from '@metamask/snaps-rpc-methods';
 import { isEvmAccountType, KeyringAccountType } from '@metamask/keyring-api';
 import {
   Caip25EndowmentPermissionName,
-  getAllNamespacesFromCaip25CaveatValue,
-  getAllScopesFromCaip25CaveatValue,
   getCaipAccountIdsFromCaip25CaveatValue,
   getEthAccounts,
   getPermittedEthChainIds,
 } from '@metamask/chain-agnostic-permission';
-import {
-  CaipChainId,
-  CaipNamespace,
-  KnownCaipNamespace,
-  parseCaipAccountId,
-  parseCaipChainId,
-} from '@metamask/utils';
+import { parseCaipAccountId } from '@metamask/utils';
 import { toRelativeRoutePath } from '../routes/utils';
 // TODO: Remove restricted import
 // eslint-disable-next-line import-x/no-restricted-paths
@@ -49,20 +38,12 @@ import {
   DEFAULT_ROUTE,
   CONNECT_ROUTE,
   CONNECT_CONFIRM_PERMISSIONS_ROUTE,
-  CONNECT_SNAPS_CONNECT_ROUTE,
-  CONNECT_SNAP_INSTALL_ROUTE,
-  CONNECT_SNAP_UPDATE_ROUTE,
-  CONNECT_SNAP_RESULT_ROUTE,
 } from '../../helpers/constants/routes';
 import {
   getAccountsWithLabels,
   getLastConnectedInfo,
   getPermissionsRequests,
   getSelectedInternalAccount,
-  getSnapInstallOrUpdateRequests,
-  getRequestState,
-  getSnapsInstallPrivacyWarningShown,
-  getRequestType,
   getTargetSubjectMetadata,
 } from '../../selectors';
 import { getURLHostName } from '../../helpers/utils/util';
@@ -70,26 +51,12 @@ import {
   approvePermissionsRequest as approvePermissionsRequestAction,
   rejectPermissionsRequest as rejectPermissionsRequestAction,
   getRequestAccountTabIds as getRequestAccountTabIdsAction,
-  resolvePendingApproval,
-  rejectPendingApproval as rejectPendingApprovalAction,
-  setSnapsInstallPrivacyWarningShownStatus as setSnapsInstallPrivacyWarningShownStatusAction,
 } from '../../store/actions';
-import { getAccountGroupWithInternalAccounts } from '../../selectors/multichain-accounts/account-tree';
 import PermissionPageContainer from '../../components/app/permission-page-container';
-import { Box } from '../../components/component-library';
-import SnapAuthorshipHeader from '../../components/app/snaps/snap-authorship-header/snap-authorship-header';
 import { MultichainAccountsConnectPage } from '../multichain-accounts/multichain-accounts-connect-page/multichain-accounts-connect-page';
-import { supportsChainIds } from '../../hooks/useAccountGroupsForPermissions';
-import { getCaip25AccountIdsFromAccountGroupAndScope } from '../../../shared/lib/multichain/scope-utils';
-import { MultichainEditAccountsPageWrapper } from '../../components/multichain-accounts/permissions/multichain-edit-accounts-page/multichain-edit-account-wrapper';
-import { SnapsPermissionsRequestType } from '../../components/multichain-accounts/permissions/multichain-edit-accounts-page/multichain-edit-accounts-page';
 import { useI18nContext } from '../../hooks/useI18nContext';
 import { ConnectionTrustSignalGate } from './connection-trust-signal-gate';
 import PermissionsRedirect from './redirect';
-import SnapsConnect from './snaps/snaps-connect';
-import SnapInstall from './snaps/snap-install';
-import SnapUpdate from './snaps/snap-update';
-import SnapResult from './snaps/snap-result';
 import {
   getCaip25CaveatValueFromPermissions,
   PermissionsRequest,
@@ -148,68 +115,17 @@ function getRequestedChainIds(permissions: PermissionsRequest | undefined) {
   return getPermittedEthChainIds(requestedCaip25CaveatValue);
 }
 
-/**
- * Gets all requested CAIP chain IDs from the permission request.
- * This includes all chains (EVM, Solana, Bitcoin, etc.), not just EVM.
- *
- * @param permissions
- * @param includeEvm - Whether to include EVM chains (default: true)
- */
-function getRequestedCaipChainIds(
-  permissions: PermissionsRequest | undefined,
-  includeEvm = true,
-): CaipChainId[] {
-  const requestedCaip25CaveatValue =
-    getCaip25CaveatValueFromPermissions(permissions);
-  return getAllScopesFromCaip25CaveatValue(requestedCaip25CaveatValue).filter(
-    (chainId) => {
-      try {
-        const { namespace } = parseCaipChainId(chainId);
-        // Exclude wallet namespace as it's not a chain
-        if (namespace === KnownCaipNamespace.Wallet) {
-          return false;
-        }
-        // Optionally exclude EVM chains (eip155 namespace)
-        if (!includeEvm && namespace === KnownCaipNamespace.Eip155) {
-          return false;
-        }
-        return true;
-      } catch {
-        return false;
-      }
-    },
-  ) as CaipChainId[];
-}
-
-/**
- * Gets only non-EVM CAIP chain IDs from the permission request.
- * This excludes EVM chains (eip155 namespace).
- *
- * @param permissions
- */
-function getNonEvmRequestedCaipChainIds(
-  permissions: PermissionsRequest | undefined,
-): CaipChainId[] {
-  return getRequestedCaipChainIds(permissions, false);
-}
-
 // eslint-disable-next-line @typescript-eslint/naming-convention
 function PermissionsConnect() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const location = useLocation();
+  const { pathname } = useLocation();
   const params = useParams();
-  const t = useI18nContext();
 
   const permissionsRequestId = params.id;
 
   // Selectors
-  const { pathname } = location;
-  let permissionsRequests = useSelector(getPermissionsRequests);
-  permissionsRequests = [
-    ...permissionsRequests,
-    ...useSelector(getSnapInstallOrUpdateRequests),
-  ];
+  const permissionsRequests = useSelector(getPermissionsRequests);
   const { address: currentAddress } = useSelector(getSelectedInternalAccount);
 
   const permissionsRequest = permissionsRequests.find(
@@ -250,24 +166,6 @@ function PermissionsConnect() {
     [targetSubjectMetadataFromSelector, originFromRequest],
   );
 
-  let requestType = useSelector((state) =>
-    getRequestType(state, permissionsRequestId),
-  );
-
-  // We want to only assign the wallet_connectSnaps request type (i.e. only show
-  // SnapsConnect) if and only if we get a singular wallet_snap permission request.
-  // Any other request gets pushed to the normal permission connect flow.
-  if (
-    permissionsRequest &&
-    Object.keys(permissions || {}).length === 1 &&
-    permissions?.[WALLET_SNAP_PERMISSION_KEY]
-  ) {
-    requestType = 'wallet_connectSnaps';
-  }
-
-  const requestState =
-    useSelector((state) => getRequestState(state, permissionsRequestId)) || {};
-
   // We only consider EVM accounts for the legacy permission review flow.
   // Multichain accounts are handled separately via the MultichainEditAccountsPageWrapper.
   const accountsWithLabels = useSelector(getAccountsWithLabels).filter(
@@ -275,7 +173,6 @@ function PermissionsConnect() {
       isEvmAccountType(account.type as KeyringAccountType),
   );
 
-  const accountGroups = useSelector(getAccountGroupWithInternalAccounts);
   const lastConnectedInfoRaw = useSelector(getLastConnectedInfo);
 
   const lastConnectedInfo = useMemo(
@@ -285,21 +182,6 @@ function PermissionsConnect() {
 
   const connectPath = `${CONNECT_ROUTE}/${permissionsRequestId}`;
   const confirmPermissionPath = `${connectPath}${CONNECT_CONFIRM_PERMISSIONS_ROUTE}`;
-  const snapsConnectPath = `${connectPath}${CONNECT_SNAPS_CONNECT_ROUTE}`;
-  const snapInstallPath = `${connectPath}${CONNECT_SNAP_INSTALL_ROUTE}`;
-  const snapUpdatePath = `${connectPath}${CONNECT_SNAP_UPDATE_ROUTE}`;
-  const snapResultPath = `${connectPath}${CONNECT_SNAP_RESULT_ROUTE}`;
-
-  const isSnapInstallOrUpdateOrResult =
-    pathname === snapInstallPath ||
-    pathname === snapUpdatePath ||
-    pathname === snapResultPath;
-
-  const hideTopBar = isSnapInstallOrUpdateOrResult;
-  const snapsInstallPrivacyWarningShownProp = useSelector(
-    getSnapsInstallPrivacyWarningShown,
-  );
-
   // Local state
   const [redirecting, setRedirecting] = useState(false);
   const [selectedAccountAddresses, setSelectedAccountAddresses] = useState(() =>
@@ -315,18 +197,6 @@ function PermissionsConnect() {
   const [targetSubjectMetadata, setTargetSubjectMetadata] = useState(
     targetSubjectMetadataProp || {},
   );
-  const [snapsInstallPrivacyWarningShown] = useState(
-    snapsInstallPrivacyWarningShownProp,
-  );
-
-  // State for chain-agnostic CAIP account IDs and chain IDs
-  // These are set when accounts are selected in the multichain account selection UI
-  const [selectedCaipAccountIds, setSelectedCaipAccountIds] = useState<
-    string[] | null
-  >(null);
-  const [selectedCaipChainIds, setSelectedCaipChainIds] = useState<
-    CaipChainId[] | null
-  >(null);
 
   const prevPermissionsRequestRef = useRef<typeof permissionsRequest | null>(
     null,
@@ -341,20 +211,8 @@ function PermissionsConnect() {
   // Define redirect function before it's used in effects
   const redirect = useCallback(
     (approved: boolean) => {
-      let shouldRedirect = true;
-
-      const isRequestingSnap =
-        permissions && Object.keys(permissions).includes('wallet_snap');
-
-      shouldRedirect = !isRequestingSnap;
-
-      setRedirecting(shouldRedirect);
+      setRedirecting(true);
       setPermissionsApproved(approved);
-
-      // If requesting a snap, don't navigate - wait for the snap install request
-      if (!shouldRedirect) {
-        return;
-      }
 
       if (approved) {
         setTimeout(() => navigate(DEFAULT_ROUTE), APPROVE_TIMEOUT);
@@ -362,7 +220,7 @@ function PermissionsConnect() {
       }
       navigate(DEFAULT_ROUTE);
     },
-    [permissions, navigate],
+    [navigate],
   );
 
   // Handle initial navigation on mount
@@ -374,25 +232,10 @@ function PermissionsConnect() {
       return;
     }
 
-    if (location.pathname === connectPath && !isRequestingAccounts) {
-      switch (requestType) {
-        case 'wallet_installSnap':
-          navigate(snapInstallPath, { replace: true });
-          break;
-        case 'wallet_updateSnap':
-          navigate(snapUpdatePath, { replace: true });
-          break;
-        case 'wallet_installSnapResult':
-          navigate(snapResultPath, { replace: true });
-          break;
-        case 'wallet_connectSnaps':
-          navigate(snapsConnectPath, { replace: true });
-          break;
-        default:
-          navigate(confirmPermissionPath, { replace: true });
-      }
+    if (pathname === connectPath && !isRequestingAccounts) {
+      navigate(confirmPermissionPath, { replace: true });
     }
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [dispatch, pathname, permissionsRequest, navigate, connectPath, isRequestingAccounts, confirmPermissionPath]);
 
   // Cache targetSubjectMetadata when it changes
   useEffect(() => {
@@ -435,40 +278,6 @@ function PermissionsConnect() {
     prevLastConnectedInfoRef.current = lastConnectedInfo;
   }, [permissionsRequest, lastConnectedInfo, redirecting, origin, redirect]);
 
-  const selectAccounts = useCallback(
-    (addresses: Set<string>) => {
-      setSelectedAccountAddresses(addresses);
-      // Navigate after state is updated
-      setTimeout(() => {
-        switch (requestType) {
-          case 'wallet_installSnap':
-            navigate(snapInstallPath);
-            break;
-          case 'wallet_updateSnap':
-            navigate(snapUpdatePath);
-            break;
-          case 'wallet_installSnapResult':
-            navigate(snapResultPath);
-            break;
-          case 'wallet_connectSnaps':
-            navigate(snapsConnectPath, { replace: true });
-            break;
-          default:
-            navigate(confirmPermissionPath);
-        }
-      }, 0);
-    },
-    [
-      requestType,
-      snapInstallPath,
-      snapUpdatePath,
-      snapResultPath,
-      snapsConnectPath,
-      confirmPermissionPath,
-      navigate,
-    ],
-  );
-
   const cancelPermissionsRequest = useCallback(
     async (requestId: string) => {
       if (requestId) {
@@ -492,101 +301,6 @@ function PermissionsConnect() {
     [dispatch, redirect],
   );
 
-  const setSnapsInstallPrivacyWarningShownStatus = useCallback(
-    (shown: boolean) => {
-      dispatch(setSnapsInstallPrivacyWarningShownStatusAction(shown));
-    },
-    [dispatch],
-  );
-
-  const approvePendingApproval = useCallback(
-    (id: string, value?: unknown) =>
-      dispatch(resolvePendingApproval(id, value)),
-    [dispatch],
-  );
-
-  const rejectPendingApproval = useCallback(
-    (id: string, error: unknown) =>
-      dispatch(rejectPendingApprovalAction(id, error)),
-    [dispatch],
-  );
-
-  const renderSnapChooseAccount = useCallback(() => {
-    const requestedCaip25CaveatValue = getCaip25CaveatValueFromPermissions(
-      permissions as PermissionsRequest | undefined,
-    );
-
-    // Get all requested scopes (chain IDs), excluding wallet namespace
-    const requestedCaipChainIds = getAllScopesFromCaip25CaveatValue(
-      requestedCaip25CaveatValue,
-    ).filter((chainId) => {
-      try {
-        const { namespace } = parseCaipChainId(chainId);
-        return namespace !== KnownCaipNamespace.Wallet;
-      } catch {
-        return false;
-      }
-    }) as CaipChainId[];
-
-    // Get all requested namespaces, excluding wallet namespace
-    const requestedNamespaces = getAllNamespacesFromCaip25CaveatValue(
-      requestedCaip25CaveatValue,
-    ).filter(
-      (namespace) => namespace !== KnownCaipNamespace.Wallet,
-    ) as CaipNamespace[];
-
-    // Build scopes to use: include all requested chain IDs
-    const caipChainIdsToUse: CaipChainId[] = [...requestedCaipChainIds];
-
-    // Only add wildcard scope for EIP-155 (EVM) namespace because
-    // getCaip25AccountIdsFromAccountGroupAndScope only handles wildcard matching for EVM.
-    // Non-EVM chains require exact scope matching.
-    if (requestedNamespaces.includes(KnownCaipNamespace.Eip155)) {
-      const evmWildcard = `${KnownCaipNamespace.Eip155}:0` as CaipChainId;
-      if (!caipChainIdsToUse.includes(evmWildcard)) {
-        caipChainIdsToUse.push(evmWildcard);
-      }
-    }
-
-    return (
-      <MultichainEditAccountsPageWrapper
-        title={t('connectWithMetaMask')}
-        permissions={permissions as PermissionsRequest}
-        onSubmit={(accountGroupIds: string[]) => {
-          const filteredAccountGroups = accountGroups.filter(
-            (group) =>
-              accountGroupIds.includes(group.id) &&
-              supportsChainIds(group, caipChainIdsToUse),
-          );
-          const caipAccountIds = getCaip25AccountIdsFromAccountGroupAndScope(
-            filteredAccountGroups,
-            caipChainIdsToUse,
-          );
-
-          // Store CAIP account IDs and chain IDs for chain-agnostic permission approval
-          setSelectedCaipAccountIds(caipAccountIds);
-          // Store all requested CAIP chain IDs - the chain-agnostic system can handle mixed EVM/non-EVM chains
-          setSelectedCaipChainIds(requestedCaipChainIds);
-
-          // Extract addresses from CAIP account IDs
-          const addresses = caipAccountIds.map(
-            (caip25AccountId) => parseCaipAccountId(caip25AccountId).address,
-          );
-          selectAccounts(new Set(addresses));
-        }}
-        onClose={() => cancelPermissionsRequest(permissionsRequestId || '')}
-        snapsPermissionsRequestType={SnapsPermissionsRequestType.Initial}
-      />
-    );
-  }, [
-    permissions,
-    accountGroups,
-    t,
-    selectAccounts,
-    cancelPermissionsRequest,
-    permissionsRequestId,
-  ]);
-
   const renderConnectPage = useCallback(() => {
     const connectPageProps = {
       rejectPermissionsRequest: (requestId: string) =>
@@ -606,37 +320,6 @@ function PermissionsConnect() {
     targetSubjectMetadata,
   ]);
 
-  const renderTopBar = useCallback(
-    (requestId: string) => {
-      const handleCancelFromHeader = () => {
-        cancelPermissionsRequest(requestId);
-      };
-      return (
-        <Box
-          style={{
-            boxShadow:
-              targetSubjectMetadata.subjectType === SubjectType.Snap
-                ? 'var(--shadow-size-lg) var(--color-shadow-default)'
-                : undefined,
-          }}
-        >
-          {targetSubjectMetadata.subjectType === SubjectType.Snap && (
-            <SnapAuthorshipHeader
-              snapId={targetSubjectMetadata.origin}
-              boxShadow="none"
-              onCancel={handleCancelFromHeader}
-            />
-          )}
-        </Box>
-      );
-    },
-    [targetSubjectMetadata, cancelPermissionsRequest],
-  );
-
-  const isRequestingSnap = isSnapId(
-    (metadata as Record<string, string>)?.origin,
-  );
-
   const cancelFromTrustSignalGate = useCallback(
     () => cancelPermissionsRequest(permissionsRequestId || ''),
     [cancelPermissionsRequest, permissionsRequestId],
@@ -648,21 +331,13 @@ function PermissionsConnect() {
       onCancel={cancelFromTrustSignalGate}
     >
       <div className="permissions-connect">
-        {!hideTopBar &&
-          permissionsRequestId &&
-          renderTopBar(permissionsRequestId)}
         {redirecting && permissionsApproved ? (
           <PermissionsRedirect subjectMetadata={targetSubjectMetadata} />
         ) : (
           <Routes>
             <Route
               path="/"
-              element={(() => {
-                if (isRequestingSnap) {
-                  return renderSnapChooseAccount();
-                }
-                return renderConnectPage();
-              })()}
+              element={renderConnectPage()}
             />
             <Route
               path={toRelativeRoutePath(CONNECT_CONFIRM_PERMISSIONS_ROUTE)}
@@ -687,108 +362,11 @@ function PermissionsConnect() {
                   requestedChainIds={getRequestedChainIds(
                     permissions as PermissionsRequest | undefined,
                   )}
-                  // Chain-agnostic data for multichain permission approval
-                  selectedCaipAccountIds={selectedCaipAccountIds}
-                  // Use selectedCaipChainIds if set (from account selection), otherwise use non-EVM CAIP chain IDs
-                  // EVM chains are already displayed via requestedChainIds, so we only pass non-EVM chains here
-                  selectedCaipChainIds={
-                    selectedCaipChainIds ??
-                    getNonEvmRequestedCaipChainIds(
-                      permissions as PermissionsRequest | undefined,
-                    )
-                  }
+                  selectedCaipAccountIds={null}
+                  selectedCaipChainIds={[]}
                   targetSubjectMetadata={targetSubjectMetadata}
                   navigate={navigate}
                   connectPath={connectPath}
-                  snapsInstallPrivacyWarningShown={
-                    snapsInstallPrivacyWarningShown
-                  }
-                  setSnapsInstallPrivacyWarningShownStatus={
-                    setSnapsInstallPrivacyWarningShownStatus
-                  }
-                />
-              }
-            />
-            <Route
-              path={toRelativeRoutePath(CONNECT_SNAPS_CONNECT_ROUTE)}
-              element={
-                <SnapsConnect
-                  request={permissionsRequest || {}}
-                  approveConnection={approveConnection}
-                  rejectConnection={(requestId) =>
-                    cancelPermissionsRequest(requestId)
-                  }
-                  targetSubjectMetadata={targetSubjectMetadata}
-                  snapsInstallPrivacyWarningShown={
-                    snapsInstallPrivacyWarningShown
-                  }
-                  setSnapsInstallPrivacyWarningShownStatus={
-                    setSnapsInstallPrivacyWarningShownStatus
-                  }
-                />
-              }
-            />
-            <Route
-              path={toRelativeRoutePath(CONNECT_SNAP_INSTALL_ROUTE)}
-              element={
-                <SnapInstall
-                  request={permissionsRequest || {}}
-                  requestState={requestState || {}}
-                  approveSnapInstall={(requestId) => {
-                    approvePendingApproval(requestId, {
-                      ...permissionsRequest,
-                      permissions: requestState.permissions,
-                      approvedAccounts: [...selectedAccountAddresses],
-                    });
-                    setPermissionsApproved(true);
-                  }}
-                  rejectSnapInstall={(requestId) => {
-                    rejectPendingApproval(
-                      requestId,
-                      serializeError(providerErrors.userRejectedRequest()),
-                    );
-                    setPermissionsApproved(true);
-                  }}
-                  targetSubjectMetadata={targetSubjectMetadata}
-                />
-              }
-            />
-            <Route
-              path={toRelativeRoutePath(CONNECT_SNAP_UPDATE_ROUTE)}
-              element={
-                <SnapUpdate
-                  request={permissionsRequest || {}}
-                  requestState={requestState || {}}
-                  approveSnapUpdate={(requestId) => {
-                    approvePendingApproval(requestId, {
-                      ...permissionsRequest,
-                      permissions: requestState.permissions,
-                      approvedAccounts: [...selectedAccountAddresses],
-                    });
-                    setPermissionsApproved(true);
-                  }}
-                  rejectSnapUpdate={(requestId) => {
-                    rejectPendingApproval(
-                      requestId,
-                      serializeError(providerErrors.userRejectedRequest()),
-                    );
-                    setPermissionsApproved(false);
-                  }}
-                  targetSubjectMetadata={targetSubjectMetadata}
-                />
-              }
-            />
-            <Route
-              path={toRelativeRoutePath(CONNECT_SNAP_RESULT_ROUTE)}
-              element={
-                <SnapResult
-                  request={permissionsRequest || {}}
-                  requestState={requestState || {}}
-                  approveSnapResult={(requestId: string) => {
-                    approvePendingApproval(requestId, undefined);
-                    setPermissionsApproved(true);
-                  }}
-                  targetSubjectMetadata={targetSubjectMetadata}
                 />
               }
             />

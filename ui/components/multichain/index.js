@@ -38,7 +38,6 @@ export { NotificationDetailBlockExplorerButton } from './notification-detail-blo
 export { NotificationsSettingsBox } from './notifications-settings-box';
 export { NotificationsSettingsType } from './notifications-settings-type';
 export { NotificationsSettingsAccount } from './notifications-settings-account';
-export { NotificationListItemSnap } from './notification-list-item-snap';
 export { NotificationsTagCounter } from './notifications-tag-counter';
 export { Toast, ToastContainer } from './toast';
 export { DisconnectPermissionsModal } from './disconnect-permissions-modal';

@@ -1,7 +1,6 @@
 // TODO: remove dead code in this file and related files now that code fences are gone
 
 import { createSelector } from 'reselect';
-import { isMultichainFeatureEnabled } from '../../../shared/lib/multichain-feature-flags';
 import { getRemoteFeatureFlags } from '../remote-feature-flags';
 
 /**
@@ -12,12 +11,7 @@ import { getRemoteFeatureFlags } from '../remote-feature-flags';
  */
 export const getIsBitcoinSupportEnabled = createSelector(
   getRemoteFeatureFlags,
-  ({ bitcoinAccounts }) => {
-    // When bitcoin is not enabled, always return false
-    let enabled = false;
-    enabled = isMultichainFeatureEnabled(bitcoinAccounts);
-    return enabled;
-  },
+  () => false,
 );
 
 /**
@@ -28,7 +22,7 @@ export const getIsBitcoinSupportEnabled = createSelector(
  */
 export const getIsSolanaSupportEnabled = createSelector(
   getRemoteFeatureFlags,
-  ({ solanaAccounts }) => isMultichainFeatureEnabled(solanaAccounts),
+  () => false,
 );
 
 /**
@@ -39,11 +33,7 @@ export const getIsSolanaSupportEnabled = createSelector(
  */
 export const getIsTronSupportEnabled = createSelector(
   getRemoteFeatureFlags,
-  ({ tronAccounts }) => {
-    let enabled = false;
-    enabled = isMultichainFeatureEnabled(tronAccounts);
-    return enabled;
-  },
+  () => false,
 );
 
 /**
@@ -54,7 +44,7 @@ export const getIsTronSupportEnabled = createSelector(
  */
 export const getIsSolanaTestnetSupportEnabled = createSelector(
   getRemoteFeatureFlags,
-  ({ solanaTestnetsEnabled }) => Boolean(solanaTestnetsEnabled),
+  () => false,
 );
 
 /**
@@ -65,7 +55,7 @@ export const getIsSolanaTestnetSupportEnabled = createSelector(
  */
 export const getIsBitcoinTestnetSupportEnabled = createSelector(
   getRemoteFeatureFlags,
-  ({ bitcoinTestnetsEnabled }) => Boolean(bitcoinTestnetsEnabled),
+  () => false,
 );
 
 /**
@@ -76,7 +66,7 @@ export const getIsBitcoinTestnetSupportEnabled = createSelector(
  */
 export const getIsTronTestnetSupportEnabled = createSelector(
   getRemoteFeatureFlags,
-  ({ tronTestnetsEnabled }) => Boolean(tronTestnetsEnabled),
+  () => false,
 );
 
 export const getIsTransactionLabelsEnabled = createSelector(

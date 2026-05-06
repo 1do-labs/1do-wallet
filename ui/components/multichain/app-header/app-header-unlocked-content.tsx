@@ -34,7 +34,6 @@ import {
 import { normalizeSafeAddress } from '../../../../app/scripts/lib/multichain/address';
 import { MetaMetricsContext } from '../../../contexts/metametrics';
 import { useCopyToClipboard } from '../../../hooks/useCopyToClipboard';
-import { NotificationsTagCounter } from '../notifications-tag-counter';
 import { ACCOUNT_LIST_PAGE_ROUTE } from '../../../helpers/constants/routes';
 import { transitionForward } from '../../ui/transition';
 import VisitSupportDataConsentModal from '../../app/modals/visit-support-data-consent-modal';
@@ -49,6 +48,7 @@ import {
 } from '../../../selectors/multichain-accounts/account-tree';
 import { trace, TraceName, TraceOperation } from '../../../../shared/lib/trace';
 import { MultichainAccountNetworkGroupWithCopyIcon } from '../../multichain-accounts/multichain-account-network-group-with-copy-icon';
+import { SmartAccountHeaderButton } from './smart-account-header-button';
 
 type AppHeaderUnlockedContentProps = {
   disableAccountPicker: boolean;
@@ -222,7 +222,6 @@ export const AppHeaderUnlockedContent = ({
         display={Display.Flex}
         flexDirection={FlexDirection.Row}
         alignItems={AlignItems.center}
-        gap={2}
         className="min-w-0"
       >
         {multichainAccountAppContent}
@@ -231,8 +230,10 @@ export const AppHeaderUnlockedContent = ({
         display={Display.Flex}
         alignItems={AlignItems.center}
         justifyContent={JustifyContent.flexEnd}
+        gap={2}
         style={{ marginLeft: 'auto' }}
       >
+        <SmartAccountHeaderButton />
         <BoxDeprecated display={Display.Flex} gap={2}>
           <BoxDeprecated
             display={Display.Flex}
@@ -240,11 +241,6 @@ export const AppHeaderUnlockedContent = ({
             width={BlockSize.Full}
             style={{ position: 'relative' }}
           >
-            {!accountOptionsMenuOpen && (
-              <BoxDeprecated onClick={handleMainMenuToggle}>
-                <NotificationsTagCounter noLabel />
-              </BoxDeprecated>
-            )}
             <ButtonIcon
               ref={menuRef}
               iconName={IconNameDeprecated.Menu}

@@ -112,3 +112,57 @@
   text-decoration: underline;
   text-decoration-style: dotted;
 }
+
+.smart-account-header-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+  padding: 7px 12px;
+  border: 1px solid rgba(232, 143, 181, 0.32);
+  border-radius: 999px;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 241, 247, 0.98) 0%,
+    rgba(255, 226, 238, 0.98) 55%,
+    rgba(255, 214, 233, 0.98) 100%
+  );
+  box-shadow: 0 8px 18px rgba(235, 154, 188, 0.18);
+  cursor: pointer;
+  flex: 0 0 auto;
+  transition:
+    transform 160ms ease,
+    box-shadow 160ms ease,
+    background 160ms ease;
+}
+
+.smart-account-header-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 24px rgba(235, 154, 188, 0.24);
+  background: linear-gradient(
+    135deg,
+    rgba(255, 236, 244, 1) 0%,
+    rgba(255, 219, 234, 1) 55%,
+    rgba(255, 205, 227, 1) 100%
+  );
+}
+
+.smart-account-header-button .mm-button-icon {
+  pointer-events: none;
+}
+
+.smart-account-header-button .mm-button-icon,
+.smart-account-header-button .mm-icon,
+.smart-account-header-button .mm-text {
+  color: #9f295f;
+}
+
+.smart-account-header-button--upgraded {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 233, 242, 0.98) 0%,
+    rgba(255, 214, 230, 0.98) 58%,
+    rgba(255, 197, 219, 0.98) 100%
+  );
+  border-color: rgba(221, 112, 161, 0.38);
+}

@@ -55,11 +55,6 @@ type AppState = {
   showPermittedNetworkToastOpen: boolean;
   showIpfsModalOpen: boolean;
   showSupportDataConsentModal: boolean;
-  keyringRemovalSnapModal: {
-    snapName: string;
-    result: 'success' | 'failure' | 'none';
-  };
-  showKeyringRemovalSnapModal: boolean;
   importTokensModalOpen: boolean;
   deprecatedNetworkModalOpen: boolean;
   accountDetail: {
@@ -124,7 +119,6 @@ type AppState = {
   accountDetailsAddress: string;
   showDeleteMetaMetricsDataModal: boolean;
   showDataDeletionErrorModal: boolean;
-  snapsInstallPrivacyWarningShown: boolean;
   isAddingNewNetwork: boolean;
   isMultiRpcOnboarding: boolean;
   isAccessedFromDappConnectedSitePopover: boolean;
@@ -179,11 +173,6 @@ const initialState: AppState = {
   showIpfsModalOpen: false,
   showBasicFunctionalityModal: false,
   externalServicesOnboardingToggleState: true,
-  keyringRemovalSnapModal: {
-    snapName: '',
-    result: 'none',
-  },
-  showKeyringRemovalSnapModal: false,
   importTokensModalOpen: false,
   deprecatedNetworkModalOpen: false,
   accountDetail: {
@@ -234,7 +223,6 @@ const initialState: AppState = {
   accountDetailsAddress: '',
   showDeleteMetaMetricsDataModal: false,
   showDataDeletionErrorModal: false,
-  snapsInstallPrivacyWarningShown: false,
   isAddingNewNetwork: false,
   isMultiRpcOnboarding: false,
   isAccessedFromDappConnectedSitePopover: false,
@@ -736,23 +724,6 @@ export default function reduceApp(
       return {
         ...appState,
         errorInSettings: null,
-      };
-    case actionConstants.SHOW_KEYRING_SNAP_REMOVAL_RESULT:
-      return {
-        ...appState,
-        showKeyringRemovalSnapModal: true,
-        keyringRemovalSnapModal: {
-          ...action.payload,
-        },
-      };
-    case actionConstants.HIDE_KEYRING_SNAP_REMOVAL_RESULT:
-      return {
-        ...appState,
-        showKeyringRemovalSnapModal: false,
-        keyringRemovalSnapModal: {
-          snapName: '',
-          result: 'none',
-        },
       };
     case actionConstants.SET_SHOW_NEW_SRP_ADDED_TOAST:
       return {

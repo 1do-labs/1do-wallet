@@ -47,12 +47,6 @@ jest.mock('./activity-list-item', () => ({
   ActivityListItem: () => <div data-testid="evm-item">evm-item</div>,
 }));
 
-jest.mock('./non-evm-activity-list-item', () => ({
-  NonEvmActivityListItem: () => (
-    <div data-testid="non-evm-item">non-evm-item</div>
-  ),
-}));
-
 jest.mock('./local-activity-list-item', () => ({
   LocalActivityListItem: () => <div data-testid="local-item">local-item</div>,
 }));
@@ -67,14 +61,7 @@ const defaultVirtualizer = {
 
 mockUseVirtualizer.mockReturnValue(defaultVirtualizer);
 
-function createStore({
-  nonEvmTransactions = {},
-}: {
-  nonEvmTransactions?: Record<
-    string,
-    Record<string, { transactions: unknown[] }>
-  >;
-} = {}) {
+function createStore() {
   return configureMockStore()({
     metamask: {
       selectedAccountGroup: 'entropy:01-group-1',
@@ -96,7 +83,6 @@ function createStore({
       },
       enabledNetworkMap: {
         eip155: { '0x1': true },
-        solana: { 'solana:mainnet': true },
       },
       internalAccounts: {
         selectedAccount: '1',
@@ -104,7 +90,7 @@ function createStore({
           '1': {
             address: '0x4f5243ceea96cee1da0fdb89c756d0e999439424',
             id: '1',
-            scopes: ['eip155:1', 'solana:mainnet'],
+            scopes: ['eip155:1'],
             type: 'eip155:eoa',
           },
         },
@@ -113,7 +99,6 @@ function createStore({
         transactionsById: {},
         transactionsByAccount: {},
       },
-      nonEvmTransactions,
       smartTransactionsState: { smartTransactions: {} },
       transactions: [],
     },
@@ -163,7 +148,7 @@ describe('ActivityList', () => {
     expect(screen.getByTestId('activity-empty-state')).toBeInTheDocument();
   });
 
-  it('renders one evm and one non-evm item when both exist', () => {
+  it('renders evm items when api transactions exist', () => {
     const evmTx = {
       chainId: 'eip155:1',
       id: 'evm-1',
@@ -171,11 +156,6 @@ describe('ActivityList', () => {
       transactionCategory: 'STANDARD',
       transactionType: 'STANDARD',
       txParams: { from: '0x4f5243ceea96cee1da0fdb89c756d0e999439424' },
-    };
-    const nonEvmTx = {
-      chain: 'solana:mainnet',
-      id: 'non-evm-1',
-      timestamp: 1735689601000,
     };
 
     mockUseTransactionsQuery.mockReturnValue({
@@ -187,15 +167,7 @@ describe('ActivityList', () => {
 
     enableVisibleVirtualItems();
 
-    const store = createStore({
-      nonEvmTransactions: {
-        '1': {
-          'solana:mainnet': {
-            transactions: [nonEvmTx],
-          },
-        },
-      },
-    });
+    const store = createStore();
 
     render(
       <Provider store={store}>
@@ -204,7 +176,6 @@ describe('ActivityList', () => {
     );
 
     expect(screen.getByTestId('evm-item')).toBeInTheDocument();
-    expect(screen.getByTestId('non-evm-item')).toBeInTheDocument();
   });
 
   it('applies tokenAddress filter and shows empty state when no transaction matches', () => {
@@ -321,7 +292,7 @@ describe('ActivityList', () => {
     expect(screen.getAllByTestId('evm-item')).toHaveLength(1);
   });
 
-  it('applies chainId filter and excludes non-evm rows for eip155 chain', () => {
+  it('applies chainId filter for evm transactions', () => {
     const evmTx = {
       amounts: {
         to: {
@@ -341,11 +312,6 @@ describe('ActivityList', () => {
       transactionType: 'STANDARD',
       txParams: { from: '0x4f5243ceea96cee1da0fdb89c756d0e999439424' },
     };
-    const nonEvmTx = {
-      chain: 'solana:mainnet',
-      id: 'non-evm-filtered-out',
-      timestamp: 1735689601000,
-    };
 
     mockUseTransactionsQuery.mockReturnValue({
       data: { pages: [{ data: [evmTx] }] },
@@ -355,15 +321,7 @@ describe('ActivityList', () => {
     });
     enableVisibleVirtualItems();
 
-    const store = createStore({
-      nonEvmTransactions: {
-        '1': {
-          'solana:mainnet': {
-            transactions: [nonEvmTx],
-          },
-        },
-      },
-    });
+    const store = createStore();
 
     render(
       <Provider store={store}>
@@ -377,7 +335,6 @@ describe('ActivityList', () => {
     );
 
     expect(screen.getByTestId('evm-item')).toBeInTheDocument();
-    expect(screen.queryByTestId('non-evm-item')).not.toBeInTheDocument();
   });
 
   it('native asset filter excludes non-native transactions', () => {
@@ -457,123 +414,6 @@ describe('ActivityList', () => {
     );
 
     expect(screen.getAllByTestId('evm-item')).toHaveLength(1);
-  });
-
-  it('non-evm native filter includes matching SOL transactions', () => {
-    const solTx = {
-      chain: 'solana:mainnet',
-      id: 'sol-send-1',
-      timestamp: 1735689600,
-      from: [
-        {
-          address: 'SoLaddr1',
-          asset: {
-            fungible: true,
-            type: 'solana:mainnet/slip44:501',
-            unit: 'SOL',
-            amount: '0.5',
-          },
-        },
-      ],
-      to: [
-        {
-          address: 'SoLaddr2',
-          asset: {
-            fungible: true,
-            type: 'solana:mainnet/slip44:501',
-            unit: 'SOL',
-            amount: '0.5',
-          },
-        },
-      ],
-    };
-
-    mockUseTransactionsQuery.mockReturnValue({
-      data: { pages: [] },
-      fetchNextPage: jest.fn(),
-      hasNextPage: false,
-      isFetchingNextPage: false,
-    });
-
-    enableVisibleVirtualItems();
-
-    const store = createStore({
-      nonEvmTransactions: {
-        '1': {
-          'solana:mainnet': {
-            transactions: [solTx],
-          },
-        },
-      },
-    });
-
-    render(
-      <Provider store={store}>
-        <ActivityList
-          filter={{
-            chainId: 'solana:mainnet',
-            assetScope: {
-              kind: 'native',
-              caipAssetType: 'solana:mainnet/slip44:501',
-            },
-          }}
-        />
-      </Provider>,
-    );
-
-    expect(screen.getByTestId('non-evm-item')).toBeInTheDocument();
-  });
-
-  it('non-evm native filter without caipAssetType excludes all non-evm transactions', () => {
-    const solTx = {
-      chain: 'solana:mainnet',
-      id: 'sol-send-no-caip',
-      timestamp: 1735689600,
-      from: [
-        {
-          address: 'SoLaddr1',
-          asset: {
-            fungible: true,
-            type: 'solana:mainnet/slip44:501',
-            unit: 'SOL',
-            amount: '0.5',
-          },
-        },
-      ],
-      to: [],
-    };
-
-    mockUseTransactionsQuery.mockReturnValue({
-      data: { pages: [] },
-      fetchNextPage: jest.fn(),
-      hasNextPage: false,
-      isFetchingNextPage: false,
-    });
-
-    enableVisibleVirtualItems();
-
-    const store = createStore({
-      nonEvmTransactions: {
-        '1': {
-          'solana:mainnet': {
-            transactions: [solTx],
-          },
-        },
-      },
-    });
-
-    render(
-      <Provider store={store}>
-        <ActivityList
-          filter={{
-            chainId: 'solana:mainnet',
-            assetScope: { kind: 'native' },
-          }}
-        />
-      </Provider>,
-    );
-
-    expect(screen.queryByTestId('non-evm-item')).not.toBeInTheDocument();
   });
 
   it('renders local item type when local transaction groups are present', () => {

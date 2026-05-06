@@ -98,7 +98,6 @@ export const SENTRY_BACKGROUND_STATE: SentryBackgroundControllerMasks = {
     showTestnetMessageInDropdown: true,
     sidePanelGasPollTokens: true,
     surveyLinkLastClickedOrClosed: true,
-    snapsInstallPrivacyWarningShown: true,
     termsOfUseLastAgreed: true,
     throttledOrigins: false,
     timeoutMinutes: true,
@@ -324,20 +323,6 @@ export const SENTRY_BACKGROUND_STATE: SentryBackgroundControllerMasks = {
       userOptInV2: true,
     },
   },
-  SnapController: {
-    snaps: false,
-  },
-  SnapInterfaceController: {
-    interfaces: false,
-  },
-  SnapInsightsController: {
-    insights: false,
-  },
-  SnapRegistryController: {
-    database: false,
-    lastUpdated: false,
-    databaseUnavailable: false,
-  },
   StaticAssetsController: {},
   SubjectMetadataController: {
     subjectMetadata: false,
@@ -416,9 +401,6 @@ export const SENTRY_UI_STATE: SentryReduxRootMask = {
     // This property comes from the background but isn't in controller state
     isInitialized: true,
     useSafeChainsListValidation: true,
-    watchEthereumAccountEnabled: false,
-    addSnapAccountEnabled: false,
-    snapsAddSnapAccountModalDismissed: false,
     newPrivacyPolicyToastClickedOrClosed: false,
     newPrivacyPolicyToastShownDate: false,
   },

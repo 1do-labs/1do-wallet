@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'clsx';
 import { I18nContext } from '../../../contexts/i18n';
+import { ONEDO_WEBSITE_LINK } from '../../../../shared/lib/ui-utils';
 
 import PageContainerFooter from '../../../components/ui/page-container/page-container-footer';
 
@@ -49,7 +50,7 @@ export default function SwapsFooter({
         <div
           className="swaps-footer__bottom-text"
           onClick={() =>
-            global.platform.openTab({ url: 'https://metamask.io/terms.html' })
+            global.platform.openTab({ url: ONEDO_WEBSITE_LINK })
           }
         >
           {t('termsOfService')}

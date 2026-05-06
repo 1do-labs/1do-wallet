@@ -2,7 +2,6 @@ import React, { useCallback, useMemo, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useVirtualizer } from '@tanstack/react-virtual';
 import { Box, Text } from '@metamask/design-system-react';
-import type { Transaction } from '@metamask/keyring-api';
 import { toEvmCaipChainId } from '@metamask/multichain-network-controller';
 import { useI18nContext } from '../../../hooks/useI18nContext';
 import { useScrollContainer } from '../../../contexts/scroll-container';
@@ -11,7 +10,6 @@ import { TabEmptyState } from '../../ui/tab-empty-state';
 import { PENDING_STATUS_HASH } from '../../../helpers/constants/transactions';
 import { selectLocalTransactions } from '../../../selectors/activity';
 import { selectEvmAddress } from '../../../selectors/accounts';
-import { selectCurrentAccountNonEvmTransactions } from '../../../selectors/multichain-transactions';
 import { selectEnabledNetworksAsCaipChainIds } from '../../../selectors/multichain/networks';
 import { useEarliestNonceByChain } from '../../../hooks/useEarliestNonceByChain';
 import type { TransactionViewModel } from '../../../../shared/lib/multichain/types';
@@ -24,15 +22,12 @@ import {
   filterLocalNotInApi,
   matchesApiTransaction,
   matchesLocalTransaction,
-  matchesNonEvmTransaction,
   type FlattenedItem,
   type ActivityListFilter,
 } from './helpers';
 import { ActivityListItem } from './activity-list-item';
 import { ActivityDetailsModalAdapter } from './activity-details-modal-adapter';
 import { LocalActivityListItem } from './local-activity-list-item';
-import { NonEvmActivityListItem } from './non-evm-activity-list-item';
-import { NonEvmDetailsModal } from './non-evm-details-modal';
 import { useTransactionsQuery } from './hooks';
 
 const ITEM_HEIGHT = 70;
@@ -49,8 +44,6 @@ export const ActivityList = ({ filter }: Props) => {
   const [selectedItem, setSelectedItem] = useState<TransactionViewModel | null>(
     null,
   );
-  const [selectedNonEvmTransaction, setSelectedNonEvmTransaction] =
-    useState<Transaction | null>(null);
 
   const evmAddress = (useSelector(selectEvmAddress) || '').toLowerCase();
   const enabledNetworks = useSelector(selectEnabledNetworksAsCaipChainIds);
@@ -59,7 +52,6 @@ export const ActivityList = ({ filter }: Props) => {
   useEffect(() => {
     setIsModalOpen(false);
     setSelectedItem(null);
-    setSelectedNonEvmTransaction(null);
   }, [evmAddress]);
 
   // EVM transactions - from API
@@ -76,11 +68,6 @@ export const ActivityList = ({ filter }: Props) => {
   // Local transactions - may not be in API yet
   const localTransactions = useSelector(selectLocalTransactions);
 
-  // Non-EVM transactions - not in API
-  const nonEvmTransactions = useSelector(
-    selectCurrentAccountNonEvmTransactions,
-  );
-
   // Merge and flatten for virtualization
   const flattenedItems = useMemo(() => {
     let evmTransactions = data?.pages?.flatMap((page) => page.data ?? []) ?? [];
@@ -95,16 +82,9 @@ export const ActivityList = ({ filter }: Props) => {
       return !chainId || enabledNetworks.includes(toEvmCaipChainId(chainId));
     });
 
-    let filteredNonEvmTransactions = nonEvmTransactions.filter((tx) =>
-      enabledNetworks.includes(tx.chain),
-    );
-
     // Asset-page filtering: narrow by chain and asset scope
     if (filter) {
       const { chainId: filterChainId, assetScope } = filter;
-      filteredNonEvmTransactions = filteredNonEvmTransactions.filter(
-        (tx) => tx.chain === filterChainId,
-      );
       filteredLocalTransactions = filteredLocalTransactions.filter((group) => {
         const hexChainId = group.initialTransaction?.chainId;
         return hexChainId && toEvmCaipChainId(hexChainId) === filterChainId;
@@ -115,20 +95,15 @@ export const ActivityList = ({ filter }: Props) => {
       filteredLocalTransactions = filteredLocalTransactions.filter((group) =>
         matchesLocalTransaction(group, assetScope),
       );
-      filteredNonEvmTransactions = filteredNonEvmTransactions.filter((tx) =>
-        matchesNonEvmTransaction(tx, assetScope),
-      );
     }
 
-    // Merge all three types by time
     const mergedByTime = mergeAllTransactionsByTime(
       filteredLocalTransactions,
       evmTransactions,
-      filteredNonEvmTransactions,
     );
 
     return groupAndFlattenMergedTransactions(mergedByTime);
-  }, [data, nonEvmTransactions, localTransactions, enabledNetworks, filter]);
+  }, [data, localTransactions, enabledNetworks, filter]);
 
   const [scrollMargin, setScrollMargin] = useState(0);
 
@@ -191,10 +166,6 @@ export const ActivityList = ({ filter }: Props) => {
     setSelectedItem(null);
   };
 
-  const handleNonEvmModalClose = () => {
-    setSelectedNonEvmTransaction(null);
-  };
-
   const renderItem = (item: FlattenedItem) => {
     if (item.type === 'date-header') {
       return (
@@ -211,15 +182,6 @@ export const ActivityList = ({ filter }: Props) => {
         <LocalActivityListItem
           transactionGroup={item.transactionGroup}
           earliestNonceByChain={earliestNonceByChain}
-        />
-      );
-    }
-
-    if (item.type === 'non-evm') {
-      return (
-        <NonEvmActivityListItem
-          transaction={item.transaction}
-          onClick={(tx) => setSelectedNonEvmTransaction(tx)}
         />
       );
     }
@@ -295,13 +257,6 @@ export const ActivityList = ({ filter }: Props) => {
         onClose={handleModalClose}
         transaction={selectedItem}
       />
-
-      {selectedNonEvmTransaction && (
-        <NonEvmDetailsModal
-          transaction={selectedNonEvmTransaction}
-          onClose={handleNonEvmModalClose}
-        />
-      )}
     </Box>
   );
 };

@@ -20,6 +20,7 @@ import {
   getAllChainsToPoll,
   getEnabledNetworksByNamespace,
   getMultichainNetworkConfigurationsByChainId,
+  getMultichainNetworkConfigurationsTuple,
   getSelectedMultichainNetworkChainId,
 } from '../../../../selectors';
 import { MetaMetricsContext } from '../../../../contexts/metametrics';
@@ -27,7 +28,6 @@ import {
   BUILT_IN_NETWORKS,
   FEATURED_RPCS,
 } from '../../../../../shared/constants/network';
-import { MultichainNetworks } from '../../../../../shared/constants/multichain/networks';
 
 // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
 // eslint-disable-next-line @typescript-eslint/naming-convention
@@ -50,10 +50,6 @@ export enum ACTION_MODE {
   // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
   // eslint-disable-next-line @typescript-eslint/naming-convention
   SELECT_RPC,
-  // Add account for non EVM networks
-  // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-  // eslint-disable-next-line @typescript-eslint/naming-convention
-  ADD_NON_EVM_ACCOUNT,
 }
 
 export const useNetworkChangeHandlers = () => {
@@ -61,21 +57,15 @@ export const useNetworkChangeHandlers = () => {
   const { trackEvent } = useContext(MetaMetricsContext);
 
   const [multichainNetworks] = useSelector(
-    getMultichainNetworkConfigurationsByChainId,
+    getMultichainNetworkConfigurationsTuple,
   );
   const currentChainId = useSelector(getSelectedMultichainNetworkChainId);
 
   const enabledNetworksByNamespace = useSelector(getEnabledNetworksByNamespace);
   const allChainIds = useSelector(getAllChainsToPoll);
   const [, evmNetworks] = useSelector(
-    getMultichainNetworkConfigurationsByChainId,
+    getMultichainNetworkConfigurationsTuple,
   );
-  // This value needs to be tracked in case the user changes to a Non EVM
-  // network and there is no account created for that network. This will
-  // allow the user to add an account for that network.
-  const [selectedNonEvmNetwork, setSelectedNonEvmNetwork] =
-    useState<CaipChainId>();
-
   const [actionMode, setActionMode] = useState(ACTION_MODE.LIST);
 
   useEffect(() => {
@@ -108,14 +98,6 @@ export const useNetworkChangeHandlers = () => {
     [dispatch, evmNetworks],
   );
 
-  const handleNonEvmNetworkChange = useCallback(
-    async (chainId: CaipChainId) => {
-      dispatch(setActiveNetwork(chainId));
-      dispatch(setEnabledNetworks(chainId));
-    },
-    [dispatch],
-  );
-
   const getMultichainNetworkConfigurationOrThrow = useCallback(
     (chainId: CaipChainId) => {
       const network = multichainNetworks[chainId];
@@ -135,23 +117,13 @@ export const useNetworkChangeHandlers = () => {
         getMultichainNetworkConfigurationOrThrow(currentChainId);
       const chain = getMultichainNetworkConfigurationOrThrow(chainId);
 
-      if (chain.isEvm) {
-        await handleEvmNetworkChange(chainId);
-      } else {
-        await handleNonEvmNetworkChange(chainId);
-      }
+      await handleEvmNetworkChange(chainId);
 
-      const chainIdToTrack = chain.isEvm
-        ? convertCaipToHexChainId(chainId)
-        : chainId;
-      const currentChainIdToTrack = currentChain.isEvm
-        ? convertCaipToHexChainId(currentChainId)
-        : currentChainId;
+      const chainIdToTrack = convertCaipToHexChainId(chainId);
+      const currentChainIdToTrack = convertCaipToHexChainId(currentChainId);
 
-      // Check if the destination network is custom (not built-in, featured, or multichain)
-      const hexChainId = chain.isEvm
-        ? convertCaipToHexChainId(chain.chainId)
-        : chain.chainId;
+      // Check if the destination network is custom (not built-in or featured)
+      const hexChainId = convertCaipToHexChainId(chain.chainId);
 
       const isBuiltInNetwork = Object.values(BUILT_IN_NETWORKS).some(
         (builtInNetwork) => builtInNetwork.chainId === hexChainId,
@@ -159,16 +131,7 @@ export const useNetworkChangeHandlers = () => {
       const isFeaturedRpc = FEATURED_RPCS.some(
         (featuredRpc) => featuredRpc.chainId === hexChainId,
       );
-      const isMultichainProviderConfig = Object.values(MultichainNetworks).some(
-        (multichainNetwork) =>
-          multichainNetwork === chain.chainId ||
-          (chain.isEvm
-            ? convertCaipToHexChainId(chain.chainId)
-            : chain.chainId) === multichainNetwork,
-      );
-
-      const isCustomNetwork =
-        !isBuiltInNetwork && !isFeaturedRpc && !isMultichainProviderConfig;
+      const isCustomNetwork = !isBuiltInNetwork && !isFeaturedRpc;
 
       trackEvent({
         event: MetaMetricsEventName.NavNetworkSwitched,
@@ -194,7 +157,6 @@ export const useNetworkChangeHandlers = () => {
       getMultichainNetworkConfigurationOrThrow,
       currentChainId,
       handleEvmNetworkChange,
-      handleNonEvmNetworkChange,
       trackEvent,
     ],
   );
@@ -202,10 +164,7 @@ export const useNetworkChangeHandlers = () => {
   return {
     handleNetworkChange,
     handleEvmNetworkChange,
-    handleNonEvmNetworkChange,
     getMultichainNetworkConfigurationOrThrow,
-    selectedNonEvmNetwork,
-    setSelectedNonEvmNetwork,
     actionMode,
     setActionMode,
     ACTION_MODE,

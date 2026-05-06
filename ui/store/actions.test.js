@@ -1341,55 +1341,6 @@ describe('Actions', () => {
     });
   });
 
-  describe('#setWatchEthereumAccountEnabled', () => {
-    it('calls background setWatchEthereumAccountEnabled with value', async () => {
-      const store = mockStore();
-      background.setWatchEthereumAccountEnabled = sinon.stub().resolves();
-      setBackgroundConnection(background);
-
-      await store.dispatch(actions.setWatchEthereumAccountEnabled(true));
-      expect(background.setWatchEthereumAccountEnabled.callCount).toStrictEqual(
-        1,
-      );
-      expect(
-        background.setWatchEthereumAccountEnabled.getCall(0).args,
-      ).toStrictEqual([true]);
-
-      await store.dispatch(actions.setWatchEthereumAccountEnabled(false));
-      expect(background.setWatchEthereumAccountEnabled.callCount).toStrictEqual(
-        2,
-      );
-      expect(
-        background.setWatchEthereumAccountEnabled.getCall(1).args,
-      ).toStrictEqual([false]);
-    });
-  });
-
-  describe('#setAddSnapAccountEnabled', () => {
-    if (typeof actions.setAddSnapAccountEnabled !== 'function') {
-      it.todo('setAddSnapAccountEnabled not available in this build');
-      return;
-    }
-
-    it('calls background setAddSnapAccountEnabled with value', async () => {
-      const store = mockStore();
-      background.setAddSnapAccountEnabled = sinon.stub().resolves();
-      setBackgroundConnection(background);
-
-      await store.dispatch(actions.setAddSnapAccountEnabled(true));
-      expect(background.setAddSnapAccountEnabled.callCount).toStrictEqual(1);
-      expect(background.setAddSnapAccountEnabled.getCall(0).args).toStrictEqual(
-        [true],
-      );
-
-      await store.dispatch(actions.setAddSnapAccountEnabled(false));
-      expect(background.setAddSnapAccountEnabled.callCount).toStrictEqual(2);
-      expect(background.setAddSnapAccountEnabled.getCall(1).args).toStrictEqual(
-        [false],
-      );
-    });
-  });
-
   describe('#updateTransaction', () => {
     const txParams = {
       from: '0x1',
@@ -4657,20 +4608,6 @@ describe('Actions', () => {
       await expect(actions.getTokenStandardAndDetailsByChain()).rejects.toThrow(
         'error',
       );
-    });
-  });
-
-  describe('setManageInstitutionalWallets', () => {
-    it('calls setManageInstitutionalWallets in the background', async () => {
-      const store = mockStore();
-      const setManageInstitutionalWalletsStub = sinon.stub().resolves();
-      background.getApi.returns({
-        setManageInstitutionalWallets: setManageInstitutionalWalletsStub,
-      });
-      setBackgroundConnection(background.getApi());
-
-      await store.dispatch(actions.setManageInstitutionalWallets(true));
-      expect(setManageInstitutionalWalletsStub.calledOnceWith(true)).toBe(true);
     });
   });
 

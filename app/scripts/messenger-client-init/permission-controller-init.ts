@@ -8,7 +8,6 @@ import {
   getPermissionSpecifications,
   unrestrictedMethods,
 } from '../controllers/permissions';
-import { getSnapPermissionSpecifications } from '../controllers/permissions/snaps/specifications';
 import {
   PermissionControllerInitMessenger,
   PermissionControllerMessenger,
@@ -38,9 +37,6 @@ export const PermissionControllerInit: MessengerClientInitFunction<
   initMessenger,
   getMessengerClient,
 }) => {
-  const approvalController = getMessengerClient('ApprovalController');
-  const keyringController = getMessengerClient('KeyringController');
-
   const messengerClient = new PermissionController({
     state: persistedState.PermissionController,
     // @ts-expect-error PermissionController messenger parameter type is incompatible with our messenger alias (handler unions).
@@ -58,22 +54,10 @@ export const PermissionControllerInit: MessengerClientInitFunction<
           'NetworkController:findNetworkClientIdByChainId',
           chainId,
         ),
-      isNonEvmScopeSupported: (scope) =>
-        initMessenger.call('MultichainRoutingService:isSupportedScope', scope),
-      getNonEvmAccountAddresses: (scope) =>
-        initMessenger.call(
-          'MultichainRoutingService:getSupportedAccounts',
-          scope,
-        ),
+      isNonEvmScopeSupported: () => false,
+      getNonEvmAccountAddresses: () => [],
     }),
-    permissionSpecifications: {
-      ...getPermissionSpecifications(),
-      ...getSnapPermissionSpecifications(initMessenger, {
-        addAndShowApprovalRequest:
-          approvalController.addAndShowApprovalRequest.bind(approvalController),
-        addNewKeyring: keyringController.addNewKeyring.bind(keyringController),
-      }),
-    },
+    permissionSpecifications: getPermissionSpecifications(),
     unrestrictedMethods,
   });
 

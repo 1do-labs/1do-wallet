@@ -26,6 +26,7 @@ import { PolymorphicRef } from '../../../components/component-library';
 import { useI18nContext } from '../../../hooks/useI18nContext';
 import { ThemeType } from '../../../../shared/constants/preferences';
 import { useTheme } from '../../../hooks/useTheme';
+import { ONEDO_WEBSITE_LINK } from '../../../../shared/lib/ui-utils';
 import { LOGIN_TYPE, LoginType, LoginOptionType, LOGIN_OPTION } from './types';
 
 export const SocialButton = React.forwardRef(
@@ -176,7 +177,7 @@ export default function LoginOptions({
             asChild
           >
             <a
-              href="https://consensys.io/terms-of-use"
+              href={ONEDO_WEBSITE_LINK}
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -189,7 +190,7 @@ export default function LoginOptions({
             asChild
           >
             <a
-              href="https://consensys.io/privacy-notice"
+              href={ONEDO_WEBSITE_LINK}
               target="_blank"
               rel="noopener noreferrer"
             >

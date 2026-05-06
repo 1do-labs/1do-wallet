@@ -385,32 +385,6 @@ describe('preferences controller', () => {
     });
   });
 
-  describe('addSnapAccountEnabled', () => {
-    it('defaults addSnapAccountEnabled to false', () => {
-      const { controller } = setupController({});
-      expect(controller.state.addSnapAccountEnabled).toStrictEqual(false);
-    });
-
-    it('setAddSnapAccountEnabled to true', () => {
-      const { controller } = setupController({});
-      controller.setAddSnapAccountEnabled(true);
-      expect(controller.state.addSnapAccountEnabled).toStrictEqual(true);
-    });
-  });
-
-  describe('watchEthereumAccountEnabled', () => {
-    it('defaults watchEthereumAccountEnabled to false', () => {
-      const { controller } = setupController({});
-      expect(controller.state.watchEthereumAccountEnabled).toStrictEqual(false);
-    });
-
-    it('setWatchEthereumAccountEnabled to true', () => {
-      const { controller } = setupController({});
-      controller.setWatchEthereumAccountEnabled(true);
-      expect(controller.state.watchEthereumAccountEnabled).toStrictEqual(true);
-    });
-  });
-
   describe('knownMethodData', () => {
     it('defaults knownMethodData', () => {
       const { controller } = setupController({});
@@ -632,21 +606,6 @@ describe('preferences controller', () => {
     });
   });
 
-  describe('manageInstitutionalWallets', () => {
-    it('defaults manageInstitutionalWallets to false', () => {
-      const { controller } = setupController({});
-      expect(controller.state.manageInstitutionalWallets).toStrictEqual(false);
-    });
-  });
-
-  describe('setManageInstitutionalWallets', () => {
-    it('sets manageInstitutionalWallets to true', () => {
-      const { controller } = setupController({});
-      controller.setManageInstitutionalWallets(true);
-      expect(controller.state.manageInstitutionalWallets).toStrictEqual(true);
-    });
-  });
-
   describe('metadata', () => {
     it('includes expected state in debug snapshots', () => {
       const { controller } = setupController({
@@ -726,7 +685,6 @@ describe('preferences controller', () => {
         ),
       ).toMatchInlineSnapshot(`
         {
-          "addSnapAccountEnabled": false,
           "advancedGasFee": {},
           "currentLocale": "",
           "dismissSeedBackUpReminder": false,
@@ -738,7 +696,6 @@ describe('preferences controller', () => {
           "isMultiAccountBalancesEnabled": true,
           "knownMethodData": {},
           "ledgerTransportType": "u2f",
-          "manageInstitutionalWallets": false,
           "openSeaEnabled": true,
           "overrideContentSecurityPolicyHeader": true,
           "preferences": {
@@ -789,7 +746,6 @@ describe('preferences controller', () => {
           "useSafeChainsListValidation": true,
           "useTokenDetection": true,
           "useTransactionSimulations": true,
-          "watchEthereumAccountEnabled": false,
         }
       `);
     });
@@ -808,7 +764,6 @@ describe('preferences controller', () => {
         ),
       ).toMatchInlineSnapshot(`
         {
-          "addSnapAccountEnabled": false,
           "advancedGasFee": {},
           "currentLocale": "",
           "dismissSeedBackUpReminder": false,
@@ -820,7 +775,6 @@ describe('preferences controller', () => {
           "isMultiAccountBalancesEnabled": true,
           "knownMethodData": {},
           "ledgerTransportType": "u2f",
-          "manageInstitutionalWallets": false,
           "openSeaEnabled": true,
           "overrideContentSecurityPolicyHeader": true,
           "preferences": {
@@ -872,7 +826,6 @@ describe('preferences controller', () => {
           "useSafeChainsListValidation": true,
           "useTokenDetection": true,
           "useTransactionSimulations": true,
-          "watchEthereumAccountEnabled": false,
         }
       `);
     });
@@ -891,7 +844,6 @@ describe('preferences controller', () => {
         ),
       ).toMatchInlineSnapshot(`
         {
-          "addSnapAccountEnabled": false,
           "advancedGasFee": {},
           "currentLocale": "",
           "dismissSeedBackUpReminder": false,
@@ -903,7 +855,6 @@ describe('preferences controller', () => {
           "isMultiAccountBalancesEnabled": true,
           "knownMethodData": {},
           "ledgerTransportType": "u2f",
-          "manageInstitutionalWallets": false,
           "openSeaEnabled": true,
           "overrideContentSecurityPolicyHeader": true,
           "preferences": {
@@ -955,7 +906,6 @@ describe('preferences controller', () => {
           "useSafeChainsListValidation": true,
           "useTokenDetection": true,
           "useTransactionSimulations": true,
-          "watchEthereumAccountEnabled": false,
         }
       `);
     });

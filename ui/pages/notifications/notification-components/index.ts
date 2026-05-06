@@ -9,7 +9,6 @@ import { components as StakeComponents } from './stake/stake';
 import { components as SwapCompletedComponents } from './swap-completed/swap-completed';
 import { components as LidoWithdrawalRequestedComponents } from './lido-withdrawal-requested/lido-withdrawal-requested';
 import { components as LidoStakeReadyToBeWithdrawnComponents } from './lido-stake-ready-to-be-withdrawn/lido-stake-ready-to-be-withdrawn';
-import { components as SnapNotificationComponents } from './snap/snap';
 import { components as PlatformNotificationComponents } from './platform-notifications/platform-notification';
 
 export const { TRIGGER_TYPES } = NotificationServicesController.Constants;
@@ -69,7 +68,6 @@ export const NotificationComponents = {
   [TRIGGER_TYPES.LIDO_STAKE_READY_TO_BE_WITHDRAWN]: expandComponentsType(
     LidoStakeReadyToBeWithdrawnComponents,
   ),
-  [TRIGGER_TYPES.SNAP]: expandComponentsType(SnapNotificationComponents),
   [TRIGGER_TYPES.PLATFORM]: expandComponentsType(
     PlatformNotificationComponents,
   ),

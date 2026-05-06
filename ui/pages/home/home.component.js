@@ -2,7 +2,6 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Navigate } from 'react-router-dom';
 import { Text, TextVariant, TextColor } from '@metamask/design-system-react';
-import { COHORT_NAMES } from '@metamask/subscription-controller';
 import {
   MetaMetricsContextProp,
   MetaMetricsEventCategory,
@@ -56,9 +55,6 @@ import { METAMETRICS_SETTINGS_LINK } from '../../helpers/constants/common';
 import { SUPPORT_LINK } from '../../../shared/lib/ui-utils';
 import { AccountOverview } from '../../components/multichain';
 import PasswordOutdatedModal from '../../components/app/password-outdated-modal';
-import ShieldEntryModal from '../../components/app/shield-entry-modal';
-import RewardsOnboardingModal from '../../components/app/rewards/onboarding/OnboardingModal';
-import { Pna25Modal } from '../../components/app/modals/pna25-modal';
 import { isBeta, isFlask, isMain } from '../../../shared/lib/build-types';
 import BetaAndFlaskHomeFooter from './beta-and-flask-home-footer.component';
 import { HomeDeepLinkActions } from './HomeDeepLinkActions';
@@ -146,17 +142,8 @@ export default class Home extends PureComponent {
     clearRedirectAfterDefaultPage: PropTypes.func,
     isSeedlessPasswordOutdated: PropTypes.bool,
     isPrimarySeedPhraseBackedUp: PropTypes.bool,
-    showShieldEntryModal: PropTypes.bool,
     isSocialLoginFlow: PropTypes.bool,
     lookupSelectedNetworks: PropTypes.func.isRequired,
-    evaluateCohortEligibility: PropTypes.func,
-    pendingShieldCohort: PropTypes.string,
-    setPendingShieldCohort: PropTypes.func,
-    isSignedIn: PropTypes.bool,
-    rewardsEnabled: PropTypes.bool,
-    rewardsOnboardingEnabled: PropTypes.bool,
-    rewardsOnboardingModalOpen: PropTypes.bool,
-    showPna25Modal: PropTypes.bool.isRequired,
     envType: PropTypes.string,
     pendingRedirectRoute: PropTypes.object,
     clearPendingRedirectRoute: PropTypes.func,
@@ -165,7 +152,6 @@ export default class Home extends PureComponent {
   state = {
     canShowBlockageNotification: true,
     notificationClosing: false,
-    shouldEvaluateCohortEligibility: true,
   };
 
   constructor(props) {
@@ -239,11 +225,6 @@ export default class Home extends PureComponent {
 
     // Ensure we have up-to-date connectivity statuses for all enabled networks
     this.props.lookupSelectedNetworks();
-
-    // Set pending Shield cohort for wallet home evaluation if there's no existing pending cohort
-    if (this.props.setPendingShieldCohort && !this.props.pendingShieldCohort) {
-      this.props.setPendingShieldCohort(COHORT_NAMES.WALLET_HOME);
-    }
   }
 
   static getDerivedStateFromProps({
@@ -272,12 +253,7 @@ export default class Home extends PureComponent {
       newNetworkAddedConfigurationId,
       setActiveNetwork,
       clearNewNetworkAdded,
-      pendingShieldCohort,
-      evaluateCohortEligibility,
-      isSignedIn,
     } = this.props;
-
-    const { shouldEvaluateCohortEligibility } = this.state;
 
     const {
       newNetworkAddedConfigurationId: prevNewNetworkAddedConfigurationId,
@@ -294,17 +270,6 @@ export default class Home extends PureComponent {
 
     if (notificationClosing && !prevState.notificationClosing) {
       attemptCloseNotificationPopup();
-    }
-
-    // Check for pending Shield cohort evaluation if user is signed in
-    if (
-      shouldEvaluateCohortEligibility &&
-      pendingShieldCohort &&
-      evaluateCohortEligibility &&
-      isSignedIn
-    ) {
-      evaluateCohortEligibility(pendingShieldCohort);
-      this.setState({ shouldEvaluateCohortEligibility: false });
     }
 
     // Only process pendingRedirectRoute when the prop first transitions from null to non-null
@@ -827,12 +792,7 @@ export default class Home extends PureComponent {
       showUpdateModal,
       isSeedlessPasswordOutdated,
       isPrimarySeedPhraseBackedUp,
-      showShieldEntryModal,
       isSocialLoginFlow,
-      rewardsEnabled,
-      rewardsOnboardingEnabled,
-      rewardsOnboardingModalOpen,
-      showPna25Modal,
     } = this.props;
 
     if (forgottenPassword) {
@@ -861,28 +821,6 @@ export default class Home extends PureComponent {
 
     const showRecoveryPhrase =
       showRecoveryPhraseReminder && !isPrimarySeedPhraseBackedUp;
-
-    const showRewardsModal =
-      rewardsEnabled &&
-      rewardsOnboardingEnabled &&
-      canSeeModals &&
-      !showTermsOfUse &&
-      !showMultiRpcEditModal &&
-      !displayUpdateModal &&
-      !isSeedlessPasswordOutdated &&
-      !showShieldEntryModal &&
-      !showRecoveryPhrase;
-
-    const showPna25ModalComponent =
-      showPna25Modal &&
-      canSeeModals &&
-      !showTermsOfUse &&
-      !showMultiRpcEditModal &&
-      !displayUpdateModal &&
-      !isSeedlessPasswordOutdated &&
-      !showShieldEntryModal &&
-      !showRecoveryPhrase &&
-      !rewardsOnboardingModalOpen;
 
     const { location } = this.props;
 
@@ -922,9 +860,6 @@ export default class Home extends PureComponent {
           {showTermsOfUse ? (
             <TermsOfUsePopup onAccept={this.onAcceptTermsOfUse} />
           ) : null}
-          {showShieldEntryModal && <ShieldEntryModal />}
-          {showRewardsModal && <RewardsOnboardingModal />}
-          {showPna25ModalComponent && <Pna25Modal />}
           {isPopup && !connectedStatusPopoverHasBeenShown
             ? this.renderPopover()
             : null}

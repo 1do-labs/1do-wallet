@@ -3,7 +3,6 @@ import {
   RateLimitedApiMap,
 } from '@metamask/rate-limit-controller';
 import log from 'loglevel';
-import { TRIGGER_TYPES } from '@metamask/notification-services-controller/notification-services';
 import { MessengerClientInitFunction } from '../types';
 import {
   RateLimitControllerInitMessenger,
@@ -61,33 +60,8 @@ export const RateLimitControllerInit: MessengerClientInitFunction<
       },
 
       showInAppNotification: {
-        method: (origin, args) => {
-          const { message, title, footerLink, interfaceId } = args;
-
-          const detailedView = {
-            title,
-            ...(footerLink ? { footerLink } : {}),
-            interfaceId,
-          };
-
-          const notification = {
-            data: {
-              message,
-              origin,
-              ...(interfaceId ? { detailedView } : {}),
-            },
-            type: TRIGGER_TYPES.SNAP,
-            readDate: null,
-          };
-
-          initMessenger.call(
-            'NotificationServicesController:updateMetamaskNotificationsList',
-            // @ts-expect-error: `notification` is not compatible with the
-            // expected type.
-            // TODO: Look into the type mismatch.
-            notification,
-          );
-
+        method: () => {
+          // External Snap in-app notifications are disabled in the EVM-only build.
           return null;
         },
 

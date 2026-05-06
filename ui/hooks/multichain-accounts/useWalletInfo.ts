@@ -2,10 +2,10 @@ import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { AccountWalletId } from '@metamask/account-api';
 import { AccountGroupObject } from '@metamask/account-tree-controller';
-import { useHdKeyringsWithSnapAccounts } from '../multi-srp/useHdKeyringsWithSnapAccounts';
 import { getMultichainAccountsByWalletId } from '../../selectors/multichain-accounts/account-tree';
 import { MultichainAccountsState } from '../../selectors/multichain-accounts/account-tree.types';
 import { getIsPrimarySeedPhraseBackedUp } from '../../ducks/metamask/metamask';
+import { getMetaMaskHdKeyrings } from '../../selectors';
 import { stripWalletTypePrefixFromWalletId } from './utils';
 
 /**
@@ -15,7 +15,7 @@ import { stripWalletTypePrefixFromWalletId } from './utils';
  * @returns Object containing multichain accounts, keyringId and isSRPBackedUp.
  */
 export const useWalletInfo = (walletId: AccountWalletId) => {
-  const hdKeyringsWithSnapAccounts = useHdKeyringsWithSnapAccounts();
+  const hdKeyrings = useSelector(getMetaMaskHdKeyrings);
   const globalSRPBackedUp = useSelector(getIsPrimarySeedPhraseBackedUp);
   const rawMultichainAccounts = useSelector((state: MultichainAccountsState) =>
     getMultichainAccountsByWalletId(state, walletId),
@@ -33,7 +33,7 @@ export const useWalletInfo = (walletId: AccountWalletId) => {
     }
 
     // Find which HD keyring this wallet belongs to using the first account
-    const keyringIndex = hdKeyringsWithSnapAccounts.findIndex(
+    const keyringIndex = hdKeyrings.findIndex(
       (keyring) =>
         keyring.metadata.id === stripWalletTypePrefixFromWalletId(walletId),
     );
@@ -45,7 +45,7 @@ export const useWalletInfo = (walletId: AccountWalletId) => {
       };
     }
 
-    const keyring = hdKeyringsWithSnapAccounts[keyringIndex];
+    const keyring = hdKeyrings[keyringIndex];
     const keyringId = keyring?.metadata.id ?? undefined;
 
     const srpIndex = keyringIndex + 1;
@@ -60,10 +60,5 @@ export const useWalletInfo = (walletId: AccountWalletId) => {
       keyringId,
       isSRPBackedUp,
     };
-  }, [
-    multichainAccounts,
-    hdKeyringsWithSnapAccounts,
-    globalSRPBackedUp,
-    walletId,
-  ]);
+  }, [multichainAccounts, hdKeyrings, globalSRPBackedUp, walletId]);
 };

@@ -27,7 +27,7 @@
     "message": "Anda perlu memilih akaun!"
   },
   "addAcquiredTokens": {
-    "message": "Tambah token yang anda peroleh menggunakan MetaMask"
+    "message": "Tambah token yang anda peroleh menggunakan 1do"
   },
   "addAlias": {
     "message": "Tambah alias"
@@ -52,15 +52,15 @@
     "description": "The description of the application"
   },
   "appName": {
-    "message": "MetaMask",
+    "message": "1do",
     "description": "The name of the application"
   },
   "appNameBeta": {
-    "message": "MetaMask Beta",
+    "message": "1do Beta",
     "description": "The name of the application (Beta)"
   },
   "appNameFlask": {
-    "message": "MetaMask Flask",
+    "message": "1do Flask",
     "description": "The name of the application (Flask)"
   },
   "approve": {
@@ -79,7 +79,7 @@
     "message": "Pemasa Logout Automatik (minit)"
   },
   "autoLockTimeLimitDescription": {
-    "message": "Tetapkan masa melahu dalam minit sebelum MetaMask log keluar secara automatik"
+    "message": "Tetapkan masa melahu dalam minit sebelum 1do log keluar secara automatik"
   },
   "average": {
     "message": "Purata"
@@ -88,7 +88,7 @@
     "message": "Kembali"
   },
   "backupApprovalInfo": {
-    "message": "Kod rahsia ini diperlukan untuk memulihkan dompet anda sekiranya anda kehilangan peranti anda, terlupa kata laluan anda, perlu memasang semua MetaMask, atau mahu mengakses dompet anda menggunakan peranti lain."
+    "message": "Kod rahsia ini diperlukan untuk memulihkan dompet anda sekiranya anda kehilangan peranti anda, terlupa kata laluan anda, perlu memasang semua 1do, atau mahu mengakses dompet anda menggunakan peranti lain."
   },
   "backupApprovalNotice": {
     "message": "Sandarkan kod Pemulihan Rahsia anda untuk memastikan dompet dan dana anda sentiasa selamat."
@@ -128,7 +128,7 @@
     "message": "ID Rantaian"
   },
   "chromeRequiredForHardwareWallets": {
-    "message": "Anda perlu menggunakan MetaMask di Google Chrome untuk menyambung kepada Dompet Perkakasan anda."
+    "message": "Anda perlu menggunakan 1do di Google Chrome untuk menyambung kepada Dompet Perkakasan anda."
   },
   "close": {
     "message": "Tutup"
@@ -267,7 +267,7 @@
     "message": "Sambungkan dompet perkakasan"
   },
   "hardwareWalletsMsg": {
-    "message": "Pilih dompet perkakasan yang anda ingin gunakan dengan MetaMask"
+    "message": "Pilih dompet perkakasan yang anda ingin gunakan dengan 1do"
   },
   "here": {
     "message": "di sini",
@@ -286,7 +286,7 @@
     "message": "Sejarah"
   },
   "importAccountMsg": {
-    "message": "Akaun yang diimport tidak akan dikaitkan dengan frasa benih akaun MetaMask asal yang anda cipta. Ketahui lebih lanjut tentang akaun import"
+    "message": "Akaun yang diimport tidak akan dikaitkan dengan frasa benih akaun 1do asal yang anda cipta. Ketahui lebih lanjut tentang akaun import"
   },
   "imported": {
     "message": "Diimport",
@@ -354,7 +354,7 @@
     "message": "Mesej"
   },
   "metamaskVersion": {
-    "message": "Versi MetaMask"
+    "message": "Versi 1do"
   },
   "mustSelectOne": {
     "message": "Mesti memilih sekurang-kurangnya 1 token."
@@ -410,10 +410,10 @@
     "message": "Asal"
   },
   "participateInMetaMetrics": {
-    "message": "Sertai MetaMetrics"
+    "message": "Sertai 1do Metrics"
   },
   "participateInMetaMetricsDescription": {
-    "message": "Sertai MetaMetrics untuk membantu kami menambah baik MetaMask"
+    "message": "Sertai 1do Metrics untuk membantu kami menambah baik 1do"
   },
   "password": {
     "message": "Kata laluan"

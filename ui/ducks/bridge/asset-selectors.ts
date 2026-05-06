@@ -16,8 +16,7 @@ import {
   isStrictHexString,
   parseCaipAssetType,
 } from '@metamask/utils';
-import { ALLOWED_MULTICHAIN_BRIDGE_CHAIN_IDS } from '../../../shared/constants/bridge';
-import { isTronSpecialAsset, toAssetId } from '../../../shared/lib/asset-utils';
+import { toAssetId } from '../../../shared/lib/asset-utils';
 import {
   getAccountTrackerControllerAccountsByChainId,
   getCurrencyRateControllerCurrencyRates,
@@ -44,20 +43,9 @@ const convertHexBalanceToDecimal = (hex: string, decimals: number): string =>
     : '0';
 
 const getNonEvmAccountIds = (
-  state: BridgeAppState,
-  id: AccountGroupId,
-): string[] => {
-  const accountIds: string[] = [];
-
-  ALLOWED_MULTICHAIN_BRIDGE_CHAIN_IDS.forEach((scope) => {
-    const accountId = getInternalAccountByGroupAndCaip(state, id, scope)?.id;
-    if (accountId) {
-      accountIds.push(accountId);
-    }
-  });
-
-  return accountIds;
-};
+  _state: BridgeAppState,
+  _id: AccountGroupId,
+): string[] => [];
 
 const getEvmAccountAddress = (state: BridgeAppState, id: AccountGroupId) =>
   getInternalAccountByGroupAndCaip(state, id, 'eip155:1')?.address;
@@ -342,10 +330,8 @@ const getBridgeAssetsForAccountGroupId = createSelector(
         .toNumber(),
     }));
 
-    const nonEvmAssetsWithFiatBalances = nonEvmAssetsWithBalance
-      // Filter out Tron special assets (resources, staking state, etc.)
-      .filter((token: BridgeToken) => !isTronSpecialAsset(token.assetId))
-      .map((asset) => ({
+    const nonEvmAssetsWithFiatBalances = nonEvmAssetsWithBalance.map(
+      (asset) => ({
         ...asset,
         tokenFiatAmount: new BigNumber(asset.balance ?? '0')
           .times(
@@ -353,7 +339,8 @@ const getBridgeAssetsForAccountGroupId = createSelector(
               '0',
           )
           .toNumber(),
-      }));
+      }),
+    );
 
     return nonEvmAssetsWithFiatBalances.concat(evmAssetsWithFiatBalances);
   },

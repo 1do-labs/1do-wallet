@@ -1,0 +1,178 @@
+diff --git a/dist/MultichainAccountService.cjs b/dist/MultichainAccountService.cjs
+index 9c38891..e630a09 100644
+--- a/dist/MultichainAccountService.cjs
++++ b/dist/MultichainAccountService.cjs
+@@ -21,11 +21,8 @@ const perf_1 = require("./analytics/perf.cjs");
+ const errors_1 = require("./errors.cjs");
+ const logger_1 = require("./logger.cjs");
+ const MultichainAccountWallet_1 = require("./MultichainAccountWallet.cjs");
+-const providers_1 = require("./providers/index.cjs");
+ const AccountProviderWrapper_1 = require("./providers/AccountProviderWrapper.cjs");
+ const EvmAccountProvider_1 = require("./providers/EvmAccountProvider.cjs");
+-const SolAccountProvider_1 = require("./providers/SolAccountProvider.cjs");
+-const SolAccountProvider_2 = require("./providers/SolAccountProvider.cjs");
+ const SnapPlatformWatcher_1 = require("./snaps/SnapPlatformWatcher.cjs");
+ exports.serviceName = 'MultichainAccountService';
+ const MESSENGER_EXPOSED_METHODS = [
+@@ -84,10 +81,7 @@ class MultichainAccountService {
+         __classPrivateFieldSet(this, _MultichainAccountService_trace, trace, "f");
+         // TODO: Rely on keyring capabilities once the keyring API is used by all keyrings.
+         __classPrivateFieldSet(this, _MultichainAccountService_providers, [
+-            new EvmAccountProvider_1.EvmAccountProvider(__classPrivateFieldGet(this, _MultichainAccountService_messenger, "f"), providerConfigs?.[providers_1.EVM_ACCOUNT_PROVIDER_NAME], trace),
+-            new AccountProviderWrapper_1.AccountProviderWrapper(__classPrivateFieldGet(this, _MultichainAccountService_messenger, "f"), new SolAccountProvider_1.SolAccountProvider(__classPrivateFieldGet(this, _MultichainAccountService_messenger, "f"), providerConfigs?.[SolAccountProvider_2.SOL_ACCOUNT_PROVIDER_NAME], trace)),
+-            new AccountProviderWrapper_1.AccountProviderWrapper(__classPrivateFieldGet(this, _MultichainAccountService_messenger, "f"), new providers_1.BtcAccountProvider(__classPrivateFieldGet(this, _MultichainAccountService_messenger, "f"), providerConfigs?.[providers_1.BTC_ACCOUNT_PROVIDER_NAME], trace)),
+-            new AccountProviderWrapper_1.AccountProviderWrapper(__classPrivateFieldGet(this, _MultichainAccountService_messenger, "f"), new providers_1.TrxAccountProvider(__classPrivateFieldGet(this, _MultichainAccountService_messenger, "f"), providerConfigs?.[providers_1.TRX_ACCOUNT_PROVIDER_NAME], trace)),
++            new EvmAccountProvider_1.EvmAccountProvider(__classPrivateFieldGet(this, _MultichainAccountService_messenger, "f"), providerConfigs?.[EvmAccountProvider_1.EVM_ACCOUNT_PROVIDER_NAME], trace),
+             // Custom account providers that can be provided by the MetaMask client.
+             ...providers,
+         ], "f");
+diff --git a/dist/MultichainAccountService.mjs b/dist/MultichainAccountService.mjs
+index 27b08db..47b5997 100644
+--- a/dist/MultichainAccountService.mjs
++++ b/dist/MultichainAccountService.mjs
+@@ -18,11 +18,8 @@ import { isPerfEnabled, withLocalPerfTrace } from "./analytics/perf.mjs";
+ import { reportError } from "./errors.mjs";
+ import { projectLogger as log } from "./logger.mjs";
+ import { MultichainAccountWallet } from "./MultichainAccountWallet.mjs";
+-import { EVM_ACCOUNT_PROVIDER_NAME, BTC_ACCOUNT_PROVIDER_NAME, TRX_ACCOUNT_PROVIDER_NAME, BtcAccountProvider, TrxAccountProvider } from "./providers/index.mjs";
+-import { AccountProviderWrapper, isAccountProviderWrapper } from "./providers/AccountProviderWrapper.mjs";
+-import { EvmAccountProvider } from "./providers/EvmAccountProvider.mjs";
+-import { SolAccountProvider } from "./providers/SolAccountProvider.mjs";
+-import { SOL_ACCOUNT_PROVIDER_NAME } from "./providers/SolAccountProvider.mjs";
++import { isAccountProviderWrapper } from "./providers/AccountProviderWrapper.mjs";
++import { EVM_ACCOUNT_PROVIDER_NAME, EvmAccountProvider } from "./providers/EvmAccountProvider.mjs";
+ import { SnapPlatformWatcher } from "./snaps/SnapPlatformWatcher.mjs";
+ export const serviceName = 'MultichainAccountService';
+ const MESSENGER_EXPOSED_METHODS = [
+@@ -82,9 +79,6 @@ export class MultichainAccountService {
+         // TODO: Rely on keyring capabilities once the keyring API is used by all keyrings.
+         __classPrivateFieldSet(this, _MultichainAccountService_providers, [
+             new EvmAccountProvider(__classPrivateFieldGet(this, _MultichainAccountService_messenger, "f"), providerConfigs?.[EVM_ACCOUNT_PROVIDER_NAME], trace),
+-            new AccountProviderWrapper(__classPrivateFieldGet(this, _MultichainAccountService_messenger, "f"), new SolAccountProvider(__classPrivateFieldGet(this, _MultichainAccountService_messenger, "f"), providerConfigs?.[SOL_ACCOUNT_PROVIDER_NAME], trace)),
+-            new AccountProviderWrapper(__classPrivateFieldGet(this, _MultichainAccountService_messenger, "f"), new BtcAccountProvider(__classPrivateFieldGet(this, _MultichainAccountService_messenger, "f"), providerConfigs?.[BTC_ACCOUNT_PROVIDER_NAME], trace)),
+-            new AccountProviderWrapper(__classPrivateFieldGet(this, _MultichainAccountService_messenger, "f"), new TrxAccountProvider(__classPrivateFieldGet(this, _MultichainAccountService_messenger, "f"), providerConfigs?.[TRX_ACCOUNT_PROVIDER_NAME], trace)),
+             // Custom account providers that can be provided by the MetaMask client.
+             ...providers,
+         ], "f");
+diff --git a/dist/index.cjs b/dist/index.cjs
+index 92dd4b8..4a78ab3 100644
+--- a/dist/index.cjs
++++ b/dist/index.cjs
+@@ -1,19 +1,6 @@
+ "use strict";
+ Object.defineProperty(exports, "__esModule", { value: true });
+-exports.MultichainAccountService = exports.MultichainAccountGroup = exports.MultichainAccountWallet = exports.TrxAccountProvider = exports.TRX_ACCOUNT_PROVIDER_NAME = exports.BtcAccountProvider = exports.BTC_ACCOUNT_PROVIDER_NAME = exports.SolAccountProvider = exports.SOL_ACCOUNT_PROVIDER_NAME = exports.EvmAccountProvider = exports.EVM_ACCOUNT_PROVIDER_NAME = exports.TimeoutError = exports.SnapAccountProvider = exports.BaseBip44AccountProvider = exports.AccountProviderWrapper = void 0;
+-var providers_1 = require("./providers/index.cjs");
+-Object.defineProperty(exports, "AccountProviderWrapper", { enumerable: true, get: function () { return providers_1.AccountProviderWrapper; } });
+-Object.defineProperty(exports, "BaseBip44AccountProvider", { enumerable: true, get: function () { return providers_1.BaseBip44AccountProvider; } });
+-Object.defineProperty(exports, "SnapAccountProvider", { enumerable: true, get: function () { return providers_1.SnapAccountProvider; } });
+-Object.defineProperty(exports, "TimeoutError", { enumerable: true, get: function () { return providers_1.TimeoutError; } });
+-Object.defineProperty(exports, "EVM_ACCOUNT_PROVIDER_NAME", { enumerable: true, get: function () { return providers_1.EVM_ACCOUNT_PROVIDER_NAME; } });
+-Object.defineProperty(exports, "EvmAccountProvider", { enumerable: true, get: function () { return providers_1.EvmAccountProvider; } });
+-Object.defineProperty(exports, "SOL_ACCOUNT_PROVIDER_NAME", { enumerable: true, get: function () { return providers_1.SOL_ACCOUNT_PROVIDER_NAME; } });
+-Object.defineProperty(exports, "SolAccountProvider", { enumerable: true, get: function () { return providers_1.SolAccountProvider; } });
+-Object.defineProperty(exports, "BTC_ACCOUNT_PROVIDER_NAME", { enumerable: true, get: function () { return providers_1.BTC_ACCOUNT_PROVIDER_NAME; } });
+-Object.defineProperty(exports, "BtcAccountProvider", { enumerable: true, get: function () { return providers_1.BtcAccountProvider; } });
+-Object.defineProperty(exports, "TRX_ACCOUNT_PROVIDER_NAME", { enumerable: true, get: function () { return providers_1.TRX_ACCOUNT_PROVIDER_NAME; } });
+-Object.defineProperty(exports, "TrxAccountProvider", { enumerable: true, get: function () { return providers_1.TrxAccountProvider; } });
++exports.MultichainAccountService = exports.MultichainAccountGroup = exports.MultichainAccountWallet = void 0;
+ var MultichainAccountWallet_1 = require("./MultichainAccountWallet.cjs");
+ Object.defineProperty(exports, "MultichainAccountWallet", { enumerable: true, get: function () { return MultichainAccountWallet_1.MultichainAccountWallet; } });
+ var MultichainAccountGroup_1 = require("./MultichainAccountGroup.cjs");
+diff --git a/dist/index.mjs b/dist/index.mjs
+index 108ced7..a5e2120 100644
+--- a/dist/index.mjs
++++ b/dist/index.mjs
+@@ -1,4 +1,3 @@
+-export { AccountProviderWrapper, BaseBip44AccountProvider, SnapAccountProvider, TimeoutError, EVM_ACCOUNT_PROVIDER_NAME, EvmAccountProvider, SOL_ACCOUNT_PROVIDER_NAME, SolAccountProvider, BTC_ACCOUNT_PROVIDER_NAME, BtcAccountProvider, TRX_ACCOUNT_PROVIDER_NAME, TrxAccountProvider } from "./providers/index.mjs";
+ export { MultichainAccountWallet } from "./MultichainAccountWallet.mjs";
+ export { MultichainAccountGroup } from "./MultichainAccountGroup.mjs";
+ export { MultichainAccountService } from "./MultichainAccountService.mjs";
+diff --git a/dist/snaps/SnapPlatformWatcher.cjs b/dist/snaps/SnapPlatformWatcher.cjs
+index 4e51765..af3fc55 100644
+--- a/dist/snaps/SnapPlatformWatcher.cjs
++++ b/dist/snaps/SnapPlatformWatcher.cjs
+@@ -49,17 +49,8 @@ class SnapPlatformWatcher {
+         return __classPrivateFieldGet(this, _SnapPlatformWatcher_isReady, "f");
+     }
+     async ensureCanUseSnapPlatform() {
+-        // When ensureOnboardingComplete is provided, wait for the onboarding first.
+         await __classPrivateFieldGet(this, _SnapPlatformWatcher_ensureOnboardingComplete, "f")?.call(this);
+-        // In all cases, we also require the Snap platform to be ready and available.
+-        await __classPrivateFieldGet(this, _SnapPlatformWatcher_isReadyOnce, "f").promise;
+-        if (!__classPrivateFieldGet(this, _SnapPlatformWatcher_isReady, "f")) {
+-            throw new Error('Snap platform cannot be used now.');
+-        }
+-        // After a restore/reset, the Snap keyring is created lazily by the client (e.g. when
+-        // getSnapKeyring() is called). Non-EVM account creation needs the keyring to exist, so we
+-        // wait for it here with a timeout to avoid "Keyring not found" errors.
+-        await __classPrivateFieldGet(this, _SnapPlatformWatcher_instances, "m", _SnapPlatformWatcher_waitForSnapKeyring).call(this);
++        return;
+     }
+ }
+ exports.SnapPlatformWatcher = SnapPlatformWatcher;
+@@ -107,18 +98,7 @@ async function _SnapPlatformWatcher_waitForSnapKeyringViaStateChange() {
+         __classPrivateFieldGet(this, _SnapPlatformWatcher_messenger, "f").subscribe('KeyringController:stateChange', listener, (state) => state.keyrings);
+     });
+ }, _SnapPlatformWatcher_watch = function _SnapPlatformWatcher_watch() {
+-    const logReadyOnce = (0, lodash_1.once)(() => (0, logger_1.projectLogger)('Snap platform is ready!'));
+-    const initialState = __classPrivateFieldGet(this, _SnapPlatformWatcher_messenger, "f").call('SnapController:getState');
+-    if (initialState.isReady) {
+-        __classPrivateFieldSet(this, _SnapPlatformWatcher_isReady, true, "f");
+-        __classPrivateFieldGet(this, _SnapPlatformWatcher_isReadyOnce, "f").resolve();
+-    }
+-    __classPrivateFieldGet(this, _SnapPlatformWatcher_messenger, "f").subscribe('SnapController:stateChange', (isReady) => {
+-        __classPrivateFieldSet(this, _SnapPlatformWatcher_isReady, isReady, "f");
+-        if (isReady) {
+-            logReadyOnce();
+-            __classPrivateFieldGet(this, _SnapPlatformWatcher_isReadyOnce, "f").resolve();
+-        }
+-    }, (state) => state.isReady);
++    __classPrivateFieldSet(this, _SnapPlatformWatcher_isReady, true, "f");
++    __classPrivateFieldGet(this, _SnapPlatformWatcher_isReadyOnce, "f").resolve();
+ };
+ //# sourceMappingURL=SnapPlatformWatcher.cjs.map
+diff --git a/dist/snaps/SnapPlatformWatcher.mjs b/dist/snaps/SnapPlatformWatcher.mjs
+index 9463c10..4ca0c4e 100644
+--- a/dist/snaps/SnapPlatformWatcher.mjs
++++ b/dist/snaps/SnapPlatformWatcher.mjs
+@@ -47,17 +47,8 @@ export class SnapPlatformWatcher {
+         return __classPrivateFieldGet(this, _SnapPlatformWatcher_isReady, "f");
+     }
+     async ensureCanUseSnapPlatform() {
+-        // When ensureOnboardingComplete is provided, wait for the onboarding first.
+         await __classPrivateFieldGet(this, _SnapPlatformWatcher_ensureOnboardingComplete, "f")?.call(this);
+-        // In all cases, we also require the Snap platform to be ready and available.
+-        await __classPrivateFieldGet(this, _SnapPlatformWatcher_isReadyOnce, "f").promise;
+-        if (!__classPrivateFieldGet(this, _SnapPlatformWatcher_isReady, "f")) {
+-            throw new Error('Snap platform cannot be used now.');
+-        }
+-        // After a restore/reset, the Snap keyring is created lazily by the client (e.g. when
+-        // getSnapKeyring() is called). Non-EVM account creation needs the keyring to exist, so we
+-        // wait for it here with a timeout to avoid "Keyring not found" errors.
+-        await __classPrivateFieldGet(this, _SnapPlatformWatcher_instances, "m", _SnapPlatformWatcher_waitForSnapKeyring).call(this);
++        return;
+     }
+ }
+ _SnapPlatformWatcher_messenger = new WeakMap(), _SnapPlatformWatcher_ensureOnboardingComplete = new WeakMap(), _SnapPlatformWatcher_snapKeyringWaitTimeoutMs = new WeakMap(), _SnapPlatformWatcher_isReadyOnce = new WeakMap(), _SnapPlatformWatcher_isReady = new WeakMap(), _SnapPlatformWatcher_instances = new WeakSet(), _SnapPlatformWatcher_waitForSnapKeyring = 
+@@ -104,18 +95,7 @@ async function _SnapPlatformWatcher_waitForSnapKeyringViaStateChange() {
+         __classPrivateFieldGet(this, _SnapPlatformWatcher_messenger, "f").subscribe('KeyringController:stateChange', listener, (state) => state.keyrings);
+     });
+ }, _SnapPlatformWatcher_watch = function _SnapPlatformWatcher_watch() {
+-    const logReadyOnce = once(() => log('Snap platform is ready!'));
+-    const initialState = __classPrivateFieldGet(this, _SnapPlatformWatcher_messenger, "f").call('SnapController:getState');
+-    if (initialState.isReady) {
+-        __classPrivateFieldSet(this, _SnapPlatformWatcher_isReady, true, "f");
+-        __classPrivateFieldGet(this, _SnapPlatformWatcher_isReadyOnce, "f").resolve();
+-    }
+-    __classPrivateFieldGet(this, _SnapPlatformWatcher_messenger, "f").subscribe('SnapController:stateChange', (isReady) => {
+-        __classPrivateFieldSet(this, _SnapPlatformWatcher_isReady, isReady, "f");
+-        if (isReady) {
+-            logReadyOnce();
+-            __classPrivateFieldGet(this, _SnapPlatformWatcher_isReadyOnce, "f").resolve();
+-        }
+-    }, (state) => state.isReady);
++    __classPrivateFieldSet(this, _SnapPlatformWatcher_isReady, true, "f");
++    __classPrivateFieldGet(this, _SnapPlatformWatcher_isReadyOnce, "f").resolve();
+ };
+ //# sourceMappingURL=SnapPlatformWatcher.mjs.map

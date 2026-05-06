@@ -63,4 +63,15 @@ describe('RateLimitController', () => {
       },
     });
   });
+
+  it('does not create in-app notifications for snaps', () => {
+    RateLimitControllerInit(getInitRequestMock());
+
+    const controllerMock = jest.mocked(RateLimitController);
+    const showInAppNotification =
+      controllerMock.mock.calls[0][0].implementations.showInAppNotification
+        .method;
+
+    expect(showInAppNotification('npm:test', { message: 'hello' })).toBeNull();
+  });
 });

@@ -2,7 +2,7 @@
 
 ## Overview
 
-The MetaMask extension supports Chrome's Side Panel API, allowing users to access MetaMask in a persistent side panel instead of the traditional popup window. This provides a better user experience with a larger, always-accessible interface.
+The 1do Wallet extension supports Chrome's Side Panel API, allowing users to access 1do Wallet in a persistent side panel instead of the traditional popup window. This provides a better user experience with a larger, always-accessible interface.
 
 ## Table of Contents
 
@@ -57,7 +57,7 @@ The `getIsSidePanelFeatureEnabled()` function (located in `shared/lib/environmen
 **Unsupported Browsers:**
 
 - ❌ Firefox (no sidePanel API)
-- ❌ Opera (uses `sidebarAction` API instead of `sidePanel` API - not implemented in MetaMask)
+- ❌ Opera (uses `sidebarAction` API instead of `sidePanel` API - not implemented in 1do Wallet)
 - ❌ Arc Browser (API exists but doesn't work properly)
 
 ### React Hook for Sidepanel Detection
@@ -80,7 +80,7 @@ The sidepanel is configured in the Chrome Manifest V3 (`app/manifest/v3/chrome.j
 
 ### Sidepanel HTML Entry Point
 
-The sidepanel HTML file (`app/html/pages/sidepanel.html`) is minimal and uses the same structure as other MetaMask pages, including standard head and body partials.
+The sidepanel HTML file (`app/html/pages/sidepanel.html`) is minimal and uses the same structure as other 1do Wallet pages, including standard head and body partials.
 
 ---
 
@@ -101,7 +101,7 @@ The background script listens for preference changes via `PreferencesController:
 
 ### Sidepanel Connection Tracking
 
-The background script tracks when the sidepanel is open using a `sidePanelIsOpen` boolean flag. When a sidepanel connection is established (detected via `ENVIRONMENT_TYPE_SIDEPANEL`), it sets the flag to `true` and registers a cleanup callback that sets it to `false` when the connection closes. This tracking is used to determine if MetaMask is open.
+The background script tracks when the sidepanel is open using a `sidePanelIsOpen` boolean flag. When a sidepanel connection is established (detected via `ENVIRONMENT_TYPE_SIDEPANEL`), it sets the flag to `true` and registers a cleanup callback that sets it to `false` when the connection closes. This tracking is used to determine if 1do Wallet is open.
 
 ---
 
@@ -210,12 +210,12 @@ Since `webextension-polyfill` doesn't include sidePanel API types yet, custom ty
 
 - Uses a different extension API model despite being Chromium-based
 - **Uses `chrome.sidebarAction` API instead of `chrome.sidePanel` API**
-- MetaMask currently only checks for `chrome.sidePanel` API (see `shared/lib/environment.ts`)
-- Since Opera's `sidebarAction` API hasn't been implemented in MetaMask, sidepanel doesn't work for Opera
+- 1do Wallet currently only checks for `chrome.sidePanel` API (see `shared/lib/environment.ts`)
+- Since Opera's `sidebarAction` API hasn't been implemented in 1do Wallet, sidepanel doesn't work for Opera
 - Detected via user agent string containing `'OPR'` (see `app/scripts/lib/util.ts`)
 - Feature automatically disabled via API check (fails because `chrome.sidePanel` doesn't exist)
 - Falls back to popup behavior
-- **Note**: To support Opera, MetaMask would need to implement `chrome.sidebarAction` API separately
+- **Note**: To support Opera, 1do Wallet would need to implement `chrome.sidebarAction` API separately
 
 **Arc Browser:**
 
@@ -272,15 +272,15 @@ Since `webextension-polyfill` doesn't include sidePanel API types yet, custom ty
 
 ## Summary
 
-The sidepanel implementation provides a modern, persistent interface for MetaMask users on supported browsers. Key features:
+The sidepanel implementation provides a modern, persistent interface for 1do Wallet users on supported browsers. Key features:
 
 1. **Feature Flag Controlled**: Enabled via `IS_SIDEPANEL` build flag
 2. **Browser Detection**: Automatically detects and handles unsupported browsers
 3. **User Preference**: Users can toggle between popup and sidepanel
-4. **Seamless Integration**: Works with existing MetaMask architecture
+4. **Seamless Integration**: Works with existing 1do Wallet architecture
 5. **Robust Error Handling**: Handles edge cases like Arc browser gracefully
 
-The implementation follows MetaMask's architecture patterns, using controllers for state management, Redux for UI state, and proper TypeScript typing throughout.
+The implementation follows 1do Wallet's architecture patterns, using controllers for state management, Redux for UI state, and proper TypeScript typing throughout.
 
 ---
 

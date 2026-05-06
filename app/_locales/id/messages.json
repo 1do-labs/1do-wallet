@@ -1,6 +1,6 @@
 {
   "CSS_loadingTakingTooLongActionText": {
-    "message": "Luncurkan ulang MetaMask jika masalah berlanjut.",
+    "message": "Luncurkan ulang 1do jika masalah berlanjut.",
     "description": "Second line of the message that is shown when the initial loading of the MetaMask UI takes a very long time."
   },
   "CSS_loadingTakingTooLongMessageText": {
@@ -70,7 +70,7 @@
     "message": "Tentang"
   },
   "aboutMetaMask": {
-    "message": "Seputar MetaMask"
+    "message": "Seputar 1do"
   },
   "accept": {
     "message": "Terima"
@@ -207,7 +207,7 @@
     "message": "Tambahkan akun atau dompet"
   },
   "addAcquiredTokens": {
-    "message": "Tambahkan token yang Anda peroleh menggunakan MetaMask"
+    "message": "Tambahkan token yang Anda peroleh menggunakan 1do"
   },
   "addAlias": {
     "message": "Tambahkan alias"
@@ -665,15 +665,15 @@
     "description": "The description of the application"
   },
   "appName": {
-    "message": "MetaMask",
+    "message": "1do",
     "description": "The name of the application"
   },
   "appNameBeta": {
-    "message": "MetaMask Beta",
+    "message": "1do Beta",
     "description": "The name of the application (Beta)"
   },
   "appNameFlask": {
-    "message": "MetaMask Flask",
+    "message": "1do Flask",
     "description": "The name of the application (Flask)"
   },
   "apply": {
@@ -727,7 +727,7 @@
     "message": "Autodeteksi token di dompet Anda, tampilkan NFT, dan dapatkan pembaruan saldo akun secara batch"
   },
   "asterdexReferralSubtitle": {
-    "message": "Dapatkan cashback 4% untuk perdagangan dengan kode rujukan MetaMask.",
+    "message": "Dapatkan cashback 4% untuk perdagangan dengan kode rujukan 1do.",
     "description": "The subtitle of the AsterDEX referral confirmation screen"
   },
   "attemptToCancelSwapForFree": {
@@ -777,7 +777,7 @@
     "message": "Timer kunci otomatis (menit)"
   },
   "autoLockTimeLimitDescription": {
-    "message": "Atur waktu siaga dalam menit sebelum MetaMask terkunci."
+    "message": "Atur waktu siaga dalam menit sebelum 1do terkunci."
   },
   "available": {
     "message": "tersedia"
@@ -811,7 +811,7 @@
     "description": "$1 is backupAndSyncBasicFunctionalityNameMention in bold."
   },
   "backupAndSyncEnableDescription": {
-    "message": "Pencadangan dan sinkronisasi memungkinkan kami menyimpan data terenkripsi untuk pengaturan dan fitur khusus Anda. Ini menjaga pengalaman MetaMask Anda tetap sama di semua perangkat serta memulihkan pengaturan dan fiturnya jika Anda perlu menginstal ulang MetaMask. Ini tidak mencadangkan Frasa Pemulihan Rahasia. $1.",
+    "message": "Pencadangan dan sinkronisasi memungkinkan kami menyimpan data terenkripsi untuk pengaturan dan fitur khusus Anda. Ini menjaga pengalaman 1do Anda tetap sama di semua perangkat serta memulihkan pengaturan dan fiturnya jika Anda perlu menginstal ulang 1do. Ini tidak mencadangkan Frasa Pemulihan Rahasia. $1.",
     "description": "$1 is link to the backup and sync privacy policy."
   },
   "backupAndSyncEnableDescriptionUpdatePreferences": {
@@ -837,7 +837,7 @@
     "message": "Pelajari cara kami melindungi privasi Anda"
   },
   "backupApprovalInfo": {
-    "message": "Kode rahasia ini diperlukan untuk memulihkan dompet seandainya perangkat Anda hilang, lupa kata sandi, harus memasang kembali MetaMask, atau ingin mengakses dompet Anda di perangkat lain."
+    "message": "Kode rahasia ini diperlukan untuk memulihkan dompet seandainya perangkat Anda hilang, lupa kata sandi, harus memasang kembali 1do, atau ingin mengakses dompet Anda di perangkat lain."
   },
   "backupApprovalNotice": {
     "message": "Cadangkan Frasa Pemulihan Rahasia untuk menjaga keamanan dompet dan dana Anda."
@@ -861,7 +861,7 @@
     "message": "Dasar"
   },
   "basicConfigurationDescription": {
-    "message": "MetaMask menawarkan fitur dasar seperti detail token dan pengaturan gas melalui layanan internet. Alamat IP dibagikan saat menggunakan layanan internet, dalam hal ini kepada MetaMask. Ini sama seperti saat Anda mengunjungi situs web mana pun. MetaMask menggunakan data ini untuk sementara dan tidak akan pernah menjual data Anda. Anda dapat menggunakan VPN atau menonaktifkan layanan ini, akan tetapi hal ini dapat memengaruhi pengalaman dalam menggunakan MetaMask. Untuk selengkapnya, baca $1 kami.",
+    "message": "1do menawarkan fitur dasar seperti detail token dan pengaturan gas melalui layanan internet. Alamat IP dibagikan saat menggunakan layanan internet, dalam hal ini kepada 1do. Ini sama seperti saat Anda mengunjungi situs web mana pun. 1do menggunakan data ini untuk sementara dan tidak akan pernah menjual data Anda. Anda dapat menggunakan VPN atau menonaktifkan layanan ini, akan tetapi hal ini dapat memengaruhi pengalaman dalam menggunakan 1do. Untuk selengkapnya, baca $1 kami.",
     "description": "$1 is to be replaced by the message for privacyMsg, and will link to https://consensys.io/privacy-policy"
   },
   "basicConfigurationDescriptionV2": {
@@ -875,13 +875,13 @@
     "message": "Saya memahami dan ingin melanjutkan"
   },
   "basicConfigurationModalDisclaimerOffPart1": {
-    "message": "Artinya, Anda tidak akan benar-benar mengoptimalkan waktu di MetaMask. Fitur dasar (seperti detail token, pengaturan gas optimal, dan lainnya) tidak akan tersedia untuk Anda."
+    "message": "Artinya, Anda tidak akan benar-benar mengoptimalkan waktu di 1do. Fitur dasar (seperti detail token, pengaturan gas optimal, dan lainnya) tidak akan tersedia untuk Anda."
   },
   "basicConfigurationModalDisclaimerOffPart2": {
     "message": "Menonaktifkan opsi ini juga akan menonaktifkan beberapa fitur dalam privasi, pencadangan dan sinkronisasi, serta notifikasi."
   },
   "basicConfigurationModalDisclaimerOn": {
-    "message": "Untuk mengoptimalkan waktu di MetaMask, Anda perlu mengaktifkan fitur ini. Fungsi dasar (seperti detail token, pengaturan gas optimal, dan lainnya) penting untuk pengalaman web3."
+    "message": "Untuk mengoptimalkan waktu di 1do, Anda perlu mengaktifkan fitur ini. Fungsi dasar (seperti detail token, pengaturan gas optimal, dan lainnya) penting untuk pengalaman web3."
   },
   "basicConfigurationModalHeadingOff": {
     "message": "Nonaktifkan fungsionalitas dasar"
@@ -935,13 +935,13 @@
     "message": "Kuotasi terbaik"
   },
   "bestQuoteTooltip": {
-    "message": "Kuotasi terbaik yang kami temukan dari penyedia, termasuk biaya penyedia dan biaya MetaMask 0,25%. Jumlah minimum yang akan Anda terima jika terjadi perubahan harga adalah $1."
+    "message": "Kuotasi terbaik yang kami temukan dari penyedia, termasuk biaya penyedia dan biaya 1do 0,25%. Jumlah minimum yang akan Anda terima jika terjadi perubahan harga adalah $1."
   },
   "beta": {
     "message": "Beta"
   },
   "betaMetamaskVersion": {
-    "message": "Versi MetaMask Beta"
+    "message": "Versi 1do Beta"
   },
   "betaTerms": {
     "message": "Ketentuan Penggunaan Beta"
@@ -1123,7 +1123,7 @@
     "description": "Tooltip title when there's an error fetching estimated points"
   },
   "bridgePoints_error_content": {
-    "message": "Jangan khawatir, Anda tetap mendapatkan poin. Poin akan segera muncul di akun Anda, atau Anda bisa memeriksanya di tab Reward pada MetaMask Mobile.",
+    "message": "Jangan khawatir, Anda tetap mendapatkan poin. Poin akan segera muncul di akun Anda, atau Anda bisa memeriksanya di tab Reward pada 1do Mobile.",
     "description": "Error message when points estimation fails"
   },
   "bridgePoints_tooltip": {
@@ -1131,7 +1131,7 @@
     "description": "Tooltip title for points"
   },
   "bridgePoints_tooltip_content_1": {
-    "message": "Poin merupakan cara Anda memperoleh MetaMask Rewards untuk menyelesaikan transaksi, seperti saat Anda menukar, menggunakan bridge, atau memperdagangkan perp.",
+    "message": "Poin merupakan cara Anda memperoleh 1do Rewards untuk menyelesaikan transaksi, seperti saat Anda menukar, menggunakan bridge, atau memperdagangkan perp.",
     "description": "First part of tooltip content explaining rewards points"
   },
   "bridgePoints_tooltip_content_2": {
@@ -1151,7 +1151,7 @@
     "message": "Karena ukuran perdagangan dan likuiditas yang tersedia, Anda akan mendapatkan sekitar $1 lebih rendah dari harga pasar. Hal ini sudah diperhitungkan dalam kuotasi Anda."
   },
   "bridgePriceImpactNormalDescription": {
-    "message": "Beginilah cara perdagangan Anda mengubah harga pasar suatu token. Hal ini bergantung pada ukuran perdagangan, likuiditas yang tersedia, dan biaya penyedia. MetaMask tidak mengontrol dampak harga."
+    "message": "Beginilah cara perdagangan Anda mengubah harga pasar suatu token. Hal ini bergantung pada ukuran perdagangan, likuiditas yang tersedia, dan biaya penyedia. 1do tidak mengontrol dampak harga."
   },
   "bridgePriceImpactTooltipTitle": {
     "message": "Dampak harga"
@@ -1280,7 +1280,7 @@
     "message": "Hubungi kami"
   },
   "bridgeTxDetailsDelayedDescriptionSupport": {
-    "message": "Dukungan MetaMask"
+    "message": "Dukungan 1do"
   },
   "bridgeTxDetailsDelayedTitle": {
     "message": "Apakah sudah lebih dari 3 jam?"
@@ -1336,7 +1336,7 @@
     "message": "Browser Anda tidak didukung..."
   },
   "builtAroundTheWorld": {
-    "message": "MetaMask dirancang dan dibangun di seluruh dunia."
+    "message": "1do dirancang dan dibangun di seluruh dunia."
   },
   "busy": {
     "message": "Sibuk"
@@ -1418,7 +1418,7 @@
     "message": "Anda yakin?"
   },
   "changePasswordWarningDescription": {
-    "message": "Mengubah kata sandi di sini akan mengunci MetaMask di perangkat lain yang Anda gunakan. Anda perlu masuk kembali dengan kata sandi baru."
+    "message": "Mengubah kata sandi di sini akan mengunci 1do di perangkat lain yang Anda gunakan. Anda perlu masuk kembali dengan kata sandi baru."
   },
   "checkNetworkConnectivity": {
     "message": "Periksa konektivitas jaringan."
@@ -1438,7 +1438,7 @@
     "message": "klik di sini"
   },
   "chromeRequiredForHardwareWallets": {
-    "message": "Anda perlu menggunakan MetaMask di Google Chrome untuk terhubung ke Dompet Perangkat Keras Anda."
+    "message": "Anda perlu menggunakan 1do di Google Chrome untuk terhubung ke Dompet Perangkat Keras Anda."
   },
   "circulatingSupply": {
     "message": "Suplai yang beredar"
@@ -1499,10 +1499,10 @@
     "message": "Distribusi suplai terkonsentrasi"
   },
   "configureSnapPopupDescription": {
-    "message": "Sekarang, Anda akan meninggalkan MetaMask untuk mengonfigurasi snap ini."
+    "message": "Sekarang, Anda akan meninggalkan 1do untuk mengonfigurasi snap ini."
   },
   "configureSnapPopupInstallDescription": {
-    "message": "Sekarang, Anda akan meninggalkan MetaMask untuk menginstal snap ini."
+    "message": "Sekarang, Anda akan meninggalkan 1do untuk menginstal snap ini."
   },
   "configureSnapPopupInstallTitle": {
     "message": "Instal Snap"
@@ -1587,7 +1587,7 @@
     "message": "Termasuk biaya $1"
   },
   "confirmGasFeeTokenModalNativeToggleMetaMask": {
-    "message": "MetaMask sedang menambah saldo untuk menyelesaikan transaksi ini."
+    "message": "1do sedang menambah saldo untuk menyelesaikan transaksi ini."
   },
   "confirmGasFeeTokenModalNativeToggleWallet": {
     "message": "Bayar biaya jaringan menggunakan saldo di dompet Anda."
@@ -1605,7 +1605,7 @@
     "message": "Anda membayar biaya jaringan ini dengan $1"
   },
   "confirmGasFeeTokenTooltip": {
-    "message": "Biaya ini dibayarkan ke jaringan untuk memproses transaksi Anda. Biaya ini mencakup biaya MetaMask sebesar $1 untuk token non-ETH atau ETH yang telah didanai sebelumnya."
+    "message": "Biaya ini dibayarkan ke jaringan untuk memproses transaksi Anda. Biaya ini mencakup biaya 1do sebesar $1 untuk token non-ETH atau ETH yang telah didanai sebelumnya."
   },
   "confirmInfoAccountNow": {
     "message": "Sekarang"
@@ -1754,7 +1754,7 @@
     "description": "$1 is the snap for which a connection is being requested."
   },
   "connectWithMetaMask": {
-    "message": "Hubungkan dengan MetaMask"
+    "message": "Hubungkan dengan 1do"
   },
   "connectedAccountsDescriptionPlural": {
     "message": "Anda memiliki $1 akun yang terhubung ke situs ini.",
@@ -1764,7 +1764,7 @@
     "message": "Anda memiliki 1 akun yang terhubung ke situs ini."
   },
   "connectedAccountsEmptyDescription": {
-    "message": "MetaMask tidak terhubung ke situs ini. Untuk terhubung ke situs web3, cari dan klik tombol hubungkan."
+    "message": "1do tidak terhubung ke situs ini. Untuk terhubung ke situs web3, cari dan klik tombol hubungkan."
   },
   "connectedAccountsListTooltip": {
     "message": "$1 dapat melihat saldo akun, alamat, aktivitas, dan menyarankan transaksi yang akan disetujui untuk akun terhubung.",
@@ -1785,7 +1785,7 @@
     "description": "$1 is the account name"
   },
   "connectedSnapAndNoAccountDescription": {
-    "message": "MetaMask terhubung ke situs ini, tetapi belum ada akun yang terhubung"
+    "message": "1do terhubung ke situs ini, tetapi belum ada akun yang terhubung"
   },
   "connectedSnaps": {
     "message": "Snaps yang Terhubung"
@@ -1831,7 +1831,7 @@
     "message": "Menghubungkan ke jaringan uji Sepolia"
   },
   "connectionDescription": {
-    "message": "Hubungkan situs web ini dengan MetaMask"
+    "message": "Hubungkan situs web ini dengan 1do"
   },
   "connectionFailed": {
     "message": "Koneksi gagal"
@@ -1841,7 +1841,7 @@
     "description": "$1 is the name of the snap being fetched."
   },
   "connectionPopoverDescription": {
-    "message": "Untuk terhubung ke situs, pilih tombol hubungkan. MetaMask hanya dapat terhubung ke situs web3."
+    "message": "Untuk terhubung ke situs, pilih tombol hubungkan. 1do hanya dapat terhubung ke situs web3."
   },
   "connectionRequest": {
     "message": "Permintaan koneksi"
@@ -1890,7 +1890,7 @@
     "message": "Interaksi kontrak"
   },
   "convertTokenToNFTDescription": {
-    "message": "Kami mendeteksi bahwa aset ini merupakan NFT. Kini MetaMask memiliki dukungan asli penuh untuk NFT. Ingin menghapusnya dari daftar token dan menambahkannya sebagai NFT?"
+    "message": "Kami mendeteksi bahwa aset ini merupakan NFT. Kini 1do memiliki dukungan asli penuh untuk NFT. Ingin menghapusnya dari daftar token dan menambahkannya sebagai NFT?"
   },
   "convertTokenToNFTExistDescription": {
     "message": "Kami mendeteksi bahwa aset ini telah ditambahkan sebagai NFT. Ingin menghapusnya dari daftar token Anda?"
@@ -1937,26 +1937,26 @@
     "message": "Buat akun baru"
   },
   "createPassword": {
-    "message": "Kata sandi MetaMask"
+    "message": "Kata sandi 1do"
   },
   "createPasswordCreate": {
     "message": "Buat kata sandi"
   },
   "createPasswordDetails": {
-    "message": "Membuka MetaMask hanya pada perangkat ini."
+    "message": "Membuka 1do hanya pada perangkat ini."
   },
   "createPasswordDetailsSocial": {
     "message": "Kehilangan kata sandi ini berarti kehilangan akses dompet di semua perangkat, $1",
     "description": "$1 is the text 'MetaMask can't reset it.'"
   },
   "createPasswordDetailsSocialReset": {
-    "message": "MetaMask tidak dapat meresetnya."
+    "message": "1do tidak dapat meresetnya."
   },
   "createPasswordMarketing": {
     "message": "Dapatkan pembaruan produk, kiat, dan berita, termasuk melalui email. Kami dapat menggunakan interaksi Anda untuk meningkatkan konten yang kami bagikan."
   },
   "createSnapAccountDescription": {
-    "message": "$1 ingin menambahkan akun baru ke MetaMask."
+    "message": "$1 ingin menambahkan akun baru ke 1do."
   },
   "createSnapAccountTitle": {
     "message": "Buat akun"
@@ -2077,10 +2077,10 @@
     "message": "Situs yang disarankan"
   },
   "dappSwapAdvantage": {
-    "message": "Hemat dan dapatkan penghasilan dengan MetaMask Swap"
+    "message": "Hemat dan dapatkan penghasilan dengan 1do Swap"
   },
   "dappSwapAdvantageSaveOnly": {
-    "message": "Hemat dengan MetaMask Swap"
+    "message": "Hemat dengan 1do Swap"
   },
   "dappSwapBenefits": {
     "message": "Biaya jaringan dikembalikan pada swap yang gagal"
@@ -2101,7 +2101,7 @@
     "message": "Pengumpulan data untuk pemasaran"
   },
   "dataCollectionForMarketingDescription": {
-    "message": "Kami akan menggunakan MetaMetrics untuk mempelajari cara Anda berinteraksi dengan komunikasi pemasaran. Kami mungkin akan membagikan berita yang relevan (seperti fitur produk dan materi lainnya)."
+    "message": "Kami akan menggunakan 1do Metrics untuk mempelajari cara Anda berinteraksi dengan komunikasi pemasaran. Kami mungkin akan membagikan berita yang relevan (seperti fitur produk dan materi lainnya)."
   },
   "dataCollectionForMarketingDescriptionSocialLogin": {
     "message": "Dapatkan pembaruan produk, kiat, dan berita - termasuk melalui email. Kami dapat menggunakan interaksi Anda untuk meningkatkan konten yang kami bagikan."
@@ -2110,7 +2110,7 @@
     "message": "Oke"
   },
   "dataCollectionWarningPopoverDescription": {
-    "message": "Anda menonaktifkan pengumpulan data untuk tujuan pemasaran kami. Ini hanya berlaku untuk perangkat ini. Jika Anda menggunakan MetaMask di perangkat lain, pastikan untuk keluar terlebih dahulu."
+    "message": "Anda menonaktifkan pengumpulan data untuk tujuan pemasaran kami. Ini hanya berlaku untuk perangkat ini. Jika Anda menggunakan 1do di perangkat lain, pastikan untuk keluar terlebih dahulu."
   },
   "dataUnavailable": {
     "message": "data tidak tersedia"
@@ -2180,14 +2180,14 @@
     "description": "$1 is a link with the text found in `deepLink_Error404_CTA_LinkText`"
   },
   "deepLink_Error404_CTA_LinkText": {
-    "message": "Perbarui ke versi terkini MetaMask",
+    "message": "Perbarui ke versi terkini 1do",
     "description": "Part of `deepLink_Error404_CTA`. The text links to https://support.metamask.io/configure/wallet/how-to-update-the-version-of-metamask/"
   },
   "deepLink_ErrorMissingUrl": {
     "message": "Tidak ada url untuk dinavigasi yang diberikan."
   },
   "deepLink_ErrorOtherDescription": {
-    "message": "Ini adalah masalah dan harus dilaporkan ke MetaMask."
+    "message": "Ini adalah masalah dan harus dilaporkan ke 1do."
   },
   "deepLink_ErrorOtherTitle": {
     "message": "Terjadi kesalahan saat memproses deep link"
@@ -2196,10 +2196,10 @@
     "message": "Buka halaman beranda"
   },
   "deepLink_RedirectingToMetaMask": {
-    "message": "Mengalihkan ke MetaMask"
+    "message": "Mengalihkan ke 1do"
   },
   "deepLink_ThirdPartyDescription": {
-    "message": "Anda diarahkan ke sini oleh pihak ketiga, bukan MetaMask. $1",
+    "message": "Anda diarahkan ke sini oleh pihak ketiga, bukan 1do. $1",
     "description": "$1 is the message 'deepLink_ContinueDescription'"
   },
   "deepLink_theAssetPage": {
@@ -2209,7 +2209,7 @@
     "message": "halaman pembelian"
   },
   "deepLink_theCardOnboardingPage": {
-    "message": "halaman orientasi Kartu MetaMask"
+    "message": "halaman orientasi Kartu 1do"
   },
   "deepLink_theHomePage": {
     "message": "halaman beranda"
@@ -2239,7 +2239,7 @@
     "message": "halaman pasar prediksi"
   },
   "deepLink_theRewardsPage": {
-    "message": "halaman MetaMask Reward"
+    "message": "halaman 1do Reward"
   },
   "deepLink_theSellPage": {
     "message": "halaman penjualan"
@@ -2260,7 +2260,7 @@
     "message": "URL RPC Default"
   },
   "defaultSettingsSubTitle": {
-    "message": "MetaMask menggunakan pengaturan default untuk menyeimbangkan keamanan dan kemudahan penggunaan. Ubah pengaturan ini untuk lebih meningkatkan privasi Anda."
+    "message": "1do menggunakan pengaturan default untuk menyeimbangkan keamanan dan kemudahan penggunaan. Ubah pengaturan ini untuk lebih meningkatkan privasi Anda."
   },
   "defaultSettingsTitle": {
     "message": "Pengaturan privasi default"
@@ -2272,11 +2272,11 @@
     "message": "Pinjamkan, pinjam, dan berdagang, langsung di dompet Anda."
   },
   "defiReferralCheckboxLabel": {
-    "message": "Izinkan MetaMask menambahkan kode rujukan. Kode ini bersifat permanen. Situs ini menawarkan diskon sesuai ketentuan mereka. MetaMask mendapatkan komisi.",
+    "message": "Izinkan 1do menambahkan kode rujukan. Kode ini bersifat permanen. Situs ini menawarkan diskon sesuai ketentuan mereka. 1do mendapatkan komisi.",
     "description": "The text for the checkbox label in the DeFi referral confirmation screen"
   },
   "defiReferralTitle": {
-    "message": "MetaMask x $1",
+    "message": "1do x $1",
     "description": "The title of the DeFi referral confirmation screen. $1 is the name of the partner"
   },
   "defiTabErrorContent": {
@@ -2292,14 +2292,14 @@
     "message": "Hapus data aktivitas dan nonce"
   },
   "deleteMetaMetricsData": {
-    "message": "Hapus data MetaMetrics"
+    "message": "Hapus data 1do Metrics"
   },
   "deleteMetaMetricsDataDescription": {
-    "message": "Ini akan menghapus data MetaMetrics historis yang terkait dengan penggunaan Anda pada perangkat ini. Dompet dan akun Anda akan tetap sama seperti sekarang setelah data ini dihapus. Proses ini dapat memakan waktu hingga 30 hari. Lihat $1.",
+    "message": "Ini akan menghapus data 1do Metrics historis yang terkait dengan penggunaan Anda pada perangkat ini. Dompet dan akun Anda akan tetap sama seperti sekarang setelah data ini dihapus. Proses ini dapat memakan waktu hingga 30 hari. Lihat $1.",
     "description": "$1 will have text saying Privacy Policy "
   },
   "deleteMetaMetricsDataDescriptionV2": {
-    "message": "Ini akan menghapus data MetaMetrics historis yang terkait dengan dompet Anda. MetaMetrics mencakup data penggunaan dan diagnostik yang dianonimkan. Dompet dan akun Anda akan tetap sama. Proses ini akan memakan waktu hingga 30 hari. Lihat $1 kami.",
+    "message": "Ini akan menghapus data 1do Metrics historis yang terkait dengan dompet Anda. 1do Metrics mencakup data penggunaan dan diagnostik yang dianonimkan. Dompet dan akun Anda akan tetap sama. Proses ini akan memakan waktu hingga 30 hari. Lihat $1 kami.",
     "description": "$1 will have text saying Privacy Policy "
   },
   "deleteMetaMetricsDataErrorDesc": {
@@ -2312,10 +2312,10 @@
     "message": "Tidak dapat menghapus"
   },
   "deleteMetaMetricsDataModalDesc": {
-    "message": "Kami akan menghapus semua data MetaMetrics Anda. Lanjutkan?"
+    "message": "Kami akan menghapus semua data 1do Metrics Anda. Lanjutkan?"
   },
   "deleteMetaMetricsDataModalTitle": {
-    "message": "Hapus data MetaMetrics?"
+    "message": "Hapus data 1do Metrics?"
   },
   "deleteMetaMetricsDataRequestedDescription": {
     "message": "Anda memulai penghapusan pada $1. Proses ini dapat memakan waktu hingga 30 hari. Lihat $2.",
@@ -2341,7 +2341,7 @@
     "message": "Mengerti"
   },
   "deprecatedNetworkDescription": {
-    "message": "Jaringan yang Anda coba hubungkan tidak lagi didukung oleh MetaMask. $1"
+    "message": "Jaringan yang Anda coba hubungkan tidak lagi didukung oleh 1do. $1"
   },
   "description": {
     "message": "Deskripsi"
@@ -2459,7 +2459,7 @@
     "message": "Unduh"
   },
   "downloadAppDescription": {
-    "message": "Bawa MetaMask ke mana pun Anda pergi. Aktifkan ID Wajah agar Anda dapat mengaksesnya setiap saat, meskipun lupa kata sandi."
+    "message": "Bawa 1do ke mana pun Anda pergi. Aktifkan ID Wajah agar Anda dapat mengaksesnya setiap saat, meskipun lupa kata sandi."
   },
   "downloadAppTitle": {
     "message": "Pindai kode QR dan unduh aplikasinya"
@@ -2468,7 +2468,7 @@
     "message": "Unduh Google Chrome"
   },
   "downloadMetaMaskMobileDescription": {
-    "message": "ID Wajah di aplikasi kami memungkinkan Anda untuk masuk meskipun lupa kata sandi. Bawa MetaMask ke mana pun Anda pergi!"
+    "message": "ID Wajah di aplikasi kami memungkinkan Anda untuk masuk meskipun lupa kata sandi. Bawa 1do ke mana pun Anda pergi!"
   },
   "downloadMetaMaskMobileQrNote": {
     "message": "Pindai kode QR ini untuk mulai."
@@ -2647,13 +2647,13 @@
     "message": "Saat ini, deteksi token lanjutan tersedia di $1. $2"
   },
   "ensDomainsSettingDescriptionIntroduction": {
-    "message": "MetaMask memungkinkan Anda melihat domain ENS pada bilah alamat browser Anda. Berikut cara kerjanya:"
+    "message": "1do memungkinkan Anda melihat domain ENS pada bilah alamat browser Anda. Berikut cara kerjanya:"
   },
   "ensDomainsSettingDescriptionOutroduction": {
     "message": "Ingatlah bahwa alamat IP akan diketahui oleh layanan pihak ketiga IPFS saat menggunakan fitur ini."
   },
   "ensDomainsSettingDescriptionPart1": {
-    "message": "MetaMask memeriksa kontrak ENS Ethereum untuk menemukan kode yang terhubung ke nama ENS."
+    "message": "1do memeriksa kontrak ENS Ethereum untuk menemukan kode yang terhubung ke nama ENS."
   },
   "ensDomainsSettingDescriptionPart2": {
     "message": "Jika kode terhubung ke IPFS, Anda dapat melihat konten yang dikaitkan dengannya (umumnya situs web)."
@@ -2698,7 +2698,7 @@
     "message": "Masukkan kata sandi untuk melanjutkan"
   },
   "enterYourPasswordSocialLoginFlow": {
-    "message": "Masukkan kata sandi MetaMask"
+    "message": "Masukkan kata sandi 1do"
   },
   "errorCode": {
     "message": "Kode: $1",
@@ -2718,7 +2718,7 @@
     "message": "Tidak ada informasi pribadi atau informasi perangkat lain yang akan dikumpulkan."
   },
   "errorLegalTextSecondInfo": {
-    "message": "Versi browser, sistem operasi, dan MetaMask Anda."
+    "message": "Versi browser, sistem operasi, dan 1do Anda."
   },
   "errorLegalTextSummary": {
     "message": "Kami akan menerima satu laporan kesalahan, yang berisi:"
@@ -2760,7 +2760,7 @@
     "description": "In sentry feedback form, The message displayed after a successful feedback submission."
   },
   "errorPageTitle": {
-    "message": "MetaMask mengalami kesalahan",
+    "message": "1do mengalami kesalahan",
     "description": "Title of generic error page"
   },
   "errorPageTryAgain": {
@@ -2897,11 +2897,11 @@
     "description": "This explains the risks of using MetaMask Flask"
   },
   "flaskWelcomeWarning3": {
-    "message": "Semua API Flask bersifat eksperimental. Sehingga dapat diubah atau dihapus tanpa pemberitahuan, atau mungkin tetap berada di Flask tanpa batas waktu dan tidak akan pernah dimigrasikan ke MetaMask yang stabil. Gunakan dengan risiko yang ditanggung sendiri.",
+    "message": "Semua API Flask bersifat eksperimental. Sehingga dapat diubah atau dihapus tanpa pemberitahuan, atau mungkin tetap berada di Flask tanpa batas waktu dan tidak akan pernah dimigrasikan ke 1do yang stabil. Gunakan dengan risiko yang ditanggung sendiri.",
     "description": "This message warns developers about unstable Flask APIs"
   },
   "flaskWelcomeWarning4": {
-    "message": "Pastikan untuk menonaktifkan ekstensi MetaMask reguler Anda saat menggunakan Flask.",
+    "message": "Pastikan untuk menonaktifkan ekstensi 1do reguler Anda saat menggunakan Flask.",
     "description": "This message calls to pay attention about multiple versions of MetaMask running on the same site (Flask + Prod)"
   },
   "flaskWelcomeWarningAcceptButton": {
@@ -2937,7 +2937,7 @@
     "message": "Kami tidak dapat memulihkan kata sandi Anda."
   },
   "forgotPasswordModalDescription2": {
-    "message": "Tambahkan kembali dompet Anda ke MetaMask dengan memasukkan Frasa Pemulihan Rahasia yang terkait dengan dompet."
+    "message": "Tambahkan kembali dompet Anda ke 1do dengan memasukkan Frasa Pemulihan Rahasia yang terkait dengan dompet."
   },
   "forgotPasswordModalTitle": {
     "message": "Lupa kata sandi Anda?"
@@ -3120,7 +3120,7 @@
     "description": "Subtitle text for the balance empty state component explaining the purpose of adding funds"
   },
   "gmxReferralSubtitle": {
-    "message": "Hemat hingga 5% untuk perdagangan dengan kode rujukan MetaMask.",
+    "message": "Hemat hingga 5% untuk perdagangan dengan kode rujukan 1do.",
     "description": "The subtitle of the GMX referral confirmation screen"
   },
   "goToSite": {
@@ -3234,7 +3234,7 @@
     "message": "Integrasi dompet perangkat keras menggunakan panggilan API ke server eksternal, yang dapat melihat alamat IP Anda dan alamat kontrak cerdas tempat Anda berinteraksi."
   },
   "hardwareWalletsMsg": {
-    "message": "Pilih dompet perangkat keras yang ingin Anda gunakan dengan MetaMask."
+    "message": "Pilih dompet perangkat keras yang ingin Anda gunakan dengan 1do."
   },
   "helpAndSettings": {
     "message": "Bantuan dan pengaturan"
@@ -3306,7 +3306,7 @@
     "description": "$1 is a message from 'holdToRevealContent4' and $2 is a text link with the message from 'holdToRevealContent5'"
   },
   "holdToRevealContent4": {
-    "message": "Dukungan MetaMask tidak akan memintanya,",
+    "message": "Dukungan 1do tidak akan memintanya,",
     "description": "Part of 'holdToRevealContent3'"
   },
   "holdToRevealContent5": {
@@ -3346,7 +3346,7 @@
     "message": "Honey pot"
   },
   "hyperliquidReferralSubtitle": {
-    "message": "Hemat hingga 4% untuk perdagangan dengan kode rujukan MetaMask.",
+    "message": "Hemat hingga 4% untuk perdagangan dengan kode rujukan 1do.",
     "description": "The subtitle of the Hyperliquid referral confirmation screen"
   },
   "iUnderstand": {
@@ -3378,13 +3378,13 @@
     "message": "Ini bukan kunci pribadi yang valid. Anda harus memasukkan string heksadesimal dengan panjang 64 karakter."
   },
   "importAccountJsonLoading1": {
-    "message": "Impor JSON diperkirakan memerlukan waktu beberapa menit dan bekukan MetaMask."
+    "message": "Impor JSON diperkirakan memerlukan waktu beberapa menit dan bekukan 1do."
   },
   "importAccountJsonLoading2": {
     "message": "Mohon maaf, kami akan berupaya untuk membuatnya semakin cepat di masa mendatang."
   },
   "importAccountMsg": {
-    "message": "Akun yang diimpor tidak akan ditautkan dengan Frasa Pemulihan Rahasia MetaMask Anda. Pelajari selengkapnya tentang akun yang diimpor"
+    "message": "Akun yang diimpor tidak akan ditautkan dengan Frasa Pemulihan Rahasia 1do Anda. Pelajari selengkapnya tentang akun yang diimpor"
   },
   "importAccountWithSocialMsg": {
     "message": "Kunci pribadi yang diimpor dicadangkan ke akun dan disinkronkan secara otomatis saat Anda masuk dengan login Google atau Apple yang sama."
@@ -3444,7 +3444,7 @@
     "message": "Salah"
   },
   "infuraBlockedNotification": {
-    "message": "MetaMask tidak dapat terhubung ke host blockchain. Tinjau alasan yang mungkin $1.",
+    "message": "1do tidak dapat terhubung ke host blockchain. Tinjau alasan yang mungkin $1.",
     "description": "$1 is a clickable link with with text defined by the 'here' key"
   },
   "insights": {
@@ -3461,7 +3461,7 @@
     "message": "Instal asal"
   },
   "installRequest": {
-    "message": "Tambahkan ke MetaMask"
+    "message": "Tambahkan ke 1do"
   },
   "installedOn": {
     "message": "Diinstal di $1",
@@ -3563,7 +3563,7 @@
     "message": "gateway IPFS"
   },
   "ipfsGatewayDescription": {
-    "message": "MetaMask menggunakan layanan pihak ketiga untuk menampilkan gambar NFT Anda yang disimpan di IPFS, menampilkan informasi terkait alamat ENS yang dimasukkan di bilah alamat browser Anda, serta mengambil ikon untuk token yang berbeda. Alamat IP Anda mungkin tidak memberikan perlindungan terhadap layanan ini saat Anda menggunakannya."
+    "message": "1do menggunakan layanan pihak ketiga untuk menampilkan gambar NFT Anda yang disimpan di IPFS, menampilkan informasi terkait alamat ENS yang dimasukkan di bilah alamat browser Anda, serta mengambil ikon untuk token yang berbeda. Alamat IP Anda mungkin tidak memberikan perlindungan terhadap layanan ini saat Anda menggunakannya."
   },
   "ipfsGatewayDescriptionV2": {
     "message": "Menggunakan layanan pihak ketiga untuk menampilkan gambar NFT yang tersimpan di IPFS, menampilkan informasi terkait alamat ENS yang dimasukkan di bilah alamat browser Anda, serta mengambil ikon untuk berbagai token. Pilih gateway IPFS pilihan Anda di bawah ini."
@@ -3660,10 +3660,10 @@
     "message": "penipuan dan risiko keamanan."
   },
   "leaveMetaMask": {
-    "message": "Keluar dari MetaMask?"
+    "message": "Keluar dari 1do?"
   },
   "leaveMetaMaskDesc": {
-    "message": "Anda akan mengunjungi situs di luar MetaMask. Periksa kembali URL sebelum melanjutkan."
+    "message": "Anda akan mengunjungi situs di luar 1do. Periksa kembali URL sebelum melanjutkan."
   },
   "ledger": {
     "message": "Ledger",
@@ -3758,7 +3758,7 @@
     "message": "Tautan"
   },
   "linkCentralizedExchanges": {
-    "message": "Tautkan akun Coinbase atau Binance untuk mentransfer kripto ke MetaMask secara gratis."
+    "message": "Tautkan akun Coinbase atau Binance untuk mentransfer kripto ke 1do secara gratis."
   },
   "links": {
     "message": "Tautan"
@@ -3782,7 +3782,7 @@
     "message": "Kunci"
   },
   "lockMetaMaskLoadingMessage": {
-    "message": "Mengunci MetaMask..."
+    "message": "Mengunci 1do..."
   },
   "lockTimeInvalid": {
     "message": "Waktu kunci harus berupa angka antara 0 dan 10080"
@@ -3807,13 +3807,13 @@
     "description": "$1 is the key 'loginErrorGenericSupport'"
   },
   "loginErrorGenericSupport": {
-    "message": "Dukungan MetaMask"
+    "message": "Dukungan 1do"
   },
   "loginErrorGenericTitle": {
     "message": "Terjadi kesalahan"
   },
   "loginErrorResetWalletDescription": {
-    "message": "Terjadi masalah saat membuka. Masuk kembali dengan $1 dan kata sandi MetaMask Anda.",
+    "message": "Terjadi masalah saat membuka. Masuk kembali dengan $1 dan kata sandi 1do Anda.",
     "description": "$1 is the social login method"
   },
   "loginErrorSessionExpiredButton": {
@@ -3852,7 +3852,7 @@
     "message": "Mempermudah pembacaan kontrak cerdas"
   },
   "makeSmartContractsEasierDescription": {
-    "message": "MetaMask menggunakan 4byte.directory dan Sourcify untuk menerjemahkan informasi ini."
+    "message": "1do menggunakan 4byte.directory dan Sourcify untuk menerjemahkan informasi ini."
   },
   "manage": {
     "message": "Kelola"
@@ -3939,7 +3939,7 @@
     "message": "Pesan"
   },
   "metaMaskConnectStatusParagraphOne": {
-    "message": "Sekarang, Anda memiliki kontrol lebih banyak atas koneksi akun Anda di MetaMask."
+    "message": "Sekarang, Anda memiliki kontrol lebih banyak atas koneksi akun Anda di 1do."
   },
   "metaMaskConnectStatusParagraphThree": {
     "message": "Klik untuk mengelola akun Anda yang terhubung."
@@ -3948,26 +3948,26 @@
     "message": "Tombol status koneksi menunjukkan apakah situs web yang Anda kunjungi terhubung ke akun Anda yang dipilih saat ini."
   },
   "metaMetricsIdNotAvailableError": {
-    "message": "Karena Anda belum pernah ikut serta dalam MetaMetrics, tidak ada data yang dapat dihapus di sini."
+    "message": "Karena Anda belum pernah ikut serta dalam 1do Metrics, tidak ada data yang dapat dihapus di sini."
   },
   "metadataModalSourceTooltip": {
     "message": "$1 dihosting pada npm dan $2 merupakan pengenal unik Snap ini.",
     "description": "$1 is the snap name and $2 is the snap NPM id."
   },
   "metamaskFee": {
-    "message": "Biaya MetaMask"
+    "message": "Biaya 1do"
   },
   "metamaskNotificationsAreOff": {
     "message": "Saat ini notifikasi dompet tidak aktif."
   },
   "metamaskSwap": {
-    "message": "MetaMask Swap"
+    "message": "1do Swap"
   },
   "metamaskSwapsOfflineDescription": {
-    "message": "MetaMask Swaps sedang menjalani pemeliharaan. Silakan kembali lagi nanti."
+    "message": "1do Swaps sedang menjalani pemeliharaan. Silakan kembali lagi nanti."
   },
   "metamaskVersion": {
-    "message": "Versi MetaMask"
+    "message": "Versi 1do"
   },
   "methodData": {
     "message": "Metode"
@@ -4045,7 +4045,7 @@
     "description": "Button text to learn more about multichain accounts"
   },
   "multichainAccountIntroSameAddressDescription": {
-    "message": "Kami telah mengelompokkan akun Anda, jadi, tetap gunakan MetaMask seperti sebelumnya. Dana Anda aman dan tidak berubah.",
+    "message": "Kami telah mengelompokkan akun Anda, jadi, tetap gunakan 1do seperti sebelumnya. Dana Anda aman dan tidak berubah.",
     "description": "Description explaining that accounts have been merged"
   },
   "multichainAccountIntroSameAddressTitle": {
@@ -4061,7 +4061,7 @@
     "description": "Button text to view accounts from the intro modal"
   },
   "multichainAccountIntroWhatDescription": {
-    "message": "Akun multichain adalah akun dengan alamat di beberapa jaringan, yang didukung oleh MetaMask. Jadi, sekarang Anda dapat menggunakan Ethereum, Solana, dan lainnya tanpa perlu berganti akun.",
+    "message": "Akun multichain adalah akun dengan alamat di beberapa jaringan, yang didukung oleh 1do. Jadi, sekarang Anda dapat menggunakan Ethereum, Solana, dan lainnya tanpa perlu berganti akun.",
     "description": "Description explaining what multichain accounts are"
   },
   "multichainAccountIntroWhatTitle": {
@@ -4077,7 +4077,7 @@
     "description": "Title for the multichain accounts introduction modal."
   },
   "multichainAddEthereumChainConfirmationDescription": {
-    "message": "Anda menambahkan jaringan ini ke MetaMask dan memberikan situs ini izin untuk menggunakannya."
+    "message": "Anda menambahkan jaringan ini ke 1do dan memberikan situs ini izin untuk menggunakannya."
   },
   "multichainAddressViewAll": {
     "message": "Lihat semua"
@@ -4087,7 +4087,7 @@
     "description": "The parameter is the name of the requesting origin"
   },
   "multichainQuoteCardRateExplanation": {
-    "message": "Tarif terbaik yang kami temukan dari penyedia, termasuk biaya penyedia dan biaya MetaMask sebesar $1%."
+    "message": "Tarif terbaik yang kami temukan dari penyedia, termasuk biaya penyedia dan biaya 1do sebesar $1%."
   },
   "multichainQuoteCardRateLabel": {
     "message": "Tarif"
@@ -4148,7 +4148,7 @@
     "description": "Accessible name for the info control that opens the mUSD conversion bonus explanation popover"
   },
   "musdConversionFeeTooltipDescription": {
-    "message": "Biaya konversi mUSD mencakup biaya jaringan dan mungkin termasuk biaya penyedia. MetaMask tidak mengenakan biaya saat Anda mengonversi ke mUSD.",
+    "message": "Biaya konversi mUSD mencakup biaya jaringan dan mungkin termasuk biaya penyedia. 1do tidak mengenakan biaya saat Anda mengonversi ke mUSD.",
     "description": "Body text shown above the fee breakdown in the transaction fee tooltip for mUSD conversion"
   },
   "musdConversionTitle": {
@@ -4197,7 +4197,7 @@
     "message": "Dapatkan mUSD"
   },
   "musdMetaMaskUsd": {
-    "message": "MetaMask USD",
+    "message": "1do USD",
     "description": "Product name shown as the title line on the home token list mUSD Buy/Get CTA"
   },
   "musdTermsApply": {
@@ -4286,7 +4286,7 @@
     "message": "Lens Protocol"
   },
   "nameProvider_token": {
-    "message": "MetaMask"
+    "message": "1do"
   },
   "nameResolutionFailedError": {
     "message": "Resolusi alamat tidak ditemukan untuk nama ini."
@@ -4329,7 +4329,7 @@
     "message": "Bagikan umpan balik Anda"
   },
   "needHelpLinkText": {
-    "message": "dukungan MetaMask"
+    "message": "dukungan 1do"
   },
   "needHelpSubmitTicket": {
     "message": "Kirimkan tiket"
@@ -4478,7 +4478,7 @@
     "description": "$1 is used for newNFTDetectedInImportNFTsMessageStrongText"
   },
   "newNFTDetectedInNFTsTabMessage": {
-    "message": "Izinkan MetaMask mendeteksi dan menampilkan NFT di dompet Anda secara otomatis."
+    "message": "Izinkan 1do mendeteksi dan menampilkan NFT di dompet Anda secara otomatis."
   },
   "newNFTsAutodetected": {
     "message": "Autodeteksi NFT"
@@ -4572,7 +4572,7 @@
     "message": "Tidak ditemukan akun untuk kueri pencarian yang diberikan"
   },
   "noConnectionDescription": {
-    "message": "MetaMask tidak terhubung ke situs ini. Untuk memulai, pilih tombol Hubungkan ke situs ini."
+    "message": "1do tidak terhubung ke situs ini. Untuk memulai, pilih tombol Hubungkan ke situs ini."
   },
   "noDefaultAddress": {
     "message": "Tidak ada alamat $1",
@@ -4585,7 +4585,7 @@
     "message": "Snap, dan sebagian besar dompet perangkat keras, tidak akan berfungsi dengan versi browser saat ini."
   },
   "noMMFeeSwapping": {
-    "message": "Tidak ada biaya MetaMask"
+    "message": "Tidak ada biaya 1do"
   },
   "noNetworkFee": {
     "message": "Tidak ada biaya jaringan"
@@ -4832,7 +4832,7 @@
     "message": "Materi promosi lain yang relevan"
   },
   "onboardedMetametricsLink": {
-    "message": "MetaMetrics"
+    "message": "1do Metrics"
   },
   "onboardedMetametricsParagraph1": {
     "message": "Selain $1, kami ingin menggunakan data untuk memahami cara Anda berinteraksi dengan komunikasi pemasaran.",
@@ -4879,7 +4879,7 @@
     "message": "Saya sudah memiliki dompet"
   },
   "onboardingLoginFooter": {
-    "message": "Dengan melanjutkan, saya menyetujui $1 dan $2 MetaMask"
+    "message": "Dengan melanjutkan, saya menyetujui $1 dan $2 1do"
   },
   "onboardingLoginFooterPrivacyNotice": {
     "message": "Pemberitahuan privasi"
@@ -4909,7 +4909,7 @@
     "message": "Kami ingin meminta izin ini. Anda dapat memilih keluar atau menghapus data penggunaan setiap saat."
   },
   "onboardingMetametricsTitle": {
-    "message": "Bantu tingkatkan MetaMask"
+    "message": "Bantu tingkatkan 1do"
   },
   "onboardingOptionIcon": {
     "message": "Ikon $1",
@@ -5006,7 +5006,7 @@
     "message": "lainnya"
   },
   "outdatedBrowserNotification": {
-    "message": "Browser Anda sudah usang. Jika browser tidak diperbarui, Anda tidak akan bisa mendapatkan tambalan keamanan dan fitur baru dari MetaMask."
+    "message": "Browser Anda sudah usang. Jika browser tidak diperbarui, Anda tidak akan bisa mendapatkan tambalan keamanan dan fitur baru dari 1do."
   },
   "overrideContentSecurityPolicyHeader": {
     "message": "Batalkan header Content-Security-Policy"
@@ -5018,16 +5018,16 @@
     "message": "Gembok"
   },
   "paidByMetaMask": {
-    "message": "Dibayar oleh MetaMask"
+    "message": "Dibayar oleh 1do"
   },
   "paidWith": {
     "message": "Dibayar dengan"
   },
   "participateInMetaMetrics": {
-    "message": "Berpartisipasi dalam MetaMetrics"
+    "message": "Berpartisipasi dalam 1do Metrics"
   },
   "participateInMetaMetricsDescription": {
-    "message": "Berpartisipasilah dalam MetaMetrics untuk membantu kami menjadikan MetaMask lebih baik"
+    "message": "Berpartisipasilah dalam 1do Metrics untuk membantu kami menjadikan 1do lebih baik"
   },
   "password": {
     "message": "Kata sandi"
@@ -5036,16 +5036,16 @@
     "message": "Kata sandi Anda telah diubah"
   },
   "passwordChangedRecentlyDescription": {
-    "message": "Masukkan kata sandi baru untuk tetap masuk ke MetaMask."
+    "message": "Masukkan kata sandi baru untuk tetap masuk ke 1do."
   },
   "passwordNotLongEnough": {
     "message": "Harus minimal 8 karakter"
   },
   "passwordTermsWarning": {
-    "message": "Jika saya kehilangan kata sandi ini, MetaMask tidak dapat meresetnya."
+    "message": "Jika saya kehilangan kata sandi ini, 1do tidak dapat meresetnya."
   },
   "passwordTermsWarningSocial": {
-    "message": "Jika lupa kata sandi ini, saya akan kehilangan akses ke dompet secara permanen. MetaMask tidak dapat mereset kata sandi ini untuk saya."
+    "message": "Jika lupa kata sandi ini, saya akan kehilangan akses ke dompet secara permanen. 1do tidak dapat mereset kata sandi ini untuk saya."
   },
   "passwordToggleHide": {
     "message": "Sembunyikan kata sandi"
@@ -5137,11 +5137,11 @@
     "description": "The description for the `wallet_snap_*` permission. $1 is the name of the Snap."
   },
   "permission_assets": {
-    "message": "Menampilkan aset akun di MetaMask.",
+    "message": "Menampilkan aset akun di 1do.",
     "description": "The description for the `endowment:assets` permission."
   },
   "permission_assetsDescription": {
-    "message": "Izinkan $1 untuk memberikan informasi aset kepada klien MetaMask. Aset dapat berupa onchain atau offchain.",
+    "message": "Izinkan $1 untuk memberikan informasi aset kepada klien 1do. Aset dapat berupa onchain atau offchain.",
     "description": "An extended description for the `endowment:assets` permission. $1 is the name of the Snap."
   },
   "permission_cronjob": {
@@ -5153,11 +5153,11 @@
     "description": "An extended description for the `snap_cronjob` permission. $1 is the snap name."
   },
   "permission_dialog": {
-    "message": "Tampilkan jendela dialog di MetaMask.",
+    "message": "Tampilkan jendela dialog di 1do.",
     "description": "The description for the `snap_dialog` permission"
   },
   "permission_dialogDescription": {
-    "message": "Izinkan $1 untuk menampilkan sembulan MetaMask yang berisi teks khusus, kolom input, dan tombol untuk menyetujui atau menolak suatu tindakan.\nDapat digunakan untuk membuat peringatan, konfirmasi, dan alur keikutsertaan untuk Snap.",
+    "message": "Izinkan $1 untuk menampilkan sembulan 1do yang berisi teks khusus, kolom input, dan tombol untuk menyetujui atau menolak suatu tindakan.\nDapat digunakan untuk membuat peringatan, konfirmasi, dan alur keikutsertaan untuk Snap.",
     "description": "An extended description for the `snap_dialog` permission. $1 is the snap name."
   },
   "permission_ethereumAccounts": {
@@ -5169,7 +5169,7 @@
     "description": "The description for the `endowment:ethereum-provider` permission"
   },
   "permission_ethereumProviderDescription": {
-    "message": "Izinkan $1 untuk berkomunikasi dengan MetaMask secara langsung, agar dapat membaca data dari blockchain serta menyarankan pesan dan transaksi.",
+    "message": "Izinkan $1 untuk berkomunikasi dengan 1do secara langsung, agar dapat membaca data dari blockchain serta menyarankan pesan dan transaksi.",
     "description": "An extended description for the `endowment:ethereum-provider` permission. $1 is the snap name."
   },
   "permission_getEntropy": {
@@ -5177,7 +5177,7 @@
     "description": "The description for the `snap_getEntropy` permission. $1 is the snap name."
   },
   "permission_getEntropyDescription": {
-    "message": "Izinkan $1 untuk mendapatkan kunci arbitrer unik untuk $1 tanpa mengeksposnya. Kunci ini terpisah dari akun MetaMask dan tidak terkait dengan kunci pribadi atau Frasa Pemulihan Rahasia. Snap lain tidak dapat mengakses informasi ini.",
+    "message": "Izinkan $1 untuk mendapatkan kunci arbitrer unik untuk $1 tanpa mengeksposnya. Kunci ini terpisah dari akun 1do dan tidak terkait dengan kunci pribadi atau Frasa Pemulihan Rahasia. Snap lain tidak dapat mengakses informasi ini.",
     "description": "An extended description for the `snap_getEntropy` permission. $1 is the snap name."
   },
   "permission_getLocale": {
@@ -5185,7 +5185,7 @@
     "description": "The description for the `snap_getLocale` permission"
   },
   "permission_getLocaleDescription": {
-    "message": "Izinkan $1 mengakses bahasa pilihan Anda dari pengaturan MetaMask. Ini dapat digunakan untuk melokalisasi dan menampilkan konten $1 menggunakan bahasa Anda.",
+    "message": "Izinkan $1 mengakses bahasa pilihan Anda dari pengaturan 1do. Ini dapat digunakan untuk melokalisasi dan menampilkan konten $1 menggunakan bahasa Anda.",
     "description": "An extended description for the `snap_getLocale` permission. $1 is the snap name."
   },
   "permission_getPreferences": {
@@ -5193,7 +5193,7 @@
     "description": "The description for the `snap_getPreferences` permission"
   },
   "permission_getPreferencesDescription": {
-    "message": "Izinkan $1 mengakses informasi seperti bahasa pilihan dan mata uang fiat di pengaturan MetaMask Anda. Ini membantu $1 menampilkan konten yang disesuaikan dengan preferensi Anda. ",
+    "message": "Izinkan $1 mengakses informasi seperti bahasa pilihan dan mata uang fiat di pengaturan 1do Anda. Ini membantu $1 menampilkan konten yang disesuaikan dengan preferensi Anda. ",
     "description": "An extended description for the `snap_getPreferences` permission. $1 is the snap name."
   },
   "permission_homePage": {
@@ -5201,7 +5201,7 @@
     "description": "The description for the `endowment:page-home` permission"
   },
   "permission_homePageDescription": {
-    "message": "Izinkan $1 menampilkan layar beranda khusus di MetaMask. Ini dapat digunakan untuk antarmuka pengguna, konfigurasi, dan dasbor.",
+    "message": "Izinkan $1 menampilkan layar beranda khusus di 1do. Ini dapat digunakan untuk antarmuka pengguna, konfigurasi, dan dasbor.",
     "description": "An extended description for the `endowment:page-home` permission. $1 is the snap name."
   },
   "permission_keyring": {
@@ -5253,7 +5253,7 @@
     "description": "The description for the `endowment:multichain-provider` permission"
   },
   "permission_multichainProviderDescription": {
-    "message": "Izinkan $1 untuk berkomunikasi dengan MetaMask secara langsung, agar dapat membaca data dari blockchain serta menyarankan pesan dan transaksi.",
+    "message": "Izinkan $1 untuk berkomunikasi dengan 1do secara langsung, agar dapat membaca data dari blockchain serta menyarankan pesan dan transaksi.",
     "description": "An extended description for the `endowment:multichain-provider` permission. $1 is the snap name."
   },
   "permission_nameLookup": {
@@ -5261,7 +5261,7 @@
     "description": "The description for the `endowment:name-lookup` permission."
   },
   "permission_nameLookupDescription": {
-    "message": "Izinkan Snap untuk mengambil dan menampilkan pencarian alamat dan domain pada bagian UI MetaMask yang berbeda.",
+    "message": "Izinkan Snap untuk mengambil dan menampilkan pencarian alamat dan domain pada bagian UI 1do yang berbeda.",
     "description": "An extended description for the `endowment:name-lookup` permission."
   },
   "permission_notifications": {
@@ -5269,7 +5269,7 @@
     "description": "The description for the `snap_notify` permission"
   },
   "permission_notificationsDescription": {
-    "message": "Izinkan $1 untuk menampilkan notifikasi dalam MetaMask. Teks notifikasi singkat dapat dipicu oleh Snap untuk informasi yang dapat ditindaklanjuti atau peka terhadap waktu.",
+    "message": "Izinkan $1 untuk menampilkan notifikasi dalam 1do. Teks notifikasi singkat dapat dipicu oleh Snap untuk informasi yang dapat ditindaklanjuti atau peka terhadap waktu.",
     "description": "An extended description for the `snap_notify` permission. $1 is the snap name."
   },
   "permission_protocol": {
@@ -5277,7 +5277,7 @@
     "description": "The description for the `endowment:protocol` permission."
   },
   "permission_protocolDescription": {
-    "message": "Izinkan $1 untuk memberikan data protokol kepada MetaMask seperti estimasi gas atau informasi token.",
+    "message": "Izinkan $1 untuk memberikan data protokol kepada 1do seperti estimasi gas atau informasi token.",
     "description": "An extended description for the `endowment:protocol` permission. $1 is the name of the Snap."
   },
   "permission_rpc": {
@@ -5313,7 +5313,7 @@
     "description": "The description for the `endowment:transaction-insight` permission"
   },
   "permission_transactionInsightDescription": {
-    "message": "Izinkan $1 untuk membaca kode transaksi dan menampilkan wawasan dalam UI MetaMask. Ini dapat digunakan sebagai solusi anti pengelabuan dan keamanan.",
+    "message": "Izinkan $1 untuk membaca kode transaksi dan menampilkan wawasan dalam UI 1do. Ini dapat digunakan sebagai solusi anti pengelabuan dan keamanan.",
     "description": "An extended description for the `endowment:transaction-insight` permission. $1 is the snap name."
   },
   "permission_transactionInsightOrigin": {
@@ -6032,7 +6032,7 @@
     "message": "Waspadai likuidasi"
   },
   "perpsTutorialWhatArePerpsDescription": {
-    "message": "MetaMask kini mendukung perpetual berjangka — alias perp — yang memungkinkan Anda berdagang berdasarkan pergerakan harga token tanpa membelinya."
+    "message": "1do kini mendukung perpetual berjangka — alias perp — yang memungkinkan Anda berdagang berdasarkan pergerakan harga token tanpa membelinya."
   },
   "perpsTutorialWhatArePerpsSubtitle": {
     "message": "Begini cara kerjanya."
@@ -6111,7 +6111,7 @@
     "description": "Pin label used in multichain account menu"
   },
   "pinMetaMask": {
-    "message": "Sematkan ekstensi MetaMask"
+    "message": "Sematkan ekstensi 1do"
   },
   "pinMetaMaskDescription": {
     "message": "Klik $1 lalu $2 untuk menyematkannya."
@@ -6129,7 +6129,7 @@
     "message": "postingan blog."
   },
   "pna25ModalBody1": {
-    "message": "Untuk melayani Anda dengan lebih baik, kami memperbarui analitik kami sehingga data yang tersedia untuk umum seperti alamat dompet dan aktivitas on-chain terkait dapat dikaitkan dengan tindakan yang Anda lakukan di MetaMask. Ini membantu kami meningkatkan kinerja, keamanan, dan fitur MetaMask untuk menciptakan dompet yang lebih baik dan lebih aman."
+    "message": "Untuk melayani Anda dengan lebih baik, kami memperbarui analitik kami sehingga data yang tersedia untuk umum seperti alamat dompet dan aktivitas on-chain terkait dapat dikaitkan dengan tindakan yang Anda lakukan di 1do. Ini membantu kami meningkatkan kinerja, keamanan, dan fitur 1do untuk menciptakan dompet yang lebih baik dan lebih aman."
   },
   "pna25ModalBody2": {
     "message": "Kami sangat menghargai privasi. Kami tidak menggunakan informasi ini untuk iklan atau menjual data Anda kepada pihak ketiga. Anda dapat memilih untuk berhenti berlangganan setiap saat di Pengaturan."
@@ -6269,7 +6269,7 @@
     "message": "Paket Anda telah dihentikan sementara karena kegagalan pembayaran."
   },
   "pushNotificationShieldSubscriptionTitle": {
-    "message": "MetaMask Transaction Shield"
+    "message": "1do Transaction Shield"
   },
   "pushNotificationShieldUpdatePaymentCta": {
     "message": "Perbarui pembayaran"
@@ -6363,7 +6363,7 @@
     "message": "Pembatalan stake selesai"
   },
   "pushPlatformNotificationsSwapCompletedDescription": {
-    "message": "Swap MetaMask berhasil"
+    "message": "Swap 1do berhasil"
   },
   "pushPlatformNotificationsSwapCompletedTitle": {
     "message": "Swap selesai"
@@ -6397,7 +6397,7 @@
     "description": "Title when camera access is persistently blocked for QR scanning."
   },
   "qrCameraAccessNeededBody": {
-    "message": "MetaMask memerlukan akses kamera untuk memindai kode QR di perangkat Anda.",
+    "message": "1do memerlukan akses kamera untuk memindai kode QR di perangkat Anda.",
     "description": "Body when the user dismissed the camera permission prompt but it can be requested again."
   },
   "qrCameraAccessNeededTitle": {
@@ -6485,17 +6485,17 @@
     "description": "Make sure you have the Secret Recovery Phrase or private key for this account before removing."
   },
   "removeAccountModalBannerTitle": {
-    "message": "Akun ini akan dihapus dari MetaMask.",
+    "message": "Akun ini akan dihapus dari 1do.",
     "description": "Title of a banner alert used on account remove modal."
   },
   "removeAll": {
     "message": "Hapus semua"
   },
   "removeKeyringSnap": {
-    "message": "Menghapus Snap ini akan menghapus akun-akun berikut dari MetaMask:"
+    "message": "Menghapus Snap ini akan menghapus akun-akun berikut dari 1do:"
   },
   "removeKeyringSnapToolTip": {
-    "message": "Snap mengontrol akun. Jika dihapus, maka akun tersebut akan dihapus juga dari MetaMask, tetapi akun tersebut akan tetap berada di blockchain."
+    "message": "Snap mengontrol akun. Jika dihapus, maka akun tersebut akan dihapus juga dari 1do, tetapi akun tersebut akan tetap berada di blockchain."
   },
   "removeNFT": {
     "message": "Hapus NFT"
@@ -6510,7 +6510,7 @@
     "message": "Hapus Snap"
   },
   "removeSnapAccountDescription": {
-    "message": "Jika Anda melanjutkan, akun ini tidak lagi tersedia di MetaMask."
+    "message": "Jika Anda melanjutkan, akun ini tidak lagi tersedia di 1do."
   },
   "removeSnapAccountTitle": {
     "message": "Hapus akun"
@@ -6584,7 +6584,7 @@
     "message": "Kami tidak dapat memulihkan Frasa Pemulihan Rahasia. Anda dapat mereset dompet untuk membuat yang baru dan mengimpor akun Anda menggunakan kunci pribadi."
   },
   "resetWalletDescriptionTwo": {
-    "message": "Mereset akan $1 menghapus semua data dompet di MetaMask pada perangkat ini. $2",
+    "message": "Mereset akan $1 menghapus semua data dompet di 1do pada perangkat ini. $2",
     "description": "$1 is the bolded text 'permanently' and $2 is the bolded text 'It will not impact the assets within your wallet.'"
   },
   "resetWalletTitle": {
@@ -6595,7 +6595,7 @@
     "description": "$1 is the protocol name."
   },
   "restartMetamask": {
-    "message": "Mulai ulang MetaMask"
+    "message": "Mulai ulang 1do"
   },
   "restore": {
     "message": "Pulihkan"
@@ -6656,7 +6656,7 @@
     "message": "Teks"
   },
   "revealSeedWordsWarning": {
-    "message": "Pastikan tidak ada orang yang melihat layar Anda. Dukungan MetaMask tidak akan pernah meminta hal ini."
+    "message": "Pastikan tidak ada orang yang melihat layar Anda. Dukungan 1do tidak akan pernah meminta hal ini."
   },
   "revealSensitiveContent": {
     "message": "Tampilkan konten sensitif"
@@ -6756,13 +6756,13 @@
     "message": "Wilayah tidak didukung"
   },
   "rewardsOnboardingStep1Description": {
-    "message": "Setiap swap dan perdagangan perp yang Anda lakukan di MetaMask makin mendekatkan Anda dengan reward. Tambahkan akun dan lihat poin Anda bertambah."
+    "message": "Setiap swap dan perdagangan perp yang Anda lakukan di 1do makin mendekatkan Anda dengan reward. Tambahkan akun dan lihat poin Anda bertambah."
   },
   "rewardsOnboardingStep1Title": {
     "message": "Dapatkan poin pada setiap perdagangan"
   },
   "rewardsOnboardingStep2Description": {
-    "message": "Capai tonggak poin untuk memperoleh keuntungan seperti diskon 50% untuk biaya perp, token eksklusif, dan Kartu Metal MetaMask gratis."
+    "message": "Capai tonggak poin untuk memperoleh keuntungan seperti diskon 50% untuk biaya perp, token eksklusif, dan Kartu Metal 1do gratis."
   },
   "rewardsOnboardingStep2Title": {
     "message": "Naik level dan dapatkan keuntungan lebih besar"
@@ -6938,7 +6938,7 @@
     "message": "Ubah kata sandi"
   },
   "securityChangePasswordDescription": {
-    "message": "Pilih kata sandi yang kuat untuk membuka aplikasi MetaMask pada perangkat Anda. Jika kehilangan kata sandi ini, Anda perlu Frasa Pemulihan Rahasia untuk mengimpor ulang dompet Anda."
+    "message": "Pilih kata sandi yang kuat untuk membuka aplikasi 1do pada perangkat Anda. Jika kehilangan kata sandi ini, Anda perlu Frasa Pemulihan Rahasia untuk mengimpor ulang dompet Anda."
   },
   "securityChangePasswordTitle": {
     "message": "Kata sandi"
@@ -6979,7 +6979,7 @@
     "message": "Diaktifkan"
   },
   "securitySocialLoginEnabledDescription": {
-    "message": "Gunakan login $1 dan kata sandi MetaMask untuk memulihkan akun dan Frasa Pemulihan Rahasia.",
+    "message": "Gunakan login $1 dan kata sandi 1do untuk memulihkan akun dan Frasa Pemulihan Rahasia.",
     "description": "The $1 is the text 'Google' or 'Apple'"
   },
   "securitySocialLoginLabel": {
@@ -7028,7 +7028,7 @@
     "message": "Pilih akun"
   },
   "selectAnAccountAlreadyConnected": {
-    "message": "Akun ini sudah terhubung ke MetaMask."
+    "message": "Akun ini sudah terhubung ke 1do."
   },
   "selectEnableDisplayMediaPrivacyPreference": {
     "message": "Aktifkan Tampilkan Media NFT"
@@ -7239,7 +7239,7 @@
     "message": "Butuh bantuan untuk menemukannya?"
   },
   "shieldClaimImpactedTxHashNotEligible": {
-    "message": "Transaksi ini tidak dilakukan dalam MetaMask, oleh karena itu tidak memenuhi syarat untuk klaim"
+    "message": "Transaksi ini tidak dilakukan dalam 1do, oleh karena itu tidak memenuhi syarat untuk klaim"
   },
   "shieldClaimImpactedWalletAddress": {
     "message": "Alamat dompet yang terkena dampak"
@@ -7347,28 +7347,28 @@
     "message": "Konfirmasikan paket"
   },
   "shieldCoverageAlertCovered": {
-    "message": "Anda terlindungi hingga $2 dengan MetaMask Transaction Shield. $1."
+    "message": "Anda terlindungi hingga $2 dengan 1do Transaction Shield. $1."
   },
   "shieldCoverageAlertHighRiskTransaction": {
-    "message": "Ini adalah transaksi berisiko tinggi, jadi tidak dilindungi oleh MetaMask Transaction Shield. $1."
+    "message": "Ini adalah transaksi berisiko tinggi, jadi tidak dilindungi oleh 1do Transaction Shield. $1."
   },
   "shieldCoverageAlertMessageChainNotSupported": {
-    "message": "Chain ini tidak didukung, jadi tidak dilindungi oleh MetaMask Transaction Shield. $1"
+    "message": "Chain ini tidak didukung, jadi tidak dilindungi oleh 1do Transaction Shield. $1"
   },
   "shieldCoverageAlertMessageLearnHowCoverageWorks": {
     "message": "Lihat apa saja yang tercakup"
   },
   "shieldCoverageAlertMessagePaused": {
-    "message": "Terjadi masalah dengan pembayaran paket MetaMask Transaction Shield. Perbarui metode pembayaran Anda untuk melanjutkan perlindungan."
+    "message": "Terjadi masalah dengan pembayaran paket 1do Transaction Shield. Perbarui metode pembayaran Anda untuk melanjutkan perlindungan."
   },
   "shieldCoverageAlertMessagePausedAcknowledgeButton": {
     "message": "Perbarui metode pembayaran"
   },
   "shieldCoverageAlertMessagePotentialRisks": {
-    "message": "Transaksi ini memiliki potensi risiko, sehingga tidak dilindungi oleh MetaMask Transaction Shield. $1"
+    "message": "Transaksi ini memiliki potensi risiko, sehingga tidak dilindungi oleh 1do Transaction Shield. $1"
   },
   "shieldCoverageAlertMessageSignatureNotSupported": {
-    "message": "Tanda tangan ini tidak didukung, jadi tidak dilindungi oleh MetaMask Transaction Shield. $1"
+    "message": "Tanda tangan ini tidak didukung, jadi tidak dilindungi oleh 1do Transaction Shield. $1"
   },
   "shieldCoverageAlertMessageTitle": {
     "message": "Transaksi ini tidak tercakup"
@@ -7389,10 +7389,10 @@
     "message": "Token ini menunjukkan tanda-tanda kuat perilaku jahat. Melanjutkan aktivitas ini dapat mengakibatkan hilangnya dana. $1."
   },
   "shieldCoverageAlertMessageTxTypeNotSupported": {
-    "message": "Jenis transaksi ini tidak didukung, jadi tidak dilindungi oleh MetaMask Transaction Shield. $1"
+    "message": "Jenis transaksi ini tidak didukung, jadi tidak dilindungi oleh 1do Transaction Shield. $1"
   },
   "shieldCoverageAlertMessageUnknown": {
-    "message": "Permintaan ini tidak dapat diverifikasi, jadi tidak dilindungi oleh MetaMask Transaction Shield. $1."
+    "message": "Permintaan ini tidak dapat diverifikasi, jadi tidak dilindungi oleh 1do Transaction Shield. $1."
   },
   "shieldCoverageEnding": {
     "message": "Cakupan shield akan segera berakhir"
@@ -7580,7 +7580,7 @@
     "description": "The $1 is the number of days and the $2 is the price of the plan"
   },
   "shieldTxDetails1Title": {
-    "message": "MetaMask Transaction Shield"
+    "message": "1do Transaction Shield"
   },
   "shieldTxDetails2Description": {
     "message": "$1, penagihan berikutnya pada $2",
@@ -7800,7 +7800,7 @@
     "message": "Pilih opsi ini untuk menampilkan jaringan pengujian dalam daftar jaringan"
   },
   "sidePanelMigrationToast": {
-    "message": "MetaMask kini terbuka di panel samping secara default. $1 setiap saat dari menu.",
+    "message": "1do kini terbuka di panel samping secara default. $1 setiap saat dari menu.",
     "description": "Shown when the extension opens in the side panel after migration. $1 is an inline link to switch back to the popup view."
   },
   "sign": {
@@ -7928,13 +7928,13 @@
     "message": "Jangan tampilkan layar interstisial saat membuka deep link"
   },
   "skipDeepLinkInterstitialDescription": {
-    "message": "Mengaktifkan opsi ini akan melewati layar interstisial yang ditampilkan saat membuka deep link di MetaMask. \"Deep link\" merupakan tautan seperti https://link.metamask.io/home yang akan menyebabkan MetaMask terbuka; tautan ini dapat dikaburkan oleh orang lain. Layar interstisial dirancang untuk melindungi Anda dari membuka halaman secara tidak sengaja di dalam MetaMask yang mungkin menampilkan akun, token, riwayat, saldo, pengaturan, atau informasi sensitif lainnya. Pengaturan ini hanya berlaku untuk tautan yang ditandatangani oleh MetaMask."
+    "message": "Mengaktifkan opsi ini akan melewati layar interstisial yang ditampilkan saat membuka deep link di 1do. \"Deep link\" merupakan tautan seperti https://link.metamask.io/home yang akan menyebabkan 1do terbuka; tautan ini dapat dikaburkan oleh orang lain. Layar interstisial dirancang untuk melindungi Anda dari membuka halaman secara tidak sengaja di dalam 1do yang mungkin menampilkan akun, token, riwayat, saldo, pengaturan, atau informasi sensitif lainnya. Pengaturan ini hanya berlaku untuk tautan yang ditandatangani oleh 1do."
   },
   "skipLinkConfirmationScreens": {
     "message": "Lewati layar konfirmasi tautan"
   },
   "skipLinkConfirmationScreensDescription": {
-    "message": "Saat Anda membuka tautan dari MetaMask, kami menampilkan layar konfirmasi untuk melindungi Anda agar tidak secara tidak sengaja melihat informasi sensitif seperti akun, saldo, atau riwayat transaksi Anda. Aktifkan fitur ini untuk melewati layar tersebut untuk tautan yang berasal dari MetaMask."
+    "message": "Saat Anda membuka tautan dari 1do, kami menampilkan layar konfirmasi untuk melindungi Anda agar tidak secara tidak sengaja melihat informasi sensitif seperti akun, saldo, atau riwayat transaksi Anda. Aktifkan fitur ini untuk melewati layar tersebut untuk tautan yang berasal dari 1do."
   },
   "slippage": {
     "message": "Selip"
@@ -7997,7 +7997,7 @@
     "message": "Transaksi Anda gagal"
   },
   "smartTransactionErrorDescription": {
-    "message": "Perubahan pasar yang mendadak dapat menyebabkan kegagalan. Jika masalah berlanjut, hubungi dukungan pelanggan MetaMask."
+    "message": "Perubahan pasar yang mendadak dapat menyebabkan kegagalan. Jika masalah berlanjut, hubungi dukungan pelanggan 1do."
   },
   "smartTransactionPending": {
     "message": "Transaksi Anda telah dikirim"
@@ -8047,7 +8047,7 @@
     "message": "Akun dihapus"
   },
   "snapAccountRemovedDescription": {
-    "message": "Akun ini tidak lagi tersedia untuk digunakan di MetaMask."
+    "message": "Akun ini tidak lagi tersedia untuk digunakan di 1do."
   },
   "snapConnectTo": {
     "message": "Hubungkan ke $1",
@@ -8263,7 +8263,7 @@
     "message": "Frasa Pemulihan Rahasia ini telah diimpor."
   },
   "srpDetailsDescription": {
-    "message": "Frasa Pemulihan Rahasia, yang juga disebut seed phrase atau mnemonik, merupakan serangkaian kata yang memungkinkan Anda untuk mengakses dan mengendalikan dompet kripto. Untuk memindahkan dompet Anda ke MetaMask, Anda memerlukan frasa ini."
+    "message": "Frasa Pemulihan Rahasia, yang juga disebut seed phrase atau mnemonik, merupakan serangkaian kata yang memungkinkan Anda untuk mengakses dan mengendalikan dompet kripto. Untuk memindahkan dompet Anda ke 1do, Anda memerlukan frasa ini."
   },
   "srpDetailsOwnsAccessListItemOne": {
     "message": "Ambil semua uang Anda"
@@ -8326,7 +8326,7 @@
     "message": "Untuk mengungkapkan Frasa Pemulihan Rahasia, Anda perlu menjawab dua pertanyaan dengan benar"
   },
   "srpSecurityQuizQuestionOneQuestion": {
-    "message": "Jika Anda kehilangan Frasa Pemulihan Rahasia, MetaMask..."
+    "message": "Jika Anda kehilangan Frasa Pemulihan Rahasia, 1do..."
   },
   "srpSecurityQuizQuestionOneRightAnswer": {
     "message": "Tidak dapat membantu Anda"
@@ -8411,7 +8411,7 @@
     "description": "$1 represents the `stateCorruptionTheseInstructions` localization key"
   },
   "stateCorruptionCopyAndRestoreBeforeReset": {
-    "message": "Anda dapat mencoba untuk menyalin dan memulihkan fail state secara manual sebelum memutuskan untuk mereset MetaMask dengan mengikuti $1.",
+    "message": "Anda dapat mencoba untuk menyalin dan memulihkan fail state secara manual sebelum memutuskan untuk mereset 1do dengan mengikuti $1.",
     "description": "$1 represents the `stateCorruptionTheseInstructions` localization key"
   },
   "stateCorruptionDetectedNoBackup": {
@@ -8424,7 +8424,7 @@
     "message": "Kesalahan internal: basis data tidak dapat diakses"
   },
   "stateCorruptionResetMetaMaskState": {
-    "message": "Reset State MetaMask"
+    "message": "Reset State 1do"
   },
   "stateCorruptionResettingDatabase": {
     "message": "Mereset basis data…"
@@ -8446,7 +8446,7 @@
     "message": "Terjadi kesalahan saat memulihkan log state, coba lagi nanti."
   },
   "stateLogFileName": {
-    "message": "Log status MetaMask"
+    "message": "Log status 1do"
   },
   "stateLogs": {
     "message": "Log status"
@@ -8455,7 +8455,7 @@
     "message": "Log status berisi alamat akun publik Anda dan transaksi terkirim."
   },
   "stateLogsModalDescription": {
-    "message": "Log state dapat membantu kami mendebug masalah yang mungkin Anda temui. Kirimkan hanya ke MetaMask untuk mendapatkan dukungan, karena log state berisi alamat akun publik dan transaksi Anda."
+    "message": "Log state dapat membantu kami mendebug masalah yang mungkin Anda temui. Kirimkan hanya ke 1do untuk mendapatkan dukungan, karena log state berisi alamat akun publik dan transaksi Anda."
   },
   "status": {
     "message": "Status"
@@ -8467,7 +8467,7 @@
     "message": "Hubungkan Lattice1 Anda"
   },
   "step1LatticeWalletMsg": {
-    "message": "Anda dapat menghubungkan MetaMask ke perangkat Lattice1 setelah diatur dan daring. Buka perangkat Anda dan siapkan ID Perangkat Anda.",
+    "message": "Anda dapat menghubungkan 1do ke perangkat Lattice1 setelah diatur dan daring. Buka perangkat Anda dan siapkan ID Perangkat Anda.",
     "description": "$1 represents the `hardwareWalletSupportLinkConversion` localization key"
   },
   "step1LedgerWallet": {
@@ -8502,7 +8502,7 @@
     "message": "Cadangkan Frasa Pemulihan Rahasia"
   },
   "storageErrorDescriptionDefault": {
-    "message": "Cadangkan Frasa Pemulihan Rahasia dan instal ulang MetaMask jika masalah berlanjut."
+    "message": "Cadangkan Frasa Pemulihan Rahasia dan instal ulang 1do jika masalah berlanjut."
   },
   "storageErrorDescriptionNoSpace": {
     "message": "Penyimpanan perangkat Anda sudah penuh. Kosongkan ruang sekarang juga, atau perubahan dompet yang belum disimpan mungkin akan hilang."
@@ -8606,7 +8606,7 @@
     "message": "Ikuti survei kami"
   },
   "surveyTitle": {
-    "message": "Bentuk masa depan MetaMask"
+    "message": "Bentuk masa depan 1do"
   },
   "swap": {
     "message": "Swap"
@@ -8666,7 +8666,7 @@
     "message": "Edit batas"
   },
   "swapEnableDescription": {
-    "message": "Ini diwajibkan dan memberikan MetaMask izin untuk menukar $1 Anda.",
+    "message": "Ini diwajibkan dan memberikan 1do izin untuk menukar $1 Anda.",
     "description": "Gives the user info about the required approval transaction for swaps. $1 will be the symbol of a token being approved for swaps."
   },
   "swapEnableTokenForSwapping": {
@@ -8704,7 +8704,7 @@
     "description": "Tells a user that they need to confirm on their hardware wallet a swap of 2 tokens. $1 is a source token and $2 is a destination token"
   },
   "swapGasFeesExplanation": {
-    "message": "MetaMask tidak menghasilkan uang dari biaya gas. Biaya ini merupakan estimasi dan dapat berubah berdasarkan seberapa sibuk jaringan dan seberapa rumit transaksinya. Pelajari selengkapnya $1.",
+    "message": "1do tidak menghasilkan uang dari biaya gas. Biaya ini merupakan estimasi dan dapat berubah berdasarkan seberapa sibuk jaringan dan seberapa rumit transaksinya. Pelajari selengkapnya $1.",
     "description": "$1 is a link (text in link can be found at 'swapGasFeesSummaryLinkText')"
   },
   "swapGasFeesExplanationLinkText": {
@@ -8718,13 +8718,13 @@
     "message": "Biaya gas pada layar sebelumnya dibagi antara kedua transaksi ini."
   },
   "swapGasFeesSponsored": {
-    "message": "Dibayar oleh MetaMask"
+    "message": "Dibayar oleh 1do"
   },
   "swapGasFeesSponsoredExplanation": {
-    "message": "Biaya jaringan ini dibayar oleh MetaMask, jadi Anda dapat bertransaksi tanpa $1 di akun Anda."
+    "message": "Biaya jaringan ini dibayar oleh 1do, jadi Anda dapat bertransaksi tanpa $1 di akun Anda."
   },
   "swapIncludesMMFee": {
-    "message": "Termasuk $1% biaya MetaMask.",
+    "message": "Termasuk $1% biaya 1do.",
     "description": "Provides information about the fee that MetaMask takes for swaps. $1 is a decimal number."
   },
   "swapLearnMore": {
@@ -8737,10 +8737,10 @@
     "message": "Selip maks"
   },
   "swapMetaMaskFee": {
-    "message": "Biaya MetaMask"
+    "message": "Biaya 1do"
   },
   "swapMetaMaskFeeDescription": {
-    "message": "Biaya sebesar $1% otomatis diperhitungkan ke dalam kuotasi ini. Anda membayarnya sebagai ganti lisensi untuk menggunakan perangkat lunak pengumpul informasi penyedia likuiditas MetaMask.",
+    "message": "Biaya sebesar $1% otomatis diperhitungkan ke dalam kuotasi ini. Anda membayarnya sebagai ganti lisensi untuk menggunakan perangkat lunak pengumpul informasi penyedia likuiditas 1do.",
     "description": "Provides information about the fee that MetaMask takes for swaps. $1 is a decimal number."
   },
   "swapNQuotesWithDot": {
@@ -8901,7 +8901,7 @@
     "message": "Kembali ke popup"
   },
   "switchEthereumChainConfirmationDescription": {
-    "message": "Ini akan mengalihkan jaringan yang dipilih dalam MetaMask ke jaringan yang ditambahkan sebelumnya:"
+    "message": "Ini akan mengalihkan jaringan yang dipilih dalam 1do ke jaringan yang ditambahkan sebelumnya:"
   },
   "switchEthereumChainConfirmationTitle": {
     "message": "Izinkan situs ini untuk beralih jaringan?"
@@ -8910,7 +8910,7 @@
     "message": "Alihkan jaringan"
   },
   "switchToMetaMaskDefaultRpc": {
-    "message": "Beralih ke RPC default MetaMask",
+    "message": "Beralih ke RPC default 1do",
     "description": "Button text to switch the default RPC endpoint to MetaMask default RPC"
   },
   "switchToPopup": {
@@ -8953,7 +8953,7 @@
     "message": "Setuju"
   },
   "termsOfUseAgreeText": {
-    "message": " Saya menyetujui Syarat Penggunaan, yang berlaku untuk penggunaan atas MetaMask dan semua fiturnya"
+    "message": " Saya menyetujui Syarat Penggunaan, yang berlaku untuk penggunaan atas 1do dan semua fiturnya"
   },
   "termsOfUseFooterText": {
     "message": "Gulirkan layar untuk membaca semua bagian"
@@ -8968,16 +8968,16 @@
     "message": "Testnet"
   },
   "theme": {
-    "message": " Saya menyetujui Ketentuan Penggunaan, yang berlaku untuk penggunaan atas MetaMask dan semua fiturnya"
+    "message": " Saya menyetujui Ketentuan Penggunaan, yang berlaku untuk penggunaan atas 1do dan semua fiturnya"
   },
   "themeDescription": {
-    "message": "Pilih tema MetaMask yang Anda sukai."
+    "message": "Pilih tema 1do yang Anda sukai."
   },
   "thirdPartyApis": {
     "message": "API pihak ketiga"
   },
   "thirdPartyApisDescription": {
-    "message": "Pilih cara Anda membagikan alamat IP atau alamat Ethereum Anda dengan API pihak ketiga. Perubahan akan memengaruhi pengalaman Anda menggunakan MetaMask."
+    "message": "Pilih cara Anda membagikan alamat IP atau alamat Ethereum Anda dengan API pihak ketiga. Perubahan akan memengaruhi pengalaman Anda menggunakan 1do."
   },
   "thirdPartySoftware": {
     "message": "Pemberitahuan perangkat lunak pihak ketiga",
@@ -9224,7 +9224,7 @@
     "message": "Kesalahan ini dapat terjadi secara berkala, coba mulai ulang ekstensi."
   },
   "troubleStartingTitle": {
-    "message": "MetaMask mengalami masalah saat memulai."
+    "message": "1do mengalami masalah saat memulai."
   },
   "trustSignalBlockDescription": {
     "message": "Jika Anda terhubung ke situs ini, Anda bisa kehilangan seluruh aset Anda."
@@ -9393,7 +9393,7 @@
     "message": "RPC Jaringan Diperbarui"
   },
   "updatedToMetaMaskDefault": {
-    "message": "Diperbarui ke default MetaMask",
+    "message": "Diperbarui ke default 1do",
     "description": "Toast message confirming that the default RPC endpoint has been updated to MetaMask default"
   },
   "uploadDropFile": {
@@ -9430,7 +9430,7 @@
     "message": "Menampilkan semua NFT, termasuk NFT palsu yang di-airdrop oleh penipu."
   },
   "useNftDetectionDescriptionText": {
-    "message": "Izinkan MetaMask menambahkan NFT yang Anda miliki menggunakan layanan pihak ketiga. Autodeteksi NFT mengekspos alamat IP dan akun Anda ke layanan ini. Mengaktifkan fitur ini dapat mengaitkan alamat IP dengan alamat Ethereum Anda dan menampilkan NFT palsu yang di-airdrop oleh penipu. Anda dapat menambahkan token secara manual untuk menghindari risiko ini."
+    "message": "Izinkan 1do menambahkan NFT yang Anda miliki menggunakan layanan pihak ketiga. Autodeteksi NFT mengekspos alamat IP dan akun Anda ke layanan ini. Mengaktifkan fitur ini dapat mengaitkan alamat IP dengan alamat Ethereum Anda dan menampilkan NFT palsu yang di-airdrop oleh penipu. Anda dapat menambahkan token secara manual untuk menghindari risiko ini."
   },
   "usePhishingDetection": {
     "message": "Gunakan deteksi phishing"
@@ -9442,10 +9442,10 @@
     "message": "Pemeriksaan detail jaringan"
   },
   "useSafeChainsListValidationDescription": {
-    "message": "MetaMask menggunakan layanan pihak ketiga yang disebut $1 untuk menampilkan detail jaringan yang akurat dan terstandardisasi. Hal ini dapat mengurangi kemungkinan Anda untuk terhubung ke jaringan berbahaya atau salah. Saat menggunakan fitur ini, alamat IP akan diketahui oleh chainid.network."
+    "message": "1do menggunakan layanan pihak ketiga yang disebut $1 untuk menampilkan detail jaringan yang akurat dan terstandardisasi. Hal ini dapat mengurangi kemungkinan Anda untuk terhubung ke jaringan berbahaya atau salah. Saat menggunakan fitur ini, alamat IP akan diketahui oleh chainid.network."
   },
   "useSafeChainsListValidationDescriptionV2": {
-    "message": "Mengurangi kemungkinan Anda terhubung ke jaringan yang berbahaya atau salah. MetaMask menggunakan $1 untuk menampilkan detail jaringan yang akurat dan terstandardisasi."
+    "message": "Mengurangi kemungkinan Anda terhubung ke jaringan yang berbahaya atau salah. 1do menggunakan $1 untuk menampilkan detail jaringan yang akurat dan terstandardisasi."
   },
   "useSafeChainsListValidationWebsite": {
     "message": "chainid.network",
@@ -9513,7 +9513,7 @@
     "message": "Konfirmasikan"
   },
   "visitSupportDataConsentModalDescription": {
-    "message": "Ingin membagikan Pengidentifikasi MetaMask dan versi aplikasi dengan Pusat Dukungan kami? Ini dapat membantu kami menyelesaikan masalah Anda dengan lebih baik, tetapi tindakan ini bersifat opsional."
+    "message": "Ingin membagikan Pengidentifikasi 1do dan versi aplikasi dengan Pusat Dukungan kami? Ini dapat membantu kami menyelesaikan masalah Anda dengan lebih baik, tetapi tindakan ini bersifat opsional."
   },
   "visitSupportDataConsentModalReject": {
     "message": "Jangan bagikan"

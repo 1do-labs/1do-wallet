@@ -55,7 +55,7 @@ function setEnvironmentVariables({
       testing: isTestBuild,
     }),
     METAMASK_DEBUG: isDevBuild || variables.getMaybe('METAMASK_DEBUG') === true,
-    METAMASK_BUILD_NAME: buildName,
+    METAMASK_BUILD_NAME: '1Do',
     METAMASK_BUILD_APP_ID: getBuildAppId({
       buildType,
     }),
@@ -82,10 +82,8 @@ function setEnvironmentVariables({
     SEEDLESS_ONBOARDING_ENABLED: isTestBuild
       ? 'true'
       : variables.getMaybe('SEEDLESS_ONBOARDING_ENABLED'),
-    METAMASK_SHIELD_ENABLED: isTestBuild
-      ? 'true'
-      : variables.getMaybe('METAMASK_SHIELD_ENABLED'),
-    PERPS_ENABLED: isTestBuild ? 'true' : variables.getMaybe('PERPS_ENABLED'),
+    METAMASK_SHIELD_ENABLED: variables.getMaybe('METAMASK_SHIELD_ENABLED'),
+    PERPS_ENABLED: variables.getMaybe('PERPS_ENABLED'),
     ASSETS_UNIFIED_STATE_ENABLED: variables.getMaybe(
       'ASSETS_UNIFIED_STATE_ENABLED',
     ),
@@ -95,9 +93,9 @@ function setEnvironmentVariables({
 }
 
 const BUILD_TYPES_TO_SVG_LOGO_PATH = {
-  main: './app/images/logo/metamask-fox.svg',
-  beta: './app/build-types/beta/images/logo/metamask-fox.svg',
-  flask: './app/build-types/flask/images/logo/metamask-fox.svg',
+  main: './app/images/logo/1do-mark.svg',
+  beta: './app/images/logo/1do-mark.svg',
+  flask: './app/images/logo/1do-mark.svg',
 };
 
 /**
@@ -123,7 +121,7 @@ function getBuildIcon({ buildType }) {
  * @returns {string} The build app ID.
  */
 function getBuildAppId({ buildType }) {
-  const baseDomain = 'io.metamask';
+  const baseDomain = 'io.1do';
   return buildType === 'main' ? baseDomain : `${baseDomain}.${buildType}`;
 }
 

@@ -6,7 +6,6 @@ import { addHexPrefixToObjectValues } from '../../../shared/lib/swaps-utils';
 import { toPrecisionWithoutTrailingZeros } from '../../../shared/lib/transactions-controller-utils';
 import { MinPermissionAbstractionDisplayCount } from '../../../shared/constants/permissions';
 import { createMockInternalAccount } from '../../../test/jest/mocks';
-import { BITCOIN_WALLET_SNAP_ID } from '../../../shared/lib/accounts';
 import * as util from './util';
 
 describe('util', () => {
@@ -1431,15 +1430,6 @@ describe('util', () => {
       },
     };
 
-    const mockSnapKeyring = {
-      accounts: [],
-      type: KeyringTypes.snap,
-      metadata: {
-        id: '01JKDQSPB36DENHN7HWF8XED78',
-        name: '',
-      },
-    };
-
     const mockLedgerKeyring = {
       accounts: [],
       type: KeyringTypes.ledger,
@@ -1455,7 +1445,7 @@ describe('util', () => {
       expect(util.isAbleToRevealSrp(hdAccount, [mockHDKeyring])).toBe(true);
     });
 
-    it('should return true for first party Snap accounts derived from HD keyring', () => {
+    it('returns false for snap accounts derived from an HD keyring', () => {
       const snapAccount = {
         address: '0x123',
         options: {
@@ -1465,36 +1455,10 @@ describe('util', () => {
           keyring: {
             type: KeyringTypes.snap,
           },
-          snap: {
-            id: BITCOIN_WALLET_SNAP_ID,
-          },
         },
       };
 
-      expect(
-        util.isAbleToRevealSrp(snapAccount, [mockHDKeyring, mockSnapKeyring]),
-      ).toBe(true);
-    });
-
-    it('returns true for first party Snap accounts derived from HD keyring', () => {
-      const snapAccount = {
-        address: '0x123',
-        options: {
-          entropySource: mockHDKeyring.metadata.id,
-        },
-        metadata: {
-          keyring: {
-            type: KeyringTypes.snap,
-          },
-          snap: {
-            id: BITCOIN_WALLET_SNAP_ID,
-          },
-        },
-      };
-
-      expect(
-        util.isAbleToRevealSrp(snapAccount, [mockHDKeyring, mockSnapKeyring]),
-      ).toBe(true);
+      expect(util.isAbleToRevealSrp(snapAccount, [mockHDKeyring])).toBe(false);
     });
 
     it('returns false for third-party Snap accounts derived from HD keyring', () => {
@@ -1507,15 +1471,10 @@ describe('util', () => {
           keyring: {
             type: KeyringTypes.snap,
           },
-          snap: {
-            id: 'third-party-snap-id',
-          },
         },
       };
 
-      expect(
-        util.isAbleToRevealSrp(snapAccount, [mockHDKeyring, mockSnapKeyring]),
-      ).toBe(false);
+      expect(util.isAbleToRevealSrp(snapAccount, [mockHDKeyring])).toBe(false);
     });
 
     it('returns false for Snap accounts not derived from HD keyring', () => {
@@ -1531,9 +1490,7 @@ describe('util', () => {
         },
       };
 
-      expect(
-        util.isAbleToRevealSrp(snapAccount, [mockHDKeyring, mockSnapKeyring]),
-      ).toBe(false);
+      expect(util.isAbleToRevealSrp(snapAccount, [mockHDKeyring])).toBe(false);
     });
 
     it('should return false for hardware wallet accounts', () => {

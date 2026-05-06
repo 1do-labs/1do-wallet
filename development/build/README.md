@@ -1,9 +1,9 @@
-# The MetaMask Build System
+# The 1do Wallet Build System
 
 > _tl;dr_ `yarn dist` for prod, `yarn start` for local development.
 > Add `--build-type flask` to build Flask, our canary distribution with more experimental features.
 
-This directory contains the MetaMask build system, which is used to build the MetaMask Extension such that it can be used in a supported browser.
+This directory contains the 1do Wallet build system, which is used to build the 1do Wallet extension such that it can be used in a supported browser.
 From the repository root, the build system entry file is located at [`./development/build/index.js`](https://github.com/MetaMask/metamask-extension/blob/main/development/build/index.js).
 
 Several package scripts invoke the build system.

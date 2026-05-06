@@ -13,7 +13,6 @@ const {
 const { TX_SENTINEL_URL } = require('../../shared/constants/transaction');
 const { DEFAULT_FIXTURE_ACCOUNT_LOWERCASE } = require('./constants');
 const { SECURITY_ALERTS_PROD_API_BASE_URL } = require('./tests/ppom/constants');
-const { SOLANA_WS_PORT } = require('./websocket/solana-mocks');
 const {
   ACCOUNT_ACTIVITY_WS_PORT,
 } = require('./websocket/account-activity-mocks');
@@ -1220,17 +1219,6 @@ async function setupMocking(
         headers: { 'Content-Type': 'application/javascript; charset=utf-8' },
       };
     });
-
-  /**
-   * Solana Websocket
-   * Setup HTTP intercept for WebSocket handshake requests
-   */
-  await server
-    .forAnyWebSocket()
-    .matching((req) =>
-      /^wss:\/\/solana-(mainnet|devnet)\.infura\.io\//u.test(req.url),
-    )
-    .thenForwardTo(`ws://localhost:${SOLANA_WS_PORT}`);
 
   /**
    * Backend WebSocket (AccountActivity, etc.)

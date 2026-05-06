@@ -1,40 +1,34 @@
 // no destructuring as process.env detection stops working
 // eslint-disable-next-line prefer-destructuring
 export const SUPPORT_LINK = process.env.SUPPORT_LINK;
+export const ONEDO_WEBSITE_LINK = 'https://www.1do.io/';
+export const ONEDO_PRIVACY_LINK = 'https://www.1do.io/privacy';
+export const ONEDO_TERMS_LINK = 'https://www.1do.io/terms';
 
 export const COINGECKO_LINK = 'https://www.coingecko.com/';
 export const CRYPTOCOMPARE_LINK = 'https://www.cryptocompare.com/';
-export const PRIVACY_POLICY_LINK = 'https://consensys.io/privacy-policy/';
-export const METAMETRICS_SETTINGS_LINK =
-  'https://support.metamask.io/configure/privacy/how-to-manage-your-metametrics-settings/?utm_source=extension';
+export const PRIVACY_POLICY_LINK = ONEDO_PRIVACY_LINK;
+export const METAMETRICS_SETTINGS_LINK = ONEDO_WEBSITE_LINK;
 export const SURVEY_LINK = 'https://www.getfeedback.com/r/Oczu1vP0';
 
 // TODO make sure these links are correct
 export const ETHERSCAN_PRIVACY_LINK = 'https://etherscan.io/privacyPolicy';
-export const CONSENSYS_PRIVACY_LINK = 'https://consensys.io/privacy-policy/';
-export const AUTO_DETECT_TOKEN_LEARN_MORE_LINK =
-  'https://consensys.io/privacy-policy/';
-export const CONSENSYS_TERMS_OF_USE = 'https://consensys.io/terms-of-use';
+export const CONSENSYS_PRIVACY_LINK = ONEDO_PRIVACY_LINK;
+export const AUTO_DETECT_TOKEN_LEARN_MORE_LINK = ONEDO_PRIVACY_LINK;
+export const CONSENSYS_TERMS_OF_USE = ONEDO_TERMS_LINK;
 
-export const SECURITY_ALERTS_LEARN_MORE_LINK =
-  'https://support.metamask.io/privacy-and-security/how-to-turn-on-security-alerts/?utm_source=extension';
+export const SECURITY_ALERTS_LEARN_MORE_LINK = ONEDO_WEBSITE_LINK;
 
-export const TRANSACTION_SIMULATIONS_LEARN_MORE_LINK =
-  'https://support.metamask.io/transactions-and-gas/transactions/simulations/?utm_source=extension';
+export const TRANSACTION_SIMULATIONS_LEARN_MORE_LINK = ONEDO_WEBSITE_LINK;
 
-export const GAS_FEES_LEARN_MORE_URL =
-  'https://community.metamask.io/t/what-is-gas-why-do-transactions-take-so-long/3172';
+export const GAS_FEES_LEARN_MORE_URL = ONEDO_WEBSITE_LINK;
 
-export const SMART_ACCOUNT_INFO_LINK =
-  'https://support.metamask.io/configure/accounts/what-is-a-smart-account/?utm_source=extension#what-are-metamask-smart-accounts';
+export const SMART_ACCOUNT_INFO_LINK = ONEDO_WEBSITE_LINK;
 
-export const VAULT_RECOVERY_LINK = `https://support.metamask.io/configure/wallet/how-to-recover-your-secret-recovery-phrase/?utm_source=extension#step-two-locate-your-vault`;
+export const VAULT_RECOVERY_LINK = ONEDO_WEBSITE_LINK;
 
-export const SHIELD_TERMS_OF_USE_URL =
-  'https://consensys.io/transaction-shield-supplemental-terms-and-privacy-notice';
+export const SHIELD_TERMS_OF_USE_URL = ONEDO_TERMS_LINK;
 
-export const TESTNET_ETH_SCAMS_LEARN_MORE_LINK =
-  'https://support.metamask.io/stay-safe/protect-yourself/tokens-and-transactions/testnet-eth-scams/?utm_source=extension';
+export const TESTNET_ETH_SCAMS_LEARN_MORE_LINK = ONEDO_WEBSITE_LINK;
 
-export const REQUEST_SETTING_URL =
-  'https://community.metamask.io/c/feature-requests-ideas/13';
+export const REQUEST_SETTING_URL = ONEDO_WEBSITE_LINK;

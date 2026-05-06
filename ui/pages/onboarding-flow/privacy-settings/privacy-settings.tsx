@@ -30,6 +30,7 @@ import {
 import {
   COINGECKO_LINK,
   CRYPTOCOMPARE_LINK,
+  ONEDO_WEBSITE_LINK,
   PRIVACY_POLICY_LINK,
   TRANSACTION_SIMULATIONS_LEARN_MORE_LINK,
 } from '../../../../shared/lib/ui-utils';
@@ -287,7 +288,7 @@ export default function PrivacySettings() {
                 {t('defaultSettingsSubTitle')}
               </Text>
               <a
-                href={ZENDESK_URLS.PRIVACY_BEST_PRACTICES}
+                href={ONEDO_WEBSITE_LINK}
                 target="_blank"
                 rel="noreferrer"
                 key="learnMoreAboutPrivacy"
@@ -415,7 +416,7 @@ export default function PrivacySettings() {
                     title={t('basicConfigurationLabel')}
                     description={t('basicConfigurationDescription', [
                       <a
-                        href="https://consensys.io/privacy-policy"
+                        href={PRIVACY_POLICY_LINK}
                         key="link"
                         target="_blank"
                         rel="noreferrer noopener"
@@ -435,7 +436,7 @@ export default function PrivacySettings() {
                       <>
                         {t('onboardingAdvancedPrivacyNetworkDescription', [
                           <a
-                            href="https://consensys.io/privacy-policy/"
+                            href={PRIVACY_POLICY_LINK}
                             key="link"
                             target="_blank"
                             rel="noopener noreferrer"

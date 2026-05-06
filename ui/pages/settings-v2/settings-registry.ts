@@ -8,30 +8,21 @@ import {
   ABOUT_US_ROUTE,
   ASSETS_ROUTE,
   AUTO_LOCK_ROUTE,
-  BACKUPANDSYNC_ROUTE,
   CURRENCY_ROUTE,
   DEVELOPER_OPTIONS_ROUTE,
   DEVELOPER_TOOLS_ROUTE,
   MANAGE_WALLET_RECOVERY_ROUTE,
-  EXPERIMENTAL_ROUTE,
   LANGUAGE_ROUTE,
-  NOTIFICATIONS_SETTINGS_ROUTE,
   PREFERENCES_AND_DISPLAY_ROUTE,
   SECURITY_AND_PASSWORD_ROUTE,
   SECURITY_PASSWORD_CHANGE_V2_ROUTE,
   SETTINGS_V2_ROUTE,
-  SNAP_SETTINGS_ROUTE,
-  TRANSACTION_SHIELD_CLAIM_ROUTES,
-  TRANSACTION_SHIELD_MANAGE_PAST_PLAN_ROUTE,
-  TRANSACTION_SHIELD_MANAGE_PLAN_ROUTE,
-  TRANSACTION_SHIELD_ROUTE,
   TRANSACTIONS_ROUTE,
   THEME_ROUTE,
   PRIVACY_ROUTE,
   THIRD_PARTY_APIS_ROUTE,
 } from '../../helpers/constants/routes';
 import { mmLazy } from '../../helpers/utils/mm-lazy';
-import { CLAIMS_TAB_KEYS } from '../settings/transaction-shield-tab/types';
 
 /**
  * Route definition for a Settings V2 page.
@@ -55,35 +46,25 @@ export const SETTINGS_V2_ROOT_SECTIONS: readonly {
 }[] = [
   {
     titleKeys: ['general'],
-    paths: [PREFERENCES_AND_DISPLAY_ROUTE, NOTIFICATIONS_SETTINGS_ROUTE],
+    paths: [PREFERENCES_AND_DISPLAY_ROUTE],
   },
   {
     titleKeys: ['securityAndPrivacy'],
-    paths: [SECURITY_AND_PASSWORD_ROUTE, PRIVACY_ROUTE, BACKUPANDSYNC_ROUTE],
+    paths: [SECURITY_AND_PASSWORD_ROUTE, PRIVACY_ROUTE],
   },
   {
     titleKeys: ['transactionsAndAssets'],
-    paths: [TRANSACTION_SHIELD_ROUTE, ASSETS_ROUTE, TRANSACTIONS_ROUTE],
+    paths: [ASSETS_ROUTE, TRANSACTIONS_ROUTE],
   },
   {
     titleKeys: ['moreCapital'],
-    paths: [
-      EXPERIMENTAL_ROUTE,
-      DEVELOPER_OPTIONS_ROUTE,
-      DEVELOPER_TOOLS_ROUTE,
-      ABOUT_US_ROUTE,
-    ],
+    paths: [DEVELOPER_OPTIONS_ROUTE, DEVELOPER_TOOLS_ROUTE, ABOUT_US_ROUTE],
   },
 ] as const;
 
 const SHOW_DEBUG_SETTINGS = Boolean(
   process.env.ENABLE_SETTINGS_PAGE_DEV_OPTIONS || process.env.IN_TEST,
 );
-
-const TRANSACTION_SHIELD_CLAIMS_WILDCARD_ROUTE = `${TRANSACTION_SHIELD_CLAIM_ROUTES.BASE}/*`;
-const TRANSACTION_SHIELD_EDIT_DRAFT_ROUTE = `${TRANSACTION_SHIELD_CLAIM_ROUTES.EDIT_DRAFT.FULL}/:draftId`;
-const TRANSACTION_SHIELD_VIEW_PENDING_ROUTE = `${TRANSACTION_SHIELD_CLAIM_ROUTES.VIEW_PENDING.FULL}/:claimId`;
-const TRANSACTION_SHIELD_VIEW_HISTORY_ROUTE = `${TRANSACTION_SHIELD_CLAIM_ROUTES.VIEW_HISTORY.FULL}/:claimId`;
 
 /**
  * Single source of truth for all Settings V2 routes.
@@ -127,14 +108,6 @@ export const SETTINGS_V2_ROUTES: Record<string, SettingsV2RouteMeta> = {
   },
 
   // --- Notifications tab ---
-  [NOTIFICATIONS_SETTINGS_ROUTE]: {
-    labelKey: 'notifications',
-    parentPath: SETTINGS_V2_ROUTE,
-    component: mmLazy(() => import('./notifications-tab/index.ts')),
-    isTab: true,
-    iconName: IconName.Notification,
-  },
-
   // --- Security and Password tab ---
   [SECURITY_AND_PASSWORD_ROUTE]: {
     labelKey: 'securityAndPassword',
@@ -184,69 +157,6 @@ export const SETTINGS_V2_ROUTES: Record<string, SettingsV2RouteMeta> = {
     ),
   },
 
-  // --- Backup and sync tab ---
-  [BACKUPANDSYNC_ROUTE]: {
-    labelKey: 'backupAndSync',
-    parentPath: SETTINGS_V2_ROUTE,
-    component: mmLazy(
-      () => import('./backup-and-sync-tab/backup-and-sync-tab.tsx'),
-    ),
-    isTab: true,
-    iconName: IconName.SecurityTime,
-  },
-
-  // --- Transaction Shield tab ---
-  [TRANSACTION_SHIELD_ROUTE]: {
-    labelKey: 'shieldTx',
-    parentPath: SETTINGS_V2_ROUTE,
-    component: mmLazy(
-      () => import('../settings/transaction-shield-tab/index.ts'),
-    ),
-    isTab: true,
-    iconName: IconName.ShieldLock,
-  },
-  [TRANSACTION_SHIELD_MANAGE_PLAN_ROUTE]: {
-    labelKey: 'shieldManagePlan',
-    parentPath: TRANSACTION_SHIELD_ROUTE,
-    component: mmLazy(
-      () => import('./transaction-shield-tab/manage-plan-sub-page.tsx'),
-    ),
-  },
-  [TRANSACTION_SHIELD_MANAGE_PAST_PLAN_ROUTE]: {
-    labelKey: 'shieldPastPlansTitle',
-    parentPath: TRANSACTION_SHIELD_ROUTE,
-    component: mmLazy(
-      () => import('./transaction-shield-tab/manage-past-plan-sub-page.tsx'),
-    ),
-  },
-  [TRANSACTION_SHIELD_CLAIM_ROUTES.BASE]: {
-    labelKey: 'shieldClaimsListTitle',
-    parentPath: TRANSACTION_SHIELD_ROUTE,
-  },
-  [TRANSACTION_SHIELD_CLAIMS_WILDCARD_ROUTE]: {
-    labelKey: 'shieldClaimsListTitle',
-    parentPath: TRANSACTION_SHIELD_ROUTE,
-    component: mmLazy(
-      () => import('../settings/transaction-shield-tab/claims-area/index.ts'),
-    ),
-  },
-  [TRANSACTION_SHIELD_CLAIM_ROUTES.NEW.FULL]: {
-    labelKey: 'shieldClaim',
-    parentPath: TRANSACTION_SHIELD_CLAIM_ROUTES.BASE,
-  },
-  [TRANSACTION_SHIELD_EDIT_DRAFT_ROUTE]: {
-    labelKey: 'shieldClaimsListTitle',
-    parentPath: `${TRANSACTION_SHIELD_CLAIM_ROUTES.BASE}?tab=${CLAIMS_TAB_KEYS.PENDING}`,
-  },
-  [TRANSACTION_SHIELD_VIEW_PENDING_ROUTE]: {
-    labelKey: 'shieldClaimsListTitle',
-    parentPath: `${TRANSACTION_SHIELD_CLAIM_ROUTES.BASE}?tab=${CLAIMS_TAB_KEYS.PENDING}`,
-  },
-  [TRANSACTION_SHIELD_VIEW_HISTORY_ROUTE]: {
-    labelKey: 'shieldClaimsListTitle',
-    parentPath: `${TRANSACTION_SHIELD_CLAIM_ROUTES.BASE}?tab=${CLAIMS_TAB_KEYS.HISTORY}`,
-  },
-
   // --- Assets tab ---
   [ASSETS_ROUTE]: {
     labelKey: 'assets',
@@ -268,15 +178,6 @@ export const SETTINGS_V2_ROUTES: Record<string, SettingsV2RouteMeta> = {
     component: mmLazy(() => import('./transactions-tab/index.ts')),
     isTab: true,
     iconName: IconName.SwapVertical,
-  },
-
-  // --- Experimental tab ---
-  [EXPERIMENTAL_ROUTE]: {
-    labelKey: 'experimental',
-    parentPath: SETTINGS_V2_ROUTE,
-    component: mmLazy(() => import('./experimental-tab/experimental-tab.tsx')),
-    isTab: true,
-    iconName: IconName.Flask,
   },
 
   // --- Debug (internal) tab ---
@@ -303,17 +204,11 @@ export const SETTINGS_V2_ROUTES: Record<string, SettingsV2RouteMeta> = {
 
   // --- About tab ---
   [ABOUT_US_ROUTE]: {
-    labelKey: 'aboutMetaMask',
+    labelKey: 'about',
     parentPath: SETTINGS_V2_ROUTE,
     component: mmLazy(() => import('./about-tab/index.ts')),
     isTab: true,
     iconName: IconName.Info,
-  },
-
-  // --- Snap settings (navigated via URL, not shown as a tab) ---
-  [SNAP_SETTINGS_ROUTE]: {
-    labelKey: 'snaps',
-    parentPath: SETTINGS_V2_ROUTE,
   },
 };
 

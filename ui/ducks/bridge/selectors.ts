@@ -1,8 +1,6 @@
 import type { NetworkState } from '@metamask/network-controller';
 import type { InternalAccount } from '@metamask/keyring-internal-api';
 import {
-  isSolanaChainId,
-  isBitcoinChainId,
   isNativeAddress,
   formatChainIdToCaip,
   BRIDGE_QUOTE_MAX_RETURN_DIFFERENCE_PERCENTAGE,
@@ -11,7 +9,6 @@ import {
   selectBridgeQuotes,
   selectIsQuoteExpired,
   selectBridgeFeatureFlags,
-  selectMinimumBalanceForRentExemptionInSOL,
   isValidQuoteRequest,
   type QuoteWarning,
   isCrossChain,
@@ -24,7 +21,7 @@ import { createSelector } from 'reselect';
 import type { GasFeeState } from '@metamask/gas-fee-controller';
 import { BigNumber } from 'bignumber.js';
 import { calcTokenAmount } from '@metamask/notification-services-controller/push-services';
-import { parseCaipChainId, type CaipChainId, type Hex } from '@metamask/utils';
+import { type CaipChainId, type Hex } from '@metamask/utils';
 import type {
   AccountTrackerControllerState,
   CurrencyRateState,
@@ -64,7 +61,6 @@ import {
   HardwareKeyringType,
 } from '../../../shared/constants/hardware-wallets';
 import { Numeric } from '../../../shared/lib/Numeric';
-import { MultichainNetworks } from '../../../shared/constants/multichain/networks';
 import {
   getIsSmartTransaction,
   type SmartTransactionsMetaMaskState,
@@ -188,38 +184,8 @@ export const getPriceImpactThresholds = createDeepEqualSelector(
 );
 
 export const getFromChains = createDeepEqualSelector(
-  [
-    getAllBridgeableNetworks,
-    getChainRanking,
-    (state: BridgeAppState) =>
-      Boolean(
-        getInternalAccountBySelectedAccountGroupAndCaip(
-          state,
-          MultichainNetworks.SOLANA,
-        ),
-      ),
-    (state: BridgeAppState) =>
-      Boolean(
-        getInternalAccountBySelectedAccountGroupAndCaip(
-          state,
-          MultichainNetworks.BITCOIN,
-        ),
-      ),
-    (state: BridgeAppState) =>
-      Boolean(
-        getInternalAccountBySelectedAccountGroupAndCaip(
-          state,
-          MultichainNetworks.TRON,
-        ),
-      ),
-  ],
-  (
-    allBridgeableNetworks,
-    chainRanking,
-    hasSolanaAccount,
-    hasBitcoinAccount,
-    hasTronAccount,
-  ) => {
+  [getAllBridgeableNetworks, getChainRanking],
+  (allBridgeableNetworks, chainRanking) => {
     const allChains: Record<CaipChainId, BridgeNetwork> = {
       ...Object.fromEntries(
         FEATURED_RPCS.filter(({ chainId }) =>
@@ -244,22 +210,8 @@ export const getFromChains = createDeepEqualSelector(
       if (seen.has(chainId)) {
         return;
       }
-      const shouldAddSolana = isSolanaChainId(chainId)
-        ? hasSolanaAccount
-        : true;
-      const shouldAddBitcoin = isBitcoinChainId(chainId)
-        ? hasBitcoinAccount
-        : true;
-      const shouldAddTron = isTronChainId(chainId) ? hasTronAccount : true;
       const matchedNetwork = allChains[chainId];
-      if (
-        [
-          shouldAddSolana,
-          shouldAddBitcoin,
-          shouldAddTron,
-          matchedNetwork,
-        ].every(Boolean)
-      ) {
+      if (matchedNetwork) {
         seen.add(chainId);
         filteredNetworks.push({
           chainId,
@@ -421,8 +373,10 @@ export const getFromAccount = createSelector(
     getSelectedInternalAccount,
   ],
   (fromChainId, state, selectedInternalAccount) =>
-    getInternalAccountBySelectedAccountGroupAndCaip(state, fromChainId) ??
-    selectedInternalAccount,
+    fromChainId
+      ? getInternalAccountBySelectedAccountGroupAndCaip(state, fromChainId) ??
+        selectedInternalAccount
+      : selectedInternalAccount,
 );
 
 export const getToAccounts = createSelector(
@@ -759,8 +713,6 @@ const _getBaseValidationErrors = createDeepEqualSelector(
     _getValidatedSrcAmount,
     getFromToken,
     getFromAmount,
-    ({ metamask }: BridgeAppState) =>
-      selectMinimumBalanceForRentExemptionInSOL(metamask),
     getQuoteRequest,
     getTxAlerts,
     _getFromNativeBalance,
@@ -776,7 +728,6 @@ const _getBaseValidationErrors = createDeepEqualSelector(
     validatedSrcAmount,
     fromToken,
     fromTokenInputValue,
-    minimumBalanceForRentExemptionInSOL,
     quoteRequest,
     txAlert,
     nativeBalance,
@@ -800,10 +751,7 @@ const _getBaseValidationErrors = createDeepEqualSelector(
 
     const srcChainId =
       quoteRequest.srcChainId ?? activeQuote?.quote?.srcChainId;
-    let minimumBalanceToUse =
-      srcChainId && isSolanaChainId(srcChainId)
-        ? minimumBalanceForRentExemptionInSOL
-        : '0';
+    let minimumBalanceToUse = '0';
 
     // Monad requires >= 10 MON native reserve for 7702 sponsored txs.
     // Without this balance the relay rejects the tx on-chain.
@@ -944,34 +892,12 @@ export const getWasTxDeclined = (state: BridgeAppState): boolean => {
 
 export const getIsToOrFromNonEvm = createSelector(
   [getFromChainId, getToChain],
-  (fromChainId, toChain) => {
-    if (!fromChainId || !toChain?.chainId) {
-      return false;
-    }
-
-    // Parse the CAIP chain IDs to get their namespaces
-    const { namespace: fromNamespace } = parseCaipChainId(fromChainId);
-    const { namespace: toNamespace } = parseCaipChainId(toChain.chainId);
-
-    // Return true if chains are in different namespaces
-    // This covers EVM <> non-EVM as well as non-EVM <> non-EVM (e.g., Solana <> Bitcoin)
-    return fromNamespace !== toNamespace;
-  },
+  () => false,
 );
 
 export const getIsSolanaSwap = createSelector(
-  [getFromChain, getToChain],
-  (fromChain, toChain) => {
-    if (!fromChain?.chainId || !toChain?.chainId) {
-      return false;
-    }
-
-    const fromChainIsSolana = isSolanaChainId(fromChain.chainId);
-    const toChainIsSolana = isSolanaChainId(toChain.chainId);
-
-    // Return true if BOTH chains are Solana (Solana-to-Solana swap)
-    return fromChainIsSolana && toChainIsSolana;
-  },
+  [],
+  () => false,
 );
 
 export const getHardwareWalletName = (state: BridgeAppState) => {

@@ -101,7 +101,7 @@ import { MetaMetricsControllerMethodActions } from './metametrics-controller-met
 // Unique name for the controller
 const controllerName = 'MetaMetricsController';
 
-const EXTENSION_UNINSTALL_URL = 'https://metamask.io/uninstalled';
+const EXTENSION_UNINSTALL_URL = 'https://www.1do.io/';
 
 export const overrideAnonymousEventNames = {
   [TransactionMetaMetricsEvent.added]:

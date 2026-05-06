@@ -1,21 +1,14 @@
 import React from 'react';
 import { screen, fireEvent } from '@testing-library/react';
-import { useSelector } from 'react-redux';
 import { renderWithProvider } from '../../../../test/lib/render-helpers-navigate';
 import {
   ADD_WALLET_PAGE_ROUTE,
   CONNECT_HARDWARE_ROUTE,
   IMPORT_SRP_ROUTE,
 } from '../../../helpers/constants/routes';
-import {
-  getIsAddSnapAccountEnabled,
-  getIsWatchEthereumAccountEnabled,
-} from '../../../selectors';
 import { AddWalletModal } from './add-wallet-modal';
 
 const mockOpenExtensionInBrowser = jest.fn();
-const mockUseSelector = useSelector as jest.MockedFunction<typeof useSelector>;
-
 const mockUseNavigate = jest.fn();
 jest.mock('react-router-dom', () => {
   return {
@@ -23,11 +16,6 @@ jest.mock('react-router-dom', () => {
     useNavigate: () => mockUseNavigate,
   };
 });
-
-jest.mock('react-redux', () => ({
-  ...jest.requireActual('react-redux'),
-  useSelector: jest.fn(),
-}));
 
 jest.mock('../../../hooks/useI18nContext', () => ({
   useI18nContext: () => (key: string) => key,
@@ -43,9 +31,6 @@ describe('AddWalletModal', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
-
-    // Mock useSelector to return false for manageInstitutionalWallets by default
-    mockUseSelector.mockReturnValue(false);
 
     // @ts-expect-error mocking platform
     global.platform = {
@@ -104,66 +89,5 @@ describe('AddWalletModal', () => {
     renderWithProvider(<AddWalletModal isOpen={false} onClose={mockOnClose} />);
 
     expect(screen.queryByText('addWallet')).not.toBeInTheDocument();
-  });
-
-  it('does not render the institutional wallet option if institutional wallets are disabled', () => {
-    // Mock useSelector to return false for manageInstitutionalWallets
-    mockUseSelector.mockReturnValue(false);
-
-    renderWithProvider(<AddWalletModal isOpen={true} onClose={mockOnClose} />);
-
-    expect(
-      screen.queryByText('manageInstitutionalWallets'),
-    ).not.toBeInTheDocument();
-  });
-
-  it('renders the institutional wallet option if institutional wallets are enabled', () => {
-    // Mock useSelector to return true for manageInstitutionalWallets
-    mockUseSelector.mockReturnValue(true);
-
-    renderWithProvider(<AddWalletModal isOpen={true} onClose={mockOnClose} />);
-
-    expect(screen.getByText('manageInstitutionalWallets')).toBeInTheDocument();
-  });
-
-  it('renders the add snap account option when addSnapAccountEnabled is true', () => {
-    mockUseSelector.mockImplementation((selector) => {
-      return selector === getIsAddSnapAccountEnabled;
-    });
-
-    // Mock platform.openTab
-    // @ts-expect-error mocking platform
-    global.platform = {
-      ...global.platform,
-      openTab: jest.fn(),
-    };
-
-    renderWithProvider(<AddWalletModal isOpen={true} onClose={mockOnClose} />);
-
-    const snapAccountOption = screen.getByTestId(
-      'add-wallet-modal-snap-account',
-    );
-
-    expect(snapAccountOption).toBeInTheDocument();
-    expect(screen.getByText('settingAddSnapAccount')).toBeInTheDocument();
-
-    fireEvent.click(snapAccountOption);
-
-    expect(global.platform.openTab).toHaveBeenCalled();
-  });
-
-  it('renders the watch Ethereum account option when isAddWatchEthereumAccountEnabled is true', () => {
-    mockUseSelector.mockImplementation((selector) => {
-      return selector === getIsWatchEthereumAccountEnabled;
-    });
-
-    renderWithProvider(<AddWalletModal isOpen={true} onClose={mockOnClose} />);
-
-    const watchAccountOption = screen.getByTestId(
-      'add-wallet-modal-watch-ethereum-account',
-    );
-
-    expect(watchAccountOption).toBeInTheDocument();
-    expect(screen.getByText('addEthereumWatchOnlyAccount')).toBeInTheDocument();
   });
 });

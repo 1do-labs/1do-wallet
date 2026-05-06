@@ -35,13 +35,7 @@ import type { RemoteFeatureFlagControllerState } from '@metamask/remote-feature-
 import type { SelectedNetworkControllerState } from '@metamask/selected-network-controller';
 import type { LoggingControllerState } from '@metamask/logging-controller';
 import type { PermissionLogControllerState } from '@metamask/permission-log-controller';
-import type {
-  SnapControllerState,
-  CronjobControllerState,
-  SnapRegistryControllerState,
-  SnapInterfaceControllerState,
-  SnapInsightsControllerState,
-} from '@metamask/snaps-controllers';
+import type { CronjobControllerState } from '@metamask/snaps-controllers';
 import type { AccountsControllerState } from '@metamask/accounts-controller';
 import type { SignatureControllerState } from '@metamask/signature-controller';
 import type { PPOMState } from '@metamask/ppom-validator';
@@ -139,7 +133,6 @@ export type ControllerStatePropertiesEnumerated = {
   musdConversionDismissedCtaKeys: AppStateControllerState['musdConversionDismissedCtaKeys'];
   lastInteractedConfirmationInfo?: AppStateControllerState['lastInteractedConfirmationInfo'];
   termsOfUseLastAgreed?: AppStateControllerState['termsOfUseLastAgreed'];
-  snapsInstallPrivacyWarningShown?: AppStateControllerState['snapsInstallPrivacyWarningShown'];
   slides: AppStateControllerState['slides'];
   pendingExtensionVersion: AppStateControllerState['pendingExtensionVersion'];
   updateModalLastDismissedAt: AppStateControllerState['updateModalLastDismissedAt'];
@@ -261,8 +254,6 @@ export type ControllerStatePropertiesEnumerated = {
   useMultiAccountBalanceChecker: PreferencesControllerState['useMultiAccountBalanceChecker'];
   use4ByteResolution: PreferencesControllerState['use4ByteResolution'];
   useCurrencyRateCheck: PreferencesControllerState['useCurrencyRateCheck'];
-  watchEthereumAccountEnabled: PreferencesControllerState['watchEthereumAccountEnabled'];
-  addSnapAccountEnabled?: PreferencesControllerState['addSnapAccountEnabled'];
   advancedGasFee: PreferencesControllerState['advancedGasFee'];
   knownMethodData: PreferencesControllerState['knownMethodData'];
   currentLocale: PreferencesControllerState['currentLocale'];
@@ -273,12 +264,10 @@ export type ControllerStatePropertiesEnumerated = {
   ledgerTransportType: PreferencesControllerState['ledgerTransportType'];
   snapRegistryList: PreferencesControllerState['snapRegistryList'];
   theme: PreferencesControllerState['theme'];
-  snapsAddSnapAccountModalDismissed?: PreferencesControllerState['snapsAddSnapAccountModalDismissed'];
   useExternalNameSources: PreferencesControllerState['useExternalNameSources'];
   enableMV3TimestampSave: PreferencesControllerState['enableMV3TimestampSave'];
   useExternalServices: PreferencesControllerState['useExternalServices'];
   textDirection?: PreferencesControllerState['textDirection'];
-  manageInstitutionalWallets: PreferencesControllerState['manageInstitutionalWallets'];
   remoteFeatureFlags: RemoteFeatureFlagControllerState['remoteFeatureFlags'];
   cacheTimestamp: RemoteFeatureFlagControllerState['cacheTimestamp'];
   fiatCurrency: RatesControllerState['fiatCurrency'];
@@ -291,16 +280,6 @@ export type ControllerStatePropertiesEnumerated = {
   unapprovedTypedMessagesCount: SignatureControllerState['unapprovedTypedMessagesCount'];
   signatureRequests: SignatureControllerState['signatureRequests'];
   smartTransactionsState: SmartTransactionsControllerState['smartTransactionsState'];
-  isReady: SnapControllerState['isReady'];
-  snaps: SnapControllerState['snaps'];
-  snapStates: SnapControllerState['snapStates'];
-  unencryptedSnapStates: SnapControllerState['unencryptedSnapStates'];
-  interfaces: SnapInterfaceControllerState['interfaces'];
-  insights: SnapInsightsControllerState['insights'];
-  database: SnapRegistryControllerState['database'];
-  lastUpdated: SnapRegistryControllerState['lastUpdated'];
-  databaseUnavailable: SnapRegistryControllerState['databaseUnavailable'];
-  signature: SnapRegistryControllerState['signature'];
   subjectMetadata: SubjectMetadataControllerState['subjectMetadata'];
   tokenBalances: TokenBalancesControllerState['tokenBalances'];
   allDetectedTokens: TokensControllerState['allDetectedTokens'];
@@ -379,10 +358,6 @@ type ControllerStateTypesMerged = AccountsControllerState &
   SelectedNetworkControllerState &
   SignatureControllerState &
   SmartTransactionsControllerState &
-  SnapControllerState &
-  SnapInterfaceControllerState &
-  SnapInsightsControllerState &
-  SnapRegistryControllerState &
   SubjectMetadataControllerState &
   TokenBalancesControllerState &
   TokensControllerState &

@@ -40,7 +40,7 @@ const createMockStore = (overrides = {}) =>
       preferences: {
         ...mockState.metamask.preferences,
         showDefaultAddress: true,
-        defaultAddressScope: 'all',
+        defaultAddressScope: 'eip155',
       },
       ...overrides,
     },
@@ -93,7 +93,7 @@ describe('ShowDefaultAddressItem', () => {
     const mockStore = createMockStore({
       preferences: {
         ...mockState.metamask.preferences,
-        defaultAddressScope: 'all',
+        defaultAddressScope: 'eip155',
       },
     });
     renderWithProvider(<ShowDefaultAddressItem />, mockStore);
@@ -109,7 +109,7 @@ describe('ShowDefaultAddressItem', () => {
       preferences: {
         ...mockState.metamask.preferences,
         showDefaultAddress: false,
-        defaultAddressScope: 'all',
+        defaultAddressScope: 'eip155',
       },
     });
     renderWithProvider(<ShowDefaultAddressItem />, mockStore);
@@ -125,7 +125,7 @@ describe('ShowDefaultAddressItem', () => {
       preferences: {
         ...mockState.metamask.preferences,
         showDefaultAddress: true,
-        defaultAddressScope: 'all',
+        defaultAddressScope: 'eip155',
       },
     });
     renderWithProvider(<ShowDefaultAddressItem />, mockStore);
@@ -140,7 +140,7 @@ describe('ShowDefaultAddressItem', () => {
       preferences: {
         ...mockState.metamask.preferences,
         showDefaultAddress: false,
-        defaultAddressScope: 'all',
+        defaultAddressScope: 'eip155',
       },
     });
     renderWithProvider(<ShowDefaultAddressItem />, mockStore);

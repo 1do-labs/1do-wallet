@@ -1,5 +1,4 @@
 import React, { useMemo } from 'react';
-import { Hex } from '@metamask/utils';
 import { Box, ButtonLink, ButtonLinkSize, Text } from '../../component-library';
 import {
   AlignItems,

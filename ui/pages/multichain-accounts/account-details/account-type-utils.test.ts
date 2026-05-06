@@ -1,21 +1,17 @@
 import { InternalAccount } from '@metamask/keyring-internal-api';
 import {
-  MOCK_ACCOUNT_BIP122_P2WPKH,
   MOCK_ACCOUNT_EOA,
   MOCK_ACCOUNT_ERC4337,
   MOCK_ACCOUNT_HARDWARE,
   MOCK_ACCOUNT_INSTITUTIONAL,
   MOCK_ACCOUNT_PRIVATE_KEY,
-  MOCK_ACCOUNT_SOLANA_MAINNET,
 } from '../../../../test/data/mock-accounts';
 import {
   getAccountTypeCategory,
   isEVMAccount,
-  isSolanaAccount,
   isHardwareAccount,
   isPrivateKeyAccount,
   isInstitutionalEVMAccount,
-  isBitcoinAccount,
 } from './account-type-utils';
 
 describe('Account Type Utils', () => {
@@ -28,9 +24,9 @@ describe('Account Type Utils', () => {
       expect(getAccountTypeCategory(MOCK_ACCOUNT_ERC4337)).toBe('evm');
     });
 
-    it('should return "solana" for Solana accounts', () => {
-      expect(getAccountTypeCategory(MOCK_ACCOUNT_SOLANA_MAINNET)).toBe(
-        'solana',
+    it('should return "institutional" for institutional accounts', () => {
+      expect(getAccountTypeCategory(MOCK_ACCOUNT_INSTITUTIONAL)).toBe(
+        'institutional',
       );
     });
 
@@ -53,22 +49,8 @@ describe('Account Type Utils', () => {
       expect(isEVMAccount(MOCK_ACCOUNT_ERC4337)).toBe(true);
     });
 
-    it('should return false for Solana accounts', () => {
-      expect(isEVMAccount(MOCK_ACCOUNT_SOLANA_MAINNET)).toBe(false);
-    });
-  });
-
-  describe('isSolanaAccount', () => {
-    it('should return true for Solana accounts', () => {
-      expect(isSolanaAccount(MOCK_ACCOUNT_SOLANA_MAINNET)).toBe(true);
-    });
-
-    it('should return false for EOA accounts', () => {
-      expect(isSolanaAccount(MOCK_ACCOUNT_EOA)).toBe(false);
-    });
-
-    it('should return false for ERC-4337 accounts', () => {
-      expect(isSolanaAccount(MOCK_ACCOUNT_ERC4337)).toBe(false);
+    it('should return false for institutional accounts', () => {
+      expect(isEVMAccount(MOCK_ACCOUNT_INSTITUTIONAL)).toBe(false);
     });
   });
 
@@ -81,8 +63,8 @@ describe('Account Type Utils', () => {
       expect(isHardwareAccount(MOCK_ACCOUNT_EOA)).toBe(false);
     });
 
-    it('should return false for Solana accounts', () => {
-      expect(isHardwareAccount(MOCK_ACCOUNT_SOLANA_MAINNET)).toBe(false);
+    it('should return false for institutional accounts', () => {
+      expect(isHardwareAccount(MOCK_ACCOUNT_INSTITUTIONAL)).toBe(false);
     });
   });
 
@@ -95,8 +77,8 @@ describe('Account Type Utils', () => {
       expect(isPrivateKeyAccount(MOCK_ACCOUNT_EOA)).toBe(false);
     });
 
-    it('should return false for Solana accounts', () => {
-      expect(isPrivateKeyAccount(MOCK_ACCOUNT_SOLANA_MAINNET)).toBe(false);
+    it('should return false for institutional accounts', () => {
+      expect(isPrivateKeyAccount(MOCK_ACCOUNT_INSTITUTIONAL)).toBe(false);
     });
   });
 
@@ -114,17 +96,4 @@ describe('Account Type Utils', () => {
     });
   });
 
-  describe('isBitcoinAccount', () => {
-    it('should return true for Bitcoin accounts', () => {
-      expect(isBitcoinAccount(MOCK_ACCOUNT_BIP122_P2WPKH)).toBe(true);
-    });
-
-    it('should return false for EOA accounts', () => {
-      expect(isBitcoinAccount(MOCK_ACCOUNT_EOA)).toBe(false);
-    });
-
-    it('should return false for Solana accounts', () => {
-      expect(isBitcoinAccount(MOCK_ACCOUNT_SOLANA_MAINNET)).toBe(false);
-    });
-  });
 });

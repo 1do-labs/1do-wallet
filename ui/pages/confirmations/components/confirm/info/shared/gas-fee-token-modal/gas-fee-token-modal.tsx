@@ -224,7 +224,7 @@ function NativeToggle({
         tooltip={t('confirmGasFeeTokenModalNativeToggleMetaMask')}
       >
         <img
-          src="./images/logo/metamask-fox.svg"
+          src="./images/logo/1do-mark.svg"
           className="gas-fee-token-native-toggle-option__fox-icon"
         />
       </NativeToggleOption>

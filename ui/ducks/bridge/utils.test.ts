@@ -1,5 +1,4 @@
 import { type CaipAssetType } from '@metamask/utils';
-import { MultichainNetworks } from '../../../shared/constants/multichain/networks';
 import { CHAIN_IDS } from '../../../shared/constants/network';
 import { isSupportedBridgeChain, toBridgeToken } from './utils';
 
@@ -35,14 +34,6 @@ describe('isSupportedBridgeChain', () => {
   });
 
   describe('non-EVM chains', () => {
-    it('returns true for Solana mainnet', () => {
-      expect(isSupportedBridgeChain(MultichainNetworks.SOLANA)).toBe(true);
-    });
-
-    it('returns true for Bitcoin mainnet', () => {
-      expect(isSupportedBridgeChain(MultichainNetworks.BITCOIN)).toBe(true);
-    });
-
     it('returns false for an unknown Solana network', () => {
       expect(isSupportedBridgeChain(`solana:unknown-testnet` as never)).toBe(
         false,

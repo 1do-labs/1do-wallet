@@ -6,15 +6,8 @@ import {
 import {
   getCronjobControllerMessenger,
   getExecutionServiceMessenger,
-  getMultichainRoutingServiceMessenger,
   getRateLimitControllerInitMessenger,
   getRateLimitControllerMessenger,
-  getSnapControllerInitMessenger,
-  getSnapControllerMessenger,
-  getSnapInsightsControllerMessenger,
-  getSnapInterfaceControllerMessenger,
-  getSnapsNameProviderMessenger,
-  getSnapRegistryControllerMessenger,
   getWebSocketServiceMessenger,
 } from './snaps';
 import {
@@ -37,7 +30,6 @@ import {
   getMultichainNetworkControllerMessenger,
   getMultichainAssetsRatesControllerMessenger,
 } from './multichain';
-import { getInstitutionalSnapControllerMessenger } from './accounts/institutional-snap-controller-messenger';
 import {
   getAuthenticationControllerInitMessenger,
   getAuthenticationControllerMessenger,
@@ -74,8 +66,6 @@ import {
   getAccountTreeControllerInitMessenger,
   getMultichainAccountServiceMessenger,
   getMultichainAccountServiceInitMessenger,
-  getSnapKeyringBuilderMessenger,
-  getSnapKeyringBuilderInitMessenger,
 } from './accounts';
 import {
   getOAuthServiceMessenger,
@@ -95,7 +85,6 @@ import {
   getSubscriptionControllerMessenger,
 } from './subscription';
 import { getConnectivityControllerMessenger } from './connectivity';
-import { getGatorPermissionsControllerMessenger } from './gator-permissions/gator-permissions-controller-messenger';
 import { getMetaMetricsControllerMessenger } from './metametrics-controller-messenger';
 import { getUserStorageControllerInitMessenger } from './identity/user-storage-controller-messenger';
 import {
@@ -522,20 +511,12 @@ export const MESSENGER_FACTORIES = {
     getMessenger: getGasFeeControllerMessenger,
     getInitMessenger: getGasFeeControllerInitMessenger,
   },
-  GatorPermissionsController: {
-    getMessenger: getGatorPermissionsControllerMessenger,
-    getInitMessenger: noop,
-  },
   GeolocationApiService: {
     getMessenger: getGeolocationApiServiceMessenger,
     getInitMessenger: noop,
   },
   GeolocationController: {
     getMessenger: getGeolocationControllerMessenger,
-    getInitMessenger: noop,
-  },
-  InstitutionalSnapController: {
-    getMessenger: getInstitutionalSnapControllerMessenger,
     getInitMessenger: noop,
   },
   KeyringController: {
@@ -576,10 +557,6 @@ export const MESSENGER_FACTORIES = {
   },
   MultichainNetworkController: {
     getMessenger: getMultichainNetworkControllerMessenger,
-    getInitMessenger: noop,
-  },
-  MultichainRoutingService: {
-    getMessenger: getMultichainRoutingServiceMessenger,
     getInitMessenger: noop,
   },
   NameController: {
@@ -649,30 +626,6 @@ export const MESSENGER_FACTORIES = {
   SignatureController: {
     getMessenger: getSignatureControllerMessenger,
     getInitMessenger: getSignatureControllerInitMessenger,
-  },
-  SnapsNameProvider: {
-    getMessenger: getSnapsNameProviderMessenger,
-    getInitMessenger: noop,
-  },
-  SnapRegistryController: {
-    getMessenger: getSnapRegistryControllerMessenger,
-    getInitMessenger: noop,
-  },
-  SnapController: {
-    getMessenger: getSnapControllerMessenger,
-    getInitMessenger: getSnapControllerInitMessenger,
-  },
-  SnapInsightsController: {
-    getMessenger: getSnapInsightsControllerMessenger,
-    getInitMessenger: noop,
-  },
-  SnapInterfaceController: {
-    getMessenger: getSnapInterfaceControllerMessenger,
-    getInitMessenger: noop,
-  },
-  SnapKeyringBuilder: {
-    getMessenger: getSnapKeyringBuilderMessenger,
-    getInitMessenger: getSnapKeyringBuilderInitMessenger,
   },
   StaticAssetsController: {
     getMessenger: getStaticAssetsControllerMessenger,

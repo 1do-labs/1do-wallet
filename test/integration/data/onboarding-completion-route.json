@@ -31,7 +31,6 @@
   },
   "accountsAssets": {},
   "accountsByChainId": {},
-  "addSnapAccountEnabled": false,
   "addressBook": {
     "*": {
       "0x03Cf1158B58CcDfc04dd518F11f85C3ee7fA0189": {
@@ -374,7 +373,6 @@
       "localizationFiles": []
     }
   },
-  "snapsAddSnapAccountModalDismissed": false,
   "storageMetadata": [],
   "storageWriteErrorType": null,
   "subjectMetadata": {

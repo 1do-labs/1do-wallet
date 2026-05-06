@@ -10,7 +10,6 @@ import { CHAIN_IDS, FEATURED_RPCS } from '../../../shared/constants/network';
 import * as networkConstants from '../../../shared/constants/network';
 import { createBridgeMockStore } from '../../../test/data/bridge/mock-bridge-store';
 import { setBackgroundConnection } from '../../store/background-connection';
-import { MultichainNetworks } from '../../../shared/constants/multichain/networks';
 import { SlippageValue } from '../../pages/bridge/utils/slippage-service';
 import * as cacheUtils from '../../pages/bridge/utils/cache';
 import * as storeActions from '../../store/actions';
@@ -61,36 +60,6 @@ describe('Ducks - Bridge', () => {
         setEnabledAllPopularNetworks: jest.fn(),
         getStatePatches: jest.fn(),
       } as never);
-    });
-
-    it('dispatches the action for a supported non-EVM chain (Solana)', () => {
-      const state = store.getState().bridge;
-      const actionPayload = {
-        symbol: 'SYMBOL',
-        chainId: MultichainNetworks.SOLANA,
-        assetId:
-          'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp/token:So11111111111111111111111111111111111111112',
-        decimals: 9,
-      };
-      store.dispatch(setFromToken(actionPayload as never) as never);
-      const actions = store.getActions();
-      expect(actions[0].type).toStrictEqual('bridge/setFromToken');
-      const newState = bridgeReducer(state, actions[0]);
-      expect(newState.fromToken).toMatchInlineSnapshot(`
-        {
-          "accountType": undefined,
-          "assetId": "solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp/token:So11111111111111111111111111111111111111112",
-          "balance": "0",
-          "chainId": "solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp",
-          "decimals": 9,
-          "iconUrl": "https://static.cx.metamask.io/api/v2/tokenIcons/assets/solana/5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp/token/So11111111111111111111111111111111111111112.png",
-          "isVerified": undefined,
-          "name": "SYMBOL",
-          "rwaData": undefined,
-          "symbol": "SYMBOL",
-          "tokenFiatAmount": undefined,
-        }
-      `);
     });
 
     it('dispatches the action for a supported EVM chain that is in the user network configs', () => {

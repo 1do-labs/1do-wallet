@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import useIsOverflowing from '../../../../../hooks/snaps/useIsOverflowing';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   Box,
   Button,
@@ -15,13 +14,24 @@ import {
 
 const NftDetailDescription = ({ value }: { value: string | null }) => {
   const t = useI18nContext();
-  const { contentRef, isOverflowing } = useIsOverflowing();
+  const contentRef = useRef<HTMLParagraphElement | null>(null);
+  const [isOverflowing, setIsOverflowing] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
-
   // TEMPORARY MOCK - Remove this before committing
   const mockDescription =
     'At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio.';
   const displayValue = value || mockDescription;
+
+  useEffect(() => {
+    if (!contentRef.current) {
+      setIsOverflowing(false);
+      return;
+    }
+
+    setIsOverflowing(
+      contentRef.current.offsetHeight < contentRef.current.scrollHeight,
+    );
+  }, [displayValue, isOpen]);
 
   const shouldDisplayButton = isOverflowing;
 

@@ -2,22 +2,17 @@ import React, {
   useCallback,
   useContext,
   useEffect,
+  useMemo,
   useRef,
   useState,
-  useMemo,
 } from 'react';
-import {
-  formatChainIdToHex,
-  formatChainIdToCaip,
-  isNonEvmChainId,
-} from '@metamask/bridge-controller';
+import { formatChainIdToHex } from '@metamask/bridge-controller';
 import { TextButton } from '@metamask/design-system-react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { getTokenTrackerLink } from '@metamask/etherscan-link/dist/token-tracker-link';
 import { CHAIN_IDS } from '@metamask/transaction-controller';
-import { NON_EVM_TESTNET_IDS } from '@metamask/multichain-network-controller';
 import { ERC20, ERC721, ERC1155 } from '@metamask/controller-utils';
 import { Tab, Tabs } from '../../ui/tabs';
 import { useI18nContext } from '../../../hooks/useI18nContext';
@@ -39,7 +34,6 @@ import {
 import {
   addImportedTokens,
   importCustomAssetsBatch,
-  multichainAddAssets,
   clearPendingTokens,
   setPendingTokens,
   showImportNftsModal,
@@ -113,7 +107,6 @@ import { isEvmChainId, toAssetId } from '../../../../shared/lib/asset-utils';
 import { NetworkSelectorCustomImport } from '../../app/import-token/network-selector-custom-import';
 import { getImageForChainId } from '../../../selectors/multichain';
 import { getSelectedMultichainNetworkChainId } from '../../../selectors/multichain/networks';
-import { getInternalAccountBySelectedAccountGroupAndCaip } from '../../../selectors/multichain-accounts/account-tree';
 import { NetworkListItem } from '../network-list-item';
 import TokenListPlaceholder from '../../app/import-token/token-list/token-list-placeholder';
 import { endTrace, trace, TraceName } from '../../../../shared/lib/trace';
@@ -162,14 +155,7 @@ export const ImportTokensModal = ({ onClose }) => {
   const allNetworkConfigurations = useSelector(
     getAllNetworkConfigurationsByCaipChainId,
   );
-
-  const allNetworks = useMemo(() => {
-    return Object.fromEntries(
-      Object.entries(allNetworkConfigurations).filter(
-        ([key]) => !NON_EVM_TESTNET_IDS.includes(key),
-      ),
-    );
-  }, [allNetworkConfigurations]);
+  const allNetworks = allNetworkConfigurations;
 
   // Tracks which page the user is on
   const [actionMode, setActionMode] = useState(ACTION_MODES.IMPORT_TOKEN);
@@ -181,21 +167,12 @@ export const ImportTokensModal = ({ onClose }) => {
     enabledNetworksByNamespace,
   );
 
-  // Initialize selected network with current multichain network, handling both EVM and non-EVM
+  // Initialize selected network with the current EVM multichain network.
   useEffect(() => {
     if (!selectedNetwork || selectedNetwork === chainId) {
-      // Initialize or update with the current multichain network
-      if (currentMultichainChainId) {
-        if (isEvmChainId(currentMultichainChainId)) {
-          // For EVM networks, convert from CAIP format to hex
-          const hexChainId = formatChainIdToHex(currentMultichainChainId);
-          setSelectedNetwork(hexChainId);
-        } else {
-          // For non-EVM networks, use the chain ID directly
-          setSelectedNetwork(currentMultichainChainId);
-        }
+      if (currentMultichainChainId && isEvmChainId(currentMultichainChainId)) {
+        setSelectedNetwork(formatChainIdToHex(currentMultichainChainId));
       } else if (!selectedNetwork) {
-        // Fallback to default EVM chain if no multichain network selected
         setSelectedNetwork(chainId);
       }
     }
@@ -302,12 +279,6 @@ export const ImportTokensModal = ({ onClose }) => {
   const { trackEvent } = useContext(MetaMetricsContext);
   const pendingTokens = useSelector(getPendingTokens);
 
-  // Get accounts for non-EVM chains using the account tree selector
-  const getAccountForChain = useSelector((state) => {
-    return (caipChainId) =>
-      getInternalAccountBySelectedAccountGroupAndCaip(state, caipChainId);
-  });
-
   const handleAddTokens = useCallback(async () => {
     try {
       const assetsIds = Object.keys(pendingTokens).map((tokenAddress) => {
@@ -322,57 +293,22 @@ export const ImportTokensModal = ({ onClose }) => {
 
       // All tokens should be from the same chain since UI clears selection on network change
       const { chainId: tokenChainId } = addedTokenValues[0];
-      const isNonEvm = isNonEvmChainId(tokenChainId);
-
-      if (isNonEvm) {
-        // Handle non-EVM tokens
-        const accountForChain = getAccountForChain(tokenChainId);
-
-        if (!accountForChain) {
-          console.warn(`No account found for chain ${tokenChainId}`);
-          return;
-        }
-
-        // Convert all tokens to CAIP asset format
-        const assetIds = addedTokenValues
-          .map((token) => {
-            // Convert address to CAIP asset format
-            const assetId =
-              token.assetId || toAssetId(token.address, tokenChainId);
-
-            if (!assetId) {
-              console.warn(
-                `Failed to create assetId for token ${token.address} on chain ${tokenChainId}`,
-              );
-              return null;
-            }
-
-            return assetId;
-          })
-          .filter((assetId) => assetId !== null); // Remove any failed conversions
-
-        if (assetIds.length > 0) {
-          await dispatch(multichainAddAssets(assetIds, accountForChain.id));
-        }
-      } else {
-        // Handle EVM tokens - use existing batch import
-        const networkConfig = networkConfigurations[tokenChainId];
-        if (!networkConfig) {
-          console.warn(`No network config found for chain ${tokenChainId}`);
-          return;
-        }
-
-        const clientId =
-          networkConfig.rpcEndpoints[networkConfig.defaultRpcEndpointIndex]
-            ?.networkClientId;
-
-        if (!clientId) {
-          console.warn(`No network client ID found for chain ${tokenChainId}`);
-          return;
-        }
-
-        await dispatch(addImportedTokens(addedTokenValues, clientId));
+      const networkConfig = networkConfigurations[tokenChainId];
+      if (!networkConfig) {
+        console.warn(`No network config found for chain ${tokenChainId}`);
+        return;
       }
+
+      const clientId =
+        networkConfig.rpcEndpoints[networkConfig.defaultRpcEndpointIndex]
+          ?.networkClientId;
+
+      if (!clientId) {
+        console.warn(`No network client ID found for chain ${tokenChainId}`);
+        return;
+      }
+
+      await dispatch(addImportedTokens(addedTokenValues, clientId));
 
       if (assetsUnifyStateFeatureEnabled) {
         const assets = assetsIds.map((assetId) => ({
@@ -420,7 +356,7 @@ export const ImportTokensModal = ({ onClose }) => {
             source_connection_method: pendingToken.isCustom
               ? MetaMetricsTokenEventSource.Custom
               : MetaMetricsTokenEventSource.List,
-            token_standard: isNonEvm ? TokenStandard.none : ERC20,
+            token_standard: ERC20,
             asset_type: AssetType.token,
           },
         });
@@ -447,7 +383,6 @@ export const ImportTokensModal = ({ onClose }) => {
     pendingTokens,
     trackEvent,
     networkConfigurations,
-    getAccountForChain,
     assetsUnifyStateFeatureEnabled,
     assetPreferences,
     selectedAccount?.id,
@@ -486,17 +421,14 @@ export const ImportTokensModal = ({ onClose }) => {
 
   useEffect(() => {
     if (selectedNetwork) {
-      // For non-EVM networks, check allNetworks first (they use CAIP chain IDs)
-      // For EVM networks, check networkConfigurations (they use hex chain IDs)
-      const networkConfig =
-        allNetworks[selectedNetwork] || networkConfigurations[selectedNetwork];
+      const networkConfig = networkConfigurations[selectedNetwork];
       if (networkConfig) {
         setNetworkFilter({
           [selectedNetwork]: networkConfig,
         });
       }
     }
-  }, [selectedNetwork, networkConfigurations, allNetworks]);
+  }, [selectedNetwork, networkConfigurations]);
 
   useEffect(() => {
     setSelectedTokens({});
@@ -796,11 +728,8 @@ export const ImportTokensModal = ({ onClose }) => {
   };
 
   const accountAddress = useMemo(
-    () =>
-      isEvmChainId(selectedNetwork)
-        ? getAccountForChain(formatChainIdToCaip(selectedNetwork))?.address
-        : getAccountForChain(selectedNetwork)?.id,
-    [selectedNetwork, getAccountForChain],
+    () => selectedAccount?.address,
+    [selectedAccount],
   );
 
   // Determines whether to show the Search/Import or Confirm action
@@ -848,19 +777,11 @@ export const ImportTokensModal = ({ onClose }) => {
                     iconSize={AvatarNetworkSize.Sm}
                     focus={false}
                     onClick={() => {
-                      const networkChainId = isEvmChainId(network.chainId)
-                        ? formatChainIdToHex(network.chainId)
-                        : network.chainId;
-                      setSelectedNetwork(networkChainId);
+                      setSelectedNetwork(formatChainIdToHex(network.chainId));
                       clearAllFormData();
                       setActionMode(ACTION_MODES.IMPORT_TOKEN);
                     }}
-                    selected={
-                      isEvmChainId(network.chainId)
-                        ? formatChainIdToHex(network.chainId) ===
-                          selectedNetwork
-                        : network.chainId === selectedNetwork
-                    }
+                    selected={formatChainIdToHex(network.chainId) === selectedNetwork}
                   />
                 </Box>
               ))}
@@ -905,7 +826,6 @@ export const ImportTokensModal = ({ onClose }) => {
             <>
               <NetworkSelectorCustomImport
                 title={
-                  allNetworks[selectedNetwork]?.name ||
                   networkConfigurations[selectedNetwork]?.name
                 }
                 buttonDataTestId="test-import-tokens-drop-down-custom-import"

@@ -21,9 +21,7 @@ import {
   getToToken,
   getFromToken,
   getSlippage,
-  getIsSolanaSwap,
   getQuoteRequest,
-  getIsToOrFromNonEvm,
   getIsStxEnabled,
   getValidationErrors,
   getPriceImpact,
@@ -52,6 +50,7 @@ import {
 } from '../../../selectors/selectors';
 import { PriceImpactQuoteDetailsRow } from '../components/price-impact-quote-details-row';
 import { BridgeQuotesModal } from './bridge-quotes-modal';
+import { SlippageValue } from '../utils/slippage-service';
 
 export { MultichainBridgeQuoteCardSkeleton } from './multichain-bridge-quote-card-skeleton';
 
@@ -93,14 +92,11 @@ export const MultichainBridgeQuoteCard = ({
   const fromToken = useSelector(getFromToken);
   const toToken = useSelector(getToToken);
   const slippage = useSelector(getSlippage);
-  const isSolanaSwap = useSelector(getIsSolanaSwap);
   const dispatch = useDispatch();
   const { isEstimatedReturnLow } = useSelector(
     getValidationErrors,
     shallowEqual,
   );
-
-  const isToOrFromNonEvm = useSelector(getIsToOrFromNonEvm);
   const isHardwareWalletAccount = useSelector(isHardwareWallet);
   const gasFeesSponsoredNetworkEnabled = useSelector(
     getGasFeesSponsoredNetworkEnabled,
@@ -276,68 +272,31 @@ export const MultichainBridgeQuoteCard = ({
           </Row>
         </Row>
 
-        {/* Network Fee - Hide if zero/undefined for non-EVM chains (e.g., Bitcoin with no gas.) */}
-        {(!isToOrFromNonEvm ||
-          (activeQuote.totalNetworkFee?.valueInCurrency &&
-            activeQuote.totalNetworkFee.valueInCurrency !== '0')) && (
-          <Row justifyContent={JustifyContent.spaceBetween}>
-            <Row gap={2}>
-              <Text
-                variant={TextVariant.bodySm}
-                color={TextColor.textAlternative}
-              >
-                {t('networkFee')}
-              </Text>
-              <Tooltip
-                title={t('networkFeeExplanationTitle')}
-                position={PopoverPosition.TopStart}
-                offset={[-16, 16]}
-              >
-                {shouldShowGasSponsored
-                  ? t('swapGasFeesSponsoredExplanation', [nativeTokenSymbol])
-                  : t('networkFeeExplanation')}
-              </Tooltip>
+        <Row justifyContent={JustifyContent.spaceBetween}>
+          <Row gap={2}>
+            <Text
+              variant={TextVariant.bodySm}
+              color={TextColor.textAlternative}
+            >
+              {t('networkFee')}
+            </Text>
+            <Tooltip
+              title={t('networkFeeExplanationTitle')}
+              position={PopoverPosition.TopStart}
+              offset={[-16, 16]}
+            >
+              {shouldShowGasSponsored
+                ? t('swapGasFeesSponsoredExplanation', [nativeTokenSymbol])
+                : t('networkFeeExplanation')}
+            </Tooltip>
+          </Row>
+          {shouldShowGasSponsored && (
+            <Row gap={1} data-testid="network-fees-sponsored">
+              <SuccessPill label={t('swapGasFeesSponsored')} />
             </Row>
-            {shouldShowGasSponsored && (
-              <Row gap={1} data-testid="network-fees-sponsored">
-                <SuccessPill label={t('swapGasFeesSponsored')} />
-              </Row>
-            )}
-            {!shouldShowGasSponsored && activeQuote.quote.gasIncluded && (
-              <Row gap={1} data-testid="network-fees-included">
-                <Text
-                  variant={TextVariant.bodySm}
-                  color={
-                    isEstimatedReturnLow
-                      ? TextColor.warningDefault
-                      : TextColor.textAlternative
-                  }
-                  style={{ textDecoration: 'line-through' }}
-                  data-testid="network-fees-included-original-amount"
-                >
-                  {activeQuote.includedTxFees?.valueInCurrency
-                    ? formatNetworkFee(
-                        activeQuote.includedTxFees.valueInCurrency,
-                        currency,
-                      )
-                    : formatNetworkFee(
-                        activeQuote.gasFee.effective?.valueInCurrency,
-                        currency,
-                      )}
-                </Text>
-                <Text
-                  variant={TextVariant.bodySm}
-                  color={
-                    isEstimatedReturnLow
-                      ? TextColor.warningDefault
-                      : TextColor.textAlternative
-                  }
-                >
-                  {t('swapGasFeesIncluded')}
-                </Text>
-              </Row>
-            )}
-            {!shouldShowGasSponsored && !activeQuote.quote.gasIncluded && (
+          )}
+          {!shouldShowGasSponsored && activeQuote.quote.gasIncluded && (
+            <Row gap={1} data-testid="network-fees-included">
               <Text
                 variant={TextVariant.bodySm}
                 color={
@@ -345,16 +304,48 @@ export const MultichainBridgeQuoteCard = ({
                     ? TextColor.warningDefault
                     : TextColor.textAlternative
                 }
-                data-testid="network-fees"
+                style={{ textDecoration: 'line-through' }}
+                data-testid="network-fees-included-original-amount"
               >
-                {formatNetworkFee(
-                  activeQuote.gasFee.effective?.valueInCurrency,
-                  currency,
-                )}
+                {activeQuote.includedTxFees?.valueInCurrency
+                  ? formatNetworkFee(
+                      activeQuote.includedTxFees.valueInCurrency,
+                      currency,
+                    )
+                  : formatNetworkFee(
+                      activeQuote.gasFee.effective?.valueInCurrency,
+                      currency,
+                    )}
               </Text>
-            )}
-          </Row>
-        )}
+              <Text
+                variant={TextVariant.bodySm}
+                color={
+                  isEstimatedReturnLow
+                    ? TextColor.warningDefault
+                    : TextColor.textAlternative
+                }
+              >
+                {t('swapGasFeesIncluded')}
+              </Text>
+            </Row>
+          )}
+          {!shouldShowGasSponsored && !activeQuote.quote.gasIncluded && (
+            <Text
+              variant={TextVariant.bodySm}
+              color={
+                isEstimatedReturnLow
+                  ? TextColor.warningDefault
+                  : TextColor.textAlternative
+              }
+              data-testid="network-fees"
+            >
+              {formatNetworkFee(
+                activeQuote.gasFee.effective?.valueInCurrency,
+                currency,
+              )}
+            </Text>
+          )}
+        </Row>
 
         {/* Slippage */}
         <Row justifyContent={JustifyContent.spaceBetween}>
@@ -378,9 +369,7 @@ export const MultichainBridgeQuoteCard = ({
               variant={TextVariant.bodySm}
               color={TextColor.textAlternative}
             >
-              {slippage === undefined && isSolanaSwap
-                ? t('slippageAuto')
-                : `${slippage}%`}
+              {`${slippage ?? SlippageValue.BridgeDefault}%`}
             </Text>
             <ButtonIcon
               iconName={IconName.Edit}

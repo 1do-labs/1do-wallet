@@ -1,6 +1,6 @@
 {
   "CSS_loadingTakingTooLongActionText": {
-    "message": "Sorun devam ederse MetaMask'i yeniden başlatın.",
+    "message": "Sorun devam ederse 1do'i yeniden başlatın.",
     "description": "Second line of the message that is shown when the initial loading of the MetaMask UI takes a very long time."
   },
   "CSS_loadingTakingTooLongMessageText": {
@@ -70,7 +70,7 @@
     "message": "Hakkında"
   },
   "aboutMetaMask": {
-    "message": "MetaMask Hakkında"
+    "message": "1do Hakkında"
   },
   "accept": {
     "message": "Kabul ediyorum"
@@ -207,7 +207,7 @@
     "message": "Hesap veya cüzdan ekle"
   },
   "addAcquiredTokens": {
-    "message": "MetaMask kullanarak elde ettiğiniz tokenları ekleyin"
+    "message": "1do kullanarak elde ettiğiniz tokenları ekleyin"
   },
   "addAlias": {
     "message": "Diğer adı ekle"
@@ -665,15 +665,15 @@
     "description": "The description of the application"
   },
   "appName": {
-    "message": "MetaMask",
+    "message": "1do",
     "description": "The name of the application"
   },
   "appNameBeta": {
-    "message": "MetaMask Beta",
+    "message": "1do Beta",
     "description": "The name of the application (Beta)"
   },
   "appNameFlask": {
-    "message": "MetaMask Flask",
+    "message": "1do Flask",
     "description": "The name of the application (Flask)"
   },
   "apply": {
@@ -727,7 +727,7 @@
     "message": "Cüzdanınızdaki tokenlar otomatik algılansın, NFT'ler gösterilsin ve toplu hesap bakiye güncellemeleri alınsın"
   },
   "asterdexReferralSubtitle": {
-    "message": "MetaMask referans kodu ile işlemlerde %4'e varan iade alın.",
+    "message": "1do referans kodu ile işlemlerde %4'e varan iade alın.",
     "description": "The subtitle of the AsterDEX referral confirmation screen"
   },
   "attemptToCancelSwapForFree": {
@@ -777,7 +777,7 @@
     "message": "Otomatik Kilitleme Sayacı (dakika)"
   },
   "autoLockTimeLimitDescription": {
-    "message": "MetaMask kilitlenmeden önce dakika olarak boşta kalma süresini belirleyin."
+    "message": "1do kilitlenmeden önce dakika olarak boşta kalma süresini belirleyin."
   },
   "available": {
     "message": "kullanılabilir"
@@ -811,7 +811,7 @@
     "description": "$1 is backupAndSyncBasicFunctionalityNameMention in bold."
   },
   "backupAndSyncEnableDescription": {
-    "message": "Yedekleme ve senkronizasyon, özel ayarlarınız ve özellikleriniz için şifrelenmiş verileri depolamamızı sağlar. Bu, cihazlar arasında aynı MetaMask deneyimini yaşamanızı sağlar ve MetaMask'i yeniden yüklemeniz gerekirse ayarları ve özellikleri geri yükler. Bu işlem Gizli Kurtarma İfadenizi yedeklemez. $1.",
+    "message": "Yedekleme ve senkronizasyon, özel ayarlarınız ve özellikleriniz için şifrelenmiş verileri depolamamızı sağlar. Bu, cihazlar arasında aynı 1do deneyimini yaşamanızı sağlar ve 1do'i yeniden yüklemeniz gerekirse ayarları ve özellikleri geri yükler. Bu işlem Gizli Kurtarma İfadenizi yedeklemez. $1.",
     "description": "$1 is link to the backup and sync privacy policy."
   },
   "backupAndSyncEnableDescriptionUpdatePreferences": {
@@ -837,7 +837,7 @@
     "message": "Gizliliğinizi nasıl koruduğumuzu öğrenin"
   },
   "backupApprovalInfo": {
-    "message": "Bu gizli kod, cihazınızı kaybetmeniz, şifrenizi unutmanız, MetaMask'ı yeniden kurmanızın gerektiği ya da cüzdanınıza başka bir cihazdan oturum açmak istemeniz durumunda cüzdanınıza erişim sağlamak için gereklidir."
+    "message": "Bu gizli kod, cihazınızı kaybetmeniz, şifrenizi unutmanız, 1do'ı yeniden kurmanızın gerektiği ya da cüzdanınıza başka bir cihazdan oturum açmak istemeniz durumunda cüzdanınıza erişim sağlamak için gereklidir."
   },
   "backupApprovalNotice": {
     "message": "Cüzdanınızı ve paranızı güvende tutmak için Gizli Kurtarma İfadenizi yedekleyin."
@@ -861,7 +861,7 @@
     "message": "Temel"
   },
   "basicConfigurationDescription": {
-    "message": "MetaMask, internet hizmetleri üzerinden token bilgileri ve gaz ayarları gibi temel özellikler sunar. İnternet hizmetlerini kullandığınızda IP adresiniz, bu durumda MetaMask ile, paylaşılır. Bu tıpkı herhangi bir web sitesini ziyaret ettiğinizde olduğu gibidir. MetaMask bu verileri geçici olarak kullanır ve verilerinizi hiçbir zaman satmaz. Bir VPN kullanabilir veya bu hizmetleri kapatabilirsiniz ancak bu durum MetaMask deneyiminizi etkileyebilir. Daha fazla bilgi için $1 bölümümüzü okuyun.",
+    "message": "1do, internet hizmetleri üzerinden token bilgileri ve gaz ayarları gibi temel özellikler sunar. İnternet hizmetlerini kullandığınızda IP adresiniz, bu durumda 1do ile, paylaşılır. Bu tıpkı herhangi bir web sitesini ziyaret ettiğinizde olduğu gibidir. 1do bu verileri geçici olarak kullanır ve verilerinizi hiçbir zaman satmaz. Bir VPN kullanabilir veya bu hizmetleri kapatabilirsiniz ancak bu durum 1do deneyiminizi etkileyebilir. Daha fazla bilgi için $1 bölümümüzü okuyun.",
     "description": "$1 is to be replaced by the message for privacyMsg, and will link to https://consensys.io/privacy-policy"
   },
   "basicConfigurationDescriptionV2": {
@@ -875,13 +875,13 @@
     "message": "Anlıyorum ve devam etmek istiyorum"
   },
   "basicConfigurationModalDisclaimerOffPart1": {
-    "message": "Bu, MetaMask'te zamanınızı tamamen optimize edemeyeceğiniz anlamına gelir. Temel özellikler (tokenlar bilgileri, en iyi gaz ayarları vb. gibi) sizin için sunulmayacaktır."
+    "message": "Bu, 1do'te zamanınızı tamamen optimize edemeyeceğiniz anlamına gelir. Temel özellikler (tokenlar bilgileri, en iyi gaz ayarları vb. gibi) sizin için sunulmayacaktır."
   },
   "basicConfigurationModalDisclaimerOffPart2": {
     "message": "Bu özellik kapatıldığında gizlilik, yedekleme, senkronizasyon ve bildirimler kısmındaki bazı özellikler de devre dışı bırakılır."
   },
   "basicConfigurationModalDisclaimerOn": {
-    "message": "MetaMask'te zamanınızı tamamen optimize etmek için bu özelliği açmanız gerekecektir. Temel özellikler (token bilgileri, en iyi gaz ayarları vb. gibi) web3 deneyimi için önemlidir."
+    "message": "1do'te zamanınızı tamamen optimize etmek için bu özelliği açmanız gerekecektir. Temel özellikler (token bilgileri, en iyi gaz ayarları vb. gibi) web3 deneyimi için önemlidir."
   },
   "basicConfigurationModalHeadingOff": {
     "message": "Temel işlevselliği kapat"
@@ -935,13 +935,13 @@
     "message": "En iyi teklif"
   },
   "bestQuoteTooltip": {
-    "message": "Sağlayıcı ücretleri ve %0,25 MetaMask ücreti dahil olmak üzere sağlayıcılardan bulduğumuz en iyi teklif. Fiyat değişirse alacağınız minimum $1."
+    "message": "Sağlayıcı ücretleri ve %0,25 1do ücreti dahil olmak üzere sağlayıcılardan bulduğumuz en iyi teklif. Fiyat değişirse alacağınız minimum $1."
   },
   "beta": {
     "message": "Beta"
   },
   "betaMetamaskVersion": {
-    "message": "MetaMask Beta Sürümü"
+    "message": "1do Beta Sürümü"
   },
   "betaTerms": {
     "message": "Beta Kullanım Şartları"
@@ -1123,7 +1123,7 @@
     "description": "Tooltip title when there's an error fetching estimated points"
   },
   "bridgePoints_error_content": {
-    "message": "Endişelenmeyin, puan kazanmaya devam ediyorsunuz. Yakında hesabınızda gösterilecek veya MetaMask Mobil'de Ödüller sekmesinde kontrol edebileceksiniz.",
+    "message": "Endişelenmeyin, puan kazanmaya devam ediyorsunuz. Yakında hesabınızda gösterilecek veya 1do Mobil'de Ödüller sekmesinde kontrol edebileceksiniz.",
     "description": "Error message when points estimation fails"
   },
   "bridgePoints_tooltip": {
@@ -1131,7 +1131,7 @@
     "description": "Tooltip title for points"
   },
   "bridgePoints_tooltip_content_1": {
-    "message": "Takas, köprü ve sürekli vadeli işlem sözleşmeleri gibi işlemleri tamamladığınızda puan toplar ve MetaMask Ödülleri kazanırsınız.",
+    "message": "Takas, köprü ve sürekli vadeli işlem sözleşmeleri gibi işlemleri tamamladığınızda puan toplar ve 1do Ödülleri kazanırsınız.",
     "description": "First part of tooltip content explaining rewards points"
   },
   "bridgePoints_tooltip_content_2": {
@@ -1151,7 +1151,7 @@
     "message": "İşleminizin boyutundan ve kullanılabilir likiditeden dolayı piyasa fiyatından yaklaşık $1 daha az alacaksınız. Bu zaten teklifinize dahil edilmiştir."
   },
   "bridgePriceImpactNormalDescription": {
-    "message": "Bu, işleminizin bir tokenın piyasa fiyatını nasıl değiştirdiğini gösterir. İşlem boyutuna, mevcut likiditeye ve sağlayıcı ücretlerine bağlıdır. MetaMask fiyat etkisini kontrol etmez."
+    "message": "Bu, işleminizin bir tokenın piyasa fiyatını nasıl değiştirdiğini gösterir. İşlem boyutuna, mevcut likiditeye ve sağlayıcı ücretlerine bağlıdır. 1do fiyat etkisini kontrol etmez."
   },
   "bridgePriceImpactTooltipTitle": {
     "message": "Fiyat etkisi"
@@ -1280,7 +1280,7 @@
     "message": "Hedeflenen:"
   },
   "bridgeTxDetailsDelayedDescriptionSupport": {
-    "message": "MetaMask Destek"
+    "message": "1do Destek"
   },
   "bridgeTxDetailsDelayedTitle": {
     "message": "3 saatten daha uzun süre geçti mi?"
@@ -1336,7 +1336,7 @@
     "message": "Tarayıcınız desteklenmiyor..."
   },
   "builtAroundTheWorld": {
-    "message": "MetaMask dünya çapında geliştirilmiş ve yapılmıştır."
+    "message": "1do dünya çapında geliştirilmiş ve yapılmıştır."
   },
   "busy": {
     "message": "Meşgul"
@@ -1418,7 +1418,7 @@
     "message": "Emin misiniz?"
   },
   "changePasswordWarningDescription": {
-    "message": "Burada şifrenizi değiştirdiğinizde MetaMask kullandığınız diğer cihazlarda kilitlenir. Yeni şifrenizle tekrar oturum açmanız gerekir."
+    "message": "Burada şifrenizi değiştirdiğinizde 1do kullandığınız diğer cihazlarda kilitlenir. Yeni şifrenizle tekrar oturum açmanız gerekir."
   },
   "checkNetworkConnectivity": {
     "message": "Ağ bağlantısını kontrol edin."
@@ -1438,7 +1438,7 @@
     "message": "buraya tıklayın"
   },
   "chromeRequiredForHardwareWallets": {
-    "message": "Donanım Cüzdanınıza bağlamak için MetaMask'ı Google Chrome'da kullanmanız gerekir."
+    "message": "Donanım Cüzdanınıza bağlamak için 1do'ı Google Chrome'da kullanmanız gerekir."
   },
   "circulatingSupply": {
     "message": "Dolaşımdaki arz"
@@ -1499,10 +1499,10 @@
     "message": "Konsantre arz dağılımı"
   },
   "configureSnapPopupDescription": {
-    "message": "Şu anda bu snapi yapılandırmak için MetaMask'ten ayrılıyorsunuz."
+    "message": "Şu anda bu snapi yapılandırmak için 1do'ten ayrılıyorsunuz."
   },
   "configureSnapPopupInstallDescription": {
-    "message": "Şu anda bu snapi yüklemek için MetaMask'ten ayrılıyorsunuz."
+    "message": "Şu anda bu snapi yüklemek için 1do'ten ayrılıyorsunuz."
   },
   "configureSnapPopupInstallTitle": {
     "message": "Snap yükle"
@@ -1587,7 +1587,7 @@
     "message": "$1 ücret dahildir"
   },
   "confirmGasFeeTokenModalNativeToggleMetaMask": {
-    "message": "MetaMask bu işlemi tamamlamak için bakiyeye katkıda bulunuyor."
+    "message": "1do bu işlemi tamamlamak için bakiyeye katkıda bulunuyor."
   },
   "confirmGasFeeTokenModalNativeToggleWallet": {
     "message": "Ağ ücretini cüzdanınızdaki bakiyeyi kullanarak ödeyin."
@@ -1605,7 +1605,7 @@
     "message": "Bu ağ ücretini $1 ile ödüyorsunuz"
   },
   "confirmGasFeeTokenTooltip": {
-    "message": "Bu ücret, işleminizi gerçekleştirmek için ağa ödenir. ETH dışı token'ler veya önceden yüklenmiş ETH için $1 MetaMask ücreti dahildir."
+    "message": "Bu ücret, işleminizi gerçekleştirmek için ağa ödenir. ETH dışı token'ler veya önceden yüklenmiş ETH için $1 1do ücreti dahildir."
   },
   "confirmInfoAccountNow": {
     "message": "Şimdi"
@@ -1754,7 +1754,7 @@
     "description": "$1 is the snap for which a connection is being requested."
   },
   "connectWithMetaMask": {
-    "message": "MetaMask ile Bağlan"
+    "message": "1do ile Bağlan"
   },
   "connectedAccountsDescriptionPlural": {
     "message": "Bu siteye bağlı $1 hesabınız var.",
@@ -1764,7 +1764,7 @@
     "message": "Bu siteye bağlı 1 hesabınız var."
   },
   "connectedAccountsEmptyDescription": {
-    "message": "MetaMask bu siteye bağlı değil. Bir web3 sitesine bağlanmak için siteyi bulun ve bağlan düğmesine tıklayın."
+    "message": "1do bu siteye bağlı değil. Bir web3 sitesine bağlanmak için siteyi bulun ve bağlan düğmesine tıklayın."
   },
   "connectedAccountsListTooltip": {
     "message": "$1 hesap bakiyenizi, adresinizi, aktivitenizi görebilir ve bağlı hesapları onaylamak için işlem önerebilir.",
@@ -1785,7 +1785,7 @@
     "description": "$1 is the account name"
   },
   "connectedSnapAndNoAccountDescription": {
-    "message": "MetaMask bu siteye bağlı ancak henüz bağlı hesap yok"
+    "message": "1do bu siteye bağlı ancak henüz bağlı hesap yok"
   },
   "connectedSnaps": {
     "message": "Bağlı Snap'ler"
@@ -1831,7 +1831,7 @@
     "message": "Sepolia test ağına bağlanılıyor"
   },
   "connectionDescription": {
-    "message": "Bu web sitesini MetaMask'e bağla"
+    "message": "Bu web sitesini 1do'e bağla"
   },
   "connectionFailed": {
     "message": "Bağlantı başarısız oldu"
@@ -1841,7 +1841,7 @@
     "description": "$1 is the name of the snap being fetched."
   },
   "connectionPopoverDescription": {
-    "message": "Bir siteye bağlanmak için bağlan düğmesini seçin. MetaMask yalnızca web3 sitelerine bağlanabilir."
+    "message": "Bir siteye bağlanmak için bağlan düğmesini seçin. 1do yalnızca web3 sitelerine bağlanabilir."
   },
   "connectionRequest": {
     "message": "Bağlantı talebi"
@@ -1890,7 +1890,7 @@
     "message": "Sözleşme Etkileşimi"
   },
   "convertTokenToNFTDescription": {
-    "message": "Bu varlığın bir NFT olduğunu tespit ettik. MetaMask artık NFT'ler için tam yerel desteğe sahiptir. Bunu token listenizden çıkarmak ve NFT olarak eklemek ister misiniz?"
+    "message": "Bu varlığın bir NFT olduğunu tespit ettik. 1do artık NFT'ler için tam yerel desteğe sahiptir. Bunu token listenizden çıkarmak ve NFT olarak eklemek ister misiniz?"
   },
   "convertTokenToNFTExistDescription": {
     "message": "Bu varlığın bir NFT olarak eklendiğini tespit ettik. Token listenizden çıkarmak ister misiniz?"
@@ -1937,26 +1937,26 @@
     "message": "Yeni bir hesap oluştur"
   },
   "createPassword": {
-    "message": "MetaMask şifresi"
+    "message": "1do şifresi"
   },
   "createPasswordCreate": {
     "message": "Şifre oluştur"
   },
   "createPasswordDetails": {
-    "message": "Yalnızca bu cihazda MetaMask'i açar."
+    "message": "Yalnızca bu cihazda 1do'i açar."
   },
   "createPasswordDetailsSocial": {
     "message": "Bu şifrenin kaybedilmesi tüm cihazlarda cüzdan erişiminin kaybedilmesi anlamına gelir, $1",
     "description": "$1 is the text 'MetaMask can't reset it.'"
   },
   "createPasswordDetailsSocialReset": {
-    "message": "MetaMask bunu sıfırlayamaz."
+    "message": "1do bunu sıfırlayamaz."
   },
   "createPasswordMarketing": {
     "message": "E-posta yoluyla dahil olmak üzere ürün güncellemeleri, ipuçları ve haberleri alın. Etkileşimlerinizi yaptığımız paylaşımları iyileştirmek için kullanabiliriz."
   },
   "createSnapAccountDescription": {
-    "message": "$1 MetaMask'e yeni bir hesap eklemek istiyor."
+    "message": "$1 1do'e yeni bir hesap eklemek istiyor."
   },
   "createSnapAccountTitle": {
     "message": "Hesap oluştur"
@@ -2077,10 +2077,10 @@
     "message": "Önerilen site"
   },
   "dappSwapAdvantage": {
-    "message": "MetaMask Swaps ile tasarruf et ve kazan"
+    "message": "1do Swaps ile tasarruf et ve kazan"
   },
   "dappSwapAdvantageSaveOnly": {
-    "message": "MetaMask Swaps ile tasarruf et"
+    "message": "1do Swaps ile tasarruf et"
   },
   "dappSwapBenefits": {
     "message": "Başarısız takas işlemlerinde ağ ücretleri iade edilir"
@@ -2101,7 +2101,7 @@
     "message": "Pazarlama amacıyla veri toplama"
   },
   "dataCollectionForMarketingDescription": {
-    "message": "MetaMetrics'i, pazarlama iletişimlerimizle nasıl etkileşimde bulunduğunuzu öğrenmek için kullanacağız. İlgili haberleri (ürün özellikleri ve diğer materyaller gibi) paylaşabiliriz."
+    "message": "1do Metrics'i, pazarlama iletişimlerimizle nasıl etkileşimde bulunduğunuzu öğrenmek için kullanacağız. İlgili haberleri (ürün özellikleri ve diğer materyaller gibi) paylaşabiliriz."
   },
   "dataCollectionForMarketingDescriptionSocialLogin": {
     "message": "E-posta yoluyla dahil olmak üzere ürün güncellemeleri, ipuçları ve haberleri alın. Etkileşimlerinizi yaptığımız paylaşımları iyileştirmek için kullanabiliriz."
@@ -2110,7 +2110,7 @@
     "message": "Tamam"
   },
   "dataCollectionWarningPopoverDescription": {
-    "message": "Pazarlama amacıyla veri toplama seçeneğini kapattınız. Bu, sadece bu cihaz için geçerlidir. MetaMask'i başka cihazlarda kullanırsanız bu cihazlarda da vazgeçtiğinizden emin olun."
+    "message": "Pazarlama amacıyla veri toplama seçeneğini kapattınız. Bu, sadece bu cihaz için geçerlidir. 1do'i başka cihazlarda kullanırsanız bu cihazlarda da vazgeçtiğinizden emin olun."
   },
   "dataUnavailable": {
     "message": "veri mevcut değil"
@@ -2180,14 +2180,14 @@
     "description": "$1 is a link with the text found in `deepLink_Error404_CTA_LinkText`"
   },
   "deepLink_Error404_CTA_LinkText": {
-    "message": "MetaMask’in en son sürümüne güncelleyin",
+    "message": "1do’in en son sürümüne güncelleyin",
     "description": "Part of `deepLink_Error404_CTA`. The text links to https://support.metamask.io/configure/wallet/how-to-update-the-version-of-metamask/"
   },
   "deepLink_ErrorMissingUrl": {
     "message": "Gidilecek url adresi sunulmadı."
   },
   "deepLink_ErrorOtherDescription": {
-    "message": "Bu bir hata ve MetaMask'e bildirilmeli."
+    "message": "Bu bir hata ve 1do'e bildirilmeli."
   },
   "deepLink_ErrorOtherTitle": {
     "message": "Derin bağlantı işlenirken bir hata oluştu"
@@ -2196,10 +2196,10 @@
     "message": "Ana sayfaya git"
   },
   "deepLink_RedirectingToMetaMask": {
-    "message": "Yeniden MetaMask'e yönlendiriliyor"
+    "message": "Yeniden 1do'e yönlendiriliyor"
   },
   "deepLink_ThirdPartyDescription": {
-    "message": "Buraya MetaMask tarafından değil, üçüncü bir taraftan gönderildiniz. $1",
+    "message": "Buraya 1do tarafından değil, üçüncü bir taraftan gönderildiniz. $1",
     "description": "$1 is the message 'deepLink_ContinueDescription'"
   },
   "deepLink_theAssetPage": {
@@ -2209,7 +2209,7 @@
     "message": "al sayfası"
   },
   "deepLink_theCardOnboardingPage": {
-    "message": "MetaMask Kart kayıt sayfası"
+    "message": "1do Kart kayıt sayfası"
   },
   "deepLink_theHomePage": {
     "message": "ana sayfa"
@@ -2239,7 +2239,7 @@
     "message": "tahmin piyasaları sayfası"
   },
   "deepLink_theRewardsPage": {
-    "message": "MetaMask Ödüller sayfası"
+    "message": "1do Ödüller sayfası"
   },
   "deepLink_theSellPage": {
     "message": "satış sayfası"
@@ -2260,7 +2260,7 @@
     "message": "Varsayılan RPC URL adresi"
   },
   "defaultSettingsSubTitle": {
-    "message": "MetaMask, güvenlik ve kullanım kolaylığını en iyi şekilde dengelemek için varsayılan ayarları kullanır. Gizliliğinizi daha fazla artırmak için bu ayarları değiştirin."
+    "message": "1do, güvenlik ve kullanım kolaylığını en iyi şekilde dengelemek için varsayılan ayarları kullanır. Gizliliğinizi daha fazla artırmak için bu ayarları değiştirin."
   },
   "defaultSettingsTitle": {
     "message": "Varsayılan gizlilik ayarları"
@@ -2272,11 +2272,11 @@
     "message": "Doğrudan cüzdanınızda borç verin, borç alın ve işlem yapın."
   },
   "defiReferralCheckboxLabel": {
-    "message": "MetaMask'in bir yönlendirme kodu eklemesine izin verin. Bu işlem kalıcıdır. Site, kendi koşullarına göre indirimler sunar. MetaMask bu işlemden bir ücret kazanır.",
+    "message": "1do'in bir yönlendirme kodu eklemesine izin verin. Bu işlem kalıcıdır. Site, kendi koşullarına göre indirimler sunar. 1do bu işlemden bir ücret kazanır.",
     "description": "The text for the checkbox label in the DeFi referral confirmation screen"
   },
   "defiReferralTitle": {
-    "message": "MetaMask x $1",
+    "message": "1do x $1",
     "description": "The title of the DeFi referral confirmation screen. $1 is the name of the partner"
   },
   "defiTabErrorContent": {
@@ -2292,14 +2292,14 @@
     "message": "Aktiviteyi ve nonce verilerini sil"
   },
   "deleteMetaMetricsData": {
-    "message": "MetaMetrics verilerini sil"
+    "message": "1do Metrics verilerini sil"
   },
   "deleteMetaMetricsDataDescription": {
-    "message": "Bu işlem, bu cihazdaki kullanımınızla ilişkili geçmiş MetaMetrics verilerini silecektir. Bu veriler silindikten sonra cüzdanınız ve hesaplarınız tam olarak şu anda oldukları gibi kalacaktır. Bu süreç 30 güne kadar sürebilir. $1 bölümümüzü görüntüleyin.",
+    "message": "Bu işlem, bu cihazdaki kullanımınızla ilişkili geçmiş 1do Metrics verilerini silecektir. Bu veriler silindikten sonra cüzdanınız ve hesaplarınız tam olarak şu anda oldukları gibi kalacaktır. Bu süreç 30 güne kadar sürebilir. $1 bölümümüzü görüntüleyin.",
     "description": "$1 will have text saying Privacy Policy "
   },
   "deleteMetaMetricsDataDescriptionV2": {
-    "message": "Bu işlem, cüzdanınızla ilişkili geçmiş MetaMetrics verilerini siler. MetaMetrics, anonimleştirilmiş kullanım ve tanı verilerini içerir. Cüzdanınız ve hesaplarınız aynı kalır. Bu işlem 30 güne kadar sürebilir. $1 bölümümüzü görüntüleyin.",
+    "message": "Bu işlem, cüzdanınızla ilişkili geçmiş 1do Metrics verilerini siler. 1do Metrics, anonimleştirilmiş kullanım ve tanı verilerini içerir. Cüzdanınız ve hesaplarınız aynı kalır. Bu işlem 30 güne kadar sürebilir. $1 bölümümüzü görüntüleyin.",
     "description": "$1 will have text saying Privacy Policy "
   },
   "deleteMetaMetricsDataErrorDesc": {
@@ -2312,10 +2312,10 @@
     "message": "Silinemiyor"
   },
   "deleteMetaMetricsDataModalDesc": {
-    "message": "Tüm MetaMetrics verilerini kaldırmak üzeresiniz. Emin misiniz?"
+    "message": "Tüm 1do Metrics verilerini kaldırmak üzeresiniz. Emin misiniz?"
   },
   "deleteMetaMetricsDataModalTitle": {
-    "message": "MetaMetrics verilerini sil?"
+    "message": "1do Metrics verilerini sil?"
   },
   "deleteMetaMetricsDataRequestedDescription": {
     "message": "$1 tarihinde bir silme işlemi başlattınız. Bu işlem 30 güne kadar sürebilir. $2 bölümünü görüntüleyin.",
@@ -2341,7 +2341,7 @@
     "message": "Anladım"
   },
   "deprecatedNetworkDescription": {
-    "message": "Bağlanmaya çalıştığınız ağ artık MetaMask tarafından desteklenmiyor. $1"
+    "message": "Bağlanmaya çalıştığınız ağ artık 1do tarafından desteklenmiyor. $1"
   },
   "description": {
     "message": "Açıklama"
@@ -2459,7 +2459,7 @@
     "message": "İndir"
   },
   "downloadAppDescription": {
-    "message": "MetaMask'i gittiğiniz her yere yanınızda götürün. Şifrenizi unutsanız bile her zaman erişiminizin olması için Face ID'yi açın."
+    "message": "1do'i gittiğiniz her yere yanınızda götürün. Şifrenizi unutsanız bile her zaman erişiminizin olması için Face ID'yi açın."
   },
   "downloadAppTitle": {
     "message": "QR kodunu tarayın ve uygulamayı indirin"
@@ -2468,7 +2468,7 @@
     "message": "Google Chrome'u indir"
   },
   "downloadMetaMaskMobileDescription": {
-    "message": "Face ID ile şifrenizi unutsanız bile uygulamamıza giriş yapabilirsiniz. MetaMask'i gittiğiniz her yere yanınızda götürün!"
+    "message": "Face ID ile şifrenizi unutsanız bile uygulamamıza giriş yapabilirsiniz. 1do'i gittiğiniz her yere yanınızda götürün!"
   },
   "downloadMetaMaskMobileQrNote": {
     "message": "Başlamak için bu QR kodunu tarayın."
@@ -2647,13 +2647,13 @@
     "message": "Gelişmiş token algılama şu anda $1 üzerinden kullanılabilir. $2"
   },
   "ensDomainsSettingDescriptionIntroduction": {
-    "message": "MetaMask, ENS alanlarını doğrudan tarayıcınızın adres çubuğunda görmenizi sağlar. Şöyle çalışır:"
+    "message": "1do, ENS alanlarını doğrudan tarayıcınızın adres çubuğunda görmenizi sağlar. Şöyle çalışır:"
   },
   "ensDomainsSettingDescriptionOutroduction": {
     "message": "Bu özelliğin kullanılmasının IP adresinizi IPFS üçüncü taraf hizmetleriyle paylaştığını unutmayın."
   },
   "ensDomainsSettingDescriptionPart1": {
-    "message": "MetaMask, ENS adına bağlı kodu bulmak için Ethereum'un ENS sözleşmesi ile kontrol gerçekleştirir."
+    "message": "1do, ENS adına bağlı kodu bulmak için Ethereum'un ENS sözleşmesi ile kontrol gerçekleştirir."
   },
   "ensDomainsSettingDescriptionPart2": {
     "message": "Kod IPFS'ye bağlanıyorsa onunla ilişkili içeriği (genellikle bir web sitesi) görebilirsiniz."
@@ -2698,7 +2698,7 @@
     "message": "Devam etmek için şifre girin"
   },
   "enterYourPasswordSocialLoginFlow": {
-    "message": "MetaMask şifresini girin"
+    "message": "1do şifresini girin"
   },
   "errorCode": {
     "message": "Kod: $1",
@@ -2718,7 +2718,7 @@
     "message": "Kişisel bilgi veya diğer cihaz bilgileri toplanmayacaktır."
   },
   "errorLegalTextSecondInfo": {
-    "message": "Tarayıcınız, işletim sisteminiz ve MetaMask sürümleriniz."
+    "message": "Tarayıcınız, işletim sisteminiz ve 1do sürümleriniz."
   },
   "errorLegalTextSummary": {
     "message": "Aşağıdakileri içeren tek bir hata raporu alacağız:"
@@ -2760,7 +2760,7 @@
     "description": "In sentry feedback form, The message displayed after a successful feedback submission."
   },
   "errorPageTitle": {
-    "message": "MetaMask bir hata ile karşılaştı",
+    "message": "1do bir hata ile karşılaştı",
     "description": "Title of generic error page"
   },
   "errorPageTryAgain": {
@@ -2897,11 +2897,11 @@
     "description": "This explains the risks of using MetaMask Flask"
   },
   "flaskWelcomeWarning3": {
-    "message": "Tüm Flask API'leri deney amaçlıdır. Herhangi bir bildirimde bulunmadan değiştirilebilir veya kaldırılabilir ya da kararlı MetaMask'e aktarılmadan süresiz olarak Flask'ta kalabilir. Riski kendinize ait olmak üzere kullanın.",
+    "message": "Tüm Flask API'leri deney amaçlıdır. Herhangi bir bildirimde bulunmadan değiştirilebilir veya kaldırılabilir ya da kararlı 1do'e aktarılmadan süresiz olarak Flask'ta kalabilir. Riski kendinize ait olmak üzere kullanın.",
     "description": "This message warns developers about unstable Flask APIs"
   },
   "flaskWelcomeWarning4": {
-    "message": "Flask kullanırken normal MetaMask uzantınızı devre dışı bıraktığınızdan emin olun.",
+    "message": "Flask kullanırken normal 1do uzantınızı devre dışı bıraktığınızdan emin olun.",
     "description": "This message calls to pay attention about multiple versions of MetaMask running on the same site (Flask + Prod)"
   },
   "flaskWelcomeWarningAcceptButton": {
@@ -2937,7 +2937,7 @@
     "message": "Sizin adınıza şifrenizi kurtaramayız."
   },
   "forgotPasswordModalDescription2": {
-    "message": "Cüzdanınızla ilişkili Gizli Kurtarma İfadesini girerek cüzdanınızı tekrar MetaMask'e ekleyin."
+    "message": "Cüzdanınızla ilişkili Gizli Kurtarma İfadesini girerek cüzdanınızı tekrar 1do'e ekleyin."
   },
   "forgotPasswordModalTitle": {
     "message": "Şifrenizi mi unuttunuz?"
@@ -3120,7 +3120,7 @@
     "description": "Subtitle text for the balance empty state component explaining the purpose of adding funds"
   },
   "gmxReferralSubtitle": {
-    "message": "MetaMask yönlendirme kodu ile işlemlerde %5'e varan tasarruf edin.",
+    "message": "1do yönlendirme kodu ile işlemlerde %5'e varan tasarruf edin.",
     "description": "The subtitle of the GMX referral confirmation screen"
   },
   "goToSite": {
@@ -3234,7 +3234,7 @@
     "message": "Donanım cüzdanı entegrasyonları, IP adresinizi ve etkileşimde bulunduğunuz akıllı sözleşme adreslerini görebilen harici sunucular için API aramalarını kullanır."
   },
   "hardwareWalletsMsg": {
-    "message": "MetaMask ile kullanmak istediğiniz donanım cüzdanını seçin."
+    "message": "1do ile kullanmak istediğiniz donanım cüzdanını seçin."
   },
   "helpAndSettings": {
     "message": "Yardım ve ayarlar"
@@ -3306,7 +3306,7 @@
     "description": "$1 is a message from 'holdToRevealContent4' and $2 is a text link with the message from 'holdToRevealContent5'"
   },
   "holdToRevealContent4": {
-    "message": "MetaMask Destek tarafından bu talep edilmez,",
+    "message": "1do Destek tarafından bu talep edilmez,",
     "description": "Part of 'holdToRevealContent3'"
   },
   "holdToRevealContent5": {
@@ -3346,7 +3346,7 @@
     "message": "Bal tuzağı"
   },
   "hyperliquidReferralSubtitle": {
-    "message": "MetaMask yönlendirme kodu ile işlemlerde %4'e varan tasarruf edin.",
+    "message": "1do yönlendirme kodu ile işlemlerde %4'e varan tasarruf edin.",
     "description": "The subtitle of the Hyperliquid referral confirmation screen"
   },
   "iUnderstand": {
@@ -3378,13 +3378,13 @@
     "message": "Bu geçerli bir özel anahtar değil. 64 karakter uzunluğunda on altılık bir dizi girmelisiniz."
   },
   "importAccountJsonLoading1": {
-    "message": "Bu JSON dosyasının birkaç dakika içinde içe aktarılmasını bekleyin ve MetaMask'i dondurun."
+    "message": "Bu JSON dosyasının birkaç dakika içinde içe aktarılmasını bekleyin ve 1do'i dondurun."
   },
   "importAccountJsonLoading2": {
     "message": "Özür dileriz, bunu gelecekte daha hızlı hale getireceğiz."
   },
   "importAccountMsg": {
-    "message": "İçe aktarılan hesaplar ilk olarak oluşturduğunuz MetaMask hesabı Gizli Kurtarma ifadenizle ilişkilendirilmez. İçe aktarılan hesaplar hakkında daha fazla bilgi edinin"
+    "message": "İçe aktarılan hesaplar ilk olarak oluşturduğunuz 1do hesabı Gizli Kurtarma ifadenizle ilişkilendirilmez. İçe aktarılan hesaplar hakkında daha fazla bilgi edinin"
   },
   "importAccountWithSocialMsg": {
     "message": "İçe aktarılan özel anahtarlar hesabınıza yedeklenir ve aynı Google veya Apple oturumu ile giriş yaptığınızda otomatik olarak senkronize olur."
@@ -3444,7 +3444,7 @@
     "message": "Yanlış"
   },
   "infuraBlockedNotification": {
-    "message": "MetaMask blokzinciri ana bilgisayarına bağlanamıyor. $1 olası nedenleri inceleyin.",
+    "message": "1do blokzinciri ana bilgisayarına bağlanamıyor. $1 olası nedenleri inceleyin.",
     "description": "$1 is a clickable link with with text defined by the 'here' key"
   },
   "insights": {
@@ -3461,7 +3461,7 @@
     "message": "Kökeni yükle"
   },
   "installRequest": {
-    "message": "MetaMask'e ekle"
+    "message": "1do'e ekle"
   },
   "installedOn": {
     "message": "$1 üzerinde yüklendi",
@@ -3563,7 +3563,7 @@
     "message": "IPFS ağ geçidi"
   },
   "ipfsGatewayDescription": {
-    "message": "MetaMask, IPFS'de depolanan NFT'lerinizin görüntülerini göstermek, tarayıcınızın adres çubuğuna girilen ENS adresleri ile ilgili bilgileri göstermek ve farklı tokenların simgelerini almak için üçüncü taraf hizmetleri kullanır. Siz bunları kullanırken IP adresiniz bu hizmetlerle paylaşılabilir."
+    "message": "1do, IPFS'de depolanan NFT'lerinizin görüntülerini göstermek, tarayıcınızın adres çubuğuna girilen ENS adresleri ile ilgili bilgileri göstermek ve farklı tokenların simgelerini almak için üçüncü taraf hizmetleri kullanır. Siz bunları kullanırken IP adresiniz bu hizmetlerle paylaşılabilir."
   },
   "ipfsGatewayDescriptionV2": {
     "message": "IPFS'de depolanan NFT'lerinizin görüntülerini göstermek, tarayıcınızın adres çubuğuna girilen ENS adresleri ile ilgili bilgileri göstermek ve farklı tokenların simgelerini almak için üçüncü taraf hizmetlerini kullanır. Tercih ettiğiniz IPFS ağ geçidini aşağıda seçin."
@@ -3660,10 +3660,10 @@
     "message": "hakkında daha fazla bilgi edinin."
   },
   "leaveMetaMask": {
-    "message": "MetaMask'ten ayrıl?"
+    "message": "1do'ten ayrıl?"
   },
   "leaveMetaMaskDesc": {
-    "message": "MetaMask'in dışında bir siteyi ziyaret etmek üzeresiniz. Devam etmeden önce URL adresini dikkatli bir şekilde kontrol edin."
+    "message": "1do'in dışında bir siteyi ziyaret etmek üzeresiniz. Devam etmeden önce URL adresini dikkatli bir şekilde kontrol edin."
   },
   "ledger": {
     "message": "Ledger",
@@ -3758,7 +3758,7 @@
     "message": "Bağlantı"
   },
   "linkCentralizedExchanges": {
-    "message": "MetaMask'e ücretsiz kripto transferi yapmak için Coinbase veya Binance hesaplarınızı bağlayın."
+    "message": "1do'e ücretsiz kripto transferi yapmak için Coinbase veya Binance hesaplarınızı bağlayın."
   },
   "links": {
     "message": "Bağlantılar"
@@ -3782,7 +3782,7 @@
     "message": "Kilitle"
   },
   "lockMetaMaskLoadingMessage": {
-    "message": "MetaMask kilitleniyor..."
+    "message": "1do kilitleniyor..."
   },
   "lockTimeInvalid": {
     "message": "Kilit süresi 0 ile 10080 arasında olmalıdır"
@@ -3807,13 +3807,13 @@
     "description": "$1 is the key 'loginErrorGenericSupport'"
   },
   "loginErrorGenericSupport": {
-    "message": "MetaMask destek ile iletişime geçin"
+    "message": "1do destek ile iletişime geçin"
   },
   "loginErrorGenericTitle": {
     "message": "Bir şeyler ters gitti"
   },
   "loginErrorResetWalletDescription": {
-    "message": "Kilidi açarken bir sorun oluştu. $1 ve MetaMask şifrenizle tekrar oturum açın.",
+    "message": "Kilidi açarken bir sorun oluştu. $1 ve 1do şifrenizle tekrar oturum açın.",
     "description": "$1 is the social login method"
   },
   "loginErrorSessionExpiredButton": {
@@ -3852,7 +3852,7 @@
     "message": "Akıllı sözleşmelerin okunmasını kolaylaştırın"
   },
   "makeSmartContractsEasierDescription": {
-    "message": "MetaMask, bu bilgileri çevirmek için 4byte.directory ve Sourcify kullanır."
+    "message": "1do, bu bilgileri çevirmek için 4byte.directory ve Sourcify kullanır."
   },
   "manage": {
     "message": "Yönet"
@@ -3939,7 +3939,7 @@
     "message": "Mesaj"
   },
   "metaMaskConnectStatusParagraphOne": {
-    "message": "Artık MetaMask'te hesap bağlantılarınızın üzerinde daha fazla kontrole sahipsiniz."
+    "message": "Artık 1do'te hesap bağlantılarınızın üzerinde daha fazla kontrole sahipsiniz."
   },
   "metaMaskConnectStatusParagraphThree": {
     "message": "Bağlı hesaplarınızı yönetmek için tıklayın."
@@ -3948,26 +3948,26 @@
     "message": "Bağlantı durumu düğmesi ziyaret ettiğiniz web sitesinin şu anda seçilen hesabınıza bağlı olup olmadığını gösterir."
   },
   "metaMetricsIdNotAvailableError": {
-    "message": "Hiçbir zaman MetaMetrics'e dahil olmadığınız için burada silinecek veri yok."
+    "message": "Hiçbir zaman 1do Metrics'e dahil olmadığınız için burada silinecek veri yok."
   },
   "metadataModalSourceTooltip": {
     "message": "$1 npm'de barındırılmaktadır ve $2 bu Snap'in eşsiz tanımlayıcısıdır.",
     "description": "$1 is the snap name and $2 is the snap NPM id."
   },
   "metamaskFee": {
-    "message": "MetaMask ücreti"
+    "message": "1do ücreti"
   },
   "metamaskNotificationsAreOff": {
     "message": "Cüzdan bildirimleri şu anda aktif değil."
   },
   "metamaskSwap": {
-    "message": "MetaMask Takas"
+    "message": "1do Takas"
   },
   "metamaskSwapsOfflineDescription": {
-    "message": "MetaMask Takas İşlemleri bakımda. Lütfen daha sonra tekrar kontrol edin."
+    "message": "1do Takas İşlemleri bakımda. Lütfen daha sonra tekrar kontrol edin."
   },
   "metamaskVersion": {
-    "message": "MetaMask Sürümü"
+    "message": "1do Sürümü"
   },
   "methodData": {
     "message": "Yöntem"
@@ -4045,7 +4045,7 @@
     "description": "Button text to learn more about multichain accounts"
   },
   "multichainAccountIntroSameAddressDescription": {
-    "message": "Hesaplarınızı gruplandırdık, yani MetaMask'i önceden olduğu gibi kullanmaya devam edebilirsiniz. Fonlarınız güvende ve herhangi bir değişiklik söz konusu değil.",
+    "message": "Hesaplarınızı gruplandırdık, yani 1do'i önceden olduğu gibi kullanmaya devam edebilirsiniz. Fonlarınız güvende ve herhangi bir değişiklik söz konusu değil.",
     "description": "Description explaining that accounts have been merged"
   },
   "multichainAccountIntroSameAddressTitle": {
@@ -4061,7 +4061,7 @@
     "description": "Button text to view accounts from the intro modal"
   },
   "multichainAccountIntroWhatDescription": {
-    "message": "Çoklu zincir hesabı, MetaMask tarafından desteklenen çeşitli ağlarda adresleri bulunan bir hesaptır. Yani artık Ethereum, Solana ve daha fazlasını hesap değiştirmeden kullanabilirsiniz.",
+    "message": "Çoklu zincir hesabı, 1do tarafından desteklenen çeşitli ağlarda adresleri bulunan bir hesaptır. Yani artık Ethereum, Solana ve daha fazlasını hesap değiştirmeden kullanabilirsiniz.",
     "description": "Description explaining what multichain accounts are"
   },
   "multichainAccountIntroWhatTitle": {
@@ -4077,7 +4077,7 @@
     "description": "Title for the multichain accounts introduction modal."
   },
   "multichainAddEthereumChainConfirmationDescription": {
-    "message": "Bu ağı MetaMask'e ekliyor ve bu siteye ağı kullanma izni veriyorsunuz."
+    "message": "Bu ağı 1do'e ekliyor ve bu siteye ağı kullanma izni veriyorsunuz."
   },
   "multichainAddressViewAll": {
     "message": "Tümünü görüntüle"
@@ -4087,7 +4087,7 @@
     "description": "The parameter is the name of the requesting origin"
   },
   "multichainQuoteCardRateExplanation": {
-    "message": "Sağlayıcı ücretleri ve %$1 MetaMask ücreti dahil sağlayıcılardan bulduğumuz en iyi oran."
+    "message": "Sağlayıcı ücretleri ve %$1 1do ücreti dahil sağlayıcılardan bulduğumuz en iyi oran."
   },
   "multichainQuoteCardRateLabel": {
     "message": "Oran"
@@ -4148,7 +4148,7 @@
     "description": "Accessible name for the info control that opens the mUSD conversion bonus explanation popover"
   },
   "musdConversionFeeTooltipDescription": {
-    "message": "mUSD dönüştürme işlemine ağ maliyetleri dahildir ve sağlayıcı ücretleri dahil olabilir. mUSD dönüştürürken MetaMask ücreti uygulanmaz.",
+    "message": "mUSD dönüştürme işlemine ağ maliyetleri dahildir ve sağlayıcı ücretleri dahil olabilir. mUSD dönüştürürken 1do ücreti uygulanmaz.",
     "description": "Body text shown above the fee breakdown in the transaction fee tooltip for mUSD conversion"
   },
   "musdConversionTitle": {
@@ -4197,7 +4197,7 @@
     "message": "mUSD kazan"
   },
   "musdMetaMaskUsd": {
-    "message": "MetaMask USD",
+    "message": "1do USD",
     "description": "Product name shown as the title line on the home token list mUSD Buy/Get CTA"
   },
   "musdTermsApply": {
@@ -4286,7 +4286,7 @@
     "message": "Lens Protocol"
   },
   "nameProvider_token": {
-    "message": "MetaMask"
+    "message": "1do"
   },
   "nameResolutionFailedError": {
     "message": "Bu isim için adres çözümlemesi bulunamadı."
@@ -4329,7 +4329,7 @@
     "message": "Geri bildirimini paylaş"
   },
   "needHelpLinkText": {
-    "message": "MetaMask destek ile iletişime geçin"
+    "message": "1do destek ile iletişime geçin"
   },
   "needHelpSubmitTicket": {
     "message": "Buradan"
@@ -4478,7 +4478,7 @@
     "description": "$1 is used for newNFTDetectedInImportNFTsMessageStrongText"
   },
   "newNFTDetectedInNFTsTabMessage": {
-    "message": "MetaMask'in otomatik olarak cüzdanınızdaki NFT'leri algılayıp göstermesine izin verin."
+    "message": "1do'in otomatik olarak cüzdanınızdaki NFT'leri algılayıp göstermesine izin verin."
   },
   "newNFTsAutodetected": {
     "message": "NFT otomatik algılama"
@@ -4572,7 +4572,7 @@
     "message": "Belirtilen arama sorgusu için hesap bulunamadı"
   },
   "noConnectionDescription": {
-    "message": "MetaMask bu siteye bağlı değil. Başlamak için sitenin Bağla düğmesini seçin."
+    "message": "1do bu siteye bağlı değil. Başlamak için sitenin Bağla düğmesini seçin."
   },
   "noDefaultAddress": {
     "message": "$1 adresi yok",
@@ -4585,7 +4585,7 @@
     "message": "Geçerli tarayıcı sürümünüzle snap'ler ve çoğu donanım cüzdanı çalışmayacak."
   },
   "noMMFeeSwapping": {
-    "message": "MetaMask ücreti yok"
+    "message": "1do ücreti yok"
   },
   "noNetworkFee": {
     "message": "Ağ ücreti yok"
@@ -4832,7 +4832,7 @@
     "message": "İlgili diğer promosyon materyalleri"
   },
   "onboardedMetametricsLink": {
-    "message": "MetaMetrics"
+    "message": "1do Metrics"
   },
   "onboardedMetametricsParagraph1": {
     "message": "$1 bağlantısına ek olarak pazarlama iletişimleri ile nasıl etkileşimde bulunduğunuzu anlamak amacıyla verileri kullanmak istiyoruz.",
@@ -4879,7 +4879,7 @@
     "message": "Mevcut bir cüzdanım var"
   },
   "onboardingLoginFooter": {
-    "message": "Devam ederek MetaMask'in $1 ve $2 bölümlerini kabul ediyorum"
+    "message": "Devam ederek 1do'in $1 ve $2 bölümlerini kabul ediyorum"
   },
   "onboardingLoginFooterPrivacyNotice": {
     "message": "Gizlilik bildirisi"
@@ -4909,7 +4909,7 @@
     "message": "Bu izinleri talep etmek istiyoruz. Dilediğiniz zaman vazgeçebilir veya kullanım verilerinizi silebilirsiniz."
   },
   "onboardingMetametricsTitle": {
-    "message": "MetaMask'in iyileştirilmesine yardımcı olun"
+    "message": "1do'in iyileştirilmesine yardımcı olun"
   },
   "onboardingOptionIcon": {
     "message": "$1 simgesi",
@@ -5006,7 +5006,7 @@
     "message": "diğerleri"
   },
   "outdatedBrowserNotification": {
-    "message": "Tarayıcınız güncel değil. Tarayıcınızı güncellemezseniz MetaMask'ten güvenlik yamalarını ve yeni özellikleri alamayacaksınız."
+    "message": "Tarayıcınız güncel değil. Tarayıcınızı güncellemezseniz 1do'ten güvenlik yamalarını ve yeni özellikleri alamayacaksınız."
   },
   "overrideContentSecurityPolicyHeader": {
     "message": "İçerik-Güvenlik-Politika başlığını geçersiz kıl"
@@ -5018,16 +5018,16 @@
     "message": "Asma Kilit"
   },
   "paidByMetaMask": {
-    "message": "MetaMask tarafından ödenir"
+    "message": "1do tarafından ödenir"
   },
   "paidWith": {
     "message": "Ödeme aracı"
   },
   "participateInMetaMetrics": {
-    "message": "MetaMetrics'e katıl"
+    "message": "1do Metrics'e katıl"
   },
   "participateInMetaMetricsDescription": {
-    "message": "MetaMask'ı daha iyi hale getirebilmemize yardımcı olmak için MetaMetrics'e katılın"
+    "message": "1do'ı daha iyi hale getirebilmemize yardımcı olmak için 1do Metrics'e katılın"
   },
   "password": {
     "message": "Şifre"
@@ -5036,16 +5036,16 @@
     "message": "Şifreniz değiştirildi"
   },
   "passwordChangedRecentlyDescription": {
-    "message": "MetaMask oturumunuzu açık bırakmak için yeni şifrenizi girin."
+    "message": "1do oturumunuzu açık bırakmak için yeni şifrenizi girin."
   },
   "passwordNotLongEnough": {
     "message": "En az 8 karakter olmalıdır"
   },
   "passwordTermsWarning": {
-    "message": "Bu şifreyi kaybedersem MetaMask bunu sıfırlayamaz."
+    "message": "Bu şifreyi kaybedersem 1do bunu sıfırlayamaz."
   },
   "passwordTermsWarningSocial": {
-    "message": "Bu şifreyi unutursam cüzdanıma erişimi kalıcı olarak kaybedeceğim. MetaMask bunu benim için sıfırlayamaz."
+    "message": "Bu şifreyi unutursam cüzdanıma erişimi kalıcı olarak kaybedeceğim. 1do bunu benim için sıfırlayamaz."
   },
   "passwordToggleHide": {
     "message": "Şifreyi gizle"
@@ -5137,11 +5137,11 @@
     "description": "The description for the `wallet_snap_*` permission. $1 is the name of the Snap."
   },
   "permission_assets": {
-    "message": "Hesap varlıklarını MetaMask'te göster.",
+    "message": "Hesap varlıklarını 1do'te göster.",
     "description": "The description for the `endowment:assets` permission."
   },
   "permission_assetsDescription": {
-    "message": "$1 adlı snap'in MetaMask müşterisine varlık bilgilerini sunmasına izin ver. Varlıklar zincir üstü veya zincir dışı olabilir.",
+    "message": "$1 adlı snap'in 1do müşterisine varlık bilgilerini sunmasına izin ver. Varlıklar zincir üstü veya zincir dışı olabilir.",
     "description": "An extended description for the `endowment:assets` permission. $1 is the name of the Snap."
   },
   "permission_cronjob": {
@@ -5153,11 +5153,11 @@
     "description": "An extended description for the `snap_cronjob` permission. $1 is the snap name."
   },
   "permission_dialog": {
-    "message": "MetaMask'te iletişim kutusu pencerelerini göster.",
+    "message": "1do'te iletişim kutusu pencerelerini göster.",
     "description": "The description for the `snap_dialog` permission"
   },
   "permission_dialogDescription": {
-    "message": "$1 adlı snap'in bir eylemi onaylamak ya da reddetmek için özel metin, giriş alanı ve düğmelerle MetaMask açılır pencerelerini göstermesine izin verin.\nBir snap için ör. uyarı, onay ve talep edilen akış oluşturmak için kullanılabilir.",
+    "message": "$1 adlı snap'in bir eylemi onaylamak ya da reddetmek için özel metin, giriş alanı ve düğmelerle 1do açılır pencerelerini göstermesine izin verin.\nBir snap için ör. uyarı, onay ve talep edilen akış oluşturmak için kullanılabilir.",
     "description": "An extended description for the `snap_dialog` permission. $1 is the snap name."
   },
   "permission_ethereumAccounts": {
@@ -5169,7 +5169,7 @@
     "description": "The description for the `endowment:ethereum-provider` permission"
   },
   "permission_ethereumProviderDescription": {
-    "message": "Blok zincirinden veri okuyabilmesi ve mesaj ile işlemleri önerebilmesi için $1 adlı snap'in doğrudan MetaMask ile iletişim kurmasına izin verin.",
+    "message": "Blok zincirinden veri okuyabilmesi ve mesaj ile işlemleri önerebilmesi için $1 adlı snap'in doğrudan 1do ile iletişim kurmasına izin verin.",
     "description": "An extended description for the `endowment:ethereum-provider` permission. $1 is the snap name."
   },
   "permission_getEntropy": {
@@ -5177,7 +5177,7 @@
     "description": "The description for the `snap_getEntropy` permission. $1 is the snap name."
   },
   "permission_getEntropyDescription": {
-    "message": "$1 adlı snap'in, paylaşmadan, $1 adlı snap'e özel rastgele anahtarlar türetmesine izin verin. Bu anahtarlar MetaMask hesap veya hesaplarınızdan ayrıdır ve özel anahtarlarınızla ya da Gizli Kurtarma İfadenizle bağlantılı değildir. Diğer snap'ler bu bilgilere erişemez.",
+    "message": "$1 adlı snap'in, paylaşmadan, $1 adlı snap'e özel rastgele anahtarlar türetmesine izin verin. Bu anahtarlar 1do hesap veya hesaplarınızdan ayrıdır ve özel anahtarlarınızla ya da Gizli Kurtarma İfadenizle bağlantılı değildir. Diğer snap'ler bu bilgilere erişemez.",
     "description": "An extended description for the `snap_getEntropy` permission. $1 is the snap name."
   },
   "permission_getLocale": {
@@ -5185,7 +5185,7 @@
     "description": "The description for the `snap_getLocale` permission"
   },
   "permission_getLocaleDescription": {
-    "message": "$1 adlı bu snap'in MetaMask ayarlarınızdan tercih ettiğiniz dile erişim sağlamasına izin verin. $1 içeriğini dilinizi kullanarak yerelleştirmek ve görüntülemek için bu özellik kullanılabilir.",
+    "message": "$1 adlı bu snap'in 1do ayarlarınızdan tercih ettiğiniz dile erişim sağlamasına izin verin. $1 içeriğini dilinizi kullanarak yerelleştirmek ve görüntülemek için bu özellik kullanılabilir.",
     "description": "An extended description for the `snap_getLocale` permission. $1 is the snap name."
   },
   "permission_getPreferences": {
@@ -5193,7 +5193,7 @@
     "description": "The description for the `snap_getPreferences` permission"
   },
   "permission_getPreferencesDescription": {
-    "message": "$1 adlı snap'in MetaMask ayarlarınızda tercih ettiğiniz dil ve fiat para gibi bilgilere erişim sağlamasına izin verin. Bu durum $1 adlı snap'in sizin tercihlerinize uygun içerikler göstermesine yardımcı olur. ",
+    "message": "$1 adlı snap'in 1do ayarlarınızda tercih ettiğiniz dil ve fiat para gibi bilgilere erişim sağlamasına izin verin. Bu durum $1 adlı snap'in sizin tercihlerinize uygun içerikler göstermesine yardımcı olur. ",
     "description": "An extended description for the `snap_getPreferences` permission. $1 is the snap name."
   },
   "permission_homePage": {
@@ -5201,7 +5201,7 @@
     "description": "The description for the `endowment:page-home` permission"
   },
   "permission_homePageDescription": {
-    "message": "$1 snap'inin MetaMask'te özel bir ana sayfa ekranı göstermesine izin verin. Bu, kullanıcı arayüzleri, yapılandırma ve kontrol panelleri için kullanılabilir.",
+    "message": "$1 snap'inin 1do'te özel bir ana sayfa ekranı göstermesine izin verin. Bu, kullanıcı arayüzleri, yapılandırma ve kontrol panelleri için kullanılabilir.",
     "description": "An extended description for the `endowment:page-home` permission. $1 is the snap name."
   },
   "permission_keyring": {
@@ -5253,7 +5253,7 @@
     "description": "The description for the `endowment:multichain-provider` permission"
   },
   "permission_multichainProviderDescription": {
-    "message": "Blok zincirinden veri okuyabilmesi ve mesaj ile işlemleri önerebilmesi için $1 adlı snap'in doğrudan MetaMask ile iletişim kurmasına izin verin.",
+    "message": "Blok zincirinden veri okuyabilmesi ve mesaj ile işlemleri önerebilmesi için $1 adlı snap'in doğrudan 1do ile iletişim kurmasına izin verin.",
     "description": "An extended description for the `endowment:multichain-provider` permission. $1 is the snap name."
   },
   "permission_nameLookup": {
@@ -5261,7 +5261,7 @@
     "description": "The description for the `endowment:name-lookup` permission."
   },
   "permission_nameLookupDescription": {
-    "message": "Snap'in MetaMask Arayüzünün farklı kısımlarında adres ve alan aramalarını almasına ve göstermesine izin verin.",
+    "message": "Snap'in 1do Arayüzünün farklı kısımlarında adres ve alan aramalarını almasına ve göstermesine izin verin.",
     "description": "An extended description for the `endowment:name-lookup` permission."
   },
   "permission_notifications": {
@@ -5269,7 +5269,7 @@
     "description": "The description for the `snap_notify` permission"
   },
   "permission_notificationsDescription": {
-    "message": "$1 adlı snap'in MetaMask dahilinde bildirim göstermesine izin verin. Eyleme geçirilebilir ya da zamana duyarlı bilgiler için bir snap tarafından kısa bir bildirim metni tetiklenebilir.",
+    "message": "$1 adlı snap'in 1do dahilinde bildirim göstermesine izin verin. Eyleme geçirilebilir ya da zamana duyarlı bilgiler için bir snap tarafından kısa bir bildirim metni tetiklenebilir.",
     "description": "An extended description for the `snap_notify` permission. $1 is the snap name."
   },
   "permission_protocol": {
@@ -5277,7 +5277,7 @@
     "description": "The description for the `endowment:protocol` permission."
   },
   "permission_protocolDescription": {
-    "message": "$1 adlı snap'in MetaMask'e gaz tahminleri veya token bilgileri gibi protokol verilerini sağlamasına izin verin.",
+    "message": "$1 adlı snap'in 1do'e gaz tahminleri veya token bilgileri gibi protokol verilerini sağlamasına izin verin.",
     "description": "An extended description for the `endowment:protocol` permission. $1 is the name of the Snap."
   },
   "permission_rpc": {
@@ -5313,7 +5313,7 @@
     "description": "The description for the `endowment:transaction-insight` permission"
   },
   "permission_transactionInsightDescription": {
-    "message": "$1 adlı snap'in işlemlerin şifresini çözmesine ve MetaMask Kullanıcı Arayüzü dahilinde içgörüleri göstermesine izin verin. Kimlik avından korunma ve güvenlik çözümleri için kullanılabilir.",
+    "message": "$1 adlı snap'in işlemlerin şifresini çözmesine ve 1do Kullanıcı Arayüzü dahilinde içgörüleri göstermesine izin verin. Kimlik avından korunma ve güvenlik çözümleri için kullanılabilir.",
     "description": "An extended description for the `endowment:transaction-insight` permission. $1 is the snap name."
   },
   "permission_transactionInsightOrigin": {
@@ -6032,7 +6032,7 @@
     "message": "Likidasyona dikkat edin"
   },
   "perpsTutorialWhatArePerpsDescription": {
-    "message": "MetaMask artık bir token satın almadan fiyat hareketinde işlem yapmanıza olanak sağlayan sürekli vadeli sözleşmeler piyasasını destekliyor."
+    "message": "1do artık bir token satın almadan fiyat hareketinde işlem yapmanıza olanak sağlayan sürekli vadeli sözleşmeler piyasasını destekliyor."
   },
   "perpsTutorialWhatArePerpsSubtitle": {
     "message": "İşte çalışma şekli."
@@ -6111,7 +6111,7 @@
     "description": "Pin label used in multichain account menu"
   },
   "pinMetaMask": {
-    "message": "MetaMask uzantısını sabitle"
+    "message": "1do uzantısını sabitle"
   },
   "pinMetaMaskDescription": {
     "message": "Sabitlemek için $1 ve ardından $2 seçeneğine tıklayın."
@@ -6129,7 +6129,7 @@
     "message": "blog yayınımızda okuyabilirsiniz."
   },
   "pna25ModalBody1": {
-    "message": "Size daha iyi hizmet verebilmek amacıyla cüzdan adresleri ve ilgili zincir içi aktiviteler gibi herkese açık verilerin MetaMask'te gerçekleştirdiğiniz eylemlerle ilişkili olabilmesi için analizlerimizi güncelliyoruz. Bu işlem, MetaMask'i daha iyi, daha güvenli bir cüzdan haline getirebilmemiz için performansını, güvenliğini ve özelliklerini iyileştirmemize yardımcı olur."
+    "message": "Size daha iyi hizmet verebilmek amacıyla cüzdan adresleri ve ilgili zincir içi aktiviteler gibi herkese açık verilerin 1do'te gerçekleştirdiğiniz eylemlerle ilişkili olabilmesi için analizlerimizi güncelliyoruz. Bu işlem, 1do'i daha iyi, daha güvenli bir cüzdan haline getirebilmemiz için performansını, güvenliğini ve özelliklerini iyileştirmemize yardımcı olur."
   },
   "pna25ModalBody2": {
     "message": "Gizliliği ciddiye alırız.  Bu bilgileri reklam amaçlı kullanmayız veya verilerinizi üçüncü taraflara satmayız.  Dilediğiniz zaman Ayarlar kısmında vazgeçebilirsiniz."
@@ -6269,7 +6269,7 @@
     "message": "Planınız başarısız ödemeden dolayı duraklatıldı."
   },
   "pushNotificationShieldSubscriptionTitle": {
-    "message": "MetaMask İşlem Kalkanı"
+    "message": "1do İşlem Kalkanı"
   },
   "pushNotificationShieldUpdatePaymentCta": {
     "message": "Ödemeyi güncelle"
@@ -6363,7 +6363,7 @@
     "message": "Unstake tamamlandı"
   },
   "pushPlatformNotificationsSwapCompletedDescription": {
-    "message": "MetaMask Swap başarılı oldu"
+    "message": "1do Swap başarılı oldu"
   },
   "pushPlatformNotificationsSwapCompletedTitle": {
     "message": "Swap tamamlandı"
@@ -6397,7 +6397,7 @@
     "description": "Title when camera access is persistently blocked for QR scanning."
   },
   "qrCameraAccessNeededBody": {
-    "message": "MetaMask'in cihazınızda QR kodunu taramak için kamera erişimine ihtiyacı var.",
+    "message": "1do'in cihazınızda QR kodunu taramak için kamera erişimine ihtiyacı var.",
     "description": "Body when the user dismissed the camera permission prompt but it can be requested again."
   },
   "qrCameraAccessNeededTitle": {
@@ -6485,17 +6485,17 @@
     "description": "Make sure you have the Secret Recovery Phrase or private key for this account before removing."
   },
   "removeAccountModalBannerTitle": {
-    "message": "Bu hesap MetaMask'ten kaldırılacak.",
+    "message": "Bu hesap 1do'ten kaldırılacak.",
     "description": "Title of a banner alert used on account remove modal."
   },
   "removeAll": {
     "message": "Tümünü kaldır"
   },
   "removeKeyringSnap": {
-    "message": "Bu Snap kaldırıldığında bu hesaplar MetaMask'ten kaldırılır:"
+    "message": "Bu Snap kaldırıldığında bu hesaplar 1do'ten kaldırılır:"
   },
   "removeKeyringSnapToolTip": {
-    "message": "Hesapları snap kontrol eder ve snap kaldırıldığında hesaplar MetaMask'ten de kaldılır, ancak blokzincirinde kalır."
+    "message": "Hesapları snap kontrol eder ve snap kaldırıldığında hesaplar 1do'ten de kaldılır, ancak blokzincirinde kalır."
   },
   "removeNFT": {
     "message": "NFT'yi kaldır"
@@ -6510,7 +6510,7 @@
     "message": "Snap'i Kaldır"
   },
   "removeSnapAccountDescription": {
-    "message": "İlerlerseniz bu hesap artık MetaMask'te kullanılamayacak."
+    "message": "İlerlerseniz bu hesap artık 1do'te kullanılamayacak."
   },
   "removeSnapAccountTitle": {
     "message": "Hesabı kaldırın"
@@ -6584,7 +6584,7 @@
     "message": "Gizli Kurtarma İfadenizi kurtaramayız. Cüzdanınızı sıfırlayarak yeni bir tane oluşturabilir ve özel anahtarları kullanarak hesaplarınızı içe aktarabilirsiniz."
   },
   "resetWalletDescriptionTwo": {
-    "message": "Sıfırlama işlemi $1 bu cihazda MetaMask'te yer alan tüm cüzdan verilerini siler. $2",
+    "message": "Sıfırlama işlemi $1 bu cihazda 1do'te yer alan tüm cüzdan verilerini siler. $2",
     "description": "$1 is the bolded text 'permanently' and $2 is the bolded text 'It will not impact the assets within your wallet.'"
   },
   "resetWalletTitle": {
@@ -6595,7 +6595,7 @@
     "description": "$1 is the protocol name."
   },
   "restartMetamask": {
-    "message": "MetaMask'i yeniden başlatın"
+    "message": "1do'i yeniden başlatın"
   },
   "restore": {
     "message": "Geri Yükle"
@@ -6656,7 +6656,7 @@
     "message": "Metin"
   },
   "revealSeedWordsWarning": {
-    "message": "Hiç kimsenin ekranınıza bakmadığından emin olun. MetaMask Destek ekibi asla bunu istemez."
+    "message": "Hiç kimsenin ekranınıza bakmadığından emin olun. 1do Destek ekibi asla bunu istemez."
   },
   "revealSensitiveContent": {
     "message": "Hassas içeriği göster"
@@ -6756,13 +6756,13 @@
     "message": "Bölge desteklenmiyor"
   },
   "rewardsOnboardingStep1Description": {
-    "message": "MetaMask'te yaptığınız her takas ve sürekli vadeli işlem sizi ödüllere yaklaştırır. Hesaplarınızı ekleyin ve puanlarınızı takip edin."
+    "message": "1do'te yaptığınız her takas ve sürekli vadeli işlem sizi ödüllere yaklaştırır. Hesaplarınızı ekleyin ve puanlarınızı takip edin."
   },
   "rewardsOnboardingStep1Title": {
     "message": "Her işlemde puan kazanın"
   },
   "rewardsOnboardingStep2Description": {
-    "message": "Belirli puanlara ulaştığınızda, sürekli vadeli işlem ücretlerinde %50 indirim, özel token’lar ve ücretsiz MetaMask Metal Kart gibi avantajlar kazanabilirsiniz."
+    "message": "Belirli puanlara ulaştığınızda, sürekli vadeli işlem ücretlerinde %50 indirim, özel token’lar ve ücretsiz 1do Metal Kart gibi avantajlar kazanabilirsiniz."
   },
   "rewardsOnboardingStep2Title": {
     "message": "Daha büyük avantajlar için seviye yükseltin"
@@ -6938,7 +6938,7 @@
     "message": "Şifreyi değiştir"
   },
   "securityChangePasswordDescription": {
-    "message": "Cihazınızda MetaMask uygulamasının kilidini açmak için güçlü bir şifre seçin. Bu şifreyi kaybederseniz cüzdanınızı yeniden içe aktarmak için Gizli Kurtarma İfadenize ihtiyacınız olacak."
+    "message": "Cihazınızda 1do uygulamasının kilidini açmak için güçlü bir şifre seçin. Bu şifreyi kaybederseniz cüzdanınızı yeniden içe aktarmak için Gizli Kurtarma İfadenize ihtiyacınız olacak."
   },
   "securityChangePasswordTitle": {
     "message": "Şifre"
@@ -6979,7 +6979,7 @@
     "message": "Etkinleştirildi"
   },
   "securitySocialLoginEnabledDescription": {
-    "message": "$1 oturumunuzu ve MetaMask şifrenizi kullanarak hesabınızı ve Gizli Kurtarma İfadelerini kurtarabilirsiniz.",
+    "message": "$1 oturumunuzu ve 1do şifrenizi kullanarak hesabınızı ve Gizli Kurtarma İfadelerini kurtarabilirsiniz.",
     "description": "The $1 is the text 'Google' or 'Apple'"
   },
   "securitySocialLoginLabel": {
@@ -7028,7 +7028,7 @@
     "message": "Bir hesap seç"
   },
   "selectAnAccountAlreadyConnected": {
-    "message": "Bu hesap zaten MetaMask'e bağlanmış"
+    "message": "Bu hesap zaten 1do'e bağlanmış"
   },
   "selectEnableDisplayMediaPrivacyPreference": {
     "message": "NFT medyasını göster seçeneğini açın"
@@ -7239,7 +7239,7 @@
     "message": "Bulma konusunda yardıma mı ihtiyacınız var?"
   },
   "shieldClaimImpactedTxHashNotEligible": {
-    "message": "Bu işlem MetaMask dahilinde yapılmamış, bu nedenle taleplere uygun değildir"
+    "message": "Bu işlem 1do dahilinde yapılmamış, bu nedenle taleplere uygun değildir"
   },
   "shieldClaimImpactedWalletAddress": {
     "message": "Etkilenen cüzdan adresi"
@@ -7347,28 +7347,28 @@
     "message": "Planı onayla"
   },
   "shieldCoverageAlertCovered": {
-    "message": "MetaMask İşlem Kalkanı ile $2 tutara kadar korunursunuz. $1."
+    "message": "1do İşlem Kalkanı ile $2 tutara kadar korunursunuz. $1."
   },
   "shieldCoverageAlertHighRiskTransaction": {
-    "message": "Bu, yüksek riskli bir işlemdir, bu nedenle MetaMask İşlem Kalkanı ile korunmuyor. $1."
+    "message": "Bu, yüksek riskli bir işlemdir, bu nedenle 1do İşlem Kalkanı ile korunmuyor. $1."
   },
   "shieldCoverageAlertMessageChainNotSupported": {
-    "message": "Bu zincir desteklenmiyor, bu nedenle MetaMask İşlem Kalkanı ile korunmuyor. $1"
+    "message": "Bu zincir desteklenmiyor, bu nedenle 1do İşlem Kalkanı ile korunmuyor. $1"
   },
   "shieldCoverageAlertMessageLearnHowCoverageWorks": {
     "message": "Nelerin kapsandığını gör"
   },
   "shieldCoverageAlertMessagePaused": {
-    "message": "MetaMask İşlem Kalkanı planı ödemenizde bir sorun oluştu. Kapsamı sürdürmek için lütfen ödeme yönteminizi güncelleyin."
+    "message": "1do İşlem Kalkanı planı ödemenizde bir sorun oluştu. Kapsamı sürdürmek için lütfen ödeme yönteminizi güncelleyin."
   },
   "shieldCoverageAlertMessagePausedAcknowledgeButton": {
     "message": "Ödeme yöntemini güncelle"
   },
   "shieldCoverageAlertMessagePotentialRisks": {
-    "message": "Bu işlemin potansiyel riskleri var, bu nedenle MetaMask İşlem Kalkanı ile korunmuyor. $1"
+    "message": "Bu işlemin potansiyel riskleri var, bu nedenle 1do İşlem Kalkanı ile korunmuyor. $1"
   },
   "shieldCoverageAlertMessageSignatureNotSupported": {
-    "message": "Bu imza desteklenmiyor, bu nedenle MetaMask İşlem Kalkanı ile korunmuyor. $1"
+    "message": "Bu imza desteklenmiyor, bu nedenle 1do İşlem Kalkanı ile korunmuyor. $1"
   },
   "shieldCoverageAlertMessageTitle": {
     "message": "Bu işlem kapsanmıyor"
@@ -7389,10 +7389,10 @@
     "message": "Bu token kötü amaçlı davranışa yönelik güçlü işaretler gösteriyor. Devam etmek fon kaybına neden olabilir. $1."
   },
   "shieldCoverageAlertMessageTxTypeNotSupported": {
-    "message": "Bu işlem türü desteklenmiyor, bu nedenle MetaMask İşlem Kalkanı ile korunmuyor. $1"
+    "message": "Bu işlem türü desteklenmiyor, bu nedenle 1do İşlem Kalkanı ile korunmuyor. $1"
   },
   "shieldCoverageAlertMessageUnknown": {
-    "message": "Bu talep doğrulanamıyor, bu nedenle MetaMask İşlem Kalkanı ile korunmuyor. $1."
+    "message": "Bu talep doğrulanamıyor, bu nedenle 1do İşlem Kalkanı ile korunmuyor. $1."
   },
   "shieldCoverageEnding": {
     "message": "Kalkan kapsamı yakında sona eriyor"
@@ -7580,7 +7580,7 @@
     "description": "The $1 is the number of days and the $2 is the price of the plan"
   },
   "shieldTxDetails1Title": {
-    "message": "MetaMask İşlem Kalkanı"
+    "message": "1do İşlem Kalkanı"
   },
   "shieldTxDetails2Description": {
     "message": "$1, bir sonraki faturalandırma tarihi $2",
@@ -7800,7 +7800,7 @@
     "message": "Ağ listesinde test ağlarını göstermek için bunu seçin"
   },
   "sidePanelMigrationToast": {
-    "message": "MetaMask artık varsayılan olarak yan panelde açılıyor. Dilediğinizden zaman menüden $1.",
+    "message": "1do artık varsayılan olarak yan panelde açılıyor. Dilediğinizden zaman menüden $1.",
     "description": "Shown when the extension opens in the side panel after migration. $1 is an inline link to switch back to the popup view."
   },
   "sign": {
@@ -7928,13 +7928,13 @@
     "message": "Derin bağlantıları açarken geçiş ekranını gösterme"
   },
   "skipDeepLinkInterstitialDescription": {
-    "message": "Bu seçenek etkinleştirildiğinde MetaMask'te derin bağlantıları açarken gösterilen geçiş ekranı atlanacaktır. \"Derin bağlantı\", MetaMask'in açılmasına sebep olan https://link.metamask.io/home gibi bir bağlantıdır; bu bağlantılar başkaları tarafından gizlenebilir. Geçiş ekranı, sizi MetaMask dahilinde hesaplarınızı, token'larınızı, geçmişinizi, bakiyelerinizi, ayarlarınızı ve hassas olma potansiyeli olan diğer bilgilerinizi gösterebilecek kazara açılan sayfalardan korumak amacıyla tasarlanmıştır. Bu ayar yalnızca MetaMask tarafından imzalanan bağlantılar için geçerlidir."
+    "message": "Bu seçenek etkinleştirildiğinde 1do'te derin bağlantıları açarken gösterilen geçiş ekranı atlanacaktır. \"Derin bağlantı\", 1do'in açılmasına sebep olan https://link.metamask.io/home gibi bir bağlantıdır; bu bağlantılar başkaları tarafından gizlenebilir. Geçiş ekranı, sizi 1do dahilinde hesaplarınızı, token'larınızı, geçmişinizi, bakiyelerinizi, ayarlarınızı ve hassas olma potansiyeli olan diğer bilgilerinizi gösterebilecek kazara açılan sayfalardan korumak amacıyla tasarlanmıştır. Bu ayar yalnızca 1do tarafından imzalanan bağlantılar için geçerlidir."
   },
   "skipLinkConfirmationScreens": {
     "message": "Bağlantı onay ekranlarını atla"
   },
   "skipLinkConfirmationScreensDescription": {
-    "message": "Siz MetaMask'ten gelen bir bağlantıyı açarken sizi hesaplarınız, bakiyeleriniz veya işlem geçmişiniz gibi hassas bilgilerin kazara görüntülenmesinden korumak amacıyla bir onay ekranı gösteririz. MetaMask'ten gelen bağlantılarda o ekranı atlamak için bunu açın."
+    "message": "Siz 1do'ten gelen bir bağlantıyı açarken sizi hesaplarınız, bakiyeleriniz veya işlem geçmişiniz gibi hassas bilgilerin kazara görüntülenmesinden korumak amacıyla bir onay ekranı gösteririz. 1do'ten gelen bağlantılarda o ekranı atlamak için bunu açın."
   },
   "slippage": {
     "message": "Kayma"
@@ -7997,7 +7997,7 @@
     "message": "İşleminiz başarısız oldu"
   },
   "smartTransactionErrorDescription": {
-    "message": "Ani piyasa değişimleri başarısızlıklara sebep olabilir. Sorun devam ederse MetaMask müşteri destek bölümüne ulaşın."
+    "message": "Ani piyasa değişimleri başarısızlıklara sebep olabilir. Sorun devam ederse 1do müşteri destek bölümüne ulaşın."
   },
   "smartTransactionPending": {
     "message": "İşleminiz gönderildi"
@@ -8047,7 +8047,7 @@
     "message": "Hesap kaldırıldı"
   },
   "snapAccountRemovedDescription": {
-    "message": "Bu hesap artık MetaMask'te kullanılamayacak."
+    "message": "Bu hesap artık 1do'te kullanılamayacak."
   },
   "snapConnectTo": {
     "message": "$1 uygulamasına bağlan",
@@ -8263,7 +8263,7 @@
     "message": "Bu Gizli Kurtarma İfadesi zaten içe aktarıldı."
   },
   "srpDetailsDescription": {
-    "message": "Gizli Kurtarma İfadesi, anahtar cümle veya kurtarma ifadesi olarak da anılan, kripto cüzdanınıza erişiminizi ve kontrolü sağlayan bir sözcük dizisidir. Cüzdanınızı MetaMask'e taşımak için bu ifadeye ihtiyacınız var."
+    "message": "Gizli Kurtarma İfadesi, anahtar cümle veya kurtarma ifadesi olarak da anılan, kripto cüzdanınıza erişiminizi ve kontrolü sağlayan bir sözcük dizisidir. Cüzdanınızı 1do'e taşımak için bu ifadeye ihtiyacınız var."
   },
   "srpDetailsOwnsAccessListItemOne": {
     "message": "Tüm paranızı alabilir"
@@ -8326,7 +8326,7 @@
     "message": "Gizli Kurtarma İfadenizi görmek için iki soruyu doğru cevaplamanız gerekmektedir"
   },
   "srpSecurityQuizQuestionOneQuestion": {
-    "message": "Gizli Kurtarma İfadenizi kaybederseniz MetaMask..."
+    "message": "Gizli Kurtarma İfadenizi kaybederseniz 1do..."
   },
   "srpSecurityQuizQuestionOneRightAnswer": {
     "message": "Size yardımcı olamaz"
@@ -8411,7 +8411,7 @@
     "description": "$1 represents the `stateCorruptionTheseInstructions` localization key"
   },
   "stateCorruptionCopyAndRestoreBeforeReset": {
-    "message": "$1 izleyerek MetaMask'i sıfırlamaya karar vermeden önce durum dosyanızı manuel olarak kopyalayıp geri yüklemeye çalışabilirsiniz.",
+    "message": "$1 izleyerek 1do'i sıfırlamaya karar vermeden önce durum dosyanızı manuel olarak kopyalayıp geri yüklemeye çalışabilirsiniz.",
     "description": "$1 represents the `stateCorruptionTheseInstructions` localization key"
   },
   "stateCorruptionDetectedNoBackup": {
@@ -8424,7 +8424,7 @@
     "message": "Dahili hata: Veri tabanına erişim sağlanamıyor"
   },
   "stateCorruptionResetMetaMaskState": {
-    "message": "MetaMask Durumunu Sıfırla"
+    "message": "1do Durumunu Sıfırla"
   },
   "stateCorruptionResettingDatabase": {
     "message": "Veri tabanı sıfırlanıyor…"
@@ -8446,7 +8446,7 @@
     "message": "Durum günlükleri alınırken hata oluştu, lütfen daha sonra tekrar deneyin."
   },
   "stateLogFileName": {
-    "message": "MetaMask durum günlükleri"
+    "message": "1do durum günlükleri"
   },
   "stateLogs": {
     "message": "Durum günlükleri"
@@ -8455,7 +8455,7 @@
     "message": "Durum günlükleri genel hesap adreslerinizi ve gönderilen işlemleri içerir."
   },
   "stateLogsModalDescription": {
-    "message": "Durum günlükleri, karşılaşabileceğiniz sorunları gidermemize yardımcı olabilir. Durum günlükleri genel hesap adreslerinizi ve işlemlerinizi içerdiği için bunları yalnızca destek almak için MetaMask'e gönderin."
+    "message": "Durum günlükleri, karşılaşabileceğiniz sorunları gidermemize yardımcı olabilir. Durum günlükleri genel hesap adreslerinizi ve işlemlerinizi içerdiği için bunları yalnızca destek almak için 1do'e gönderin."
   },
   "status": {
     "message": "Durum"
@@ -8467,7 +8467,7 @@
     "message": "Lattice1'inizi bağlayın"
   },
   "step1LatticeWalletMsg": {
-    "message": "Kurulduktan ve çevrimiçi olduktan sonra MetaMask'i Lattice1 cihazınıza bağlayabilirsiniz. Cihazınızın kilidini açın ve Cihaz Kimlliğinizi hazırlayın.",
+    "message": "Kurulduktan ve çevrimiçi olduktan sonra 1do'i Lattice1 cihazınıza bağlayabilirsiniz. Cihazınızın kilidini açın ve Cihaz Kimlliğinizi hazırlayın.",
     "description": "$1 represents the `hardwareWalletSupportLinkConversion` localization key"
   },
   "step1LedgerWallet": {
@@ -8502,7 +8502,7 @@
     "message": "Gizli Kurtarma İfadesini yedekle"
   },
   "storageErrorDescriptionDefault": {
-    "message": "Gizli Kurtarma İfadenizi yedekleyin ve sorun devam ederse MetaMask'i tekrar yükleyin."
+    "message": "Gizli Kurtarma İfadenizi yedekleyin ve sorun devam ederse 1do'i tekrar yükleyin."
   },
   "storageErrorDescriptionNoSpace": {
     "message": "Cihazınızda depolama alanı yetersiz. Hemen yer açın, aksi takdirde kaydedilmemiş cüzdan değişiklikleri kaybolabilir."
@@ -8606,7 +8606,7 @@
     "message": "Anketimize katılın"
   },
   "surveyTitle": {
-    "message": "MetaMask'in geleceğini şekillendirin"
+    "message": "1do'in geleceğini şekillendirin"
   },
   "swap": {
     "message": "Takas Yap"
@@ -8666,7 +8666,7 @@
     "message": "Limiti düzenle"
   },
   "swapEnableDescription": {
-    "message": "Bu gereklidir ve MetaMask’e $1’inizi takas yapma izni verir.",
+    "message": "Bu gereklidir ve 1do’e $1’inizi takas yapma izni verir.",
     "description": "Gives the user info about the required approval transaction for swaps. $1 will be the symbol of a token being approved for swaps."
   },
   "swapEnableTokenForSwapping": {
@@ -8704,7 +8704,7 @@
     "description": "Tells a user that they need to confirm on their hardware wallet a swap of 2 tokens. $1 is a source token and $2 is a destination token"
   },
   "swapGasFeesExplanation": {
-    "message": "MetaMask, gaz ücretlerinden para kazanmaz. Bu ücretler tahminlerdir ve ağın yoğunluğuna ve işlemin karmaşıklığına göre değişebilir. $1 daha fazla bilgi edinin.",
+    "message": "1do, gaz ücretlerinden para kazanmaz. Bu ücretler tahminlerdir ve ağın yoğunluğuna ve işlemin karmaşıklığına göre değişebilir. $1 daha fazla bilgi edinin.",
     "description": "$1 is a link (text in link can be found at 'swapGasFeesSummaryLinkText')"
   },
   "swapGasFeesExplanationLinkText": {
@@ -8718,13 +8718,13 @@
     "message": "Önceki ekrandaki gaz ücretleri bu iki işlem arasında bölünmüştür."
   },
   "swapGasFeesSponsored": {
-    "message": "MetaMask tarafından ödenir"
+    "message": "1do tarafından ödenir"
   },
   "swapGasFeesSponsoredExplanation": {
-    "message": "Bu ağ ücreti MetaMask tarafından ödenir, bu sayede hesabınızda $1 olmadan işlem yapabilirsiniz."
+    "message": "Bu ağ ücreti 1do tarafından ödenir, bu sayede hesabınızda $1 olmadan işlem yapabilirsiniz."
   },
   "swapIncludesMMFee": {
-    "message": "%$1 MetaMask ücreti dahildir.",
+    "message": "%$1 1do ücreti dahildir.",
     "description": "Provides information about the fee that MetaMask takes for swaps. $1 is a decimal number."
   },
   "swapLearnMore": {
@@ -8737,10 +8737,10 @@
     "message": "Maks. kayma"
   },
   "swapMetaMaskFee": {
-    "message": "MetaMask ücreti"
+    "message": "1do ücreti"
   },
   "swapMetaMaskFeeDescription": {
-    "message": "%$1 oranında bir ücret otomatik olarak bu teklife dahil edilmiştir. MetaMask'in likidite sağlayıcı bilgilerinin toplandığı yazılımı kullanma lisansı karşılığında ödersiniz.",
+    "message": "%$1 oranında bir ücret otomatik olarak bu teklife dahil edilmiştir. 1do'in likidite sağlayıcı bilgilerinin toplandığı yazılımı kullanma lisansı karşılığında ödersiniz.",
     "description": "Provides information about the fee that MetaMask takes for swaps. $1 is a decimal number."
   },
   "swapNQuotesWithDot": {
@@ -8901,7 +8901,7 @@
     "message": "Açılır pencereye geri dön"
   },
   "switchEthereumChainConfirmationDescription": {
-    "message": "Bu işlem, MetaMask'te seçili bir ağı önceden eklenmiş bir ağ ile değiştirecek:"
+    "message": "Bu işlem, 1do'te seçili bir ağı önceden eklenmiş bir ağ ile değiştirecek:"
   },
   "switchEthereumChainConfirmationTitle": {
     "message": "Bu sitenin ağı değiştirmesine izin ver?"
@@ -8910,7 +8910,7 @@
     "message": "Ağ değiştir"
   },
   "switchToMetaMaskDefaultRpc": {
-    "message": "MetaMask varsayılan RPC'sine geç",
+    "message": "1do varsayılan RPC'sine geç",
     "description": "Button text to switch the default RPC endpoint to MetaMask default RPC"
   },
   "switchToPopup": {
@@ -8953,7 +8953,7 @@
     "message": "Kabul Ediyorum"
   },
   "termsOfUseAgreeText": {
-    "message": "MetaMask ve tüm özelliklerini kullanımım için geçerli olan Kullanım Şartları bölümünü kabul ediyorum."
+    "message": "1do ve tüm özelliklerini kullanımım için geçerli olan Kullanım Şartları bölümünü kabul ediyorum."
   },
   "termsOfUseFooterText": {
     "message": "Tüm bölümleri okumak için lütfen kaydırın"
@@ -8971,13 +8971,13 @@
     "message": "Tema"
   },
   "themeDescription": {
-    "message": "Tercih ettiğin MetaMask temasını seç."
+    "message": "Tercih ettiğin 1do temasını seç."
   },
   "thirdPartyApis": {
     "message": "Üçüncü taraf API'leri"
   },
   "thirdPartyApisDescription": {
-    "message": "IP adresinizi veya Ethereum adresinizi üçüncü taraf API'leriyle nasıl paylaştığınızı seçin. Değişiklikler MetaMask deneyiminizi etkileyecektir."
+    "message": "IP adresinizi veya Ethereum adresinizi üçüncü taraf API'leriyle nasıl paylaştığınızı seçin. Değişiklikler 1do deneyiminizi etkileyecektir."
   },
   "thirdPartySoftware": {
     "message": "Üçüncü taraf yazılım uyarısı",
@@ -9224,7 +9224,7 @@
     "message": "Bu hata sürekli olmayabilir; bu yüzden uzantıyı yeniden başlatmayı deneyin."
   },
   "troubleStartingTitle": {
-    "message": "MetaMask başlatılırken sorun oluştu."
+    "message": "1do başlatılırken sorun oluştu."
   },
   "trustSignalBlockDescription": {
     "message": "Bu siteye bağlanırsanız varlıklarınızın tamamını kaybedebilirsiniz."
@@ -9393,7 +9393,7 @@
     "message": "Ağ RPC'leri Güncellendi"
   },
   "updatedToMetaMaskDefault": {
-    "message": "MetaMask varsayılanına güncellendi",
+    "message": "1do varsayılanına güncellendi",
     "description": "Toast message confirming that the default RPC endpoint has been updated to MetaMask default"
   },
   "uploadDropFile": {
@@ -9430,7 +9430,7 @@
     "message": "Dolandırıcılar tarafından airdrop edilen sahte NFT’ler de dahil olmak üzere tüm NFT'leri gösterir."
   },
   "useNftDetectionDescriptionText": {
-    "message": "MetaMask'in üçüncü taraf hizmetlerini kullanarak size ait olan NFT'leri eklemesine izin verin. NFT'leri otomatik algılama, IP adresinizi ve hesap adresinizi bu hizmetlerle paylaşır. Bu özelliğin etkinleştirilmesi IP adresinizi Ethereum adresinizle ilişkilendirebilir ve dolandırıcılar tarafından airdrop'u gerçekleştirilen sahte NFT'leri gösterebilir. Bu riski önlemek için tokenları elle ekleyebilirsiniz."
+    "message": "1do'in üçüncü taraf hizmetlerini kullanarak size ait olan NFT'leri eklemesine izin verin. NFT'leri otomatik algılama, IP adresinizi ve hesap adresinizi bu hizmetlerle paylaşır. Bu özelliğin etkinleştirilmesi IP adresinizi Ethereum adresinizle ilişkilendirebilir ve dolandırıcılar tarafından airdrop'u gerçekleştirilen sahte NFT'leri gösterebilir. Bu riski önlemek için tokenları elle ekleyebilirsiniz."
   },
   "usePhishingDetection": {
     "message": "Kimlik avı algılama kullan"
@@ -9442,10 +9442,10 @@
     "message": "Ağ bilgileri kontrolü"
   },
   "useSafeChainsListValidationDescription": {
-    "message": "MetaMask, doğru ve standartlaştırılmış ağ bilgilerini göstermek için $1 adlı üçüncü taraf bir hizmet kullanır. Bu, kötü amaçlı veya yanlış ağa bağlanma şansınızı düşürür. Bu özelliği kullanırken IP adresiniz chainid.network ile paylaşılır."
+    "message": "1do, doğru ve standartlaştırılmış ağ bilgilerini göstermek için $1 adlı üçüncü taraf bir hizmet kullanır. Bu, kötü amaçlı veya yanlış ağa bağlanma şansınızı düşürür. Bu özelliği kullanırken IP adresiniz chainid.network ile paylaşılır."
   },
   "useSafeChainsListValidationDescriptionV2": {
-    "message": "Kötü amaçlı veya yanlış bir ağa bağlanma ihtimalinizi azaltır. MetaMask, doğru ve standartlaştırılmış ağ bilgileri göstermek için $1 kullanır."
+    "message": "Kötü amaçlı veya yanlış bir ağa bağlanma ihtimalinizi azaltır. 1do, doğru ve standartlaştırılmış ağ bilgileri göstermek için $1 kullanır."
   },
   "useSafeChainsListValidationWebsite": {
     "message": "chainid.network",
@@ -9513,7 +9513,7 @@
     "message": "Onayla"
   },
   "visitSupportDataConsentModalDescription": {
-    "message": "MetaMask Tanımlayıcınızı ve uygulama sürümünüzü Destek Merkezimizle paylaşmak ister misiniz? Probleminizi daha iyi bir şekilde çözmemize yardımcı olabilir ancak isteğe bağlıdır."
+    "message": "1do Tanımlayıcınızı ve uygulama sürümünüzü Destek Merkezimizle paylaşmak ister misiniz? Probleminizi daha iyi bir şekilde çözmemize yardımcı olabilir ancak isteğe bağlıdır."
   },
   "visitSupportDataConsentModalReject": {
     "message": "Paylaşma"

@@ -17,10 +17,13 @@ export const PreferencesControllerInit: MessengerClientInitFunction<
   PreferencesController,
   PreferencesControllerMessenger
 > = ({ controllerMessenger, persistedState, initLangCode }) => {
+  const persistedPreferences = persistedState.PreferencesController ?? {};
   const messengerClient = new PreferencesController({
     state: {
       currentLocale: initLangCode ?? '',
-      ...persistedState.PreferencesController,
+      ...persistedPreferences,
+      // This fork keeps remote-backed auxiliary services permanently disabled.
+      useExternalServices: false,
     },
     messenger: controllerMessenger,
   });

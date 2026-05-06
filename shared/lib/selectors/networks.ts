@@ -1,7 +1,6 @@
 import {
   MultichainNetworkConfiguration,
   type MultichainNetworkConfiguration as InternalMultichainNetworkConfiguration,
-  NON_EVM_TESTNET_IDS,
 } from '@metamask/multichain-network-controller';
 import {
   RpcEndpointType,
@@ -57,7 +56,7 @@ export type MultichainNetworkConfigurationsByChainIdState = {
   };
 };
 
-export type EvmAndMultichainNetworkConfigurationsWithCaipChainId = (
+export type EvmNetworkConfigurationsWithCaipChainId = (
   | NetworkConfiguration
   | MultichainNetworkConfiguration
 ) & {
@@ -93,7 +92,7 @@ export function getSelectedNetworkClientId(
 }
 
 /**
- * Combines and returns network configurations for all chains (EVM and not) by caip chain id.
+ * Combines and returns network configurations for EVM chains by CAIP chain id.
  *
  * @param params - The parameters object.
  * @param params.multichainNetworkConfigurationsByChainId - network configurations by caip chain id from the MultichainNetworkController state.
@@ -102,9 +101,9 @@ export function getSelectedNetworkClientId(
  * @returns A consolidated object containing all available network configurations by caip chain id.
  */
 export const getNetworkConfigurationsByCaipChainId = ({
-  multichainNetworkConfigurationsByChainId,
+  multichainNetworkConfigurationsByChainId: _multichainNetworkConfigurationsByChainId,
   networkConfigurationsByChainId,
-  internalAccounts,
+  internalAccounts: _internalAccounts,
 }: {
   multichainNetworkConfigurationsByChainId: Record<
     CaipChainId,
@@ -125,34 +124,11 @@ export const getNetworkConfigurationsByCaipChainId = ({
     },
   );
 
-  // For now we need to filter out networkConfigurations/scopes without accounts because
-  // the `endowment:caip25` caveat validator will throw if there are no supported accounts for the given scope
-  // due to how the `MultichainRoutingService.isSupportedScope()` method is implemented
-  Object.entries(multichainNetworkConfigurationsByChainId).forEach(
-    ([caipChainId, networkConfig]) => {
-      const matchesAccount = Object.values(internalAccounts.accounts).some(
-        (account) => {
-          const matchesScope = account.scopes?.some((scope) => {
-            return scope === caipChainId;
-          });
-
-          const isSnapEnabled = account.metadata.snap?.enabled;
-
-          return Boolean(matchesScope && isSnapEnabled);
-        },
-      );
-
-      if (matchesAccount) {
-        caipFormattedEvmNetworkConfigurations[caipChainId] = networkConfig;
-      }
-    },
-  );
-
   return caipFormattedEvmNetworkConfigurations;
 };
 
 /**
- * Combines and returns network configurations for all chains (EVM and not).
+ * Combines and returns network configurations for EVM chains.
  *
  * @param state - Redux state.
  * @returns A consolidated object containing all available network configurations.
@@ -169,57 +145,12 @@ export const getAllNetworkConfigurationsByCaipChainId = createSelector(
     networkConfigurationsByChainId,
     multichainNetworkConfigurationsByChainId,
     internalAccounts,
-  ) => {
-    // We have this logic here to filter out non EVM test networks
-    // to properly handle this we should use the selector from
-    // multichain/networks.ts in the UI side
-    const { nonEvmNetworks, nonEvmTestNetworks } = Object.keys(
+  ) =>
+    getNetworkConfigurationsByCaipChainId({
       multichainNetworkConfigurationsByChainId,
-    ).reduce(
-      (
-        result: {
-          nonEvmNetworks: Record<
-            CaipChainId,
-            InternalMultichainNetworkConfiguration
-          >;
-          nonEvmTestNetworks: Record<
-            CaipChainId,
-            InternalMultichainNetworkConfiguration
-          >;
-        },
-        key: string,
-      ) => {
-        const caipKey = key as CaipChainId;
-        if (NON_EVM_TESTNET_IDS.includes(caipKey)) {
-          result.nonEvmTestNetworks[caipKey] =
-            multichainNetworkConfigurationsByChainId[caipKey];
-        } else {
-          result.nonEvmNetworks[caipKey] =
-            multichainNetworkConfigurationsByChainId[caipKey];
-        }
-        return result;
-      },
-      {
-        nonEvmNetworks: {} as Record<
-          CaipChainId,
-          InternalMultichainNetworkConfiguration
-        >,
-        nonEvmTestNetworks: {} as Record<
-          CaipChainId,
-          InternalMultichainNetworkConfiguration
-        >,
-      },
-    );
-
-    return getNetworkConfigurationsByCaipChainId({
-      multichainNetworkConfigurationsByChainId: {
-        ...nonEvmNetworks,
-        ...nonEvmTestNetworks,
-      },
       networkConfigurationsByChainId,
       internalAccounts,
-    });
-  },
+    }),
 );
 
 /**
@@ -323,7 +254,7 @@ export const getNonTestNetworks = createSelector(
   [getAllNetworkConfigurationsByCaipChainId],
   (
     networkConfigurationsByCaipChainId,
-  ): EvmAndMultichainNetworkConfigurationsWithCaipChainId[] => {
+  ): EvmNetworkConfigurationsWithCaipChainId[] => {
     return Object.entries(networkConfigurationsByCaipChainId)
       .filter(([chainId]) => {
         const caipChainId = chainId as CaipChainId;

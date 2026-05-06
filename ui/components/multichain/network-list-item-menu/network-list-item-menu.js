@@ -24,7 +24,6 @@ export const NetworkListItemMenu = ({
 }) => {
   const t = useI18nContext();
 
-  // Create refs for each menu item
   const discoverRef = useRef(null);
   const editRef = useRef(null);
   const deleteRef = useRef(null);
@@ -41,7 +40,7 @@ export const NetworkListItemMenu = ({
       return discoverRef;
     }
     return null;
-  }, [onDeleteClick, onEditClick, onDiscoverClick]);
+  }, [onDeleteClick, onDiscoverClick, onEditClick]);
 
   // Handle Tab key press for accessibility - close popover on last MenuItem
   const handleKeyDown = useCallback(
@@ -66,7 +65,7 @@ export const NetworkListItemMenu = ({
         {onDiscoverClick ? (
           <MenuItem
             ref={discoverRef}
-            iconNameLegacy={IconName.Eye}
+            iconNameLegacy={IconName.Export}
             onClick={(e) => {
               e.stopPropagation();
               onDiscoverClick();

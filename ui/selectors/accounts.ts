@@ -1,11 +1,8 @@
 import { AccountsControllerState } from '@metamask/accounts-controller';
 import {
   EthAccountType,
-  BtcAccountType,
-  SolAccountType,
   CaipChainId,
   EthScope,
-  TrxAccountType,
   isEvmAccountType,
 } from '@metamask/keyring-api';
 import { InternalAccount } from '@metamask/keyring-internal-api';
@@ -17,32 +14,6 @@ import { EMPTY_OBJECT } from './shared';
 export type AccountsState = {
   metamask: AccountsControllerState;
 };
-
-export function isBitcoinAccount(account: InternalAccount) {
-  return Boolean(
-    account &&
-      Object.values(BtcAccountType).includes(account.type as BtcAccountType),
-  );
-}
-
-export function isSolanaAccount(account: InternalAccount) {
-  const { DataAccount } = SolAccountType;
-
-  return Boolean(account && account.type === DataAccount);
-}
-
-export function isTronAccount(account: InternalAccount) {
-  const { Eoa } = TrxAccountType;
-  return Boolean(account && account.type === Eoa);
-}
-
-export function isNonEvmAccount(account: InternalAccount) {
-  return (
-    isBitcoinAccount(account) ||
-    isSolanaAccount(account) ||
-    isTronAccount(account)
-  );
-}
 
 export const getInternalAccountsObject = (state: AccountsState) =>
   state.metamask.internalAccounts.accounts;
@@ -103,16 +74,6 @@ export const selectEvmAddress = createSelector(
   getSelectedInternalAccount,
   (account) =>
     account && isEvmAccountType(account.type) ? account.address : undefined,
-);
-
-export const isSelectedInternalAccountSolana = createSelector(
-  getSelectedInternalAccount,
-  (account) => isSolanaAccount(account),
-);
-
-export const hasCreatedSolanaAccount = createSelector(
-  getInternalAccounts,
-  (accounts) => accounts.some((account) => isSolanaAccount(account)),
 );
 
 /**

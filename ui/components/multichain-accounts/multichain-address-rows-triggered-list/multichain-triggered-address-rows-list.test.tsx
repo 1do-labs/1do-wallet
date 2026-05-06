@@ -66,9 +66,6 @@ jest.mock('../../../hooks/useCopyToClipboard', () => ({
 const TEST_STRINGS = {
   VIEW_ALL_TEXT: 'multichainAddressViewAll',
   EVM_NETWORKS: 'networkNameEthereum',
-  BITCOIN_NETWORK: 'networkNameBitcoinSegwit',
-  SOLANA_NETWORK: 'Solana',
-  TRON_NETWORK: 'Tron',
 } as const;
 
 const TEST_IDS = {
@@ -90,11 +87,6 @@ const GROUP_ID_MOCK = `${WALLET_ID_MOCK}/0` as AccountGroupId;
 const SPECIAL_GROUP_ID = `${WALLET_ID_MOCK}/special-0` as AccountGroupId;
 const ACCOUNT_EVM_ID_MOCK =
   'entropy:01K437Z7EJ0VCMFDE9TQKRV60A:multichain-account:01K437Z7EJ0VCMFDE9TQKRV60A:eoa:0x4b42aed7d99fc7874a56e6003629c89210a31c34';
-const ACCOUNT_BITCOIN_ID_MOCK =
-  'bitcoin:mainnet:4e445ed5a8c09d4d3be8e7fbf7dc3314';
-const ACCOUNT_SOLANA_ID_MOCK =
-  'solana:mainnet:5e445ed5a8c09d4d3be8e7fbf7dc3314';
-const ACCOUNT_TRON_ID_MOCK = 'tron:mainnet:6e445ed5a8c09d4d3be8e7fbf7dc3314';
 
 const INTERNAL_ACCOUNTS_MOCK: Record<string, InternalAccount> = {
   [ACCOUNT_EVM_ID_MOCK]: {
@@ -116,45 +108,6 @@ const INTERNAL_ACCOUNTS_MOCK: Record<string, InternalAccount> = {
       'eip155:59144',
     ],
   },
-  [ACCOUNT_BITCOIN_ID_MOCK]: {
-    id: ACCOUNT_BITCOIN_ID_MOCK,
-    address: '1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa',
-    metadata: {
-      name: 'Bitcoin Account',
-      importTime: Date.now(),
-      keyring: { type: 'Snap Keyring' },
-    },
-    options: {},
-    methods: [],
-    type: 'bip122:p2wpkh',
-    scopes: ['bip122:000000000019d6689c085ae165831e93'],
-  },
-  [ACCOUNT_SOLANA_ID_MOCK]: {
-    id: ACCOUNT_SOLANA_ID_MOCK,
-    address: 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v',
-    metadata: {
-      name: 'Solana Account',
-      importTime: Date.now(),
-      keyring: { type: 'Snap Keyring' },
-    },
-    options: {},
-    methods: [],
-    type: 'solana:data-account',
-    scopes: ['solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp'],
-  },
-  [ACCOUNT_TRON_ID_MOCK]: {
-    id: ACCOUNT_TRON_ID_MOCK,
-    address: 'TN3W4H6rK2ce4vX9YnFQHwKENnHjoxb3m9',
-    metadata: {
-      name: 'Tron Account',
-      importTime: Date.now(),
-      keyring: { type: 'Snap Keyring' },
-    },
-    options: {},
-    methods: [],
-    type: 'tron:eoa',
-    scopes: ['tron:0x2b6653dc'],
-  },
 };
 
 const ACCOUNT_TREE_MOCK = {
@@ -168,12 +121,7 @@ const ACCOUNT_TREE_MOCK = {
           type: 'multichain-account',
           id: GROUP_ID_MOCK,
           metadata: {},
-          accounts: [
-            ACCOUNT_EVM_ID_MOCK,
-            ACCOUNT_BITCOIN_ID_MOCK,
-            ACCOUNT_SOLANA_ID_MOCK,
-            ACCOUNT_TRON_ID_MOCK,
-          ],
+          accounts: [ACCOUNT_EVM_ID_MOCK],
         },
       },
     },
@@ -249,24 +197,6 @@ const createMockState = () => ({
         name: 'Linea',
         isEvm: true,
         nativeCurrency: 'ETH',
-      },
-      'bip122:000000000019d6689c085ae165831e93': {
-        chainId: 'bip122:000000000019d6689c085ae165831e93',
-        name: 'Bitcoin',
-        isEvm: false,
-        nativeCurrency: 'BTC',
-      },
-      'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp': {
-        chainId: 'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp',
-        name: 'Solana',
-        isEvm: false,
-        nativeCurrency: 'SOL',
-      },
-      'tron:0x2b6653dc': {
-        chainId: 'tron:0x2b6653dc',
-        name: 'Tron',
-        isEvm: false,
-        nativeCurrency: 'TRX',
       },
     },
   },
@@ -376,18 +306,6 @@ describe('MultichainTriggeredAddressRowsList', () => {
 
     mockedGetNetworksByScopes.mockImplementation((_, scopes) => {
       const networkMap: Record<string, { name: string; chainId: string }> = {
-        'bip122:000000000019d6689c085ae165831e93': {
-          name: messages.networkNameBitcoin.message,
-          chainId: 'bip122:000000000019d6689c085ae165831e93',
-        },
-        'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp': {
-          name: messages.networkNameSolana.message,
-          chainId: 'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp',
-        },
-        'tron:0x2b6653dc': {
-          name: messages.networkNameTron.message,
-          chainId: 'tron:0x2b6653dc',
-        },
         'eip155:1': {
           name: messages.networkNameEthereum.message,
           chainId: 'eip155:1',
@@ -429,21 +347,6 @@ describe('MultichainTriggeredAddressRowsList', () => {
         scope: 'eip155:59144' as CaipChainId,
         networkName: 'Linea',
       },
-      {
-        account: INTERNAL_ACCOUNTS_MOCK[ACCOUNT_BITCOIN_ID_MOCK],
-        scope: 'bip122:000000000019d6689c085ae165831e93' as CaipChainId,
-        networkName: 'Bitcoin',
-      },
-      {
-        account: INTERNAL_ACCOUNTS_MOCK[ACCOUNT_SOLANA_ID_MOCK],
-        scope: 'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp' as CaipChainId,
-        networkName: 'Solana',
-      },
-      {
-        account: INTERNAL_ACCOUNTS_MOCK[ACCOUNT_TRON_ID_MOCK],
-        scope: 'tron:0x2b6653dc' as CaipChainId,
-        networkName: 'Tron',
-      },
     ]);
   });
 
@@ -483,22 +386,6 @@ describe('MultichainTriggeredAddressRowsList', () => {
     expect(avatarGroup).toBeInTheDocument();
   });
 
-  it('displays separate rows for non-eip155 accounts', async () => {
-    renderComponent();
-
-    const triggerElement = screen.getByTestId(TEST_IDS.HOVER_TRIGGER);
-    fireEvent.mouseEnter(triggerElement.parentElement as HTMLElement);
-    await waitFor(() => {
-      expect(
-        screen.getByTestId(TEST_IDS.MULTICHAIN_ADDRESS_ROWS_LIST),
-      ).toBeInTheDocument();
-    });
-
-    expect(screen.getByText(TEST_STRINGS.BITCOIN_NETWORK)).toBeInTheDocument();
-    expect(screen.getByText(TEST_STRINGS.SOLANA_NETWORK)).toBeInTheDocument();
-    expect(screen.getByText(TEST_STRINGS.TRON_NETWORK)).toBeInTheDocument();
-  });
-
   it('applies priority sorting with grouped eip155 first', async () => {
     renderComponent();
 
@@ -514,9 +401,7 @@ describe('MultichainTriggeredAddressRowsList', () => {
     const rowTexts = addressRows.map((row) => row.textContent);
 
     expect(rowTexts[0]).toContain(TEST_STRINGS.EVM_NETWORKS);
-    expect(rowTexts[1]).toContain(TEST_STRINGS.BITCOIN_NETWORK);
-    expect(rowTexts[2]).toContain(TEST_STRINGS.SOLANA_NETWORK);
-    expect(rowTexts[3]).toContain(TEST_STRINGS.TRON_NETWORK);
+    expect(addressRows).toHaveLength(1);
   });
 
   it('handles copy functionality for aggregated rows', async () => {
@@ -597,9 +482,9 @@ describe('MultichainTriggeredAddressRowsList', () => {
     const avatarGroup = evmRow?.querySelector('[data-testid="avatar-group"]');
     expect(avatarGroup).toBeInTheDocument();
 
-    expect(screen.getByText(TEST_STRINGS.BITCOIN_NETWORK)).toBeInTheDocument();
-    expect(screen.getByText(TEST_STRINGS.SOLANA_NETWORK)).toBeInTheDocument();
-    expect(screen.getByText(TEST_STRINGS.TRON_NETWORK)).toBeInTheDocument();
+    expect(screen.getAllByTestId(TEST_IDS.MULTICHAIN_ADDRESS_ROW)).toHaveLength(
+      1,
+    );
   });
 
   it('respects priority order when multiple accounts have priority chains', async () => {
@@ -615,34 +500,23 @@ describe('MultichainTriggeredAddressRowsList', () => {
 
     const addressRows = screen.getAllByTestId(TEST_IDS.MULTICHAIN_ADDRESS_ROW);
 
-    expect(addressRows.length).toBe(4);
+    expect(addressRows.length).toBe(1);
 
     const groupNames = addressRows.map((row) => {
       // Find the Text element containing the network name
       // It's the first Text element after the network group avatar
       const textElements = row.querySelectorAll('p');
-      // The network name is typically the first text element in the row
-      // We'll find it by checking which text matches our expected network names
+      // The network name is typically the first text element in the row.
       for (const textEl of textElements) {
         const text = textEl.textContent?.trim() || '';
-        if (
-          text === TEST_STRINGS.EVM_NETWORKS ||
-          text === TEST_STRINGS.BITCOIN_NETWORK ||
-          text === TEST_STRINGS.SOLANA_NETWORK ||
-          text === TEST_STRINGS.TRON_NETWORK
-        ) {
+        if (text === TEST_STRINGS.EVM_NETWORKS) {
           return text;
         }
       }
       return '';
     });
 
-    expect(groupNames).toEqual([
-      TEST_STRINGS.EVM_NETWORKS,
-      TEST_STRINGS.BITCOIN_NETWORK,
-      TEST_STRINGS.SOLANA_NETWORK,
-      TEST_STRINGS.TRON_NETWORK,
-    ]);
+    expect(groupNames).toEqual([TEST_STRINGS.EVM_NETWORKS]);
   });
 
   describe('Copy Functionality', () => {
@@ -851,8 +725,8 @@ describe('MultichainTriggeredAddressRowsList', () => {
       // Verify content is displayed
       expect(screen.getByText(TEST_STRINGS.EVM_NETWORKS)).toBeInTheDocument();
       expect(
-        screen.getByText(TEST_STRINGS.BITCOIN_NETWORK),
-      ).toBeInTheDocument();
+        screen.getAllByTestId(TEST_IDS.MULTICHAIN_ADDRESS_ROW),
+      ).toHaveLength(1);
     });
 
     it('hides address list on mouse leave with delay', async () => {

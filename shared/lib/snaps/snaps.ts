@@ -10,18 +10,7 @@ import { isFlask } from '../build-types';
 const FORCE_PREINSTALLED_SNAPS =
   isFlask() && process.env.FORCE_PREINSTALLED_SNAPS === 'true';
 
-export const PREINSTALLED_SNAPS = [
-  'npm:@metamask/message-signing-snap',
-  'npm:@metamask/ens-resolver-snap',
-  'npm:@metamask/institutional-wallet-snap',
-  'npm:@metamask/account-watcher',
-  'npm:@metamask/preinstalled-example-snap',
-  'npm:@metamask/bitcoin-wallet-snap',
-  'npm:@metamask/solana-wallet-snap',
-  'npm:@metamask/tron-wallet-snap',
-  'npm:@metamask/permissions-kernel-snap',
-  'npm:@metamask/gator-permissions-snap',
-];
+export const PREINSTALLED_SNAPS: SnapId[] = [];
 
 /**
  * Check if a Snap is a preinstalled Snap.

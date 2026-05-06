@@ -4,7 +4,6 @@ import {
   MOCK_EVM_ACCOUNT,
 } from '../../../test/data/bridge/mock-bridge-store';
 import { CHAIN_IDS } from '../../../shared/constants/network';
-import { MultichainNetworks } from '../../../shared/constants/multichain/networks';
 import { getAccountGroupsByAddress } from '../../selectors/multichain-accounts/account-tree';
 import {
   getBridgeBalancesByChainId,
@@ -38,26 +37,11 @@ describe('Bridge asset selectors', () => {
                 isActiveSrc: true,
                 isActiveDest: true,
               },
-              [MultichainNetworks.SOLANA]: {
-                isActiveSrc: true,
-                isActiveDest: true,
-              },
-              [MultichainNetworks.BITCOIN]: {
-                isActiveSrc: true,
-                isActiveDest: true,
-              },
-              [MultichainNetworks.TRON]: {
-                isActiveSrc: true,
-                isActiveDest: true,
-              },
             },
             chainRanking: [
               { chainId: formatChainIdToCaip(CHAIN_IDS.MAINNET) },
               { chainId: formatChainIdToCaip(CHAIN_IDS.OPTIMISM) },
               { chainId: formatChainIdToCaip(CHAIN_IDS.POLYGON) },
-              { chainId: MultichainNetworks.SOLANA },
-              { chainId: MultichainNetworks.BITCOIN },
-              { chainId: MultichainNetworks.TRON },
             ],
           },
         },
@@ -105,26 +89,6 @@ describe('Bridge asset selectors', () => {
             "tokenFiatAmount": 2524.2443591635597,
           },
           {
-            "accountType": "solana:data-account",
-            "assetId": "solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp/slip44:501",
-            "balance": "1.530",
-            "chainId": "solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp",
-            "decimals": 18,
-            "name": "Solana",
-            "symbol": "SOL",
-            "tokenFiatAmount": 210.8493,
-          },
-          {
-            "accountType": "bip122:p2wpkh",
-            "assetId": "bip122:000000000019d6689c085ae165831e93/slip44:0",
-            "balance": ".001",
-            "chainId": "bip122:000000000019d6689c085ae165831e93",
-            "decimals": 18,
-            "name": "Bitcoin",
-            "symbol": "BTC",
-            "tokenFiatAmount": 91.238,
-          },
-          {
             "assetId": "eip155:1/slip44:60",
             "balance": "0.01",
             "chainId": "eip155:1",
@@ -132,16 +96,6 @@ describe('Bridge asset selectors', () => {
             "name": "Ether",
             "symbol": "ETH",
             "tokenFiatAmount": 25.242128065034784,
-          },
-          {
-            "accountType": "solana:data-account",
-            "assetId": "solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp/token:EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
-            "balance": "2.043238",
-            "chainId": "solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp",
-            "decimals": 6,
-            "name": "USDC",
-            "symbol": "USDC",
-            "tokenFiatAmount": 2.04284978478,
           },
           {
             "assetId": "eip155:1/erc20:0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984",
@@ -167,16 +121,6 @@ describe('Bridge asset selectors', () => {
       `);
       expect(balanceByAssetId).toMatchInlineSnapshot(`
         {
-          "bip122:000000000019d6689c085ae165831e93/slip44:0": {
-            "accountType": "bip122:p2wpkh",
-            "assetId": "bip122:000000000019d6689c085ae165831e93/slip44:0",
-            "balance": ".001",
-            "chainId": "bip122:000000000019d6689c085ae165831e93",
-            "decimals": 18,
-            "name": "Bitcoin",
-            "symbol": "BTC",
-            "tokenFiatAmount": 91.238,
-          },
           "eip155:1/erc20:0x1f9840a85d5af5bf1d1762f925bdaddc4201f984": {
             "assetId": "eip155:1/erc20:0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984",
             "balance": "0.0000001848",
@@ -235,35 +179,13 @@ describe('Bridge asset selectors', () => {
             "symbol": "ETH",
             "tokenFiatAmount": 2524.2443591635597,
           },
-          "solana:5eykt4usfv8p8njdtrepy1vzqkqzkvdp/slip44:501": {
-            "accountType": "solana:data-account",
-            "assetId": "solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp/slip44:501",
-            "balance": "1.530",
-            "chainId": "solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp",
-            "decimals": 18,
-            "name": "Solana",
-            "symbol": "SOL",
-            "tokenFiatAmount": 210.8493,
-          },
-          "solana:5eykt4usfv8p8njdtrepy1vzqkqzkvdp/token:epjfwdd5aufqssqem2qn1xzybapc8g4weggkzwytdt1v": {
-            "accountType": "solana:data-account",
-            "assetId": "solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp/token:EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
-            "balance": "2.043238",
-            "chainId": "solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp",
-            "decimals": 6,
-            "name": "USDC",
-            "symbol": "USDC",
-            "tokenFiatAmount": 2.04284978478,
-          },
         }
       `);
 
       expect(balanceByChainId).toMatchInlineSnapshot(`
         {
-          "bip122:000000000019d6689c085ae165831e93": 91.238,
           "eip155:1": 25.243203985501427,
           "eip155:10": 20648.66167132946,
-          "solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp": 212.89214978478,
         }
       `);
     });

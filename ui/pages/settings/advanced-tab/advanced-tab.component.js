@@ -57,8 +57,6 @@ export default class AdvancedTab extends PureComponent {
     backupUserData: PropTypes.func.isRequired,
     showExtensionInFullSizeView: PropTypes.bool,
     setShowExtensionInFullSizeView: PropTypes.func.isRequired,
-    manageInstitutionalWallets: PropTypes.bool,
-    setManageInstitutionalWallets: PropTypes.func.isRequired,
     dismissSmartAccountSuggestionEnabled: PropTypes.bool.isRequired,
     setDismissSmartAccountSuggestionEnabled: PropTypes.func.isRequired,
   };
@@ -592,40 +590,6 @@ export default class AdvancedTab extends PureComponent {
               {t('exportYourDataButton')}
             </Button>
           </div>
-        </div>
-      </Box>
-    );
-  }
-
-  renderManageInstitutionalWallets() {
-    const { t } = this.context;
-    const { manageInstitutionalWallets, setManageInstitutionalWallets } =
-      this.props;
-
-    return (
-      <Box
-        ref={this.settingsRefs[9]}
-        className="settings-page__content-row"
-        data-testid="advanced-setting-dismiss-reminder"
-        display={Display.Flex}
-        flexDirection={FlexDirection.Row}
-        justifyContent={JustifyContent.spaceBetween}
-        gap={[null, 4]}
-      >
-        <div className="settings-page__content-item">
-          <span>{t('manageInstitutionalWallets')}</span>
-          <div className="settings-page__content-description">
-            {t('manageInstitutionalWalletsDescription')}
-          </div>
-        </div>
-
-        <div className="settings-page__content-item-col">
-          <ToggleButton
-            value={manageInstitutionalWallets}
-            onToggle={(value) => setManageInstitutionalWallets(!value)}
-            offLabel={t('off')}
-            onLabel={t('on')}
-          />
         </div>
       </Box>
     );

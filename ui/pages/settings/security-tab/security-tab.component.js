@@ -62,12 +62,9 @@ import {
   getNumberOfSettingRoutesInTab,
   handleSettingsRefs,
 } from '../../../helpers/utils/settings-search';
-
 import { updateDataDeletionTaskStatus } from '../../../store/actions';
 import ZENDESK_URLS from '../../../helpers/constants/zendesk-url';
 import { getIsSeedlessOnboardingFeatureEnabled } from '../../../../shared/lib/environment';
-import MetametricsToggle from './metametrics-toggle';
-import DeleteMetametricsDataButton from './delete-metametrics-data-button';
 
 export default class SecurityTab extends PureComponent {
   static contextTypes = {
@@ -107,7 +104,6 @@ export default class SecurityTab extends PureComponent {
     useTransactionSimulations: PropTypes.bool.isRequired,
     securityAlertsEnabled: PropTypes.bool,
     useExternalServices: PropTypes.bool,
-    toggleExternalServices: PropTypes.func,
     setSkipDeepLinkInterstitial: PropTypes.func.isRequired,
     skipDeepLinkInterstitial: PropTypes.bool,
     setSecurityAlertsEnabled: PropTypes.func,
@@ -1130,11 +1126,7 @@ export default class SecurityTab extends PureComponent {
 
   renderUseExternalServices() {
     const { t } = this.context;
-    const {
-      useExternalServices,
-      toggleExternalServices,
-      setBasicFunctionalityModalOpen,
-    } = this.props;
+    const { useExternalServices, setBasicFunctionalityModalOpen } = this.props;
 
     return (
       <Box
@@ -1160,34 +1152,18 @@ export default class SecurityTab extends PureComponent {
               value={useExternalServices}
               onToggle={() => {
                 if (useExternalServices) {
-                  // If we are going to be disabling external services, then we want to show the "turn off" warning modal
                   setBasicFunctionalityModalOpen();
-                } else {
-                  toggleExternalServices(true);
-                  this.context.trackEvent({
-                    category: MetaMetricsEventCategory.Settings,
-                    event: MetaMetricsEventName.SettingsUpdated,
-                    properties: {
-                      settings_group: 'security_privacy',
-                      settings_type: 'basic_functionality',
-                      old_value: false,
-                      new_value: true,
-                      // these values will always be set to false
-                      // when basic functionality is re-enabled
-                      was_notifications_on: false,
-                      was_profile_syncing_on: false,
-                    },
-                  });
                 }
               }}
               offLabel={t('off')}
               onLabel={t('on')}
+              disabled={!useExternalServices}
             />
           </Box>
           <Text marginBottom={2} color={TextColor.textAlternative}>
             {t('basicConfigurationDescription', [
               <a
-                href="https://consensys.io/privacy-policy"
+                href={PRIVACY_POLICY_LINK}
                 key="link"
                 target="_blank"
                 rel="noreferrer noopener"
@@ -1290,7 +1266,6 @@ export default class SecurityTab extends PureComponent {
   };
 
   render() {
-    const { dataCollectionForMarketing } = this.props;
     const { showDataCollectionDisclaimer } = this.state;
 
     return (
@@ -1358,20 +1333,6 @@ export default class SecurityTab extends PureComponent {
           {this.renderBatchAccountBalanceRequestsToggle()}
           {this.renderDisplayNftMediaToggle()}
           {this.renderNftDetectionToggle()}
-        </div>
-
-        <span className="settings-page__security-tab-sub-header">
-          {this.context.t('metrics')}
-        </span>
-        <div className="settings-page__content-padded">
-          <MetametricsToggle
-            dataCollectionForMarketing={dataCollectionForMarketing}
-            setDataCollectionForMarketing={this.toggleDataCollectionForMarketing.bind(
-              this,
-            )}
-          />
-          {this.renderDataCollectionForMarketing()}
-          <DeleteMetametricsDataButton ref={this.settingsRefs[20]} />
         </div>
       </div>
     );

@@ -22,7 +22,6 @@ import {
   ENVIRONMENT_TYPE_FULLSCREEN,
   ENVIRONMENT_TYPE_NOTIFICATION,
   ENVIRONMENT_TYPE_POPUP,
-  SNAP_MANAGE_ACCOUNTS_CONFIRMATION_TYPES,
 } from '../../../shared/constants/app';
 import {
   getTransactions,
@@ -48,13 +47,6 @@ const EXEMPTED_ROUTES = [
   // shield approval transaction back to shield plan and transaction shield settings page on cancel/confirm, need to be exempted otherwise it will redirect to home page
   SHIELD_PLAN_ROUTE,
   TRANSACTION_SHIELD_ROUTE,
-];
-
-const SNAP_APPROVAL_TYPES = [
-  'wallet_installSnapResult',
-  SNAP_MANAGE_ACCOUNTS_CONFIRMATION_TYPES.confirmAccountCreation,
-  SNAP_MANAGE_ACCOUNTS_CONFIRMATION_TYPES.confirmAccountRemoval,
-  SNAP_MANAGE_ACCOUNTS_CONFIRMATION_TYPES.showSnapAccountRedirect,
 ];
 
 export const ConfirmationHandler = () => {
@@ -120,11 +112,6 @@ export const ConfirmationHandler = () => {
     pathname.startsWith(route),
   );
 
-  // Ported from home.component - hasAllowedPopupRedirectApprovals()
-  const hasAllowedPopupRedirectApprovals = pendingApprovals.some((approval) =>
-    SNAP_APPROVAL_TYPES.includes(approval.type),
-  );
-
   const hasSwapRelatedNavigation = hasBridgeQuotes;
 
   const isMerklTransaction = pendingApprovals.some((approval) =>
@@ -143,7 +130,6 @@ export const ConfirmationHandler = () => {
 
   const isFullscreenExemption =
     isFullscreen &&
-    !hasAllowedPopupRedirectApprovals &&
     !hasSwapRelatedNavigation &&
     !isMerklTransaction &&
     !isMUSDConversionTransaction;

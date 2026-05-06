@@ -122,7 +122,6 @@ export type PreferencesControllerState = Omit<
   | 'showIncomingTransactions'
   | 'tokenNetworkFilter'
 > & {
-  addSnapAccountEnabled?: boolean;
   advancedGasFee: Record<string, Record<string, string>>;
   currentLocale: string;
   dismissSeedBackUpReminder: boolean;
@@ -130,13 +129,11 @@ export type PreferencesControllerState = Omit<
   forgottenPassword: boolean;
   knownMethodData: Record<string, string>;
   ledgerTransportType: LedgerTransportTypes;
-  manageInstitutionalWallets: boolean;
   openSeaEnabled: boolean;
   overrideContentSecurityPolicyHeader: boolean;
   preferences: Preferences;
   // TODO: Replace `Json` with correct type
   snapRegistryList: Record<string, Json>;
-  snapsAddSnapAccountModalDismissed?: boolean;
   textDirection?: string;
   theme: ThemeType;
   use4ByteResolution: boolean;
@@ -149,7 +146,6 @@ export type PreferencesControllerState = Omit<
   usePhishDetect: boolean;
   referrals: Record<DefiReferralPartner, Record<Hex, ReferralStatus>>;
   showSidePanelMigrationToast: boolean;
-  watchEthereumAccountEnabled: boolean;
 };
 
 /**
@@ -157,7 +153,6 @@ export type PreferencesControllerState = Omit<
  */
 export const getDefaultPreferencesControllerState =
   (): PreferencesControllerState => ({
-    addSnapAccountEnabled: false,
     advancedGasFee: {},
     currentLocale: '',
     dismissSeedBackUpReminder: false,
@@ -173,7 +168,6 @@ export const getDefaultPreferencesControllerState =
     ledgerTransportType: window.navigator.hid
       ? LedgerTransportTypes.webhid
       : LedgerTransportTypes.u2f,
-    manageInstitutionalWallets: false,
     openSeaEnabled: true,
     overrideContentSecurityPolicyHeader: true,
     preferences: {
@@ -206,16 +200,14 @@ export const getDefaultPreferencesControllerState =
     securityAlertsEnabled: true,
     showSidePanelMigrationToast: false,
     snapRegistryList: {},
-    snapsAddSnapAccountModalDismissed: false,
     theme: ThemeType.os,
     use4ByteResolution: true,
     useAddressBarEnsResolution: true,
     useCurrencyRateCheck: true,
     useExternalNameSources: true,
-    // Turning OFF basic functionality toggle means turning OFF this useExternalServices flag.
-    // Whenever useExternalServices is false, certain features will be disabled.
-    // The flag is true by Default, meaning the toggle is ON by default.
-    useExternalServices: true,
+    // Default this fork to local-first behavior. Remote-backed features stay
+    // off unless the user explicitly re-enables them.
+    useExternalServices: false,
     // from core PreferencesController
     isMultiAccountBalancesEnabled: true,
     useMultiAccountBalanceChecker: true,
@@ -226,7 +218,6 @@ export const getDefaultPreferencesControllerState =
     // set to false will be using the static list from contract-metadata
     useTokenDetection: true,
     useTransactionSimulations: true,
-    watchEthereumAccountEnabled: false,
     referrals: {
       [DefiReferralPartner.AsterDEX]: {},
       [DefiReferralPartner.GMX]: {},
@@ -242,12 +233,6 @@ export const getDefaultPreferencesControllerState =
  * the `anonymous` flag.
  */
 const controllerMetadata: StateMetadata<PreferencesControllerState> = {
-  addSnapAccountEnabled: {
-    includeInStateLogs: true,
-    persist: true,
-    includeInDebugSnapshot: false,
-    usedInUi: true,
-  },
   advancedGasFee: {
     persist: true,
     includeInStateLogs: true,
@@ -308,12 +293,6 @@ const controllerMetadata: StateMetadata<PreferencesControllerState> = {
     includeInDebugSnapshot: true,
     usedInUi: true,
   },
-  manageInstitutionalWallets: {
-    includeInStateLogs: true,
-    persist: true,
-    includeInDebugSnapshot: false,
-    usedInUi: true,
-  },
   openSeaEnabled: {
     includeInStateLogs: true,
     persist: true,
@@ -345,12 +324,6 @@ const controllerMetadata: StateMetadata<PreferencesControllerState> = {
     usedInUi: true,
   },
   snapRegistryList: {
-    includeInStateLogs: true,
-    persist: true,
-    includeInDebugSnapshot: false,
-    usedInUi: true,
-  },
-  snapsAddSnapAccountModalDismissed: {
     includeInStateLogs: true,
     persist: true,
     includeInDebugSnapshot: false,
@@ -440,12 +413,6 @@ const controllerMetadata: StateMetadata<PreferencesControllerState> = {
     includeInDebugSnapshot: true,
     usedInUi: true,
   },
-  watchEthereumAccountEnabled: {
-    includeInStateLogs: true,
-    persist: true,
-    includeInDebugSnapshot: false,
-    usedInUi: true,
-  },
   referrals: {
     includeInStateLogs: true,
     persist: true,
@@ -466,8 +433,6 @@ const MESSENGER_EXPOSED_METHODS = [
   'setUseCurrencyRateCheck',
   'setOpenSeaEnabled',
   'setSecurityAlertsEnabled',
-  'setAddSnapAccountEnabled',
-  'setWatchEthereumAccountEnabled',
   'setUseExternalNameSources',
   'setUseTransactionSimulations',
   'setAdvancedGasFee',
@@ -485,12 +450,10 @@ const MESSENGER_EXPOSED_METHODS = [
   'setLedgerTransportPreference',
   'setDismissSeedBackUpReminder',
   'setOverrideContentSecurityPolicyHeader',
-  'setManageInstitutionalWallets',
   'setServiceWorkerKeepAlivePreference',
   'setUseSidePanelAsDefault',
   'setShowDefaultAddress',
   'setDefaultAddressScope',
-  'setSnapsAddSnapAccountModalDismissed',
   'resetState',
   'addReferralApprovedAccount',
   'addReferralPassedAccount',
@@ -595,16 +558,18 @@ export class PreferencesController extends BaseController<
   }
 
   toggleExternalServices(useExternalServices: boolean): void {
+    const nextValue = false;
+
     this.update((state) => {
-      state.useExternalServices = useExternalServices;
+      state.useExternalServices = nextValue;
     });
-    this.setUseTokenDetection(useExternalServices);
-    this.setUseCurrencyRateCheck(useExternalServices);
-    this.setUsePhishDetect(useExternalServices);
-    this.setUseAddressBarEnsResolution(useExternalServices);
-    this.setOpenSeaEnabled(useExternalServices);
-    this.setUseNftDetection(useExternalServices);
-    this.setUseSafeChainsListValidation(useExternalServices);
+    this.setUseTokenDetection(nextValue);
+    this.setUseCurrencyRateCheck(nextValue);
+    this.setUsePhishDetect(nextValue);
+    this.setUseAddressBarEnsResolution(nextValue);
+    this.setOpenSeaEnabled(nextValue);
+    this.setUseNftDetection(nextValue);
+    this.setUseSafeChainsListValidation(nextValue);
   }
 
   /**
@@ -670,30 +635,6 @@ export class PreferencesController extends BaseController<
   setSecurityAlertsEnabled(securityAlertsEnabled: boolean): void {
     this.update((state) => {
       state.securityAlertsEnabled = securityAlertsEnabled;
-    });
-  }
-
-  /**
-   * Setter for the `addSnapAccountEnabled` property.
-   *
-   * @param addSnapAccountEnabled - Whether or not the user wants to
-   * enable the "Add Snap accounts" button.
-   */
-  setAddSnapAccountEnabled(addSnapAccountEnabled: boolean): void {
-    this.update((state) => {
-      state.addSnapAccountEnabled = addSnapAccountEnabled;
-    });
-  }
-
-  /**
-   * Setter for the `watchEthereumAccountEnabled` property.
-   *
-   * @param watchEthereumAccountEnabled - Whether or not the user wants to
-   * enable the "Watch Ethereum account (Beta)" button.
-   */
-  setWatchEthereumAccountEnabled(watchEthereumAccountEnabled: boolean): void {
-    this.update((state) => {
-      state.watchEthereumAccountEnabled = watchEthereumAccountEnabled;
     });
   }
 
@@ -978,17 +919,6 @@ export class PreferencesController extends BaseController<
     });
   }
 
-  /**
-   * A setter for the user preference to manage institutional wallets
-   *
-   * @param manageInstitutionalWallets - User preference for managing institutional wallets.
-   */
-  setManageInstitutionalWallets(manageInstitutionalWallets: boolean): void {
-    this.update((state) => {
-      state.manageInstitutionalWallets = manageInstitutionalWallets;
-    });
-  }
-
   setServiceWorkerKeepAlivePreference(value: boolean): void {
     this.update((state) => {
       state.enableMV3TimestampSave = value;
@@ -1008,12 +938,6 @@ export class PreferencesController extends BaseController<
   setDefaultAddressScope(value: DefaultAddressScope): void {
     this.update((state) => {
       state.preferences.defaultAddressScope = value;
-    });
-  }
-
-  setSnapsAddSnapAccountModalDismissed(value: boolean): void {
-    this.update((state) => {
-      state.snapsAddSnapAccountModalDismissed = value;
     });
   }
 

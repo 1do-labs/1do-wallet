@@ -18,7 +18,6 @@ import {
   MAX_SAFE_CHAIN_ID,
   CHAIN_ID_TO_NETWORK_IMAGE_URL_MAP,
 } from '../constants/network';
-import { MULTICHAIN_TOKEN_IMAGE_MAP } from '../constants/multichain/networks';
 
 export type RpcEndpoint = {
   name?: string;
@@ -168,11 +167,13 @@ export const sortNetworks = (
 export const getNetworkIcon = (
   networkConfiguration: MultichainNetworkConfiguration,
 ) => {
-  return networkConfiguration.isEvm
-    ? CHAIN_ID_TO_NETWORK_IMAGE_URL_MAP[
-        convertCaipToHexChainId(networkConfiguration.chainId)
-      ]
-    : MULTICHAIN_TOKEN_IMAGE_MAP[networkConfiguration.chainId];
+  if (!networkConfiguration.isEvm) {
+    return undefined;
+  }
+
+  return CHAIN_ID_TO_NETWORK_IMAGE_URL_MAP[
+    convertCaipToHexChainId(networkConfiguration.chainId)
+  ];
 };
 
 /**

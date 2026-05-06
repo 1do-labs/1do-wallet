@@ -1,11 +1,11 @@
-# Getting Started with Tailwind CSS in MetaMask Extension
+# Getting Started with Tailwind CSS in 1do Wallet Extension
 
-This guide will help you get started with Tailwind CSS in the MetaMask extension project. Tailwind CSS is a utility-first CSS framework that allows you to rapidly build modern interfaces by composing classes directly in your HTML/JSX.
+This guide will help you get started with Tailwind CSS in the 1do Wallet extension project. Tailwind CSS is a utility-first CSS framework that allows you to rapidly build modern interfaces by composing classes directly in your HTML/JSX.
 
 ## Table of Contents
 
 1. [VSCode Setup](#vscode-setup)
-2. [Understanding Tailwind in MetaMask](#understanding-tailwind-in-metamask)
+2. [Understanding Tailwind in 1do Wallet](#understanding-tailwind-in-1do-wallet)
 3. [ESLint Configuration](#eslint-configuration)
 4. [Best Practices](#best-practices)
 
@@ -38,11 +38,11 @@ The extension is already configured in `.vscode/extensions.json` and will be rec
 3. You should see Tailwind class suggestions
 4. Hover over existing Tailwind classes to see their CSS properties
 
-## Understanding Tailwind in MetaMask
+## Understanding Tailwind in 1do Wallet
 
 ### Current Implementation
 
-The MetaMask extension has Tailwind CSS installed alongside the MetaMask Design System React components. The design system components work seamlessly with Tailwind classes:
+The 1do Wallet extension has Tailwind CSS installed alongside the 1do Wallet Design System React components. The design system components work seamlessly with Tailwind classes:
 
 ```tsx
 import { Box, Text } from '@metamask/design-system-react';
@@ -54,7 +54,7 @@ import { Box, Text } from '@metamask/design-system-react';
 
 ### Migration Strategy: SASS → Tailwind CSS
 
-We are currently in a transitional period migrating from SASS to Tailwind CSS throughout the MetaMask extension codebase.
+We are currently in a transitional period migrating from SASS to Tailwind CSS throughout the 1do Wallet extension codebase.
 
 Tailwind CSS classes have **the lowest CSS specificity** compared to our existing SASS classes. This means any custom sass classname will override tailwind css classnames
 
@@ -113,7 +113,7 @@ When you're ready to use **strict Tailwind** in your workspace:
 
 ## Best Practices
 
-Read the MetaMask Contributor Docs [Tailwind CSS Guidelines](https://github.com/MetaMask/contributor-docs/blob/main/docs/tailwind-css.md) to ensure you're using Tailwind CSS effectively and consistently across the mobile codebase. You can also look for examples of design system component and tailwind classname usage in [design-system.stories.tsx](../app/component-library/components/design-system.stories.tsx)
+Read the 1do contributor docs [Tailwind CSS Guidelines](https://github.com/MetaMask/contributor-docs/blob/main/docs/tailwind-css.md) to ensure you're using Tailwind CSS effectively and consistently across the mobile codebase. You can also look for examples of design system component and tailwind classname usage in [design-system.stories.tsx](../app/component-library/components/design-system.stories.tsx)
 
 ## Resources
 

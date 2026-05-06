@@ -459,14 +459,10 @@ class UnlockPage extends Component<UnlockPageProps, UnlockPageState> {
 
   renderMascot = () => {
     if (isFlask()) {
-      return (
-        <img src="./images/logo/metamask-fox.svg" width="115" height="115" />
-      );
+      return <img src="./images/logo/1do-mark.svg" width="115" height="115" />;
     }
     if (isBeta()) {
-      return (
-        <img src="./images/logo/metamask-fox.svg" width="115" height="115" />
-      );
+      return <img src="./images/logo/1do-mark.svg" width="115" height="115" />;
     }
     return (
       <Mascot

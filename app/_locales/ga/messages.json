@@ -1,6 +1,6 @@
 {
   "CSS_loadingTakingTooLongActionText": {
-    "message": "Athsheol MetaMask má leanann an fhadhb.",
+    "message": "Athsheol 1do má leanann an fhadhb.",
     "description": "Second line of the message that is shown when the initial loading of the MetaMask UI takes a very long time."
   },
   "CSS_loadingTakingTooLongMessageText": {
@@ -198,7 +198,7 @@
     "message": "Cuir cuntas nó sparán leis"
   },
   "addAcquiredTokens": {
-    "message": "Cuir na comharthaí leis atá faighte agat ag baint úsáide as MetaMask"
+    "message": "Cuir na comharthaí leis atá faighte agat ag baint úsáide as 1do"
   },
   "addAlias": {
     "message": "Cuir leasainm leis"
@@ -564,15 +564,15 @@
     "description": "The description of the application"
   },
   "appName": {
-    "message": "MetaMask",
+    "message": "1do",
     "description": "The name of the application"
   },
   "appNameBeta": {
-    "message": "Béite MetaMask",
+    "message": "Béite 1do",
     "description": "The name of the application (Beta)"
   },
   "appNameFlask": {
-    "message": "Fleascán MetaMask",
+    "message": "Fleascán 1do",
     "description": "The name of the application (Flask)"
   },
   "apply": {
@@ -644,7 +644,7 @@
     "message": "Uaineadóir glasála uathoibríoch (nóiméid)"
   },
   "autoLockTimeLimitDescription": {
-    "message": "Socraigh an t-am díomhaoin i nóiméid sula nglasálfar MetaMask."
+    "message": "Socraigh an t-am díomhaoin i nóiméid sula nglasálfar 1do."
   },
   "available": {
     "message": "ar fáil"
@@ -672,7 +672,7 @@
     "description": "$1 is backupAndSyncBasicFunctionalityNameMention in bold."
   },
   "backupAndSyncEnableDescription": {
-    "message": "Ligeann cúltaca agus sioncrónú dúinn sonraí criptithe a stóráil do do shocruithe agus do ghnéithe saincheaptha. Coinníonn sé seo d’eispéireas MetaMask mar an gcéanna ar fud gléasanna agus athchóiríonn sé socruithe agus gnéithe má bhíonn ort MetaMask a athshuiteáil riamh. Ní dhéanann sé seo cúltaca de do Rún Aisghabhála Frása. $1.",
+    "message": "Ligeann cúltaca agus sioncrónú dúinn sonraí criptithe a stóráil do do shocruithe agus do ghnéithe saincheaptha. Coinníonn sé seo d’eispéireas 1do mar an gcéanna ar fud gléasanna agus athchóiríonn sé socruithe agus gnéithe má bhíonn ort 1do a athshuiteáil riamh. Ní dhéanann sé seo cúltaca de do Rún Aisghabhála Frása. $1.",
     "description": "$1 is link to the backup and sync privacy policy."
   },
   "backupAndSyncEnableDescriptionUpdatePreferences": {
@@ -698,7 +698,7 @@
     "message": "Foghlaim conas a chosnaímid do phríobháideacht"
   },
   "backupApprovalInfo": {
-    "message": "Tá an cód rúnda seo ag teastáil chun do sparán a aisghabháil i gcás go gcaillfidh tú do ghléas, go ndéanfaidh tú dearmad ar do phasfhocal, go gcaithfidh tú MetaMask a athshuiteáil, nó más mian leat rochtain a fháil ar do sparán ar ghléas eile."
+    "message": "Tá an cód rúnda seo ag teastáil chun do sparán a aisghabháil i gcás go gcaillfidh tú do ghléas, go ndéanfaidh tú dearmad ar do phasfhocal, go gcaithfidh tú 1do a athshuiteáil, nó más mian leat rochtain a fháil ar do sparán ar ghléas eile."
   },
   "backupApprovalNotice": {
     "message": "Déan cúltaca de do Rúnd-Frása Aisghabhála chun do sparán agus do chistí a choinneáil slán."
@@ -722,7 +722,7 @@
     "message": "Bunúsach"
   },
   "basicConfigurationDescription": {
-    "message": "Cuireann MetaMask gnéithe bunúsacha ar fáil ar nós sonraí comharthaí agus socruithe gáis trí sheirbhísí idirlín. Nuair a úsáideann tú seirbhísí idirlín, roinntear do sheoladh IP, sa chás seo le MetaMask. Tá sé seo díreach mar a tharlaíonn nuair a thugann tú cuairt ar aon suíomh Gréasáin. Úsáideann MetaMask na sonraí seo go sealadach agus ní dhíolann sé do shonraí riamh. Is féidir leat VPN a úsáid nó na seirbhísí seo a mhúchadh, ach d'fhéadfadh sé difear a dhéanamh do do thaithí MetaMask. Chun tuilleadh eolais a fháil léigh ár $1.",
+    "message": "Cuireann 1do gnéithe bunúsacha ar fáil ar nós sonraí comharthaí agus socruithe gáis trí sheirbhísí idirlín. Nuair a úsáideann tú seirbhísí idirlín, roinntear do sheoladh IP, sa chás seo le 1do. Tá sé seo díreach mar a tharlaíonn nuair a thugann tú cuairt ar aon suíomh Gréasáin. Úsáideann 1do na sonraí seo go sealadach agus ní dhíolann sé do shonraí riamh. Is féidir leat VPN a úsáid nó na seirbhísí seo a mhúchadh, ach d'fhéadfadh sé difear a dhéanamh do do thaithí 1do. Chun tuilleadh eolais a fháil léigh ár $1.",
     "description": "$1 is to be replaced by the message for privacyMsg, and will link to https://consensys.io/privacy-policy"
   },
   "basicConfigurationLabel": {
@@ -732,10 +732,10 @@
     "message": "Tuigim agus ba mhaith liom leanúint ar aghaidh"
   },
   "basicConfigurationModalDisclaimerOffPart1": {
-    "message": "Ciallaíonn sé seo nach mbainfidh tú an leas is fearr as d’am ar MetaMask. Ní bheidh gnéithe bunúsacha (cosúil le sonraí comharthaí, socruithe gáis is fearr, agus eile) ar fáil duit."
+    "message": "Ciallaíonn sé seo nach mbainfidh tú an leas is fearr as d’am ar 1do. Ní bheidh gnéithe bunúsacha (cosúil le sonraí comharthaí, socruithe gáis is fearr, agus eile) ar fáil duit."
   },
   "basicConfigurationModalDisclaimerOn": {
-    "message": "Chun d’am ar MetaMask a bharrfheabhsú, beidh ort an ghné seo a chasadh air. Tá feidhmeanna bunúsacha (cosúil le sonraí comharthaí, socruithe gáis is fearr, agus eile) tábhachtach don taithí web3."
+    "message": "Chun d’am ar 1do a bharrfheabhsú, beidh ort an ghné seo a chasadh air. Tá feidhmeanna bunúsacha (cosúil le sonraí comharthaí, socruithe gáis is fearr, agus eile) tábhachtach don taithí web3."
   },
   "basicConfigurationModalHeadingOff": {
     "message": "Múch feidhmiúlacht bhunúsach"
@@ -747,7 +747,7 @@
     "message": "Béite"
   },
   "betaMetamaskVersion": {
-    "message": "Leagan Béite MetaMask"
+    "message": "Leagan Béite 1do"
   },
   "betaTerms": {
     "message": "Téarmaí úsáide béite"
@@ -960,7 +960,7 @@
     "message": "Téigh i dteagmháil le"
   },
   "bridgeTxDetailsDelayedDescriptionSupport": {
-    "message": "Tacaíocht MetaMask"
+    "message": "Tacaíocht 1do"
   },
   "bridgeTxDetailsDelayedTitle": {
     "message": "An bhfuil sé níos faide ná 3 uair an chloig?"
@@ -1016,7 +1016,7 @@
     "message": "Ní thacaítear le do bhrabhsálaí..."
   },
   "builtAroundTheWorld": {
-    "message": "Tá MetaMask deartha agus tógtha ar fud an domhain."
+    "message": "Tá 1do deartha agus tógtha ar fud an domhain."
   },
   "busy": {
     "message": "Gnóthach"
@@ -1069,7 +1069,7 @@
     "message": "An bhfuil tú cinnte?"
   },
   "changePasswordWarningDescription": {
-    "message": "Má athraíonn tú do phasfhocal anseo, glasálfar MetaMask ar ghléasanna eile atá in úsáid agat. Beidh ort logáil isteach arís le do phasfhocal nua."
+    "message": "Má athraíonn tú do phasfhocal anseo, glasálfar 1do ar ghléasanna eile atá in úsáid agat. Beidh ort logáil isteach arís le do phasfhocal nua."
   },
   "chooseYourNetwork": {
     "message": "Roghnaigh do líonra"
@@ -1082,7 +1082,7 @@
     "message": "cliceáil anseo"
   },
   "chromeRequiredForHardwareWallets": {
-    "message": "Ní mór duit MetaMask a úsáid ar Google Chrome chun ceangal le do Sparán Crua-earraí."
+    "message": "Ní mór duit 1do a úsáid ar Google Chrome chun ceangal le do Sparán Crua-earraí."
   },
   "circulatingSupply": {
     "message": "Soláthar imshruthaithe"
@@ -1136,10 +1136,10 @@
     "message": "Dáileadh Soláthair Chomhchruinnithe"
   },
   "configureSnapPopupDescription": {
-    "message": "Tá tú ag fágáil MetaMask anois chun an snap seo a chumrú."
+    "message": "Tá tú ag fágáil 1do anois chun an snap seo a chumrú."
   },
   "configureSnapPopupInstallDescription": {
-    "message": "Tá tú ag fágáil MetaMask anois chun an snap seo a shuiteáil."
+    "message": "Tá tú ag fágáil 1do anois chun an snap seo a shuiteáil."
   },
   "configureSnapPopupInstallTitle": {
     "message": "Suiteáil snap"
@@ -1181,7 +1181,7 @@
     "message": "Táille $1 san áireamh"
   },
   "confirmGasFeeTokenModalNativeToggleMetaMask": {
-    "message": "Tá MetaMask ag cur leis an iarmhéid chun an t-idirbheart seo a chríochnú."
+    "message": "Tá 1do ag cur leis an iarmhéid chun an t-idirbheart seo a chríochnú."
   },
   "confirmGasFeeTokenModalNativeToggleWallet": {
     "message": "Íoc as an táille líonra ag baint úsáide as an iarmhéid i do sparán."
@@ -1199,7 +1199,7 @@
     "message": "Tá tú ag íoc an táille líonra seo le $1"
   },
   "confirmGasFeeTokenTooltip": {
-    "message": "Íoctar é seo leis an líonra chun d’idirbheart a phróiseáil. Áirítear leis táille MetaMask $1 le haghaidh comharthaí neamh-ETH nó ETH réamh-mhaoinithe."
+    "message": "Íoctar é seo leis an líonra chun d’idirbheart a phróiseáil. Áirítear leis táille 1do $1 le haghaidh comharthaí neamh-ETH nó ETH réamh-mhaoinithe."
   },
   "confirmInfoAccountNow": {
     "message": "Anois"
@@ -1332,7 +1332,7 @@
     "description": "$1 is the snap for which a connection is being requested."
   },
   "connectWithMetaMask": {
-    "message": "Ceangail le MetaMask"
+    "message": "Ceangail le 1do"
   },
   "connectedAccountsDescriptionPlural": {
     "message": "Tá $1 cuntas agat ceangailte leis an suíomh seo.",
@@ -1342,7 +1342,7 @@
     "message": "Tá cuntas amháin agat atá ceangailte leis an suíomh seo."
   },
   "connectedAccountsEmptyDescription": {
-    "message": "Níl MetaMask ceangailte leis an suíomh seo. Chun ceangal le suíomh gréasáin, aimsigh agus cliceáil an cnaipe ceangail."
+    "message": "Níl 1do ceangailte leis an suíomh seo. Chun ceangal le suíomh gréasáin, aimsigh agus cliceáil an cnaipe ceangail."
   },
   "connectedAccountsListTooltip": {
     "message": "Is féidir le $1 iarmhéid an chuntais, an seoladh, an ghníomhaíocht a fheiceáil, agus idirbhearta a mholadh le ceadú do chuntais nasctha.",
@@ -1363,7 +1363,7 @@
     "description": "$1 is the account name"
   },
   "connectedSnapAndNoAccountDescription": {
-    "message": "Tá MetaMask ceangailte leis an suíomh seo, ach níl aon chuntais ceangailte fós"
+    "message": "Tá 1do ceangailte leis an suíomh seo, ach níl aon chuntais ceangailte fós"
   },
   "connectedSnaps": {
     "message": "Snapanna Ceangailte"
@@ -1409,7 +1409,7 @@
     "message": "Ag ceangal le líonra tástála Sepolia"
   },
   "connectionDescription": {
-    "message": "Ceangail an suíomh gréasáin seo le MetaMask"
+    "message": "Ceangail an suíomh gréasáin seo le 1do"
   },
   "connectionFailed": {
     "message": "Theip ar an nasc"
@@ -1419,7 +1419,7 @@
     "description": "$1 is the name of the snap being fetched."
   },
   "connectionPopoverDescription": {
-    "message": "Chun ceangal le suíomh, roghnaigh an cnaipe ceangail. Ní féidir le MetaMask ceangal ach le suíomhanna gréasáin 3."
+    "message": "Chun ceangal le suíomh, roghnaigh an cnaipe ceangail. Ní féidir le 1do ceangal ach le suíomhanna gréasáin 3."
   },
   "connectionRequest": {
     "message": "Iarratas ceangail"
@@ -1459,7 +1459,7 @@
     "message": "Idirghníomhaíocht conartha"
   },
   "convertTokenToNFTDescription": {
-    "message": "Tá braite againn gur NFT an tsócmhainn seo. Tá tacaíocht iomlán dhúchasach ag MetaMask anois do NFTanna. Ar mhaith leat é a bhaint de do liosta comharthaí agus é a chur leis mar NFT?"
+    "message": "Tá braite againn gur NFT an tsócmhainn seo. Tá tacaíocht iomlán dhúchasach ag 1do anois do NFTanna. Ar mhaith leat é a bhaint de do liosta comharthaí agus é a chur leis mar NFT?"
   },
   "convertTokenToNFTExistDescription": {
     "message": "Tá braite againn gur cuireadh an tsócmhainn seo leis mar NFT. Ar mhaith leat í a bhaint de do liosta comharthaí?"
@@ -1500,26 +1500,26 @@
     "message": "Cruthaigh cuntas nua"
   },
   "createPassword": {
-    "message": "Pasfhocal MetaMask"
+    "message": "Pasfhocal 1do"
   },
   "createPasswordCreate": {
     "message": "Cruthaigh pasfhocal"
   },
   "createPasswordDetails": {
-    "message": "Díghlasálann sé MetaMask ar an ngléas seo amháin."
+    "message": "Díghlasálann sé 1do ar an ngléas seo amháin."
   },
   "createPasswordDetailsSocial": {
     "message": "Má chailleann tú an pasfhocal seo, caillfidh tú rochtain ar do sparán ar gach gléas. Stóráil é in áit shábháilte, ",
     "description": "$1 is the text 'MetaMask can't reset it.'"
   },
   "createPasswordDetailsSocialReset": {
-    "message": "Ní féidir le MetaMask é a athshocrú."
+    "message": "Ní féidir le 1do é a athshocrú."
   },
   "createPasswordMarketing": {
     "message": "Faigh nuashonruithe táirgí, leideanna agus nuacht lena n-áirítear trí ríomhphost. Féadfaimid d’idirghníomhaíochtaí a úsáid chun feabhas a chur ar a bhfuil á roinnt againn."
   },
   "createSnapAccountDescription": {
-    "message": "Tá $1 ag iarraidh cuntas nua a chur le MetaMask."
+    "message": "Tá $1 ag iarraidh cuntas nua a chur le 1do."
   },
   "createSnapAccountTitle": {
     "message": "Cruthaigh cuntas"
@@ -1622,7 +1622,7 @@
     "message": "Bailiú sonraí le haghaidh margaíochta"
   },
   "dataCollectionForMarketingDescription": {
-    "message": "Úsáidfimid MetaMetrics chun foghlaim conas a idirghníomhaíonn tú lenár gcumarsáid mhargaíochta. Féadfaimid nuacht ábhartha (cosúil le gnéithe táirgí agus ábhair eile) a roinnt."
+    "message": "Úsáidfimid 1do Metrics chun foghlaim conas a idirghníomhaíonn tú lenár gcumarsáid mhargaíochta. Féadfaimid nuacht ábhartha (cosúil le gnéithe táirgí agus ábhair eile) a roinnt."
   },
   "dataCollectionForMarketingDescriptionSocialLogin": {
     "message": "Faigh nuashonruithe táirgí, leideanna agus nuacht - lena n-áirítear trí ríomhphost. Féadfaimid d’idirghníomhaíochtaí a úsáid chun feabhas a chur ar a bhfuil á roinnt againn."
@@ -1631,7 +1631,7 @@
     "message": "Ceart go leor"
   },
   "dataCollectionWarningPopoverDescription": {
-    "message": "Mhúch tú bailiú sonraí chun críocha margaíochta. Ní bhaineann sé seo ach leis an ngléas seo. Má úsáideann tú MetaMask ar ghléasanna eile, déan cinnte rogha an diúltaithe a dhéanamh ansin freisin."
+    "message": "Mhúch tú bailiú sonraí chun críocha margaíochta. Ní bhaineann sé seo ach leis an ngléas seo. Má úsáideann tú 1do ar ghléasanna eile, déan cinnte rogha an diúltaithe a dhéanamh ansin freisin."
   },
   "dataUnavailable": {
     "message": "sonraí ar fáil"
@@ -1695,14 +1695,14 @@
     "description": "$1 is a link with the text found in `deepLink_Error404_CTA_LinkText`"
   },
   "deepLink_Error404_CTA_LinkText": {
-    "message": "Nuashonraigh go dtí an leagan is déanaí de MetaMask",
+    "message": "Nuashonraigh go dtí an leagan is déanaí de 1do",
     "description": "Part of `deepLink_Error404_CTA`. The text links to https://support.metamask.io/configure/wallet/how-to-update-the-version-of-metamask/"
   },
   "deepLink_ErrorMissingUrl": {
     "message": "Níor soláthraíodh aon URL le nascleanúint chuige."
   },
   "deepLink_ErrorOtherDescription": {
-    "message": "Is fabht é seo agus ba chóir é a thuairisciú do MetaMask."
+    "message": "Is fabht é seo agus ba chóir é a thuairisciú do 1do."
   },
   "deepLink_ErrorOtherTitle": {
     "message": "Tharla earráid agus an nasc domhain á phróiseáil"
@@ -1711,10 +1711,10 @@
     "message": "Téigh go dtí an leathanach baile"
   },
   "deepLink_RedirectingToMetaMask": {
-    "message": "Ag atreorú chuig MetaMask"
+    "message": "Ag atreorú chuig 1do"
   },
   "deepLink_ThirdPartyDescription": {
-    "message": "Cuireadh anseo thú ag tríú páirtí, ní ag MetaMask. $1",
+    "message": "Cuireadh anseo thú ag tríú páirtí, ní ag 1do. $1",
     "description": "$1 is the message 'deepLink_ContinueDescription'"
   },
   "deepLink_theBuyPage": {
@@ -1739,7 +1739,7 @@
     "message": "URL RPC réamhshocraithe"
   },
   "defaultSettingsSubTitle": {
-    "message": "Úsáideann MetaMask socruithe réamhshocraithe chun an chothromaíocht is fearr a bhaint amach idir sábháilteacht agus éascaíocht úsáide. Athraigh na socruithe seo chun do phríobháideacht a mhéadú tuilleadh."
+    "message": "Úsáideann 1do socruithe réamhshocraithe chun an chothromaíocht is fearr a bhaint amach idir sábháilteacht agus éascaíocht úsáide. Athraigh na socruithe seo chun do phríobháideacht a mhéadú tuilleadh."
   },
   "defaultSettingsTitle": {
     "message": "Socruithe príobháideachta réamhshocraithe"
@@ -1751,7 +1751,7 @@
     "message": "Iasachtaigh, faigh iasacht, agus trádáil, díreach i do sparán."
   },
   "defiReferralCheckboxLabel": {
-    "message": "Lig do MetaMask cód atreoraithe a chur leis. Tá sé seo buan. Cuireann an suíomh lascainí ar fáil de réir a dtéarmaí féin. Gearrtar táille ar MetaMask.",
+    "message": "Lig do 1do cód atreoraithe a chur leis. Tá sé seo buan. Cuireann an suíomh lascainí ar fáil de réir a dtéarmaí féin. Gearrtar táille ar 1do.",
     "description": "The text for the checkbox label in the DeFi referral confirmation screen"
   },
   "defiTabErrorContent": {
@@ -1764,10 +1764,10 @@
     "message": "Scrios"
   },
   "deleteMetaMetricsData": {
-    "message": "Scrios sonraí MetaMetrics"
+    "message": "Scrios sonraí 1do Metrics"
   },
   "deleteMetaMetricsDataDescription": {
-    "message": "Scriosfaidh sé seo sonraí stairiúla MetaMetrics a bhaineann le d'úsáid ar an ngléas seo. Fanfaidh do sparán agus do chuntais díreach mar atá siad anois tar éis na sonraí seo a scriosadh. Féadfaidh an próiseas seo suas le 30 lá a thógáil. Féach ar ár $1.",
+    "message": "Scriosfaidh sé seo sonraí stairiúla 1do Metrics a bhaineann le d'úsáid ar an ngléas seo. Fanfaidh do sparán agus do chuntais díreach mar atá siad anois tar éis na sonraí seo a scriosadh. Féadfaidh an próiseas seo suas le 30 lá a thógáil. Féach ar ár $1.",
     "description": "$1 will have text saying Privacy Policy "
   },
   "deleteMetaMetricsDataErrorDesc": {
@@ -1777,10 +1777,10 @@
     "message": "Ní féidir linn na sonraí seo a scriosadh faoi láthair"
   },
   "deleteMetaMetricsDataModalDesc": {
-    "message": "Táimid ar tí do chuid sonraí MetaMetrics go léir a bhaint. An bhfuil tú cinnte?"
+    "message": "Táimid ar tí do chuid sonraí 1do Metrics go léir a bhaint. An bhfuil tú cinnte?"
   },
   "deleteMetaMetricsDataModalTitle": {
-    "message": "Scrios sonraí MetaMetrics?"
+    "message": "Scrios sonraí 1do Metrics?"
   },
   "deleteMetaMetricsDataRequestedDescription": {
     "message": "Chuir tú tús leis an ngníomh seo ar $1. Féadfaidh an próiseas seo suas le 30 lá a thógáil. Féach ar an $2",
@@ -1803,7 +1803,7 @@
     "message": "Tuigim é."
   },
   "deprecatedNetworkDescription": {
-    "message": "Ní thacaíonn MetaMask leis an líonra atá tú ag iarraidh ceangal leis a thuilleadh. $1"
+    "message": "Ní thacaíonn 1do leis an líonra atá tú ag iarraidh ceangal leis a thuilleadh. $1"
   },
   "description": {
     "message": "Cur síos"
@@ -1900,7 +1900,7 @@
     "message": "Ná taispeáin seo arís"
   },
   "downloadAppDescription": {
-    "message": "Tabhair MetaMask leat cibé áit a théann tú leis an aip shoghluaiste. Ina theannta sin, cas ar Face ID ionas go mbeidh rochtain agat i gcónaí, fiú má dhéanann tú dearmad ar do phasfhocal."
+    "message": "Tabhair 1do leat cibé áit a théann tú leis an aip shoghluaiste. Ina theannta sin, cas ar Face ID ionas go mbeidh rochtain agat i gcónaí, fiú má dhéanann tú dearmad ar do phasfhocal."
   },
   "downloadAppTitle": {
     "message": "Scan an cód QR agus íoslódáil an aip"
@@ -1909,7 +1909,7 @@
     "message": "Íoslódáil Google Chrome"
   },
   "downloadMetaMaskMobileDescription": {
-    "message": "Ligeann Face ID ar ár n-aip duit dul isteach fiú má dhéanann tú dearmad ar do phasfhocal. Tabhair MetaMask leat cibé áit a théann tú!"
+    "message": "Ligeann Face ID ar ár n-aip duit dul isteach fiú má dhéanann tú dearmad ar do phasfhocal. Tabhair 1do leat cibé áit a théann tú!"
   },
   "downloadMetaMaskMobileQrNote": {
     "message": "Scanáil an cód QR seo le tosú."
@@ -2088,13 +2088,13 @@
     "message": "Tá braiteadh feabhsaithe comharthaí ar fáil faoi láthair ar $1. $2"
   },
   "ensDomainsSettingDescriptionIntroduction": {
-    "message": "Le MetaMask is féidir leat fearainn ENS a fheiceáil i mbarra seoltaí do bhrabhsálaí. Seo mar a oibríonn sé:"
+    "message": "Le 1do is féidir leat fearainn ENS a fheiceáil i mbarra seoltaí do bhrabhsálaí. Seo mar a oibríonn sé:"
   },
   "ensDomainsSettingDescriptionOutroduction": {
     "message": "Coinnigh i gcuimhne go nochtar do sheoladh IP do sheirbhísí tríú páirtí IPFS tríd an ngné seo a úsáid."
   },
   "ensDomainsSettingDescriptionPart1": {
-    "message": "Déanann MetaMask seiceáil le conradh ENS Ethereum chun an cód atá nasctha leis an ainm ENS a aimsiú."
+    "message": "Déanann 1do seiceáil le conradh ENS Ethereum chun an cód atá nasctha leis an ainm ENS a aimsiú."
   },
   "ensDomainsSettingDescriptionPart2": {
     "message": "Má nascann an cód le IPFS, is féidir leat an t-ábhar a bhaineann leis (suíomh gréasáin de ghnáth) a fheiceáil."
@@ -2139,7 +2139,7 @@
     "message": "Cuir isteach focal faire le leanúint ar aghaidh"
   },
   "enterYourPasswordSocialLoginFlow": {
-    "message": "Cuir isteach Pasfhocal MetaMask"
+    "message": "Cuir isteach Pasfhocal 1do"
   },
   "errorCode": {
     "message": "Cód: $1",
@@ -2159,7 +2159,7 @@
     "message": "Ní bhaileofar aon fhaisnéis phearsanta ná aon fhaisnéis eile faoi ghléasanna."
   },
   "errorLegalTextSecondInfo": {
-    "message": "Leaganacha do bhrabhsálaí, do chóras oibriúcháin, agus do MetaMask."
+    "message": "Leaganacha do bhrabhsálaí, do chóras oibriúcháin, agus do 1do."
   },
   "errorLegalTextSummary": {
     "message": "Gheobhaimid tuarascáil earráide amháin, ina mbeidh:"
@@ -2201,7 +2201,7 @@
     "description": "In sentry feedback form, The message displayed after a successful feedback submission."
   },
   "errorPageTitle": {
-    "message": "Tharla earráid i MetaMask",
+    "message": "Tharla earráid i 1do",
     "description": "Title of generic error page"
   },
   "errorPageTryAgain": {
@@ -2323,11 +2323,11 @@
     "description": "This explains the risks of using MetaMask Flask"
   },
   "flaskWelcomeWarning3": {
-    "message": "Is turgnamhacha iad gach API Flask. Féadfar iad a athrú nó a bhaint gan fógra, nó d'fhéadfadh siad fanacht ar Flask go ceann tréimhse éiginnte gan iad a aistriú go MetaMask cobhsaí riamh. Bain úsáid astu ar do phriacal féin.",
+    "message": "Is turgnamhacha iad gach API Flask. Féadfar iad a athrú nó a bhaint gan fógra, nó d'fhéadfadh siad fanacht ar Flask go ceann tréimhse éiginnte gan iad a aistriú go 1do cobhsaí riamh. Bain úsáid astu ar do phriacal féin.",
     "description": "This message warns developers about unstable Flask APIs"
   },
   "flaskWelcomeWarning4": {
-    "message": "Bí cinnte do shíneadh rialta MetaMask a dhíchumasú agus Flask in úsáid agat.",
+    "message": "Bí cinnte do shíneadh rialta 1do a dhíchumasú agus Flask in úsáid agat.",
     "description": "This message calls to pay attention about multiple versions of MetaMask running on the same site (Flask + Prod)"
   },
   "flaskWelcomeWarningAcceptButton": {
@@ -2350,7 +2350,7 @@
     "message": "Athshocraigh an sparán"
   },
   "forgotPasswordModalDescription1": {
-    "message": "Ní féidir le MetaMask do phasfhocal a aisghabháil duit."
+    "message": "Ní féidir le 1do do phasfhocal a aisghabháil duit."
   },
   "forgotPasswordModalDescription2": {
     "message": "Is féidir leat do sparán a athshocrú tríd an bhFrása Rúnda Aisghabhála a d'úsáid tú nuair a bhunaigh tú do sparán a iontráil."
@@ -2359,11 +2359,11 @@
     "message": "An ndearna tú dearmad ar do phasfhocal?"
   },
   "forgotPasswordSocialDescription": {
-    "message": "Ní féidir le MetaMask do phasfhocal a aisghabháil duit.",
+    "message": "Ní féidir le 1do do phasfhocal a aisghabháil duit.",
     "description": "$1 is the support link"
   },
   "forgotPasswordSocialStep1": {
-    "message": "Má tá tú logáilte isteach i MetaMask ar ghléas le $1 (cosúil le Face ID), is féidir leat do phasfhocal a athshocrú ansin.",
+    "message": "Má tá tú logáilte isteach i 1do ar ghléas le $1 (cosúil le Face ID), is féidir leat do phasfhocal a athshocrú ansin.",
     "description": "$1 is bold heading"
   },
   "forgotPasswordSocialStep1Biometrics": {
@@ -2481,7 +2481,7 @@
     "message": "Úsáideann comhtháthú sparán crua-earraí glaonna API chuig freastalaithe seachtracha, ar féidir leo do sheoladh IP agus na seoltaí conartha cliste a mbíonn tú ag idirghníomhú leo a fheiceáil."
   },
   "hardwareWalletsMsg": {
-    "message": "Roghnaigh sparán crua-earraí ar mhaith leat a úsáid le MetaMask."
+    "message": "Roghnaigh sparán crua-earraí ar mhaith leat a úsáid le 1do."
   },
   "here": {
     "message": "anseo",
@@ -2547,7 +2547,7 @@
     "description": "$1 is a message from 'holdToRevealContent4' and $2 is a text link with the message from 'holdToRevealContent5'"
   },
   "holdToRevealContent4": {
-    "message": "Ní iarrfaidh Tacaíocht MetaMask é seo,",
+    "message": "Ní iarrfaidh Tacaíocht 1do é seo,",
     "description": "Part of 'holdToRevealContent3'"
   },
   "holdToRevealContent5": {
@@ -2587,7 +2587,7 @@
     "message": "Pota Meala"
   },
   "hyperliquidReferralSubtitle": {
-    "message": "Sábháil suas le 4% ar thrádálacha le cód atreoraithe MetaMask.",
+    "message": "Sábháil suas le 4% ar thrádálacha le cód atreoraithe 1do.",
     "description": "The subtitle of the Hyperliquid referral confirmation screen"
   },
   "id": {
@@ -2616,13 +2616,13 @@
     "message": "Ní eochair phríobháideach bhailí í seo. Ní mór duit teaghrán heicsidheachúlach de fhad 64 a iontráil."
   },
   "importAccountJsonLoading1": {
-    "message": "Bí ag súil go dtógfaidh an t-allmhairiú JSON seo cúpla nóiméad agus go reofaidh sé MetaMask."
+    "message": "Bí ag súil go dtógfaidh an t-allmhairiú JSON seo cúpla nóiméad agus go reofaidh sé 1do."
   },
   "importAccountJsonLoading2": {
     "message": "Gabhaimid ár leithscéal, agus déanfaimid é níos tapúla amach anseo."
   },
   "importAccountMsg": {
-    "message": "Ní bheidh cuntais allmhairithe bainteach le do Frása Aisghabhála Rúnda MetaMask. Foghlaim tuilleadh faoi chuntais allmhairithe"
+    "message": "Ní bheidh cuntais allmhairithe bainteach le do Frása Aisghabhála Rúnda 1do. Foghlaim tuilleadh faoi chuntais allmhairithe"
   },
   "importAccountWithSocialMsg": {
     "message": "Déantar cúltaca d’eochracha príobháideacha allmhairithe chuig do chuntas agus sioncrónaítear iad go huathoibríoch nuair a shíníonn tú isteach leis an logáil isteach céanna Google nó Apple."
@@ -2679,7 +2679,7 @@
     "message": "Áirítear idirbhearta $1"
   },
   "infuraBlockedNotification": {
-    "message": "Ní féidir le MetaMask ceangal leis an óstach blockchain. Athbhreithnigh cúiseanna féideartha $1.",
+    "message": "Ní féidir le 1do ceangal leis an óstach blockchain. Athbhreithnigh cúiseanna féideartha $1.",
     "description": "$1 is a clickable link with with text defined by the 'here' key"
   },
   "insightsFromSnap": {
@@ -2693,7 +2693,7 @@
     "message": "Suiteáil bunús"
   },
   "installRequest": {
-    "message": "Cuir le MetaMask"
+    "message": "Cuir le 1do"
   },
   "installedOn": {
     "message": "Suiteáilte ar $1",
@@ -2792,7 +2792,7 @@
     "message": "Geata IPFS"
   },
   "ipfsGatewayDescription": {
-    "message": "Úsáideann MetaMask seirbhísí tríú páirtí chun íomhánna de do NFTanna atá stóráilte ar IPFS a thaispeáint, faisnéis a bhaineann le seoltaí ENS atá curtha isteach i mbarra seoltaí do bhrabhsálaí a thaispeáint, agus deilbhíní a fháil le haghaidh comharthaí éagsúla. D’fhéadfadh do sheoladh IP a bheith nochta do na seirbhísí seo nuair a bhíonn tú á n-úsáid."
+    "message": "Úsáideann 1do seirbhísí tríú páirtí chun íomhánna de do NFTanna atá stóráilte ar IPFS a thaispeáint, faisnéis a bhaineann le seoltaí ENS atá curtha isteach i mbarra seoltaí do bhrabhsálaí a thaispeáint, agus deilbhíní a fháil le haghaidh comharthaí éagsúla. D’fhéadfadh do sheoladh IP a bheith nochta do na seirbhísí seo nuair a bhíonn tú á n-úsáid."
   },
   "ipfsToggleModalDescriptionOne": {
     "message": "Úsáidimid seirbhísí tríú páirtí chun íomhánna de do NFTanna atá stóráilte ar IPFS a thaispeáint, faisnéis a bhaineann le seoltaí ENS atá curtha isteach i mbarra seoltaí do bhrabhsálaí a thaispeáint, agus deilbhíní a fháil le haghaidh comharthaí éagsúla. D’fhéadfadh do sheoladh IP a bheith nochta do na seirbhísí seo nuair a bhíonn tú á n-úsáid."
@@ -2873,10 +2873,10 @@
     "message": "camscéimeanna agus rioscaí slándála."
   },
   "leaveMetaMask": {
-    "message": "Fág MetaMask?"
+    "message": "Fág 1do?"
   },
   "leaveMetaMaskDesc": {
-    "message": "Tá tú ar tí cuairt a thabhairt ar shuíomh lasmuigh de MetaMask. Déan seiceáil dhúbailte ar an URL sula leanann tú ar aghaidh."
+    "message": "Tá tú ar tí cuairt a thabhairt ar shuíomh lasmuigh de 1do. Déan seiceáil dhúbailte ar an URL sula leanann tú ar aghaidh."
   },
   "ledgerAccountRestriction": {
     "message": "Ní mór duit do chuntas deireanach a úsáid sula bhféadann tú ceann nua a chur leis."
@@ -2967,7 +2967,7 @@
     "message": "Nasc"
   },
   "linkCentralizedExchanges": {
-    "message": "Ceangail do chuntais Coinbase nó Binance chun cripte a aistriú chuig MetaMask saor in aisce."
+    "message": "Ceangail do chuntais Coinbase nó Binance chun cripte a aistriú chuig 1do saor in aisce."
   },
   "links": {
     "message": "Naisc"
@@ -2988,7 +2988,7 @@
     "message": "Glasáil"
   },
   "lockMetaMaskLoadingMessage": {
-    "message": "Ag Glasáil MetaMask..."
+    "message": "Ag Glasáil 1do..."
   },
   "lockTimeInvalid": {
     "message": "Ní mór don am glasála a bheith ina uimhir idir 0 agus 10080"
@@ -3010,7 +3010,7 @@
     "description": "$1 is the key 'loginErrorGenericSupport'"
   },
   "loginErrorGenericSupport": {
-    "message": "Tacaíocht MetaMask"
+    "message": "Tacaíocht 1do"
   },
   "loginErrorGenericTitle": {
     "message": "Chuaigh rud éigin mícheart"
@@ -3097,7 +3097,7 @@
     "message": "Teachtaireacht"
   },
   "metaMaskConnectStatusParagraphOne": {
-    "message": "Tá níos mó smachta agat anois ar naisc do chuntais i MetaMask."
+    "message": "Tá níos mó smachta agat anois ar naisc do chuntais i 1do."
   },
   "metaMaskConnectStatusParagraphThree": {
     "message": "Cliceáil air chun do chuntais nasctha a bhainistiú."
@@ -3106,7 +3106,7 @@
     "message": "Taispeánann an cnaipe stádais nasc an bhfuil an suíomh Gréasáin atá á thabhairt agat ceangailte leis an gcuntas atá roghnaithe agat faoi láthair."
   },
   "metaMetricsIdNotAvailableError": {
-    "message": "Ós rud é nár roghnaigh tú MetaMetrics a úsáid riamh, níl aon sonraí le scriosadh anseo."
+    "message": "Ós rud é nár roghnaigh tú 1do Metrics a úsáid riamh, níl aon sonraí le scriosadh anseo."
   },
   "metadataModalSourceTooltip": {
     "message": "Tá $1 á óstáil ar npm agus is é $2 aitheantóir uathúil an Snap seo.",
@@ -3116,10 +3116,10 @@
     "message": "Níl fógraí sparán gníomhach faoi láthair."
   },
   "metamaskSwapsOfflineDescription": {
-    "message": "Tá cothabháil á déanamh ar MetaMask Swaps. Seiceáil ar ais ar ball."
+    "message": "Tá cothabháil á déanamh ar 1do Swaps. Seiceáil ar ais ar ball."
   },
   "metamaskVersion": {
-    "message": "Leagan MetaMask"
+    "message": "Leagan 1do"
   },
   "methodData": {
     "message": "Modh"
@@ -3191,7 +3191,7 @@
     "description": "Button text to learn more about multichain accounts"
   },
   "multichainAccountIntroSameAddressDescription": {
-    "message": "Tá do chuntais cumasctha againn, mar sin lean ort ag úsáid MetaMask mar a bhí roimhe. Tá do chistí sábháilte agus gan athrú.",
+    "message": "Tá do chuntais cumasctha againn, mar sin lean ort ag úsáid 1do mar a bhí roimhe. Tá do chistí sábháilte agus gan athrú.",
     "description": "Description explaining that accounts have been merged"
   },
   "multichainAccountIntroSameAddressTitle": {
@@ -3207,7 +3207,7 @@
     "description": "Button text to view accounts from the intro modal"
   },
   "multichainAccountIntroWhatDescription": {
-    "message": "Cuntas amháin, seoltaí ar na líonraí uile a dtacaítear leo le MetaMask. Mar sin is féidir leat Ethereum, Solana, agus níos mó a úsáid anois gan cuntais a athrú.",
+    "message": "Cuntas amháin, seoltaí ar na líonraí uile a dtacaítear leo le 1do. Mar sin is féidir leat Ethereum, Solana, agus níos mó a úsáid anois gan cuntais a athrú.",
     "description": "Description explaining what multichain accounts are"
   },
   "multichainAccountIntroWhatTitle": {
@@ -3223,10 +3223,10 @@
     "description": "Title for the multichain accounts introduction modal."
   },
   "multichainAddEthereumChainConfirmationDescription": {
-    "message": "Tá tú ag cur an líonra seo le MetaMask agus ag tabhairt cead don suíomh seo é a úsáid."
+    "message": "Tá tú ag cur an líonra seo le 1do agus ag tabhairt cead don suíomh seo é a úsáid."
   },
   "multichainQuoteCardRateExplanation": {
-    "message": "An ráta is fearr a fuair muid ó sholáthraithe, lena n-áirítear táillí soláthraithe agus táille $1% ar MetaMask."
+    "message": "An ráta is fearr a fuair muid ó sholáthraithe, lena n-áirítear táillí soláthraithe agus táille $1% ar 1do."
   },
   "multichainQuoteCardRateLabel": {
     "message": "Ráta"
@@ -3318,7 +3318,7 @@
     "message": "Prótacal Lionsa"
   },
   "nameProvider_token": {
-    "message": "MetaMask"
+    "message": "1do"
   },
   "nameSetPlaceholder": {
     "message": "Roghnaigh leasainm...",
@@ -3355,7 +3355,7 @@
     "message": "Roinn d’aiseolas"
   },
   "needHelpLinkText": {
-    "message": "Tacaíocht MetaMask"
+    "message": "Tacaíocht 1do"
   },
   "needHelpSubmitTicket": {
     "message": "Cuir ticéad isteach"
@@ -3492,7 +3492,7 @@
     "description": "$1 is used for newNFTDetectedInImportNFTsMessageStrongText"
   },
   "newNFTDetectedInNFTsTabMessage": {
-    "message": "Lig do MetaMask NFTanna a bhrath agus a thaispeáint go huathoibríoch i do sparán."
+    "message": "Lig do 1do NFTanna a bhrath agus a thaispeáint go huathoibríoch i do sparán."
   },
   "newNFTsAutodetected": {
     "message": "Uathbhrath NFT"
@@ -3577,7 +3577,7 @@
     "message": "Ní bhfuarthas aon chuntais don fhiosrúchán cuardaigh tugtha"
   },
   "noConnectionDescription": {
-    "message": "Chun ceangal le suíomh, aimsigh agus roghnaigh an cnaipe \"ceangail\". Cuimhnigh nach féidir le MetaMask ceangal ach le suíomhanna ar an ngréasán 3."
+    "message": "Chun ceangal le suíomh, aimsigh agus roghnaigh an cnaipe \"ceangail\". Cuimhnigh nach féidir le 1do ceangal ach le suíomhanna ar an ngréasán 3."
   },
   "noDomainResolution": {
     "message": "Níor soláthraíodh aon réiteach don fhearann."
@@ -3827,7 +3827,7 @@
     "message": "Ábhair chur chun cinn ábhartha eile"
   },
   "onboardedMetametricsLink": {
-    "message": "MetaMetrics"
+    "message": "1do Metrics"
   },
   "onboardedMetametricsParagraph1": {
     "message": "Chomh maith le $1, ba mhaith linn sonraí a úsáid chun tuiscint a fháil ar an gcaoi a n-idirghníomhaíonn tú le cumarsáid mhargaíochta.",
@@ -3874,7 +3874,7 @@
     "message": "Tá sparán agam cheana féin"
   },
   "onboardingLoginFooter": {
-    "message": "Trí leanúint ar aghaidh, aontaím le $1 agus $2 MetaMask."
+    "message": "Trí leanúint ar aghaidh, aontaím le $1 agus $2 1do."
   },
   "onboardingLoginFooterPrivacyNotice": {
     "message": "Fógra príobháideachais."
@@ -3901,7 +3901,7 @@
     "message": "Ba mhaith linn na ceadanna seo a iarraidh. Is féidir leat rogha an diúltaithe a dhéanamh nó do shonraí úsáide a scriosadh tráth ar bith."
   },
   "onboardingMetametricsTitle": {
-    "message": "Cabhraigh linn MetaMask a fheabhsú"
+    "message": "Cabhraigh linn 1do a fheabhsú"
   },
   "onboardingOptionIcon": {
     "message": "Deilbhín $1",
@@ -3970,7 +3970,7 @@
     "message": "daoine eile"
   },
   "outdatedBrowserNotification": {
-    "message": "Tá do bhrabhsálaí as dáta. Mura ndéanann tú do bhrabhsálaí a nuashonrú, ní bheidh tú in ann paistí slándála agus gnéithe nua a fháil ó MetaMask."
+    "message": "Tá do bhrabhsálaí as dáta. Mura ndéanann tú do bhrabhsálaí a nuashonrú, ní bheidh tú in ann paistí slándála agus gnéithe nua a fháil ó 1do."
   },
   "overrideContentSecurityPolicyHeader": {
     "message": "Sáraigh ceanntásc Beartas Slándála Ábhair"
@@ -3982,10 +3982,10 @@
     "message": "glas fraincín "
   },
   "participateInMetaMetrics": {
-    "message": "Glac páirt i MetaMetrics"
+    "message": "Glac páirt i 1do Metrics"
   },
   "participateInMetaMetricsDescription": {
-    "message": "Glac páirt i MetaMetrics chun cabhrú linn MetaMask a fheabhsú"
+    "message": "Glac páirt i 1do Metrics chun cabhrú linn 1do a fheabhsú"
   },
   "password": {
     "message": "Pasfhocal"
@@ -3994,16 +3994,16 @@
     "message": "Athraíodh do phasfhocal"
   },
   "passwordChangedRecentlyDescription": {
-    "message": "Cuir isteach do phasfhocal nua le fanacht logáilte isteach i MetaMask."
+    "message": "Cuir isteach do phasfhocal nua le fanacht logáilte isteach i 1do."
   },
   "passwordNotLongEnough": {
     "message": "Ní mór 8 gcarachtar ar a laghad a bheith ann"
   },
   "passwordTermsWarning": {
-    "message": "Mura ndéanaim dearmad ar an bpasfhocal seo, ní féidir le MetaMask é a athshocrú dom."
+    "message": "Mura ndéanaim dearmad ar an bpasfhocal seo, ní féidir le 1do é a athshocrú dom."
   },
   "passwordTermsWarningSocial": {
-    "message": "Má dhéanaim dearmad ar an bpasfhocal seo, caillfidh mé rochtain ar mo sparán go buan. Ní féidir le MetaMask é a athshocrú dom."
+    "message": "Má dhéanaim dearmad ar an bpasfhocal seo, caillfidh mé rochtain ar mo sparán go buan. Ní féidir le 1do é a athshocrú dom."
   },
   "passwordToggleHide": {
     "message": "Folaigh Pasfhocal"
@@ -4081,11 +4081,11 @@
     "description": "The description for the `wallet_snap_*` permission. $1 is the name of the Snap."
   },
   "permission_assets": {
-    "message": "Taispeáin sócmhainní cuntais i MetaMask.",
+    "message": "Taispeáin sócmhainní cuntais i 1do.",
     "description": "The description for the `endowment:assets` permission."
   },
   "permission_assetsDescription": {
-    "message": "Lig do $1 faisnéis sócmhainní a sholáthar don chliant MetaMask. Is féidir na sócmhainní a bheith ar an slabhra nó lasmuigh den slabhra.",
+    "message": "Lig do $1 faisnéis sócmhainní a sholáthar don chliant 1do. Is féidir na sócmhainní a bheith ar an slabhra nó lasmuigh den slabhra.",
     "description": "An extended description for the `endowment:assets` permission. $1 is the name of the Snap."
   },
   "permission_cronjob": {
@@ -4097,11 +4097,11 @@
     "description": "An extended description for the `snap_cronjob` permission. $1 is the snap name."
   },
   "permission_dialog": {
-    "message": "Taispeáin fuinneoga dialóige i MetaMask.",
+    "message": "Taispeáin fuinneoga dialóige i 1do.",
     "description": "The description for the `snap_dialog` permission"
   },
   "permission_dialogDescription": {
-    "message": "Ceadaigh do $1 fuinneoga aníos MetaMask a thaispeáint le téacs saincheaptha, réimse ionchuir, agus cnaipí chun gníomh a cheadú nó a dhiúltú.\nIs féidir é a úsáid chun foláirimh, dearbhuithe, agus sreafaí rogha isteach a chruthú ar feadh tamaill thapa.",
+    "message": "Ceadaigh do $1 fuinneoga aníos 1do a thaispeáint le téacs saincheaptha, réimse ionchuir, agus cnaipí chun gníomh a cheadú nó a dhiúltú.\nIs féidir é a úsáid chun foláirimh, dearbhuithe, agus sreafaí rogha isteach a chruthú ar feadh tamaill thapa.",
     "description": "An extended description for the `snap_dialog` permission. $1 is the snap name."
   },
   "permission_ethereumAccounts": {
@@ -4113,7 +4113,7 @@
     "description": "The description for the `endowment:ethereum-provider` permission"
   },
   "permission_ethereumProviderDescription": {
-    "message": "Lig do $1 cumarsáid a dhéanamh le MetaMask go díreach, ionas gur féidir leis sonraí ón blockchain a léamh agus teachtaireachtaí agus idirbhearta a mholadh.",
+    "message": "Lig do $1 cumarsáid a dhéanamh le 1do go díreach, ionas gur féidir leis sonraí ón blockchain a léamh agus teachtaireachtaí agus idirbhearta a mholadh.",
     "description": "An extended description for the `endowment:ethereum-provider` permission. $1 is the snap name."
   },
   "permission_getEntropy": {
@@ -4121,7 +4121,7 @@
     "description": "The description for the `snap_getEntropy` permission. $1 is the snap name."
   },
   "permission_getEntropyDescription": {
-    "message": "Lig do $1 eochracha treallacha atá uathúil do $1 a dhíorthú, gan iad a nochtadh. Tá na heochracha seo ar leithligh ó do chuntas(anna) MetaMask agus níl siad gaolmhar le d'eochracha príobháideacha ná le d'Frása Aisghabhála Rúnda. Ní féidir le snaps eile rochtain a fháil ar an bhfaisnéis seo.",
+    "message": "Lig do $1 eochracha treallacha atá uathúil do $1 a dhíorthú, gan iad a nochtadh. Tá na heochracha seo ar leithligh ó do chuntas(anna) 1do agus níl siad gaolmhar le d'eochracha príobháideacha ná le d'Frása Aisghabhála Rúnda. Ní féidir le snaps eile rochtain a fháil ar an bhfaisnéis seo.",
     "description": "An extended description for the `snap_getEntropy` permission. $1 is the snap name."
   },
   "permission_getLocale": {
@@ -4129,7 +4129,7 @@
     "description": "The description for the `snap_getLocale` permission"
   },
   "permission_getLocaleDescription": {
-    "message": "Lig do $1 rochtain a fháil ar do theanga is fearr leat ó do shocruithe MetaMask. Is féidir é seo a úsáid chun ábhar $1 a logánú agus a thaispeáint ag baint úsáide as do theanga féin.",
+    "message": "Lig do $1 rochtain a fháil ar do theanga is fearr leat ó do shocruithe 1do. Is féidir é seo a úsáid chun ábhar $1 a logánú agus a thaispeáint ag baint úsáide as do theanga féin.",
     "description": "An extended description for the `snap_getLocale` permission. $1 is the snap name."
   },
   "permission_getPreferences": {
@@ -4137,7 +4137,7 @@
     "description": "The description for the `snap_getPreferences` permission"
   },
   "permission_getPreferencesDescription": {
-    "message": "Lig do $1 rochtain a fháil ar fhaisnéis ar nós do theanga is fearr leat agus airgeadra fiat i do shocruithe MetaMask. Cuidíonn sé seo le $1 ábhar a thaispeáint atá saincheaptha do do chuid sainroghanna.",
+    "message": "Lig do $1 rochtain a fháil ar fhaisnéis ar nós do theanga is fearr leat agus airgeadra fiat i do shocruithe 1do. Cuidíonn sé seo le $1 ábhar a thaispeáint atá saincheaptha do do chuid sainroghanna.",
     "description": "An extended description for the `snap_getPreferences` permission. $1 is the snap name."
   },
   "permission_homePage": {
@@ -4145,7 +4145,7 @@
     "description": "The description for the `endowment:page-home` permission"
   },
   "permission_homePageDescription": {
-    "message": "Lig do $1 scáileán baile saincheaptha a thaispeáint i MetaMask. Is féidir é seo a úsáid le haghaidh comhéadain úsáideora, cumraíochta, agus painéil rialaithe.",
+    "message": "Lig do $1 scáileán baile saincheaptha a thaispeáint i 1do. Is féidir é seo a úsáid le haghaidh comhéadain úsáideora, cumraíochta, agus painéil rialaithe.",
     "description": "An extended description for the `endowment:page-home` permission. $1 is the snap name."
   },
   "permission_keyring": {
@@ -4197,7 +4197,7 @@
     "description": "The description for the `endowment:name-lookup` permission."
   },
   "permission_nameLookupDescription": {
-    "message": "Lig don snap cuardaigh seoltaí agus fearainn a fháil agus a thaispeáint i gcodanna éagsúla den Chomhéadan Úsáideora MetaMask.",
+    "message": "Lig don snap cuardaigh seoltaí agus fearainn a fháil agus a thaispeáint i gcodanna éagsúla den Chomhéadan Úsáideora 1do.",
     "description": "An extended description for the `endowment:name-lookup` permission."
   },
   "permission_notifications": {
@@ -4205,7 +4205,7 @@
     "description": "The description for the `snap_notify` permission"
   },
   "permission_notificationsDescription": {
-    "message": "Ceadaigh do $1 fógraí a thaispeáint laistigh de MetaMask. Is féidir téacs fógra gearr a spreagadh le snap le haghaidh faisnéise inghníomhaithe nó faisnéise atá íogair ó thaobh ama de.",
+    "message": "Ceadaigh do $1 fógraí a thaispeáint laistigh de 1do. Is féidir téacs fógra gearr a spreagadh le snap le haghaidh faisnéise inghníomhaithe nó faisnéise atá íogair ó thaobh ama de.",
     "description": "An extended description for the `snap_notify` permission. $1 is the snap name."
   },
   "permission_protocol": {
@@ -4213,7 +4213,7 @@
     "description": "The description for the `endowment:protocol` permission."
   },
   "permission_protocolDescription": {
-    "message": "Lig do $1 sonraí prótacail a sholáthar do MetaMask amhail meastacháin gháis nó faisnéis chomharthaí.",
+    "message": "Lig do $1 sonraí prótacail a sholáthar do 1do amhail meastacháin gháis nó faisnéis chomharthaí.",
     "description": "An extended description for the `endowment:protocol` permission. $1 is the name of the Snap."
   },
   "permission_rpc": {
@@ -4249,7 +4249,7 @@
     "description": "The description for the `endowment:transaction-insight` permission"
   },
   "permission_transactionInsightDescription": {
-    "message": "Lig do $1 idirbhearta a dhíchódú agus léargais a thaispeáint laistigh den Chomhéadan Úsáideora MetaMask. Is féidir é seo a úsáid le haghaidh réitigh frith-fhioscaireachta agus slándála.",
+    "message": "Lig do $1 idirbhearta a dhíchódú agus léargais a thaispeáint laistigh den Chomhéadan Úsáideora 1do. Is féidir é seo a úsáid le haghaidh réitigh frith-fhioscaireachta agus slándála.",
     "description": "An extended description for the `endowment:transaction-insight` permission. $1 is the snap name."
   },
   "permission_transactionInsightOrigin": {
@@ -4329,7 +4329,7 @@
     "description": "Pin label used in multichain account menu"
   },
   "pinMetaMask": {
-    "message": "Priontáil an síneadh MetaMask"
+    "message": "Priontáil an síneadh 1do"
   },
   "pinMetaMaskDescription": {
     "message": "Cliceáil ar $1 agus ansin $2 chun é a phionáil."
@@ -4527,7 +4527,7 @@
     "message": "Dí-ghealladh críochnaithe"
   },
   "pushPlatformNotificationsSwapCompletedDescription": {
-    "message": "D'éirigh le do Mhalartú MetaMask"
+    "message": "D'éirigh le do Mhalartú 1do"
   },
   "pushPlatformNotificationsSwapCompletedTitle": {
     "message": "Malartú críochnaithe"
@@ -4604,14 +4604,14 @@
     "description": "Make sure you have the Secret Recovery Phrase or private key for this account before removing."
   },
   "removeAccountModalBannerTitle": {
-    "message": "Bainfear an cuntas seo as MetaMask.",
+    "message": "Bainfear an cuntas seo as 1do.",
     "description": "Title of a banner alert used on account remove modal."
   },
   "removeKeyringSnap": {
-    "message": "Baintear na cuntais seo as MetaMask má bhaintear an Snap seo:"
+    "message": "Baintear na cuntais seo as 1do má bhaintear an Snap seo:"
   },
   "removeKeyringSnapToolTip": {
-    "message": "Rialaíonn an snap na cuntais, agus trína bhaint, bainfear na cuntais as MetaMask freisin, ach fanfaidh siad sa blockchain."
+    "message": "Rialaíonn an snap na cuntais, agus trína bhaint, bainfear na cuntais as 1do freisin, ach fanfaidh siad sa blockchain."
   },
   "removeNFT": {
     "message": "Bain NFT"
@@ -4626,7 +4626,7 @@
     "message": "Bain Snap"
   },
   "removeSnapAccountDescription": {
-    "message": "Mura leanann tú ar aghaidh, ní bheidh an cuntas seo ar fáil i MetaMask a thuilleadh."
+    "message": "Mura leanann tú ar aghaidh, ní bheidh an cuntas seo ar fáil i 1do a thuilleadh."
   },
   "removeSnapAccountTitle": {
     "message": "Bain cuntas"
@@ -4688,7 +4688,7 @@
     "description": "$1 is the protocol name."
   },
   "restartMetamask": {
-    "message": "Atosaigh MetaMask"
+    "message": "Atosaigh 1do"
   },
   "restore": {
     "message": "Athchóirigh"
@@ -4855,7 +4855,7 @@
     "message": "Athraigh an focal faire"
   },
   "securityChangePasswordDescription": {
-    "message": "Roghnaigh pasfhocal láidir chun an aip MetaMask a dhíghlasáil ar do ghléas. Má chailleann tú an pasfhocal seo, beidh do Rún Aisghabhála Frása ag teastáil uait chun do sparán a ath-allmhairiú."
+    "message": "Roghnaigh pasfhocal láidir chun an aip 1do a dhíghlasáil ar do ghléas. Má chailleann tú an pasfhocal seo, beidh do Rún Aisghabhála Frása ag teastáil uait chun do sparán a ath-allmhairiú."
   },
   "securityChangePasswordTitle": {
     "message": "Pasfhocal"
@@ -4896,7 +4896,7 @@
     "message": "Cumasaithe"
   },
   "securitySocialLoginEnabledDescription": {
-    "message": "Bain úsáid as do logáil isteach $1 agus do phasfhocal MetaMask chun do chuntas agus Frásaí Aisghabhála Rúnda a aisghabháil.",
+    "message": "Bain úsáid as do logáil isteach $1 agus do phasfhocal 1do chun do chuntas agus Frásaí Aisghabhála Rúnda a aisghabháil.",
     "description": "The $1 is the text 'Google' or 'Apple'"
   },
   "securitySocialLoginLabel": {
@@ -4945,7 +4945,7 @@
     "message": "Roghnaigh cuntas"
   },
   "selectAnAccountAlreadyConnected": {
-    "message": "Tá an cuntas seo ceangailte le MetaMask cheana féin"
+    "message": "Tá an cuntas seo ceangailte le 1do cheana féin"
   },
   "selectEnableDisplayMediaPrivacyPreference": {
     "message": "Cas air Taispeáin Meáin NFT"
@@ -5380,7 +5380,7 @@
     "message": "Ná taispeáin an scáileán idirmheánach agus naisc dhomhain á n-oscailt"
   },
   "skipDeepLinkInterstitialDescription": {
-    "message": "Má chumasaíonn tú an rogha seo, scipeálfar an scáileán idirmheánach a thaispeántar agus naisc dhomhain á n-oscailt i MetaMask. Is nasc cosúil le https://link.metamask.io/home é \"nasc domhain\" a chuirfidh faoi deara go n-osclófar MetaMask; is féidir le daoine eile na naisc seo a cheilt. Tá an scáileán idirmheánach deartha chun tú a chosaint ó leathanaigh a oscailt de thaisme laistigh de MetaMask a d'fhéadfadh do chuntais, comharthaí, stair, iarmhéideanna, socruithe, nó faisnéis eile a d'fhéadfadh a bheith íogair a thaispeáint. Ní bhaineann an socrú seo ach le naisc atá sínithe ag MetaMask."
+    "message": "Má chumasaíonn tú an rogha seo, scipeálfar an scáileán idirmheánach a thaispeántar agus naisc dhomhain á n-oscailt i 1do. Is nasc cosúil le https://link.metamask.io/home é \"nasc domhain\" a chuirfidh faoi deara go n-osclófar 1do; is féidir le daoine eile na naisc seo a cheilt. Tá an scáileán idirmheánach deartha chun tú a chosaint ó leathanaigh a oscailt de thaisme laistigh de 1do a d'fhéadfadh do chuntais, comharthaí, stair, iarmhéideanna, socruithe, nó faisnéis eile a d'fhéadfadh a bheith íogair a thaispeáint. Ní bhaineann an socrú seo ach le naisc atá sínithe ag 1do."
   },
   "slippage": {
     "message": "Sleamhnú"
@@ -5425,7 +5425,7 @@
     "message": "Theip ar do idirbheart"
   },
   "smartTransactionErrorDescription": {
-    "message": "Is féidir le hathruithe tobann sa mhargadh teipeanna a chur faoi deara. Má leanann an fhadhb, déan teagmháil le tacaíocht do chustaiméirí MetaMask."
+    "message": "Is féidir le hathruithe tobann sa mhargadh teipeanna a chur faoi deara. Má leanann an fhadhb, déan teagmháil le tacaíocht do chustaiméirí 1do."
   },
   "smartTransactionPending": {
     "message": "Cuireadh isteach d’idirbheart"
@@ -5475,7 +5475,7 @@
     "message": "Baineadh an cuntas"
   },
   "snapAccountRemovedDescription": {
-    "message": "Ní bheidh an cuntas seo ar fáil lena úsáid i MetaMask a thuilleadh."
+    "message": "Ní bheidh an cuntas seo ar fáil lena úsáid i 1do a thuilleadh."
   },
   "snapConnectTo": {
     "message": "Ceangail le $1",
@@ -5679,7 +5679,7 @@
     "message": "Teorainní caiteachais"
   },
   "srpDetailsDescription": {
-    "message": "Is sraith focal é Frása Aisghabhála Rúnda, ar a dtugtar frása síl nó mnemonic freisin, a ligeann duit rochtain a fháil ar do sparán cripte agus é a rialú. Chun do sparán a bhogadh go MetaMask, beidh an frása seo ag teastáil uait."
+    "message": "Is sraith focal é Frása Aisghabhála Rúnda, ar a dtugtar frása síl nó mnemonic freisin, a ligeann duit rochtain a fháil ar do sparán cripte agus é a rialú. Chun do sparán a bhogadh go 1do, beidh an frása seo ag teastáil uait."
   },
   "srpDetailsOwnsAccessListItemOne": {
     "message": "Tóg do chuid airgid go léir"
@@ -5739,7 +5739,7 @@
     "message": "Chun do Rúndráma Téarnaimh a nochtadh, ní mór duit dhá cheist a fhreagairt i gceart."
   },
   "srpSecurityQuizQuestionOneQuestion": {
-    "message": "Má chailleann tú do Rúndfrása Aisghabhála, MetaMask..."
+    "message": "Má chailleann tú do Rúndfrása Aisghabhála, 1do..."
   },
   "srpSecurityQuizQuestionOneRightAnswer": {
     "message": "Ní féidir liom cabhrú leat"
@@ -5818,7 +5818,7 @@
     "description": "$1 represents the `stateCorruptionTheseInstructions` localization key"
   },
   "stateCorruptionCopyAndRestoreBeforeReset": {
-    "message": "Is féidir leat iarracht a dhéanamh do chomhad stáit a chóipeáil agus a athchóiriú de láimh sula ndéanann tú cinneadh MetaMask a athshocrú trí $1 a leanúint.",
+    "message": "Is féidir leat iarracht a dhéanamh do chomhad stáit a chóipeáil agus a athchóiriú de láimh sula ndéanann tú cinneadh 1do a athshocrú trí $1 a leanúint.",
     "description": "$1 represents the `stateCorruptionTheseInstructions` localization key"
   },
   "stateCorruptionDetectedNoBackup": {
@@ -5853,7 +5853,7 @@
     "message": "Earráid agus logaí stádais á n-aisghabháil."
   },
   "stateLogFileName": {
-    "message": "Logaí stáit MetaMask"
+    "message": "Logaí stáit 1do"
   },
   "stateLogs": {
     "message": "Logaí stáit"
@@ -5871,7 +5871,7 @@
     "message": "Ceangail do Lattice1"
   },
   "step1LatticeWalletMsg": {
-    "message": "Is féidir leat MetaMask a nascadh le do ghléas Lattice1 a luaithe a bheidh sé socraithe agus ar líne. Díghlasáil do ghléas agus bíodh d’Aitheantas Gléis réidh agat.",
+    "message": "Is féidir leat 1do a nascadh le do ghléas Lattice1 a luaithe a bheidh sé socraithe agus ar líne. Díghlasáil do ghléas agus bíodh d’Aitheantas Gléis réidh agat.",
     "description": "$1 represents the `hardwareWalletSupportLinkConversion` localization key"
   },
   "step1LedgerWallet": {
@@ -5988,7 +5988,7 @@
     "message": "Glac páirt inár suirbhé"
   },
   "surveyTitle": {
-    "message": "Múnlaigh todhchaí MetaMask"
+    "message": "Múnlaigh todhchaí 1do"
   },
   "swap": {
     "message": "Malartú"
@@ -6048,7 +6048,7 @@
     "message": "Teorainn in eagar"
   },
   "swapEnableDescription": {
-    "message": "Tá sé seo riachtanach agus tugann sé cead do MetaMask do $1 a mhalartú.",
+    "message": "Tá sé seo riachtanach agus tugann sé cead do 1do do $1 a mhalartú.",
     "description": "Gives the user info about the required approval transaction for swaps. $1 will be the symbol of a token being approved for swaps."
   },
   "swapEnableTokenForSwapping": {
@@ -6086,7 +6086,7 @@
     "description": "Tells a user that they need to confirm on their hardware wallet a swap of 2 tokens. $1 is a source token and $2 is a destination token"
   },
   "swapGasFeesExplanation": {
-    "message": "Ní dhéanann MetaMask aon airgead ó tháillí gáis. Is meastacháin iad na táillí seo agus féadfaidh siad athrú bunaithe ar cé chomh gnóthach is atá an líonra agus cé chomh casta is atá idirbheart. Foghlaim tuilleadh $1.",
+    "message": "Ní dhéanann 1do aon airgead ó tháillí gáis. Is meastacháin iad na táillí seo agus féadfaidh siad athrú bunaithe ar cé chomh gnóthach is atá an líonra agus cé chomh casta is atá idirbheart. Foghlaim tuilleadh $1.",
     "description": "$1 is a link (text in link can be found at 'swapGasFeesSummaryLinkText')"
   },
   "swapGasFeesExplanationLinkText": {
@@ -6100,7 +6100,7 @@
     "message": "Tá táillí gáis ar an scáileán roimhe seo roinnte idir an dá idirbheart seo."
   },
   "swapIncludesMMFee": {
-    "message": "Áirítear táille $1% le haghaidh MetaMask.",
+    "message": "Áirítear táille $1% le haghaidh 1do.",
     "description": "Provides information about the fee that MetaMask takes for swaps. $1 is a decimal number."
   },
   "swapLearnMore": {
@@ -6113,10 +6113,10 @@
     "message": "Sleamhnú uasta"
   },
   "swapMetaMaskFee": {
-    "message": "Táille MetaMask"
+    "message": "Táille 1do"
   },
   "swapMetaMaskFeeDescription": {
-    "message": "Cuirtear an táille $1% san áireamh go huathoibríoch sa luachan seo. Íocann tú í mar mhalairt ar cheadúnas chun bogearraí comhiomlánaithe faisnéise soláthraí leachtachta MetaMask a úsáid.",
+    "message": "Cuirtear an táille $1% san áireamh go huathoibríoch sa luachan seo. Íocann tú í mar mhalairt ar cheadúnas chun bogearraí comhiomlánaithe faisnéise soláthraí leachtachta 1do a úsáid.",
     "description": "Provides information about the fee that MetaMask takes for swaps. $1 is a decimal number."
   },
   "swapNQuotesWithDot": {
@@ -6274,7 +6274,7 @@
     "message": "Lasc ar ais"
   },
   "switchEthereumChainConfirmationDescription": {
-    "message": "Aistreoidh sé seo an líonra roghnaithe laistigh de MetaMask go líonra a cuireadh leis roimhe seo:"
+    "message": "Aistreoidh sé seo an líonra roghnaithe laistigh de 1do go líonra a cuireadh leis roimhe seo:"
   },
   "switchEthereumChainConfirmationTitle": {
     "message": "Ceadaigh don suíomh seo an líonra a athrú?"
@@ -6316,7 +6316,7 @@
     "message": "Aontaigh"
   },
   "termsOfUseAgreeText": {
-    "message": "Aontaím leis na Téarmaí Úsáide, a bhaineann le mo úsáid de MetaMask agus a ghnéithe uile."
+    "message": "Aontaím leis na Téarmaí Úsáide, a bhaineann le mo úsáid de 1do agus a ghnéithe uile."
   },
   "termsOfUseFooterText": {
     "message": "Scrollaigh le do thoil chun na hailt go léir a léamh"
@@ -6334,7 +6334,7 @@
     "message": "Téama"
   },
   "themeDescription": {
-    "message": "Roghnaigh do théama MetaMask is fearr leat."
+    "message": "Roghnaigh do théama 1do is fearr leat."
   },
   "thirdPartySoftware": {
     "message": "Fógra bogearraí tríú páirtí",
@@ -6512,7 +6512,7 @@
     "message": "D’fhéadfadh an earráid seo tarlú go tréimhsiúil, mar sin déan iarracht an síneadh a atosú."
   },
   "troubleStartingTitle": {
-    "message": "Bhí trioblóid ag MetaMask ag tosú."
+    "message": "Bhí trioblóid ag 1do ag tosú."
   },
   "tryAgain": {
     "message": "Déan iarracht arís"
@@ -6690,7 +6690,7 @@
     "message": "NFTanna a bhrath go huathoibríoch"
   },
   "useNftDetectionDescriptionText": {
-    "message": "Lig do MetaMask NFTanna atá i do sheilbh a chur leis trí sheirbhísí tríú páirtí. Nochtann uath-bhrath NFTanna do sheoladh IP agus do sheoladh cuntais do na seirbhísí seo. D’fhéadfadh sé go n-aistreofar do sheoladh IP le do sheoladh Ethereum agus go dtaispeánfar NFTanna bréige arna scaoileadh ag scamadóirí. Is féidir leat comharthaí a chur leis de láimh chun an riosca seo a sheachaint."
+    "message": "Lig do 1do NFTanna atá i do sheilbh a chur leis trí sheirbhísí tríú páirtí. Nochtann uath-bhrath NFTanna do sheoladh IP agus do sheoladh cuntais do na seirbhísí seo. D’fhéadfadh sé go n-aistreofar do sheoladh IP le do sheoladh Ethereum agus go dtaispeánfar NFTanna bréige arna scaoileadh ag scamadóirí. Is féidir leat comharthaí a chur leis de láimh chun an riosca seo a sheachaint."
   },
   "usePhishingDetection": {
     "message": "Bain úsáid as braiteadh fioscaireachta"
@@ -6702,7 +6702,7 @@
     "message": "Seiceáil sonraí líonra"
   },
   "useSafeChainsListValidationDescription": {
-    "message": "Úsáideann MetaMask seirbhís tríú páirtí ar a dtugtar $1 chun sonraí líonra cruinne agus caighdeánaithe a thaispeáint. Laghdaíonn sé seo do sheans ceangal le líonra mailíseach nó mícheart. Agus an ghné seo in úsáid agat, nochtar do sheoladh IP do chainid.network."
+    "message": "Úsáideann 1do seirbhís tríú páirtí ar a dtugtar $1 chun sonraí líonra cruinne agus caighdeánaithe a thaispeáint. Laghdaíonn sé seo do sheans ceangal le líonra mailíseach nó mícheart. Agus an ghné seo in úsáid agat, nochtar do sheoladh IP do chainid.network."
   },
   "useSafeChainsListValidationWebsite": {
     "message": "chainid.network",
@@ -6767,7 +6767,7 @@
     "message": "Deimhnigh"
   },
   "visitSupportDataConsentModalDescription": {
-    "message": "Ar mhaith leat d’Aitheantóir MetaMask agus leagan an aip a roinnt lenár nIonad Tacaíochta? Is féidir leis seo cabhrú linn do fhadhb a réiteach níos fearr, ach is rogha é."
+    "message": "Ar mhaith leat d’Aitheantóir 1do agus leagan an aip a roinnt lenár nIonad Tacaíochta? Is féidir leis seo cabhrú linn do fhadhb a réiteach níos fearr, ach is rogha é."
   },
   "visitSupportDataConsentModalReject": {
     "message": "Ná roinn"

@@ -3,7 +3,6 @@ import {
   TokenFeature,
   TokenFeatureType,
 } from '../../types/security-alerts-api';
-import { MultichainNetworks } from '../../constants/multichain/networks';
 import {
   getTokenFeatureTitleDescriptionIds,
   fetchTxAlerts,
@@ -52,6 +51,9 @@ describe('Security alerts utils', () => {
     });
 
     it('should correctly return title Id and Description Id null if not available', async () => {
+      const consoleWarnSpy = jest
+        .spyOn(console, 'warn')
+        .mockImplementation(() => undefined);
       const mockTokenAlert = {
         type: TokenFeatureType.BENIGN,
         // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
@@ -64,11 +66,12 @@ describe('Security alerts utils', () => {
         getTokenFeatureTitleDescriptionIds(mockTokenAlert);
       expect(tokenAlertWithLabelIds.titleId).toBeNull();
       expect(tokenAlertWithLabelIds.descriptionId).toBeNull();
+      consoleWarnSpy.mockRestore();
     });
   });
 
   describe('fetchTxAlerts', () => {
-    const mockChainId = MultichainNetworks.SOLANA;
+    const mockChainId = 'eip155:1' as const;
     const mockTrade =
       'AQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAQALEC+B/mrGX4B49j9Pt3cLS/moZQX+WeeNTFbg8tHgHtaeI3upde+TaWP4z3riqaHdNZ98/ZUKdQiAK953SSApKYw0ycVL/4j0T5DoJd6lAe/rPLCUHCHYB6gn8UZyB66MfR6MT6uJlElMjx5cEodEWykX1gxDx5qpWRYvXWAAWY0yNaBm/qy58sC4y0qyEMejJKjQYQhW8amNWJqBmVTkVv0DBkZv5SEXMv/srbpyw5vnvIzlu8X3EmssQ5s6QAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABt324ddloZPZy+FGzut5rBy0he1fWzeROoz1hX7/AKkEedVb8jHAbu50xW7OaBUH/bGy3qP0jlECsc2iVrwTj8b6evO+2606PWXzaqvJdDGxu+TC0vbg5HymAgNFL11htD/6J/XX9kp0wJsfKVh53ksJqzbfyd1RSzIap7OM5ejnStls42Wf0xNRAChL93gEW4UQqPNOSYySLu5vwwX4aVJh0UqsxbwO7GNdqHBaH3CjnuNams8L+PIsxs5JAZ16KD0N0oI1T+8K47DiJ9N82JyiZvsX3fj3y3zO++Tr3FUGp9UXGMd0yShWY5hpHV62i164o5tLbVxzVVshAAAAAPPvWeGt7MppdBwkmIZQA+0op8AFkAFcDizwhodc7RDPG6lguUcBUafedbpvY415gYoZ6UmeWoc/FesM7J0/XNwJBQAFApeWAgAFAAkDriEBAAAAAAAGAgABDAIAAADadkgdAAAAAAcBAQERCBYHAAECCAkICggUEAsMERIBAhMVFgAHJOUXy5d6460qAQAAADoBZAAB2nZIHQAAAACtQU8EAAAAADIAAAcDAQAAAQkNAg4PCQD043liGeeMAAYCAAMMAgAAAAAAAAAAAAAABgIABAwCAAAATSxCAAAAAAAB6BwQxsr3h83KgxKA07LOpN5ZFYWarna+9W5g8zXGhz0EDRETDgMQEg8=';
     const mockAccountAddress = '4CT8Uuah9FCv37NfkKZaTmaJXsC9KWd7cE2btFgChmvV';
@@ -112,7 +115,7 @@ describe('Security alerts utils', () => {
       expect(result).toBeNull();
     });
 
-    it('should make API call with correct parameters for Solana', async () => {
+    it('should make API call with correct parameters for Ethereum', async () => {
       const mockResponse = {
         status: 'SUCCESS',
         // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
@@ -125,7 +128,7 @@ describe('Security alerts utils', () => {
       };
 
       const scope = nock(BASE_URL)
-        .post('/solana/message/scan')
+        .post('/ethereum/message/scan')
         .reply(200, mockResponse);
 
       await fetchTxAlerts({
@@ -150,7 +153,7 @@ describe('Security alerts utils', () => {
         error: null,
       };
 
-      nock(BASE_URL).post('/solana/message/scan').reply(200, mockResponse);
+      nock(BASE_URL).post('/ethereum/message/scan').reply(200, mockResponse);
 
       const result = await fetchTxAlerts({
         signal,
@@ -174,7 +177,7 @@ describe('Security alerts utils', () => {
         error: 'This is an error',
       };
 
-      nock(BASE_URL).post('/solana/message/scan').reply(200, mockResponse);
+      nock(BASE_URL).post('/ethereum/message/scan').reply(200, mockResponse);
 
       const result = await fetchTxAlerts({
         signal,
@@ -199,7 +202,7 @@ describe('Security alerts utils', () => {
         error_details: null,
       };
 
-      nock(BASE_URL).post('/solana/message/scan').reply(200, mockResponse);
+      nock(BASE_URL).post('/ethereum/message/scan').reply(200, mockResponse);
 
       const result = await fetchTxAlerts({
         signal,
@@ -224,7 +227,7 @@ describe('Security alerts utils', () => {
         error: null,
       };
 
-      nock(BASE_URL).post('/solana/message/scan').reply(200, mockResponse);
+      nock(BASE_URL).post('/ethereum/message/scan').reply(200, mockResponse);
 
       const result = await fetchTxAlerts({
         signal,
@@ -237,7 +240,7 @@ describe('Security alerts utils', () => {
     });
 
     it('should throw error when API request fails', async () => {
-      nock(BASE_URL).post('/solana/message/scan').reply(500);
+      nock(BASE_URL).post('/ethereum/message/scan').reply(500);
 
       await expect(
         fetchTxAlerts({
@@ -277,22 +280,13 @@ describe('Security alerts utils', () => {
   });
 
   describe('convertChainIdToBlockAidChainName', () => {
-    it('should return correct chain name for Solana', () => {
-      const result = convertChainIdToBlockAidChainName(
-        MultichainNetworks.SOLANA,
-      );
-      expect(result).toBe('solana');
-    });
-
     it('should return correct chain name for Ethereum mainnet', () => {
       const result = convertChainIdToBlockAidChainName('eip155:1');
       expect(result).toBe('ethereum');
     });
 
     it('should return null for unsupported chain', () => {
-      const result = convertChainIdToBlockAidChainName(
-        MultichainNetworks.SOLANA_TESTNET,
-      );
+      const result = convertChainIdToBlockAidChainName('solana:testnet');
       expect(result).toBeNull();
     });
   });

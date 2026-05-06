@@ -160,7 +160,9 @@ const plugins: WebpackPluginInstance[] = [
   }),
   new CopyPlugin({
     patterns: [
-      { from: join(context, '_locales'), to: '_locales' }, // translations
+      // Keep the Chrome Web Store package focused on English and Simplified Chinese.
+      { from: join(context, '_locales', 'en'), to: '_locales/en' },
+      { from: join(context, '_locales', 'zh_CN'), to: '_locales/zh_CN' },
       // misc images
       // TODO: fix overlap between this folder and automatically bundled assets
       { from: join(context, 'images'), to: 'images' },
@@ -180,27 +182,6 @@ const plugins: WebpackPluginInstance[] = [
               from: join(context, 'build-types', 'beta', 'images'),
               to: 'images',
               force: true,
-            },
-          ]
-        : []),
-      // snaps MV3 needs the offscreen document
-      ...(MANIFEST_VERSION === 3
-        ? [
-            {
-              from: join(
-                nodeModules,
-                '@metamask/snaps-execution-environments',
-                'dist/webpack/iframe/index.html',
-              ),
-              to: 'snaps/index.html',
-            },
-            {
-              from: join(
-                nodeModules,
-                '@metamask/snaps-execution-environments',
-                'dist/webpack/iframe/bundle.js',
-              ),
-              to: 'snaps/bundle.js',
             },
           ]
         : []),

@@ -168,7 +168,7 @@ describe('extractIdFromPathname', () => {
 describe('getRelativeLocationForNestedRoutes', () => {
   it('should return relative pathname when location starts with basePath', () => {
     const location = {
-      pathname: '/connect/abc123/snaps-connect',
+      pathname: '/connect/abc123/confirm-permissions',
       search: '?query=test',
       hash: '#section',
       state: { foo: 'bar' },
@@ -179,7 +179,7 @@ describe('getRelativeLocationForNestedRoutes', () => {
     const result = getRelativeLocationForNestedRoutes(location, basePath);
 
     expect(result).toEqual({
-      pathname: '/snaps-connect',
+      pathname: '/confirm-permissions',
       search: '?query=test',
       hash: '#section',
       state: { foo: 'bar' },
@@ -207,7 +207,7 @@ describe('getRelativeLocationForNestedRoutes', () => {
 
   it('should preserve all location properties except pathname', () => {
     const location = {
-      pathname: '/connect/xyz789/snap-install',
+      pathname: '/connect/xyz789/confirm-permissions',
       search: '?foo=bar&baz=qux',
       hash: '#heading',
       state: { from: '/home', test: true },
@@ -218,7 +218,7 @@ describe('getRelativeLocationForNestedRoutes', () => {
     const result = getRelativeLocationForNestedRoutes(location, basePath);
 
     expect(result).toEqual({
-      pathname: '/snap-install',
+      pathname: '/confirm-permissions',
       search: '?foo=bar&baz=qux',
       hash: '#heading',
       state: { from: '/home', test: true },
@@ -246,7 +246,7 @@ describe('getRelativeLocationForNestedRoutes', () => {
 
   it('should handle nested paths with multiple segments', () => {
     const location = {
-      pathname: '/connect/id123/snap-update/review',
+      pathname: '/connect/id123/confirm-permissions/review',
       search: '',
       hash: '',
       state: undefined,
@@ -259,7 +259,7 @@ describe('getRelativeLocationForNestedRoutes', () => {
       basePath,
     ) as typeof location;
 
-    expect(result.pathname).toBe('/snap-update/review');
+    expect(result.pathname).toBe('/confirm-permissions/review');
   });
 
   it('should handle empty basePath', () => {
@@ -282,7 +282,7 @@ describe('getRelativeLocationForNestedRoutes', () => {
 
   it('should handle basePath with trailing slash', () => {
     const location = {
-      pathname: '/connect/abc123/snaps-connect',
+      pathname: '/connect/abc123/confirm-permissions',
       search: '',
       hash: '',
       state: undefined,
@@ -295,7 +295,7 @@ describe('getRelativeLocationForNestedRoutes', () => {
       basePath,
     ) as typeof location;
 
-    expect(result.pathname).toBe('/snaps-connect');
+    expect(result.pathname).toBe('/confirm-permissions');
   });
 
   it('should return "/" when pathname is basePath with trailing slash', () => {
@@ -318,7 +318,7 @@ describe('getRelativeLocationForNestedRoutes', () => {
 
   it('should not mutate the original location object', () => {
     const location = {
-      pathname: '/connect/abc123/snaps-connect',
+      pathname: '/connect/abc123/confirm-permissions',
       search: '?test=1',
       hash: '#top',
       state: undefined,
@@ -334,7 +334,7 @@ describe('getRelativeLocationForNestedRoutes', () => {
 
   it('should handle special characters in pathname', () => {
     const location = {
-      pathname: '/connect/abc-123_456/snap-install',
+      pathname: '/connect/abc-123_456/confirm-permissions',
       search: '',
       hash: '',
       state: undefined,
@@ -347,7 +347,7 @@ describe('getRelativeLocationForNestedRoutes', () => {
       basePath,
     ) as typeof location;
 
-    expect(result.pathname).toBe('/snap-install');
+    expect(result.pathname).toBe('/confirm-permissions');
   });
 
   it('should work with real-world permission connect routes', () => {
@@ -357,9 +357,9 @@ describe('getRelativeLocationForNestedRoutes', () => {
       expected: string;
     }[] = [
       {
-        pathname: '/connect/-ZVKNcTT6CDpxHK9bc5tn/snaps-connect',
+        pathname: '/connect/-ZVKNcTT6CDpxHK9bc5tn/confirm-permissions',
         basePath: '/connect/-ZVKNcTT6CDpxHK9bc5tn',
-        expected: '/snaps-connect',
+        expected: '/confirm-permissions',
       },
       {
         pathname: '/connect/HEfPLJk2JliAmOQPv2uJt/confirm-permissions',
@@ -367,9 +367,9 @@ describe('getRelativeLocationForNestedRoutes', () => {
         expected: '/confirm-permissions',
       },
       {
-        pathname: '/connect/xs6SFPJxNbT4gASU5QH3Z/snap-install',
+        pathname: '/connect/xs6SFPJxNbT4gASU5QH3Z/confirm-permissions',
         basePath: '/connect/xs6SFPJxNbT4gASU5QH3Z',
-        expected: '/snap-install',
+        expected: '/confirm-permissions',
       },
       {
         pathname: '/connect/lDEodtmT-xo07k0uTHWIm',

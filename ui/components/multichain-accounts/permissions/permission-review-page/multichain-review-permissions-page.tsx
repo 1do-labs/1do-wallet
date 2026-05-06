@@ -48,7 +48,7 @@ import { CONNECT_ROUTE } from '../../../../helpers/constants/routes';
 import { DisconnectAllModal } from '../../../multichain/disconnect-all-modal/disconnect-all-modal';
 import { DisconnectPermissionsModal } from '../../../multichain/disconnect-permissions-modal/disconnect-permissions-modal';
 import { PermissionsHeader } from '../../../multichain/permissions-header/permissions-header';
-import { EvmAndMultichainNetworkConfigurationsWithCaipChainId } from '../../../../selectors/selectors.types';
+import { EvmNetworkConfigurationWithCaipChainId } from '../../../../selectors/selectors.types';
 import { CAIP_FORMATTED_TEST_CHAINS } from '../../../../../shared/constants/network';
 import { endTrace, trace, TraceName } from '../../../../../shared/lib/trace';
 import { MultichainSiteCell } from '../../multichain-site-cell/multichain-site-cell';
@@ -151,22 +151,22 @@ export const MultichainReviewPermissions = () => {
     getAllNetworkConfigurationsByCaipChainId,
   );
 
-  const [nonTestNetworks, testNetworks] = useMemo(
+  const [evmMainnetNetworks, evmTestNetworks] = useMemo(
     () =>
       Object.entries(networkConfigurationsByCaipChainId).reduce(
-        ([nonTestNetworksList, testNetworksList], [chainId, network]) => {
+        ([mainnetNetworks, testnetNetworks], [chainId, network]) => {
           const caipChainId = chainId as CaipChainId;
           const isTestNetwork =
             CAIP_FORMATTED_TEST_CHAINS.includes(caipChainId);
-          (isTestNetwork ? testNetworksList : nonTestNetworksList).push({
+          (isTestNetwork ? testnetNetworks : mainnetNetworks).push({
             ...network,
             caipChainId,
           });
-          return [nonTestNetworksList, testNetworksList];
+          return [mainnetNetworks, testnetNetworks];
         },
         [
-          [] as EvmAndMultichainNetworkConfigurationsWithCaipChainId[],
-          [] as EvmAndMultichainNetworkConfigurationsWithCaipChainId[],
+          [] as EvmNetworkConfigurationWithCaipChainId[],
+          [] as EvmNetworkConfigurationWithCaipChainId[],
         ],
       ),
     [networkConfigurationsByCaipChainId],
@@ -346,8 +346,8 @@ export const MultichainReviewPermissions = () => {
         <Content padding={0}>
           {connectedAccountGroups.length > 0 ? (
             <MultichainSiteCell
-              nonTestNetworks={nonTestNetworks}
-              testNetworks={testNetworks}
+              nonTestNetworks={evmMainnetNetworks}
+              testNetworks={evmTestNetworks}
               supportedAccountGroups={supportedAccountGroups}
               showEditAccounts={setModeToEditAccounts}
               onSelectChainIds={handleSelectChainIds}
@@ -361,8 +361,8 @@ export const MultichainReviewPermissions = () => {
                 ([permissionGroupName, details]) => (
                   <PermissionsCell
                     key={permissionGroupName}
-                    nonTestNetworks={nonTestNetworks}
-                    testNetworks={testNetworks}
+                    nonTestNetworks={evmMainnetNetworks}
+                    testNetworks={evmTestNetworks}
                     totalCount={details.count}
                     chainIds={details.chains}
                     paddingTop={connectedAccountGroups.length === 0 ? 4 : 0}

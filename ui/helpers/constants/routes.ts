@@ -77,7 +77,6 @@ export const CONTACTS_ROUTE = '/contacts';
 export const CONTACTS_ADD_ROUTE = '/contacts/add';
 export const CONTACTS_VIEW_ROUTE = '/contacts/view';
 export const CONTACTS_EDIT_ROUTE = '/contacts/edit';
-export const SNAP_SETTINGS_ROUTE = '/settings/snap';
 export const SECURITY_PASSWORD_CHANGE_ROUTE =
   '/settings/security-and-privacy/password-change';
 export const BACKUPANDSYNC_ROUTE =
@@ -115,12 +114,6 @@ export const REVIEW_GATOR_PERMISSIONS_ROUTE = '/review-gator-permissions';
 export const REVIEW_PERMISSIONS = '/review-permissions';
 export const CONNECT_ROUTE = '/connect';
 export const CONNECT_CONFIRM_PERMISSIONS_ROUTE = '/confirm-permissions';
-export const CONNECT_SNAPS_CONNECT_ROUTE = '/snaps-connect';
-export const CONNECT_SNAP_INSTALL_ROUTE = '/snap-install';
-export const CONNECT_SNAP_UPDATE_ROUTE = '/snap-update';
-export const CONNECT_SNAP_RESULT_ROUTE = '/snap-install-result';
-export const SNAPS_ROUTE = '/snaps';
-export const SNAPS_VIEW_ROUTE = '/snaps/view';
 export const NOTIFICATIONS_ROUTE = '/notifications';
 export const NOTIFICATIONS_SETTINGS_ROUTE = '/settings/notifications';
 export const CONNECTED_ROUTE = '/connected';
@@ -153,7 +146,6 @@ export const ONBOARDING_METAMETRICS = '/onboarding/metametrics';
 export const ONBOARDING_ACCOUNT_EXIST = '/onboarding/account-exist';
 export const ONBOARDING_ACCOUNT_NOT_FOUND = '/onboarding/account-not-found';
 export const ONBOARDING_DOWNLOAD_APP_ROUTE = '/onboarding/download-app';
-export const NONEVM_BALANCE_CHECK_ROUTE = '/nonevm-balance-check';
 export const INITIALIZE_EXPERIMENTAL_AREA = '/initialize/experimental-area';
 export const ONBOARDING_EXPERIMENTAL_AREA = '/onboarding/experimental-area';
 
@@ -180,33 +172,6 @@ export const ROUTES = [
   { path: '', label: 'Home', trackInAnalytics: true }, // "" is an alias for the Home route
   { path: UNLOCK_ROUTE, label: 'Unlock Page', trackInAnalytics: true },
   { path: LOCK_ROUTE, label: 'Lock Page', trackInAnalytics: true },
-  { path: REWARDS_ROUTE, label: 'Rewards Page', trackInAnalytics: true },
-  { path: PERPS_ROUTE, label: 'Perps Tab', trackInAnalytics: true },
-  {
-    path: PERPS_MARKET_LIST_ROUTE,
-    label: 'Perps Market List',
-    trackInAnalytics: true,
-  },
-  {
-    path: `${PERPS_MARKET_DETAIL_ROUTE}/:symbol`,
-    label: 'Perps Market Detail',
-    trackInAnalytics: true,
-  },
-  {
-    path: `${PERPS_ORDER_ENTRY_ROUTE}/:symbol`,
-    label: 'Perps Order Entry',
-    trackInAnalytics: true,
-  },
-  {
-    path: PERPS_ACTIVITY_ROUTE,
-    label: 'Perps Activity',
-    trackInAnalytics: true,
-  },
-  {
-    path: PERPS_WITHDRAW_ROUTE,
-    label: 'Perps Withdraw',
-    trackInAnalytics: true,
-  },
   {
     path: ACCOUNT_LIST_PAGE_ROUTE,
     label: 'Account List Page',
@@ -351,18 +316,8 @@ export const ROUTES = [
     trackInAnalytics: true,
   },
   {
-    path: SNAP_SETTINGS_ROUTE,
-    label: 'Snap Settings Page',
-    trackInAnalytics: true,
-  },
-  {
     path: SECURITY_PASSWORD_CHANGE_ROUTE,
     label: 'Change Password',
-    trackInAnalytics: true,
-  },
-  {
-    path: BACKUPANDSYNC_ROUTE,
-    label: 'Backup And Sync Settings Page',
     trackInAnalytics: true,
   },
   {
@@ -441,47 +396,6 @@ export const ROUTES = [
   {
     path: `${CONNECT_ROUTE}/:id${CONNECT_CONFIRM_PERMISSIONS_ROUTE}`,
     label: 'Grant Connected Site Permissions Confirmation Page',
-    trackInAnalytics: true,
-  },
-  {
-    path: `${CONNECT_ROUTE}/:id${CONNECT_SNAPS_CONNECT_ROUTE}`,
-    label: 'Snaps Connect Page',
-    trackInAnalytics: true,
-  },
-  {
-    path: `${CONNECT_ROUTE}/:id${CONNECT_SNAP_INSTALL_ROUTE}`,
-    label: 'Snap Install Page',
-    trackInAnalytics: true,
-  },
-  {
-    path: `${CONNECT_ROUTE}/:id${CONNECT_SNAP_UPDATE_ROUTE}`,
-    label: 'Snap Update Page',
-    trackInAnalytics: true,
-  },
-  {
-    path: `${CONNECT_ROUTE}/:id${CONNECT_SNAP_RESULT_ROUTE}`,
-    label: 'Snap Install Result Page',
-    trackInAnalytics: true,
-  },
-  { path: SNAPS_ROUTE, label: 'Snaps List Page', trackInAnalytics: true },
-  {
-    path: SNAPS_VIEW_ROUTE,
-    label: 'Snap View Page',
-    trackInAnalytics: true,
-  },
-  {
-    path: NOTIFICATIONS_ROUTE,
-    label: 'Notifications Page',
-    trackInAnalytics: true,
-  },
-  {
-    path: `${NOTIFICATIONS_ROUTE}/:uuid`,
-    label: 'Notification Detail Page',
-    trackInAnalytics: true,
-  },
-  {
-    path: NOTIFICATIONS_SETTINGS_ROUTE,
-    label: 'Notifications Settings Page',
     trackInAnalytics: true,
   },
   {
@@ -631,11 +545,6 @@ export const ROUTES = [
   {
     path: ONBOARDING_EXPERIMENTAL_AREA,
     label: 'Onboarding Experimental Area',
-    trackInAnalytics: false,
-  },
-  {
-    path: SHIELD_PLAN_ROUTE,
-    label: 'Shield Plan',
     trackInAnalytics: false,
   },
   {

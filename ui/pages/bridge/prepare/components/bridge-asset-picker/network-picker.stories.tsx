@@ -2,7 +2,6 @@ import React from 'react';
 import { Provider, useSelector } from 'react-redux';
 import { NetworkPicker } from './network-picker';
 import { getFromChains } from '../../../../../ducks/bridge/selectors';
-import { MultichainNetworks } from '../../../../../../shared/constants/multichain/networks';
 import { CHAIN_IDS } from '../../../../../../shared/constants/network';
 import { formatChainIdToCaip } from '@metamask/bridge-controller';
 import configureStore from '../../../../../store/store';
@@ -25,9 +24,9 @@ const mockFeatureFlags = {
       { chainId: formatChainIdToCaip(CHAIN_IDS.MAINNET) },
       { chainId: formatChainIdToCaip(CHAIN_IDS.OPTIMISM) },
       { chainId: formatChainIdToCaip(CHAIN_IDS.POLYGON) },
-      { chainId: MultichainNetworks.SOLANA },
-      { chainId: MultichainNetworks.BITCOIN },
-      { chainId: MultichainNetworks.TRON },
+      { chainId: formatChainIdToCaip(CHAIN_IDS.ARBITRUM) },
+      { chainId: formatChainIdToCaip(CHAIN_IDS.BASE) },
+      { chainId: formatChainIdToCaip(CHAIN_IDS.LINEA_MAINNET) },
     ],
   },
 };

@@ -95,12 +95,12 @@ export default function LoadingSwapsQuotes({
   const renderMascot = () => {
     if (isFlask()) {
       return (
-        <img src="./images/logo/metamask-fox.svg" width="90" height="90" />
+        <img src="./images/logo/1do-mark.svg" width="90" height="90" />
       );
     }
     if (isBeta()) {
       return (
-        <img src="./images/logo/metamask-fox.svg" width="90" height="90" />
+        <img src="./images/logo/1do-mark.svg" width="90" height="90" />
       );
     }
     return (

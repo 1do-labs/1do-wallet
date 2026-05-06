@@ -4,7 +4,6 @@ import { ApprovalType } from '@metamask/controller-utils';
 import {
   stripSnapPrefix,
   getLocalizedSnapManifest,
-  SnapStatus,
 } from '@metamask/snaps-utils';
 import { memoize } from 'lodash';
 import semver from 'semver';
@@ -12,10 +11,6 @@ import { createSelector } from 'reselect';
 import { TransactionStatus } from '@metamask/transaction-controller';
 import { isEvmAccountType } from '@metamask/keyring-api';
 import { RpcEndpointType } from '@metamask/network-controller';
-import {
-  SnapEndowments,
-  WALLET_SNAP_PERMISSION_KEY,
-} from '@metamask/snaps-rpc-methods';
 import {
   Caip25EndowmentPermissionName,
   getEthAccounts,
@@ -45,7 +40,6 @@ import {
   getTokensControllerAllTokens,
   getCurrencyRateControllerCurrencyRates,
   getTokenRatesControllerMarketData,
-  getMultiChainBalancesControllerBalances,
 } from '../../shared/lib/selectors/assets-migration';
 import { getEnabledNetworks } from '../../shared/lib/selectors/multichain';
 import { getBooleanFeatureFlag } from '../../shared/lib/remote-feature-flag-utils';
@@ -154,8 +148,6 @@ import {
   hexToDecimal,
 } from '../../shared/lib/conversion.utils';
 import { BackgroundColor } from '../helpers/constants/design-system';
-import { MULTICHAIN_NETWORK_TO_ASSET_TYPES } from '../../shared/constants/multichain/assets';
-import { MULTICHAIN_PROVIDER_CONFIGS } from '../../shared/constants/multichain/networks';
 import { hasTransactionData } from '../../shared/lib/transaction.utils';
 import { toChecksumHexAddress } from '../../shared/lib/hexstring-utils';
 import {
@@ -164,7 +156,6 @@ import {
   createParameterizedShallowEqualSelector,
   createResultEqualSelector,
 } from '../../shared/lib/selectors/selector-creators';
-import { isSnapIgnoredInProd } from '../helpers/utils/snaps';
 import {
   FeatureFlagNames,
   DEFAULT_FEATURE_FLAG_VALUES,
@@ -319,10 +310,6 @@ export function getShowDeleteMetaMetricsDataModal(state) {
 
 export function getShowDataDeletionErrorModal(state) {
   return state.appState.showDataDeletionErrorModal;
-}
-
-export function getKeyringSnapRemovalResult(state) {
-  return state.appState.keyringRemovalSnapModal;
 }
 
 export const getPendingTokens = (state) => state.appState.pendingTokens;
@@ -562,14 +549,12 @@ export const getMetaMaskAccounts = createChainIdSelector(
   getInternalAccounts,
   getMetaMaskAccountBalances,
   getMetaMaskCachedBalances,
-  getMultiChainBalancesControllerBalances,
   getCurrentChainId,
   (_, chainId) => chainId,
   (
     internalAccounts,
     balances,
     cachedBalances,
-    multichainBalances,
     currentChainId,
     chainId,
   ) => {
@@ -581,25 +566,13 @@ export const getMetaMaskAccounts = createChainIdSelector(
       if (chainId === undefined || currentChainId === chainId) {
         // TODO: `AccountTracker` balances are in hex and `MultichainBalance` are in number.
         // We should consolidate the format to either hex or number
-        if (isEvmAccountType(internalAccount.type)) {
-          if (balances?.[internalAccount.address]) {
-            account = {
-              ...account,
-              ...balances[internalAccount.address],
-            };
-          }
-        } else {
-          const multichainNetwork = Object.values(
-            MULTICHAIN_PROVIDER_CONFIGS,
-          ).find((network) =>
-            internalAccount.scopes.some((scope) => scope === network.chainId),
-          );
+        if (
+          isEvmAccountType(internalAccount.type) &&
+          balances?.[internalAccount.address]
+        ) {
           account = {
             ...account,
-            balance:
-              multichainBalances?.[internalAccount.id]?.[
-                MULTICHAIN_NETWORK_TO_ASSET_TYPES[multichainNetwork.chainId]
-              ]?.amount ?? '0',
+            ...balances[internalAccount.address],
           };
         }
 
@@ -704,59 +677,9 @@ export const getInternalAccountsSortedByKeyring = createSelector(
     /** @type {Record<string, import('@metamask/keyring-internal-api').InternalAccount>} */
     accounts,
   ) => {
-    const thirdPartySnaps = 'thirdPartySnaps';
-
-    // Create a map of entropySource map to accounts for quick lookup
-    /** @type {Record<string, import('@metamask/keyring-internal-api').InternalAccount[]>} */
-    const entropySourceToAccountsMap = Object.values(accounts).reduce(
-      (map, account) => {
-        if (account.metadata?.keyring?.type === KeyringTypes.snap) {
-          const { entropySource = thirdPartySnaps } = account.options || {};
-          if (!map[entropySource]) {
-            map[entropySource] = [];
-          }
-          map[entropySource].push(account);
-        }
-        return map;
-      },
-      {},
+    return keyrings.flatMap((keyring) =>
+      keyring.accounts.map((address) => accounts[address]),
     );
-
-    // keep existing keyring order
-    /**
-     * @type {import('@metamask/keyring-internal-api').InternalAccount[]}
-     */
-    const result = keyrings.reduce((internalAccounts, keyring) => {
-      // Get regular accounts for this keyring
-      const keyringAccounts = keyring.accounts.map(
-        (address) => accounts[address],
-      );
-
-      // If it's an HD keyring, add any snap accounts that belong to it
-      if (keyring.type === KeyringTypes.hd) {
-        const snapAccounts =
-          entropySourceToAccountsMap[keyring.metadata.id] || [];
-        internalAccounts.push(...keyringAccounts, ...snapAccounts);
-        return internalAccounts;
-      } else if (keyring.type === KeyringTypes.snap) {
-        const thirdpartySnapAccounts =
-          entropySourceToAccountsMap[thirdPartySnaps] || [];
-        // In a scenario where there are multiple snap keyrings, which isn't the case for today
-        // There would be duplicate third party snap accounts that are being pushed into internalAccounts again
-        // This will only be run once, when there is only one snap keyring
-        const accountsToAdd = thirdpartySnapAccounts.filter(
-          (account) =>
-            !internalAccounts.some((existing) => existing.id === account.id),
-        );
-
-        internalAccounts.push(...accountsToAdd);
-        return internalAccounts;
-      }
-      internalAccounts.push(...keyringAccounts);
-      return internalAccounts;
-    }, []);
-
-    return result;
   },
 );
 
@@ -1691,24 +1614,6 @@ export function getTargetSubjectMetadata(state, origin) {
 const rawStateSelector = (state) => state;
 
 /**
- * Input selector used to retrieve Snaps that are added to Snaps Directory.
- *
- * @param state - Redux state object.
- * @returns Object - Containing verified Snaps from the Directory.
- */
-const selectVerifiedSnapsRegistry = (state) =>
-  state.metamask.database?.verifiedSnaps;
-
-/**
- * Input selector providing a way to pass a snapId as an argument.
- *
- * @param _state - Redux state object.
- * @param snapId - ID of a Snap.
- * @returns string - ID of a Snap that can be used as input selector.
- */
-const selectSnapId = (_state, snapId) => snapId;
-
-/**
  * Input selector for retrieving all installed Snaps.
  *
  * @param state - Redux state object.
@@ -1716,126 +1621,8 @@ const selectSnapId = (_state, snapId) => snapId;
  */
 const selectInstalledSnaps = (state) => state.metamask.snaps;
 
-/**
- * Input selector for retrieving all installed non-preinstalled Snaps.
- *
- * @param state - Redux state object.
- * @returns Array - Installed non-preinstalled Snaps.
- */
-const selectInstalledNonPreinstalledSnaps = createSelector(
-  [selectInstalledSnaps],
-  (installedSnaps) =>
-    Object.values(installedSnaps).filter((snap) => !snap.preinstalled),
-);
-
 export const selectIsNetworkMenuOpen = (state) =>
   state.appState.isNetworkMenuOpen;
-
-/**
- * Retrieve registry data for requested Snap.
- *
- * @param state - Redux state object.
- * @param snapId - ID of a Snap.
- * @returns Object containing metadata stored in Snaps registry for requested Snap.
- */
-export const getSnapRegistryData = createSelector(
-  [selectVerifiedSnapsRegistry, selectSnapId],
-  (snapsRegistryData, snapId) => {
-    return snapsRegistryData ? snapsRegistryData[snapId] : null;
-  },
-);
-
-/**
- * Find and return Snap's latest version available in registry.
- *
- * @param state - Redux state object.
- * @param snapId - ID of a Snap.
- * @returns String SemVer version.
- */
-export const getSnapLatestVersion = createSelector(
-  [getSnapRegistryData],
-  (snapRegistryData) => {
-    if (!snapRegistryData) {
-      return null;
-    }
-
-    return Object.keys(snapRegistryData.versions).reduce((latest, version) => {
-      return semver.gt(version, latest) ? version : latest;
-    }, '0.0.0');
-  },
-);
-
-/**
- * Return a Map of all installed Snaps with available update status.
- *
- * @param state - Redux state object.
- * @returns Map Snap IDs mapped to a boolean value (true if update is available, false otherwise).
- */
-export const getAllSnapAvailableUpdates = createSelector(
-  [selectInstalledNonPreinstalledSnaps, rawStateSelector],
-  (installedSnaps, state) => {
-    const snapMap = new Map();
-
-    installedSnaps.forEach((snap) => {
-      const latestVersion = getSnapLatestVersion(state, snap.id);
-
-      snapMap.set(
-        snap.id,
-        latestVersion ? semver.gt(latestVersion, snap.version) : false,
-      );
-    });
-
-    return snapMap;
-  },
-);
-
-/**
- * Return status of Snaps update availability for any installed Snap.
- *
- * @param state - Redux state object.
- * @returns boolean true if update is available, false otherwise.
- */
-export const getAnySnapUpdateAvailable = createSelector(
-  [getAllSnapAvailableUpdates],
-  (snapMap) => {
-    return [...snapMap.values()].some((value) => value === true);
-  },
-);
-
-/**
- * Return if the snap branding should show in the UI.
- */
-export const getHideSnapBranding = createDeepEqualSelector(
-  [selectInstalledSnaps, selectSnapId],
-  (installedSnaps, snapId) => {
-    return installedSnaps[snapId]?.hideSnapBranding;
-  },
-);
-
-/**
- * Get the Snap interfaces from the redux state.
- *
- * @param state - Redux state object.
- * @returns the Snap interfaces.
- */
-const getInterfaces = (state) => state.metamask.interfaces;
-
-/**
- * Input selector providing a way to pass a Snap interface ID as an argument.
- *
- * @param _state - Redux state object.
- * @param interfaceId - ID of a Snap interface.
- * @returns ID of a Snap Interface that can be used as input selector.
- */
-const selectInterfaceId = (_state, interfaceId) => interfaceId;
-
-/**
- * Get a Snap Interface with a given ID.
- */
-export const getInterface = createSelector(
-  [getInterfaces, selectInterfaceId],
-  (interfaces, id) => interfaces[id],
-);
 
 /**
  * Get the content from a Snap interface with a given ID.
@@ -2316,98 +2103,6 @@ export const getSnapMetadata = createDeepEqualSelector(
       }
     );
   },
-);
-
-const getEnabledSnaps = createDeepEqualSelector(getSnaps, (snaps) => {
-  return Object.values(snaps).reduce((acc, cur) => {
-    if (cur.enabled) {
-      acc[cur.id] = cur;
-    }
-    return acc;
-  }, {});
-});
-
-export const getPreinstalledSnaps = createDeepEqualSelector(
-  getSnaps,
-  (snaps) => {
-    return Object.values(snaps).reduce((acc, snap) => {
-      if (snap.preinstalled) {
-        acc[snap.id] = snap;
-      }
-      return acc;
-    }, {});
-  },
-);
-
-const getSettingsPageSnaps = createDeepEqualSelector(
-  getEnabledSnaps,
-  getPermissionSubjects,
-  (snaps, subjects) => {
-    return Object.values(snaps).filter(
-      ({ id, preinstalled }) =>
-        subjects[id]?.permissions[SnapEndowments.SettingsPage] &&
-        preinstalled &&
-        !isSnapIgnoredInProd(id),
-    );
-  },
-);
-
-export const getNameLookupSnapsIds = createDeepEqualSelector(
-  getEnabledSnaps,
-  getPermissionSubjects,
-  (snaps, subjects) => {
-    return Object.values(snaps)
-      .filter(({ id }) => subjects[id]?.permissions['endowment:name-lookup'])
-      .map((snap) => snap.id);
-  },
-);
-
-export const getNameLookupSnaps = createDeepEqualSelector(
-  getEnabledSnaps,
-  getPermissionSubjects,
-  (snaps, subjects) => {
-    return Object.values(snaps)
-      .filter(({ id }) => subjects[id]?.permissions['endowment:name-lookup'])
-      .map((snap) => ({
-        id: snap.id,
-        permission: subjects[snap.id]?.permissions['endowment:name-lookup'],
-      }));
-  },
-);
-
-export const getSettingsPageSnapsIds = createDeepEqualSelector(
-  getSettingsPageSnaps,
-  (snaps) => snaps.map((snap) => snap.id),
-);
-
-export const getNotifySnaps = createDeepEqualSelector(
-  getEnabledSnaps,
-  getPermissionSubjects,
-  (snaps, subjects) => {
-    return Object.values(snaps).filter(
-      ({ id }) => subjects[id]?.permissions.snap_notify,
-    );
-  },
-);
-/**
- * Get non-preinstalled snaps that have the snap_notify permission.
- *
- * @param {object} state - The Redux state object.
- * @returns {object[]} An array of notify snaps that are not preinstalled.
- */
-export const getThirdPartyNotifySnaps = createDeepEqualSelector(
-  getNotifySnaps,
-  (snaps) => snaps.filter((snap) => !snap.preinstalled),
-);
-
-function getAllSnapInsights(state) {
-  return state.metamask.insights;
-}
-
-export const getSnapInsights = createDeepEqualSelector(
-  getAllSnapInsights,
-  (_, id) => id,
-  (insights, id) => insights?.[id],
 );
 
 /**
@@ -2994,29 +2689,11 @@ export const getTokenScanResultsForAddresses = createDeepEqualSelector(
 );
 
 /**
- * Get the state of the `addSnapAccountEnabled` flag.
- *
- * @param {*} state
- * @returns The state of the `addSnapAccountEnabled` flag.
- */
-export function getIsAddSnapAccountEnabled(state) {
-  return state.metamask.addSnapAccountEnabled;
-}
-
-export function getIsWatchEthereumAccountEnabled(state) {
-  return state.metamask.watchEthereumAccountEnabled;
-}
-
-/**
  * Checks if the new settings redesign is enabled
  *
  * @param state - The state of the application
  * @returns true if the new settings redesign is enabled, false otherwise
  */
-export function getManageInstitutionalWallets(state) {
-  return state.metamask.manageInstitutionalWallets;
-}
-
 /**
  * Get the state of the `defiPositionsEnabled` remote feature flag.
  *
@@ -3317,64 +2994,6 @@ export function getMetaMetricsDataDeletionStatus(state) {
  * @param {*} state
  * @returns Boolean
  */
-export function getSnapsList(state) {
-  const snaps = getSnaps(state);
-  return Object.entries(snaps)
-    .filter(([_key, snap]) => {
-      // Always hide installing Snaps.
-      if (snap.status === SnapStatus.Installing) {
-        return false;
-      }
-
-      // For backwards compatibility, preinstalled Snaps must specify hidden = false to be displayed.
-      if (snap.preinstalled) {
-        return snap.hidden === false;
-      }
-
-      return true;
-    })
-    .map(([key, snap]) => {
-      const targetSubjectMetadata = getTargetSubjectMetadata(state, snap?.id);
-      return {
-        key,
-        id: snap.id,
-        iconUrl: targetSubjectMetadata?.iconUrl,
-        subjectType: targetSubjectMetadata?.subjectType,
-        packageName: stripSnapPrefix(snap.id),
-        name: getSnapMetadata(state, snap.id).name,
-      };
-    });
-}
-
-/**
- * To get the state of snaps privacy warning popover.
- *
- * @param state - Redux state object.
- * @returns True if popover has been shown, false otherwise.
- */
-export function getSnapsInstallPrivacyWarningShown(state) {
-  const { snapsInstallPrivacyWarningShown } = state.metamask;
-
-  if (
-    snapsInstallPrivacyWarningShown === undefined ||
-    snapsInstallPrivacyWarningShown === null
-  ) {
-    return false;
-  }
-
-  return snapsInstallPrivacyWarningShown;
-}
-
-export const getKeyringSnapAccounts = createSelector(
-  getInternalAccounts,
-  (internalAccounts) => {
-    const keyringAccounts = internalAccounts.filter((internalAccount) => {
-      const { keyring } = internalAccount.metadata;
-      return keyring.type === KeyringType.snap;
-    });
-    return keyringAccounts;
-  },
-);
 export const getSelectedKeyringByIdOrDefault = createSelector(
   getMetaMaskKeyrings,
   (_state, keyringId) => keyringId,
@@ -3586,26 +3205,6 @@ export function getConnectedSubjectsForSelectedAddress(state) {
 
   return connectedSubjects;
 }
-export function getSubjectsWithSnapPermission(state, snapId) {
-  const subjects = getPermissionSubjects(state);
-
-  return Object.entries(subjects)
-    .filter(
-      ([_origin, { permissions }]) =>
-        permissions[WALLET_SNAP_PERMISSION_KEY]?.caveats[0].value[snapId],
-    )
-    .map(([origin, _subject]) => {
-      const { extensionId, name, iconUrl } =
-        getTargetSubjectMetadata(state, origin) || {};
-      return {
-        extensionId,
-        origin,
-        name,
-        iconUrl,
-      };
-    });
-}
-
 /**
  * Returns an object mapping addresses to objects mapping origins to connected
  * subject info. Subject info objects have the following properties:
@@ -3755,21 +3354,6 @@ export function getLastConnectedInfo(state) {
 
     return lastConnectedInfo;
   }, {});
-}
-
-export function getSnapInstallOrUpdateRequests(state) {
-  return Object.values(state.metamask.pendingApprovals)
-    .filter(
-      ({ type }) =>
-        type === 'wallet_installSnap' ||
-        type === 'wallet_updateSnap' ||
-        type === 'wallet_installSnapResult',
-    )
-    .map(({ requestData }) => requestData);
-}
-
-export function getFirstSnapInstallOrUpdateRequest(state) {
-  return getSnapInstallOrUpdateRequests(state)?.[0] ?? null;
 }
 
 export function getPermissionsRequests(state) {

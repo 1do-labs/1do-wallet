@@ -1,6 +1,5 @@
 import { CaipAccountId, CaipAssetType } from '@metamask/utils';
 import { ControllerGetStateAction } from '@metamask/base-controller';
-import type { SnapControllerHandleRequestAction } from '@metamask/snaps-controllers';
 import {
   AccountsControllerGetSelectedMultichainAccountAction,
   AccountsControllerListMultichainAccountsAction,
@@ -856,8 +855,7 @@ type AllowedActions =
   | RewardsDataServiceGetSeasonMetadataAction
   | RewardsDataServiceGetDiscoverSeasonsAction
   | RewardsDataServiceGenerateChallengeAction
-  | AccountTreeControllerGetAccountsFromSelectedAccountGroupAction
-  | SnapControllerHandleRequestAction;
+  | AccountTreeControllerGetAccountsFromSelectedAccountGroupAction;
 
 type AllowedEvents =
   | KeyringControllerUnlockEvent

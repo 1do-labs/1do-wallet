@@ -83,10 +83,9 @@ import {
 } from '../../../../shared/constants/metametrics';
 import { MetaMetricsContext } from '../../../contexts/metametrics';
 import {
-  EvmAndMultichainNetworkConfigurationsWithCaipChainId,
+  EvmNetworkConfigurationWithCaipChainId,
   MergedInternalAccountWithCaipAccountId,
 } from '../../../selectors/selectors.types';
-import { CreateSolanaAccountModal } from '../../../components/multichain/create-solana-account-modal/create-solana-account-modal';
 import { mergeCaip25CaveatValues } from '../../../../shared/lib/caip25-caveat-merger';
 import { useOriginTrustSignals } from '../../../hooks/useOriginTrustSignals';
 import { TrustSignalDisplayState } from '../../../hooks/useTrustSignals';
@@ -102,7 +101,6 @@ export type ConnectPageRequest = {
     id: string;
     origin: string;
     isEip1193Request?: boolean;
-    promptToCreateSolanaAccount?: boolean;
   };
 };
 
@@ -163,29 +161,29 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
     requestedCaip25CaveatValueWithExistingPermissions,
   );
 
-  const { promptToCreateSolanaAccount, isEip1193Request } =
-    request.metadata ?? {};
+  const { isEip1193Request } = request.metadata ?? {};
 
   const networkConfigurationsByCaipChainId = useSelector(
     getAllNetworkConfigurationsByCaipChainId,
   );
 
-  const [nonTestNetworkConfigurations, testNetworkConfigurations] = useMemo(
+  const [evmMainnetNetworkConfigurations, evmTestNetworkConfigurations] =
+    useMemo(
     () =>
       Object.entries(networkConfigurationsByCaipChainId).reduce(
-        ([nonTestNetworksList, testNetworksList], [chainId, network]) => {
+        ([mainnetNetworks, testnetNetworks], [chainId, network]) => {
           const caipChainId = chainId as CaipChainId;
           const isTestNetwork =
             CAIP_FORMATTED_TEST_CHAINS.includes(caipChainId);
-          (isTestNetwork ? testNetworksList : nonTestNetworksList).push({
+          (isTestNetwork ? testnetNetworks : mainnetNetworks).push({
             ...network,
             caipChainId,
           });
-          return [nonTestNetworksList, testNetworksList];
+          return [mainnetNetworks, testnetNetworks];
         },
         [
-          [] as EvmAndMultichainNetworkConfigurationsWithCaipChainId[],
-          [] as EvmAndMultichainNetworkConfigurationsWithCaipChainId[],
+          [] as EvmNetworkConfigurationWithCaipChainId[],
+          [] as EvmNetworkConfigurationWithCaipChainId[],
         ],
       ),
     [networkConfigurationsByCaipChainId],
@@ -193,32 +191,30 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
 
   const allNetworksList = useMemo(
     () =>
-      [...nonTestNetworkConfigurations, ...testNetworkConfigurations].map(
+      [...evmMainnetNetworkConfigurations, ...evmTestNetworkConfigurations].map(
         ({ caipChainId }) => caipChainId,
       ),
-    [nonTestNetworkConfigurations, testNetworkConfigurations],
+    [evmMainnetNetworkConfigurations, evmTestNetworkConfigurations],
   );
 
   const [userHasModifiedSelection, setUserHasModifiedSelection] =
     useState(false);
   const [showEditAccountsModal, setShowEditAccountsModal] = useState(false);
-  const [showCreateSolanaAccountModal, setShowCreateSolanaAccountModal] =
-    useState(false);
 
   // By default, if a non test network is the globally selected network. We will only show non test networks as default selected.
   const currentlySelectedNetwork = useSelector(getMultichainNetwork);
   const currentlySelectedNetworkChainId = currentlySelectedNetwork.chainId;
   // If globally selected network is a test network, include that in the default selected networks for connection request
-  const selectedTestNetwork = testNetworkConfigurations.find(
+  const selectedTestNetwork = evmTestNetworkConfigurations.find(
     (network: { caipChainId: CaipChainId }) =>
       network.caipChainId === currentlySelectedNetworkChainId,
   );
 
   let defaultSelectedNetworkList = selectedTestNetwork
-    ? [...nonTestNetworkConfigurations, selectedTestNetwork].map(
+    ? [...evmMainnetNetworkConfigurations, selectedTestNetwork].map(
         ({ caipChainId }) => caipChainId,
       )
-    : nonTestNetworkConfigurations.map(({ caipChainId }) => caipChainId);
+    : evmMainnetNetworkConfigurations.map(({ caipChainId }) => caipChainId);
 
   let supportedRequestedCaipChainIds = requestedCaipChainIds.filter(
     (caipChainId) => allNetworksList.includes(caipChainId as CaipChainId),
@@ -280,7 +276,7 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
   );
 
   const requestedNamespacesWithoutWallet = requestedNamespaces.filter(
-    (namespace) => namespace !== KnownCaipNamespace.Wallet,
+    (namespace) => namespace === KnownCaipNamespace.Eip155,
   );
 
   // all accounts that match the requested namespaces
@@ -392,13 +388,6 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
     });
   });
 
-  const solanaAccountExistsInWallet = useMemo(() => {
-    return allAccounts.some(({ caipAccountId }) => {
-      const { chain } = parseCaipAccountId(caipAccountId);
-      return chain.namespace === KnownCaipNamespace.Solana;
-    });
-  }, [allAccounts]);
-
   const handleOpenAccountsModal = useCallback(() => {
     setShowEditAccountsModal(true);
     trackEvent({
@@ -410,14 +399,6 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
       },
     });
   }, [trackEvent]);
-
-  const handleOpenCreateSolanaAccountModal = useCallback(() => {
-    setShowCreateSolanaAccountModal(true);
-  }, []);
-
-  const handleCloseCreateSolanaAccountModal = useCallback(() => {
-    setShowCreateSolanaAccountModal(false);
-  }, []);
 
   const handleCloseEditAccountsModal = useCallback(() => {
     setShowEditAccountsModal(false);
@@ -553,7 +534,7 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
                   />
                 ))}
                 {selectedAccounts.length === 0 &&
-                  !promptToCreateSolanaAccount && (
+                  (
                     <Box
                       className="connect-page__accounts-empty"
                       display={Display.Flex}
@@ -584,40 +565,6 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
                   </ButtonLink>
                 </Box>
               )}
-              {promptToCreateSolanaAccount && !solanaAccountExistsInWallet && (
-                <Box
-                  display={Display.Flex}
-                  flexDirection={FlexDirection.Column}
-                  justifyContent={JustifyContent.center}
-                  alignItems={AlignItems.center}
-                  marginTop={4}
-                  gap={2}
-                >
-                  <Text
-                    variant={TextVariant.bodyMd}
-                    color={TextColor.textAlternative}
-                    textAlign={TextAlign.Center}
-                  >
-                    {selectedAccounts.length === 0
-                      ? t('solanaAccountRequired')
-                      : t('solanaAccountRequested')}
-                  </Text>
-                  <Button
-                    variant={ButtonVariant.Secondary}
-                    width={BlockSize.Full}
-                    size={ButtonSize.Lg}
-                    onClick={handleOpenCreateSolanaAccountModal}
-                    data-testid="create-solana-account"
-                  >
-                    {t('createSolanaAccount')}
-                  </Button>
-                </Box>
-              )}
-              {showCreateSolanaAccountModal && (
-                <CreateSolanaAccountModal
-                  onClose={handleCloseCreateSolanaAccountModal}
-                />
-              )}
               {showEditAccountsModal && (
                 <EditAccountsModal
                   accounts={allAccounts}
@@ -632,17 +579,12 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
             name={t('permissions')}
             tabKey="permissions"
             data-testid="permissions-tab"
-            disabled={
-              promptToCreateSolanaAccount &&
-              !solanaAccountExistsInWallet &&
-              selectedAccounts.length === 0
-            }
             className="flex-1"
           >
             <Box marginTop={4}>
               <SiteCell
-                nonTestNetworks={nonTestNetworkConfigurations}
-                testNetworks={testNetworkConfigurations}
+                nonTestNetworks={evmMainnetNetworkConfigurations}
+                testNetworks={evmTestNetworkConfigurations}
                 accounts={allAccounts}
                 onSelectAccountAddresses={handleCaipAccountAddressesSelected}
                 onSelectChainIds={handleChainIdsSelected}

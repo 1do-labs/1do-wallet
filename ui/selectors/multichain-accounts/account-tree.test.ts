@@ -1520,7 +1520,7 @@ describe('Multichain Accounts Selectors', () => {
     });
 
     it('returns null defaultAddress and empty defaultScopes when defaultAddressScope does not match groupId scopes', () => {
-      const stateWithBip122 = {
+      const stateWithUnknownScope = {
         ...typedMockState,
         metamask: {
           ...typedMockState.metamask,
@@ -1530,13 +1530,13 @@ describe('Multichain Accounts Selectors', () => {
                 preferences?: Record<string, unknown>;
               }
             ).preferences,
-            defaultAddressScope: 'bip122',
+            defaultAddressScope: 'unknown',
           },
         },
       } as MultichainAccountsState;
 
       const result = getDefaultScopeAndAddressByAccountGroupId(
-        stateWithBip122,
+        stateWithUnknownScope,
         ENTROPY_GROUP_1_ID,
       );
 

@@ -2,7 +2,6 @@ import PropTypes from 'prop-types';
 import React, { useCallback, useContext, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { KeyringObject, KeyringTypes } from '@metamask/keyring-controller';
-import type { SnapId } from '@metamask/snaps-sdk';
 import {
   AvatarAccountSize,
   Box,
@@ -45,7 +44,6 @@ import { PreferredAvatar } from '../../app/preferred-avatar';
 import SRPQuiz from '../../app/srp-quiz-modal';
 import { findKeyringId } from '../../../../shared/lib/keyring';
 import { isAbleToRevealSrp } from '../../../helpers/utils/util';
-import { isMultichainWalletSnap } from '../../../../shared/lib/accounts';
 import { AttemptExportState } from '../../../../shared/constants/accounts';
 import { AccountDetailsAuthenticate } from './account-details-authenticate';
 import { AccountDetailsDisplay } from './account-details-display';
@@ -67,9 +65,8 @@ export const AccountDetails = ({ address }: AccountDetailsProps) => {
   );
   const entropySource = account?.options?.entropySource;
 
-  const { keyring, snap } = account?.metadata ?? {};
+  const { keyring } = account?.metadata ?? {};
   const keyringType = keyring?.type;
-  const snapId = snap?.id;
 
   const [showHoldToReveal, setShowHoldToReveal] = useState(false);
   let showModal = !showHoldToReveal;
@@ -79,15 +76,9 @@ export const AccountDetails = ({ address }: AccountDetailsProps) => {
 
   const keyrings: KeyringObject[] = useSelector(getMetaMaskKeyrings);
 
-  // Snap accounts have an entropy source that is the id of the hd keyring
-  const keyringId =
-    keyringType === KeyringTypes.snap &&
-    isMultichainWalletSnap(snapId as SnapId) &&
-    entropySource
-      ? entropySource
-      : findKeyringId(keyrings, {
-          address,
-        });
+  const keyringId = findKeyringId(keyrings, {
+    address,
+  });
 
   const isAbleToExportSrp = isAbleToRevealSrp(account, keyrings);
   const displayExportSrpQuiz = keyringId && isAbleToExportSrp;

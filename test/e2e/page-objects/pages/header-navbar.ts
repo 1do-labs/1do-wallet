@@ -11,8 +11,6 @@ class HeaderNavbar {
 
   private readonly accountMenuButton = '[data-testid="account-menu-icon"]';
 
-  private readonly accountSnapButton = { text: 'Snaps', tag: 'div' };
-
   private readonly allPermissionsButton =
     '[data-testid="global-menu-connected-sites"]';
 
@@ -145,12 +143,6 @@ class HeaderNavbar {
     console.log('Click All Permissions button in header navbar');
     await this.openGlobalMenu();
     await this.driver.clickElement(this.allPermissionsButton);
-  }
-
-  async openSnapListPage(): Promise<void> {
-    console.log('Open account snap page');
-    await this.openGlobalMenu();
-    await this.driver.clickElement(this.accountSnapButton);
   }
 
   async openSettingsPage(): Promise<void> {

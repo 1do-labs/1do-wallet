@@ -32,7 +32,7 @@ import {
   getDisplayOrigin,
   safeDecodeURIComponent,
 } from '../helper';
-import { getMultichainNetworkConfigurationsByChainId } from '../../../../../selectors';
+import { getMultichainNetworkConfigurationsTuple } from '../../../../../selectors';
 import { useRevokeGatorPermissions } from '../../../../../hooks/gator-permissions/useRevokeGatorPermissions';
 import {
   AppState,
@@ -55,7 +55,7 @@ export const ReviewGatorPermissionsPage = () => {
   const originDecoded = origin ? safeDecodeURIComponent(origin) : undefined;
 
   const [, evmNetworks] = useSelector(
-    getMultichainNetworkConfigurationsByChainId,
+    getMultichainNetworkConfigurationsTuple,
   );
   const [pendingRevokeClicks, setPendingRevokeClicks] = useState<Set<string>>(
     new Set(),

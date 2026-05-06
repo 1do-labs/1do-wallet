@@ -78,12 +78,12 @@ const ChangePassword = ({
   const renderMascot = () => {
     if (isFlask()) {
       return (
-        <img src="./images/logo/metamask-fox.svg" width="100" height="100" />
+        <img src="./images/logo/1do-mark.svg" width="100" height="100" />
       );
     }
     if (isBeta()) {
       return (
-        <img src="./images/logo/metamask-fox.svg" width="100" height="100" />
+        <img src="./images/logo/1do-mark.svg" width="100" height="100" />
       );
     }
     return (

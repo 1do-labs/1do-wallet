@@ -3,13 +3,10 @@ import configureMockStore from 'redux-mock-store';
 import { screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import thunk from 'redux-thunk';
-import { SolAccountType, SolMethod, SolScope } from '@metamask/keyring-api';
-import { Cryptocurrency } from '@metamask/assets-controllers';
+import { EthAccountType, EthMethod, EthScope } from '@metamask/keyring-api';
 import { renderWithProvider } from '../../../../test/lib/render-helpers-navigate';
-import { MultichainNativeAssets } from '../../../../shared/constants/multichain/assets';
 import mockState from '../../../../test/data/mock-state.json';
-import { SOLANA_WALLET_SNAP_ID } from '../../../../shared/lib/accounts';
-import { mockMultichainNetworkState } from '../../../../test/stub/networks';
+import { mockNetworkState } from '../../../../test/stub/networks';
 import { AggregatedBalance } from './aggregated-balance';
 
 const mockDispatch = jest.fn().mockReturnValue(() => jest.fn());
@@ -18,43 +15,40 @@ jest.mock('react-redux', () => ({
   useDispatch: () => mockDispatch,
 }));
 
-const mockNonEvmBalance = '1';
+const mockNativeAssetId = 'eip155:1/slip44:60';
+const mockNativeBalance = '1';
 
-const mockNonEvmAccount = {
-  address: 'DtMUkCoeyzs35B6EpQQxPyyog6TRwXxV1W1Acp8nWBNa',
+const mockEvmAccount = {
+  address: '0x0dcd5d886577d5081b0c52e242ef29e70be3e7bc',
   id: '542490c8-d178-433b-9f31-f680b11f45a5',
-  scopes: [SolScope.Mainnet],
+  scopes: [EthScope.Eoa],
   metadata: {
-    name: 'Solana Account',
+    name: 'Account 1',
     keyring: {
-      type: 'Snap Keyring',
-    },
-    snap: {
-      id: SOLANA_WALLET_SNAP_ID,
-      name: 'sol-snap-name',
+      type: 'HD Key Tree',
     },
   },
   options: {},
-  methods: [SolMethod.SendAndConfirmTransaction],
-  type: SolAccountType.DataAccount,
+  methods: [EthMethod.PersonalSign],
+  type: EthAccountType.Eoa,
 };
 
 const mockMetamaskStore = {
   ...mockState.metamask,
-  ...mockMultichainNetworkState(),
+  ...mockNetworkState({
+    chainId: '0x1',
+    ticker: 'ETH',
+    blockExplorerUrl: 'https://etherscan.io',
+  }),
   completedOnboarding: true,
-  selectedMultichainNetworkChainId: SolScope.Mainnet,
-  isEvmSelected: false,
   internalAccounts: {
-    selectedAccount: mockNonEvmAccount.id,
+    selectedAccount: mockEvmAccount.id,
     accounts: {
-      [mockNonEvmAccount.id]: mockNonEvmAccount,
+      [mockEvmAccount.id]: mockEvmAccount,
     },
   },
-  enabledNetworkMap: {
-    solana: {
-      [SolScope.Mainnet]: true,
-    },
+  accountIdByAddress: {
+    [mockEvmAccount.address]: mockEvmAccount.id,
   },
   preferences: {
     showNativeTokenAsMainBalance: false,
@@ -62,27 +56,27 @@ const mockMetamaskStore = {
     privacyMode: false,
   },
   accountsAssets: {
-    [mockNonEvmAccount.id]: [MultichainNativeAssets.SOLANA],
+    [mockEvmAccount.id]: [mockNativeAssetId],
+  },
+  enabledNetworkMap: {
+    eip155: {
+      '0x1': true,
+    },
   },
   balances: {
-    [mockNonEvmAccount.id]: {
-      [MultichainNativeAssets.SOLANA]: {
-        amount: mockNonEvmBalance,
-        unit: 'SOL',
+    [mockEvmAccount.id]: {
+      [mockNativeAssetId]: {
+        amount: mockNativeBalance,
+        unit: 'ETH',
       },
     },
   },
   fiatCurrency: 'usd',
   conversionRates: {
-    [MultichainNativeAssets.SOLANA]: {
+    [mockNativeAssetId]: {
       rate: '1.000',
       conversionDate: 0,
     },
-  },
-  cryptocurrencies: [Cryptocurrency.Solana],
-  remoteFeatureFlags: {
-    solanaAccounts: { enabled: true, minimumVersion: '13.6.0' },
-    bitcoinAccounts: { enabled: true, minimumVersion: '13.6.0' },
   },
 };
 
@@ -106,7 +100,7 @@ describe('AggregatedBalance Component', () => {
       metamask: {
         ...mockMetamaskStore,
         accountsAssets: {
-          [mockNonEvmAccount.id]: [],
+          [mockEvmAccount.id]: [],
         },
       },
     });
@@ -150,10 +144,10 @@ describe('AggregatedBalance Component', () => {
         metamask: {
           ...mockMetamaskStore,
           balances: {
-            [mockNonEvmAccount.id]: {
-              [MultichainNativeAssets.SOLANA]: {
+            [mockEvmAccount.id]: {
+              [mockNativeAssetId]: {
                 amount: 0,
-                unit: 'SOL',
+                unit: 'ETH',
               },
             },
           },
@@ -187,7 +181,7 @@ describe('AggregatedBalance Component', () => {
     expect(screen.getByTestId('account-value-and-suffix')).toHaveTextContent(
       '1',
     );
-    expect(screen.getByText('SOL')).toBeInTheDocument();
+    expect(screen.getByText('ETH')).toBeInTheDocument();
   });
 
   it('renders 0 native balance when showNativeTokenAsMainBalance is true, and balance is 0', () => {
@@ -204,10 +198,10 @@ describe('AggregatedBalance Component', () => {
             showNativeTokenAsMainBalance: true,
           },
           balances: {
-            [mockNonEvmAccount.id]: {
-              [MultichainNativeAssets.SOLANA]: {
+            [mockEvmAccount.id]: {
+              [mockNativeAssetId]: {
                 amount: 0,
-                unit: 'SOL',
+                unit: 'ETH',
               },
             },
           },
@@ -218,10 +212,10 @@ describe('AggregatedBalance Component', () => {
     expect(screen.getByTestId('account-value-and-suffix')).toHaveTextContent(
       '0',
     );
-    expect(screen.getByText('SOL')).toBeInTheDocument();
+    expect(screen.getByText('ETH')).toBeInTheDocument();
   });
 
-  it('renders token balance when non evm rates are not available', () => {
+  it('renders token balance when rates are not available', () => {
     renderWithProvider(
       <AggregatedBalance
         classPrefix="test"
@@ -242,7 +236,7 @@ describe('AggregatedBalance Component', () => {
     expect(screen.getByTestId('account-value-and-suffix')).toHaveTextContent(
       '1',
     );
-    expect(screen.getByText('SOL')).toBeInTheDocument();
+    expect(screen.getByText('ETH')).toBeInTheDocument();
   });
 
   it('renders token balance when setting prices is disabled', () => {
@@ -260,7 +254,7 @@ describe('AggregatedBalance Component', () => {
             showNativeTokenAsMainBalance: false,
           },
           conversionRates: {
-            [MultichainNativeAssets.SOLANA]: {
+            [mockNativeAssetId]: {
               rate: '1.000',
               conversionDate: 0,
             },
@@ -272,6 +266,6 @@ describe('AggregatedBalance Component', () => {
     expect(screen.getByTestId('account-value-and-suffix')).toHaveTextContent(
       '1',
     );
-    expect(screen.getByText('SOL')).toBeInTheDocument();
+    expect(screen.getByText('ETH')).toBeInTheDocument();
   });
 });

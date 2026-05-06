@@ -31,11 +31,9 @@ import { OUTDATED_BROWSER_VERSIONS } from '../constants/common';
 // formatData :: ( date: <Unix Timestamp> ) -> String
 import { isEqualCaseInsensitive } from '../../../shared/lib/string-utils';
 import { hexToDecimal } from '../../../shared/lib/conversion.utils';
-import { SNAPS_VIEW_ROUTE } from '../constants/routes';
 // TODO: Remove restricted import
 // eslint-disable-next-line import-x/no-restricted-paths
 import { normalizeSafeAddress } from '../../../app/scripts/lib/multichain/address';
-import { isMultichainWalletSnap } from '../../../shared/lib/accounts';
 
 export function formatDate(date, format = "M/d/y 'at' T") {
   if (!date) {
@@ -750,10 +748,6 @@ export const getSnapName = (snapsMetadata) => {
   };
 };
 
-export const getSnapRoute = (snapId) => {
-  return `${SNAPS_VIEW_ROUTE}?snapId=${encodeURIComponent(snapId)}`;
-};
-
 export const getDedupedSnaps = (request, permissions) => {
   const permission = request?.permissions?.[WALLET_SNAP_PERMISSION_KEY];
   const requestedSnaps = permission?.caveats[0].value;
@@ -820,27 +814,12 @@ export const isAbleToRevealSrp = (accountToExport, keyrings = []) => {
   const {
     metadata: {
       keyring: { type },
-      snap,
     },
-    options: { entropySource },
   } = accountToExport;
 
   // All hd keyrings can reveal their srp.
   if (type === KeyringTypes.hd) {
     return true;
-  }
-
-  // We only consider 1st-party Snaps that have an entropy source.
-  if (
-    type === KeyringTypes.snap &&
-    isMultichainWalletSnap(snap?.id) &&
-    entropySource
-  ) {
-    const keyringId = entropySource;
-    return keyrings.some(
-      (keyring) =>
-        keyring.type === KeyringTypes.hd && keyring.metadata.id === keyringId,
-    );
   }
 
   return false;

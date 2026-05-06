@@ -147,10 +147,8 @@ export default class PermissionPageContainerContent extends PureComponent {
                 : requestedChainIds
             }
             // Incremental permission requests (permissionDiffMap present) are
-            // EVM-only (wallet_switchEthereumChain). Passing null here lets
-            // PermissionCell fall back to the EVM-only display via
-            // requestedChainIds, instead of showing pre-existing non-EVM
-            // chains (Bitcoin/Solana/Tron) from the full permission set.
+            // EVM-only. Passing null here lets PermissionCell fall back to the
+            // requested EVM chain list instead of reusing the full permission set.
             caipChainIds={permissionDiffMap ? null : selectedCaipChainIds}
           />
         </Box>

@@ -9,8 +9,6 @@ import { enLocale as messages } from '../../../../test/lib/i18n-helpers';
 import mockState from '../../../../test/data/mock-state.json';
 import { ThemeType } from '../../../../shared/constants/preferences';
 import useBridging from '../../../hooks/bridge/useBridging';
-import { MultichainNetworks } from '../../../../shared/constants/multichain/networks';
-import * as useMultichainSelectorHook from '../../../hooks/useMultichainSelector';
 import {
   TransactionActivityEmptyState,
   type TransactionActivityEmptyStateProps,
@@ -113,14 +111,6 @@ const setupMocks = (): {
   mockUseBridging.mockReturnValue({
     openBridgeExperience: mockOpenBridgeExperience,
   });
-
-  // Mock useMultichainSelector to return EVM network by default
-  jest
-    .spyOn(useMultichainSelectorHook, 'useMultichainSelector')
-    .mockReturnValue({
-      chainId: '0x1', // Default to mainnet (EVM)
-      isEvmNetwork: true,
-    });
 
   return { mockOpenBridgeExperience, mockUseBridging };
 };
@@ -249,18 +239,6 @@ describe('TransactionActivityEmptyState', () => {
       const stateOverrides = createValidSwapState();
       renderComponent({}, stateOverrides, accountWithSigning);
       expectSwapButtonState(true);
-    });
-
-    it('enables swap button for Solana networks even when isSwapsChain is false', () => {
-      jest
-        .spyOn(useMultichainSelectorHook, 'useMultichainSelector')
-        .mockReturnValue({
-          chainId: MultichainNetworks.SOLANA,
-          isEvmNetwork: false,
-        });
-      const stateOverrides = createTestnetState();
-      renderComponent({}, stateOverrides, accountWithSigning);
-      expectSwapButtonState(true); // Should be enabled due to Solana logic
     });
 
     it('calls openBridgeExperience when swap button is clicked', () => {

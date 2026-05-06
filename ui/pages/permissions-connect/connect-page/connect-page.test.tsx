@@ -10,18 +10,6 @@ import configureStore from '../../../store/store';
 import { enLocale as messages } from '../../../../test/lib/i18n-helpers';
 import { ConnectPage, ConnectPageProps } from './connect-page';
 
-// Mock the CreateSolanaAccountModal component to avoid errors
-jest.mock(
-  '../../../components/multichain/create-solana-account-modal/create-solana-account-modal',
-  () => ({
-    CreateSolanaAccountModal: ({ onClose }: { onClose: () => void }) => (
-      <div data-testid="create-solana-account-modal">
-        <button onClick={onClose}>Close</button>
-      </div>
-    ),
-  }),
-);
-
 const mockTestDappUrl = 'https://test.dapp';
 
 const mockTargetSubjectMetadata = {
@@ -275,47 +263,7 @@ describe('ConnectPage', () => {
     expect(container).toMatchSnapshot();
   });
 
-  it('should render Solana account requested message when promptToCreateSolanaAccount is true', () => {
-    const { getByText } = render({
-      props: {
-        request: {
-          permissions: {
-            [Caip25EndowmentPermissionName]: {
-              caveats: [
-                {
-                  type: Caip25CaveatType,
-                  value: {
-                    requiredScopes: {},
-                    optionalScopes: {
-                      'eip155:1': {
-                        accounts: [],
-                      },
-                    },
-                    sessionProperties: {},
-                    isMultichainOrigin: false,
-                  },
-                },
-              ],
-            },
-          },
-          metadata: {
-            id: '1',
-            origin: mockTargetSubjectMetadata.origin,
-            promptToCreateSolanaAccount: true,
-          },
-        },
-        permissionsRequestId: '1',
-        rejectPermissionsRequest: jest.fn(),
-        approveConnection: jest.fn(),
-        targetSubjectMetadata: mockTargetSubjectMetadata,
-      },
-    });
-
-    expect(getByText(messages.solanaAccountRequested.message)).toBeDefined();
-    expect(getByText(messages.createSolanaAccount.message)).toBeDefined();
-  });
-
-  it('should not render Solana account message when promptToCreateSolanaAccount is false', () => {
+  it('should ignore the legacy promptToCreateSolanaAccount metadata flag', () => {
     const { queryByText } = render({
       props: {
         request: {
@@ -341,7 +289,7 @@ describe('ConnectPage', () => {
           metadata: {
             id: '1',
             origin: mockTargetSubjectMetadata.origin,
-            promptToCreateSolanaAccount: false,
+            promptToCreateSolanaAccount: true,
           },
         },
         permissionsRequestId: '1',
@@ -353,88 +301,5 @@ describe('ConnectPage', () => {
 
     expect(queryByText(messages.solanaAccountRequested.message)).toBeNull();
     expect(queryByText(messages.createSolanaAccount.message)).toBeNull();
-  });
-
-  it('should open CreateSolanaAccountModal when create Solana account button is clicked', () => {
-    const { getByText, getByTestId } = render({
-      props: {
-        request: {
-          permissions: {
-            [Caip25EndowmentPermissionName]: {
-              caveats: [
-                {
-                  type: Caip25CaveatType,
-                  value: {
-                    requiredScopes: {},
-                    optionalScopes: {
-                      'eip155:1': {
-                        accounts: [],
-                      },
-                    },
-                    sessionProperties: {},
-                    isMultichainOrigin: false,
-                  },
-                },
-              ],
-            },
-          },
-          metadata: {
-            id: '1',
-            origin: mockTargetSubjectMetadata.origin,
-            promptToCreateSolanaAccount: true,
-          },
-        },
-        permissionsRequestId: '1',
-        rejectPermissionsRequest: jest.fn(),
-        approveConnection: jest.fn(),
-        targetSubjectMetadata: mockTargetSubjectMetadata,
-      },
-    });
-
-    const createSolanaAccountButton = getByText(
-      messages.createSolanaAccount.message,
-    );
-    fireEvent.click(createSolanaAccountButton);
-
-    expect(getByTestId('create-solana-account-modal')).toBeDefined();
-  });
-
-  it('should not show select account message when promptToCreateSolanaAccount is true', () => {
-    const { queryByText } = render({
-      props: {
-        request: {
-          permissions: {
-            [Caip25EndowmentPermissionName]: {
-              caveats: [
-                {
-                  type: Caip25CaveatType,
-                  value: {
-                    requiredScopes: {},
-                    optionalScopes: {
-                      'eip155:1': {
-                        accounts: [],
-                      },
-                    },
-                    sessionProperties: {},
-                    isMultichainOrigin: false,
-                  },
-                },
-              ],
-            },
-          },
-          metadata: {
-            id: '1',
-            origin: mockTargetSubjectMetadata.origin,
-            promptToCreateSolanaAccount: true,
-          },
-        },
-        permissionsRequestId: '1',
-        rejectPermissionsRequest: jest.fn(),
-        approveConnection: jest.fn(),
-        targetSubjectMetadata: mockTargetSubjectMetadata,
-      },
-    });
-
-    expect(queryByText(messages.selectAccountToConnect.message)).toBeNull();
   });
 });

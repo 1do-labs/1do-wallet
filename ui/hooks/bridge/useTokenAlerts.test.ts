@@ -1,7 +1,6 @@
 import { formatChainIdToCaip } from '@metamask/bridge-controller';
 import { renderHookWithProvider } from '../../../test/lib/render-helpers-navigate';
 import { CHAIN_IDS } from '../../../shared/constants/network';
-import { MultichainNetworks } from '../../../shared/constants/multichain/networks';
 import { createBridgeMockStore } from '../../../test/data/bridge/mock-bridge-store';
 import { toAssetId } from '../../../shared/lib/asset-utils';
 import { useTokenAlerts } from './useTokenAlerts';
@@ -27,13 +26,13 @@ jest.mock('../../../shared/lib/bridge-utils/security-alerts-api.util', () => ({
 }));
 
 describe('useTokenAlerts', () => {
-  it('should set token alert when toChain is Solana', async () => {
+  it('should not set token alert for non-EVM target tokens', async () => {
     const mockStoreState = createBridgeMockStore({
       featureFlagOverrides: {
         bridgeConfig: {
           chainRanking: [
             {
-              chainId: MultichainNetworks.SOLANA,
+              chainId: 'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp',
             },
             {
               chainId: formatChainIdToCaip(CHAIN_IDS.MAINNET),
@@ -52,11 +51,9 @@ describe('useTokenAlerts', () => {
         },
         toToken: {
           address: '6p6xgHyF7AeE6TZkSmFsko444wqoP15icUSqi2jfGiPN',
-          chainId: MultichainNetworks.SOLANA,
-          assetId: toAssetId(
-            '6p6xgHyF7AeE6TZkSmFsko444wqoP15icUSqi2jfGiPN',
-            MultichainNetworks.SOLANA,
-          ),
+          chainId: 'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp',
+          assetId:
+            'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp/token:6p6xgHyF7AeE6TZkSmFsko444wqoP15icUSqi2jfGiPN',
         },
       },
     });
@@ -64,6 +61,6 @@ describe('useTokenAlerts', () => {
     const { result, waitForNextUpdate } = renderUseSolanaAlerts(mockStoreState);
     await waitForNextUpdate();
 
-    expect(result.current.tokenAlert).toStrictEqual(mockResponse);
+    expect(result.current.tokenAlert).toBeNull();
   });
 });

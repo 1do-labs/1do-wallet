@@ -5,7 +5,7 @@ import type {
 
 export type SuccessPillStyleUtilityProps = {
   /**
-   * The text content of the pill (e.g. "Paid by MetaMask", "No network fee")
+   * The text content of the pill (e.g. "Paid by 1do", "No network fee")
    */
   label: string | React.ReactNode;
 } & StyleUtilityProps;

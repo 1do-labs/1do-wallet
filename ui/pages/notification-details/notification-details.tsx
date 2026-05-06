@@ -1,9 +1,6 @@
 import React, { useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import {
-  TRIGGER_TYPES,
-  type INotification,
-} from '@metamask/notification-services-controller/notification-services';
+import { type INotification } from '@metamask/notification-services-controller/notification-services';
 import { Box } from '../../components/component-library';
 import {
   BlockSize,
@@ -19,7 +16,6 @@ import {
   NotificationComponents,
   hasNotificationComponents,
 } from '../notifications/notification-components';
-import { useSnapNotificationTimeouts } from '../../hooks/useNotificationTimeouts';
 import { useAppSelector } from '../../store/store';
 import { getExtractIdentifier } from './utils/utils';
 import { NotificationDetailsHeader } from './notification-details-header/notification-details-header';
@@ -40,7 +36,6 @@ function useNotificationByPath() {
 
 function useEffectOnNotificationView(notificationData?: INotification) {
   const { markNotificationAsRead } = useMarkNotificationAsRead();
-  const { setNotificationTimeout } = useSnapNotificationTimeouts();
 
   useEffect(() => {
     if (notificationData) {
@@ -52,12 +47,6 @@ function useEffectOnNotificationView(notificationData?: INotification) {
         },
       ]);
     }
-
-    return () => {
-      if (notificationData?.type === TRIGGER_TYPES.SNAP) {
-        setNotificationTimeout(notificationData.id);
-      }
-    };
   }, []);
 }
 

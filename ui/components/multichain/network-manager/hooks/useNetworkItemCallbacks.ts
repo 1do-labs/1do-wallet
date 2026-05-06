@@ -12,7 +12,7 @@ import {
 import { openWindow } from '../../../../helpers/utils/window';
 import { setEditedNetwork, showModal } from '../../../../store/actions';
 import {
-  getMultichainNetworkConfigurationsByChainId,
+  getMultichainNetworkConfigurationsTuple,
   getNetworkDiscoverButtonEnabled,
   getSelectedMultichainNetworkChainId,
 } from '../../../../selectors';
@@ -20,7 +20,6 @@ import {
   getCompletedOnboarding,
   getIsUnlocked,
 } from '../../../../ducks/metamask/metamask';
-import { useAccountCreationOnNetworkChange } from '../../../../hooks/accounts/useAccountCreationOnNetworkChange';
 
 export const useNetworkItemCallbacks = () => {
   const dispatch = useDispatch();
@@ -31,11 +30,9 @@ export const useNetworkItemCallbacks = () => {
     getNetworkDiscoverButtonEnabled,
   );
   const [, evmNetworks] = useSelector(
-    getMultichainNetworkConfigurationsByChainId,
+    getMultichainNetworkConfigurationsTuple,
   );
   const completedOnboarding = useSelector(getCompletedOnboarding);
-
-  const { hasAnyAccountsInNetwork } = useAccountCreationOnNetworkChange();
 
   const isDiscoverBtnEnabled = useCallback(
     (chainId: Hex | `${string}:${string}`): boolean => {
@@ -58,34 +55,15 @@ export const useNetworkItemCallbacks = () => {
   );
 
   const isNetworkEnabled = useCallback(
-    (network: MultichainNetworkConfiguration): boolean => {
-      return (
-        network.isEvm ||
-        completedOnboarding ||
-        hasAnyAccountsInNetwork(network.chainId)
-      );
-    },
-    [hasAnyAccountsInNetwork, completedOnboarding],
+    (_network: MultichainNetworkConfiguration): boolean => completedOnboarding,
+    [completedOnboarding],
   );
 
   const getItemCallbacks = useCallback(
     (
       network: MultichainNetworkConfiguration,
     ): Record<string, (() => void) | undefined> => {
-      const { chainId, isEvm } = network;
-
-      if (!isEvm) {
-        return {
-          onDiscoverClick: isDiscoverBtnEnabled(chainId)
-            ? () => {
-                openWindow(
-                  CHAIN_ID_PORTFOLIO_LANDING_PAGE_URL_MAP[chainId],
-                  '_blank',
-                );
-              }
-            : undefined,
-        };
-      }
+      const { chainId } = network;
       const hexChainId = convertCaipToHexChainId(chainId);
       const isDeletable =
         isUnlocked &&

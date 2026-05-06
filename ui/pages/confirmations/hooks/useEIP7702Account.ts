@@ -1,10 +1,12 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { TransactionMeta } from '@metamask/transaction-controller';
+import {
+  TransactionEnvelopeType,
+  TransactionMeta,
+  TransactionType,
+} from '@metamask/transaction-controller';
 import { Hex } from '@metamask/utils';
 import {
-  createEIP7702UpgradeTransaction,
-  createEIP7702DowngradeTransaction,
   isAccountUpgraded,
   EIP_7702_REVOKE_ADDRESS,
 } from '../../../../shared/lib/eip7702-utils';
@@ -34,47 +36,62 @@ export function useEIP7702Account(
 
   const downgradeAccount = useCallback(
     async (address: Hex) => {
-      const result = await createEIP7702DowngradeTransaction(
-        {
-          address,
-          networkClientId,
-        },
-        async (transactionParams, options) => {
-          const transactionMeta = (await dispatch(
-            addTransactionAndRouteToConfirmationPage(
-              transactionParams,
-              options,
-            ),
-          )) as unknown as TransactionMeta;
-          return transactionMeta;
-        },
-      );
+      const transactionMeta = (await dispatch(
+        addTransactionAndRouteToConfirmationPage(
+          {
+            authorizationList: [
+              {
+                address: EIP_7702_REVOKE_ADDRESS,
+              },
+            ],
+            from: address,
+            to: address,
+            type: TransactionEnvelopeType.setCode,
+          },
+          {
+            networkClientId,
+            requireApproval: true,
+            type: TransactionType.revokeDelegation,
+          },
+        ),
+      )) as unknown as TransactionMeta;
 
-      setTransactionId(result.transactionId);
+      if (!transactionMeta?.id) {
+        throw new Error('Transaction ID is missing from transaction metadata');
+      }
+
+      setTransactionId(transactionMeta.id);
     },
     [dispatch, networkClientId],
   );
 
   const upgradeAccount = useCallback(
     async (address: Hex, upgradeContractAddress: Hex) => {
-      const result = await createEIP7702UpgradeTransaction(
-        {
-          address,
-          upgradeContractAddress,
-          networkClientId,
-        },
-        async (transactionParams, options) => {
-          const transactionMeta = (await dispatch(
-            addTransactionAndRouteToConfirmationPage(
-              transactionParams,
-              options,
-            ),
-          )) as unknown as TransactionMeta;
-          return transactionMeta;
-        },
-      );
+      const transactionMeta = (await dispatch(
+        addTransactionAndRouteToConfirmationPage(
+          {
+            authorizationList: [
+              {
+                address: upgradeContractAddress,
+              },
+            ],
+            from: address,
+            to: address,
+            type: TransactionEnvelopeType.setCode,
+          },
+          {
+            networkClientId,
+            requireApproval: true,
+            type: TransactionType.batch,
+          },
+        ),
+      )) as unknown as TransactionMeta;
 
-      setTransactionId(result.transactionId);
+      if (!transactionMeta?.id) {
+        throw new Error('Transaction ID is missing from transaction metadata');
+      }
+
+      setTransactionId(transactionMeta.id);
     },
     [dispatch, networkClientId],
   );

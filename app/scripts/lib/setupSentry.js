@@ -213,9 +213,10 @@ function getSentryTarget() {
   }
 
   if (!SENTRY_DSN) {
-    throw new Error(
-      `Missing SENTRY_DSN environment variable in production environment`,
+    log(
+      'Missing SENTRY_DSN environment variable in production environment, skipping Sentry initialization',
     );
+    return undefined;
   }
 
   return SENTRY_DSN;

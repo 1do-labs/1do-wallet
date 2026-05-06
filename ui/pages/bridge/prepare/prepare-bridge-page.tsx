@@ -38,7 +38,6 @@ import {
   getWasTxDeclined,
   getFromAmountInCurrency,
   getValidationErrors,
-  getIsToOrFromNonEvm,
   getHardwareWalletName,
   getIsQuoteExpired,
   BridgeAppState,
@@ -274,8 +273,6 @@ const PrepareBridgePage = ({
     isUsingHardwareWallet,
     isLoading,
   ]);
-
-  const isToOrFromNonEvm = useSelector(getIsToOrFromNonEvm);
 
   const quoteParams:
     | Parameters<BridgeController['updateBridgeQuoteRequestParams']>[0]
@@ -708,7 +705,7 @@ const PrepareBridgePage = ({
                 });
               }}
               needsDestinationAddress={
-                isToOrFromNonEvm && !selectedDestinationAccount
+                !selectedDestinationAccount
               }
               onOpenRecipientModal={() =>
                 setIsDestinationAccountPickerOpen(true)

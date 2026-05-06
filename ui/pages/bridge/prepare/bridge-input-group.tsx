@@ -5,7 +5,6 @@ import {
   formatChainIdToCaip,
   formatChainIdToHex,
   isNativeAddress,
-  isNonEvmChainId,
 } from '@metamask/bridge-controller';
 import { getAccountLink } from '@metamask/etherscan-link';
 import { parseCaipAssetType } from '@metamask/utils';
@@ -39,8 +38,6 @@ import {
 import { shortenString } from '../../../helpers/utils/util';
 import { useCopyToClipboard } from '../../../hooks/useCopyToClipboard';
 import { getIntlLocale } from '../../../ducks/locale/locale';
-import { MULTICHAIN_NETWORK_BLOCK_EXPLORER_FORMAT_URLS_MAP } from '../../../../shared/constants/multichain/networks';
-import { formatBlockExplorerAddressUrl } from '../../../../shared/lib/multichain/networks';
 import { CAIP_CHAINID_DEFAULT_BLOCK_EXPLORER_URL_MAP } from '../../../../shared/constants/common';
 import type { BridgeNetwork, BridgeToken } from '../../../ducks/bridge/types';
 import { SelectedAssetButton } from './components/bridge-asset-picker/selected-asset-button';
@@ -161,33 +158,20 @@ export const BridgeInputGroup = ({
 
   const handleAddressClick = () => {
     if (token && selectedChainId && assetReference) {
-      const caipChainId = formatChainIdToCaip(selectedChainId);
-
       let blockExplorerUrl = '';
-      if (isNonEvmChainId(selectedChainId)) {
-        const blockExplorerUrls =
-          MULTICHAIN_NETWORK_BLOCK_EXPLORER_FORMAT_URLS_MAP[caipChainId];
-        if (blockExplorerUrls) {
-          blockExplorerUrl = formatBlockExplorerAddressUrl(
-            blockExplorerUrls,
-            assetReference,
-          );
-        }
-      } else {
-        const explorerUrl =
-          CAIP_CHAINID_DEFAULT_BLOCK_EXPLORER_URL_MAP[
-            formatChainIdToCaip(token.chainId)
-          ];
-        if (explorerUrl) {
-          blockExplorerUrl = getAccountLink(
-            assetReference,
-            formatChainIdToHex(selectedChainId),
-            {
-              blockExplorerUrl: explorerUrl,
-            },
-            undefined,
-          );
-        }
+      const explorerUrl =
+        CAIP_CHAINID_DEFAULT_BLOCK_EXPLORER_URL_MAP[
+          formatChainIdToCaip(token.chainId)
+        ];
+      if (explorerUrl) {
+        blockExplorerUrl = getAccountLink(
+          assetReference,
+          formatChainIdToHex(selectedChainId),
+          {
+            blockExplorerUrl: explorerUrl,
+          },
+          undefined,
+        );
       }
 
       if (blockExplorerUrl) {

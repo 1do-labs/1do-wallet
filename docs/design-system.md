@@ -1,4 +1,4 @@
-# MetaMask Design System
+# 1do Wallet Design System
 
 A design system is a series of components that can be reused in different combinations. Design systems allow you to manage design at scale.
 
@@ -12,7 +12,7 @@ We have released our latest design system libraries in **beta**. These are avail
 
 - [Getting started with Tailwind in the extension](./tailwind-css-guide.md)
 - [Design System Figma File](https://www.figma.com/design/1D6tnzXqWgnUC3spaAOELN/%F0%9F%A6%8A-MMDS-Components?m=auto&node-id=5428-18270)
-- [MetaMask Design System storybook](https://metamask.github.io/metamask-design-system/)
+- [1do Wallet Design System storybook](https://metamask.github.io/metamask-design-system/)
 
 ### Storybook and Examples
 
@@ -20,4 +20,4 @@ We have released our latest design system libraries in **beta**. These are avail
 
 ### Repositories
 
-- [MetaMask Design System monorepo](https://github.com/MetaMask/metamask-design-system/)
+- [1do Wallet Design System monorepo](https://github.com/MetaMask/metamask-design-system/)

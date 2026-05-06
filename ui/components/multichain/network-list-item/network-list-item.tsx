@@ -339,6 +339,10 @@ NetworkListItem.propTypes = {
    */
   onEditClick: PropTypes.func,
   /**
+   * Executes when the discover menu item is clicked
+   */
+  onDiscoverClick: PropTypes.func,
+  /**
    * Represents if the network item should be keyboard selected
    */
   focus: PropTypes.bool,

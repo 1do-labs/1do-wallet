@@ -22,12 +22,12 @@ import {
 } from '../../../selectors/multichain-accounts/account-tree.types';
 import { getIconSeedAddressByAccountGroupId } from '../../../selectors/multichain-accounts/account-tree';
 import { SiteCellConnectionListItem } from '../../multichain/pages/review-permissions-page/site-cell/site-cell-connection-list-item';
-import { EvmAndMultichainNetworkConfigurationsWithCaipChainId } from '../../../selectors/selectors.types';
+import { EvmNetworkConfigurationWithCaipChainId } from '../../../selectors/selectors.types';
 import { MultichainSiteCellTooltip } from './tool-tip/multichain-site-cell-tooltip';
 
 type MultichainSiteCellProps = {
-  nonTestNetworks: EvmAndMultichainNetworkConfigurationsWithCaipChainId[];
-  testNetworks: EvmAndMultichainNetworkConfigurationsWithCaipChainId[];
+  nonTestNetworks: EvmNetworkConfigurationWithCaipChainId[];
+  testNetworks: EvmNetworkConfigurationWithCaipChainId[];
   supportedAccountGroups: AccountGroupWithInternalAccounts[];
   showEditAccounts: () => void;
   onSelectChainIds: (chainIds: CaipChainId[]) => void;

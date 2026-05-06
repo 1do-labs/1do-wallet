@@ -27,7 +27,6 @@ import {
 import { InternalAccount } from '@metamask/keyring-internal-api';
 import {
   type CaipAssetType,
-  Hex,
   isCaipChainId,
   parseCaipAssetType,
 } from '@metamask/utils';
@@ -40,7 +39,6 @@ import { endTrace, TraceName } from '../../../../shared/lib/trace';
 import { hexToDecimal } from '../../../../shared/lib/conversion.utils';
 import { toChecksumHexAddress } from '../../../../shared/lib/hexstring-utils';
 import TokenCell from '../../../components/app/assets/token-cell';
-import { ASSET_OVERVIEW_TOKEN_CELL_MUSD_OPTIONS } from '../../../components/app/musd/musd-events';
 import { MarketClosedModal } from '../../../components/app/assets/market-closed-modal';
 import {
   TokenFiatDisplayInfo,
@@ -74,31 +72,22 @@ import {
   getMultichainIsTestnet,
   getMultichainNetworkConfigurationsByChainId,
   getMultichainShouldShowFiat,
-  getMultichainIsTron,
 } from '../../../selectors/multichain';
 import { getInternalAccountBySelectedAccountGroupAndCaip } from '../../../selectors/multichain-accounts/account-tree';
-import {
-  selectIsMerklClaimingEnabled,
-  selectIsMusdConversionFlowEnabled,
-} from '../../../selectors/musd';
 import { useSafeChains } from '../../settings/networks-tab/networks-form/use-safe-chains';
 import { useCurrentPrice } from '../hooks/useCurrentPrice';
 import { isNativeAsset, type Asset } from '../types/asset';
 import { useRWAToken } from '../../bridge/hooks/useRWAToken';
-import {
-  useMusdCtaVisibility,
-  useMusdMerklPosition,
-} from '../../../hooks/musd';
-import { MusdAssetCta } from '../../../components/app/musd';
 import { isMusdToken } from '../../../components/app/musd/constants';
+import { useMusdMerklPosition } from '../../../hooks/musd';
+import { selectIsMusdConversionFlowEnabled } from '../../../selectors/musd';
 import { AssetMarketDetails } from './asset-market-details';
 import AssetChart from './chart/asset-chart';
 import { MarketClosedActionButton } from './market-closed-action-button';
+import MusdBonusSection from './musd-bonus-section';
+import MusdConvertSection from './musd-convert-section';
+import MusdPositionSection from './musd-position-section';
 import TokenButtons from './token-buttons';
-import { TronDailyResources } from './tron-daily-resources';
-import { MusdBonusSection } from './musd-bonus-section';
-import { MusdConvertSection } from './musd-convert-section';
-import { MusdPositionSection } from './musd-position-section';
 
 // TODO BIP44 Refactor: BIP-44 has been enabled and is stable, this page needs a significant refactor to remove confusing branching logic
 const AssetPage = ({
@@ -147,13 +136,6 @@ const AssetPage = ({
   // Check if show conversion is enabled
   const showFiatInTestnets = useSelector(getShowFiatInTestnets);
 
-  // mUSD CTA visibility check
-  const { shouldShowAssetOverviewCta: checkMusdCtaVisibility } =
-    useMusdCtaVisibility();
-
-  const isMusdFlowEnabled = useSelector(selectIsMusdConversionFlowEnabled);
-  const isMerklClaimingEnabled = useSelector(selectIsMerklClaimingEnabled);
-
   const showFiat =
     shouldShowFiat && (isMainnet || (isTestnet && showFiatInTestnets));
 
@@ -170,6 +152,19 @@ const AssetPage = ({
     })() ?? '';
 
   const shouldShowContractAddress = type === AssetType.token;
+  const isMusdAssetPage =
+    shouldShowContractAddress &&
+    isEvm &&
+    isMusdToken(asset.address ?? undefined);
+  const isMusdConversionFlowEnabled = useSelector(
+    selectIsMusdConversionFlowEnabled,
+  );
+  const showMusdEnhancedPage =
+    isMusdAssetPage && isMusdConversionFlowEnabled;
+  const {
+    aggregatedFiat: musdAggregatedFiat,
+    hasAnyBalance: musdHasAnyBalance,
+  } = useMusdMerklPosition(showMusdEnhancedPage);
   const contractAddress = (() => {
     if (shouldShowContractAddress) {
       return isEvm
@@ -271,22 +266,8 @@ const AssetPage = ({
     </Text>
   );
 
-  // Check if we should show Tron resources
-  const isTron = useMultichainSelector(getMultichainIsTron, selectedAccount);
-  const showTronResources = isTron && type === AssetType.native;
-
   const isUpdatedAssetNative = isNativeAsset(updatedAsset);
   const tokenAsset = isUpdatedAssetNative ? null : updatedAsset;
-  const isMusdAssetPage =
-    type === AssetType.token &&
-    isEvm &&
-    isMusdToken((asset as { address?: Hex }).address) &&
-    isMusdFlowEnabled;
-
-  const {
-    aggregatedFiat: aggregatedMusdFiat,
-    hasAnyBalance: hasAnyMusdBalance,
-  } = useMusdMerklPosition(isMusdAssetPage);
 
   const [isMarketClosedModalOpen, setIsMarketClosedModalOpen] = useState(false);
   const handleOpenMarketClosedModal = () => {
@@ -361,60 +342,21 @@ const AssetPage = ({
         ) : null}
       </Box>
       <Box flexDirection={BoxFlexDirection.Column} paddingTop={3}>
-        {showTronResources && (
-          <Box>
-            <TronDailyResources
-              account={selectedAccount}
-              chainId={chainId}
-              t={t}
-            />
-            <Box
-              marginTop={2}
-              marginBottom={2}
-              className="asset-page__divider"
-            />
-          </Box>
-        )}
-        {isMusdAssetPage ? (
+        {showMusdEnhancedPage ? (
           <>
             <MusdPositionSection
-              balanceDisplay={balance ? `${balance} ${t('musdSymbol')}` : '0'}
-              fiatValue={tokenFiatAmount}
+              balanceDisplay={balance}
+              fiatValue={showFiat ? tokenFiatAmount : null}
               showFiat={showFiat}
             />
-            {isMerklClaimingEnabled ? (
-              <>
-                <Box
-                  marginTop={5}
-                  marginBottom={5}
-                  className="asset-page__divider"
-                />
-                <MusdBonusSection
-                  chainId={chainId as Hex}
-                  tokenAddress={(asset as { address: Hex }).address}
-                  positionFiatValue={showFiat ? aggregatedMusdFiat : null}
-                  showFiat={showFiat}
-                  hasPositiveBalance={hasAnyMusdBalance}
-                />
-                <Box
-                  marginTop={5}
-                  marginBottom={5}
-                  className="asset-page__divider"
-                />
-              </>
-            ) : (
-              <Box
-                marginTop={5}
-                marginBottom={5}
-                className="asset-page__divider"
-              />
-            )}
-            <MusdConvertSection />
-            <Box
-              marginTop={5}
-              marginBottom={5}
-              className="asset-page__divider"
+            <MusdBonusSection
+              chainId={chainId}
+              tokenAddress={contractAddress as `0x${string}`}
+              positionFiatValue={showFiat ? musdAggregatedFiat : null}
+              showFiat={showFiat}
+              hasPositiveBalance={musdHasAnyBalance}
             />
+            <MusdConvertSection />
           </>
         ) : (
           <>
@@ -429,34 +371,10 @@ const AssetPage = ({
                 key={`${symbol}-${address}`}
                 token={tokenWithFiatAmount as TokenWithFiatAmount}
                 safeChains={safeChains}
-                musd={ASSET_OVERVIEW_TOKEN_CELL_MUSD_OPTIONS}
               />
             )}
           </>
         )}
-        {/* mUSD Conversion CTA - shows for eligible stablecoins */}
-        {!isNativeAsset(updatedAsset) &&
-          type === AssetType.token &&
-          isEvm &&
-          !isMusdAssetPage &&
-          checkMusdCtaVisibility({
-            address: (asset as { address: Hex }).address,
-            chainId,
-            symbol,
-          }) && (
-            <Box marginTop={2} paddingLeft={4} paddingRight={4}>
-              <MusdAssetCta
-                token={{
-                  address: (asset as { address: Hex }).address,
-                  chainId: chainId as string,
-                  symbol,
-                  balance: String(balance),
-                  fiatBalance: String(tokenFiatAmount),
-                }}
-                variant="card"
-              />
-            </Box>
-          )}
         <Box marginTop={6} flexDirection={BoxFlexDirection.Column} gap={4}>
           {[AssetType.token, AssetType.native].includes(type) && (
             <Box

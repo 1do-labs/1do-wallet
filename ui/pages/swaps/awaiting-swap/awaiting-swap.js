@@ -279,14 +279,14 @@ export default function AwaitingSwap({
     if (isFlask()) {
       return (
         <div className="awaiting-swap__mascot">
-          <img src="./images/logo/metamask-fox.svg" width="90" height="90" />
+          <img src="./images/logo/1do-mark.svg" width="90" height="90" />
         </div>
       );
     }
     if (isBeta()) {
       return (
         <div className="awaiting-swap__mascot">
-          <img src="./images/logo/metamask-fox.svg" width="90" height="90" />
+          <img src="./images/logo/1do-mark.svg" width="90" height="90" />
         </div>
       );
     }

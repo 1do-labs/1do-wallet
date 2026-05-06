@@ -230,13 +230,10 @@ function createManifestTasks({
       .trim()
       .substring(0, 8);
 
-    manifest.name = getBuildName({
-      environment,
-      buildType,
-      applyLavaMoat,
-      shouldIncludeSnow,
-      isManifestV3,
-    });
+    // Keep the public-facing brand stable for 1Do builds instead of exposing
+    // internal build suffixes like "MV3 lavamoat snow" in Chrome Extensions.
+    manifest.name = '1Do';
+    manifest.short_name = '1Do';
 
     manifest.description = `${environment} build from git id: ${gitRevisionStr}`;
   }

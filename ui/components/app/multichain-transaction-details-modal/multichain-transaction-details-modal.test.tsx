@@ -1,26 +1,13 @@
 import React from 'react';
-import { CaipChainId } from '@metamask/utils';
-import {
-  CaipAssetType,
-  Transaction,
-  TransactionStatus,
-} from '@metamask/keyring-api';
 import { screen, fireEvent } from '@testing-library/react';
+import { type Transaction, TransactionStatus } from '@metamask/keyring-api';
 import { useI18nContext } from '../../../hooks/useI18nContext';
 import { renderWithProvider } from '../../../../test/lib/render-helpers-navigate';
-import {
-  MOCK_ACCOUNT_SOLANA_MAINNET,
-  MOCK_ACCOUNT_BIP122_P2WPKH,
-} from '../../../../test/data/mock-accounts';
 import { MetaMetricsContext } from '../../../contexts/metametrics';
-import {
-  MULTICHAIN_PROVIDER_CONFIGS,
-  MultichainNetworks,
-  SOLANA_BLOCK_EXPLORER_URL,
-} from '../../../../shared/constants/multichain/networks';
 import mockState from '../../../../test/data/mock-state.json';
 import configureStore from '../../../store/store';
 import { enLocale as messages } from '../../../../test/lib/i18n-helpers';
+import { CHAIN_IDS } from '../../../../shared/constants/network';
 import { MultichainTransactionDetailsModal } from './multichain-transaction-details-modal';
 import {
   getAddressUrl,
@@ -32,96 +19,53 @@ jest.mock('../../../hooks/useI18nContext', () => ({
   useI18nContext: jest.fn(),
 }));
 
-const mockTransaction = {
-  type: 'send' as const,
-  status: TransactionStatus.Confirmed as TransactionStatus,
-  timestamp: new Date('2023-09-30T12:56:00').getTime(),
-  id: 'b93ea2cb4eed0f9e13284ed8860bcfc45de2488bb6a8b0b2a843c4b2fbce40f3',
-  chain: 'bip122:000000000019d6689c085ae165831e93' as CaipChainId,
-  account: 'test-account-id',
-  events: [],
-  from: [
-    {
-      address: 'bc1ql49ydapnjafl5t2cp9zqpjwe6pdgmxy98859v2',
-      asset: {
-        fungible: true as const,
-        type: 'native' as CaipAssetType,
-        amount: '1.2',
-        unit: 'BTC',
-      },
-    },
-  ],
-  to: [
-    {
-      address: 'bc1qar0srrr7xfkvy5l643lydnw9re59gtzzwf5mdq',
-      asset: {
-        fungible: true as const,
-        type: 'native' as CaipAssetType,
-        amount: '1.1',
-        unit: 'BTC',
-      },
-    },
-    {
-      address: 'bc1qar0srrr7xfkvy5l643lydnw9re59gtzzwf5mdq',
-      asset: {
-        fungible: true as const,
-        type: 'native' as CaipAssetType,
-        amount: '0.1',
-        unit: 'BTC',
-      },
-    },
-  ],
-  fees: [
-    {
-      type: 'base' as const,
-      asset: {
-        fungible: true as const,
-        type: 'native' as CaipAssetType,
-        amount: '1.0001',
-        unit: 'BTC',
-      },
-    },
-  ],
+const mockTrackEvent = jest.fn();
+
+const mockMetaMetricsContext = {
+  trackEvent: mockTrackEvent,
+  bufferedTrace: jest.fn(),
+  bufferedEndTrace: jest.fn(),
+  onboardingParentContext: { current: null },
 };
 
-const mockSwapTransaction = {
-  type: 'swap' as const,
-  status: TransactionStatus.Confirmed as TransactionStatus,
+const mockTransaction: Transaction = {
+  type: 'send',
+  status: TransactionStatus.Confirmed,
   timestamp: new Date('2023-09-30T12:56:00').getTime(),
-  id: '5Y64J6gUNd67hM63Aeks3qVLGWRM3A52PFFjqKSPTVDdAZFbaPDHHLTFCs3ioeFcAAXFmqcUftZeLJVZCzqovAJ4',
-  chain: MultichainNetworks.SOLANA as CaipChainId,
-  account: 'test-account-id',
+  id: '0xb93ea2cb4eed0f9e13284ed8860bcfc45de2488bb6a8b0b2a843c4b2fbce40f3',
+  chain: CHAIN_IDS.SEPOLIA,
+  account: 'cf8dace4-9439-4bd4-b3a8-88c821c8fcb3',
   events: [],
   from: [
     {
-      address: MOCK_ACCOUNT_SOLANA_MAINNET.address,
+      address: '0x0dcd5d886577d5081b0c52e242ef29e70be3e7bc',
       asset: {
-        fungible: true as const,
-        type: 'native' as CaipAssetType,
-        amount: '2.5',
-        unit: 'SOL',
+        fungible: true,
+        type: 'native',
+        amount: '1.2',
+        unit: 'ETH',
       },
     },
   ],
   to: [
     {
-      address: MOCK_ACCOUNT_SOLANA_MAINNET.address,
+      address: '0x1234567890abcdef1234567890abcdef12345678',
       asset: {
-        fungible: true as const,
-        type: 'token' as CaipAssetType,
-        amount: '100',
-        unit: 'USDC',
+        fungible: true,
+        type: 'native',
+        amount: '1.1',
+        unit: 'ETH',
       },
     },
   ],
   fees: [
     {
-      type: 'base' as const,
+      type: 'base',
       asset: {
-        fungible: true as const,
-        type: 'native' as CaipAssetType,
-        amount: '0.000005',
-        unit: 'SOL',
+        fungible: true,
+        type: 'native',
+        amount: '0.00042',
+        unit: 'ETH',
       },
     },
   ],
@@ -132,33 +76,7 @@ const mockProps = {
   onClose: jest.fn(),
 };
 
-const mockStateWithBitcoin = {
-  ...mockState,
-  metamask: {
-    ...mockState.metamask,
-    isEvmSelected: false,
-    remoteFeatureFlags: {
-      ...mockState.metamask.remoteFeatureFlags,
-      bitcoinAccounts: true,
-    },
-    internalAccounts: {
-      ...mockState.metamask.internalAccounts,
-      accounts: {
-        ...mockState.metamask.internalAccounts.accounts,
-        [MOCK_ACCOUNT_BIP122_P2WPKH.id]: MOCK_ACCOUNT_BIP122_P2WPKH,
-      },
-    },
-  },
-};
-
 describe('MultichainTransactionDetailsModal', () => {
-  const mockTrackEvent = jest.fn();
-  const mockMetaMetricsContext = {
-    trackEvent: mockTrackEvent,
-    bufferedTrace: jest.fn(),
-    bufferedEndTrace: jest.fn(),
-    onboardingParentContext: { current: null },
-  };
   const useI18nContextMock = useI18nContext as jest.Mock;
 
   beforeEach(() => {
@@ -175,7 +93,7 @@ describe('MultichainTransactionDetailsModal', () => {
       onClose: jest.Mock;
     } = mockProps,
   ) => {
-    const store = configureStore(mockStateWithBitcoin);
+    const store = configureStore(mockState);
     return renderWithProvider(
       <MetaMetricsContext.Provider value={mockMetaMetricsContext}>
         <MultichainTransactionDetailsModal {...props} />
@@ -190,7 +108,7 @@ describe('MultichainTransactionDetailsModal', () => {
     expect(screen.getByText(messages.send.message)).toBeInTheDocument();
     expect(screen.getByText(messages.confirmed.message)).toBeInTheDocument();
     expect(screen.getByTestId('transaction-amount')).toHaveTextContent(
-      '1.2 BTC',
+      '1.1 ETH',
     );
   });
 
@@ -202,41 +120,33 @@ describe('MultichainTransactionDetailsModal', () => {
 
   it('shows transaction ID in shortened format', () => {
     renderComponent();
-    const txId = mockTransaction.id;
-    const shortenedId = screen.getByText(shortenTransactionId(txId));
-    expect(shortenedId).toBeInTheDocument();
+    expect(
+      screen.getByText(shortenTransactionId(mockTransaction.id)),
+    ).toBeInTheDocument();
   });
 
   it('displays network fee when present', () => {
     renderComponent();
 
-    const feeElement =
-      // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31880
-      // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
-      screen.queryByTestId('transaction-network-fee') ||
-      screen.queryByTestId('transaction-base-fee');
+    const feeElement = screen.getByTestId('transaction-base-fee');
 
-    expect(feeElement).not.toBeNull();
-    expect(feeElement?.textContent).toContain('1.0001');
-    expect(feeElement?.textContent).toContain('BTC');
+    expect(feeElement.textContent).toContain('0.00042');
+    expect(feeElement.textContent).toContain('ETH');
   });
 
   it('calls onClose when close button is clicked', () => {
     renderComponent();
-    const closeButton = screen.getByRole('button', { name: /close/iu });
-    fireEvent.click(closeButton);
+    fireEvent.click(screen.getByRole('button', { name: /close/iu }));
     expect(mockProps.onClose).toHaveBeenCalled();
   });
 
-  it('renders the view details button with correct link', () => {
+  it('renders the view details button and tracks click', () => {
     renderComponent();
-    const viewDetailsButton = screen.getByText('viewDetails');
-    expect(viewDetailsButton).toBeInTheDocument();
-    fireEvent.click(viewDetailsButton);
+    fireEvent.click(screen.getByText('viewDetails'));
     expect(mockTrackEvent).toHaveBeenCalled();
   });
 
-  // @ts-expect-error This is missing from the Mocha type definitions
+  // @ts-expect-error Jest typing for it.each status tuple inference is loose here.
   it.each([
     [TransactionStatus.Confirmed, 'Confirmed'],
     [TransactionStatus.Unconfirmed, 'Pending'],
@@ -245,169 +155,50 @@ describe('MultichainTransactionDetailsModal', () => {
   ])(
     'handles different transaction status: %s',
     (status: TransactionStatus, expectedLabel: string) => {
-      const propsWithStatus = {
+      renderComponent({
         ...mockProps,
         transaction: {
           ...mockTransaction,
           status,
         },
-      };
-      renderComponent(propsWithStatus);
+      });
+
       expect(screen.getByText(expectedLabel)).toBeInTheDocument();
     },
   );
 
-  it('returns correct Bitcoin mainnet transaction URL', () => {
+  it('returns correct EVM transaction URL', () => {
     const txId =
-      '447755f24ab40f469309f357cfdd9e375e9569b2cf68aaeba2ebcc232eac9568';
-    const chainId = MultichainNetworks.BITCOIN;
+      '0x447755f24ab40f469309f357cfdd9e375e9569b2cf68aaeba2ebcc232eac9568';
 
-    expect(getTransactionUrl(txId, chainId)).toBe(
-      `https://mempool.space/tx/${txId}`,
+    expect(getTransactionUrl(txId, CHAIN_IDS.SEPOLIA)).toBe(
+      `https://sepolia.etherscan.io/tx/${txId}`,
     );
   });
 
-  it('returns correct Bitcoin testnet transaction URL', () => {
-    const txId =
-      '447755f24ab40f469309f357cfdd9e375e9569b2cf68aaeba2ebcc232eac9568';
-    const chainId = MultichainNetworks.BITCOIN_TESTNET;
+  it('returns correct EVM address URL', () => {
+    const address = '0x1234567890abcdef1234567890abcdef12345678';
 
-    expect(getTransactionUrl(txId, chainId)).toBe(
-      `https://mempool.space/testnet/tx/${txId}`,
+    expect(getAddressUrl(address, CHAIN_IDS.SEPOLIA)).toBe(
+      `https://sepolia.etherscan.io/address/${address}`,
     );
   });
 
-  it('returns correct Solana mainnet transaction URL', () => {
-    const txId =
-      '5Y64J6gUNd67hM63Aeks3qVLGWRM3A52PFFjqKSPTVDdAZFbaPDHHLTFCs3ioeFcAAXFmqcUftZeLJVZCzqovAJ4';
-    const chainId = MultichainNetworks.SOLANA;
-
-    expect(getTransactionUrl(txId, chainId)).toBe(
-      `${SOLANA_BLOCK_EXPLORER_URL}/tx/${txId}`,
-    );
-  });
-
-  it('returns correct Solana devnet transaction URL', () => {
-    const txId =
-      '5Y64J6gUNd67hM63Aeks3qVLGWRM3A52PFFjqKSPTVDdAZFbaPDHHLTFCs3ioeFcAAXFmqcUftZeLJVZCzqovAJ4';
-    const chainId = MultichainNetworks.SOLANA_DEVNET;
-
-    expect(getTransactionUrl(txId, chainId)).toBe(
-      `${SOLANA_BLOCK_EXPLORER_URL}/tx/${txId}?cluster=devnet`,
-    );
-  });
-
-  it('returns correct Solana mainnet address URL', () => {
-    const address = 'FKrZTPRmX6WpJL1YUCJmVH1AcmqLfjUt2rzovhLqLJQZ';
-    const chainId = MultichainNetworks.SOLANA;
-
-    expect(getAddressUrl(address, chainId)).toBe(
-      `${SOLANA_BLOCK_EXPLORER_URL}/account/${address}`,
-    );
-  });
-
-  it('returns correct Solana devnet address URL', () => {
-    const address = 'FKrZTPRmX6WpJL1YUCJmVH1AcmqLfjUt2rzovhLqLJQZ';
-    const chainId = MultichainNetworks.SOLANA_DEVNET;
-
-    expect(getAddressUrl(address, chainId)).toBe(
-      `${SOLANA_BLOCK_EXPLORER_URL}/account/${address}?cluster=devnet`,
-    );
-  });
-
-  it('returns correct Bitcoin mainnet address URL', () => {
-    const address = 'bc1qar0srrr7xfkvy5l643lydnw9re59gtzzwf5mdq';
-    const chainId = MultichainNetworks.BITCOIN;
-
-    expect(getAddressUrl(address, chainId)).toBe(
-      `https://mempool.space/address/${address}`,
-    );
-  });
-
-  it('returns correct Bitcoin testnet address URL', () => {
-    const address = 'tb1qw508d6qejxtdg4y5r3zarvary0c5xw7kxpjzsx';
-    const chainId = MultichainNetworks.BITCOIN_TESTNET;
-
-    expect(getAddressUrl(address, chainId)).toBe(
-      `https://mempool.space/testnet/address/${address}`,
-    );
-  });
-
-  it('renders Solana swap transaction details correctly', () => {
-    const swapProps = {
-      transaction: mockSwapTransaction,
-      onClose: jest.fn(),
-    };
-
-    renderComponent(swapProps);
-
-    expect(screen.getByText(messages.swap.message)).toBeInTheDocument();
-    expect(screen.getByTestId('transaction-amount')).toHaveTextContent(
-      '-2.5 SOL',
-    );
-
-    const addressStart = MOCK_ACCOUNT_SOLANA_MAINNET.address.substring(0, 6);
-    const addressElements = screen.getAllByText((_content, element) => {
-      // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31880
-      // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
-      return element?.textContent?.includes(addressStart) || false;
-    });
-
-    expect(addressElements.length).toBeGreaterThan(0);
-
-    const feeElement =
-      // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31880
-      // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
-      screen.queryByTestId('transaction-network-fee') ||
-      screen.queryByTestId('transaction-base-fee');
-
-    expect(feeElement).not.toBeNull();
-    expect(feeElement?.textContent).toContain('0.000005');
-    expect(feeElement?.textContent).toContain('SOL');
-  });
-
-  it('displays the correct from address for Bitcoin send transaction', () => {
-    const btcTransaction: Transaction = {
-      ...mockTransaction,
-      account: MOCK_ACCOUNT_BIP122_P2WPKH.id,
-      from: [
-        {
-          address: MOCK_ACCOUNT_BIP122_P2WPKH.address,
-          asset: {
-            fungible: true,
-            type: 'native' as CaipAssetType,
-            amount: '1.0',
-            unit: 'BTC',
-          },
-        },
-      ],
-    };
-    const store = configureStore(mockStateWithBitcoin);
-    const props = {
-      transaction: btcTransaction,
-      onClose: jest.fn(),
-    };
-
-    renderWithProvider(
-      <MetaMetricsContext.Provider value={mockMetaMetricsContext}>
-        <MultichainTransactionDetailsModal {...props} />
-      </MetaMetricsContext.Provider>,
-      store,
-    );
+  it('renders the correct from address link for an EVM send transaction', () => {
+    renderComponent();
 
     const fromLabel = screen.getByText('from');
     expect(fromLabel).toBeInTheDocument();
 
-    const fromAddressElement = screen.getByText(
-      MOCK_ACCOUNT_BIP122_P2WPKH.metadata.name,
+    const fromLink = screen.getAllByRole('link').find((link) =>
+      link.getAttribute('href')?.includes('/address/0x0dcd5d886577d5081b0c52e242ef29e70be3e7bc'),
     );
-    expect(fromAddressElement).toBeInTheDocument();
-
-    const expectedHref = getAddressUrl(
-      MOCK_ACCOUNT_BIP122_P2WPKH.address,
-      MULTICHAIN_PROVIDER_CONFIGS[MultichainNetworks.BITCOIN].chainId,
+    expect(fromLink).toHaveAttribute(
+      'href',
+      getAddressUrl(
+        '0x0dcd5d886577d5081b0c52e242ef29e70be3e7bc',
+        CHAIN_IDS.SEPOLIA,
+      ),
     );
-    const fromLink = fromAddressElement.closest('a');
-    expect(fromLink).toHaveAttribute('href', expectedHref);
   });
 });

@@ -156,17 +156,6 @@ export type AppStateControllerSetTermsOfUseLastAgreedAction = {
 };
 
 /**
- * Record if popover for snaps privacy warning has been shown
- * on the first install of a snap.
- *
- * @param shown - shown status
- */
-export type AppStateControllerSetSnapsInstallPrivacyWarningShownStatusAction = {
-  type: `AppStateController:setSnapsInstallPrivacyWarningShownStatus`;
-  handler: AppStateController['setSnapsInstallPrivacyWarningShownStatus'];
-};
-
-/**
  * Record the timestamp of the last time the user has seen the outdated browser warning
  *
  * @param lastShown - Timestamp (in milliseconds) of when the user was last shown the warning.
@@ -621,7 +610,6 @@ export type AppStateControllerMethodActions =
   | AppStateControllerRemoveSlideAction
   | AppStateControllerSetRecoveryPhraseReminderLastShownAction
   | AppStateControllerSetTermsOfUseLastAgreedAction
-  | AppStateControllerSetSnapsInstallPrivacyWarningShownStatusAction
   | AppStateControllerSetOutdatedBrowserWarningLastShownAction
   | AppStateControllerSetLastActiveTimeAction
   | AppStateControllerSetPendingExtensionVersionAction

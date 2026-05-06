@@ -51,7 +51,7 @@ export enum CriticalErrorTranslationKey {
 }
 
 /**
- * Sends critical MetaMask errors to Sentry via direct API call.
+ * Sends critical 1do errors to Sentry via direct API call.
  *
  * @param error - The error object to report to Sentry
  * @returns Promise that resolves when the report is sent
@@ -93,7 +93,7 @@ async function sendErrorToSentry(error: ErrorLike): Promise<void> {
       timestamp,
       platform: 'javascript',
       level: 'error',
-      message: error?.message || 'MetaMask extension crash critical error',
+      message: error?.message || '1do extension crash critical error',
       release: browser.runtime.getManifest()?.version || 'unknown',
       extra: {
         // eslint-disable-next-line @typescript-eslint/naming-convention
@@ -138,7 +138,7 @@ async function sendErrorToSentry(error: ErrorLike): Promise<void> {
 }
 
 /**
- * Handles the restart action: sends error report to Sentry (if enabled) and restarts MetaMask.
+ * Handles the restart action: sends error report to Sentry (if enabled) and restarts 1do.
  *
  * @param error - The error object to report
  * @param shouldReport - Whether to send the error report to Sentry
@@ -187,7 +187,7 @@ export async function displayCriticalErrorMessage(
         '#critical-error-checkbox',
       );
 
-    // Restart button: report error and restart MetaMask
+    // Restart button: report error and restart 1do
     restartButton?.addEventListener('click', async () => {
       const shouldReport = reportCheckbox?.checked ?? false;
       await handleRestartAction(error, shouldReport);

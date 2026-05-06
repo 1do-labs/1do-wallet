@@ -41,8 +41,6 @@ const SEGMENT_CTA_MAPPING: Record<string, string> = {
   swaps: 'basicFunctionalityRequired_openSwapsPage',
   defi: 'basicFunctionalityRequired_openDefiPage',
   musd: 'basicFunctionalityRequired_openMusdConversionPage',
-  'nonevm-balance-check':
-    'basicFunctionalityRequired_openCreateSnapAccountPage',
   'shield-plan': 'basicFunctionalityRequired_openTransactionShieldPage',
   rewards: 'basicFunctionalityRequired_openRewardsPage',
   perps: 'basicFunctionalityRequired_openPerpsPage',
@@ -102,7 +100,7 @@ export const BasicFunctionalityOff = () => {
         <img
           className="metamask-basic-functionality-off-logo"
           alt="MetaMask logo"
-          src="./images/logo/metamask-fox.svg"
+          src="./images/logo/1do-mark.svg"
           style={LOGO_STYLE}
         />
         <Text

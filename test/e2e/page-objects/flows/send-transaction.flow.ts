@@ -1,6 +1,5 @@
 import HomePage from '../pages/home/homepage';
 import { Driver } from '../../webdriver/driver';
-import SnapSimpleKeyringPage from '../pages/snap-simple-keyring-page';
 import TransactionConfirmation from '../pages/confirmations/transaction-confirmation';
 import ActivityListPage from '../pages/home/activity-list';
 import { createInternalTransaction } from './transaction';
@@ -66,41 +65,6 @@ export const sendRedesignedTransactionToAccount = async ({
   // confirm transaction when user lands on confirm transaction screen
   const transactionConfirmationPage = new TransactionConfirmation(driver);
   await transactionConfirmationPage.clickFooterConfirmButton();
-};
-
-/**
- * This function initiates the steps required to send a transaction from snap account on homepage to final confirmation.
- *
- * @param params - An object containing the parameters.
- * @param params.driver - The webdriver instance.
- * @param params.recipientAddress - The recipient address.
- * @param params.amount - The amount of the asset to be sent in the transaction.
- * @param params.isSyncFlow - Indicates whether synchronous approval option is on for the snap. Defaults to true.
- * @param params.approveTransaction - Indicates whether the transaction should be approved. Defaults to true.
- */
-export const sendRedesignedTransactionWithSnapAccount = async ({
-  driver,
-  recipientAddress,
-  amount,
-  isSyncFlow = true,
-  approveTransaction = true,
-}: {
-  driver: Driver;
-  recipientAddress: string;
-  amount: string;
-  isSyncFlow?: boolean;
-  approveTransaction?: boolean;
-}): Promise<void> => {
-  await sendRedesignedTransactionToAddress({
-    driver,
-    recipientAddress,
-    amount,
-  });
-  if (!isSyncFlow) {
-    await new SnapSimpleKeyringPage(driver).approveRejectSnapAccountTransaction(
-      approveTransaction,
-    );
-  }
 };
 
 export const validateTransaction = async (driver: Driver, quantity: string) => {

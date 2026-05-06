@@ -1,8 +1,7 @@
 /**
- * Allowed values for default address scope: which chain namespace is used when
- * showing a single "default" address (e.g. in the account list hover or in Settings).
+ * Allowed values for default address scope in the EVM-only build.
  */
-export type DefaultAddressScope = 'eip155' | 'solana' | 'bip122' | 'tron';
+export type DefaultAddressScope = 'eip155';
 
 /**
  * Default address scope: which chain namespace is used when showing a single
@@ -13,9 +12,6 @@ export const DEFAULT_ADDRESS_OPTIONS: {
   messageKey: string;
 }[] = [
   { value: 'eip155', messageKey: 'ethereumAndEvms' },
-  { value: 'solana', messageKey: 'networkNameSolana' },
-  { value: 'bip122', messageKey: 'networkNameBitcoin' },
-  { value: 'tron', messageKey: 'networkNameTron' },
 ];
 
 /**

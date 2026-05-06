@@ -4,7 +4,6 @@ import type { BridgeHistoryItem } from '@metamask/bridge-status-controller';
 import {
   formatChainIdToCaip,
   formatChainIdToHex,
-  isNonEvmChainId,
 } from '@metamask/bridge-controller';
 import {
   Display,
@@ -51,12 +50,6 @@ import {
   getTransactionUrl,
   shortenTransactionId,
 } from '../multichain-transaction-details-modal/helpers';
-import { formatBlockExplorerTransactionUrl } from '../../../../shared/lib/multichain/networks';
-import {
-  MULTICHAIN_NETWORK_TO_NICKNAME,
-  MULTICHAIN_TOKEN_IMAGE_MAP,
-  MULTICHAIN_NETWORK_BLOCK_EXPLORER_FORMAT_URLS_MAP,
-} from '../../../../shared/constants/multichain/networks';
 import { CHAIN_ID_TO_NETWORK_IMAGE_URL_MAP } from '../../../../shared/constants/network';
 import { CHAINID_DEFAULT_BLOCK_EXPLORER_URL_MAP } from '../../../../shared/constants/common';
 import { NETWORK_TO_SHORT_NETWORK_NAME_MAP } from '../../../../shared/constants/bridge';
@@ -108,39 +101,14 @@ const MultichainBridgeTransactionDetailsModal = ({
     }
 
     try {
-      const caipChainId = formatChainIdToCaip(chainId);
-
-      let blockExplorerUrl = '';
-
-      if (isNonEvmChainId(chainId)) {
-        const blockExplorerUrls =
-          MULTICHAIN_NETWORK_BLOCK_EXPLORER_FORMAT_URLS_MAP[caipChainId];
-        if (blockExplorerUrls) {
-          blockExplorerUrl = formatBlockExplorerTransactionUrl(
-            blockExplorerUrls,
-            txHash.split(':').at(-1) ?? txHash,
-          );
-        }
-      } else {
-        // Handle EVM chains using MetaMask's predefined block explorer URLs
-        // Make sure chainId is in the correct format (0x-prefixed hex string)
-        const formattedChainId = chainId.startsWith('0x')
-          ? chainId
-          : `0x${Number(chainId).toString(16)}`;
-
-        // Use common mapping of chain IDs to block explorer URLs
-        const explorerBaseUrl =
-          CHAINID_DEFAULT_BLOCK_EXPLORER_URL_MAP[formattedChainId];
-
-        if (explorerBaseUrl) {
-          blockExplorerUrl = `${explorerBaseUrl}tx/${txHash}`;
-        } else {
-          // Fallback to Etherscan as a last resort
-          blockExplorerUrl = `https://etherscan.io/tx/${txHash}`;
-        }
-      }
-
-      return blockExplorerUrl;
+      const formattedChainId = chainId.startsWith('0x')
+        ? chainId
+        : formatChainIdToHex(formatChainIdToCaip(chainId));
+      const explorerBaseUrl =
+        CHAINID_DEFAULT_BLOCK_EXPLORER_URL_MAP[formattedChainId];
+      return explorerBaseUrl
+        ? `${explorerBaseUrl}tx/${txHash}`
+        : `https://etherscan.io/tx/${txHash}`;
     } catch (error) {
       console.error('Error generating block explorer URL:', error);
       return '';
@@ -177,13 +145,13 @@ const MultichainBridgeTransactionDetailsModal = ({
     nonEvmTransaction: transaction,
   });
 
-  // Get source network info from chain ID
-  const sourceNetworkNickname = srcNetwork?.chainId
-    ? MULTICHAIN_NETWORK_TO_NICKNAME[srcNetwork.chainId]
-    : undefined;
-  const sourceNetworkImage = srcNetwork?.chainId
-    ? MULTICHAIN_TOKEN_IMAGE_MAP[srcNetwork.chainId]
-    : undefined;
+  const sourceNetworkNickname = srcNetwork?.name;
+  const sourceNetworkImage =
+    srcNetwork?.isEvm && srcNetwork.chainId
+      ? CHAIN_ID_TO_NETWORK_IMAGE_URL_MAP[
+          formatChainIdToHex(srcNetwork.chainId)
+        ]
+      : undefined;
 
   return (
     <Modal
@@ -400,13 +368,11 @@ const MultichainBridgeTransactionDetailsModal = ({
                         : ''
                     }
                     src={
-                      destNetwork?.isEvm
+                      destNetwork?.isEvm && destNetwork.chainId
                         ? CHAIN_ID_TO_NETWORK_IMAGE_URL_MAP[
-                            formatChainIdToHex(destNetwork?.chainId)
+                            formatChainIdToHex(destNetwork.chainId)
                           ] || ''
-                        : (destNetwork?.chainId &&
-                            MULTICHAIN_TOKEN_IMAGE_MAP[destNetwork.chainId]) ||
-                          ''
+                        : ''
                     }
                     borderColor={BorderColor.backgroundDefault}
                   />

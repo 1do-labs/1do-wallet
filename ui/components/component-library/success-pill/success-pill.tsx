@@ -9,7 +9,7 @@ import type {
 
 /**
  * A pill-shaped label with success (green) styling.
- * Used for "Paid by MetaMask", "No network fee", and similar labels.
+ * Used for "Paid by 1do", "No network fee", and similar labels.
  */
 export const SuccessPill: SuccessPillComponent = React.forwardRef(
   // eslint-disable-next-line @typescript-eslint/naming-convention

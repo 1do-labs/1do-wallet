@@ -58,10 +58,6 @@ import {
 import { RootMessenger } from '../../lib/messenger';
 import { AppStateControllerGetStateAction } from '../../controllers/app-state-controller';
 import { SubscriptionServiceSubmitSubscriptionSponsorshipIntentAction } from '../../services/subscription/types';
-import {
-  InstitutionalSnapControllerBeforeCheckPendingTransactionHookAction,
-  InstitutionalSnapControllerPublishHookAction,
-} from '../../controllers/institutional-snap/InstitutionalSnapController-method-action-types';
 
 type AllowedActions = MessengerActions<TransactionControllerMessenger>;
 
@@ -115,8 +111,6 @@ type InitMessengerActions =
   | BridgeStatusControllerActions
   | CurrencyRateControllerActions
   | DelegationControllerSignDelegationAction
-  | InstitutionalSnapControllerPublishHookAction
-  | InstitutionalSnapControllerBeforeCheckPendingTransactionHookAction
   | KeyringControllerSignEip7702AuthorizationAction
   | KeyringControllerSignTypedMessageAction
   | NetworkControllerFindNetworkClientIdByChainIdAction
@@ -192,8 +186,6 @@ export function getTransactionControllerInitMessenger(
       'BridgeStatusController:submitTx',
       'CurrencyRateController:getState',
       'DelegationController:signDelegation',
-      'InstitutionalSnapController:beforeCheckPendingTransactionHook',
-      'InstitutionalSnapController:publishHook',
       'KeyringController:signEip7702Authorization',
       'KeyringController:signTypedMessage',
       'NetworkController:findNetworkClientIdByChainId',

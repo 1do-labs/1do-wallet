@@ -1,4 +1,3 @@
-import { SolScope } from '@metamask/keyring-api';
 import { renderHookWithProviderTyped } from '../../../../../test/lib/render-helpers-navigate';
 import { getAllEnabledNetworksForAllNamespaces } from '../../../../selectors';
 import { useNetworkManagerInitialTab } from './useNetworkManagerState';
@@ -22,13 +21,13 @@ describe('useNetworkManagerInitialTab() tests', () => {
   const testScenarios = [
     {
       scenario: 'all enabled networks are featured networks',
-      enabledNetworks: ['eip155:1', 'eip155:137', SolScope.Mainnet],
+      enabledNetworks: ['eip155:1', 'eip155:137'],
       expectedTab: 'networks',
     },
     {
       scenario:
         'all enabled networks are featured networks (with hex conversion)',
-      enabledNetworks: ['0x1', '0x89', SolScope.Mainnet],
+      enabledNetworks: ['0x1', '0x89'],
       expectedTab: 'networks',
     },
     {

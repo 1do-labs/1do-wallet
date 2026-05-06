@@ -20,7 +20,6 @@ import {
   resolveTransactionType,
   matchesApiTransaction,
   matchesLocalTransaction,
-  matchesNonEvmTransaction,
 } from './helpers';
 
 const ethToken: Token = {
@@ -292,48 +291,6 @@ describe('matchesLocalTransaction', () => {
         tokenAddress: '0xSomeToken',
       }),
     ).toBe(false);
-  });
-});
-
-describe('matchesNonEvmTransaction', () => {
-  it('matches when a fungible asset type matches the token address', () => {
-    const tx = {
-      from: [{ asset: { fungible: true, type: 'solana:101/token:0xABC' } }],
-      to: [],
-    } as unknown as import('@metamask/keyring-api').Transaction;
-    expect(
-      matchesNonEvmTransaction(tx, {
-        kind: 'token',
-        tokenAddress: 'solana:101/token:0xABC',
-      }),
-    ).toBe(true);
-    expect(
-      matchesNonEvmTransaction(tx, {
-        kind: 'token',
-        tokenAddress: '0xdeadbeef',
-      }),
-    ).toBe(false);
-  });
-
-  it('matches native scope via caipAssetType', () => {
-    const tx = {
-      from: [{ asset: { fungible: true, type: 'solana:mainnet/slip44:501' } }],
-      to: [],
-    } as unknown as import('@metamask/keyring-api').Transaction;
-    expect(
-      matchesNonEvmTransaction(tx, {
-        kind: 'native',
-        caipAssetType: 'solana:mainnet/slip44:501',
-      }),
-    ).toBe(true);
-  });
-
-  it('returns false for native scope without caipAssetType', () => {
-    const tx = {
-      from: [{ asset: { fungible: true, type: 'solana:mainnet/slip44:501' } }],
-      to: [],
-    } as unknown as import('@metamask/keyring-api').Transaction;
-    expect(matchesNonEvmTransaction(tx, { kind: 'native' })).toBe(false);
   });
 });
 

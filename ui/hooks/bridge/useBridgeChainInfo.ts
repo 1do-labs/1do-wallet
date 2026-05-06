@@ -6,14 +6,12 @@ import {
   formatChainIdToHex,
   getNativeAssetForChainId,
   isCrossChain,
-  isNonEvmChainId,
 } from '@metamask/bridge-controller';
 import { BridgeHistoryItem } from '@metamask/bridge-status-controller';
 import { CHAINID_DEFAULT_BLOCK_EXPLORER_URL_MAP } from '../../../shared/constants/common';
 import { TransactionViewModel } from '../../../shared/lib/multichain/types';
 import { type ChainInfo } from '../../pages/bridge/utils/tx-details';
 import { NETWORK_TO_SHORT_NETWORK_NAME_MAP } from '../../../shared/constants/bridge';
-import { MULTICHAIN_NETWORK_BLOCK_EXPLORER_FORMAT_URLS_MAP } from '../../../shared/constants/multichain/networks';
 import { selectBridgeHistoryItemByHash } from '../../ducks/bridge-status/selectors';
 import { type MetaMaskReduxState } from '../../selectors';
 
@@ -83,10 +81,7 @@ export default function useBridgeChainInfo({
     return { srcNetwork: undefined, destNetwork: undefined };
   }
 
-  // Source chain info
-  const normalizedSrcChainId = isNonEvmChainId(srcChainId)
-    ? srcChainIdInCaip
-    : formatChainIdToHex(srcChainId);
+  const normalizedSrcChainId = formatChainIdToHex(srcChainId);
 
   const commonSrcNetworkFields = {
     chainId: srcChainIdInCaip,
@@ -97,30 +92,17 @@ export default function useBridgeChainInfo({
 
   const srcNetwork = {
     ...commonSrcNetworkFields,
-    ...(isNonEvmChainId(srcChainIdInCaip)
-      ? ({
-          isEvm: false,
-          nativeCurrency: srcNativeAsset?.assetId,
-          blockExplorerUrl:
-            MULTICHAIN_NETWORK_BLOCK_EXPLORER_FORMAT_URLS_MAP[srcChainIdInCaip]
-              ?.url,
-        } as const)
-      : {
-          defaultBlockExplorerUrlIndex: 0,
-          blockExplorerUrls: [
-            CHAINID_DEFAULT_BLOCK_EXPLORER_URL_MAP[normalizedSrcChainId],
-          ],
-          defaultRpcEndpointIndex: 0,
-          rpcEndpoints: [],
-          nativeCurrency: srcNativeAsset?.symbol,
-          isEvm: true as const,
-        }),
+    defaultBlockExplorerUrlIndex: 0,
+    blockExplorerUrls: [
+      CHAINID_DEFAULT_BLOCK_EXPLORER_URL_MAP[normalizedSrcChainId],
+    ],
+    defaultRpcEndpointIndex: 0,
+    rpcEndpoints: [],
+    nativeCurrency: srcNativeAsset?.symbol,
+    isEvm: true as const,
   };
 
-  // Dest chain info
-  const normalizedDestChainId = isNonEvmChainId(destChainId)
-    ? destChainIdInCaip
-    : formatChainIdToHex(destChainId);
+  const normalizedDestChainId = formatChainIdToHex(destChainId);
 
   const commonDestNetworkFields = {
     chainId: destChainIdInCaip,
@@ -131,24 +113,14 @@ export default function useBridgeChainInfo({
 
   const destNetwork = {
     ...commonDestNetworkFields,
-    ...(isNonEvmChainId(destChainIdInCaip)
-      ? ({
-          isEvm: false,
-          nativeCurrency: destNativeAsset?.assetId,
-          blockExplorerUrl:
-            MULTICHAIN_NETWORK_BLOCK_EXPLORER_FORMAT_URLS_MAP[destChainIdInCaip]
-              ?.url,
-        } as const)
-      : {
-          defaultBlockExplorerUrlIndex: 0,
-          blockExplorerUrls: [
-            CHAINID_DEFAULT_BLOCK_EXPLORER_URL_MAP[normalizedDestChainId],
-          ],
-          defaultRpcEndpointIndex: 0,
-          rpcEndpoints: [],
-          nativeCurrency: destNativeAsset?.symbol,
-          isEvm: true as const,
-        }),
+    defaultBlockExplorerUrlIndex: 0,
+    blockExplorerUrls: [
+      CHAINID_DEFAULT_BLOCK_EXPLORER_URL_MAP[normalizedDestChainId],
+    ],
+    defaultRpcEndpointIndex: 0,
+    rpcEndpoints: [],
+    nativeCurrency: destNativeAsset?.symbol,
+    isEvm: true as const,
   };
 
   return {

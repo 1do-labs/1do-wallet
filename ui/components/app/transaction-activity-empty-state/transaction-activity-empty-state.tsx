@@ -10,9 +10,6 @@ import { getCurrentChainId } from '../../../../shared/lib/selectors/networks';
 import { MetaMetricsSwapsEventSource } from '../../../../shared/constants/metametrics';
 import useBridging from '../../../hooks/bridge/useBridging';
 import { ThemeType } from '../../../../shared/constants/preferences';
-import { getMultichainNetwork } from '../../../selectors/multichain';
-import { useMultichainSelector } from '../../../hooks/useMultichainSelector';
-import { MultichainNetworks } from '../../../../shared/constants/multichain/networks';
 import { getSelectedInternalAccount } from '../../../selectors/accounts';
 
 export type TransactionActivityEmptyStateProps = {
@@ -35,11 +32,6 @@ export const TransactionActivityEmptyState: React.FC<
   const chainId = useSelector(getCurrentChainId);
   const isSwapsChain = useSelector((state) => getIsSwapsChain(state, chainId));
 
-  const { chainId: multichainChainId } = useMultichainSelector(
-    getMultichainNetwork,
-    account,
-  );
-
   const { openBridgeExperience } = useBridging();
 
   const activityIcon =
@@ -56,8 +48,7 @@ export const TransactionActivityEmptyState: React.FC<
 
   // Determine if swap button should be enabled
   const isSwapButtonEnabled =
-    multichainChainId === MultichainNetworks.SOLANA ||
-    (isSwapsChain && isSigningEnabled && isExternalServicesEnabled);
+    isSwapsChain && isSigningEnabled && isExternalServicesEnabled;
 
   return (
     <TabEmptyState

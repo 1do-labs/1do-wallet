@@ -27,7 +27,7 @@
     "message": "Трябва да изберете акаунт!"
   },
   "addAcquiredTokens": {
-    "message": "Добавете жетоните, които сте придобили с помощта на MetaMask"
+    "message": "Добавете жетоните, които сте придобили с помощта на 1do"
   },
   "addAlias": {
     "message": "Добавете псевдоним"
@@ -52,15 +52,15 @@
     "description": "The description of the application"
   },
   "appName": {
-    "message": "MetaMask",
+    "message": "1do",
     "description": "The name of the application"
   },
   "appNameBeta": {
-    "message": "MetaMask Beta",
+    "message": "1do Beta",
     "description": "The name of the application (Beta)"
   },
   "appNameFlask": {
-    "message": "MetaMask Flask",
+    "message": "1do Flask",
     "description": "The name of the application (Flask)"
   },
   "approve": {
@@ -79,7 +79,7 @@
     "message": "Таймер за автоматично излизане (минути)"
   },
   "autoLockTimeLimitDescription": {
-    "message": "Задайте времето на неактивност в минути, преди MetaMask автоматично да Ви отпише от акаунта"
+    "message": "Задайте времето на неактивност в минути, преди 1do автоматично да Ви отпише от акаунта"
   },
   "average": {
     "message": "Средно аритметично"
@@ -88,7 +88,7 @@
     "message": "Назад"
   },
   "backupApprovalInfo": {
-    "message": "Този секретен код е необходим за възстановяване на портфейла ви, в случай че загубите устройството си, забравите паролата си, трябва да инсталирате отново MetaMask или искате да получите достъп до портфейла си на друго устройство."
+    "message": "Този секретен код е необходим за възстановяване на портфейла ви, в случай че загубите устройството си, забравите паролата си, трябва да инсталирате отново 1do или искате да получите достъп до портфейла си на друго устройство."
   },
   "backupApprovalNotice": {
     "message": "Раправете резервно копие на вашия Secret Recovery код, за да запазите портфейла и средствата си."
@@ -128,7 +128,7 @@
     "message": "Идентификатор на веригата"
   },
   "chromeRequiredForHardwareWallets": {
-    "message": "За да се свържете с хардуерния си портфейл, трябва да използвате MetaMask в Google Chrome."
+    "message": "За да се свържете с хардуерния си портфейл, трябва да използвате 1do в Google Chrome."
   },
   "close": {
     "message": "Затваряне"
@@ -270,7 +270,7 @@
     "message": "Свържете хардуерен портфейл"
   },
   "hardwareWalletsMsg": {
-    "message": "Изберете хардуерен портфейл, който искате да използвате с MetaMask"
+    "message": "Изберете хардуерен портфейл, който искате да използвате с 1do"
   },
   "here": {
     "message": "тук",
@@ -367,7 +367,7 @@
     "message": "Съобщение"
   },
   "metamaskVersion": {
-    "message": "Версия на MetaMask"
+    "message": "Версия на 1do"
   },
   "mustSelectOne": {
     "message": "Трябва да изберете поне 1 жетон."
@@ -426,10 +426,10 @@
     "message": "Произход"
   },
   "participateInMetaMetrics": {
-    "message": "Участвайте в MetaMetrics"
+    "message": "Участвайте в 1do Metrics"
   },
   "participateInMetaMetricsDescription": {
-    "message": "Участвайте в MetaMetrics, за да ни помогнете да подобрим MetaMask"
+    "message": "Участвайте в 1do Metrics, за да ни помогнете да подобрим 1do"
   },
   "password": {
     "message": "Парола"

@@ -41,7 +41,6 @@ export function getRewardsControllerMessenger(
       'RewardsDataService:getSeasonMetadata',
       'RewardsDataService:getDiscoverSeasons',
       'RewardsDataService:generateChallenge',
-      'SnapController:handleRequest',
     ],
     events: [
       'AccountTreeController:selectedAccountGroupChange',

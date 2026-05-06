@@ -32,7 +32,6 @@ export const NameControllerInit: MessengerClientInitFunction<
   getMessengerClient,
 }) => {
   const ensController = getMessengerClient('EnsController');
-  const snapsNameProvider = getMessengerClient('SnapsNameProvider');
 
   const isExternalNameSourcesEnabled = () =>
     initMessenger.call('PreferencesController:getState').useExternalNameSources;
@@ -52,7 +51,6 @@ export const NameControllerInit: MessengerClientInitFunction<
       new EtherscanNameProvider({ isEnabled: isExternalNameSourcesEnabled }),
       new TokenNameProvider({ isEnabled: isExternalNameSourcesEnabled }),
       new LensNameProvider({ isEnabled: isExternalNameSourcesEnabled }),
-      snapsNameProvider,
     ],
   });
 

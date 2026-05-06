@@ -6,7 +6,7 @@ import configureStore from '../../../../store/store';
 import mockState from '../../../../../test/data/mock-state.json';
 import { createMockInternalAccount } from '../../../../../test/jest/mocks';
 import { AccountGroupWithInternalAccounts } from '../../../../selectors/multichain-accounts/account-tree.types';
-import { EvmAndMultichainNetworkConfigurationsWithCaipChainId } from '../../../../selectors/selectors.types';
+import { EvmNetworkConfigurationWithCaipChainId } from '../../../../selectors/selectors.types';
 import { getIconSeedAddressesByAccountGroups } from '../../../../selectors/multichain-accounts/account-tree';
 import {
   BNB_DISPLAY_NAME,
@@ -111,7 +111,7 @@ describe('MultichainSiteCellTooltip', () => {
     },
   ] as unknown as AccountGroupWithInternalAccounts[];
 
-  const mockNetworks: EvmAndMultichainNetworkConfigurationsWithCaipChainId[] = [
+  const mockNetworks: EvmNetworkConfigurationWithCaipChainId[] = [
     {
       name: MAINNET_DISPLAY_NAME,
       chainId: '0x1',
@@ -289,7 +289,7 @@ describe('MultichainSiteCellTooltip', () => {
   });
 
   it('shows overflow indicator for many networks in avatar group', () => {
-    const manyNetworks: EvmAndMultichainNetworkConfigurationsWithCaipChainId[] =
+    const manyNetworks: EvmNetworkConfigurationWithCaipChainId[] =
       Array.from({ length: 10 }, (_, index) => ({
         name: `Network ${index + 1}`,
         chainId: `0x${index + 1}`,

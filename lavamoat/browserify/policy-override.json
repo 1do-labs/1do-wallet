@@ -17,6 +17,31 @@
         "@metamask/utils": true
       }
     },
+    "@metamask/bridge-status-controller": {
+      "packages": {
+        "@metamask/transaction-controller": true
+      }
+    },
+    "@metamask/shield-controller": {
+      "packages": {
+        "@metamask/transaction-controller": true
+      }
+    },
+    "@metamask/smart-transactions-controller": {
+      "packages": {
+        "@metamask/transaction-controller": true
+      }
+    },
+    "@metamask/transaction-pay-controller": {
+      "packages": {
+        "@metamask/transaction-controller": true
+      }
+    },
+    "@metamask/user-operation-controller": {
+      "packages": {
+        "@metamask/transaction-controller": true
+      }
+    },
     "lodash": {
       "globals": {
         "setTimeout": true,

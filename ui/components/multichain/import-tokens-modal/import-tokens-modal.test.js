@@ -32,13 +32,6 @@ jest.mock('../../../../shared/lib/assets-unify-state/remote-feature-flag', () =>
 jest.mock('../../../hooks/bridge/useTokensWithFiltering');
 jest.mock('@metamask/bridge-controller');
 jest.mock('../../../../shared/lib/asset-utils');
-jest.mock('../../../selectors/multichain-accounts/account-tree', () => ({
-  ...jest.requireActual('../../../selectors/multichain-accounts/account-tree'),
-  getInternalAccountBySelectedAccountGroupAndCaip: jest.fn(() => ({
-    id: 'mock-account-id',
-    address: '0xMockAddress',
-  })),
-}));
 
 const {
   useTokensWithFiltering,
@@ -356,8 +349,7 @@ describe('ImportTokensModal', () => {
       const selectedAccountAddress =
         '0x0dcd5d886577d5081b0c52e242ef29e70be3e7bc';
       const { getByText, getByTestId, queryByText } = render({
-        isEvmSelected: false,
-        selectedMultichainNetworkChainId: 'eip155:1',
+        selectedNetworkClientId: 'testNetworkConfigurationId',
         allTokens: {
           [CHAIN_IDS.GOERLI]: {
             [selectedAccountAddress]: [{ address: tokenAddress }],

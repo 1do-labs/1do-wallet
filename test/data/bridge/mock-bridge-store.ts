@@ -730,9 +730,6 @@ export const createBridgeMockStore = ({
       ...bridgeStateOverrides,
       ...bridgeStatusStateOverrides,
     },
-    DNS: {
-      resolutions: [],
-    },
     ...stateOverrides,
     // TODO fix types
   } as unknown as BridgeAppState;

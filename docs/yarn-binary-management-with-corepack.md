@@ -1,10 +1,10 @@
 # Yarn Binary Management
 
-This document describes how to manage yarn versions for the MetaMask extension project using native Corepack commands, ensuring consistent versions across development and CI/CD environments.
+This document describes how to manage yarn versions for the 1do Wallet extension project using native Corepack commands, ensuring consistent versions across development and CI/CD environments.
 
 ## Overview
 
-The MetaMask extension uses native Corepack commands to manage yarn versions. This system:
+The 1do Wallet extension uses native Corepack commands to manage yarn versions. This system:
 
 - **Reads version from package.json** - Single source of truth via `packageManager` field
 - **Uses native corepack commands** - Direct use of built-in `corepack pack` and `corepack hydrate`

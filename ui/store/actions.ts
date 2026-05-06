@@ -13,7 +13,6 @@ import { providerErrors } from '@metamask/rpc-errors';
 import type { DataWithOptionalCause } from '@metamask/rpc-errors';
 import {
   CaipAccountId,
-  type CaipAssetType,
   type CaipChainId,
   type Hex,
   type Json,
@@ -46,13 +45,11 @@ import {
   NetworkClientId,
   NetworkConfiguration,
 } from '@metamask/network-controller';
-import { InterfaceState } from '@metamask/snaps-sdk';
 import { KeyringObject, KeyringTypes } from '@metamask/keyring-controller';
 import type { InternalAccount } from '@metamask/keyring-internal-api';
 import type { NotificationServicesController } from '@metamask/notification-services-controller';
 import { UserProfileLineage } from '@metamask/profile-sync-controller/sdk';
 import { Immer, Patch } from 'immer';
-import { HandlerType } from '@metamask/snaps-utils';
 import {
   GetAppNameAndVersionResponse,
   AppConfigurationResponse,
@@ -111,8 +108,6 @@ import {
   getCurrentNetworkTransactions,
   getIsSigningQRHardwareTransaction,
   getIsHardwareWalletErrorModalVisible,
-  getPermissionSubjects,
-  getFirstSnapInstallOrUpdateRequest,
   getInternalAccountByAddress,
   getSelectedInternalAccount,
   getMetaMaskHdKeyrings,
@@ -2151,46 +2146,6 @@ function updateTransactionParams(txId: string, txParams: TransactionParams) {
   };
 }
 
-export function disableSnap(
-  snapId: string,
-): ThunkAction<void, MetaMaskReduxState, unknown, AnyAction> {
-  // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31879
-  // eslint-disable-next-line @typescript-eslint/no-misused-promises
-  return async (dispatch: MetaMaskReduxDispatch) => {
-    await submitRequestToBackground('disableSnap', [snapId]);
-    await forceUpdateMetamaskState(dispatch);
-  };
-}
-
-export function enableSnap(
-  snapId: string,
-): ThunkAction<void, MetaMaskReduxState, unknown, AnyAction> {
-  // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31879
-  // eslint-disable-next-line @typescript-eslint/no-misused-promises
-  return async (dispatch: MetaMaskReduxDispatch) => {
-    await submitRequestToBackground('enableSnap', [snapId]);
-    await forceUpdateMetamaskState(dispatch);
-  };
-}
-
-export function updateSnap(
-  origin: string,
-  snap: { [snapId: string]: { version: string } },
-): ThunkAction<void, MetaMaskReduxState, unknown, AnyAction> {
-  // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31879
-  // eslint-disable-next-line @typescript-eslint/no-misused-promises
-  return async (dispatch: MetaMaskReduxDispatch, getState) => {
-    await submitRequestToBackground('updateSnap', [origin, snap]);
-    await forceUpdateMetamaskState(dispatch);
-
-    const state = getState();
-
-    const approval = getFirstSnapInstallOrUpdateRequest(state);
-
-    return approval?.metadata.id;
-  };
-}
-
 export async function getPhishingResult(website: string) {
   return await submitRequestToBackground('getPhishingResult', [website]);
 }
@@ -2199,43 +2154,6 @@ export async function scanUrlForPhishing(
   origin: string,
 ): Promise<PhishingDetectionScanResult | null> {
   return await submitRequestToBackground('scanUrlForPhishing', [origin]);
-}
-
-// TODO: Clean this up.
-export function removeSnap(
-  snapId: string,
-): ThunkAction<Promise<void>, MetaMaskReduxState, unknown, AnyAction> {
-  return async (dispatch: MetaMaskReduxDispatch, getState) => {
-    dispatch(showLoadingIndication());
-    const subjects = getPermissionSubjects(getState()) as {
-      // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31973
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      [k: string]: { permissions: Record<string, any> };
-    };
-
-    const isAccountsSnap =
-      subjects[snapId]?.permissions?.snap_manageAccounts !== undefined;
-
-    try {
-      if (isAccountsSnap) {
-        const addresses: string[] = await submitRequestToBackground(
-          'getAccountsBySnapId',
-          [snapId],
-        );
-        for (const address of addresses) {
-          await submitRequestToBackground('removeAccount', [address]);
-        }
-      }
-
-      await submitRequestToBackground('removeSnap', [snapId]);
-      await forceUpdateMetamaskState(dispatch);
-    } catch (error) {
-      dispatch(displayWarning(error));
-      throw error;
-    } finally {
-      dispatch(hideLoadingIndication());
-    }
-  };
 }
 
 export async function handleSnapRequest<
@@ -2247,21 +2165,6 @@ export async function handleSnapRequest<
   request: JsonRpcRequest<Params>;
 }): Promise<unknown> {
   return submitRequestToBackground('handleSnapRequest', [args]);
-}
-
-export function revokeDynamicSnapPermissions(
-  snapId: string,
-  permissionNames: string[],
-): ThunkAction<void, MetaMaskReduxState, unknown, AnyAction> {
-  // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31879
-  // eslint-disable-next-line @typescript-eslint/no-misused-promises
-  return async (dispatch: MetaMaskReduxDispatch) => {
-    await submitRequestToBackground('revokeDynamicSnapPermissions', [
-      snapId,
-      permissionNames,
-    ]);
-    await forceUpdateMetamaskState(dispatch);
-  };
 }
 
 export function deleteExpiredNotifications(): ThunkAction<
@@ -2295,30 +2198,6 @@ export function deleteExpiredNotifications(): ThunkAction<
       ]);
       await forceUpdateMetamaskState(dispatch);
     }
-  };
-}
-
-/**
- * Disconnects a given origin from a snap.
- *
- * This revokes the permission granted to the origin
- * that provides the capability to communicate with a snap.
- *
- * @param origin - The origin.
- * @param snapId - The snap ID.
- */
-export function disconnectOriginFromSnap(
-  origin: string,
-  snapId: string,
-): ThunkAction<void, MetaMaskReduxState, unknown, AnyAction> {
-  // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31879
-  // eslint-disable-next-line @typescript-eslint/no-misused-promises
-  return async (dispatch: MetaMaskReduxDispatch) => {
-    await submitRequestToBackground('disconnectOriginFromSnap', [
-      origin,
-      snapId,
-    ]);
-    await forceUpdateMetamaskState(dispatch);
   };
 }
 
@@ -5866,18 +5745,6 @@ export function setOverrideContentSecurityPolicyHeader(
   };
 }
 
-export function setManageInstitutionalWallets(
-  value: boolean,
-): ThunkAction<void, MetaMaskReduxState, unknown, AnyAction> {
-  // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31879
-  // eslint-disable-next-line @typescript-eslint/no-misused-promises
-  return async (dispatch: MetaMaskReduxDispatch) => {
-    dispatch(showLoadingIndication());
-    await submitRequestToBackground('setManageInstitutionalWallets', [value]);
-    dispatch(hideLoadingIndication());
-  };
-}
-
 export function getRpcMethodPreferences(): ThunkAction<
   void,
   MetaMaskReduxState,
@@ -6850,57 +6717,6 @@ export function setSecurityAlertsEnabled(val: boolean): void {
   }
 }
 
-export function setWatchEthereumAccountEnabled(
-  value: boolean,
-): ThunkAction<void, MetaMaskReduxState, unknown, AnyAction> {
-  return async () => {
-    try {
-      await submitRequestToBackground('setWatchEthereumAccountEnabled', [
-        value,
-      ]);
-    } catch (error) {
-      logErrorWithMessage(error);
-    }
-  };
-}
-
-export function setAddSnapAccountEnabled(
-  value: boolean,
-): ThunkAction<void, MetaMaskReduxState, unknown, AnyAction> {
-  return async () => {
-    try {
-      await submitRequestToBackground('setAddSnapAccountEnabled', [value]);
-    } catch (error) {
-      logErrorWithMessage(error);
-    }
-  };
-}
-
-export function showKeyringSnapRemovalModal(payload: {
-  snapName: string;
-  result: 'success' | 'failed';
-}) {
-  return {
-    type: actionConstants.SHOW_KEYRING_SNAP_REMOVAL_RESULT,
-    payload,
-  };
-}
-
-export function hideKeyringRemovalResultModal() {
-  return {
-    type: actionConstants.HIDE_KEYRING_SNAP_REMOVAL_RESULT,
-  };
-}
-
-export async function getSnapAccountsById(snapId: string): Promise<string[]> {
-  const addresses: string[] = await submitRequestToBackground(
-    'getAccountsBySnapId',
-    [snapId],
-  );
-
-  return addresses;
-}
-
 export function setUseExternalNameSources(val: boolean): void {
   try {
     submitRequestToBackground('setUseExternalNameSources', [val]);
@@ -7252,64 +7068,6 @@ export async function captureTestBackgroundError(
   message: string,
 ): Promise<void> {
   await submitRequestToBackground('captureTestError', [message]);
-}
-
-/**
- * Set status of popover warning for the first snap installation.
- *
- * @param shown - True if popover has been shown.
- * @returns Promise Resolved on successfully submitted background request.
- */
-export function setSnapsInstallPrivacyWarningShownStatus(shown: boolean) {
-  return async () => {
-    await submitRequestToBackground(
-      'setSnapsInstallPrivacyWarningShownStatus',
-      [shown],
-    );
-  };
-}
-
-/**
- * Update the state of a given Snap interface.
- *
- * @param id - The Snap interface ID.
- * @param state - The interface state.
- * @returns Promise Resolved on successfully submitted background request.
- */
-export function updateInterfaceState(
-  id: string,
-  state: InterfaceState,
-): ThunkAction<void, MetaMaskReduxState, unknown, AnyAction> {
-  return (async (dispatch: MetaMaskReduxDispatch) => {
-    await submitRequestToBackground<void>('updateInterfaceState', [id, state]);
-    await forceUpdateMetamaskState(dispatch);
-
-    // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31973
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  }) as any;
-}
-
-/**
- * Delete the Snap interface from state.
- *
- * @param id - The Snap interface ID.
- * @returns Promise Resolved on successfully submitted background request.
- */
-export function deleteInterface(
-  id: string,
-): ThunkAction<void, MetaMaskReduxState, unknown, AnyAction> {
-  return (async (dispatch: MetaMaskReduxDispatch) => {
-    await submitRequestToBackground<void>('deleteInterface', [id]);
-    await forceUpdateMetamaskState(dispatch);
-
-    // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31973
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  }) as any;
-}
-export async function setSnapsAddSnapAccountModalDismissed() {
-  await submitRequestToBackground('setSnapsAddSnapAccountModalDismissed', [
-    true,
-  ]);
 }
 
 /**
@@ -7918,45 +7676,6 @@ function applyPatches(
   immer.setAutoFreeze(false);
 
   return immer.applyPatches(oldState, patches);
-}
-
-export async function sendMultichainTransaction(
-  snapId: string,
-  {
-    account,
-    scope,
-    assetType,
-  }: {
-    account: string;
-    scope: string;
-    assetType?: CaipAssetType;
-  },
-) {
-  await handleSnapRequest({
-    snapId,
-    origin: 'metamask',
-    handler: HandlerType.OnRpcRequest,
-    request: {
-      method: 'startSendTransactionFlow',
-      params: {
-        account,
-        scope,
-        assetId: assetType, // The Solana snap names the parameter `assetId` while it is in fact an `assetType`
-      },
-    },
-  });
-}
-
-export async function createSnapAccount(
-  snapId: SnapId,
-  options: Record<string, Json>,
-  internalOptions?: SnapKeyringInternalOptions,
-): Promise<InternalAccount> {
-  return await submitRequestToBackground<InternalAccount>('createSnapAccount', [
-    snapId,
-    options,
-    internalOptions,
-  ]);
 }
 
 export async function getCode(address: Hex, networkClientId: string) {

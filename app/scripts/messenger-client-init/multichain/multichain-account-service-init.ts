@@ -1,9 +1,4 @@
-import {
-  MultichainAccountService,
-  SOL_ACCOUNT_PROVIDER_NAME,
-  TRX_ACCOUNT_PROVIDER_NAME,
-  BTC_ACCOUNT_PROVIDER_NAME,
-} from '@metamask/multichain-account-service';
+import { MultichainAccountService } from '@metamask/multichain-account-service';
 import { MessengerClientInitFunction } from '../types';
 import {
   MultichainAccountServiceMessenger,
@@ -26,39 +21,9 @@ export const MultichainAccountServiceInit: MessengerClientInitFunction<
   MultichainAccountServiceMessenger,
   MultichainAccountServiceInitMessenger
 > = ({ controllerMessenger, initMessenger, ensureOnboardingComplete }) => {
-  const snapAccountProviderConfig = {
-    // READ THIS CAREFULLY:
-    // We are using 1 to prevent any concurrent `keyring_createAccount` requests. This ensures
-    // we prevent any desync between Snap's accounts and Metamask's accounts.
-    maxConcurrency: 1,
-    // Re-use the default config for the rest:
-    discovery: {
-      timeoutMs: 2000,
-      maxAttempts: 3,
-      backOffMs: 1000,
-    },
-    createAccounts: {
-      timeoutMs: 3000,
-      batched: false,
-    },
-    resyncAccounts: {
-      autoRemoveExtraSnapAccounts: false,
-    },
-  };
-
   const messengerClient = new MultichainAccountService({
     messenger: controllerMessenger,
-    providerConfigs: {
-      [SOL_ACCOUNT_PROVIDER_NAME]: {
-        ...snapAccountProviderConfig,
-        createAccounts: {
-          ...snapAccountProviderConfig.createAccounts,
-          batched: true,
-        },
-      },
-      [BTC_ACCOUNT_PROVIDER_NAME]: snapAccountProviderConfig,
-      [TRX_ACCOUNT_PROVIDER_NAME]: snapAccountProviderConfig,
-    },
+    providerConfigs: {},
     config: {
       // @ts-expect-error Controller uses string for names rather than enum
       trace,

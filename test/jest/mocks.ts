@@ -18,7 +18,15 @@ import { Json } from '@metamask/utils';
 import { MetaMaskReduxState } from '../../ui/store/store';
 import mockState from '../data/mock-state.json';
 import { isBtcMainnetAddress } from '../../shared/lib/multichain/accounts';
-import { MultichainNetworks } from '../../shared/constants/multichain/networks';
+
+const BITCOIN_MAINNET_SCOPE = 'bip122:000000000019d6689c085ae165831e93';
+const BITCOIN_TESTNET_SCOPE = 'bip122:000000000933ea01ad0ee984209779ba';
+const SOLANA_MAINNET_SCOPE = 'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp';
+const SOLANA_TESTNET_SCOPE = 'solana:4uhcVJyU9pJkvQyS88uRDiswHXSCkY3z';
+const SOLANA_DEVNET_SCOPE = 'solana:EtWTRABZaYq6iMfeYKouRu166VU2xqa1';
+const TRON_MAINNET_SCOPE = 'tron:0x2b6653dc';
+const TRON_SHASTA_SCOPE = 'tron:0x94a9059e';
+const TRON_NILE_SCOPE = 'tron:0xcd8690dc';
 
 export type MockState = typeof mockState;
 
@@ -188,26 +196,18 @@ export function createMockInternalAccount({
 
       scopes = [
         isMainnet
-          ? MultichainNetworks.BITCOIN
-          : MultichainNetworks.BITCOIN_TESTNET,
+          ? BITCOIN_MAINNET_SCOPE
+          : BITCOIN_TESTNET_SCOPE,
       ];
       methods = Object.values(BtcMethod);
       break;
     }
     case SolAccountType.DataAccount:
-      scopes = [
-        MultichainNetworks.SOLANA,
-        MultichainNetworks.SOLANA_TESTNET,
-        MultichainNetworks.SOLANA_DEVNET,
-      ];
+      scopes = [SOLANA_MAINNET_SCOPE, SOLANA_TESTNET_SCOPE, SOLANA_DEVNET_SCOPE];
       methods = [SolMethod.SendAndConfirmTransaction];
       break;
     case TrxAccountType.Eoa:
-      scopes = [
-        MultichainNetworks.TRON,
-        MultichainNetworks.TRON_SHASTA,
-        MultichainNetworks.TRON_NILE,
-      ];
+      scopes = [TRON_MAINNET_SCOPE, TRON_SHASTA_SCOPE, TRON_NILE_SCOPE];
       methods = [TrxMethod.SignMessageV2];
       break;
     default:

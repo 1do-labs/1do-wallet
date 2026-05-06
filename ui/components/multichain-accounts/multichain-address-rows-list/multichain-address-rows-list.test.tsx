@@ -21,9 +21,6 @@ const WALLET_ID_MOCK = 'entropy:01K437Z7EJ0VCMFDE9TQKRV60A';
 const GROUP_ID_MOCK = `${WALLET_ID_MOCK}/0`;
 
 const ACCOUNT_EVM_ID_MOCK = 'account-evm-id';
-const ACCOUNT_BITCOIN_ID_MOCK = 'account-bitcoin-id';
-const ACCOUNT_SOLANA_ID_MOCK = 'account-solana-id';
-const ACCOUNT_TRON_ID_MOCK = 'account-tron-id';
 
 const INTERNAL_ACCOUNTS_MOCK: Record<string, InternalAccount> = {
   [ACCOUNT_EVM_ID_MOCK]: {
@@ -39,45 +36,6 @@ const INTERNAL_ACCOUNTS_MOCK: Record<string, InternalAccount> = {
     type: 'eip155:eoa',
     scopes: ['eip155:0'], // EOA account - will be spread across all EVM networks
   },
-  [ACCOUNT_BITCOIN_ID_MOCK]: {
-    id: ACCOUNT_BITCOIN_ID_MOCK,
-    address: 'bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh',
-    metadata: {
-      name: 'Bitcoin Account',
-      importTime: Date.now(),
-      keyring: { type: 'Snap Keyring' },
-    },
-    options: {},
-    methods: [],
-    type: 'bip122:p2wpkh',
-    scopes: ['bip122:000000000019d6689c085ae165831e93'],
-  },
-  [ACCOUNT_SOLANA_ID_MOCK]: {
-    id: ACCOUNT_SOLANA_ID_MOCK,
-    address: 'DRpbCBMxVnDK7maPM5tGv6MvB3v1sRMC86PZ8okm21hy',
-    metadata: {
-      name: 'Solana Account',
-      importTime: Date.now(),
-      keyring: { type: 'Snap Keyring' },
-    },
-    options: {},
-    methods: [],
-    type: 'solana:data-account',
-    scopes: ['solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp'],
-  },
-  [ACCOUNT_TRON_ID_MOCK]: {
-    id: ACCOUNT_TRON_ID_MOCK,
-    address: 'TN3W4H6rK2ce4vX9YnFQHwKENnHjoxb3m9',
-    metadata: {
-      name: 'Tron Account',
-      importTime: Date.now(),
-      keyring: { type: 'Snap Keyring' },
-    },
-    options: {},
-    methods: [],
-    type: 'tron:eoa',
-    scopes: ['tron:0x2b6653dc'],
-  },
 };
 
 const ACCOUNT_TREE_MOCK = {
@@ -91,12 +49,7 @@ const ACCOUNT_TREE_MOCK = {
           type: 'multichain-account',
           id: GROUP_ID_MOCK,
           metadata: {},
-          accounts: [
-            ACCOUNT_EVM_ID_MOCK,
-            ACCOUNT_BITCOIN_ID_MOCK,
-            ACCOUNT_SOLANA_ID_MOCK,
-            ACCOUNT_TRON_ID_MOCK,
-          ],
+          accounts: [ACCOUNT_EVM_ID_MOCK],
         },
       },
     },
@@ -223,25 +176,6 @@ const createMockState = () => ({
         isEvm: true,
         nativeCurrency: 'ETH',
       },
-      // Non-EVM networks
-      'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp': {
-        chainId: 'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp',
-        name: 'Solana',
-        isEvm: false,
-        nativeCurrency: 'SOL',
-      },
-      'bip122:000000000019d6689c085ae165831e93': {
-        chainId: 'bip122:000000000019d6689c085ae165831e93',
-        name: 'Bitcoin',
-        isEvm: false,
-        nativeCurrency: 'BTC',
-      },
-      'tron:0x2b6653dc': {
-        chainId: 'tron:0x2b6653dc',
-        name: 'Tron',
-        isEvm: false,
-        nativeCurrency: 'TRX',
-      },
     },
     // Current provider config for EVM
     providerConfig: {
@@ -266,15 +200,6 @@ const createMockState = () => ({
         '0xa4b1': true,
         '0xaa36a7': true,
         '0xe708': true,
-      },
-      solana: {
-        'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp': true,
-      },
-      bip122: {
-        '000000000019d6689c085ae165831e93': true,
-      },
-      tron: {
-        '0x2b6653dc': true,
       },
     },
   },
@@ -410,30 +335,11 @@ describe('MultichainAddressRowsList', () => {
       const ethereumIndex = networkNamesText.findIndex((name) =>
         name?.includes('Ethereum'),
       );
-      const bitcoinIndex = networkNamesText.findIndex((name) =>
-        name?.includes('Bitcoin'),
-      );
-      const solanaIndex = networkNamesText.findIndex((name) =>
-        name?.includes('Solana'),
-      );
-      const tronIndex = networkNamesText.findIndex((name) =>
-        name?.includes('Tron'),
-      );
       const lineaIndex = networkNamesText.findIndex((name) =>
         name?.includes('Linea'),
       );
 
       expect(ethereumIndex).toBe(0);
-
-      if (bitcoinIndex !== -1) {
-        expect(bitcoinIndex).toBeGreaterThan(ethereumIndex);
-      }
-      if (solanaIndex !== -1 && bitcoinIndex !== -1) {
-        expect(solanaIndex).toBeGreaterThan(bitcoinIndex);
-      }
-      if (tronIndex !== -1 && solanaIndex !== -1) {
-        expect(tronIndex).toBeGreaterThan(solanaIndex);
-      }
       if (lineaIndex !== -1) {
         expect(lineaIndex).toBeGreaterThan(0);
       }
@@ -488,15 +394,14 @@ describe('MultichainAddressRowsList', () => {
       expect(lineaIndex).toBeGreaterThan(ethereumIndex);
     });
 
-    it('filters correctly while maintaining priority order', () => {
+    it('filters correctly while maintaining EVM priority order', () => {
       renderComponent();
 
       const searchInput = screen
         .getByTestId('multichain-address-rows-list-search')
         .querySelector('input') as HTMLInputElement;
 
-      // Search for "bit" which should match Bitcoin
-      fireEvent.change(searchInput, { target: { value: 'bit' } });
+      fireEvent.change(searchInput, { target: { value: 'linea' } });
 
       // Check if we have any results
       const addressRows = screen.queryAllByTestId('multichain-address-row');
@@ -507,11 +412,10 @@ describe('MultichainAddressRowsList', () => {
         );
         const networkNamesText = networkNames.map((el) => el.textContent);
 
-        // Bitcoin should be in the results if it exists
-        const hasBitcoin = networkNamesText.some((name) =>
-          name?.toLowerCase().includes('bitcoin'),
+        const hasLinea = networkNamesText.some((name) =>
+          name?.toLowerCase().includes('linea'),
         );
-        expect(hasBitcoin).toBe(true);
+        expect(hasLinea).toBe(true);
       } else {
         // If no results, check that the empty message is shown
         expect(

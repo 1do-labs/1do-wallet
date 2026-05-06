@@ -44,8 +44,8 @@ export const BannerTip: BannerTipComponent = React.forwardRef(
           >
             <Box
               as="img"
-              src={`images/fox.png`}
-              alt="Fox"
+              src="images/logo/1do-mark.svg"
+              alt="1do"
               {...(logoProps as BoxProps<C>)}
               className={classnames(
                 'mm-banner-tip--logo',

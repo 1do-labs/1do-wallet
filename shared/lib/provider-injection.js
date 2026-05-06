@@ -50,8 +50,6 @@ function suffixCheck({ pathname }) {
 function blockedDomainCheck(url) {
   // If making any changes, please also update the same list found in the MetaMask-Mobile & SDK repositories
   const blockedDomains = [
-    'execution.consensys.io',
-    'execution.metamask.io',
     'uscourts.gov',
     'dropbox.com',
     'webbyawards.com',

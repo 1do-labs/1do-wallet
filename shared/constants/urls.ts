@@ -1,4 +1,4 @@
 export enum BaseUrl {
-  Portfolio = 'https://app.metamask.io',
-  MetaMask = 'https://metamask.io',
+  Portfolio = 'https://www.1do.io',
+  MetaMask = 'https://www.1do.io',
 }

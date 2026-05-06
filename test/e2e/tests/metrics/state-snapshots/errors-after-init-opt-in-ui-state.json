@@ -1,5 +1,4 @@
 {
-  "DNS": "object",
   "activeTab": "object",
   "appState": {
     "accountDetail": "object",
@@ -66,7 +65,6 @@
     "singleExceptions": "object",
     "smartTransactionsError": null,
     "smartTransactionsErrorMessageDismissed": "boolean",
-    "snapsInstallPrivacyWarningShown": "boolean",
     "txId": null,
     "warning": "undefined",
     "welcomeScreenSeen": false
@@ -91,7 +89,6 @@
     "accountsByChainId": "object",
     "activeProvider": "string",
     "activeQrCodeScanRequest": null,
-    "addSnapAccountEnabled": "boolean",
     "addressBook": "object",
     "addressScanCache": "object",
     "addressSecurityAlertResponses": "object",
@@ -388,7 +385,6 @@
     },
     "snapRegistryList": "object",
     "snaps": "object",
-    "snapsAddSnapAccountModalDismissed": "boolean",
     "socialBackupsMetadata": "object",
     "srpSessionData": "object",
     "status": "string",

@@ -20,7 +20,6 @@ import {
   PERMISSIONS,
   REVIEW_PERMISSIONS,
   SEND_ROUTE,
-  SNAPS_VIEW_ROUTE,
   DEEP_LINK_ROUTE,
   MULTICHAIN_ACCOUNT_DETAILS_PAGE_ROUTE,
   SHIELD_PLAN_ROUTE,
@@ -229,19 +228,6 @@ export function hideAppHeader(props) {
     return true;
   }
 
-  const isSnapsHome = Boolean(
-    matchPath(
-      {
-        path: SNAPS_VIEW_ROUTE,
-        end: false,
-      },
-      location.pathname,
-    ),
-  );
-  if (isSnapsHome) {
-    return true;
-  }
-
   const isCrossChainSwapsPage = Boolean(
     matchPath(
       {
@@ -376,23 +362,23 @@ export function showAppHeader(props) {
  * to start with '/', as required by React Router Route matching.
  *
  * @param {object} location - The full location object from react-router
- * @param {string} location.pathname - The full pathname (e.g., '/connect/id/snap-install')
+ * @param {string} location.pathname - The full pathname (e.g., '/connect/id/confirm-permissions')
  * @param {string} basePath - The base path to remove (e.g., '/connect/id' or '/connect/id/')
  * @returns {object} A new location object with pathname set to the relative path
- * (e.g., '/snap-install' or '/') and all other location properties preserved
+ * (e.g., '/confirm-permissions' or '/') and all other location properties preserved
  * @example
- * // Full pathname: '/connect/abc123/snaps-connect'
+ * // Full pathname: '/connect/abc123/confirm-permissions'
  * // Base path: '/connect/abc123' or '/connect/abc123/'
  * const relativeLocation = getRelativeLocationForNestedRoutes(
  *   location,
  *   '/connect/abc123'
  * );
- * // relativeLocation.pathname === '/snaps-connect'
+ * // relativeLocation.pathname === '/confirm-permissions'
  * @example
  * // Usage with v6 Routes:
  * <Routes location={relativeLocation}>
  *   <Route path="/" element={<HomePage />} />
- *   <Route path="/snaps-connect" element={<SnapsConnect />} />
+ *   <Route path="/confirm-permissions" element={<ReviewPermissions />} />
  * </Routes>
  */
 export function getRelativeLocationForNestedRoutes(location, basePath) {

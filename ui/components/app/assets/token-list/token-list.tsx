@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { type CaipChainId, type Hex } from '@metamask/utils';
-import { NON_EVM_TESTNET_IDS } from '@metamask/multichain-network-controller';
 import TokenCell from '../token-cell';
 import { ASSET_CELL_HEIGHT } from '../constants';
 import {
@@ -29,7 +28,6 @@ import { MetaMetricsContext } from '../../../../contexts/metametrics';
 import { SafeChain } from '../../../../pages/settings/networks-tab/networks-form/use-safe-chains';
 import {
   isEvmChainId,
-  isTronSpecialAsset,
 } from '../../../../../shared/lib/asset-utils';
 import { sortAssetsWithPriority } from '../util/sortAssetsWithPriority';
 import { VirtualizedList } from '../../../ui/virtualized-list/virtualized-list';
@@ -70,9 +68,6 @@ function TokenList({ onTokenClick, safeChains }: TokenListProps) {
 
         // Mapping necessary to comply with the type. Fields will be overriden with useTokenDisplayInfo
         return assets.filter((asset) => {
-          if (isTronSpecialAsset(asset.assetId)) {
-            return false;
-          }
           if (shouldHideZeroBalanceTokens && asset.balance === '0') {
             return false;
           }
@@ -157,16 +152,12 @@ function TokenList({ onTokenClick, safeChains }: TokenListProps) {
     return (
       <div className="token-list-non-virtualized">
         {sortedFilteredTokens.map((token) => {
-          const isNonEvmTestnet = NON_EVM_TESTNET_IDS.includes(
-            token.chainId as CaipChainId,
-          );
-
           return (
             <TokenCell
               key={`${token.chainId}-${token.symbol}-${token.address}`}
               token={token}
               privacyMode={privacyMode}
-              onClick={isNonEvmTestnet ? undefined : handleTokenClick(token)}
+              onClick={handleTokenClick(token)}
               safeChains={safeChains}
               musd={TOKEN_LIST_CELL_MUSD_OPTIONS}
             />
@@ -185,15 +176,11 @@ function TokenList({ onTokenClick, safeChains }: TokenListProps) {
         `${token.chainId}-${token.symbol}-${token.address}`
       }
       renderItem={({ item: token }) => {
-        const isNonEvmTestnet = NON_EVM_TESTNET_IDS.includes(
-          token.chainId as CaipChainId,
-        );
-
         return (
           <TokenCell
             token={token}
             privacyMode={privacyMode}
-            onClick={isNonEvmTestnet ? undefined : handleTokenClick(token)}
+            onClick={handleTokenClick(token)}
             safeChains={safeChains}
             musd={TOKEN_LIST_CELL_MUSD_OPTIONS}
           />

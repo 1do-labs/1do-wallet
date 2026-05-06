@@ -1,6 +1,5 @@
 import { BUILT_IN_NETWORKS } from '@metamask/controller-utils';
 import {
-  NON_EVM_TESTNET_IDS,
   toEvmCaipChainId,
   type MultichainNetworkConfiguration,
 } from '@metamask/multichain-network-controller';
@@ -8,7 +7,6 @@ import { CaipChainId, Hex, isStrictHexString } from '@metamask/utils';
 import { useCallback, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { convertCaipToHexChainId } from '../../../../../shared/lib/network.utils';
-import { MultichainNetworks } from '../../../../../shared/constants/multichain/networks';
 import {
   FEATURED_NETWORK_CHAIN_IDS,
   FEATURED_NETWORK_CHAIN_IDS_MULTICHAIN,
@@ -17,7 +15,7 @@ import {
 } from '../../../../../shared/constants/network';
 import {
   getAllEnabledNetworksForAllNamespaces,
-  getMultichainNetworkConfigurationsByChainId,
+  getMultichainNetworkConfigurationsTuple,
 } from '../../../../selectors';
 
 export const useNetworkManagerState = ({
@@ -26,23 +24,15 @@ export const useNetworkManagerState = ({
   showDefaultNetworks?: boolean;
 } = {}) => {
   const [multichainNetworks] = useSelector(
-    getMultichainNetworkConfigurationsByChainId,
+    getMultichainNetworkConfigurationsTuple,
   );
 
   const [nonTestNetworks, testNetworks] = useMemo(
     () =>
       Object.entries(multichainNetworks).reduce(
-        ([nonTestnetsList, testnetsList], [id, network]) => {
-          let chainId = id;
-          let isTest = false;
-
-          if (network.isEvm) {
-            // We keep using raw chain ID for EVM.
-            chainId = convertCaipToHexChainId(network.chainId);
-            isTest = TEST_CHAINS.includes(chainId as Hex);
-          } else {
-            isTest = NON_EVM_TESTNET_IDS.includes(network.chainId);
-          }
+        ([nonTestnetsList, testnetsList], [_id, network]) => {
+          const chainId = convertCaipToHexChainId(network.chainId);
+          const isTest = TEST_CHAINS.includes(chainId as Hex);
 
           if (showDefaultNetworks) {
             (isTest ? testnetsList : nonTestnetsList)[chainId] = network;
@@ -50,9 +40,7 @@ export const useNetworkManagerState = ({
           }
 
           // Pre-filter to only include networks that are NOT in built-in networks or featured RPCs
-          const hexChainId = network.isEvm
-            ? convertCaipToHexChainId(network.chainId)
-            : network.chainId;
+          const hexChainId = convertCaipToHexChainId(network.chainId);
 
           // Check if the network is NOT a built-in network or featured RPC
           const isBuiltInNetwork = Object.values(BUILT_IN_NETWORKS).some(
@@ -61,19 +49,7 @@ export const useNetworkManagerState = ({
           const isFeaturedRpc = FEATURED_RPCS.some(
             (featuredRpc) => featuredRpc.chainId === hexChainId,
           );
-
-          const isMultichainProviderConfig = Object.values(
-            MultichainNetworks,
-          ).some(
-            (multichainNetwork) =>
-              multichainNetwork === network.chainId ||
-              (network.isEvm
-                ? convertCaipToHexChainId(network.chainId)
-                : network.chainId) === multichainNetwork,
-          );
-
-          const shouldInclude =
-            !isBuiltInNetwork && !isFeaturedRpc && !isMultichainProviderConfig;
+          const shouldInclude = !isBuiltInNetwork && !isFeaturedRpc;
 
           if (shouldInclude || isTest) {
             (isTest ? testnetsList : nonTestnetsList)[chainId] = network;
@@ -91,10 +67,6 @@ export const useNetworkManagerState = ({
 
   const isNetworkInDefaultNetworkTab = useCallback(
     (network: MultichainNetworkConfiguration) => {
-      if (!network.isEvm) {
-        return true;
-      }
-
       return FEATURED_NETWORK_CHAIN_IDS.includes(
         convertCaipToHexChainId(network.chainId),
       );

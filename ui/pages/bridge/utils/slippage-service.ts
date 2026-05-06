@@ -1,4 +1,4 @@
-import { isCrossChain, isSolanaChainId } from '@metamask/bridge-controller';
+import { isCrossChain } from '@metamask/bridge-controller';
 import type { CaipAssetType } from '@metamask/utils';
 import type { BridgeToken } from '../../../ducks/bridge/types';
 import { STABLECOIN_ASSET_IDS } from './stablecoins';
@@ -51,7 +51,6 @@ function isStablecoinPair(
  *
  * Rules:
  * - Bridge (cross-chain): Always 2%
- * - Swap on Solana: Always undefined (AUTO mode)
  * - Swap on EVM stablecoin pairs (same chain only): 0.5%
  * - Swap on EVM other pairs: 2%
  *
@@ -59,7 +58,7 @@ function isStablecoinPair(
  */
 export function calculateSlippage(
   context: SlippageContext,
-): number | undefined {
+): number {
   const { fromToken, toToken } = context;
 
   // If no source chain, we can't determine the type
@@ -72,12 +71,7 @@ export function calculateSlippage(
     return SlippageValue.BridgeDefault;
   }
 
-  // 2. Solana swap → undefined (AUTO mode)
-  if (isSolanaChainId(fromToken.chainId)) {
-    return undefined;
-  }
-
-  // 3. EVM swap → check for stablecoin pair
+  // 2. EVM swap → check for stablecoin pair
   if (isStablecoinPair(fromToken, toToken)) {
     return SlippageValue.EvmStablecoin; // 0.5%
   }
@@ -101,10 +95,6 @@ export function getSlippageReason(context: SlippageContext): string {
 
   if (isCrossChain(fromToken.chainId, toToken.chainId)) {
     return 'Cross-chain transaction';
-  }
-
-  if (isSolanaChainId(fromToken.chainId)) {
-    return 'Solana swap (AUTO mode)';
   }
 
   if (isStablecoinPair(fromToken, toToken)) {

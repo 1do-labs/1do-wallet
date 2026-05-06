@@ -5,7 +5,6 @@ import { renderWithProvider } from '../../../../test/lib/render-helpers-navigate
 import { enLocale as messages } from '../../../../test/lib/i18n-helpers';
 import configureStore from '../../../store/store';
 import { createBridgeMockStore } from '../../../../test/data/bridge/mock-bridge-store';
-import * as bridgeSelectors from '../../../ducks/bridge/selectors';
 import CrossChainSwap from '..';
 import { PREPARE_SWAP_ROUTE } from '../../../helpers/constants/routes';
 import { waitForElementById } from '../../../../test/integration/helpers';
@@ -99,16 +98,11 @@ const submitUpdate = async (getByTestId: (id: string) => HTMLElement) => {
 };
 
 const expectButtonStates = (
-  autoState: string | null,
   halfPercentState: string,
   twoPercentState: string,
   customState: string,
   customLabel = messages.customSlippage.message,
 ) => {
-  autoState &&
-    expect(screen.getByText(messages.slippageAuto.message)).toHaveClass(
-      autoState,
-    );
   expect(screen.getByText('0.5%').parentElement).toHaveClass(halfPercentState);
   expect(screen.getByText('2%').parentElement).toHaveClass(twoPercentState);
   expect(screen.getByText(customLabel)).toHaveClass(customState);
@@ -120,7 +114,6 @@ const DEFAULT_CLASS = 'mm-box--background-color-icon-default';
 describe('BridgeTransactionSettingsModal', () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    jest.spyOn(bridgeSelectors, 'getIsSolanaSwap').mockReturnValue(true);
     mockUseHardwareWalletConfig.mockReturnValue({
       isHardwareWalletAccount: false,
       walletType: null,
@@ -138,7 +131,6 @@ describe('BridgeTransactionSettingsModal', () => {
   });
 
   it('should render the component, with initial state', async () => {
-    jest.spyOn(bridgeSelectors, 'getIsSolanaSwap').mockReturnValue(false);
     const { getByTestId, baseElement } = renderModal();
 
     act(() => {
@@ -146,7 +138,7 @@ describe('BridgeTransactionSettingsModal', () => {
     });
     await waitFor(() => {
       expect(getByTestId(TX_MODAL.submitButton)).toBeDisabled();
-      expectButtonStates(null, MUTED_CLASS, MUTED_CLASS, MUTED_CLASS);
+      expectButtonStates(MUTED_CLASS, DEFAULT_CLASS, MUTED_CLASS);
     });
 
     // Click and blur Custom button
@@ -155,12 +147,12 @@ describe('BridgeTransactionSettingsModal', () => {
     expect(baseElement.childNodes[2]).toMatchSnapshot();
   });
 
-  it('should render the component, with initial Solana state', async () => {
+  it('should render the component with default slippage selected', async () => {
     const { getByTestId, baseElement } = renderModal();
 
     await openModal(getByTestId);
     expect(getByTestId(TX_MODAL.submitButton)).toBeDisabled();
-    expectButtonStates(DEFAULT_CLASS, MUTED_CLASS, MUTED_CLASS, MUTED_CLASS);
+    expectButtonStates(MUTED_CLASS, DEFAULT_CLASS, MUTED_CLASS);
 
     // Click and blur Custom button
     await interactWithCustomInput(getByTestId, () => {
@@ -175,7 +167,7 @@ describe('BridgeTransactionSettingsModal', () => {
 
     await openModal(getByTestId);
     expect(getByTestId(TX_MODAL.submitButton)).toBeDisabled();
-    expectButtonStates(DEFAULT_CLASS, MUTED_CLASS, MUTED_CLASS, MUTED_CLASS);
+    expectButtonStates(MUTED_CLASS, DEFAULT_CLASS, MUTED_CLASS);
 
     // Click and blur Custom button
     await interactWithCustomInput(getByTestId);
@@ -184,6 +176,7 @@ describe('BridgeTransactionSettingsModal', () => {
     // Change custom input to .
     await interactWithCustomInput(getByTestId, async (input) => {
       input.focus();
+      await userEvent.clear(input);
       await userEvent.keyboard('.');
     });
     expect(getByTestId(TX_MODAL.submitButton)).toBeDisabled();
@@ -192,6 +185,7 @@ describe('BridgeTransactionSettingsModal', () => {
     // Change custom input to .0
     await interactWithCustomInput(getByTestId, async (input) => {
       input.focus();
+      await userEvent.clear(input);
       await userEvent.keyboard('.');
       await userEvent.keyboard('0');
     });
@@ -207,13 +201,7 @@ describe('BridgeTransactionSettingsModal', () => {
     act(() => {
       fireEvent.click(getByTestId(TX_MODAL.refElement));
     });
-    expectButtonStates(
-      MUTED_CLASS,
-      MUTED_CLASS,
-      MUTED_CLASS,
-      DEFAULT_CLASS,
-      '0%',
-    );
+    expectButtonStates(MUTED_CLASS, MUTED_CLASS, DEFAULT_CLASS, '0%');
     expect(getByTestId(TX_MODAL.submitButton)).toBeDisabled();
   });
 
@@ -224,7 +212,7 @@ describe('BridgeTransactionSettingsModal', () => {
 
     await openModal(getByTestId);
     expect(getByTestId(TX_MODAL.submitButton)).toBeDisabled();
-    expectButtonStates(MUTED_CLASS, DEFAULT_CLASS, MUTED_CLASS, MUTED_CLASS);
+    expectButtonStates(DEFAULT_CLASS, MUTED_CLASS, MUTED_CLASS);
 
     // Click and blur Custom button
     await interactWithCustomInput(getByTestId);
@@ -250,7 +238,7 @@ describe('BridgeTransactionSettingsModal', () => {
         await userEvent.keyboard(char);
       }
     });
-    expectButtonStates(MUTED_CLASS, MUTED_CLASS, DEFAULT_CLASS, MUTED_CLASS);
+    expectButtonStates(MUTED_CLASS, DEFAULT_CLASS, MUTED_CLASS);
     expect(getByTestId(TX_MODAL.submitButton)).toBeEnabled();
     expect(store.getState().bridge.slippage).toBe(initialSlippage);
 
@@ -262,7 +250,7 @@ describe('BridgeTransactionSettingsModal', () => {
     await act(async () => {
       fireEvent.click(getByTestId(TX_MODAL.refElement));
     });
-    expectButtonStates(MUTED_CLASS, MUTED_CLASS, DEFAULT_CLASS, MUTED_CLASS);
+    expectButtonStates(MUTED_CLASS, DEFAULT_CLASS, MUTED_CLASS);
     expect(getByTestId(TX_MODAL.submitButton)).toBeDisabled();
 
     // Click hardcoded 0.5 and submit
@@ -275,7 +263,8 @@ describe('BridgeTransactionSettingsModal', () => {
   const ACTIONS = [
     [
       'paste',
-      async (_input: HTMLElement, value: string) => {
+      async (input: HTMLElement, value: string) => {
+        await userEvent.clear(input);
         await userEvent.paste(value);
       },
     ],
@@ -283,6 +272,7 @@ describe('BridgeTransactionSettingsModal', () => {
       'type',
       async (input: HTMLElement, value: string) => {
         input.focus();
+        await userEvent.clear(input);
         for (const char of value) {
           await userEvent.keyboard(char);
         }

@@ -6,7 +6,7 @@ import { MultichainSiteCellTooltip } from './multichain-site-cell-tooltip';
 import type { AccountGroupId } from '@metamask/account-api';
 import { AccountGroupWithInternalAccounts } from '../../../../selectors/multichain-accounts/account-tree.types';
 import { createMockInternalAccount } from '../../../../../test/jest/mocks';
-import { EvmAndMultichainNetworkConfigurationsWithCaipChainId } from '../../../../selectors/selectors.types';
+import { EvmNetworkConfigurationWithCaipChainId } from '../../../../selectors/selectors.types';
 import { CaipChainId } from '@metamask/utils';
 
 export default {
@@ -69,7 +69,7 @@ const mockAccountGroups: AccountGroupWithInternalAccounts[] = [
   },
 ];
 
-const mockNetworks: EvmAndMultichainNetworkConfigurationsWithCaipChainId[] = [
+const mockNetworks: EvmNetworkConfigurationWithCaipChainId[] = [
   {
     name: 'Ethereum Mainnet',
     chainId: '0x1',

@@ -1,6 +1,5 @@
 import React, { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
-import { useDispatch } from 'react-redux';
 import Box from '../../ui/box';
 import { useI18nContext } from '../../../hooks/useI18nContext';
 import {
@@ -14,24 +13,16 @@ import {
 } from '../../component-library';
 import { Menu, MenuItem } from '../../ui/menu';
 import {
-  TextColor,
   TextVariant,
 } from '../../../helpers/constants/design-system';
-import { DynamicSnapPermissions } from '../../../../shared/constants/snaps/permissions';
-import { revokeDynamicSnapPermissions } from '../../../store/actions';
 
 export const PermissionCellOptions = ({
-  snapId,
-  permissionName,
   description,
 }) => {
   const t = useI18nContext();
-  const dispatch = useDispatch();
   const ref = useRef(false);
   const [showOptions, setShowOptions] = useState(false);
   const [showDetails, setShowDetails] = useState(false);
-
-  const isRevokable = DynamicSnapPermissions.includes(permissionName);
 
   const handleOpen = () => {
     setShowOptions(true);
@@ -51,12 +42,7 @@ export const PermissionCellOptions = ({
     setShowDetails(false);
   };
 
-  const handleRevokePermission = () => {
-    setShowOptions(false);
-    dispatch(revokeDynamicSnapPermissions(snapId, [permissionName]));
-  };
-
-  if (!description && !isRevokable) {
+  if (!description) {
     return null;
   }
 
@@ -66,7 +52,7 @@ export const PermissionCellOptions = ({
         iconName={IconName.MoreVertical}
         ariaLabel={t('options')}
         onClick={handleOpen}
-        data-testid={permissionName}
+        data-testid="permission-cell-options"
       />
       {showOptions && (
         <Menu anchorElement={ref.current} onHide={handleClose}>
@@ -79,19 +65,6 @@ export const PermissionCellOptions = ({
                 }}
               >
                 {t('details')}
-              </Text>
-            </MenuItem>
-          )}
-          {isRevokable && (
-            <MenuItem onClick={handleRevokePermission}>
-              <Text
-                variant={TextVariant.bodySm}
-                color={TextColor.errorDefault}
-                style={{
-                  whiteSpace: 'nowrap',
-                }}
-              >
-                {t('revokePermission')}
               </Text>
             </MenuItem>
           )}
@@ -111,7 +84,5 @@ export const PermissionCellOptions = ({
 };
 
 PermissionCellOptions.propTypes = {
-  snapId: PropTypes.string.isRequired,
-  permissionName: PropTypes.string.isRequired,
   description: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
 };

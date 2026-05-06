@@ -869,7 +869,6 @@
       "whitelistPaths": {}
     },
     "PreferencesController": {
-      "addSnapAccountEnabled": false,
       "advancedGasFee": {},
       "currentLocale": "en",
       "dismissSeedBackUpReminder": false,
@@ -920,7 +919,6 @@
       "showSidePanelMigrationToast": false,
       "securityAlertsEnabled": true,
       "snapRegistryList": {},
-      "snapsAddSnapAccountModalDismissed": false,
       "theme": "os",
       "use4ByteResolution": true,
       "useAddressBarEnsResolution": true,
@@ -1033,9 +1031,6 @@
       "orderedTransactionHistory": []
     },
     "SnapController": {},
-    "SnapInterfaceController": {
-      "interfaces": {}
-    },
     "SubjectMetadataController": {},
     "SubscriptionController": {
       "subscriptions": [],

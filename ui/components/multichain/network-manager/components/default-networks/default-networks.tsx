@@ -1,7 +1,7 @@
 import { CaipChainId, Hex } from '@metamask/utils';
 import React, { memo, useCallback, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { BtcScope, EthScope, SolScope, TrxScope } from '@metamask/keyring-api';
+import { EthScope } from '@metamask/keyring-api';
 import { AddNetworkFields } from '@metamask/network-controller';
 import {
   CHAIN_ID_TO_NETWORK_IMAGE_URL_MAP,
@@ -47,15 +47,13 @@ import { useNetworkChangeHandlers } from '../../hooks/useNetworkChangeHandlers';
 import { useNetworkItemCallbacks } from '../../hooks/useNetworkItemCallbacks';
 import { useNetworkManagerState } from '../../hooks/useNetworkManagerState';
 import { AdditionalNetworksInfo } from '../additional-networks-info';
-import { getMultichainIsEvm } from '../../../../../selectors/multichain';
 import {
   getAllEnabledNetworksForAllNamespaces,
-  getSelectedMultichainNetworkConfiguration,
 } from '../../../../../selectors/multichain/networks';
 import { useI18nContext } from '../../../../../hooks/useI18nContext';
 import {
   getOrderedNetworksList,
-  getMultichainNetworkConfigurationsByChainId,
+  getMultichainNetworkConfigurationsTuple,
   getUseExternalServices,
 } from '../../../../../selectors';
 import { getInternalAccountBySelectedAccountGroupAndCaip } from '../../../../../selectors/multichain-accounts/account-tree';
@@ -126,7 +124,7 @@ const DefaultNetworks = memo(() => {
   const dispatch = useDispatch();
   const orderedNetworksList = useSelector(getOrderedNetworksList);
   const [, evmNetworks] = useSelector(
-    getMultichainNetworkConfigurationsByChainId,
+    getMultichainNetworkConfigurationsTuple,
   );
   const allEnabledNetworksForAllNamespaces = useSelector(
     getAllEnabledNetworksForAllNamespaces,
@@ -137,14 +135,7 @@ const DefaultNetworks = memo(() => {
   // Use the shared network change handlers hook
   const { handleNetworkChange } = useNetworkChangeHandlers();
 
-  const isEvmNetworkSelected = useSelector(getMultichainIsEvm);
-
   const useExternalServices = useSelector(getUseExternalServices);
-
-  // Get the currently selected network to allow it through when BFT is OFF
-  const currentNetwork = useSelector(getSelectedMultichainNetworkConfiguration);
-  const selectedNonEvmChainId =
-    !isEvmNetworkSelected && currentNetwork ? currentNetwork.chainId : null;
 
   // extract the evm account of the selected account group
   const evmAccountGroup = useSelector((state) =>
@@ -152,19 +143,6 @@ const DefaultNetworks = memo(() => {
   );
 
   const enabledChainIds = useSelector(getAllEnabledNetworksForAllNamespaces);
-
-  // extract the solana account of the selected account group
-  const solAccountGroup = useSelector((state) =>
-    getInternalAccountBySelectedAccountGroupAndCaip(state, SolScope.Mainnet),
-  );
-
-  const btcAccountGroup = useSelector((state) =>
-    getInternalAccountBySelectedAccountGroupAndCaip(state, BtcScope.Mainnet),
-  );
-
-  const trxAccountGroup = useSelector((state) =>
-    getInternalAccountBySelectedAccountGroupAndCaip(state, TrxScope.Mainnet),
-  );
 
   // Get blacklisted chain IDs from feature flag
   const blacklistedChainIds = useSelector(
@@ -177,24 +155,15 @@ const DefaultNetworks = memo(() => {
 
   // Memoize sorted networks to avoid expensive sorting on every render
   const orderedNetworks = useMemo(() => {
-    // Filter nonTestNetworks object based on basic functionality toggle
-    // Exception: Keep the currently selected non-EVM chain visible
     const filteredNetworks = useExternalServices
       ? nonTestNetworks
       : Object.fromEntries(
           Object.entries(nonTestNetworks).filter(
-            ([, network]) =>
-              isEvmChainId(network.chainId as `0x${string}`) ||
-              network.chainId === selectedNonEvmChainId,
+            ([, network]) => isEvmChainId(network.chainId as `0x${string}`),
           ),
         );
     return sortNetworks(filteredNetworks, orderedNetworksList);
-  }, [
-    nonTestNetworks,
-    orderedNetworksList,
-    useExternalServices,
-    selectedNonEvmChainId,
-  ]);
+  }, [nonTestNetworks, orderedNetworksList, useExternalServices]);
 
   // Memoize the featured networks calculation
   const featuredNetworksNotYetEnabled = useMemo(() => {
@@ -274,39 +243,14 @@ const DefaultNetworks = memo(() => {
 
   // Memoize the network list items to avoid recreation on every render
   const networkListItems = useMemo(() => {
-    // Helper function to filter networks based on account type and selection
-    const getFilteredNetworks = () => {
-      return orderedNetworks.filter((network) => {
-        // Show EVM networks if user has EVM accounts
-        if (evmAccountGroup && network.isEvm) {
-          return true;
-        }
-        // When basic functionality toggle is OFF, only show EVM networks
-        // Exception: Keep the currently selected non-EVM chain visible
-        if (!useExternalServices) {
-          return network.chainId === selectedNonEvmChainId;
-        }
-        if (solAccountGroup && network.chainId === SolScope.Mainnet) {
-          return true;
-        }
-        if (btcAccountGroup && network.chainId === BtcScope.Mainnet) {
-          return true;
-        }
-        if (trxAccountGroup && network.chainId === TrxScope.Mainnet) {
-          return true;
-        }
-        return false;
-      });
-    };
-
-    const filteredNetworks = getFilteredNetworks();
+    const filteredNetworks = orderedNetworks.filter(
+      (network) => Boolean(evmAccountGroup) && network.isEvm,
+    );
 
     return filteredNetworks.map((network) => {
       const networkChainId = network.chainId; // eip155:59144
       // Convert CAIP format to hex format for comparison
-      const hexChainId = network.isEvm
-        ? convertCaipToHexChainId(networkChainId)
-        : networkChainId;
+      const hexChainId = convertCaipToHexChainId(networkChainId);
 
       if (!isNetworkInDefaultNetworkTab(network)) {
         return null;
@@ -358,14 +302,9 @@ const DefaultNetworks = memo(() => {
     hasMultiRpcOptions,
     evmNetworks,
     handleNetworkChangeCallback,
-    btcAccountGroup,
-    solAccountGroup,
-    trxAccountGroup,
     evmAccountGroup,
     dispatch,
     enabledChainIds,
-    useExternalServices,
-    selectedNonEvmChainId,
   ]);
 
   // Memoize the additional network list items

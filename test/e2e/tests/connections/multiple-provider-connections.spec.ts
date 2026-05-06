@@ -1,11 +1,9 @@
 /**
- * This test suite is for testing connecting to a dapp with different wallet providers (EVM and Solana).
+ * This test suite is for testing connecting to a dapp with different EVM permission states.
  */
-import { SolScope } from '@metamask/keyring-api';
 import {
   ACCOUNT_2,
   DAPP_HOST_ADDRESS,
-  DAPP_PATH,
   DEFAULT_FIXTURE_ACCOUNT as EVM_ADDRESS_ONE,
   WINDOW_TITLES,
 } from '../../constants';
@@ -26,32 +24,14 @@ import { login } from '../../page-objects/flows/login.flow';
 import { connectAccountToTestDapp } from '../../page-objects/flows/test-dapp.flow';
 import { getPermissionsPageForHost } from '../../page-objects/flows/permissions.flow';
 import FixtureBuilderV2 from '../../fixtures/fixture-builder-v2';
-import { TestDappSolana } from '../../page-objects/pages/test-dapp-solana';
-import {
-  connectSolanaTestDapp,
-  account1 as SOLANA_ADDRESS_ONE,
-} from '../../flask/solana-wallet-standard/testHelpers';
 import { Driver } from '../../webdriver/driver';
 import NetworkPermissionSelectModal from '../../page-objects/pages/dialog/network-permission-select-modal';
 import EditConnectedAccountsModal from '../../page-objects/pages/dialog/edit-connected-accounts-modal';
-import { switchToNetworkFromNetworkSelect } from '../../page-objects/flows/network.flow';
 
 const EVM_ADDRESS_TWO = ACCOUNT_2;
-const SOLANA_ACCOUNT_ONE = `${SolScope.Mainnet}:${SOLANA_ADDRESS_ONE}`;
 
 const EVM_ACCOUNT_LABEL_ONE = 'Account 1';
 const EVM_ACCOUNT_LABEL_TWO = 'Account 2';
-
-const SOLANA_PERMISSIONS = {
-  isMultichainOrigin: true,
-  sessionProperties: {},
-  requiredScopes: {},
-  optionalScopes: {
-    [SolScope.Mainnet]: {
-      accounts: [SOLANA_ACCOUNT_ONE],
-    },
-  },
-};
 
 /**
  * Checks if an account is displayed
@@ -254,246 +234,4 @@ describe('Multiple Standard Dapp Connections', function () {
     );
   });
 
-  it('should retain EVM permissions when connecting through the Solana Wallet Standard', async function () {
-    await withFixtures(
-      {
-        fixtures: new FixtureBuilderV2()
-          .withKeyringControllerAdditionalAccountVault()
-          .withAccountsControllerAdditionalAccountVault()
-          .withPermissionControllerConnectedToTestDapp({
-            account: [EVM_ADDRESS_ONE.toLowerCase(), EVM_ADDRESS_TWO],
-          })
-          .build(),
-        title: this.test?.fullTitle(),
-        dappOptions: {
-          customDappPaths: [DAPP_PATH.TEST_DAPP_SOLANA],
-        },
-      },
-      async ({ driver }) => {
-        await login(driver);
-        await switchToNetworkFromNetworkSelect(driver, 'Popular', 'Solana');
-        const testDapp = new TestDappSolana(driver);
-
-        await testDapp.openTestDappPage();
-        await testDapp.switchTo();
-
-        await connectSolanaTestDapp(driver, testDapp);
-
-        await driver.switchToWindowWithTitle(
-          WINDOW_TITLES.ExtensionInFullScreenView,
-        );
-
-        const sitePermissionPage = await getPermissionsPageForHost(
-          driver,
-          DAPP_HOST_ADDRESS,
-        );
-
-        await sitePermissionPage.checkConnectedAccountsNumber(2);
-        await sitePermissionPage.checkConnectedNetworksNumber(10);
-
-        await checkAccountsAndNetworksDisplayed(
-          driver,
-          sitePermissionPage,
-          [
-            MAINNET_DISPLAY_NAME,
-            LINEA_MAINNET_DISPLAY_NAME,
-            BASE_DISPLAY_NAME,
-            ARBITRUM_DISPLAY_NAME,
-            BSC_DISPLAY_NAME,
-            POLYGON_DISPLAY_NAME,
-            OPTIMISM_DISPLAY_NAME,
-            'Solana',
-            'Bitcoin',
-            'Tron',
-          ],
-          [EVM_ACCOUNT_LABEL_ONE, EVM_ACCOUNT_LABEL_TWO],
-        );
-      },
-    );
-  });
-
-  it('should retain Solana permissions when connecting through the EVM provider', async function () {
-    await withFixtures(
-      {
-        fixtures: new FixtureBuilderV2()
-          .withPermissionControllerConnectedToTestDapp({
-            scopes: SOLANA_PERMISSIONS,
-          })
-          .build(),
-        title: this.test?.fullTitle(),
-        dappOptions: { numberOfTestDapps: 1 },
-      },
-      async ({ driver }) => {
-        await login(driver);
-        await switchToNetworkFromNetworkSelect(driver, 'Popular', 'Solana');
-        const testDapp = new TestDapp(driver);
-
-        await testDapp.openTestDappPage();
-        await driver.switchToWindowWithTitle(WINDOW_TITLES.TestDApp);
-        await testDapp.checkPageIsLoaded();
-
-        await connectAccountToTestDapp(driver);
-
-        await driver.switchToWindowWithTitle(
-          WINDOW_TITLES.ExtensionInFullScreenView,
-        );
-
-        const sitePermissionPage = await getPermissionsPageForHost(
-          driver,
-          DAPP_HOST_ADDRESS,
-        );
-
-        await sitePermissionPage.checkConnectedAccountsNumber(1);
-        await sitePermissionPage.checkConnectedNetworksNumber(10);
-
-        await checkAccountsAndNetworksDisplayed(
-          driver,
-          sitePermissionPage,
-          [
-            MAINNET_DISPLAY_NAME,
-            BASE_DISPLAY_NAME,
-            BSC_DISPLAY_NAME,
-            POLYGON_DISPLAY_NAME,
-            OPTIMISM_DISPLAY_NAME,
-            ARBITRUM_DISPLAY_NAME,
-            LINEA_MAINNET_DISPLAY_NAME,
-            'Bitcoin',
-            'Solana',
-            'Tron',
-          ],
-          [EVM_ACCOUNT_LABEL_ONE],
-        );
-      },
-    );
-  });
-
-  it('should default account selection to already permissioned Solana account and requested Ethereum account when `wallet_requestPermissions` is called with specific Ethereum account', async function () {
-    await withFixtures(
-      {
-        fixtures: new FixtureBuilderV2()
-          .withKeyringControllerAdditionalAccountVault()
-          .withAccountsControllerAdditionalAccountVault()
-          .withPermissionControllerConnectedToTestDapp({
-            scopes: SOLANA_PERMISSIONS,
-          })
-          .build(),
-        title: this.test?.fullTitle(),
-        dappOptions: { numberOfTestDapps: 1 },
-      },
-      async ({ driver }) => {
-        await login(driver);
-        await switchToNetworkFromNetworkSelect(driver, 'Popular', 'Solana');
-        const testDapp = new TestDapp(driver);
-
-        await testDapp.openTestDappPage();
-        await driver.switchToWindowWithTitle(WINDOW_TITLES.TestDApp);
-
-        const requestPermissionsWithEthAccount2 =
-          getRequestPermissionsRequestObject([EVM_ADDRESS_TWO]);
-
-        await driver.executeScript(
-          `window.ethereum.request(${requestPermissionsWithEthAccount2})`,
-        );
-
-        await driver.switchToWindowWithTitle(WINDOW_TITLES.Dialog);
-
-        const connectAccountConfirmation = new ConnectAccountConfirmation(
-          driver,
-        );
-
-        await connectAccountConfirmation.checkPageIsLoaded();
-
-        await checkIsAccountDisplayed(driver, EVM_ACCOUNT_LABEL_TWO);
-
-        await connectAccountConfirmation.confirmConnect();
-
-        await driver.switchToWindowWithTitle(WINDOW_TITLES.TestDApp);
-        await driver.switchToWindowWithTitle(
-          WINDOW_TITLES.ExtensionInFullScreenView,
-        );
-
-        const sitePermissionPage = await getPermissionsPageForHost(
-          driver,
-          DAPP_HOST_ADDRESS,
-        );
-
-        await sitePermissionPage.checkConnectedAccountsNumber(2);
-        await sitePermissionPage.checkConnectedNetworksNumber(10);
-
-        await checkAccountsAndNetworksDisplayed(
-          driver,
-          sitePermissionPage,
-          [
-            MAINNET_DISPLAY_NAME,
-            LINEA_MAINNET_DISPLAY_NAME,
-            BASE_DISPLAY_NAME,
-            ARBITRUM_DISPLAY_NAME,
-            BSC_DISPLAY_NAME,
-            POLYGON_DISPLAY_NAME,
-            OPTIMISM_DISPLAY_NAME,
-            'Solana',
-            'Bitcoin',
-            'Tron',
-          ],
-          [EVM_ACCOUNT_LABEL_TWO],
-        );
-      },
-    );
-  });
-
-  it('should be able to request specific chains when connecting through the EVM provider with existing permissions', async function () {
-    await withFixtures(
-      {
-        fixtures: new FixtureBuilderV2()
-          .withPermissionControllerConnectedToTestDapp({
-            scopes: SOLANA_PERMISSIONS,
-          })
-          .build(),
-        title: this.test?.fullTitle(),
-        dappOptions: { numberOfTestDapps: 1 },
-      },
-      async ({ driver }) => {
-        await login(driver);
-        const testDapp = new TestDapp(driver);
-
-        await testDapp.openTestDappPage();
-        await driver.switchToWindowWithTitle(WINDOW_TITLES.TestDApp);
-        await testDapp.checkPageIsLoaded();
-
-        const requestSpecificNetwork = getRestrictedNetworks(['0x1']);
-
-        await driver.executeScript(
-          `window.ethereum.request(${requestSpecificNetwork})`,
-        );
-
-        const connectAccountConfirmation = new ConnectAccountConfirmation(
-          driver,
-        );
-
-        await driver.switchToWindowWithTitle(WINDOW_TITLES.Dialog);
-
-        await connectAccountConfirmation.checkPageIsLoaded();
-        await connectAccountConfirmation.confirmConnect();
-
-        await driver.switchToWindowWithTitle(
-          WINDOW_TITLES.ExtensionInFullScreenView,
-        );
-
-        const sitePermissionPage = await getPermissionsPageForHost(
-          driver,
-          DAPP_HOST_ADDRESS,
-        );
-
-        await sitePermissionPage.checkConnectedAccountsNumber(1);
-        await sitePermissionPage.checkConnectedNetworksNumber(2);
-
-        await checkAccountsAndNetworksDisplayed(
-          driver,
-          sitePermissionPage,
-          [MAINNET_DISPLAY_NAME, 'Solana'],
-          [EVM_ACCOUNT_LABEL_ONE],
-        );
-      },
-    );
-  });
 });

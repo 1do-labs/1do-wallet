@@ -6,20 +6,13 @@ import {
   Hex,
 } from '@metamask/utils';
 import { toEvmCaipChainId } from '@metamask/multichain-network-controller';
-import { MultichainNetwork } from '@metamask/multichain-transactions-controller';
 import { getNativeAssetForChainId } from '@metamask/bridge-controller';
-import { MultichainNetworks } from '../constants/multichain/networks';
-import {
-  TRON_SPECIAL_ASSET_CAIP_TYPES,
-  TronSpecialAssetCaipType,
-} from '../constants/multichain/assets';
 import {
   getAssetImageUrl,
   fetchAssetMetadata,
   toAssetId,
   fetchAssetMetadataForAssetIds,
   isEvmChainId,
-  isTronSpecialAsset,
 } from './asset-utils';
 
 jest.mock('@metamask/multichain-network-controller');
@@ -40,6 +33,7 @@ describe('asset-utils', () => {
 
   describe('toAssetId', () => {
     beforeEach(() => {
+      mockFetchWithTimeout.mockReset();
       jest.clearAllMocks();
     });
 
@@ -85,16 +79,12 @@ describe('asset-utils', () => {
       expect(result).toBeUndefined();
     });
 
-    it('should create Solana token asset ID correctly', () => {
+    it('should return undefined for non-EVM chain IDs', () => {
       const address = 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v';
-      const chainId = MultichainNetwork.Solana as CaipChainId;
+      const chainId = 'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp' as CaipChainId;
 
       const result = toAssetId(address, chainId);
-      expect(result).toBe(`${MultichainNetwork.Solana}/token:${address}`);
-      expect(CaipAssetTypeStruct.validate(result)).toStrictEqual([
-        undefined,
-        result,
-      ]);
+      expect(result).toBeUndefined();
     });
 
     it('should create EVM token asset ID correctly', () => {
@@ -150,13 +140,11 @@ describe('asset-utils', () => {
       expect(getAssetImageUrl(assetId, 'eip155:1')).toBe(expectedUrl);
     });
 
-    it('should return correct image URL for non-hex CAIP asset ID', () => {
+    it('should return undefined for non-EVM asset IDs', () => {
       const assetId =
-        `${MultichainNetworks.SOLANA}/token:aBCD` as CaipAssetType;
-      const expectedUrl =
-        'https://static.cx.metamask.io/api/v2/tokenIcons/assets/solana/5eykt4usfv8p8njdtrepy1vzqkqzkvdp/token/abcd.png';
+        'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp/token:aBCD' as CaipAssetType;
 
-      expect(getAssetImageUrl(assetId, 'eip155:1')).toBe(expectedUrl);
+      expect(getAssetImageUrl(assetId, 'eip155:1')).toBe(undefined);
     });
 
     it('should handle asset IDs with multiple colons', () => {
@@ -173,6 +161,7 @@ describe('asset-utils', () => {
     const mockAssetId = 'eip155:1/erc20:0x123' as CaipAssetType;
 
     beforeEach(() => {
+      mockFetchWithTimeout.mockReset();
       jest.clearAllMocks();
       (toEvmCaipChainId as jest.Mock).mockReturnValue(mockChainId);
     });
@@ -213,46 +202,14 @@ describe('asset-utils', () => {
       });
     });
 
-    it('should fetch Solana token metadata successfully', async () => {
-      const solanaChainId = MultichainNetwork.Solana;
-      const solanaAddress = 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v';
-      const solanaAssetId = `${solanaChainId}/token:${solanaAddress}`;
-
-      const mockMetadata = {
-        assetId: solanaAssetId,
-        symbol: 'SOL',
-        name: 'Solana Token',
-        decimals: 9,
-      };
-
-      mockFetchWithTimeout.mockResolvedValueOnce({
-        json: async () => await Promise.resolve([mockMetadata]),
-      });
-
-      const mockSignal = new AbortController().signal;
+    it('should return undefined for non-EVM chain IDs', async () => {
       const result = await fetchAssetMetadata(
-        solanaAddress,
-        solanaChainId,
-        mockSignal,
+        'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v',
+        'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp' as CaipChainId,
       );
 
-      expect(mockFetchWithTimeout).toHaveBeenCalledWith(
-        'https://tokens.api.cx.metamask.io/v3/assets?assetIds=solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp/token:EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v',
-        {
-          headers: { 'X-Client-Id': 'extension' },
-          method: 'GET',
-          signal: mockSignal,
-        },
-      );
-      expect(result).toStrictEqual({
-        symbol: 'SOL',
-        decimals: 9,
-        image:
-          'https://static.cx.metamask.io/api/v2/tokenIcons/assets/solana/5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp/token/EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v.png',
-        assetId: solanaAssetId,
-        address: solanaAddress,
-        chainId: solanaChainId,
-      });
+      expect(mockFetchWithTimeout).not.toHaveBeenCalled();
+      expect(result).toBeUndefined();
     });
 
     it('should handle CAIP chain IDs', async () => {
@@ -350,6 +307,7 @@ describe('asset-utils', () => {
     const mockAssetId = 'eip155:1/erc20:0x123' as CaipAssetType;
 
     beforeEach(() => {
+      mockFetchWithTimeout.mockReset();
       jest.clearAllMocks();
       (toEvmCaipChainId as jest.Mock).mockReturnValue(mockChainId);
     });
@@ -388,62 +346,13 @@ describe('asset-utils', () => {
       });
     });
 
-    it('should fetch Solana token metadata successfully', async () => {
-      const solanaChainId = MultichainNetwork.Solana;
-      const solanaAddress = 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v';
-      const solanaAssetId = `${solanaChainId}/token:${solanaAddress}`;
+    it('should return null when asset IDs are not valid EVM assets', async () => {
+      const result = await fetchAssetMetadataForAssetIds([
+        'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp/token:EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v' as never,
+      ]);
 
-      const mockMetadata = {
-        assetId: solanaAssetId,
-        symbol: 'SOL',
-        name: 'Solana Token',
-        decimals: 9,
-      };
-
-      mockFetchWithTimeout.mockResolvedValueOnce({
-        json: async () =>
-          await Promise.resolve([
-            mockMetadata,
-            { ...mockMetadata, assetId: solanaAssetId + 'ABcDe' },
-          ]),
-      });
-
-      const mockSignal = new AbortController().signal;
-      const result = await fetchAssetMetadataForAssetIds(
-        [
-          solanaAssetId,
-          (solanaAssetId + 'ABcDe') as never,
-          getNativeAssetForChainId(solanaChainId).assetId,
-        ],
-        mockSignal,
-      );
-
-      expect(mockFetchWithTimeout).toHaveBeenCalledWith(
-        'https://tokens.api.cx.metamask.io/v3/assets?assetIds=solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp/token:EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v,solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp/token:EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1vABcDe,solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp/slip44:501',
-        {
-          headers: { 'X-Client-Id': 'extension' },
-          method: 'GET',
-          signal: mockSignal,
-        },
-      );
-      expect(result).toStrictEqual({
-        'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp/token:EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v':
-          {
-            assetId:
-              'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp/token:EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v',
-            decimals: 9,
-            name: 'Solana Token',
-            symbol: 'SOL',
-          },
-        'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp/token:EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1vABcDe':
-          {
-            assetId:
-              'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp/token:EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1vABcDe',
-            decimals: 9,
-            name: 'Solana Token',
-            symbol: 'SOL',
-          },
-      });
+      expect(mockFetchWithTimeout).not.toHaveBeenCalled();
+      expect(result).toBeNull();
     });
 
     it('should return null when API call fails', async () => {
@@ -501,76 +410,6 @@ describe('asset-utils', () => {
       expect(isEvmChainId('1439' as Hex)).toBe(true); // Decimal string
       expect(isEvmChainId('0x59f' as Hex)).toBe(true); // Hex format
       expect(isEvmChainId('eip155:1439' as CaipChainId)).toBe(true); // CAIP format
-    });
-  });
-
-  describe('isTronSpecialAsset', () => {
-    const tronMainnet = MultichainNetworks.TRON;
-    const tronNile = MultichainNetworks.TRON_NILE;
-    const tronShasta = MultichainNetworks.TRON_SHASTA;
-
-    (
-      Object.entries(TRON_SPECIAL_ASSET_CAIP_TYPES) as [
-        string,
-        TronSpecialAssetCaipType,
-      ][]
-    ).forEach(([key, assetType]) => {
-      it(`returns true for ${key} on Tron mainnet`, () => {
-        expect(
-          isTronSpecialAsset(`${tronMainnet}/${assetType}` as CaipAssetType),
-        ).toBe(true);
-      });
-    });
-
-    it('returns true for special assets on Tron Nile testnet', () => {
-      expect(
-        isTronSpecialAsset(
-          `${tronNile}/${TRON_SPECIAL_ASSET_CAIP_TYPES.ENERGY}` as CaipAssetType,
-        ),
-      ).toBe(true);
-    });
-
-    it('returns true for special assets on Tron Shasta testnet', () => {
-      expect(
-        isTronSpecialAsset(
-          `${tronShasta}/${TRON_SPECIAL_ASSET_CAIP_TYPES.BANDWIDTH}` as CaipAssetType,
-        ),
-      ).toBe(true);
-    });
-
-    it('returns false for native TRX (slip44:195)', () => {
-      expect(
-        isTronSpecialAsset(`${tronMainnet}/slip44:195` as CaipAssetType),
-      ).toBe(false);
-    });
-
-    it('returns false for a normal Tron TRC20 token', () => {
-      expect(
-        isTronSpecialAsset(
-          `${tronMainnet}/trc20:TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t` as CaipAssetType,
-        ),
-      ).toBe(false);
-    });
-
-    it('returns false for non-Tron CAIP IDs', () => {
-      expect(isTronSpecialAsset('eip155:1/erc20:0x123' as CaipAssetType)).toBe(
-        false,
-      );
-      expect(
-        isTronSpecialAsset(
-          'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp/slip44:501' as CaipAssetType,
-        ),
-      ).toBe(false);
-    });
-
-    it('returns false for undefined', () => {
-      expect(isTronSpecialAsset(undefined)).toBe(false);
-    });
-
-    it('returns false for non-CAIP strings', () => {
-      expect(isTronSpecialAsset('0xabc123')).toBe(false);
-      expect(isTronSpecialAsset('')).toBe(false);
-      expect(isTronSpecialAsset('not-a-caip-id')).toBe(false);
     });
   });
 });

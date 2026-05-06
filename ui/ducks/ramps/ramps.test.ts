@@ -7,7 +7,6 @@ import {
   getMultichainIsBitcoin,
   getMultichainIsSolana,
 } from '../../selectors/multichain';
-import { MultichainNetworks } from '../../../shared/constants/multichain/networks';
 import rampsReducer, {
   fetchBuyableChains,
   getBuyableChains,
@@ -221,25 +220,11 @@ describe('rampsSlice', () => {
       expect(getIsNativeTokenBuyable(state)).toBe(false);
     });
 
-    it('should return true when Bitcoin is buyable and current chain is Bitcoin', () => {
+    it('should return false when Bitcoin buy requests are filtered out', () => {
       getCurrentChainIdMock.mockReturnValue(CHAIN_IDS.MAINNET);
       getMultichainIsBitcoinMock.mockReturnValue(true);
       const mockBuyableChains = [
-        { chainId: MultichainNetworks.BITCOIN, active: true },
-      ];
-      store.dispatch({
-        type: 'ramps/setBuyableChains',
-        payload: mockBuyableChains,
-      });
-      const state = store.getState();
-      expect(getIsNativeTokenBuyable(state)).toBe(true);
-    });
-
-    it('should return false when Bitcoin is not buyable and current chain is Bitcoin', () => {
-      getCurrentChainIdMock.mockReturnValue(CHAIN_IDS.MAINNET);
-      getMultichainIsBitcoinMock.mockReturnValue(true);
-      const mockBuyableChains = [
-        { chainId: MultichainNetworks.BITCOIN, active: false },
+        { chainId: 'bip122:000000000019d6689c085ae165831e93', active: true },
       ];
       store.dispatch({
         type: 'ramps/setBuyableChains',
@@ -249,28 +234,38 @@ describe('rampsSlice', () => {
       expect(getIsNativeTokenBuyable(state)).toBe(false);
     });
 
-    it('should return true when Solana is buyable and current chain is Solana', () => {
+    it('should return false when Bitcoin is not buyable and current chain is Bitcoin', () => {
       getCurrentChainIdMock.mockReturnValue(CHAIN_IDS.MAINNET);
-      getMultichainIsBitcoinMock.mockReturnValue(false);
-      getMultichainIsSolanaMock.mockReturnValue(true);
+      getMultichainIsBitcoinMock.mockReturnValue(true);
       const mockBuyableChains = [
-        { chainId: MultichainNetworks.SOLANA, active: true },
+        { chainId: 'bip122:000000000019d6689c085ae165831e93', active: false },
       ];
       store.dispatch({
         type: 'ramps/setBuyableChains',
         payload: mockBuyableChains,
       });
       const state = store.getState();
-      expect(getIsNativeTokenBuyable(state)).toBe(true);
+      expect(getIsNativeTokenBuyable(state)).toBe(false);
+    });
+
+    it('should return false when Solana buy requests are filtered out', () => {
+      getCurrentChainIdMock.mockReturnValue(CHAIN_IDS.MAINNET);
+      getMultichainIsBitcoinMock.mockReturnValue(false);
+      getMultichainIsSolanaMock.mockReturnValue(true);
+      const mockBuyableChains = [{ chainId: 'solana:101', active: true }];
+      store.dispatch({
+        type: 'ramps/setBuyableChains',
+        payload: mockBuyableChains,
+      });
+      const state = store.getState();
+      expect(getIsNativeTokenBuyable(state)).toBe(false);
     });
 
     it('should return false when Solana is not buyable and current chain is Solana', () => {
       getCurrentChainIdMock.mockReturnValue(CHAIN_IDS.MAINNET);
       getMultichainIsBitcoinMock.mockReturnValue(false);
       getMultichainIsSolanaMock.mockReturnValue(true);
-      const mockBuyableChains = [
-        { chainId: MultichainNetworks.SOLANA, active: false },
-      ];
+      const mockBuyableChains = [{ chainId: 'solana:101', active: false }];
       store.dispatch({
         type: 'ramps/setBuyableChains',
         payload: mockBuyableChains,
@@ -293,14 +288,14 @@ describe('rampsSlice', () => {
   });
 
   describe('getIsBitcoinBuyable', () => {
-    it('should return true when Bitcoin is in defaultBuyableChains', () => {
+    it('should return false when Bitcoin is not in defaultBuyableChains', () => {
       const state = store.getState();
-      expect(getIsBitcoinBuyable(state)).toBe(true);
+      expect(getIsBitcoinBuyable(state)).toBe(false);
     });
 
     it('should return false when Bitcoin is explicitly set to inactive', () => {
       const mockBuyableChains = [
-        { chainId: MultichainNetworks.BITCOIN, active: false },
+        { chainId: 'bip122:000000000019d6689c085ae165831e93', active: false },
       ];
       store.dispatch({
         type: 'ramps/setBuyableChains',
@@ -310,21 +305,21 @@ describe('rampsSlice', () => {
       expect(getIsBitcoinBuyable(state)).toBe(false);
     });
 
-    it('should return true when Bitcoin is in buyableChains and active', () => {
+    it('should return false when Bitcoin entries are filtered from buyableChains', () => {
       const mockBuyableChains = [
-        { chainId: MultichainNetworks.BITCOIN, active: true },
+        { chainId: 'bip122:000000000019d6689c085ae165831e93', active: true },
       ];
       store.dispatch({
         type: 'ramps/setBuyableChains',
         payload: mockBuyableChains,
       });
       const state = store.getState();
-      expect(getIsBitcoinBuyable(state)).toBe(true);
+      expect(getIsBitcoinBuyable(state)).toBe(false);
     });
 
     it('should return false when Bitcoin is in buyableChains but not active', () => {
       const mockBuyableChains = [
-        { chainId: MultichainNetworks.BITCOIN, active: false },
+        { chainId: 'bip122:000000000019d6689c085ae165831e93', active: false },
       ];
       store.dispatch({
         type: 'ramps/setBuyableChains',

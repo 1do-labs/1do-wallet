@@ -1,4 +1,3 @@
-import { NON_EVM_TESTNET_IDS } from '@metamask/multichain-network-controller';
 import { CaipChainId, type Hex, isCaipChainId } from '@metamask/utils';
 import { TEST_CHAINS } from '../../../shared/constants/network';
 import { convertCaipToHexChainId } from '../../../shared/lib/network.utils';
@@ -63,5 +62,5 @@ export const isTestNetwork = (chainId: CaipChainId | Hex) => {
     return TEST_CHAINS.includes(convertCaipToHexChainId(chainId));
   }
 
-  return NON_EVM_TESTNET_IDS.includes(chainId);
+  return false;
 };

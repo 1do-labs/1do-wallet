@@ -38,12 +38,6 @@ import { initializeProvider } from '@metamask/providers/initializeInpageProvider
 import ObjectMultiplex from '@metamask/object-multiplex';
 import { pipeline } from 'readable-stream';
 
-import {
-  getMultichainClient,
-  getDefaultTransport,
-} from '@metamask/multichain-api-client';
-import { registerSolanaWalletStandard } from '@metamask/solana-wallet-standard';
-
 import shouldInjectProvider from '../../shared/lib/provider-injection';
 import { METAMASK_EIP_1193_PROVIDER } from './constants/stream';
 
@@ -115,16 +109,9 @@ if (shouldInjectProvider()) {
     providerInfo: {
       uuid: uuid(),
       name: process.env.METAMASK_BUILD_NAME,
-      icon: process.env.METAMASK_BUILD_ICON,
+      icon: chrome.runtime.getURL('images/icon-128.png'),
       rdns: process.env.METAMASK_BUILD_APP_ID,
     },
   });
 
-  const multichainClient = getMultichainClient({
-    transport: getDefaultTransport(),
-  });
-  registerSolanaWalletStandard({
-    client: multichainClient,
-    walletName: process.env.METAMASK_BUILD_NAME,
-  });
 }

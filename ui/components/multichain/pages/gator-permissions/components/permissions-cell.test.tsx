@@ -7,7 +7,7 @@ import { renderWithProvider } from '../../../../../../test/lib/render-helpers-na
 import { enLocale as messages } from '../../../../../../test/lib/i18n-helpers';
 import configureStore from '../../../../../store/store';
 import mockState from '../../../../../../test/data/mock-state.json';
-import { EvmAndMultichainNetworkConfigurationsWithCaipChainId } from '../../../../../selectors/selectors.types';
+import { EvmNetworkConfigurationWithCaipChainId } from '../../../../../selectors/selectors.types';
 import { PermissionsCell } from './permissions-cell';
 
 const mockUseNavigate = jest.fn();
@@ -25,7 +25,7 @@ describe('PermissionsCell', () => {
     },
   });
 
-  const mockNonTestNetworks: EvmAndMultichainNetworkConfigurationsWithCaipChainId[] =
+  const mockNonTestNetworks: EvmNetworkConfigurationWithCaipChainId[] =
     [
       {
         name: 'Ethereum Mainnet',
@@ -61,7 +61,7 @@ describe('PermissionsCell', () => {
       },
     ];
 
-  const mockTestNetworks: EvmAndMultichainNetworkConfigurationsWithCaipChainId[] =
+  const mockTestNetworks: EvmNetworkConfigurationWithCaipChainId[] =
     [
       {
         name: 'Sepolia',

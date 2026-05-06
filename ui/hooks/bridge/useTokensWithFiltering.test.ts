@@ -1,7 +1,5 @@
 import { getNativeAssetForChainId } from '@metamask/bridge-controller';
 import { AVAILABLE_MULTICHAIN_NETWORK_CONFIGURATIONS } from '@metamask/multichain-network-controller';
-import { SolScope } from '@metamask/keyring-api';
-import { MultichainNetwork } from '@metamask/multichain-transactions-controller';
 import { renderHookWithProvider } from '../../../test/lib/render-helpers-navigate';
 import { createBridgeMockStore } from '../../../test/data/bridge/mock-bridge-store';
 import { STATIC_MAINNET_TOKEN_LIST } from '../../../shared/constants/tokens';
@@ -128,56 +126,6 @@ describe('useTokensWithFiltering', () => {
     expect(mockFetchTopAssetsList).toHaveBeenCalledWith('0x1');
     expect(mockFetchBridgeTokens).toHaveBeenCalledTimes(2);
     expect(mockFetchBridgeTokens).toHaveBeenCalledWith('0x1');
-    // The first 10 tokens returned
-    const first10Tokens = [...result.current(() => true)].slice(0, 10);
-    expect(first10Tokens).toMatchSnapshot();
-  });
-
-  it('should fetch bridge tokens if chain is solana', async () => {
-    const mockStore = createBridgeMockStore({
-      metamaskStateOverrides: {
-        completedOnboarding: true,
-        tokensChainsCache: {
-          [CHAIN_IDS.MAINNET]: {
-            timestamp: Date.now() - 11 * MINUTE,
-            data: {
-              [NATIVE_TOKEN.address]: NATIVE_TOKEN,
-              ...Object.fromEntries(
-                Object.entries(STATIC_MAINNET_TOKEN_LIST).map(
-                  ([address, token]) => [
-                    address.toLowerCase(),
-                    { ...token, address: address.toLowerCase() },
-                  ],
-                ),
-              ),
-            },
-          },
-        },
-        multichainNetworkConfigurationsByChainId:
-          AVAILABLE_MULTICHAIN_NETWORK_CONFIGURATIONS,
-        selectedMultichainNetworkChainId: SolScope.Mainnet,
-        isEvmSelected: false,
-      },
-    });
-
-    const { result, waitForNextUpdate } = renderHookWithProvider(() => {
-      const { filteredTokenListGenerator } = useTokensWithFiltering(
-        MultichainNetwork.Solana,
-      );
-      return filteredTokenListGenerator;
-    }, mockStore);
-
-    await waitForNextUpdate();
-    await flushPromises();
-
-    expect(mockFetchTopAssetsList).toHaveBeenCalledTimes(1);
-    expect(mockFetchTopAssetsList).toHaveBeenCalledWith(
-      'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp',
-    );
-    expect(mockFetchBridgeTokens).toHaveBeenCalledTimes(2);
-    expect(mockFetchBridgeTokens).toHaveBeenCalledWith(
-      'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp',
-    );
     // The first 10 tokens returned
     const first10Tokens = [...result.current(() => true)].slice(0, 10);
     expect(first10Tokens).toMatchSnapshot();

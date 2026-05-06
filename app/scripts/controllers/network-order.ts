@@ -1,4 +1,3 @@
-import { BtcScope, SolScope, TrxScope } from '@metamask/keyring-api';
 import { BaseController, StateMetadata } from '@metamask/base-controller';
 import type { Messenger } from '@metamask/messenger';
 import {
@@ -158,11 +157,6 @@ export class NetworkOrderController extends BaseController<
           !TEST_CHAINS.includes(chainId as (typeof TEST_CHAINS)[number]),
       ) as Hex[];
       const chainIds: CaipChainId[] = hexChainIds.map(toEvmCaipChainId);
-      const nonEvmChainIds: CaipChainId[] = [
-        BtcScope.Mainnet,
-        SolScope.Mainnet,
-        TrxScope.Mainnet,
-      ];
 
       const newNetworks = chainIds
         .filter(
@@ -176,12 +170,7 @@ export class NetworkOrderController extends BaseController<
       state.orderedNetworkList = state.orderedNetworkList
         // Filter out deleted networks
         .filter(
-          ({ networkId }) =>
-            chainIds.includes(networkId) ||
-            // Since Bitcoin, Solana and Tron are not part of the @metamask/network-controller, we have
-            // to add a second check to make sure it is not filtered out.
-            // TODO: Update this logic to @metamask/multichain-network-controller once all networks are migrated.
-            nonEvmChainIds.includes(networkId),
+          ({ networkId }) => chainIds.includes(networkId),
         )
         // Append new networks to the end
         .concat(newNetworks);

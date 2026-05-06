@@ -35,11 +35,12 @@ import {
   getMultichainCurrentNetwork,
   getMultichainSelectedAccountCachedBalance,
 } from '../../../../selectors/multichain';
-import { MultichainNetworks } from '../../../../../shared/constants/multichain/networks';
 import { useMultichainBalances } from '../../../../hooks/useMultichainBalances';
 import { enLocale as messages } from '../../../../../test/lib/i18n-helpers';
 import { AssetPickerModal } from './asset-picker-modal';
 import { ERC20Asset } from './types';
+
+const SOLANA_CHAIN_ID = 'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp';
 
 const mockAssetList = jest.fn();
 jest.mock('./AssetList', () => (props: unknown) => {
@@ -505,16 +506,16 @@ describe('AssetPickerModal token filtering', () => {
       <AssetPickerModal
         {...defaultProps}
         isMultiselectEnabled={false}
-        selectedChainIds={[MultichainNetworks.SOLANA]}
+        selectedChainIds={[SOLANA_CHAIN_ID]}
         network={
           {
-            chainId: MultichainNetworks.SOLANA,
+            chainId: SOLANA_CHAIN_ID,
             name: 'Solana',
           } as unknown as NetworkConfiguration
         }
         asset={{
           address: 'NEWTOKEN',
-          chainId: MultichainNetworks.SOLANA,
+          chainId: SOLANA_CHAIN_ID,
           symbol: 'USDT',
           image: 'image.png',
           type: AssetType.token,
@@ -532,7 +533,7 @@ describe('AssetPickerModal token filtering', () => {
             },
             {
               address: 'NEWTOKEN',
-              chainId: MultichainNetworks.SOLANA,
+              chainId: SOLANA_CHAIN_ID,
               symbol: 'USDT',
               image: 'image.png',
               type: AssetType.token,
@@ -569,7 +570,7 @@ describe('AssetPickerModal token filtering', () => {
         selectedChainIds={['solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp']}
         network={
           {
-            chainId: MultichainNetworks.SOLANA,
+            chainId: SOLANA_CHAIN_ID,
             name: 'Solana',
           } as unknown as NetworkConfiguration
         }

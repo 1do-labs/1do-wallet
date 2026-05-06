@@ -2,7 +2,6 @@ import classnames from 'clsx';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import { flatten } from 'lodash';
-import { useSelector } from 'react-redux';
 import {
   Box,
   ButtonIcon,
@@ -21,13 +20,10 @@ import {
   JustifyContent,
   TextVariant,
 } from '../../../helpers/constants/design-system';
-import { getSnapName } from '../../../helpers/utils/util';
-import { getSnapsMetadata } from '../../../selectors';
 
 const ConnectedAccountsPermissions = ({ permissions }) => {
   const t = useI18nContext();
   const [expanded, setExpanded] = useState(false);
-  const snapsMetadata = useSelector(getSnapsMetadata);
 
   const toggleExpanded = () => {
     setExpanded((_expanded) => !_expanded);
@@ -43,7 +39,6 @@ const ConnectedAccountsPermissions = ({ permissions }) => {
         t,
         permissionName: key,
         permissionValue: value,
-        getSubjectName: getSnapName(snapsMetadata),
       }),
     ),
   );

@@ -27,7 +27,7 @@
     "message": "Du måste välja ett konto!"
   },
   "addAcquiredTokens": {
-    "message": "Lägg till de tokens du har skaffat med MetaMask"
+    "message": "Lägg till de tokens du har skaffat med 1do"
   },
   "addAlias": {
     "message": "Lägg till alias"
@@ -52,15 +52,15 @@
     "description": "The description of the application"
   },
   "appName": {
-    "message": "MetaMask",
+    "message": "1do",
     "description": "The name of the application"
   },
   "appNameBeta": {
-    "message": "MetaMask Beta",
+    "message": "1do Beta",
     "description": "The name of the application (Beta)"
   },
   "appNameFlask": {
-    "message": "MetaMask Flask",
+    "message": "1do Flask",
     "description": "The name of the application (Flask)"
   },
   "approve": {
@@ -79,7 +79,7 @@
     "message": "Timer för automatisk utloggning (minuter)"
   },
   "autoLockTimeLimitDescription": {
-    "message": "Ställ in efter hur lång tids inaktivitet som MetaMask automatiskt loggar ut"
+    "message": "Ställ in efter hur lång tids inaktivitet som 1do automatiskt loggar ut"
   },
   "average": {
     "message": "Genomsnitt"
@@ -88,7 +88,7 @@
     "message": "Bakåt"
   },
   "backupApprovalInfo": {
-    "message": "Den hemliga koden krävs för att komma åt din plånbok ifall du tappar bort din enhet, glömmer ditt lösenord, behöver installera om MetaMask eller om du vill komma åt din plånbok på en annan enhet."
+    "message": "Den hemliga koden krävs för att komma åt din plånbok ifall du tappar bort din enhet, glömmer ditt lösenord, behöver installera om 1do eller om du vill komma åt din plånbok på en annan enhet."
   },
   "backupApprovalNotice": {
     "message": "Säkerhetskopiera din hemliga återställningskod för att se till att din plånbok och dina tillgångar är säkra."
@@ -122,7 +122,7 @@
     "message": "Avbruten"
   },
   "chromeRequiredForHardwareWallets": {
-    "message": "Du måste använda MetaMask på Google Chrome för att ansluta till din hårdvaruplånbok."
+    "message": "Du måste använda 1do på Google Chrome för att ansluta till din hårdvaruplånbok."
   },
   "close": {
     "message": "Stäng"
@@ -264,7 +264,7 @@
     "message": "Anslut en hårdvaruplånbok"
   },
   "hardwareWalletsMsg": {
-    "message": "Välj en hårdvaruplånbok som du vill använda med MetaMask"
+    "message": "Välj en hårdvaruplånbok som du vill använda med 1do"
   },
   "here": {
     "message": "här",
@@ -287,7 +287,7 @@
     "description": "Button to import an account from a selected file"
   },
   "importAccountMsg": {
-    "message": "Importerade konton kommer inte att kopplas till din ursprungligen skapade seedphrase för ditt MetaMask-konto. Läs mer om importerade konton"
+    "message": "Importerade konton kommer inte att kopplas till din ursprungligen skapade seedphrase för ditt 1do-konto. Läs mer om importerade konton"
   },
   "imported": {
     "message": "Importerade",
@@ -355,7 +355,7 @@
     "message": "Meddelande"
   },
   "metamaskVersion": {
-    "message": "MetaMask-version"
+    "message": "1do-version"
   },
   "mustSelectOne": {
     "message": "Minst 1 token måste väljas."
@@ -414,10 +414,10 @@
     "message": "Ursprung"
   },
   "participateInMetaMetrics": {
-    "message": "Delta i MetaMetrics"
+    "message": "Delta i 1do Metrics"
   },
   "participateInMetaMetricsDescription": {
-    "message": "Delta i MetaMetrics för att hjälpa oss göra MetaMask bättre"
+    "message": "Delta i 1do Metrics för att hjälpa oss göra 1do bättre"
   },
   "password": {
     "message": "Lösenord"

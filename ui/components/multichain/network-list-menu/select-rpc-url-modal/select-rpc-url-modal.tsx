@@ -22,7 +22,7 @@ import {
 import { CHAIN_ID_TO_NETWORK_IMAGE_URL_MAP } from '../../../../../shared/constants/network';
 import { setEditedNetwork, updateNetwork } from '../../../../store/actions';
 import RpcListItem from '../rpc-list-item';
-import { getMultichainNetworkConfigurationsByChainId } from '../../../../selectors';
+import { getMultichainNetworkConfigurationsTuple } from '../../../../selectors';
 
 export const SelectRpcUrlModal = ({
   networkConfiguration,
@@ -36,7 +36,7 @@ export const SelectRpcUrlModal = ({
   const chainId = location.state?.chainId;
 
   const [, evmNetworks] = useSelector(
-    getMultichainNetworkConfigurationsByChainId,
+    getMultichainNetworkConfigurationsTuple,
   );
   const networkConfigurationToUse =
     networkConfiguration ?? evmNetworks[chainId as keyof typeof evmNetworks];

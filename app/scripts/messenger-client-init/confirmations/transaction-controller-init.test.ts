@@ -493,6 +493,40 @@ describe('Transaction Controller Init', () => {
       expect(jest.mocked(Delegation7702PublishHook)).toHaveBeenCalled();
     });
 
+    it('skips Delegation7702PublishHook for upgrade-only 7702 transactions', async () => {
+      const requestMock = buildInitRequestMock();
+      requestMock.getMessengerClient.mockImplementation(((
+        name: MessengerClientName,
+      ) => {
+        if (name === 'KeyringController') {
+          return {
+            getKeyringForAccount: jest.fn().mockResolvedValue({
+              type: 'HD Key Tree',
+            }),
+          };
+        }
+        return buildControllerMock();
+      }) as unknown as MessengerClientInitRequest<
+        TransactionControllerMessenger,
+        TransactionControllerInitMessenger
+      >['getMessengerClient']);
+
+      TransactionControllerInit(requestMock);
+
+      const { hooks } = transactionControllerClassMock.mock.calls[0][0];
+
+      await hooks?.publish?.({
+        ...mockTransactionMeta,
+        txParams: {
+          ...mockTransactionMeta.txParams,
+          authorizationList: [{ address: '0x1234567890123456789012345678901234567890' }],
+          data: '0x',
+        },
+      } as TransactionMeta);
+
+      expect(jest.mocked(Delegation7702PublishHook)).not.toHaveBeenCalled();
+    });
+
     it('records sentinel_relay submission via metrics fragment on delegation hook success', async () => {
       const delegation7702HookFn: jest.MockedFn<PublishHook> = jest.fn();
       delegation7702HookFn.mockResolvedValue({ transactionHash: '0xdelHash' });

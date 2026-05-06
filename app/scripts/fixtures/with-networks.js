@@ -1,4 +1,3 @@
-import { MultichainNetworks } from '../../../shared/constants/multichain/networks';
 import {
   ARBITRUM_DISPLAY_NAME,
   AVALANCHE_DISPLAY_NAME,
@@ -171,8 +170,5 @@ export const ALL_POPULAR_NETWORKS = {
     [CHAIN_IDS.AVALANCHE]: true,
     [CHAIN_IDS.ZKSYNC_ERA]: true,
     [CHAIN_IDS.SEI]: true,
-  },
-  solana: {
-    [MultichainNetworks.SOLANA]: true,
   },
 };

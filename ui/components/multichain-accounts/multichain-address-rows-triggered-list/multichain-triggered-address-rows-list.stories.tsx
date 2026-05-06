@@ -12,10 +12,7 @@ import {
 import mockState from '../../../../test/data/mock-state.json';
 import {
   MOCK_ACCOUNT_EOA,
-  MOCK_ACCOUNT_BIP122_P2WPKH,
-  MOCK_ACCOUNT_SOLANA_MAINNET,
 } from '../../../../test/data/mock-accounts';
-import { MultichainNetworks } from '../../../../shared/constants/multichain/networks';
 import { MultichainTriggeredAddressRowsList } from './multichain-triggered-address-rows-list';
 
 const mockStore = configureStore([]);
@@ -50,36 +47,6 @@ const accounts: Record<string, InternalAccount> = {
       name: 'Polygon Account',
     },
   },
-  solana: {
-    ...MOCK_ACCOUNT_SOLANA_MAINNET,
-    id: 'solana-account',
-    address: '9A4AptCThfbuknsbteHgGKXczfJpfjuVA9SLTSGaaLGD',
-    scopes: ['solana:*'],
-    metadata: {
-      ...MOCK_ACCOUNT_SOLANA_MAINNET.metadata,
-      name: 'Solana Account',
-    },
-  },
-  solanaTestnet: {
-    ...MOCK_ACCOUNT_SOLANA_MAINNET,
-    id: 'solana-testnet-account',
-    address: '9A4AptCThfbuknsbteHgGKXczfJpfjuVA9SLTSGaaLGD',
-    scopes: [MultichainNetworks.SOLANA_TESTNET],
-    metadata: {
-      ...MOCK_ACCOUNT_SOLANA_MAINNET.metadata,
-      name: 'Solana Testnet Account',
-    },
-  },
-  bitcoin: {
-    ...MOCK_ACCOUNT_BIP122_P2WPKH,
-    id: 'bitcoin-account',
-    address: 'bc1q4v2dstzcpvkhz29l75kz5gxspvpxgxkdmhjaq8',
-    scopes: ['bip122:*'],
-    metadata: {
-      ...MOCK_ACCOUNT_BIP122_P2WPKH.metadata,
-      name: 'Bitcoin Account',
-    },
-  },
   multiChainAccount: {
     ...MOCK_ACCOUNT_EOA,
     id: 'multi-chain-account',
@@ -99,8 +66,8 @@ const createMockState = () => ({
     ...mockState.metamask,
     remoteFeatureFlags: {
       ...mockState.metamask.remoteFeatureFlags,
-      solanaAccounts: { enabled: true, minimumVersion: '13.6.0' },
-      bitcoinAccounts: { enabled: true, minimumVersion: '13.6.0' },
+      solanaAccounts: { enabled: false, minimumVersion: '13.6.0' },
+      bitcoinAccounts: { enabled: false, minimumVersion: '13.6.0' },
     },
     accountTree: {
       wallets: {
@@ -234,30 +201,6 @@ const createMockState = () => ({
         isEvm: true,
         nativeCurrency: 'ETH',
       },
-      [MultichainNetworks.SOLANA]: {
-        chainId: MultichainNetworks.SOLANA,
-        name: 'Solana with a really long name',
-        nativeCurrency: 'SOL',
-        isEvm: false,
-      },
-      [MultichainNetworks.SOLANA_TESTNET]: {
-        chainId: MultichainNetworks.SOLANA_TESTNET,
-        name: 'Solana Testnet',
-        nativeCurrency: 'SOL',
-        isEvm: false,
-      },
-      'bip122:000000000019d6689c085ae165831e93': {
-        chainId: 'bip122:000000000019d6689c085ae165831e93',
-        name: 'Bitcoin Mainnet',
-        nativeCurrency: 'BTC',
-        isEvm: false,
-      },
-      'tron:0x2b6653dc': {
-        chainId: 'tron:0x2b6653dc',
-        name: 'Tron Mainnet',
-        nativeCurrency: 'TRX',
-        isEvm: false,
-      },
     },
     internalAccounts: {
       selectedAccount: accounts.ethereum.id,
@@ -312,12 +255,7 @@ export const MultipleDifferentAccounts: Story = {
     (Story) => {
       const state = createMockState();
       state.metamask.accountTree.wallets[WALLET_ID].groups[GROUP_ID].accounts =
-        [
-          accounts.ethereum.id,
-          accounts.polygon.id,
-          accounts.solana.id,
-          accounts.bitcoin.id,
-        ];
+        [accounts.ethereum.id, accounts.polygon.id, accounts.multiChainAccount.id];
       return (
         <Provider store={mockStore(state)}>
           <div style={{ width: '400px', padding: '16px' }}>
@@ -371,16 +309,16 @@ export const SpecificNetworkAccount: Story = {
   ],
 };
 
-export const SolanaOnly: Story = {
+export const MultiEvmOnly: Story = {
   args: {
     groupId: GROUP_ID,
-    children: <button>Hover to see Solana account</button>,
+    children: <button>Hover to see EVM accounts</button>,
   },
   decorators: [
     (Story) => {
       const state = createMockState();
       state.metamask.accountTree.wallets[WALLET_ID].groups[GROUP_ID].accounts =
-        [accounts.solana.id, accounts.solanaTestnet.id];
+        [accounts.ethereum.id, accounts.multiChainAccount.id];
       return (
         <Provider store={mockStore(state)}>
           <div style={{ width: '400px', padding: '16px' }}>

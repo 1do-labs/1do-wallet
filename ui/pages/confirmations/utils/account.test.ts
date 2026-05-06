@@ -3,6 +3,7 @@ import {
   isBitcoinAccountForSend,
   isEVMAccountForSend,
   isSolanaAccountForSend,
+  isTronAccountForSend,
 } from './account';
 
 describe('Account Send Utils', () => {
@@ -96,31 +97,6 @@ describe('Account Send Utils', () => {
       ).toBe(false);
     });
 
-    it('returns true when account type starts with solana:', () => {
-      const account = {
-        id: 'test-id',
-        type: 'solana:mainnet',
-        address: 'solana-address',
-        metadata: {},
-        methods: [],
-        options: {},
-      } as unknown as InternalAccount;
-      expect(isSolanaAccountForSend(account)).toBe(true);
-    });
-
-    it('returns true when account has solana scope', () => {
-      const account = {
-        id: 'test-id',
-        type: 'other:type',
-        address: 'test-address',
-        metadata: {},
-        methods: [],
-        options: {},
-        scopes: ['solana:mainnet', 'other:scope'],
-      } as unknown as InternalAccount;
-      expect(isSolanaAccountForSend(account)).toBe(true);
-    });
-
     it('returns false when account type does not start with solana and has no solana scopes', () => {
       const account = {
         id: 'test-id',
@@ -173,31 +149,6 @@ describe('Account Send Utils', () => {
       ).toBe(false);
     });
 
-    it('returns true when account type starts with bip122:', () => {
-      const account = {
-        id: 'test-id',
-        type: 'bip122:bitcoin',
-        address: 'bitcoin-address',
-        metadata: {},
-        methods: [],
-        options: {},
-      } as unknown as InternalAccount;
-      expect(isBitcoinAccountForSend(account)).toBe(true);
-    });
-
-    it('returns true when account has bip122 scope', () => {
-      const account = {
-        id: 'test-id',
-        type: 'other:type',
-        address: 'test-address',
-        metadata: {},
-        methods: [],
-        options: {},
-        scopes: ['bip122:bitcoin', 'other:scope'],
-      } as unknown as InternalAccount;
-      expect(isBitcoinAccountForSend(account)).toBe(true);
-    });
-
     it('returns false when account type does not start with bip122 and has no bip122 scopes', () => {
       const account = {
         id: 'test-id',
@@ -234,6 +185,33 @@ describe('Account Send Utils', () => {
         scopes: ['eip155:1', 'solana:mainnet'],
       } as unknown as InternalAccount;
       expect(isBitcoinAccountForSend(account)).toBe(false);
+    });
+  });
+
+  describe('isTronAccountForSend', () => {
+    it('returns false when account is null', () => {
+      expect(isTronAccountForSend(null as unknown as InternalAccount)).toBe(
+        false,
+      );
+    });
+
+    it('returns false when account is undefined', () => {
+      expect(isTronAccountForSend(undefined as unknown as InternalAccount)).toBe(
+        false,
+      );
+    });
+
+    it('returns false for EVM accounts', () => {
+      const account = {
+        id: 'test-id',
+        type: 'eip155:ethereum',
+        address: '0x123',
+        metadata: {},
+        methods: [],
+        options: {},
+        scopes: ['eip155:1'],
+      } as unknown as InternalAccount;
+      expect(isTronAccountForSend(account)).toBe(false);
     });
   });
 });

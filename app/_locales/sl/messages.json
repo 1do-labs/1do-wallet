@@ -27,7 +27,7 @@
     "message": "Izbrati morate račun!"
   },
   "addAcquiredTokens": {
-    "message": "Dodaj žetone pridobljene z MetaMask"
+    "message": "Dodaj žetone pridobljene z 1do"
   },
   "addAlias": {
     "message": "Dodaj vzdevek"
@@ -52,15 +52,15 @@
     "description": "The description of the application"
   },
   "appName": {
-    "message": "MetaMask",
+    "message": "1do",
     "description": "The name of the application"
   },
   "appNameBeta": {
-    "message": "MetaMask Beta",
+    "message": "1do Beta",
     "description": "The name of the application (Beta)"
   },
   "appNameFlask": {
-    "message": "MetaMask Flask",
+    "message": "1do Flask",
     "description": "The name of the application (Flask)"
   },
   "approve": {
@@ -79,7 +79,7 @@
     "message": "Časovnik za samodejno odjavo (minute)"
   },
   "autoLockTimeLimitDescription": {
-    "message": "Nastavite, po koliko minutah mirovanja naj se MetaMask samodejno odjavi"
+    "message": "Nastavite, po koliko minutah mirovanja naj se 1do samodejno odjavi"
   },
   "average": {
     "message": "Povprečje"
@@ -88,7 +88,7 @@
     "message": "Nazaj"
   },
   "backupApprovalInfo": {
-    "message": "Ta skrivna koda je potrebna za obnovitev denarnice, če izgubite napravo, pozabite geslo, ponovno namestite MetaMask ali želite dostopati do denarnice v drugi napravi."
+    "message": "Ta skrivna koda je potrebna za obnovitev denarnice, če izgubite napravo, pozabite geslo, ponovno namestite 1do ali želite dostopati do denarnice v drugi napravi."
   },
   "backupApprovalNotice": {
     "message": "Varnostno kopirajte kodo Secret Recovery, da ohranite denarnico in sredstva varna."
@@ -414,10 +414,10 @@
     "message": "Izvor"
   },
   "participateInMetaMetrics": {
-    "message": "Sodelujte v MetaMetrics"
+    "message": "Sodelujte v 1do Metrics"
   },
   "participateInMetaMetricsDescription": {
-    "message": "Sodelujte v MetaMetrics in nam pomagajte izboljšati MetaMask"
+    "message": "Sodelujte v 1do Metrics in nam pomagajte izboljšati 1do"
   },
   "password": {
     "message": "Geslo"

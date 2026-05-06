@@ -190,7 +190,6 @@
       "urlScanCache": "object"
     },
     "PreferencesController": {
-      "addSnapAccountEnabled": "boolean",
       "advancedGasFee": {},
       "currentLocale": "en",
       "dismissSeedBackUpReminder": false,
@@ -230,7 +229,6 @@
       "securityAlertsEnabled": "boolean",
       "showSidePanelMigrationToast": "boolean",
       "snapRegistryList": "object",
-      "snapsAddSnapAccountModalDismissed": "boolean",
       "theme": "os",
       "use4ByteResolution": true,
       "useAddressBarEnsResolution": true,
@@ -273,13 +271,6 @@
       "snapStates": "object",
       "snaps": "object",
       "unencryptedSnapStates": "object"
-    },
-    "SnapInterfaceController": { "interfaces": "object" },
-    "SnapRegistryController": {
-      "database": "object",
-      "databaseUnavailable": "boolean",
-      "lastUpdated": "number",
-      "signature": "string"
     },
     "SubjectMetadataController": { "subjectMetadata": "object" },
     "SubscriptionController": "object",

@@ -167,7 +167,7 @@ export function RevealSeedContent({
               className="rounded-lg"
             />
             <img
-              src="images/logo/metamask-fox.svg"
+              src="images/logo/1do-mark.svg"
               alt=""
               className="absolute top-1/2 left-1/2 w-12 h-12 object-contain -translate-x-1/2 -translate-y-1/2"
               aria-hidden

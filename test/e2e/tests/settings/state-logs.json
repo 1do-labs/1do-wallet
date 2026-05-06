@@ -1,12 +1,4 @@
 {
-  "DNS": {
-    "chainId": "null",
-    "domainName": "null",
-    "error": "null",
-    "resolutions": "null",
-    "stage": "string",
-    "warning": "null"
-  },
   "activeTab": {},
   "appState": {
     "accountDetail": {
@@ -94,7 +86,6 @@
     },
     "smartTransactionsError": "null",
     "smartTransactionsErrorMessageDismissed": "boolean",
-    "snapsInstallPrivacyWarningShown": "boolean",
     "txId": "null",
     "welcomeScreenSeen": "boolean"
   },
@@ -281,7 +272,6 @@
     "addressBook": {},
     "addressScanCache": {},
     "addressSecurityAlertResponses": {},
-    "addSnapAccountEnabled": "boolean",
     "advancedGasFee": {},
     "alertEnabledness": {
       "smartTransactionsMigration": "boolean",
@@ -1342,7 +1332,6 @@
       "userOptInV2": "null"
     },
     "snapRegistryList": {},
-    "snapsAddSnapAccountModalDismissed": "boolean",
     "socialBackupsMetadata": [],
     "srpSessionData": {
       "01KA0MT07W98B2G9474CFDC6VM": {

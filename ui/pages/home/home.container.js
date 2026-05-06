@@ -2,7 +2,6 @@ import React from 'react';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import withRouterHooks from '../../helpers/higher-order-components/with-router-hooks/with-router-hooks';
-import { useShieldSubscriptionContext } from '../../contexts/shield/shield-subscription';
 import {
   activeTabHasPermissions,
   getUseExternalServices,
@@ -21,13 +20,10 @@ import {
   getRemoveNftMessage,
   getApprovalFlows,
   getNewTokensImportedError,
-  hasPendingApprovals,
   getSelectedInternalAccount,
   getEditedNetwork,
   getShowUpdateModal,
   getIsSocialLoginFlow,
-  getShowShieldEntryModal,
-  getPendingShieldCohort,
   getPendingRedirectRoute,
 } from '../../selectors';
 import { getInfuraBlocked } from '../../../shared/lib/selectors/networks';
@@ -49,7 +45,6 @@ import {
   setDataCollectionForMarketing,
   setEditedNetwork,
   lookupSelectedNetworks,
-  setPendingShieldCohort,
   setPendingRedirectRoute,
 } from '../../store/actions';
 import { openBasicFunctionalityModal } from '../../ducks/app/app';
@@ -59,12 +54,6 @@ import {
   getWeb3ShimUsageAlertEnabledness,
 } from '../../ducks/metamask/metamask';
 import { fetchBuyableChains } from '../../ducks/ramps';
-import {
-  selectRewardsEnabled,
-  selectRewardsOnboardingEnabled,
-  selectOnboardingModalOpen,
-} from '../../ducks/rewards/selectors';
-import { selectShowPna25Modal } from '../../components/app/toast-master/selectors';
 // TODO: Remove restricted import
 // eslint-disable-next-line import-x/no-restricted-paths
 import { getEnvironmentType } from '../../../app/scripts/lib/util';
@@ -72,7 +61,6 @@ import { getIsBrowserDeprecated } from '../../helpers/utils/util';
 import {
   ENVIRONMENT_TYPE_NOTIFICATION,
   ENVIRONMENT_TYPE_POPUP,
-  SNAP_MANAGE_ACCOUNTS_CONFIRMATION_TYPES,
 } from '../../../shared/constants/app';
 import {
   AlertTypes,
@@ -116,12 +104,6 @@ const mapStateToProps = (state) => {
     getWeb3ShimUsageStateForOrigin(state, originOfCurrentTab) ===
       Web3ShimUsageAlertStates.recorded;
 
-  const hasAllowedPopupRedirectApprovals = hasPendingApprovals(state, [
-    SNAP_MANAGE_ACCOUNTS_CONFIRMATION_TYPES.confirmAccountCreation,
-    SNAP_MANAGE_ACCOUNTS_CONFIRMATION_TYPES.confirmAccountRemoval,
-    SNAP_MANAGE_ACCOUNTS_CONFIRMATION_TYPES.showSnapAccountRedirect,
-  ]);
-
   const shouldShowSeedPhraseReminder =
     selectedAccount && getShouldShowSeedPhraseReminder(state, selectedAccount);
 
@@ -161,20 +143,13 @@ const mapStateToProps = (state) => {
     newTokensImportedError: getNewTokensImportedError(state),
     newNetworkAddedConfigurationId: appState.newNetworkAddedConfigurationId,
     onboardedInThisUISession: appState.onboardedInThisUISession,
-    hasAllowedPopupRedirectApprovals,
+    hasAllowedPopupRedirectApprovals: false,
     showMultiRpcModal: state.metamask.preferences.showMultiRpcModal,
     showUpdateModal: getShowUpdateModal(state),
     redirectAfterDefaultPage,
     isSeedlessPasswordOutdated: getIsSeedlessPasswordOutdated(state),
     isPrimarySeedPhraseBackedUp: getIsPrimarySeedPhraseBackedUp(state),
-    showShieldEntryModal: getShowShieldEntryModal(state),
     isSocialLoginFlow: getIsSocialLoginFlow(state),
-    pendingShieldCohort: getPendingShieldCohort(state),
-    isSignedIn: state.metamask.isSignedIn,
-    rewardsEnabled: selectRewardsEnabled(state),
-    rewardsOnboardingEnabled: selectRewardsOnboardingEnabled(state),
-    rewardsOnboardingModalOpen: selectOnboardingModalOpen(state),
-    showPna25Modal: selectShowPna25Modal(state),
     pendingRedirectRoute: getPendingRedirectRoute(state),
   };
 };
@@ -231,8 +206,6 @@ const mapDispatchToProps = (dispatch) => {
     clearRedirectAfterDefaultPage: () =>
       dispatch(clearRedirectAfterDefaultPage()),
     lookupSelectedNetworks: () => dispatch(lookupSelectedNetworks()),
-    setPendingShieldCohort: (cohort) =>
-      dispatch(setPendingShieldCohort(cohort)),
     clearPendingRedirectRoute: () => dispatch(setPendingRedirectRoute(null)),
   };
 };
@@ -241,17 +214,12 @@ const mapDispatchToProps = (dispatch) => {
 // It causes cascading, unnecessary re-renders
 // eslint-disable-next-line react/prop-types
 const HomeWithRouter = ({ match: _match, ...props }) => {
-  const { evaluateCohortEligibility } = useShieldSubscriptionContext();
-
   return (
     <>
       <AppHeader />
 
       <div className="flex flex-col flex-1 min-h-0">
-        <Home
-          {...props}
-          evaluateCohortEligibility={evaluateCohortEligibility}
-        />
+        <Home {...props} />
         <DappConnectionControlBar />
       </div>
     </>

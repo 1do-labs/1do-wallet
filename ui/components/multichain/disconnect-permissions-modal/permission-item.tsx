@@ -1,6 +1,7 @@
 import React, { useCallback, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { hexToNumber, KnownCaipNamespace, CaipChainId } from '@metamask/utils';
+import { NameType } from '@metamask/name-controller';
 import {
   TextColor,
   TextVariant,
@@ -23,7 +24,7 @@ import {
 } from '../../../../shared/lib/gator-permissions';
 import { getIntlLocale } from '../../../ducks/locale/locale';
 import { shortenAddress } from '../../../helpers/utils/util';
-import { useDisplayName } from '../../../hooks/snaps/useDisplayName';
+import { useDisplayName } from '../../../hooks/useDisplayName';
 import { useGatorPermissionTokenInfo } from '../../../hooks/gator-permissions/useGatorPermissionTokenInfo';
 import { PermissionItemProps } from './types';
 
@@ -72,16 +73,13 @@ export const PermissionItem: React.FC<PermissionItemProps> = ({
 
   // Always call useDisplayName hook (hooks must be called unconditionally)
   const displayNameResult = useDisplayName({
-    chain: {
-      namespace: KnownCaipNamespace.Eip155,
-      reference: hexToNumber(permission.chainId).toString(),
-    },
-    chainId: caipChainId,
-    address: signerAddress || '',
+    type: NameType.ETHEREUM_ADDRESS,
+    value: signerAddress || '',
+    variation: permission.chainId,
   });
 
   // Only use the display name if signerAddress exists
-  const accountName = displayNameResult || undefined;
+  const accountName = displayNameResult?.name || undefined;
 
   // Network configuration values (simple derived values, no need for memoization)
   const networkIcon =

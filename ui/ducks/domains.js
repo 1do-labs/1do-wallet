@@ -1,19 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
 import log from 'loglevel';
 
-import { formatChainIdToCaip } from '@metamask/bridge-controller';
-import {
-  getChainIdsCaveat,
-  getLookupMatchersCaveat,
-} from '@metamask/snaps-rpc-methods';
-import {
-  getAddressBookEntry,
-  getNameLookupSnapsIds,
-  getPermissionSubjects,
-  getSnapMetadata,
-} from '../selectors';
+import { getAddressBookEntry } from '../selectors';
 import { getCurrentChainId } from '../../shared/lib/selectors/networks';
-import { handleSnapRequest } from '../store/actions';
 import { NO_RESOLUTION_FOR_DOMAIN } from '../pages/confirmations/send-utils/send.constants';
 import { CHAIN_CHANGED } from '../store/actionConstants';
 import { BURN_ADDRESS } from '../../shared/lib/hexstring-utils';
@@ -142,78 +131,14 @@ export async function fetchResolutions({ domain, chainId, state, signal }) {
     resolutionCache.delete(cacheKey);
   }
 
-  const NAME_LOOKUP_PERMISSION = 'endowment:name-lookup';
-  const subjects = getPermissionSubjects(state);
-  const nameLookupSnaps = getNameLookupSnapsIds(state);
-
   if (signal?.aborted) {
     return [];
   }
-
-  const filteredNameLookupSnapsIds = nameLookupSnaps.filter((snapId) => {
-    const permission = subjects[snapId]?.permissions[NAME_LOOKUP_PERMISSION];
-    const chainIdCaveat = getChainIdsCaveat(permission);
-    const lookupMatchersCaveat = getLookupMatchersCaveat(permission);
-
-    if (chainIdCaveat && !chainIdCaveat.includes(chainId)) {
-      return false;
-    }
-
-    if (lookupMatchersCaveat) {
-      const { tlds, schemes } = lookupMatchersCaveat;
-      return (
-        tlds?.some((tld) => domain.endsWith(`.${tld}`)) ||
-        schemes?.some((scheme) => domain.startsWith(`${scheme}:`))
-      );
-    }
-
-    return true;
-  });
 
   if (domain.length === 0) {
     return [];
   }
-
-  const results = await Promise.allSettled(
-    filteredNameLookupSnapsIds.map((snapId) => {
-      return handleSnapRequest({
-        snapId,
-        origin: 'metamask',
-        handler: 'onNameLookup',
-        request: {
-          jsonrpc: '2.0',
-          method: ' ',
-          params: {
-            domain,
-            chainId,
-          },
-        },
-      });
-    }),
-  );
-
-  if (signal?.aborted) {
-    return [];
-  }
-
-  const filteredResults = results.reduce(
-    (successfulResolutions, result, idx) => {
-      if (result.status !== 'rejected' && result.value !== null) {
-        const resolutions = result.value.resolvedAddresses.map(
-          (resolution) => ({
-            ...resolution,
-            resolvingSnap: getSnapMetadata(
-              state,
-              filteredNameLookupSnapsIds[idx],
-            )?.name,
-          }),
-        );
-        return successfulResolutions.concat(resolutions);
-      }
-      return successfulResolutions;
-    },
-    [],
-  );
+  const filteredResults = [];
 
   // Prune expired entries and enforce max cache size before adding new entry
   if (resolutionCache.size >= MAX_CACHE_SIZE) {
@@ -244,11 +169,9 @@ export function lookupDomainName(domainName, chainId, signal) {
     await dispatch(lookupStart(trimmedDomainName));
     state = getState();
     log.info(`Resolvers attempting to resolve name: ${trimmedDomainName}`);
-    const finalChainId = chainId || getCurrentChainId(state);
-    const caipChainId = formatChainIdToCaip(finalChainId);
     const resolutions = await fetchResolutions({
       domain: trimmedDomainName,
-      chainId: caipChainId,
+      chainId: chainId || getCurrentChainId(state),
       state,
       signal,
     });
@@ -263,7 +186,6 @@ export function lookupDomainName(domainName, chainId, signal) {
     await dispatch(
       lookupEnd({
         resolutions,
-        chainId: caipChainId,
         domainName: trimmedDomainName,
       }),
     );

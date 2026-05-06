@@ -20,7 +20,6 @@ import {
   type UpdateNetworkFields,
 } from '@metamask/network-controller';
 import {
-  NON_EVM_TESTNET_IDS,
   toEvmCaipChainId,
   type MultichainNetworkConfiguration,
 } from '@metamask/multichain-network-controller';
@@ -51,10 +50,6 @@ import {
   BUILT_IN_NETWORKS,
   CAIP_FORMATTED_TEST_CHAINS,
 } from '../../../../shared/constants/network';
-import {
-  MULTICHAIN_NETWORK_TO_ACCOUNT_TYPE_NAME,
-  MultichainNetworks,
-} from '../../../../shared/constants/multichain/networks';
 import {
   getShowTestNetworks,
   getOriginOfCurrentTab,
@@ -119,7 +114,6 @@ import NetworkListSearch from './network-list-search/network-list-search';
 import AddRpcUrlModal from './add-rpc-url-modal/add-rpc-url-modal';
 import { SelectRpcUrlModal } from './select-rpc-url-modal/select-rpc-url-modal';
 import AddBlockExplorerModal from './add-block-explorer-modal/add-block-explorer-modal';
-import AddNonEvmAccountModal from './add-non-evm-account/add-non-evm-account';
 
 // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
 // eslint-disable-next-line @typescript-eslint/naming-convention
@@ -142,10 +136,6 @@ export enum ACTION_MODE {
   // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
   // eslint-disable-next-line @typescript-eslint/naming-convention
   SELECT_RPC,
-  // Add account for non EVM networks
-  // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-  // eslint-disable-next-line @typescript-eslint/naming-convention
-  ADD_NON_EVM_ACCOUNT,
 }
 
 type NetworkListMenuProps = {
@@ -215,16 +205,12 @@ export const NetworkListMenu = ({ onClose }: NetworkListMenuProps) => {
     () =>
       Object.entries(multichainNetworks).reduce(
         ([nonTestnetsList, testnetsList], [id, network]) => {
-          let chainId = id;
-          let isTest = false;
-
-          if (network.isEvm) {
-            // We keep using raw chain ID for EVM.
-            chainId = convertCaipToHexChainId(network.chainId);
-            isTest = TEST_CHAINS.includes(chainId as Hex);
-          } else {
-            isTest = NON_EVM_TESTNET_IDS.includes(network.chainId);
-          }
+          const chainId = network.isEvm
+            ? convertCaipToHexChainId(network.chainId)
+            : id;
+          const isTest = network.isEvm
+            ? TEST_CHAINS.includes(chainId as Hex)
+            : false;
           (isTest ? testnetsList : nonTestnetsList)[chainId] = network;
           return [nonTestnetsList, testnetsList];
         },
@@ -298,12 +284,6 @@ export const NetworkListMenu = ({ onClose }: NetworkListMenuProps) => {
     // Sort alphabetically
     return filteredNetworks.sort((a, b) => a.name.localeCompare(b.name));
   }, [evmNetworks, blacklistedChainIds]);
-
-  // This value needs to be tracked in case the user changes to a Non EVM
-  // network and there is no account created for that network. This will
-  // allow the user to add an account for that network.
-  const [selectedNonEvmNetwork, setSelectedNonEvmNetwork] =
-    useState<CaipChainId>();
 
   // Searches networks by user input
   const [searchQuery, setSearchQuery] = useState('');
@@ -398,27 +378,15 @@ export const NetworkListMenu = ({ onClose }: NetworkListMenuProps) => {
     }
   };
 
-  const handleNonEvmNetworkChange = async (chainId: CaipChainId) => {
-    if (hasAnyAccountsInNetwork(chainId)) {
-      dispatch(toggleNetworkMenu());
-      dispatch(setActiveNetwork(chainId));
-      return;
-    }
-
-    setSelectedNonEvmNetwork(chainId);
-    setActionMode(ACTION_MODE.ADD_NON_EVM_ACCOUNT);
-  };
-
   const handleNetworkChange = async (chainId: CaipChainId) => {
     const currentChain =
       getMultichainNetworkConfigurationOrThrow(currentChainId);
     const chain = getMultichainNetworkConfigurationOrThrow(chainId);
 
-    if (chain.isEvm) {
-      await handleEvmNetworkChange(chainId);
-    } else {
-      await handleNonEvmNetworkChange(chainId);
+    if (!chain.isEvm) {
+      return;
     }
+    await handleEvmNetworkChange(chainId);
 
     const chainIdToTrack = chain.isEvm
       ? convertCaipToHexChainId(chainId)
@@ -438,16 +406,7 @@ export const NetworkListMenu = ({ onClose }: NetworkListMenuProps) => {
     const isFeaturedRpc = FEATURED_RPCS.some(
       (featuredRpc) => featuredRpc.chainId === hexChainId,
     );
-    const isMultichainProviderConfig = Object.values(MultichainNetworks).some(
-      (multichainNetwork) =>
-        multichainNetwork === chain.chainId ||
-        (chain.isEvm
-          ? convertCaipToHexChainId(chain.chainId)
-          : chain.chainId) === multichainNetwork,
-    );
-
-    const isCustomNetwork =
-      !isBuiltInNetwork && !isFeaturedRpc && !isMultichainProviderConfig;
+    const isCustomNetwork = !isBuiltInNetwork && !isFeaturedRpc;
 
     trackEvent({
       event: MetaMetricsEventName.NavNetworkSwitched,
@@ -813,11 +772,6 @@ export const NetworkListMenu = ({ onClose }: NetworkListMenuProps) => {
           onNetworkChange={handleEvmNetworkChange}
         />
       );
-    } else if (
-      actionMode === ACTION_MODE.ADD_NON_EVM_ACCOUNT &&
-      selectedNonEvmNetwork
-    ) {
-      return <AddNonEvmAccountModal chainId={selectedNonEvmNetwork} />;
     }
     return null; // Should not be reachable
   };
@@ -833,13 +787,6 @@ export const NetworkListMenu = ({ onClose }: NetworkListMenuProps) => {
     title = t('addBlockExplorerUrl');
   } else if (actionMode === ACTION_MODE.SELECT_RPC) {
     title = t('selectRpcUrl');
-  } else if (
-    actionMode === ACTION_MODE.ADD_NON_EVM_ACCOUNT &&
-    selectedNonEvmNetwork
-  ) {
-    title = t('addNonEvmAccount', [
-      MULTICHAIN_NETWORK_TO_ACCOUNT_TYPE_NAME[selectedNonEvmNetwork],
-    ]);
   } else {
     title = editedNetwork?.name ?? '';
   }
@@ -856,8 +803,6 @@ export const NetworkListMenu = ({ onClose }: NetworkListMenuProps) => {
     actionMode === ACTION_MODE.ADD_EXPLORER_URL
   ) {
     onBack = () => setActionMode(ACTION_MODE.ADD_EDIT);
-  } else if (actionMode === ACTION_MODE.ADD_NON_EVM_ACCOUNT) {
-    onBack = () => setActionMode(ACTION_MODE.LIST);
   }
 
   if (isMultiRpcOnboarding) {

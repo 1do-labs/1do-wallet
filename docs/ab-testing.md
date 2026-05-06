@@ -1,6 +1,6 @@
-# A/B Testing in MetaMask Extension
+# A/B Testing in 1do Wallet Extension
 
-This is the canonical guide for implementing A/B tests in the MetaMask
+This is the canonical guide for implementing A/B tests in the 1do Wallet
 extension.
 
 If you are adding a new test, start with the quickstart and the end-to-end
@@ -14,10 +14,10 @@ Use this order every time:
 2. Add a single experiment config module in
    `shared/lib/ab-testing/configs/`.
 3. In the feature, call `useABTest(flagKey, variants)`.
-4. If the feature sends business events through the shared MetaMetrics path,
+4. If the feature sends business events through the shared 1do Metrics path,
    register an `ABTestAnalyticsMapping` in background-safe shared code used by
    `shared/lib/ab-testing/ab-test-analytics.ts`.
-5. If the feature uses a custom tracking path that bypasses shared MetaMetrics
+5. If the feature uses a custom tracking path that bypasses shared 1do Metrics
    enrichment, attach `active_ab_tests` manually on that event.
 6. Update targeted tests, the E2E feature-flag registry, and local override
    guidance when needed.
@@ -43,7 +43,7 @@ An A/B test is ready when all of these are true:
 - The remote JSON flag exists and uses the threshold-array format shown below
 - The feature reads assignment through `useABTest`
 - The variants object includes a `control` variant
-- Shared MetaMetrics events are registered for auto-enrichment when needed
+- Shared 1do Metrics events are registered for auto-enrichment when needed
 - Custom tracker events attach `active_ab_tests` manually when active
 - Relevant tests were added or updated when behavior or analytics wiring changed
 - The E2E feature-flag registry includes the production default value
@@ -117,7 +117,7 @@ Important behavior:
 
 ### 3. Register business-event auto-enrichment
 
-If the feature tracks business events through the shared MetaMetrics path,
+If the feature tracks business events through the shared 1do Metrics path,
 register the mapping in background-safe shared code and keep existing mappings
 intact:
 
@@ -129,7 +129,7 @@ export const AB_TEST_ANALYTICS_MAPPINGS: ABTestAnalyticsMapping[] = [
 ];
 ```
 
-After this, shared MetaMetrics events are enriched automatically:
+After this, shared 1do Metrics events are enriched automatically:
 
 ```typescript
 trackEvent({

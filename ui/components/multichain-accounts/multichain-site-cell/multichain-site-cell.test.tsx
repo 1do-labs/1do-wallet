@@ -9,7 +9,7 @@ import { RpcEndpointType } from '@metamask/network-controller';
 import configureStore from '../../../store/store';
 import { createMockInternalAccount } from '../../../../test/jest/mocks';
 import { AccountGroupWithInternalAccounts } from '../../../selectors/multichain-accounts/account-tree.types';
-import { EvmAndMultichainNetworkConfigurationsWithCaipChainId } from '../../../selectors/selectors.types';
+import { EvmNetworkConfigurationWithCaipChainId } from '../../../selectors/selectors.types';
 import { enLocale as messages } from '../../../../test/lib/i18n-helpers';
 import { MultichainSiteCell } from './multichain-site-cell';
 
@@ -93,7 +93,7 @@ const mockAccountGroups: AccountGroupWithInternalAccounts[] = [
   },
 ];
 
-const mockNetworks: EvmAndMultichainNetworkConfigurationsWithCaipChainId[] = [
+const mockNetworks: EvmNetworkConfigurationWithCaipChainId[] = [
   {
     name: messages.networkNameEthereum.message,
     chainId: '0x1' as Hex,
@@ -128,7 +128,7 @@ const mockNetworks: EvmAndMultichainNetworkConfigurationsWithCaipChainId[] = [
   },
 ];
 
-const mockTestNetworks: EvmAndMultichainNetworkConfigurationsWithCaipChainId[] =
+const mockTestNetworks: EvmNetworkConfigurationWithCaipChainId[] =
   [
     {
       name: 'Sepolia',

@@ -189,13 +189,7 @@ export const TransactionControllerInit: MessengerClientInitFunction<
           },
         };
       },
-      beforePublish: (transactionMeta: TransactionMeta) => {
-        const response = initMessenger.call(
-          'InstitutionalSnapController:publishHook',
-          transactionMeta,
-        );
-        return response;
-      },
+      beforePublish: () => undefined,
       beforeSign: new EnforceSimulationHook({
         messenger: initMessenger,
         isEligible: (transactionMeta) =>
@@ -204,14 +198,7 @@ export const TransactionControllerInit: MessengerClientInitFunction<
             initMessenger.call('AppStateController:getState'),
           ),
       }).getBeforeSignHook(),
-      beforeCheckPendingTransactions: (transactionMeta: TransactionMeta) => {
-        const response = initMessenger.call(
-          'InstitutionalSnapController:beforeCheckPendingTransactionHook',
-          transactionMeta,
-        );
-
-        return response;
-      },
+      beforeCheckPendingTransactions: () => undefined,
       // @ts-expect-error Controller type does not support undefined return value
       publish: (transactionMeta, signedTx) =>
         publishHook({
@@ -318,8 +305,6 @@ function getControllers(
       request.getMessengerClient('PreferencesController'),
     smartTransactionsController: () =>
       request.getMessengerClient('SmartTransactionsController'),
-    institutionalSnapController: () =>
-      request.getMessengerClient('InstitutionalSnapController'),
   };
 }
 
@@ -439,6 +424,15 @@ export async function publishHook({
   }
 
   const { isExternalSign } = transactionMeta;
+  const isUpgradeOnly7702Transaction = Boolean(
+    transactionMeta.txParams?.authorizationList?.length &&
+      (!transactionMeta.txParams?.data ||
+        transactionMeta.txParams.data === '0x') &&
+      transactionMeta.selectedGasFeeToken === undefined &&
+      !transactionMeta.gasFeeTokens?.length &&
+      !transactionMeta.isGasFeeIncluded &&
+      !transactionMeta.isGasFeeSponsored,
+  );
 
   const keyringSupports7702 = await accountSupports7702(
     transactionMeta.txParams?.from,
@@ -447,6 +441,7 @@ export async function publishHook({
 
   if (
     keyringSupports7702 &&
+    !isUpgradeOnly7702Transaction &&
     (!isSmartTransaction || !sendBundleSupport || isExternalSign)
   ) {
     const hook = new Delegation7702PublishHook({

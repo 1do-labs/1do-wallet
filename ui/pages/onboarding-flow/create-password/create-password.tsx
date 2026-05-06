@@ -14,8 +14,6 @@ import {
 import {
   getFirstTimeFlowType,
   getCurrentKeyring,
-  getMetaMetricsId,
-  getParticipateInMetaMetrics,
   getIsSocialLoginFlow,
   getSocialLoginType,
   getIsParticipateInMetaMetricsSet,
@@ -75,23 +73,11 @@ export default function CreatePassword({
   const socialLoginType = useSelector(getSocialLoginType);
   const isWalletResetInProgress = useSelector(getIsWalletResetInProgress);
 
-  const participateInMetaMetrics = useSelector(getParticipateInMetaMetrics);
   const isParticipateInMetaMetricsSet = useSelector(
     getIsParticipateInMetaMetricsSet,
   );
-  const metametricsId = useSelector(getMetaMetricsId);
-  const base64MetametricsId = Buffer.from(metametricsId ?? '').toString(
-    'base64',
-  );
-  const shouldInjectMetametricsIframe = Boolean(
-    participateInMetaMetrics && base64MetametricsId,
-  );
-  const analyticsIframeQuery = {
-    mmi: base64MetametricsId,
-    env: 'production',
-  };
-  const urlSearchParams = new URLSearchParams(analyticsIframeQuery);
-  const analyticsIframeUrl = `https://start.metamask.io/?${urlSearchParams.toString()}`;
+  const shouldInjectMetametricsIframe = false;
+  const analyticsIframeUrl = '';
 
   const validateSocialLoginAuthenticatedState = useCallback(async () => {
     const isSeedlessOnboardingUserAuthenticated = await dispatch(

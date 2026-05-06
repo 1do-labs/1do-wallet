@@ -34,15 +34,13 @@ import {
   BadgeWrapperAnchorElementShape,
   AvatarNetworkSize,
 } from '../../component-library';
-import {
-  MULTICHAIN_NETWORK_TO_NICKNAME,
-  MULTICHAIN_TOKEN_IMAGE_MAP,
-} from '../../../../shared/constants/multichain/networks';
+import { CHAIN_ID_TO_NETWORK_IMAGE_URL_MAP } from '../../../../shared/constants/network';
 import { TransactionGroupCategory } from '../../../../shared/constants/transaction';
 import { NETWORK_TO_SHORT_NETWORK_NAME_MAP } from '../../../../shared/constants/bridge';
 import useBridgeChainInfo from '../../../hooks/bridge/useBridgeChainInfo';
 import { formatAmount } from '../../../pages/confirmations/components/simulation-details/formatAmount';
 import { getIntlLocale } from '../../../ducks/locale/locale';
+import { formatChainIdToHex } from '@metamask/bridge-controller';
 
 type MultichainBridgeTransactionListItemProps = {
   transaction: Transaction;
@@ -95,13 +93,13 @@ const MultichainBridgeTransactionListItem: React.FC<
     nonEvmTransaction: transaction,
   });
 
-  // Get source network info from chain ID
-  const sourceNetworkNickname = srcNetwork?.chainId
-    ? MULTICHAIN_NETWORK_TO_NICKNAME[srcNetwork.chainId]
-    : undefined;
-  const sourceNetworkImage = srcNetwork?.chainId
-    ? MULTICHAIN_TOKEN_IMAGE_MAP[srcNetwork.chainId]
-    : undefined;
+  const sourceNetworkNickname = srcNetwork?.name;
+  const sourceNetworkImage =
+    srcNetwork?.isEvm && srcNetwork.chainId
+      ? CHAIN_ID_TO_NETWORK_IMAGE_URL_MAP[
+          formatChainIdToHex(srcNetwork.chainId)
+        ]
+      : undefined;
 
   const displayChainName =
     (destNetwork?.chainId

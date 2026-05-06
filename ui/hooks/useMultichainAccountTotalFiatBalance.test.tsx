@@ -1,7 +1,6 @@
 import React from 'react';
 import { renderHook } from '@testing-library/react-hooks';
 import { Provider } from 'react-redux';
-import { BtcAccountType, BtcScope } from '@metamask/keyring-api';
 import { InternalAccount } from '@metamask/keyring-internal-api';
 import mockState from '../../test/data/mock-state.json';
 import configureStore from '../store/store';
@@ -35,13 +34,6 @@ const mockAccount = createMockInternalAccount({
   name: 'Account 1',
   address: '0x0836f5ed6b62baf60706fe3adc0ff0fd1df833da',
 });
-const mockNonEvmAccount = {
-  ...mockAccount,
-  id: 'b7893c59-e376-4cc0-93ad-05ddaab574a6',
-  address: 'bc1qn3stuu6g37rpxk3jfxr4h4zmj68g0lwxx5eker',
-  type: BtcAccountType.P2wpkh,
-  scopes: [BtcScope.Mainnet],
-};
 
 const renderUseMultichainAccountTotalFiatBalance = (
   account: InternalAccount,
@@ -72,57 +64,8 @@ const renderUseMultichainAccountTotalFiatBalance = (
       internalAccounts: {
         accounts: {
           [mockAccount.id]: mockAccount,
-          [mockNonEvmAccount.id]: mockNonEvmAccount,
         },
         selectedAccount: mockAccount.id,
-      },
-      balances: {
-        [mockNonEvmAccount.id]: {
-          'bip122:000000000019d6689c085ae165831e93/slip44:0': {
-            amount: '1.00000000',
-            unit: 'BTC',
-          },
-        },
-      },
-      rates: {
-        btc: {
-          conversionDate: 0,
-          conversionRate: '100000',
-        },
-      },
-      tokensChainsCache: {
-        [CHAIN_IDS.MAINNET]: {
-          data: {
-            '0x0bc529c00c6401aef6d220be8c6ea1667f6ad93e': {
-              address: '0x0bc529c00c6401aef6d220be8c6ea1667f6ad93e',
-              symbol: 'YFI',
-              decimals: 18,
-              name: 'yearn.finance',
-              occurrences: 12,
-              aggregators: [
-                'airswapLight',
-                'bancor',
-                'cmc',
-                'coinGecko',
-                'kleros',
-                'oneInch',
-                'paraswap',
-                'pmm',
-                'totle',
-                'zapper',
-                'zerion',
-                'zeroEx',
-              ],
-              iconUrl:
-                'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x0bc529c00C6401aEF6D220BE8C6Ea1667F6Ad93e/logo.png',
-            },
-          },
-        },
-      },
-      conversionRates: {
-        'bip122:000000000019d6689c085ae165831e93/slip44:0': {
-          rate: '100000',
-        },
       },
       currentCurrency: 'usd',
       currencyRates: {
@@ -168,7 +111,7 @@ const renderUseMultichainAccountTotalFiatBalance = (
 };
 
 describe('useMultichainAccountTotalFiatBalance', () => {
-  it('return uses useAccountTotalFiatBalance if the an EVM account is passed', () => {
+  it('returns the EVM account total fiat balance', () => {
     const { result } = renderUseMultichainAccountTotalFiatBalance(mockAccount);
 
     expect(result.current).toStrictEqual({
@@ -187,54 +130,7 @@ describe('useMultichainAccountTotalFiatBalance', () => {
           iconUrl: './images/eth_logo.svg',
           symbol: 'ETH',
         },
-        {
-          address: '0x0bc529c00c6401aef6d220be8c6ea1667f6ad93e',
-          aggregators: [
-            'airswapLight',
-            'bancor',
-            'cmc',
-            'coinGecko',
-            'kleros',
-            'oneInch',
-            'paraswap',
-            'pmm',
-            'totle',
-            'zapper',
-            'zerion',
-            'zeroEx',
-          ],
-          balance: '1409247882142934',
-          balanceError: null,
-          decimals: 18,
-          fiatBalance: '0.05',
-          iconUrl:
-            'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x0bc529c00C6401aEF6D220BE8C6Ea1667F6Ad93e/logo.png',
-          name: 'yearn.finance',
-          occurrences: 12,
-          string: '0.001409247882142934',
-          symbol: 'YFI',
-        },
       ],
-    });
-  });
-
-  it('returns the total fiat balance for a non-EVM account', () => {
-    const { result } =
-      renderUseMultichainAccountTotalFiatBalance(mockNonEvmAccount);
-
-    expect(result.current).toStrictEqual({
-      formattedFiat: '$100,000.00',
-      loading: false,
-      orderedTokenList: [
-        {
-          fiatBalance: '100000',
-          iconUrl: './images/bitcoin-logo.svg',
-          symbol: 'BTC',
-        },
-      ],
-      tokensWithBalances: [],
-      totalFiatBalance: '100000',
-      totalBalance: '1.00000000',
     });
   });
 });

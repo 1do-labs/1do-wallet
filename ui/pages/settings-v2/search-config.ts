@@ -51,7 +51,6 @@ export const PREFERENCES_ITEMS = {
   'account-identicon': 'accountIdenticon',
   'show-default-address': 'showDefaultAddress',
   'show-extension': 'showExtensionInFullSizeView',
-  'manage-institutional-wallet': 'manageInstitutionalWallets',
 } as const;
 
 export const PRIVACY_ITEMS = {
@@ -59,9 +58,6 @@ export const PRIVACY_ITEMS = {
   'third-party-apis': 'thirdPartyApis',
   'batch-account-balance-requests': 'useMultiAccountBalanceChecker',
   'skip-link-confirmation': 'skipLinkConfirmationScreens',
-  metametrics: 'participateInMetaMetrics',
-  'data-collection': 'dataCollectionForMarketing',
-  'delete-metametrics-data': 'deleteMetaMetricsData',
   'download-state-logs': 'downloadStateLogs',
   'export-your-data': 'exportYourData',
 } as const;
@@ -83,21 +79,7 @@ export const SECURITY_ITEMS = {
   'phishing-detection': 'usePhishingDetection',
 } as const;
 
-export const BACKUP_AND_SYNC_ITEMS = {
-  'backup-toggle': 'backupAndSyncEnable',
-  'features-toggles': 'backupAndSyncFeatureAccounts',
-  'contact-syncing': 'backupAndSyncFeatureContacts',
-} as const;
-
-export const EXPERIMENTAL_ITEMS = {
-  'keyring-snaps': 'addSnapAccountToggle',
-  'watch-account': 'watchEthereumAccountsToggle',
-} as const;
-
-export const NOTIFICATIONS_ITEMS = {
-  'allow-notifications': 'notifications',
-  'account-activity': 'accountActivity',
-} as const;
+export const EXPERIMENTAL_ITEMS = {} as const;
 
 export const DEVELOPER_TOOLS_ITEMS = {
   'show-fiat-in-testnets': 'showFiatConversionInTestnets',
@@ -134,12 +116,6 @@ export const SETTINGS_V2_SEARCH_CONFIG: TabSearchConfig[] = [
     tabId: 'security-and-password',
     items: createSearchItemMeta(SECURITY_ITEMS),
   },
-  {
-    tabId: 'backup-and-sync',
-    items: createSearchItemMeta(BACKUP_AND_SYNC_ITEMS),
-  },
-  { tabId: 'experimental', items: createSearchItemMeta(EXPERIMENTAL_ITEMS) },
-  { tabId: 'notifications', items: createSearchItemMeta(NOTIFICATIONS_ITEMS) },
   {
     tabId: 'developer-tools',
     items: createSearchItemMeta(DEVELOPER_TOOLS_ITEMS),

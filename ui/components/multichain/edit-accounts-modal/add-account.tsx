@@ -1,6 +1,5 @@
-import React, { useCallback, useContext, useMemo, useState } from 'react';
+import React, { useCallback, useContext, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { BtcScope, SolScope, TrxScope } from '@metamask/keyring-api';
 import {
   Box,
   IconName,
@@ -9,11 +8,6 @@ import {
   ModalContent,
   ModalHeader,
 } from '../../component-library';
-import {
-  WalletClientType,
-  EVM_WALLET_TYPE,
-} from '../../../hooks/accounts/useMultichainWalletSnapClient';
-import { CreateSnapAccount } from '../create-snap-account/create-snap-account';
 import { CreateEthAccount } from '../create-eth-account';
 import { getHdKeyringOfSelectedAccountOrPrimaryKeyring } from '../../../selectors';
 import { useI18nContext } from '../../../hooks/useI18nContext';
@@ -24,8 +18,10 @@ import {
 } from '../../../../shared/constants/metametrics';
 import { SrpList } from '../multi-srp/srp-list';
 
+const EVM_WALLET_TYPE = 'evm' as const;
+
 type EditAccountAddAccountFormProps = {
-  accountType: WalletClientType | typeof EVM_WALLET_TYPE; // undefined is default evm.
+  accountType: typeof EVM_WALLET_TYPE;
   onActionComplete: (completed: boolean) => Promise<void>;
   onBack: () => void;
   onClose: () => void;
@@ -56,32 +52,7 @@ export const EditAccountAddAccountForm: React.FC<
       },
     });
     setShowSrpSelection((previous) => !previous);
-  }, []);
-
-  const { clientType, chainId, networkName } = useMemo(() => {
-    switch (accountType) {
-      case WalletClientType.Bitcoin:
-        return {
-          clientType: WalletClientType.Bitcoin,
-          chainId: BtcScope.Mainnet,
-          networkName: t('networkNameBitcoin'),
-        };
-      case WalletClientType.Solana:
-        return {
-          clientType: WalletClientType.Solana,
-          chainId: SolScope.Mainnet,
-          networkName: t('networkNameSolana'),
-        };
-      case WalletClientType.Tron:
-        return {
-          clientType: WalletClientType.Tron,
-          chainId: TrxScope.Mainnet,
-          networkName: t('networkNameTron'),
-        };
-      default:
-        return { clientType: null, chainId: null, networkName: null };
-    }
-  }, [accountType]);
+  }, [trackEvent]);
 
   return (
     <ModalContent>
@@ -101,9 +72,7 @@ export const EditAccountAddAccountForm: React.FC<
           />
         }
       >
-        {networkName
-          ? t('addAccountFromNetwork', [networkName])
-          : t('addAccount')}
+        {t('addAccount')}
       </ModalHeader>
       <ModalBody>
         <Box paddingLeft={4} paddingRight={4} paddingBottom={4}>
@@ -116,26 +85,12 @@ export const EditAccountAddAccountForm: React.FC<
             />
           )}
           {!showSrpSelection && (
-            <>
-              {clientType && chainId ? (
-                <CreateSnapAccount
-                  onActionComplete={onActionComplete}
-                  selectedKeyringId={selectedKeyringId}
-                  onSelectSrp={onSelectSrp}
-                  clientType={clientType}
-                  chainId={chainId}
-                  setNewlyCreatedAccountAsSelected={true}
-                  redirectToOverview={false}
-                />
-              ) : (
-                <CreateEthAccount
-                  onActionComplete={onActionComplete}
-                  selectedKeyringId={selectedKeyringId}
-                  onSelectSrp={onSelectSrp}
-                  redirectToOverview={false}
-                />
-              )}
-            </>
+            <CreateEthAccount
+              onActionComplete={onActionComplete}
+              selectedKeyringId={selectedKeyringId}
+              onSelectSrp={onSelectSrp}
+              redirectToOverview={false}
+            />
           )}
         </Box>
       </ModalBody>

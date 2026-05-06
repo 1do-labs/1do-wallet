@@ -111,28 +111,6 @@ export type PreferencesControllerSetSecurityAlertsEnabledAction = {
 };
 
 /**
- * Setter for the `addSnapAccountEnabled` property.
- *
- * @param addSnapAccountEnabled - Whether or not the user wants to
- * enable the "Add Snap accounts" button.
- */
-export type PreferencesControllerSetAddSnapAccountEnabledAction = {
-  type: `PreferencesController:setAddSnapAccountEnabled`;
-  handler: PreferencesController['setAddSnapAccountEnabled'];
-};
-
-/**
- * Setter for the `watchEthereumAccountEnabled` property.
- *
- * @param watchEthereumAccountEnabled - Whether or not the user wants to
- * enable the "Watch Ethereum account (Beta)" button.
- */
-export type PreferencesControllerSetWatchEthereumAccountEnabledAction = {
-  type: `PreferencesController:setWatchEthereumAccountEnabled`;
-  handler: PreferencesController['setWatchEthereumAccountEnabled'];
-};
-
-/**
  * Setter for the `useExternalNameSources` property
  *
  * @param useExternalNameSources - Whether or not to use external name providers in the name controller.
@@ -318,16 +296,6 @@ export type PreferencesControllerSetOverrideContentSecurityPolicyHeaderAction =
     handler: PreferencesController['setOverrideContentSecurityPolicyHeader'];
   };
 
-/**
- * A setter for the user preference to manage institutional wallets
- *
- * @param manageInstitutionalWallets - User preference for managing institutional wallets.
- */
-export type PreferencesControllerSetManageInstitutionalWalletsAction = {
-  type: `PreferencesController:setManageInstitutionalWallets`;
-  handler: PreferencesController['setManageInstitutionalWallets'];
-};
-
 export type PreferencesControllerSetServiceWorkerKeepAlivePreferenceAction = {
   type: `PreferencesController:setServiceWorkerKeepAlivePreference`;
   handler: PreferencesController['setServiceWorkerKeepAlivePreference'];
@@ -346,11 +314,6 @@ export type PreferencesControllerSetShowDefaultAddressAction = {
 export type PreferencesControllerSetDefaultAddressScopeAction = {
   type: `PreferencesController:setDefaultAddressScope`;
   handler: PreferencesController['setDefaultAddressScope'];
-};
-
-export type PreferencesControllerSetSnapsAddSnapAccountModalDismissedAction = {
-  type: `PreferencesController:setSnapsAddSnapAccountModalDismissed`;
-  handler: PreferencesController['setSnapsAddSnapAccountModalDismissed'];
 };
 
 /**
@@ -402,7 +365,6 @@ export type PreferencesControllerMethodActions =
   | PreferencesControllerSetUseCurrencyRateCheckAction
   | PreferencesControllerSetOpenSeaEnabledAction
   | PreferencesControllerSetSecurityAlertsEnabledAction
-  | PreferencesControllerSetAddSnapAccountEnabledAction
   | PreferencesControllerSetWatchEthereumAccountEnabledAction
   | PreferencesControllerSetUseExternalNameSourcesAction
   | PreferencesControllerSetUseTransactionSimulationsAction
@@ -426,7 +388,6 @@ export type PreferencesControllerMethodActions =
   | PreferencesControllerSetUseSidePanelAsDefaultAction
   | PreferencesControllerSetShowDefaultAddressAction
   | PreferencesControllerSetDefaultAddressScopeAction
-  | PreferencesControllerSetSnapsAddSnapAccountModalDismissedAction
   | PreferencesControllerResetStateAction
   | PreferencesControllerAddReferralApprovedAccountAction
   | PreferencesControllerAddReferralPassedAccountAction

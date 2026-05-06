@@ -2,10 +2,9 @@ import React from 'react';
 import { ReactComponentLike } from 'prop-types';
 
 import { useConfirmContext } from '../../../context/confirm';
-import { SnapsSection } from '../snaps/snaps-section';
 
 // Components to be plugged into confirmation page can be added to the array below
-const pluggedInSections: ReactComponentLike[] = [SnapsSection];
+const pluggedInSections: ReactComponentLike[] = [];
 
 const PluggableSection = () => {
   const { currentConfirmation } = useConfirmContext();
