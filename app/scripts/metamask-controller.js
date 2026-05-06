@@ -292,6 +292,7 @@ import {
   METAMASK_CAIP_MULTICHAIN_PROVIDER,
   METAMASK_COOKIE_HANDLER,
   METAMASK_EIP_1193_PROVIDER,
+  PHISHING_SAFELIST,
 } from './constants/stream';
 
 // Notification controllers
@@ -461,9 +462,6 @@ const API_TYPE = {
   EIP1193: 'eip-1193',
   CAIP_MULTICHAIN: 'caip-multichain',
 };
-
-// stream channels
-const PHISHING_SAFELIST = 'metamask-phishing-safelist';
 
 export default class MetamaskController extends EventEmitter {
   /**
@@ -4084,6 +4082,7 @@ export default class MetamaskController extends EventEmitter {
    * Counts the number of accounts discovered by provider.
    *
    * @param {Array} accounts - The discovered accounts to count by provider.
+   * @param _accounts
    */
   getDiscoveryCountByProvider(_accounts) {
     return {
@@ -4401,9 +4400,7 @@ export default class MetamaskController extends EventEmitter {
   /**
    * Imports accounts with balances to the keyring.
    */
-  async _importAccountsWithBalances() {
-    return;
-  }
+  async _importAccountsWithBalances() {}
 
   /**
    * Adds Snap account to the keyring.
@@ -5597,7 +5594,6 @@ export default class MetamaskController extends EventEmitter {
     const sessionScopes = getSessionScopes(caip25Caveat.value, {
       getNonEvmSupportedMethods: this.getNonEvmSupportedMethods.bind(this),
     });
-
   }
   // Identity Management (signature operations)
 

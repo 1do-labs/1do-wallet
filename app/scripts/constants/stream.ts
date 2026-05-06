@@ -1,14 +1,14 @@
 // contexts
-export const CONTENT_SCRIPT = 'metamask-contentscript';
-export const METAMASK_INPAGE = 'metamask-inpage';
-export const PHISHING_WARNING_PAGE = 'metamask-phishing-warning-page';
+export const CONTENT_SCRIPT = '1do-contentscript';
+export const METAMASK_INPAGE = '1do-inpage';
+export const PHISHING_WARNING_PAGE = '1do-phishing-warning-page';
 
 // stream channels
-export const METAMASK_COOKIE_HANDLER = 'metamask-cookie-handler';
-export const METAMASK_EIP_1193_PROVIDER = 'metamask-provider';
-export const METAMASK_CAIP_MULTICHAIN_PROVIDER = 'metamask-multichain-provider';
-export const PHISHING_SAFELIST = 'metamask-phishing-safelist';
-export const PHISHING_STREAM = 'phishing';
+export const METAMASK_COOKIE_HANDLER = '1do-cookie-handler';
+export const METAMASK_EIP_1193_PROVIDER = '1do-provider';
+export const METAMASK_CAIP_MULTICHAIN_PROVIDER = '1do-multichain-provider';
+export const PHISHING_SAFELIST = '1do-phishing-safelist';
+export const PHISHING_STREAM = '1do-phishing';
 
 // For more information about these legacy streams, see here:
 // https://github.com/MetaMask/metamask-extension/issues/15491

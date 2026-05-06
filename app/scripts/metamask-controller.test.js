@@ -75,7 +75,11 @@ import { PATCH_STORE_SUBSTREAM_METHODS } from '../../shared/constants/patch-stor
 import * as environment from '../../shared/lib/environment';
 import * as metamaskControllerUtils from '../../shared/lib/metamask-controller-utils';
 import { ReferralStatus } from './controllers/preferences-controller';
-import { METAMASK_COOKIE_HANDLER } from './constants/stream';
+import {
+  METAMASK_COOKIE_HANDLER,
+  METAMASK_EIP_1193_PROVIDER,
+  PHISHING_SAFELIST,
+} from './constants/stream';
 import { getAuthorizedScopesByOrigin } from './controllers/permissions';
 import { forwardRequestToSnap } from './lib/forwardRequestToSnap';
 import MetaMaskController from './metamask-controller';
@@ -2944,7 +2948,7 @@ describe('MetaMaskController', () => {
       });
       it('creates a phishing stream with safelistPhishingDomain and backToSafetyPhishingWarning handler', async () => {
         const safelistPhishingDomainRequest = {
-          name: 'metamask-phishing-safelist',
+          name: PHISHING_SAFELIST,
           data: {
             id: 1,
             method: 'safelistPhishingDomain',
@@ -2952,7 +2956,7 @@ describe('MetaMaskController', () => {
           },
         };
         const backToSafetyPhishingWarningRequest = {
-          name: 'metamask-phishing-safelist',
+          name: PHISHING_SAFELIST,
           data: { id: 2, method: 'backToSafetyPhishingWarning', params: [] },
         };
 
@@ -2960,7 +2964,7 @@ describe('MetaMaskController', () => {
         const { promise: promiseStream, resolve: resolveStream } =
           withResolvers();
         const streamTest = createThroughStream((chunk, _, cb) => {
-          if (chunk.name !== 'metamask-phishing-safelist') {
+          if (chunk.name !== PHISHING_SAFELIST) {
             cb();
             return;
           }
@@ -3176,7 +3180,7 @@ describe('MetaMaskController', () => {
         await new Promise((resolve) => {
           streamTest.write(
             {
-              name: 'metamask-provider',
+              name: METAMASK_EIP_1193_PROVIDER,
               data: message,
             },
             null,
@@ -3230,7 +3234,7 @@ describe('MetaMaskController', () => {
         await new Promise((resolve) => {
           streamTest.write(
             {
-              name: 'metamask-provider',
+              name: METAMASK_EIP_1193_PROVIDER,
               data: message,
             },
             null,
@@ -3254,7 +3258,7 @@ describe('MetaMaskController', () => {
         streamTest.end();
       });
 
-      it('should only process `metamask-provider` multiplex formatted messages', async () => {
+      it('should only process the configured EIP-1193 multiplex channel', async () => {
         const messageSender = {
           url: 'http://mycrypto.com',
           tab: { id: 456 },
@@ -3300,7 +3304,7 @@ describe('MetaMaskController', () => {
         await new Promise((resolve) => {
           streamTest.write(
             {
-              name: 'metamask-provider',
+              name: METAMASK_EIP_1193_PROVIDER,
               data: message,
             },
             null,
@@ -6471,5 +6475,4 @@ describe('MetaMaskController', () => {
       jest.useRealTimers();
     });
   });
-
 });

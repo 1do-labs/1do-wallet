@@ -39,11 +39,11 @@ import ObjectMultiplex from '@metamask/object-multiplex';
 import { pipeline } from 'readable-stream';
 
 import shouldInjectProvider from '../../shared/lib/provider-injection';
-import { METAMASK_EIP_1193_PROVIDER } from './constants/stream';
-
-// contexts
-const CONTENT_SCRIPT = 'metamask-contentscript';
-const INPAGE = 'metamask-inpage';
+import {
+  CONTENT_SCRIPT,
+  METAMASK_EIP_1193_PROVIDER,
+  METAMASK_INPAGE,
+} from './constants/stream';
 
 restoreContextAfterImports();
 
@@ -56,7 +56,7 @@ log.setDefaultLevel(process.env.METAMASK_DEBUG ? 'debug' : 'warn');
 if (shouldInjectProvider()) {
   // setup background connection
   const metamaskStream = new WindowPostMessageStream({
-    name: INPAGE,
+    name: METAMASK_INPAGE,
     target: CONTENT_SCRIPT,
   });
 
