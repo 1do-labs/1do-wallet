@@ -7228,6 +7228,9 @@
   "settings": {
     "message": "Settings"
   },
+  "runtime": {
+    "message": "Runtime"
+  },
   "settingsSearchCantFindSetting": {
     "message": "Can't find a setting? $1",
     "description": "$1 is a link to request a setting"

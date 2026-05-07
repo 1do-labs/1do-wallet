@@ -7112,6 +7112,9 @@
   "settings": {
     "message": "设置"
   },
+  "runtime": {
+    "message": "运行时"
+  },
   "settingsSearchCantFindSetting": {
     "message": "找不到设置吗？$1",
     "description": "$1 is a link to request a setting"

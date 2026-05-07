@@ -42,6 +42,10 @@ jest.mock('../../app/assets/defi-list/defi-tab', () => ({
   default: () => null,
 }));
 
+jest.mock('./runtime-tab', () => ({
+  RuntimeTab: () => <div data-testid="runtime-tab-panel" />,
+}));
+
 describe('AccountOverviewTabs - event metrics', () => {
   const mockTrackEvent = jest.fn();
   const mockMetaMetricsContext = {
@@ -77,6 +81,7 @@ describe('AccountOverviewTabs - event metrics', () => {
           showTokens={true}
           showNfts={false}
           showActivity={true}
+          showRuntime={true}
           setBasicFunctionalityModalOpen={jest.fn()}
           onSupportLinkClick={jest.fn()}
         />
@@ -101,5 +106,27 @@ describe('AccountOverviewTabs - event metrics', () => {
         ],
       },
     });
+  });
+
+  it('renders runtime tab when enabled', () => {
+    const store = configureStore({
+      metamask: mockState.metamask,
+    });
+
+    const { getByTestId } = renderWithProvider(
+      <MetaMetricsContext.Provider value={mockMetaMetricsContext}>
+        <AccountOverviewTabs
+          showTokens={true}
+          showNfts={false}
+          showActivity={true}
+          showRuntime={true}
+          setBasicFunctionalityModalOpen={jest.fn()}
+          onSupportLinkClick={jest.fn()}
+        />
+      </MetaMetricsContext.Provider>,
+      store,
+    );
+
+    expect(getByTestId('account-overview__runtime-tab')).toBeInTheDocument();
   });
 });

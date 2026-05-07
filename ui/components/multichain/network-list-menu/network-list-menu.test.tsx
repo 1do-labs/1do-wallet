@@ -557,23 +557,23 @@ describe('NetworkListMenu', () => {
   });
 
   describe('NetworkListMenu network switching behavior', () => {
-    it('should not switch networks when clicking network items', () => {
+    it('should switch networks when clicking network items in wallet view', async () => {
       const { getByText } = render({ selectedTabOriginInDomainsState: false });
       fireEvent.click(getByText(MAINNET_DISPLAY_NAME));
 
-      expect(mockToggleNetworkMenu).not.toHaveBeenCalled();
-      expect(mockSetActiveNetwork).not.toHaveBeenCalled();
-      expect(mockUpdateCustomNonce).not.toHaveBeenCalled();
-      expect(mockSetNextNonce).not.toHaveBeenCalled();
-      expect(mockDetectNfts).not.toHaveBeenCalled();
+      await waitFor(() => expect(mockToggleNetworkMenu).toHaveBeenCalled());
+      await waitFor(() => expect(mockSetActiveNetwork).toHaveBeenCalled());
+      await waitFor(() => expect(mockUpdateCustomNonce).toHaveBeenCalled());
+      await waitFor(() => expect(mockSetNextNonce).toHaveBeenCalled());
+      await waitFor(() => expect(mockDetectNfts).toHaveBeenCalled());
     });
 
-    it('should not show any networks as selected', () => {
+    it('should show the current network as selected in wallet view', () => {
       render({ selectedTabOriginInDomainsState: false });
       const selectedNodes = document.querySelectorAll(
         '.multichain-network-list-item--selected',
       );
-      expect(selectedNodes).toHaveLength(0);
+      expect(selectedNodes).toHaveLength(1);
     });
 
     it('should still allow searching networks even when switching is disabled', () => {
@@ -588,17 +588,17 @@ describe('NetworkListMenu', () => {
       expect(queryByText('Chain 5')).not.toBeInTheDocument();
     });
 
-    it('should not fire network switch when isAccessedFromDappConnectedSitePopover is false', () => {
+    it('should fire network switch when isAccessedFromDappConnectedSitePopover is false', async () => {
       const { getByText } = render({
         isAccessedFromDappConnectedSitePopover: false,
       });
       fireEvent.click(getByText(MAINNET_DISPLAY_NAME));
 
-      expect(mockToggleNetworkMenu).not.toHaveBeenCalled();
-      expect(mockSetActiveNetwork).not.toHaveBeenCalled();
-      expect(mockUpdateCustomNonce).not.toHaveBeenCalled();
-      expect(mockSetNextNonce).not.toHaveBeenCalled();
-      expect(mockDetectNfts).not.toHaveBeenCalled();
+      await waitFor(() => expect(mockToggleNetworkMenu).toHaveBeenCalled());
+      await waitFor(() => expect(mockSetActiveNetwork).toHaveBeenCalled());
+      await waitFor(() => expect(mockUpdateCustomNonce).toHaveBeenCalled());
+      await waitFor(() => expect(mockSetNextNonce).toHaveBeenCalled());
+      await waitFor(() => expect(mockDetectNfts).toHaveBeenCalled());
     });
 
     it('should fire network switch when isAccessedFromDappConnectedSitePopover is true', async () => {
@@ -612,6 +612,20 @@ describe('NetworkListMenu', () => {
       await waitFor(() => expect(mockUpdateCustomNonce).toHaveBeenCalled());
       await waitFor(() => expect(mockSetNextNonce).toHaveBeenCalled());
       await waitFor(() => expect(mockDetectNfts).toHaveBeenCalled());
+    });
+
+    it('should not fire network switch in connected-site popover when the site is not connected', () => {
+      const { getByText } = render({
+        isAccessedFromDappConnectedSitePopover: true,
+        selectedTabOriginInDomainsState: false,
+      });
+      fireEvent.click(getByText(MAINNET_DISPLAY_NAME));
+
+      expect(mockToggleNetworkMenu).not.toHaveBeenCalled();
+      expect(mockSetActiveNetwork).not.toHaveBeenCalled();
+      expect(mockUpdateCustomNonce).not.toHaveBeenCalled();
+      expect(mockSetNextNonce).not.toHaveBeenCalled();
+      expect(mockDetectNfts).not.toHaveBeenCalled();
     });
   });
 });

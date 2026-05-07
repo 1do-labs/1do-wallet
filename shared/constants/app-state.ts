@@ -9,6 +9,7 @@ export enum AccountOverviewTabKey {
   Activity = 'activity',
   DeFi = 'defi',
   Perps = 'perps',
+  Runtime = 'runtime',
 }
 
 export type AccountOverviewTab = `${AccountOverviewTabKey}`;
@@ -25,6 +26,7 @@ export const ACCOUNT_OVERVIEW_TAB_KEY_TO_TRACE_NAME_MAP = {
   [AccountOverviewTabKey.Activity]: TraceName.AccountOverviewActivityTab,
   [AccountOverviewTabKey.DeFi]: TraceName.AccountOverviewDeFiTab,
   [AccountOverviewTabKey.Perps]: TraceName.AccountOverviewPerpsTab,
+  [AccountOverviewTabKey.Runtime]: TraceName.AccountOverviewRuntimeTab,
 } as const;
 
 export type CarouselSlide = {

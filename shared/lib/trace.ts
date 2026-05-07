@@ -18,6 +18,7 @@ export enum TraceName {
   AccountOverviewActivityTab = 'Account Overview Activity Tab',
   AccountOverviewDeFiTab = 'Account Overview DeFi Tab',
   AccountOverviewPerpsTab = 'Account Overview Perps Tab',
+  AccountOverviewRuntimeTab = 'Account Overview Runtime Tab',
   AssetDetails = 'Asset Details',
   BackgroundConnect = 'Background Connect',
   BridgeBalancesUpdated = 'Bridge Balances Updated',

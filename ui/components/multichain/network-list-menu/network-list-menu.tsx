@@ -182,9 +182,8 @@ export const NetworkListMenu = ({ onClose }: NetworkListMenuProps) => {
     selectAdditionalNetworksBlacklistFeatureFlag,
   );
   const canSelectNetwork: boolean =
-    Boolean(selectedTabOrigin) &&
-    Boolean(domains[selectedTabOrigin]) &&
-    isAccessedFromDappConnectedSitePopover;
+    !isAccessedFromDappConnectedSitePopover ||
+    (Boolean(selectedTabOrigin) && Boolean(domains[selectedTabOrigin]));
 
   useEffect(() => {
     endTrace({ name: TraceName.NetworkList });

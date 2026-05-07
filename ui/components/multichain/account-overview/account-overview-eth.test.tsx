@@ -66,5 +66,6 @@ describe('AccountOverviewEth', () => {
     expect(queryByTestId('account-overview__nfts-tab')).toBeInTheDocument();
     expect(queryByTestId('account-overview__activity-tab')).toBeInTheDocument();
     expect(queryByTestId('account-overview__defi-tab')).toBeInTheDocument();
+    expect(queryByTestId('account-overview__runtime-tab')).toBeInTheDocument();
   });
 });

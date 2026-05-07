@@ -39,6 +39,7 @@ import { ActivityList } from '../activity-v2/activity-list';
 import { usePrefetchTransactions } from '../activity-v2/hooks';
 import { transitionForward } from '../../ui/transition';
 import { AccountOverviewCommonProps } from './common';
+import { RuntimeTab } from './runtime-tab';
 
 export type AccountOverviewTabsProps = AccountOverviewCommonProps & {
   showTokens: boolean;
@@ -46,6 +47,7 @@ export type AccountOverviewTabsProps = AccountOverviewCommonProps & {
   showNfts: boolean;
   showActivity: boolean;
   showDefi?: boolean;
+  showRuntime?: boolean;
 };
 
 export const AccountOverviewTabs = ({
@@ -54,6 +56,7 @@ export const AccountOverviewTabs = ({
   showNfts,
   showActivity,
   showDefi,
+  showRuntime,
 }: AccountOverviewTabsProps) => {
   const persistedTab = useSelector(getDefaultHomeActiveTabName);
   const [urlTab, setActiveTabKey] = useTabState();
@@ -227,6 +230,16 @@ export const AccountOverviewTabs = ({
           <ErrorBoundary key="activity">
             <ActivityList />
           </ErrorBoundary>
+        </Tab>
+      )}
+
+      {showRuntime && (
+        <Tab
+          name={t('runtime')}
+          tabKey={AccountOverviewTabKey.Runtime}
+          data-testid="account-overview__runtime-tab"
+        >
+          <RuntimeTab />
         </Tab>
       )}
     </Tabs>
