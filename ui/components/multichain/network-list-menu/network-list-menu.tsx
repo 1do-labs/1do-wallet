@@ -46,7 +46,6 @@ import {
 import {
   FEATURED_RPCS,
   TEST_CHAINS,
-  CHAIN_ID_PORTFOLIO_LANDING_PAGE_URL_MAP,
   BUILT_IN_NETWORKS,
   CAIP_FORMATTED_TEST_CHAINS,
 } from '../../../../shared/constants/network';
@@ -63,7 +62,6 @@ import {
   getPreferences,
   getMultichainNetworkConfigurationsByChainId,
   getSelectedMultichainNetworkChainId,
-  getNetworkDiscoverButtonEnabled,
   getAllChainsToPoll,
 } from '../../../selectors';
 import { selectAdditionalNetworksBlacklistFeatureFlag } from '../../../selectors/network-blacklist/network-blacklist';
@@ -107,7 +105,6 @@ import {
 } from '../../../ducks/metamask/metamask';
 import NetworksForm from '../../../pages/settings/networks-tab/networks-form';
 import { useNetworkFormState } from '../../../pages/settings/networks-tab/networks-form/networks-form-state';
-import { openWindow } from '../../../helpers/utils/window';
 import { endTrace, TraceName } from '../../../../shared/lib/trace';
 import PopularNetworkList from './popular-network-list/popular-network-list';
 import NetworkListSearch from './network-list-search/network-list-search';
@@ -160,11 +157,6 @@ export const NetworkListMenu = ({ onClose }: NetworkListMenuProps) => {
     getIsAccessedFromDappConnectedSitePopover,
   );
   const completedOnboarding = useSelector(getCompletedOnboarding);
-  // This selector provides the indication if the "Discover" button
-  // is enabled based on the remote feature flag.
-  const isNetworkDiscoverButtonEnabled = useSelector(
-    getNetworkDiscoverButtonEnabled,
-  );
   // This selector provides an array with two elements.
   // 1 - All network configurations including EVM and non-EVM with the data type
   // MultichainNetworkConfiguration from @metamask/multichain-network-controller
@@ -429,21 +421,6 @@ export const NetworkListMenu = ({ onClose }: NetworkListMenuProps) => {
     });
   };
 
-  const isDiscoverBtnEnabled = useCallback(
-    (chainId: Hex | `${string}:${string}`): boolean => {
-      // The "Discover" button should be enabled when the mapping for the chainId is enabled in the feature flag json
-      // and in the constants `CHAIN_ID_PORTFOLIO_LANDING_PAGE_URL_MAP`.
-      return (
-        Boolean(
-          isNetworkDiscoverButtonEnabled?.[
-            chainId as keyof typeof isNetworkDiscoverButtonEnabled
-          ],
-        ) && CHAIN_ID_PORTFOLIO_LANDING_PAGE_URL_MAP[chainId] !== undefined
-      );
-    },
-    [isNetworkDiscoverButtonEnabled],
-  );
-
   const hasMultiRpcOptions = useCallback(
     (network: MultichainNetworkConfiguration): boolean =>
       network.isEvm &&
@@ -470,14 +447,7 @@ export const NetworkListMenu = ({ onClose }: NetworkListMenuProps) => {
 
       if (!isEvm) {
         return {
-          onDiscoverClick: isDiscoverBtnEnabled(chainId)
-            ? () => {
-                openWindow(
-                  CHAIN_ID_PORTFOLIO_LANDING_PAGE_URL_MAP[chainId],
-                  '_blank',
-                );
-              }
-            : undefined,
+          onDiscoverClick: undefined,
         };
       }
 
@@ -511,14 +481,7 @@ export const NetworkListMenu = ({ onClose }: NetworkListMenuProps) => {
           );
           setActionMode(ACTION_MODE.ADD_EDIT);
         },
-        onDiscoverClick: isDiscoverBtnEnabled(hexChainId)
-          ? () => {
-              openWindow(
-                CHAIN_ID_PORTFOLIO_LANDING_PAGE_URL_MAP[hexChainId],
-                '_blank',
-              );
-            }
-          : undefined,
+        onDiscoverClick: undefined,
         onRpcConfigEdit: hasMultiRpcOptions(network)
           ? () => {
               setActionMode(ACTION_MODE.SELECT_RPC);
@@ -539,13 +502,7 @@ export const NetworkListMenu = ({ onClose }: NetworkListMenuProps) => {
         },
       };
     },
-    [
-      currentChainId,
-      dispatch,
-      hasMultiRpcOptions,
-      isUnlocked,
-      isDiscoverBtnEnabled,
-    ],
+    [currentChainId, dispatch, hasMultiRpcOptions, isUnlocked],
   );
 
   // Renders a network in the network list

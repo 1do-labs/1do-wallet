@@ -91,7 +91,6 @@ type TestRenderProps = Partial<{
   isAddingNewNetwork?: boolean;
   isAccessedFromDappConnectedSitePopover?: boolean;
   editedNetwork?: { chainId: string };
-  neNetworkDiscoverButton?: Record<string, boolean>;
 }>;
 
 const render = ({
@@ -103,7 +102,6 @@ const render = ({
   isAddingNewNetwork = false,
   isAccessedFromDappConnectedSitePopover = false,
   editedNetwork = undefined,
-  neNetworkDiscoverButton = { '0x531': true, '0xe708': true, '0x8f': true },
 }: TestRenderProps = {}) => {
   const state = {
     appState: {
@@ -235,7 +233,7 @@ const render = ({
           : {}),
       },
       remoteFeatureFlags: {
-        neNetworkDiscoverButton,
+        neNetworkDiscoverButton: {},
       },
     },
     activeTab: {
@@ -373,63 +371,6 @@ describe('NetworkListMenu', () => {
     expect(
       document.querySelectorAll('multichain-network-list-item__delete'),
     ).toHaveLength(0);
-  });
-
-  it('enables the "Discover" for Linea button when the Feature Flag `neNetworkDiscoverButton` is true for Linea and the network is supported', () => {
-    const { queryByTestId, getByTestId } = render({
-      neNetworkDiscoverButton: {
-        '0xe708': true,
-      },
-    });
-
-    const menuButton = getByTestId(
-      `network-list-item-options-button-eip155:${hexToDecimal(
-        CHAIN_IDS.LINEA_MAINNET,
-      )}`,
-    );
-    fireEvent.click(menuButton);
-
-    expect(
-      queryByTestId('network-list-item-options-discover'),
-    ).toBeInTheDocument();
-  });
-
-  it('disables the "Discover" button when the Feature Flag `neNetworkDiscoverButton` is false for Linea even if the network is supported', () => {
-    const { queryByTestId, getByTestId } = render({
-      neNetworkDiscoverButton: {
-        '0x531': true,
-        '0xe708': false,
-      },
-    });
-
-    const menuButton = getByTestId(
-      `network-list-item-options-button-eip155:${hexToDecimal(
-        CHAIN_IDS.LINEA_MAINNET,
-      )}`,
-    );
-    fireEvent.click(menuButton);
-    expect(
-      queryByTestId('network-list-item-options-discover'),
-    ).not.toBeInTheDocument();
-  });
-
-  it('disables the "Discover" button when the network is not in the list of `CHAIN_ID_PORTFOLIO_LANDING_PAGE_URL_MAP`', () => {
-    const { queryByTestId, getByTestId } = render({
-      neNetworkDiscoverButton: {
-        '0x1': true,
-      },
-    });
-
-    const menuButton = getByTestId(
-      `network-list-item-options-button-eip155:${hexToDecimal(
-        CHAIN_IDS.MAINNET,
-      )}`,
-    );
-    fireEvent.click(menuButton);
-
-    expect(
-      queryByTestId('network-list-item-options-discover'),
-    ).not.toBeInTheDocument();
   });
 
   describe('selectedTabOrigin is connected to wallet', () => {

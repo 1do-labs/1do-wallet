@@ -43,9 +43,7 @@ export const CustomNetworks = React.memo(() => {
   const [, setSearchParams] = useSearchParams();
   const dispatch = useDispatch();
   const orderedNetworksList = useSelector(getOrderedNetworksList);
-  const [, evmNetworks] = useSelector(
-    getMultichainNetworkConfigurationsTuple,
-  );
+  const [, evmNetworks] = useSelector(getMultichainNetworkConfigurationsTuple);
   const showTestnets = useSelector(getShowTestNetworks);
   const enabledNetworksByNamespace = useSelector(getEnabledNetworksByNamespace);
 
@@ -85,8 +83,7 @@ export const CustomNetworks = React.memo(() => {
 
       const isEnabled = Boolean(enabledNetworksByNamespace[convertedChainId]);
 
-      const { onDelete, onEdit, onDiscoverClick, onRpcSelect } =
-        getItemCallbacks(network);
+      const { onDelete, onEdit, onRpcSelect } = getItemCallbacks(network);
 
       const rpcEndpoint =
         network.isEvm && hasMultiRpcOptions(network)
@@ -105,7 +102,6 @@ export const CustomNetworks = React.memo(() => {
           onClick={() => handleNetworkClick(network.chainId)}
           onDeleteClick={onDelete}
           onEditClick={onEdit}
-          onDiscoverClick={onDiscoverClick}
           selected={isEnabled}
           onRpcEndpointClick={onRpcSelect}
           disabled={!isNetworkEnabled(network)}
@@ -134,7 +130,9 @@ export const CustomNetworks = React.memo(() => {
         >
           {t('customNetworks')}
         </Text>
-        {orderedNetworks.map((network) => generateMultichainNetworkListItem(network))}
+        {orderedNetworks.map((network) =>
+          generateMultichainNetworkListItem(network),
+        )}
       </Box>
     ) : null;
   }, [orderedNetworks, generateMultichainNetworkListItem, t]);

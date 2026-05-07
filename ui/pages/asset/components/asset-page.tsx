@@ -13,8 +13,6 @@ import {
   IconColor,
   IconName,
   Text,
-  TextButton,
-  TextButtonSize,
   TextColor,
   TextVariant,
 } from '@metamask/design-system-react';
@@ -50,16 +48,12 @@ import { StockBadge } from '../../../components/app/assets/stock-badge/stock-bad
 import { AddressCopyButton } from '../../../components/multichain';
 import { getCurrentCurrency } from '../../../ducks/metamask/metamask';
 import { getIsNativeTokenBuyable } from '../../../ducks/ramps';
-import { getPortfolioUrl } from '../../../helpers/utils/portfolio';
 import { useI18nContext } from '../../../hooks/useI18nContext';
 import { useMultichainSelector } from '../../../hooks/useMultichainSelector';
 import { transitionBack } from '../../../components/ui/transition';
 import {
-  getDataCollectionForMarketing,
   getIsBridgeChain,
   getIsSwapsChain,
-  getMetaMetricsId,
-  getParticipateInMetaMetrics,
   getShowFiatInTestnets,
 } from '../../../selectors';
 import {
@@ -139,10 +133,6 @@ const AssetPage = ({
   const showFiat =
     shouldShowFiat && (isMainnet || (isTestnet && showFiatInTestnets));
 
-  const isMetaMetricsEnabled = useSelector(getParticipateInMetaMetrics);
-  const isMarketingEnabled = useSelector(getDataCollectionForMarketing);
-  const metaMetricsId = useSelector(getMetaMetricsId);
-
   let address =
     (() => {
       if (type === AssetType.token) {
@@ -159,8 +149,7 @@ const AssetPage = ({
   const isMusdConversionFlowEnabled = useSelector(
     selectIsMusdConversionFlowEnabled,
   );
-  const showMusdEnhancedPage =
-    isMusdAssetPage && isMusdConversionFlowEnabled;
+  const showMusdEnhancedPage = isMusdAssetPage && isMusdConversionFlowEnabled;
   const {
     aggregatedFiat: musdAggregatedFiat,
     hasAnyBalance: musdHasAnyBalance,
@@ -189,26 +178,6 @@ const AssetPage = ({
   const balance = assetWithBalance?.balance ?? '0';
   const tokenFiatAmount = assetWithBalance?.fiat?.balance ?? 0;
   const tokenHexBalance = assetWithBalance?.rawBalance as string;
-
-  const shouldShowSpendingCaps = isEvm;
-  const portfolioSpendingCapsUrl = useMemo(
-    () =>
-      getPortfolioUrl(
-        '',
-        'asset_page',
-        metaMetricsId,
-        isMetaMetricsEnabled,
-        isMarketingEnabled,
-        selectedAccount.address,
-        'spending-caps',
-      ),
-    [
-      selectedAccount.address,
-      isMarketingEnabled,
-      isMetaMetricsEnabled,
-      metaMetricsId,
-    ],
-  );
 
   const networkConfigurationsByChainId = useSelector(
     getMultichainNetworkConfigurationsByChainId,
@@ -462,20 +431,6 @@ const AssetPage = ({
                     </Box>
                   </Box>
                 )}
-                {shouldShowSpendingCaps &&
-                  renderRow(
-                    t('spendingCaps'),
-                    <TextButton size={TextButtonSize.BodyMd} asChild>
-                      <a
-                        className="asset-page__spending-caps"
-                        href={portfolioSpendingCapsUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        {t('editInPortfolio')}
-                      </a>
-                    </TextButton>,
-                  )}
               </Box>
             </Box>
           )}

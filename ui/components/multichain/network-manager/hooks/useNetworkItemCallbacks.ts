@@ -4,16 +4,13 @@ import { type MultichainNetworkConfiguration } from '@metamask/multichain-networ
 import { type Hex } from '@metamask/utils';
 import { useDispatch, useSelector } from 'react-redux';
 import { useSearchParams } from 'react-router-dom';
-import { CHAIN_ID_PORTFOLIO_LANDING_PAGE_URL_MAP } from '../../../../../shared/constants/network';
 import {
   convertCaipToHexChainId,
   getRpcDataByChainId,
 } from '../../../../../shared/lib/network.utils';
-import { openWindow } from '../../../../helpers/utils/window';
 import { setEditedNetwork, showModal } from '../../../../store/actions';
 import {
   getMultichainNetworkConfigurationsTuple,
-  getNetworkDiscoverButtonEnabled,
   getSelectedMultichainNetworkChainId,
 } from '../../../../selectors';
 import {
@@ -26,26 +23,8 @@ export const useNetworkItemCallbacks = () => {
   const [, setSearchParams] = useSearchParams();
   const isUnlocked = useSelector(getIsUnlocked);
   const currentChainId = useSelector(getSelectedMultichainNetworkChainId);
-  const isNetworkDiscoverButtonEnabled = useSelector(
-    getNetworkDiscoverButtonEnabled,
-  );
-  const [, evmNetworks] = useSelector(
-    getMultichainNetworkConfigurationsTuple,
-  );
+  const [, evmNetworks] = useSelector(getMultichainNetworkConfigurationsTuple);
   const completedOnboarding = useSelector(getCompletedOnboarding);
-
-  const isDiscoverBtnEnabled = useCallback(
-    (chainId: Hex | `${string}:${string}`): boolean => {
-      // The "Discover" button should be enabled when the mapping for the chainId is enabled in the feature flag json
-      // and in the constants `CHAIN_ID_PORTFOLIO_LANDING_PAGE_URL_MAP`.
-      return Boolean(
-        isNetworkDiscoverButtonEnabled?.[
-          chainId as keyof typeof isNetworkDiscoverButtonEnabled
-        ] && CHAIN_ID_PORTFOLIO_LANDING_PAGE_URL_MAP[chainId] !== undefined,
-      );
-    },
-    [isNetworkDiscoverButtonEnabled],
-  );
 
   const hasMultiRpcOptions = useCallback(
     (network: MultichainNetworkConfiguration): boolean =>
@@ -96,14 +75,7 @@ export const useNetworkItemCallbacks = () => {
           );
           setSearchParams({ view: 'edit' });
         },
-        onDiscoverClick: isDiscoverBtnEnabled(hexChainId)
-          ? () => {
-              openWindow(
-                CHAIN_ID_PORTFOLIO_LANDING_PAGE_URL_MAP[hexChainId],
-                '_blank',
-              );
-            }
-          : undefined,
+        onDiscoverClick: undefined,
         onRpcConfigEdit: hasMultiRpcOptions(network)
           ? () => {
               setSearchParams({ view: 'add-rpc' });
@@ -124,14 +96,7 @@ export const useNetworkItemCallbacks = () => {
         },
       };
     },
-    [
-      currentChainId,
-      dispatch,
-      hasMultiRpcOptions,
-      isUnlocked,
-      isDiscoverBtnEnabled,
-      setSearchParams,
-    ],
+    [currentChainId, dispatch, hasMultiRpcOptions, isUnlocked, setSearchParams],
   );
 
   return {

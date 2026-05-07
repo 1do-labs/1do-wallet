@@ -94,24 +94,4 @@ describe('FundingMethodModal', () => {
     fireEvent.click(getByText(messages.receiveCrypto.message));
     expect(onClickReceive).toHaveBeenCalled();
   });
-
-  it('should open a new tab with the correct URL when Transfer Crypto item is clicked', () => {
-    global.platform.openTab = jest.fn();
-
-    const { getByText } = renderWithProvider(
-      <FundingMethodModal
-        isOpen={true}
-        onClose={jest.fn()}
-        title="Test Modal"
-        onClickReceive={jest.fn()}
-        data-testid="funding-method-modal"
-      />,
-      store,
-    );
-
-    fireEvent.click(getByText(messages.transferCrypto.message));
-    expect(global.platform.openTab).toHaveBeenCalledWith({
-      url: expect.stringContaining('transfer'),
-    });
-  });
 });

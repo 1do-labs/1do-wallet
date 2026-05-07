@@ -14,18 +14,6 @@ jest.mock('../../asset-list/cells/asset-title', () => ({
   ),
 }));
 
-jest.mock('../../../../multichain/token-list-item/stakeable-link', () => ({
-  StakeableLink: ({ chainId, symbol }: { chainId: string; symbol: string }) => (
-    <div
-      data-testid="stakeable-link"
-      data-chain-id={chainId}
-      data-symbol={symbol}
-    >
-      Stake
-    </div>
-  ),
-}));
-
 jest.mock('../../../../component-library', () => ({
   Tag: ({ label }: { label: string }) => (
     <span data-testid="tag" data-label={label}>
@@ -139,39 +127,10 @@ describe('TokenCellTitle', () => {
     expect(tag).toHaveAttribute('data-label', 'Taproot');
   });
 
-  it('renders StakeableLink when isStakeable is true', () => {
-    const token = createMockToken({
-      isStakeable: true,
-      chainId: '0x1',
-      symbol: 'ETH',
-    });
-    const { getByTestId } = render(<TokenCellTitle token={token} />);
-
-    const stakeableLink = getByTestId('stakeable-link');
-    expect(stakeableLink).toBeInTheDocument();
-    expect(stakeableLink).toHaveAttribute('data-chain-id', '0x1');
-    expect(stakeableLink).toHaveAttribute('data-symbol', 'ETH');
-  });
-
-  it('does not render StakeableLink when isStakeable is false', () => {
-    const token = createMockToken({ isStakeable: false });
-    const { queryByTestId } = render(<TokenCellTitle token={token} />);
-
-    expect(queryByTestId('stakeable-link')).not.toBeInTheDocument();
-  });
-
-  it('does not render StakeableLink when isStakeable is undefined', () => {
-    const token = createMockToken({ isStakeable: undefined });
-    const { queryByTestId } = render(<TokenCellTitle token={token} />);
-
-    expect(queryByTestId('stakeable-link')).not.toBeInTheDocument();
-  });
-
-  it('renders both tag and StakeableLink when both conditions are met', () => {
+  it('renders tag when account type is present', () => {
     const token = createMockToken({
       title: 'Bitcoin',
       accountType: BtcAccountType.P2tr,
-      isStakeable: true,
       chainId: BtcScope.Mainnet,
       symbol: 'BTC',
     });
@@ -183,9 +142,6 @@ describe('TokenCellTitle', () => {
     expect(container.querySelector('[data-testid="tag"]')).toHaveTextContent(
       'Taproot',
     );
-    expect(
-      container.querySelector('[data-testid="stakeable-link"]'),
-    ).toBeInTheDocument();
   });
 
   describe('StockBadge', () => {
@@ -251,15 +207,9 @@ describe('TokenCellTitle', () => {
         address: '0x1',
         chainId: '0x1',
         symbol: 'ETH',
-        isStakeable: true,
       });
       const { rerender, getByTestId } = render(
         <TokenCellTitle token={token} />,
-      );
-
-      expect(getByTestId('stakeable-link')).toHaveAttribute(
-        'data-symbol',
-        'ETH',
       );
 
       const updatedToken = createMockToken({
@@ -267,15 +217,12 @@ describe('TokenCellTitle', () => {
         address: '0x1',
         chainId: '0x1',
         symbol: 'ETH',
-        isStakeable: false,
         tokenFiatAmount: 999,
         balance: '999',
       });
       rerender(<TokenCellTitle token={updatedToken} />);
 
-      // isStakeable changed to false but is NOT in the areEqual check,
-      // so memo blocks the re-render and StakeableLink stays visible.
-      expect(getByTestId('stakeable-link')).toBeInTheDocument();
+      expect(getByTestId('asset-cell-title')).toHaveTextContent('Ethereum');
     });
 
     it('re-renders when title changes', () => {

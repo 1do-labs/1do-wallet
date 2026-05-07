@@ -47,9 +47,7 @@ import { useNetworkChangeHandlers } from '../../hooks/useNetworkChangeHandlers';
 import { useNetworkItemCallbacks } from '../../hooks/useNetworkItemCallbacks';
 import { useNetworkManagerState } from '../../hooks/useNetworkManagerState';
 import { AdditionalNetworksInfo } from '../additional-networks-info';
-import {
-  getAllEnabledNetworksForAllNamespaces,
-} from '../../../../../selectors/multichain/networks';
+import { getAllEnabledNetworksForAllNamespaces } from '../../../../../selectors/multichain/networks';
 import { useI18nContext } from '../../../../../hooks/useI18nContext';
 import {
   getOrderedNetworksList,
@@ -123,9 +121,7 @@ const DefaultNetworks = memo(() => {
   const t = useI18nContext();
   const dispatch = useDispatch();
   const orderedNetworksList = useSelector(getOrderedNetworksList);
-  const [, evmNetworks] = useSelector(
-    getMultichainNetworkConfigurationsTuple,
-  );
+  const [, evmNetworks] = useSelector(getMultichainNetworkConfigurationsTuple);
   const allEnabledNetworksForAllNamespaces = useSelector(
     getAllEnabledNetworksForAllNamespaces,
   );
@@ -158,8 +154,8 @@ const DefaultNetworks = memo(() => {
     const filteredNetworks = useExternalServices
       ? nonTestNetworks
       : Object.fromEntries(
-          Object.entries(nonTestNetworks).filter(
-            ([, network]) => isEvmChainId(network.chainId as `0x${string}`),
+          Object.entries(nonTestNetworks).filter(([, network]) =>
+            isEvmChainId(network.chainId as `0x${string}`),
           ),
         );
     return sortNetworks(filteredNetworks, orderedNetworksList);
@@ -256,8 +252,7 @@ const DefaultNetworks = memo(() => {
         return null;
       }
 
-      const { onDelete, onEdit, onDiscoverClick, onRpcSelect } =
-        getItemCallbacks(network);
+      const { onDelete, onEdit, onRpcSelect } = getItemCallbacks(network);
       const iconSrc = getNetworkIcon(network);
       const isSelected = isSingleNetworkSelected(hexChainId as Hex);
 
@@ -288,7 +283,6 @@ const DefaultNetworks = memo(() => {
           }}
           onDeleteClick={onDelete}
           onEditClick={onEdit}
-          onDiscoverClick={onDiscoverClick}
           onRpcEndpointClick={onRpcSelect}
           selected={isSelected}
         />

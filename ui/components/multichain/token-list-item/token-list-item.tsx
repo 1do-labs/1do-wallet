@@ -65,7 +65,6 @@ import { selectNoFeeAssets } from '../../../ducks/bridge/selectors';
 import { ACCOUNT_TYPE_LABELS } from '../../app/assets/constants';
 import { TokenWithFiatAmount } from '../../app/assets/types';
 import { PercentageChange } from './price/percentage-change/percentage-change';
-import { StakeableLink } from './stakeable-link';
 
 type TokenListItemProps = {
   className?: string;
@@ -285,9 +284,6 @@ export const TokenListItemComponent = ({
                     ellipsis
                   >
                     {tokenMainTitleToDisplay}
-                    {isStakeable && (
-                      <StakeableLink chainId={chainId} symbol={tokenSymbol} />
-                    )}
                   </Text>
                 </Tooltip>
               ) : (
@@ -297,9 +293,6 @@ export const TokenListItemComponent = ({
                   ellipsis
                 >
                   {tokenMainTitleToDisplay}
-                  {isStakeable && (
-                    <StakeableLink chainId={chainId} symbol={tokenSymbol} />
-                  )}
                 </Text>
               )}
               {accountType && ACCOUNT_TYPE_LABELS[accountType] && (

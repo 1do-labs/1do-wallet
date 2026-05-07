@@ -1,4 +1,4 @@
-import React, { useCallback, useContext } from 'react';
+import React, { useContext } from 'react';
 import { useSelector } from 'react-redux';
 import { CaipChainId } from '@metamask/utils';
 import {
@@ -21,13 +21,6 @@ import {
 import useRamps, {
   RampsMetaMaskEntry,
 } from '../../../hooks/ramps/useRamps/useRamps';
-import { getPortfolioUrl } from '../../../helpers/utils/portfolio';
-import {
-  getMetaMetricsId,
-  getParticipateInMetaMetrics,
-  getDataCollectionForMarketing,
-  getSelectedAccount,
-} from '../../../selectors';
 import { useI18nContext } from '../../../hooks/useI18nContext';
 import { ChainId } from '../../../../shared/constants/network';
 import {
@@ -54,49 +47,9 @@ export const FundingMethodModal: React.FC<FundingMethodModalProps> = ({
   const t = useI18nContext();
   const { trackEvent } = useContext(MetaMetricsContext);
   const { openBuyCryptoInPdapp } = useRamps();
-  const { address: accountAddress } = useSelector(getSelectedAccount);
   const { chainId } = useSelector(getMultichainCurrentNetwork);
   const { symbol } = useSelector(getMultichainDefaultToken);
-  const metaMetricsId = useSelector(getMetaMetricsId);
-  const isMetaMetricsEnabled = useSelector(getParticipateInMetaMetrics);
-  const isMarketingEnabled = useSelector(getDataCollectionForMarketing);
-
-  const handleTransferCryptoClick = useCallback(() => {
-    trackEvent({
-      event: MetaMetricsEventName.NavSendButtonClicked,
-      category: MetaMetricsEventCategory.Navigation,
-      properties: {
-        location: RampsMetaMaskEntry?.TokensBanner,
-        text: 'Transfer crypto',
-        // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        chain_id: chainId,
-        // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        token_symbol: symbol,
-      },
-    });
-
-    const url = getPortfolioUrl(
-      'transfer',
-      'ext_funding_method_modal',
-      metaMetricsId,
-      isMetaMetricsEnabled,
-      isMarketingEnabled,
-      accountAddress,
-      'transfer',
-    );
-    global.platform.openTab({ url });
-  }, [
-    metaMetricsId,
-    isMetaMetricsEnabled,
-    isMarketingEnabled,
-    chainId,
-    symbol,
-    accountAddress,
-  ]);
-
-  const handleBuyCryptoClick = useCallback(() => {
+  const handleBuyCryptoClick = () => {
     trackEvent({
       event: MetaMetricsEventName.NavBuyButtonClicked,
       category: MetaMetricsEventCategory.Navigation,
@@ -112,7 +65,7 @@ export const FundingMethodModal: React.FC<FundingMethodModalProps> = ({
       },
     });
     openBuyCryptoInPdapp(chainId as ChainId | CaipChainId);
-  }, [chainId, symbol]);
+  };
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} {...props}>
@@ -134,12 +87,6 @@ export const FundingMethodModal: React.FC<FundingMethodModalProps> = ({
           title={t('receiveCrypto')}
           description={t('depositCrypto')}
           onClick={onClickReceive}
-        />
-        <FundingMethodItem
-          icon={IconName.Link}
-          title={t('transferCrypto')}
-          description={t('linkCentralizedExchanges')}
-          onClick={handleTransferCryptoClick}
         />
       </ModalContent>
     </Modal>
