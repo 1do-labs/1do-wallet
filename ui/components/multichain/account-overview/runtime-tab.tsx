@@ -12,7 +12,7 @@ import {
   getRuntimeAppHostLabel,
   getRuntimeAppUrl,
   getRuntimeAppsForSurface,
-} from '../../../../shared/lib/1do-runtime-app-registry';
+} from '@1doapp/runtime-registry';
 
 const walletRuntimeApps = getRuntimeAppsForSurface('wallet');
 
