@@ -9,7 +9,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "1do-wallet@workspace:."
   dependencies:
-    "@1doapp/runtime-registry": "file:../1do-runtime-registry"
     "@actions/core": "npm:^1.10.0"
     "@actions/github": "npm:^5.1.1"
     "@anthropic-ai/sdk": "npm:^0.32.1"
@@ -519,13 +518,6 @@ __metadata:
     yazl: "npm:^3.3.1"
   languageName: unknown
   linkType: soft
-
-"@1doapp/runtime-registry@file:../1do-runtime-registry::locator=1do-wallet%40workspace%3A.":
-  version: 0.1.0
-  resolution: "@1doapp/runtime-registry@file:../1do-runtime-registry#../1do-runtime-registry::hash=b66c05&locator=1do-wallet%40workspace%3A."
-  checksum: 10/6c1505d551e74113bd95be4126f2cc2cc50ccd9bec659de336c873b7da5762ce334af80e50cfdb1ee47056d97a84f66b6a00e7dabe789d61c0c275bda9a181d8
-  languageName: node
-  linkType: hard
 
 "@aashutoshrathi/word-wrap@npm:^1.2.3":
   version: 1.2.6

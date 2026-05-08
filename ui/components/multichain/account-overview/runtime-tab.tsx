@@ -3,18 +3,80 @@ import {
   Box,
   BoxBackgroundColor,
   BoxFlexDirection,
-  BoxJustifyContent,
   Text,
   TextColor,
   TextVariant,
 } from '@metamask/design-system-react';
 import {
-  getRuntimeAppHostLabel,
   getRuntimeAppUrl,
   getRuntimeAppsForSurface,
-} from '@1doapp/runtime-registry';
+} from './runtime-app-registry';
+import {
+  BlinkPayIcon,
+  CloseSkyVoxelDart,
+  CryptoWillMonolith,
+  FlashManPower,
+  GiftIcon,
+  MintDappIcon,
+  PayIcon,
+  PeerDexPixel,
+  RedPacketIcon,
+} from './runtime-tab-icons';
 
-const walletRuntimeApps = getRuntimeAppsForSurface('wallet');
+const walletRuntimeApps = getRuntimeAppsForSurface('wallet').filter(
+  (app) => app.id !== 'settings',
+);
+
+const ICON_BY_APP_ID = {
+  redpacket: RedPacketIcon,
+  gift: GiftIcon,
+  pay: PayIcon,
+  peerdex: PeerDexPixel,
+  closesky: CloseSkyVoxelDart,
+  flashman: FlashManPower,
+  cryptowill: CryptoWillMonolith,
+  blinkpay: BlinkPayIcon,
+  store: MintDappIcon,
+} as const;
+
+const RuntimeAppCard = ({
+  app,
+}: {
+  app: (typeof walletRuntimeApps)[number];
+}) => {
+  const Icon = ICON_BY_APP_ID[app.id as keyof typeof ICON_BY_APP_ID];
+  const isFeatured = app.coreVariant === 'featured';
+
+  return (
+    <button
+      type="button"
+      data-testid={`runtime-app-card-${app.id}`}
+      className="runtime-app-card-button border-0 bg-transparent p-0 text-center"
+      onClick={() => global.platform.openTab({ url: getRuntimeAppUrl(app) })}
+    >
+      <Box
+        flexDirection={BoxFlexDirection.Column}
+        className="runtime-app-card"
+        gap={3}
+      >
+        <Box
+          backgroundColor={BoxBackgroundColor.BackgroundSection}
+          className={`runtime-app-card__icon ${isFeatured ? 'runtime-app-card__icon--featured' : ''}`}
+        >
+          {Icon ? <Icon aria-hidden="true" /> : null}
+        </Box>
+        <Box flexDirection={BoxFlexDirection.Column} gap={1}>
+          <Text
+            variant={TextVariant.BodySmMedium}
+            color={TextColor.textDefault}
+          >
+            {app.label}
+          </Text>
+        </Box>
+      </Box>
+    </button>
+  );
+};
 
 export const RuntimeTab = () => {
   return (
@@ -26,43 +88,7 @@ export const RuntimeTab = () => {
     >
       <Box className="grid grid-cols-3 gap-4 sm:grid-cols-4">
         {walletRuntimeApps.map((app) => (
-          <button
-            key={app.id}
-            type="button"
-            data-testid={`runtime-app-card-${app.id}`}
-            className="rounded-2xl border-0 bg-transparent p-0 text-left"
-            onClick={() =>
-              global.platform.openTab({ url: getRuntimeAppUrl(app) })
-            }
-          >
-            <Box
-              flexDirection={BoxFlexDirection.Column}
-              justifyContent={BoxJustifyContent.Between}
-              backgroundColor={BoxBackgroundColor.BackgroundSection}
-              className="min-h-[132px] rounded-2xl border border-default p-3 transition-transform hover:-translate-y-0.5"
-              gap={3}
-            >
-              <Box
-                className={`flex h-12 w-12 items-center justify-center rounded-2xl text-xs font-bold tracking-[0.12em] ${app.walletBadgeClassName}`}
-              >
-                {app.walletBadge}
-              </Box>
-              <Box flexDirection={BoxFlexDirection.Column} gap={1}>
-                <Text
-                  variant={TextVariant.BodyMdMedium}
-                  color={TextColor.textDefault}
-                >
-                  {app.label}
-                </Text>
-                <Text
-                  variant={TextVariant.BodySm}
-                  color={TextColor.textAlternative}
-                >
-                  {getRuntimeAppHostLabel(app)}
-                </Text>
-              </Box>
-            </Box>
-          </button>
+          <RuntimeAppCard key={app.id} app={app} />
         ))}
       </Box>
     </Box>

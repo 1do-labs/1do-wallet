@@ -1,9 +1,7 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useId, useMemo, useState } from 'react';
 import {
-  AvatarAccountSize,
   Box,
   ButtonIcon,
-  ButtonIconSize,
   Icon,
   IconColor,
   IconName,
@@ -16,7 +14,6 @@ import { Hex } from '@metamask/utils';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { KeyringTypes } from '@metamask/keyring-controller';
-import { PreferredAvatar } from '../../app/preferred-avatar';
 import { useI18nContext } from '../../../hooks/useI18nContext';
 import { useEIP7702Account } from '../../../pages/confirmations/hooks/useEIP7702Account';
 import { isAtomicBatchSupported } from '../../../store/controller-actions/transaction-controller';
@@ -25,7 +22,93 @@ import { getCurrentChainId } from '../../../../shared/lib/selectors/networks';
 import { KEYRING_TYPES_SUPPORTING_7702 } from '../../../../shared/constants/keyring';
 import { MULTICHAIN_SMART_ACCOUNT_PAGE_ROUTE } from '../../../helpers/constants/routes';
 
-const ONE_DO_7702_DELEGATE = '0x69d2927735c3E57c512177B32e216431B1Aba1fF' as Hex;
+/* eslint-disable @metamask/design-tokens/color-no-hex */
+
+const ONE_DO_7702_DELEGATE =
+  '0x69d2927735c3E57c512177B32e216431B1Aba1fF' as Hex;
+
+const OneDoWalletAvatar = () => {
+  const maskId = useId();
+
+  return (
+    <svg
+      width="18"
+      height="18"
+      viewBox="0 0 40 40"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className="smart-account-header-logo__avatar"
+    >
+      <defs>
+        <mask id={maskId}>
+          <rect width="40" height="40" fill="white" />
+          <circle cx="16" cy="12" r="2" fill="black" />
+        </mask>
+      </defs>
+      <rect
+        x="11"
+        y="6"
+        width="18"
+        height="16"
+        rx="5"
+        fill="black"
+        mask={`url(#${maskId})`}
+      />
+      <path
+        d="M7 38 C7 29 12 23 20 23 C28 23 33 29 33 38"
+        fill="url(#bodyGradient)"
+      />
+      <path
+        d="M9.5 37.5 C9.5 29.8 13.8 24.5 20 24.5 C26.2 24.5 30.5 29.8 30.5 37.5"
+        fill="url(#bodyGradientMid)"
+        opacity="0.7"
+      />
+      <path
+        d="M12 36 C12 31 14.8 27.5 20 27.5 C25.2 27.5 28 31 28 36"
+        fill="url(#bodyGradientInner)"
+        opacity="0.8"
+      />
+      <defs>
+        <linearGradient
+          id="bodyGradient"
+          x1="7"
+          y1="23"
+          x2="33"
+          y2="38"
+          gradientUnits="userSpaceOnUse"
+        >
+          <stop offset="0%" stopColor="#fde2e7" />
+          <stop offset="55%" stopColor="#f7b5c9" />
+          <stop offset="100%" stopColor="#db8fa9" />
+        </linearGradient>
+        <linearGradient
+          id="bodyGradientMid"
+          x1="9.5"
+          y1="24.5"
+          x2="30.5"
+          y2="37.5"
+          gradientUnits="userSpaceOnUse"
+        >
+          <stop offset="0%" stopColor="#fbe3ea" />
+          <stop offset="65%" stopColor="#f3a3bd" />
+          <stop offset="100%" stopColor="#db8fa9" />
+        </linearGradient>
+        <linearGradient
+          id="bodyGradientInner"
+          x1="12"
+          y1="27.5"
+          x2="28"
+          y2="36"
+          gradientUnits="userSpaceOnUse"
+        >
+          <stop offset="0%" stopColor="#ffd4e0" />
+          <stop offset="60%" stopColor="#f58fb5" />
+          <stop offset="100%" stopColor="#d36394" />
+        </linearGradient>
+      </defs>
+    </svg>
+  );
+};
 
 export const SmartAccountHeaderButton = () => {
   const t = useI18nContext();
@@ -67,7 +150,8 @@ export const SmartAccountHeaderButton = () => {
         );
         const delegationAddress = currentChainSupport?.delegationAddress;
         const result =
-          delegationAddress?.toLowerCase() === ONE_DO_7702_DELEGATE.toLowerCase();
+          delegationAddress?.toLowerCase() ===
+          ONE_DO_7702_DELEGATE.toLowerCase();
         if (!cancelled) {
           setUpgraded(result);
         }
@@ -103,20 +187,24 @@ export const SmartAccountHeaderButton = () => {
     } finally {
       setPending(false);
     }
-  }, [address, isSupportedKeyring, pending, upgraded, navigate, upgradeAccount]);
+  }, [
+    address,
+    isSupportedKeyring,
+    pending,
+    upgraded,
+    navigate,
+    upgradeAccount,
+  ]);
 
   const content = useMemo(() => {
     if (upgraded && address) {
       return (
         <Box
-          className="smart-account-header-button smart-account-header-button--upgraded"
+          className="smart-account-header-logo"
           onClick={onClick}
           data-testid="smart-account-header-button"
         >
-          <PreferredAvatar address={address} size={AvatarAccountSize.Sm} />
-          <Text variant={TextVariant.BodySm} color={TextColor.TextDefault}>
-            1do
-          </Text>
+          <OneDoWalletAvatar />
         </Box>
       );
     }
@@ -137,11 +225,11 @@ export const SmartAccountHeaderButton = () => {
           <ButtonIcon
             ariaLabel={t('smartAccount')}
             iconName={IconName.UserCircleAdd}
-            size={ButtonIconSize.Md}
+            className="smart-account-header-button__icon"
           />
         )}
         <Text variant={TextVariant.BodySm} color={TextColor.TextDefault}>
-          {t('smartAccount')}
+          Smart
         </Text>
       </Box>
     );
