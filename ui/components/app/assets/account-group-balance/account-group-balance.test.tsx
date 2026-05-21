@@ -8,15 +8,12 @@ import { getIntlLocale } from '../../../../ducks/locale/locale';
 import { getCurrentCurrency } from '../../../../ducks/metamask/metamask';
 import {
   getPreferences,
-  getEnabledNetworksByNamespace,
   selectAnyEnabledNetworksAreAvailable,
 } from '../../../../selectors';
 import {
   selectBalanceBySelectedAccountGroup,
   selectAggregatedBalanceForSelectedAccount,
 } from '../../../../selectors/assets';
-import * as useMultichainSelectorHook from '../../../../hooks/useMultichainSelector';
-import * as multichainSelectors from '../../../../selectors/multichain';
 import {
   AccountGroupBalance,
   AccountGroupBalanceProps,
@@ -28,10 +25,6 @@ jest.mock('../../../../selectors/assets');
 jest.mock('../../../../selectors');
 jest.mock('../../../../ducks/locale/locale');
 jest.mock('../../../../ducks/metamask/metamask');
-jest.mock('../../../../selectors/multichain', () => ({
-  ...jest.requireActual('../../../../selectors/multichain'),
-  getMultichainIsTestnet: jest.fn(),
-}));
 
 describe('AccountGroupBalance', () => {
   const createMockBalance = (): AccountGroupBalanceType => ({
@@ -44,7 +37,6 @@ describe('AccountGroupBalance', () => {
   const arrange = (
     selectedGroupBalance: AccountGroupBalanceType | null = null,
     showNativeTokenAsMainBalance: boolean = false,
-    isTestnet: boolean = false,
     aggregatedBalance: {
       entries: unknown[];
       totalBalanceInFiat?: number;
@@ -71,29 +63,17 @@ describe('AccountGroupBalance', () => {
       .mocked(getPreferences)
       .mockReturnValue({ privacyMode: false, showNativeTokenAsMainBalance });
 
-    const mockGetEnabledNetworksByNamespace = jest
-      .mocked(getEnabledNetworksByNamespace)
-      .mockReturnValue({
-        '0x1': true,
-      });
-
     const mockGetIntlLocale = jest.mocked(getIntlLocale).mockReturnValue('en');
 
     const mockGetCurrentCurrency = jest
       .mocked(getCurrentCurrency)
       .mockReturnValue('usd');
 
-    const mockGetMultichainIsTestnet = jest
-      .mocked(multichainSelectors.getMultichainIsTestnet)
-      .mockReturnValue(isTestnet);
-
     return {
       mockSelectBalanceBySelectedAccountGroup,
       mockGetPreferences,
       mockGetIntlLocale,
       mockGetCurrentCurrency,
-      mockGetEnabledNetworksByNamespace,
-      mockGetMultichainIsTestnet,
     };
   };
 
@@ -142,7 +122,7 @@ describe('AccountGroupBalance', () => {
   });
 
   it('renders a skeleton when no selected group balance and no networks available', () => {
-    arrange(null, false, false, null, false);
+    arrange(null, false, null, false);
     actAssertSkeletonPresent();
   });
 
@@ -156,34 +136,18 @@ describe('AccountGroupBalance', () => {
     });
   });
 
-  it('renders native balance when setting showNativeTokenAsMainBalance to true', () => {
-    jest
-      .spyOn(useMultichainSelectorHook, 'useMultichainSelector')
-      .mockReturnValue('ETH');
+  it('renders total balance when setting showNativeTokenAsMainBalance to true', () => {
     arrange(createMockBalance(), true);
     actAssertBalanceContent({
-      currency: 'ETH',
-      amount: '0.000589',
+      currency: 'USD',
+      amount: '$123.45',
       balance: '0x0217b4f7389e02',
       chainId: '0x1',
     });
   });
 
-  it('renders native balance when on testnet regardless of showNativeTokenAsMainBalance setting', () => {
-    jest
-      .spyOn(useMultichainSelectorHook, 'useMultichainSelector')
-      .mockReturnValue('SepoliaETH');
-    arrange(createMockBalance(), false, true);
-    actAssertBalanceContent({
-      currency: 'SepoliaETH',
-      amount: '0.000589',
-      balance: '0x0217b4f7389e02',
-      chainId: '0xaa36a7',
-    });
-  });
-
   it('renders aggregated balance when selectAggregatedBalanceForSelectedAccount returns totalBalanceInFiat', () => {
-    arrange(null, false, false, {
+    arrange(null, false, {
       entries: [],
       totalBalanceInFiat: 99.5,
     });
@@ -199,7 +163,7 @@ describe('AccountGroupBalance', () => {
   });
 
   it('renders legacy balance when aggregatedBalance is null and selectedGroupBalance is set', () => {
-    arrange(createMockBalance(), false, false, null);
+    arrange(createMockBalance(), false, null);
     actAssertBalanceContent({
       currency: 'USD',
       amount: '$123.45',
@@ -209,7 +173,7 @@ describe('AccountGroupBalance', () => {
   });
 
   it('renders skeleton when no networks available and no balance', () => {
-    arrange(null, false, false, null, false);
+    arrange(null, false, null, false);
     actAssertSkeletonPresent();
   });
 

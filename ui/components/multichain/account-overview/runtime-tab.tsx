@@ -12,15 +12,11 @@ import {
   getRuntimeAppsForSurface,
 } from './runtime-app-registry';
 import {
-  BlinkPayIcon,
-  CloseSkyVoxelDart,
-  CryptoWillMonolith,
-  FlashManPower,
-  GiftIcon,
-  MintDappIcon,
-  PayIcon,
-  PeerDexPixel,
-  RedPacketIcon,
+  SessionPayIcon,
+  NFTMarketVoxelDart,
+  WillMonolith,
+  FlashLoanPower,
+  DexPixel,
 } from './runtime-tab-icons';
 
 const walletRuntimeApps = getRuntimeAppsForSurface('wallet').filter(
@@ -28,15 +24,11 @@ const walletRuntimeApps = getRuntimeAppsForSurface('wallet').filter(
 );
 
 const ICON_BY_APP_ID = {
-  redpacket: RedPacketIcon,
-  gift: GiftIcon,
-  pay: PayIcon,
-  peerdex: PeerDexPixel,
-  closesky: CloseSkyVoxelDart,
-  flashman: FlashManPower,
-  cryptowill: CryptoWillMonolith,
-  blinkpay: BlinkPayIcon,
-  store: MintDappIcon,
+  dex: DexPixel,
+  nftmarket: NFTMarketVoxelDart,
+  flashloan: FlashLoanPower,
+  will: WillMonolith,
+  sessionpay: SessionPayIcon,
 } as const;
 
 const RuntimeAppCard = ({
@@ -45,7 +37,6 @@ const RuntimeAppCard = ({
   app: (typeof walletRuntimeApps)[number];
 }) => {
   const Icon = ICON_BY_APP_ID[app.id as keyof typeof ICON_BY_APP_ID];
-  const isFeatured = app.coreVariant === 'featured';
 
   return (
     <button
@@ -61,7 +52,7 @@ const RuntimeAppCard = ({
       >
         <Box
           backgroundColor={BoxBackgroundColor.BackgroundSection}
-          className={`runtime-app-card__icon ${isFeatured ? 'runtime-app-card__icon--featured' : ''}`}
+          className="runtime-app-card__icon"
         >
           {Icon ? <Icon aria-hidden="true" /> : null}
         </Box>

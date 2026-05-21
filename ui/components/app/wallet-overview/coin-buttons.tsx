@@ -353,7 +353,7 @@ const CoinButtons = ({
             size={IconSize.Md}
           />
         }
-        disabled={!isBuyableChain}
+        disabled
         data-testid={`${classPrefix}-overview-buy`}
         label={t('buy')}
         onClick={handleBuyAndSellOnClick}
@@ -364,7 +364,7 @@ const CoinButtons = ({
       />
       <IconButton
         className={`${classPrefix}-overview__button`}
-        disabled={!isSigningEnabled || !isExternalServicesEnabled}
+        disabled
         Icon={
           <Icon
             name={IconName.SwapVertical}

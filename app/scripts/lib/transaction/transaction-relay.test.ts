@@ -4,6 +4,7 @@ import { jsonRpcRequest } from '../../../../shared/lib/rpc.utils';
 import getFetchWithTimeout from '../../../../shared/lib/fetch-with-timeout';
 import { flushPromises } from '../../../../test/lib/timer-helpers';
 import {
+  DEFAULT_RELAY_WAIT_TIMEOUT_MS,
   RELAY_RPC_METHOD,
   RelayStatus,
   RelaySubmitRequest,
@@ -213,6 +214,65 @@ describe('Transaction Relay Utils', () => {
       expect(fetchMock).toHaveBeenCalledTimes(4);
 
       await resultPromise;
+    });
+
+    it('keeps polling when relay succeeds before transaction hash is available', async () => {
+      mockFetchSuccess({
+        transactions: [
+          {
+            status: RelayStatus.Success,
+          },
+        ],
+      });
+
+      mockFetchSuccess({
+        transactions: [
+          {
+            hash: TRANSACTION_HASH_MOCK,
+            status: RelayStatus.Success,
+          },
+        ],
+      });
+
+      const resultPromise = waitForRelayResult(WAIT_REQUEST_MOCK);
+      await flushPromises();
+
+      jest.advanceTimersByTime(INTERVAL_MOCK);
+      await flushPromises();
+
+      expect(fetchMock).toHaveBeenCalledTimes(2);
+
+      jest.advanceTimersByTime(INTERVAL_MOCK);
+      await flushPromises();
+
+      await expect(resultPromise).resolves.toStrictEqual({
+        status: RelayStatus.Success,
+        transactionHash: TRANSACTION_HASH_MOCK,
+      });
+
+      // Additional request to check network support
+      expect(fetchMock).toHaveBeenCalledTimes(3);
+    });
+
+    it('throws if relay status stays pending until timeout', async () => {
+      for (let i = 0; i < 3; i++) {
+        mockFetchSuccess({
+          transactions: [
+            {
+              status: RelayStatus.Pending,
+            },
+          ],
+        });
+      }
+
+      const resultPromise = waitForRelayResult(WAIT_REQUEST_MOCK);
+      await flushPromises();
+
+      jest.advanceTimersByTime(DEFAULT_RELAY_WAIT_TIMEOUT_MS);
+
+      await expect(resultPromise).rejects.toThrow(
+        `Transaction relay timed out after ${DEFAULT_RELAY_WAIT_TIMEOUT_MS}ms`,
+      );
     });
   });
 

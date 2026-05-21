@@ -23,6 +23,7 @@ import {
   submitRelayTransaction,
   waitForRelayResult,
 } from '../transaction-relay';
+import { NATIVE_TOKEN_ADDRESS } from '../../../../../shared/constants/transaction';
 import { Delegation7702PublishHook } from './delegation-7702-publish';
 
 jest.mock('../transaction-relay');
@@ -236,6 +237,36 @@ describe('Delegation 7702 Publish Hook', () => {
         transactionHash: undefined,
       });
     });
+
+    it('native gas fee token is selected for ordinary transaction', async () => {
+      isAtomicBatchSupportedMock.mockResolvedValueOnce([
+        {
+          chainId: TRANSACTION_META_MOCK.chainId,
+          delegationAddress: UPGRADE_CONTRACT_ADDRESS_MOCK,
+          isSupported: true,
+          upgradeContractAddress: UPGRADE_CONTRACT_ADDRESS_MOCK,
+        },
+      ]);
+
+      const result = await hookClass.getHook()(
+        {
+          ...TRANSACTION_META_MOCK,
+          gasFeeTokens: [
+            {
+              ...GAS_FEE_TOKEN_MOCK,
+              tokenAddress: NATIVE_TOKEN_ADDRESS,
+            },
+          ],
+          selectedGasFeeToken: NATIVE_TOKEN_ADDRESS,
+        },
+        SIGNED_TX_MOCK,
+      );
+
+      expect(result).toEqual({
+        transactionHash: undefined,
+      });
+      expect(submitRelayTransactionMock).not.toHaveBeenCalled();
+    });
   });
 
   it('submits request to transaction relay', async () => {
@@ -424,6 +455,33 @@ describe('Delegation 7702 Publish Hook', () => {
         SIGNED_TX_MOCK,
       ),
     ).rejects.toThrow('Transaction relay error - TEST_STATUS');
+  });
+
+  it('throws if relay succeeds without returning a transaction hash', async () => {
+    waitForRelayResultMock.mockResolvedValueOnce({
+      status: RelayStatus.Success,
+      transactionHash: undefined,
+    });
+
+    isAtomicBatchSupportedMock.mockResolvedValueOnce([
+      {
+        chainId: TRANSACTION_META_MOCK.chainId,
+        delegationAddress: UPGRADE_CONTRACT_ADDRESS_MOCK,
+        isSupported: true,
+        upgradeContractAddress: UPGRADE_CONTRACT_ADDRESS_MOCK,
+      },
+    ]);
+
+    await expect(
+      hookClass.getHook()(
+        {
+          ...TRANSACTION_META_MOCK,
+          gasFeeTokens: [GAS_FEE_TOKEN_MOCK],
+          selectedGasFeeToken: GAS_FEE_TOKEN_MOCK.tokenAddress,
+        },
+        SIGNED_TX_MOCK,
+      ),
+    ).rejects.toThrow('Transaction relay returned success without a hash');
   });
 
   it('submits request to relay for gasless 7702 swap without gas fee tokens', async () => {

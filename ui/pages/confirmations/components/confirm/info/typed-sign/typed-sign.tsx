@@ -23,7 +23,10 @@ import { useConfirmContext } from '../../../../context/confirm';
 import { useTypesSignSimulationEnabledInfo } from '../../../../hooks/useTypesSignSimulationEnabledInfo';
 import { ConfirmInfoRowTypedSignData } from '../../row/typed-sign-data/typedSignData';
 import { NetworkRow } from '../shared/network-row/network-row';
+import { OneDoClearSigningSection } from '../shared/onedo-clear-signing/onedo-clear-signing';
 import { SigningInWithRow } from '../shared/sign-in-with-row/sign-in-with-row';
+import { getOneDoTypedDataClearSigning } from '../../../../utils/onedo-clear-signing';
+import { getBuiltInRegistryErc7730TypedDataClearSigning } from '../../../../utils/erc7730-registry';
 import { TypedSignV4Simulation } from './typed-sign-v4-simulation';
 
 const useTokenContract = () => {
@@ -65,10 +68,18 @@ const TypedSignInfo: React.FC = () => {
     ? t('requestFromInfoSnap')
     : t('requestFromInfo');
   const msgData = currentConfirmation.msgParams?.data as string;
+  const oneDoClearSigningInfo =
+    getOneDoTypedDataClearSigning(currentConfirmation) ??
+    getBuiltInRegistryErc7730TypedDataClearSigning(currentConfirmation);
 
   return (
     <>
       {isSimulationSupported && <TypedSignV4Simulation />}
+      <OneDoClearSigningSection
+        chainId={chainId}
+        hideAdvancedDetails
+        info={oneDoClearSigningInfo}
+      />
       <ConfirmInfoSection data-testid="confirmation_request-section">
         {isPermit && (
           <>
@@ -109,7 +120,7 @@ const TypedSignInfo: React.FC = () => {
       <ConfirmInfoSection data-testid="confirmation_message-section">
         <ConfirmInfoRow
           label={t('message')}
-          collapsed={isSimulationSupported}
+          collapsed={Boolean(oneDoClearSigningInfo) || isSimulationSupported}
           copyEnabled
           copyText={JSON.stringify(parseTypedDataMessage(msgData ?? {}))}
         >

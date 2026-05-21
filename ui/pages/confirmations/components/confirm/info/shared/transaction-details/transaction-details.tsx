@@ -29,6 +29,7 @@ import { hasValueAndNativeBalanceMismatch as checkValueAndNativeBalanceMismatch 
 import { NetworkRow } from '../network-row/network-row';
 import { SigningInWithRow } from '../sign-in-with-row/sign-in-with-row';
 import { isBatchTransaction } from '../../../../../../../../shared/lib/transactions.utils';
+import { OneDoTransactionClearSigningSection } from '../onedo-clear-signing/onedo-clear-signing';
 
 export const OriginRow = () => {
   const t = useI18nContext();
@@ -187,6 +188,7 @@ export const TransactionDetails = () => {
 
   return (
     <>
+      <OneDoTransactionClearSigningSection />
       <ConfirmInfoSection data-testid="transaction-details-section">
         <NetworkRow />
         <OriginRow />

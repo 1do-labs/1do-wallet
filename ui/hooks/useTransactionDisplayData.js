@@ -40,6 +40,7 @@ import {
 
 import { PAY_TRANSACTION_TYPES } from '../pages/confirmations/constants/pay';
 import { resolveTransactionType } from '../components/app/transaction-list-item/helpers';
+import { isOneDo7702UpgradeAuthorization } from '../../shared/lib/eip7702-utils';
 import { useI18nContext } from './useI18nContext';
 import { useTokenFiatAmount } from './useTokenFiatAmount';
 import { useUserPreferencedCurrency } from './useUserPreferencedCurrency';
@@ -151,6 +152,9 @@ export function useTransactionDisplayData(transactionGroup) {
   const mounted = useRef(true);
 
   const primaryValue = primaryTransaction.txParams?.value;
+  const isOneDoSmartAccountUpgrade = isOneDo7702UpgradeAuthorization(
+    initialTransaction.txParams?.authorizationList?.[0]?.address,
+  );
 
   let prefix = '-';
   let recipientAddress = to;
@@ -286,6 +290,8 @@ export function useTransactionDisplayData(transactionGroup) {
 
   if (signatureTypes.includes(type)) {
     title = t('signatureRequest');
+  } else if (isOneDoSmartAccountUpgrade) {
+    title = t('upgradeSmartAccount');
   } else if (type === TransactionType.swap) {
     title = t('swapTokenToToken', [
       bridgeTokenDisplayData.sourceTokenSymbol ??
@@ -480,9 +486,12 @@ export function useTransactionDisplayData(transactionGroup) {
   return {
     title,
     primaryCurrency:
-      type === TransactionType.swap && isPending ? '' : primaryCurrency,
+      (type === TransactionType.swap && isPending) || isOneDoSmartAccountUpgrade
+        ? ''
+        : primaryCurrency,
     recipientAddress,
     secondaryCurrency:
+      isOneDoSmartAccountUpgrade ||
       (isTokenCategory && !tokenFiatAmount) ||
       (!isUnifiedSwapTx &&
         [TransactionType.swap, TransactionType.swapAndSend].includes(type) &&

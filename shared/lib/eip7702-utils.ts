@@ -9,6 +9,31 @@ import { Hex } from '@metamask/utils';
 export const EIP_7702_REVOKE_ADDRESS =
   '0x0000000000000000000000000000000000000000';
 
+export const ONE_DO_7702_DELEGATE =
+  '0x69d2927735c3E57c512177B32e216431B1Aba1fF' as Hex;
+
+export const EIP_7702_DELEGATION_PREFIX = '0xef0100';
+
+export const isOneDo7702UpgradeAuthorization = (
+  authorizationAddress?: string,
+) => authorizationAddress?.toLowerCase() === ONE_DO_7702_DELEGATE.toLowerCase();
+
+export const getEip7702DelegationAddress = (code?: string | null) => {
+  if (
+    typeof code !== 'string' ||
+    !new RegExp(`^${EIP_7702_DELEGATION_PREFIX}[a-fA-F0-9]{40}$`, 'u').test(
+      code,
+    )
+  ) {
+    return undefined;
+  }
+
+  return `0x${code.slice(EIP_7702_DELEGATION_PREFIX.length)}` as Hex;
+};
+
+export const isOneDo7702DelegationCode = (code?: string | null) =>
+  isOneDo7702UpgradeAuthorization(getEip7702DelegationAddress(code));
+
 export type EIP7702TransactionParams = {
   address: Hex;
   upgradeContractAddress?: Hex;

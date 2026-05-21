@@ -1,9 +1,11 @@
 import React from 'react';
 import configureMockStore from 'redux-mock-store';
+import copyToClipboard from 'copy-to-clipboard';
 import thunk from 'redux-thunk';
 import { TransactionStatus } from '@metamask/transaction-controller';
-import { act, waitFor } from '@testing-library/react';
+import { act, fireEvent, waitFor } from '@testing-library/react';
 import { GAS_LIMITS } from '../../../../shared/constants/gas';
+import { COPY_OPTIONS } from '../../../../shared/constants/copy';
 import { renderWithProvider } from '../../../../test/lib/render-helpers-navigate';
 import mockState from '../../../../test/data/mock-state.json';
 import mockSwapTxGroup from '../../../../test/data/swap/mock-legacy-swap-transaction-group.json';
@@ -20,6 +22,8 @@ jest.mock('../../../store/actions.ts', () => ({
     .fn()
     .mockResolvedValue({ chainId: '0x5' }),
 }));
+
+jest.mock('copy-to-clipboard');
 
 const render = async (overrideProps) => {
   const rpcPrefs = {
@@ -43,7 +47,17 @@ const render = async (overrideProps) => {
     ...overrideProps,
   };
 
-  const mockStore = configureMockStore([thunk])(mockState);
+  const mockStore = configureMockStore([thunk])({
+    ...mockState,
+    DNS: {
+      stage: 'INITIALIZED',
+      resolutions: null,
+      error: null,
+      warning: null,
+      chainId: '0x5',
+      domainName: null,
+    },
+  });
 
   let result;
 
@@ -59,10 +73,15 @@ const render = async (overrideProps) => {
 };
 
 describe('TransactionListItemDetails Component', () => {
+  const transactionHash =
+    '0x06bb79b856f5eb67025e4c4ffff44bca26ae135d1c3e6bd9a4193f422dcecca2';
+  const rawTx =
+    '0xf86c0c8502540be40082520894ffe5bc4e8f1f969934d773fa67da095d2e491a97880de0b6b3a7640000802ca0e0b79a8e33b15460ea79b05a5fb16bc067a796592eeb4edc5007c88615c12595a01c834a25f1df07af5122996a40e99e554a40dc971a25041bc6e31638846c4f58';
   const transaction = {
     history: [],
     id: 1,
     status: TransactionStatus.confirmed,
+    hash: transactionHash,
     txParams: {
       from: '0x1',
       gas: GAS_LIMITS.SIMPLE,
@@ -131,6 +150,51 @@ describe('TransactionListItemDetails Component', () => {
       });
 
       expect(queryByTestId('speedup-button')).toBeInTheDocument();
+    });
+  });
+
+  describe('Copy transaction ID button', () => {
+    afterEach(() => {
+      jest.clearAllMocks();
+    });
+
+    it('copies the transaction hash', async () => {
+      const { getByText } = await render({
+        transactionGroup,
+      });
+
+      fireEvent.click(getByText(messages.copyTransactionId.message));
+
+      expect(copyToClipboard).toHaveBeenCalledWith(
+        transactionHash,
+        COPY_OPTIONS,
+      );
+    });
+
+    it('derives and copies the transaction hash from rawTx when hash is missing', async () => {
+      const pendingTransaction = {
+        ...transaction,
+        status: TransactionStatus.submitted,
+        hash: undefined,
+        rawTx,
+      };
+      const pendingTransactionGroup = {
+        ...transactionGroup,
+        transactions: [pendingTransaction],
+        primaryTransaction: pendingTransaction,
+        initialTransaction: pendingTransaction,
+      };
+
+      const { getByText } = await render({
+        transactionGroup: pendingTransactionGroup,
+      });
+
+      fireEvent.click(getByText(messages.copyTransactionId.message));
+
+      expect(copyToClipboard).toHaveBeenCalledWith(
+        transactionHash,
+        COPY_OPTIONS,
+      );
     });
   });
 });

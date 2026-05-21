@@ -1,0 +1,898 @@
+import { Interface } from '@ethersproject/abi';
+import { utils as ethersUtils } from 'ethers';
+import {
+  TransactionStatus,
+  TransactionType,
+} from '@metamask/transaction-controller';
+
+import type { SignatureRequestType } from '../types/confirm';
+import {
+  DESCRIPTORS,
+  getTrustedOneDoClearSigningDescriptor,
+  getOneDoTransactionClearSigning,
+  getOneDoTypedDataClearSigning,
+  ONE_DO_7702_DELEGATE,
+  ONEDO_CLEAR_SIGNING_TRUST_POLICY,
+} from './onedo-clear-signing';
+
+const WALLET_ADDRESS = '0x1111111111111111111111111111111111111111';
+const MAKER_WALLET_ADDRESS = '0x2222222222222222222222222222222222222222';
+const DEX_ADDRESS = '0x199DFfe30b8B5Ab611d952289a2674c5E826Dcb9';
+const NFTMARKET_ADDRESS = '0x7C8f64a017D026c889eFAC3D72CDBB2fd2ea0daA';
+const SESSIONPAY_ADDRESS = '0x55Dc56E517E5371313bA2932d712029d334DF006';
+const TOKEN_IN_ADDRESS = '0x3333333333333333333333333333333333333333';
+const TOKEN_OUT_ADDRESS = '0x4444444444444444444444444444444444444444';
+const NFT_ADDRESS = '0x5555555555555555555555555555555555555555';
+const CLAIMANT_ADDRESS = '0x6666666666666666666666666666666666666666';
+const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000';
+const MAKER_SIGNATURE = `0x${'11'.repeat(65)}`;
+const TRANSFER_SIGNATURE = `0x${'22'.repeat(65)}`;
+
+const accountRuntimeInterface = new Interface([
+  'function enableApp(address app)',
+  'function disableApp(address app)',
+  'function executeBatch(tuple(address target,uint256 value,bytes data)[] calls)',
+  'function executeRuntimeApp(address app, bytes data)',
+  'function executeWithTokenPull(address target, bytes data, address asset, uint256 maxAmount)',
+  'function executeWithNftPull(address target, bytes data, address asset, uint256 tokenId)',
+]);
+
+const walletNativeTransferInterface = new Interface([
+  'function tokenTransferWithSig(address asset, address to, uint256 value, uint256 deadline, bytes signature)',
+  'function nftTransferWithSig(address asset, address to, uint256 tokenId, uint256 deadline, bytes signature)',
+]);
+
+const dexInterface = new Interface([
+  'function fillSignedTokenForTokenOrderAsBuyer(tuple(address tokenIn,address tokenOut,uint256 amountIn,uint256 amountOut,uint256 expiry,uint256 nonce) order, bytes makerSignature)',
+]);
+
+const nftMarketInterface = new Interface([
+  'function fillSignedTokenForNftOrderAsBuyer(tuple(address nft,uint256 tokenId,address erc20,uint256 tokenAmount,uint256 expiry,uint256 nonce) order, bytes makerSignature)',
+]);
+
+describe('1Do clear signing utilities', () => {
+  it('uses a trusted registry mirror with pinned descriptor cache', () => {
+    expect(ONEDO_CLEAR_SIGNING_TRUST_POLICY).toMatchObject({
+      version: 'erc7730-v2',
+      mode: 'trusted-registry-with-pinned-cache',
+      dappSuppliedDescriptors: 'unsupported',
+      trustedSource: 'onedo-registry-mirror',
+    });
+
+    for (const descriptor of Object.values(DESCRIPTORS)) {
+      expect(descriptor).toMatchObject({
+        source: 'onedo-registry-mirror',
+        trust: 'pinned-cache',
+      });
+      expect(getTrustedOneDoClearSigningDescriptor(descriptor.id)).toBe(
+        descriptor,
+      );
+    }
+
+    expect(
+      getTrustedOneDoClearSigningDescriptor('third-party-unreviewed-app'),
+    ).toBeUndefined();
+  });
+
+  it('recognizes Dex typed data', () => {
+    const confirmation = {
+      msgParams: {
+        from: WALLET_ADDRESS,
+        data: JSON.stringify({
+          domain: {
+            name: 'Dex Order on 1Do',
+            version: '1',
+            chainId: 11155111,
+            verifyingContract: WALLET_ADDRESS,
+          },
+          primaryType: 'TokenForTokenOrder',
+          message: {
+            tokenIn: '0x2222222222222222222222222222222222222222',
+            tokenOut: '0x3333333333333333333333333333333333333333',
+            amountIn: '1000',
+            amountOut: '2000',
+            expiry: '4102444800',
+            nonce: '7',
+          },
+        }),
+      },
+    } as SignatureRequestType;
+
+    expect(getOneDoTypedDataClearSigning(confirmation)).toMatchObject({
+      descriptorId: 'dex',
+      descriptorSha256:
+        'f79813148ff420600487ef9408b26533bb69a021d16e002637154c988fe179ba',
+      title: 'Create Dex token order on 1Do',
+      rows: expect.arrayContaining([
+        expect.objectContaining({
+          label: 'Sell',
+          value: '1000 raw units',
+          valueType: 'tokenAmount',
+        }),
+        expect.objectContaining({
+          label: 'Receive',
+          value: '2000 raw units',
+          valueType: 'tokenAmount',
+        }),
+      ]),
+      advancedRows: expect.arrayContaining([
+        expect.objectContaining({ label: 'Sell token' }),
+        expect.objectContaining({ label: 'Receive token' }),
+        expect.objectContaining({ label: 'Nonce', value: '7' }),
+      ]),
+    });
+  });
+
+  it('recognizes Session Pay session grants', () => {
+    const confirmation = {
+      msgParams: {
+        from: WALLET_ADDRESS,
+        data: JSON.stringify({
+          domain: {
+            name: 'Session Pay on 1Do',
+            version: '1',
+            chainId: 11155111,
+            verifyingContract: WALLET_ADDRESS,
+          },
+          primaryType: 'SessionGrant',
+          message: {
+            sessionKey: '0x2222222222222222222222222222222222222222',
+            payee: '0x3333333333333333333333333333333333333333',
+            token: '0x4444444444444444444444444444444444444444',
+            spendLimit: '1000000',
+            sessionExpiresAt: '4102444800',
+            salt: '0x0000000000000000000000000000000000000000000000000000000000000001',
+          },
+        }),
+      },
+    } as SignatureRequestType;
+
+    expect(getOneDoTypedDataClearSigning(confirmation)).toMatchObject({
+      descriptorId: 'sessionpay',
+      descriptorSha256:
+        '995361a78b5dc328d96c782adb9506255edbc9ac03b531404220ae02081de60e',
+      title: 'Grant Session Pay session on 1Do',
+      rows: expect.arrayContaining([
+        expect.objectContaining({ label: 'Session key' }),
+        expect.objectContaining({
+          label: 'Spend limit',
+          value: '1000000 raw units',
+          valueType: 'tokenAmount',
+        }),
+      ]),
+    });
+  });
+
+  it('recognizes wallet-native token transfer typed data', () => {
+    const confirmation = {
+      msgParams: {
+        from: WALLET_ADDRESS,
+        data: JSON.stringify({
+          domain: {
+            name: 'ERC8112 Token Transfer',
+            version: '1',
+            chainId: 11155111,
+            verifyingContract: WALLET_ADDRESS,
+          },
+          primaryType: 'TokenTransferWithSig',
+          message: {
+            wallet: WALLET_ADDRESS,
+            asset: TOKEN_OUT_ADDRESS,
+            to: TOKEN_IN_ADDRESS,
+            value: '1000000',
+            nonce: '2',
+            deadline: '4102444800',
+          },
+        }),
+      },
+    } as SignatureRequestType;
+
+    expect(getOneDoTypedDataClearSigning(confirmation)).toMatchObject({
+      descriptorId: 'wallet-native-transfers',
+      descriptorSha256:
+        '3fac1b55c499c9f20eec1d0a51c2c006902216d14e3e0f2866a7eaee9c8bd6f0',
+      title: 'Authorize token payment',
+      rows: expect.arrayContaining([
+        expect.objectContaining({
+          label: 'Pay',
+          value: '1000000 raw units',
+          valueType: 'tokenAmount',
+          rawValue: '1000000',
+          tokenAddress: TOKEN_OUT_ADDRESS,
+        }),
+        expect.objectContaining({
+          label: 'To',
+          value: TOKEN_IN_ADDRESS,
+        }),
+        expect.objectContaining({ label: 'From', value: WALLET_ADDRESS }),
+      ]),
+      advancedRows: expect.arrayContaining([
+        expect.objectContaining({ label: 'Asset', value: TOKEN_OUT_ADDRESS }),
+      ]),
+    });
+  });
+
+  it('recognizes wallet-native NFT transfer typed data with any-caller claim recipient', () => {
+    const confirmation = {
+      msgParams: {
+        from: WALLET_ADDRESS,
+        data: JSON.stringify({
+          domain: {
+            name: 'ERC8114 NFT Transfer',
+            version: '1',
+            chainId: 11155111,
+            verifyingContract: WALLET_ADDRESS,
+          },
+          primaryType: 'NFTTransferWithSig',
+          message: {
+            wallet: WALLET_ADDRESS,
+            asset: NFT_ADDRESS,
+            to: ZERO_ADDRESS,
+            tokenId: '42',
+            nonce: '3',
+            deadline: '4102444800',
+          },
+        }),
+      },
+    } as SignatureRequestType;
+
+    expect(getOneDoTypedDataClearSigning(confirmation)).toMatchObject({
+      descriptorId: 'wallet-native-transfers',
+      title: 'Create claimable NFT gift',
+      rows: expect.arrayContaining([
+        expect.objectContaining({
+          label: 'Claim rule',
+          value: 'Anyone with the link can claim to self',
+        }),
+        expect.objectContaining({ label: 'Token ID', value: '42' }),
+      ]),
+      advancedRows: expect.arrayContaining([
+        expect.objectContaining({
+          label: 'Recipient marker',
+          value: ZERO_ADDRESS,
+        }),
+      ]),
+    });
+  });
+
+  it('does not recognize wallet-native transfer typed data when the message wallet does not match the signing domain', () => {
+    const confirmation = {
+      msgParams: {
+        from: WALLET_ADDRESS,
+        data: JSON.stringify({
+          domain: {
+            name: 'ERC8112 Token Transfer',
+            version: '1',
+            chainId: 11155111,
+            verifyingContract: WALLET_ADDRESS,
+          },
+          primaryType: 'TokenTransferWithSig',
+          message: {
+            wallet: MAKER_WALLET_ADDRESS,
+            asset: TOKEN_OUT_ADDRESS,
+            to: TOKEN_IN_ADDRESS,
+            value: '1000000',
+            nonce: '2',
+            deadline: '4102444800',
+          },
+        }),
+      },
+    } as SignatureRequestType;
+
+    expect(getOneDoTypedDataClearSigning(confirmation)).toBeUndefined();
+  });
+
+  it('recognizes direct enableApp transactions only with 1Do delegation context', () => {
+    const data = accountRuntimeInterface.encodeFunctionData('enableApp', [
+      SESSIONPAY_ADDRESS,
+    ]);
+
+    const info = getOneDoTransactionClearSigning({
+      chainId: '0xaa36a7',
+      delegationAddress: ONE_DO_7702_DELEGATE,
+      id: '1',
+      networkClientId: 'sepolia',
+      status: TransactionStatus.unapproved,
+      time: Date.now(),
+      type: TransactionType.contractInteraction,
+      txParams: {
+        from: WALLET_ADDRESS,
+        to: WALLET_ADDRESS,
+        data,
+      },
+    });
+
+    expect(info).toMatchObject({
+      descriptorId: 'account-runtime',
+      descriptorSha256:
+        'aab7b3f722a6d8a9bed1100c228dea71c304efc0fdbdea6b15e8485301a51fff',
+      title: 'Enable Session Pay',
+      rows: expect.arrayContaining([
+        expect.objectContaining({ label: 'Action', value: 'Enable app' }),
+        expect.objectContaining({ label: 'App', value: 'Session Pay' }),
+      ]),
+      advancedRows: expect.arrayContaining([
+        expect.objectContaining({
+          label: 'App logic',
+          value: SESSIONPAY_ADDRESS,
+        }),
+      ]),
+    });
+  });
+
+  it('recognizes nested disableApp transactions inside executeBatch', () => {
+    const disableData = accountRuntimeInterface.encodeFunctionData(
+      'disableApp',
+      [DEX_ADDRESS],
+    );
+    const data = accountRuntimeInterface.encodeFunctionData('executeBatch', [
+      [
+        {
+          target: WALLET_ADDRESS,
+          value: 0,
+          data: disableData,
+        },
+      ],
+    ]);
+
+    const info = getOneDoTransactionClearSigning({
+      chainId: '0xaa36a7',
+      delegationAddress: ONE_DO_7702_DELEGATE,
+      id: '2',
+      networkClientId: 'sepolia',
+      status: TransactionStatus.unapproved,
+      time: Date.now(),
+      type: TransactionType.contractInteraction,
+      txParams: {
+        from: WALLET_ADDRESS,
+        to: WALLET_ADDRESS,
+        data,
+      },
+    });
+
+    expect(info).toMatchObject({
+      descriptorId: 'account-runtime',
+      descriptorSha256:
+        'aab7b3f722a6d8a9bed1100c228dea71c304efc0fdbdea6b15e8485301a51fff',
+      title: 'Disable Dex',
+      rows: expect.arrayContaining([
+        expect.objectContaining({
+          label: 'Action 1',
+          value: 'Disable Dex',
+        }),
+      ]),
+    });
+  });
+
+  it('does not recognize transactions without 1Do delegation context', () => {
+    const data = accountRuntimeInterface.encodeFunctionData('enableApp', [
+      SESSIONPAY_ADDRESS,
+    ]);
+
+    expect(
+      getOneDoTransactionClearSigning({
+        chainId: '0xaa36a7',
+        id: '3',
+        networkClientId: 'sepolia',
+        status: TransactionStatus.unapproved,
+        time: Date.now(),
+        type: TransactionType.contractInteraction,
+        txParams: {
+          from: WALLET_ADDRESS,
+          to: WALLET_ADDRESS,
+          data,
+        },
+      }),
+    ).toBeUndefined();
+  });
+
+  it('recognizes account runtime calldata when the transaction is classified as a native transfer', () => {
+    const data = accountRuntimeInterface.encodeFunctionData('enableApp', [
+      SESSIONPAY_ADDRESS,
+    ]);
+
+    const info = getOneDoTransactionClearSigning(
+      {
+        chainId: '0xaa36a7',
+        id: 'simple-send-runtime-call',
+        networkClientId: 'sepolia',
+        origin: 'http://localhost:3001',
+        status: TransactionStatus.unapproved,
+        time: Date.now(),
+        type: TransactionType.simpleSend,
+        txParams: {
+          from: WALLET_ADDRESS,
+          to: WALLET_ADDRESS,
+          data,
+          value: '0x0',
+        },
+      },
+      { allowAccountRuntimeCalldata: true },
+    );
+
+    expect(info).toMatchObject({
+      descriptorId: 'account-runtime',
+      subtitle: 'ERC-7730 clear signing',
+      title: 'Enable Session Pay',
+      rows: expect.arrayContaining([
+        expect.objectContaining({ label: 'Action', value: 'Enable app' }),
+        expect.objectContaining({ label: 'App', value: 'Session Pay' }),
+      ]),
+      advancedRows: expect.arrayContaining([
+        expect.objectContaining({
+          label: 'App logic',
+          value: SESSIONPAY_ADDRESS,
+        }),
+      ]),
+    });
+  });
+
+  it('recognizes submitted wallet-native token transfer transactions', () => {
+    const data = walletNativeTransferInterface.encodeFunctionData(
+      'tokenTransferWithSig',
+      [
+        TOKEN_OUT_ADDRESS,
+        ZERO_ADDRESS,
+        1000000,
+        4102444800,
+        TRANSFER_SIGNATURE,
+      ],
+    );
+
+    const info = getOneDoTransactionClearSigning(
+      {
+        chainId: '0xaa36a7',
+        id: 'claim-token-transfer',
+        networkClientId: 'sepolia',
+        origin: 'http://localhost:3001',
+        status: TransactionStatus.unapproved,
+        time: Date.now(),
+        type: TransactionType.contractInteraction,
+        txParams: {
+          from: CLAIMANT_ADDRESS,
+          to: WALLET_ADDRESS,
+          data,
+        },
+      },
+      { allowWalletNativeTransferCalldata: true },
+    );
+
+    expect(info).toMatchObject({
+      descriptorId: 'wallet-native-transfers',
+      descriptorSha256:
+        '3fac1b55c499c9f20eec1d0a51c2c006902216d14e3e0f2866a7eaee9c8bd6f0',
+      title: 'Claim token transfer',
+      rows: expect.arrayContaining([
+        expect.objectContaining({
+          label: 'Claim',
+          value: '1000000 raw units',
+          valueType: 'tokenAmount',
+          rawValue: '1000000',
+          tokenAddress: TOKEN_OUT_ADDRESS,
+        }),
+        expect.objectContaining({
+          label: 'From wallet',
+          value: WALLET_ADDRESS,
+        }),
+        expect.objectContaining({
+          label: 'To',
+          value: 'Transaction sender',
+        }),
+        expect.objectContaining({
+          label: 'Transaction sender',
+          value: CLAIMANT_ADDRESS,
+        }),
+      ]),
+      advancedRows: expect.arrayContaining([
+        expect.objectContaining({ label: 'Asset', value: TOKEN_OUT_ADDRESS }),
+        expect.objectContaining({
+          label: 'Recipient marker',
+          value: ZERO_ADDRESS,
+        }),
+      ]),
+    });
+  });
+
+  it('recognizes submitted wallet-native NFT transfer transactions', () => {
+    const data = walletNativeTransferInterface.encodeFunctionData(
+      'nftTransferWithSig',
+      [NFT_ADDRESS, CLAIMANT_ADDRESS, 42, 4102444800, TRANSFER_SIGNATURE],
+    );
+
+    const info = getOneDoTransactionClearSigning(
+      {
+        chainId: '0xaa36a7',
+        id: 'claim-nft-transfer',
+        networkClientId: 'sepolia',
+        origin: 'http://localhost:3001',
+        status: TransactionStatus.unapproved,
+        time: Date.now(),
+        type: TransactionType.contractInteraction,
+        txParams: {
+          from: CLAIMANT_ADDRESS,
+          to: WALLET_ADDRESS,
+          data,
+        },
+      },
+      { allowWalletNativeTransferCalldata: true },
+    );
+
+    expect(info).toMatchObject({
+      descriptorId: 'wallet-native-transfers',
+      title: 'Submit NFT transfer',
+      rows: expect.arrayContaining([
+        expect.objectContaining({
+          label: 'From wallet',
+          value: WALLET_ADDRESS,
+        }),
+        expect.objectContaining({
+          label: 'NFT collection',
+          value: NFT_ADDRESS,
+        }),
+        expect.objectContaining({
+          label: 'To',
+          value: CLAIMANT_ADDRESS,
+        }),
+        expect.objectContaining({ label: 'Token ID', value: '42' }),
+      ]),
+    });
+  });
+
+  it('does not recognize runtime access transactions sent away from the wallet', () => {
+    const data = accountRuntimeInterface.encodeFunctionData('enableApp', [
+      SESSIONPAY_ADDRESS,
+    ]);
+
+    expect(
+      getOneDoTransactionClearSigning({
+        chainId: '0xaa36a7',
+        delegationAddress: ONE_DO_7702_DELEGATE,
+        id: '4',
+        networkClientId: 'sepolia',
+        status: TransactionStatus.unapproved,
+        time: Date.now(),
+        type: TransactionType.contractInteraction,
+        txParams: {
+          from: WALLET_ADDRESS,
+          to: '0x2222222222222222222222222222222222222222',
+          data,
+        },
+      }),
+    ).toBeUndefined();
+  });
+
+  it('recognizes direct executeRuntimeApp Dex fill transactions', () => {
+    const appData = dexInterface.encodeFunctionData(
+      'fillSignedTokenForTokenOrderAsBuyer',
+      [
+        {
+          tokenIn: TOKEN_IN_ADDRESS,
+          tokenOut: TOKEN_OUT_ADDRESS,
+          amountIn: 1000,
+          amountOut: 2000,
+          expiry: 4102444800,
+          nonce: 7,
+        },
+        MAKER_SIGNATURE,
+      ],
+    );
+    const data = accountRuntimeInterface.encodeFunctionData(
+      'executeRuntimeApp',
+      [DEX_ADDRESS, appData],
+    );
+
+    const info = getOneDoTransactionClearSigning({
+      chainId: '0xaa36a7',
+      delegationAddress: ONE_DO_7702_DELEGATE,
+      id: '5',
+      networkClientId: 'sepolia',
+      status: TransactionStatus.unapproved,
+      time: Date.now(),
+      type: TransactionType.contractInteraction,
+      txParams: {
+        from: WALLET_ADDRESS,
+        to: WALLET_ADDRESS,
+        data,
+      },
+    });
+
+    expect(info).toMatchObject({
+      descriptorId: 'account-runtime',
+      descriptorSha256:
+        'aab7b3f722a6d8a9bed1100c228dea71c304efc0fdbdea6b15e8485301a51fff',
+      title: 'Fill Dex order: token for token',
+      rows: expect.arrayContaining([
+        expect.objectContaining({ label: 'Runtime app', value: 'Dex' }),
+        expect.objectContaining({
+          label: 'Maker sells',
+          value: '1000 raw units',
+          valueType: 'tokenAmount',
+        }),
+        expect.objectContaining({
+          label: 'Buyer pays',
+          value: '2000 raw units',
+          valueType: 'tokenAmount',
+        }),
+      ]),
+      advancedRows: expect.arrayContaining([
+        expect.objectContaining({
+          label: 'Maker sells token',
+          value: TOKEN_IN_ADDRESS,
+        }),
+      ]),
+    });
+  });
+
+  it('recognizes executeWithTokenPull wrapping maker executeRuntimeApp', () => {
+    const appData = dexInterface.encodeFunctionData(
+      'fillSignedTokenForTokenOrderAsBuyer',
+      [
+        {
+          tokenIn: TOKEN_IN_ADDRESS,
+          tokenOut: TOKEN_OUT_ADDRESS,
+          amountIn: 1000,
+          amountOut: 2000,
+          expiry: 4102444800,
+          nonce: 7,
+        },
+        MAKER_SIGNATURE,
+      ],
+    );
+    const makerRuntimeData = accountRuntimeInterface.encodeFunctionData(
+      'executeRuntimeApp',
+      [DEX_ADDRESS, appData],
+    );
+    const data = accountRuntimeInterface.encodeFunctionData(
+      'executeWithTokenPull',
+      [MAKER_WALLET_ADDRESS, makerRuntimeData, TOKEN_OUT_ADDRESS, 2000],
+    );
+
+    const info = getOneDoTransactionClearSigning({
+      chainId: '0xaa36a7',
+      delegationAddress: ONE_DO_7702_DELEGATE,
+      id: '6',
+      networkClientId: 'sepolia',
+      status: TransactionStatus.unapproved,
+      time: Date.now(),
+      type: TransactionType.contractInteraction,
+      txParams: {
+        from: WALLET_ADDRESS,
+        to: WALLET_ADDRESS,
+        data,
+      },
+    });
+
+    expect(info).toMatchObject({
+      title: 'Fill Dex order: token for token',
+      rows: expect.arrayContaining([
+        expect.objectContaining({
+          label: 'Buyer wallet',
+          value: WALLET_ADDRESS,
+        }),
+        expect.objectContaining({
+          label: 'Target wallet',
+          value: MAKER_WALLET_ADDRESS,
+        }),
+        expect.objectContaining({
+          label: 'Max token pull',
+          value: '2000 raw units',
+          valueType: 'tokenAmount',
+        }),
+        expect.objectContaining({
+          label: 'Maker sells',
+          value: '1000 raw units',
+          valueType: 'tokenAmount',
+        }),
+      ]),
+      advancedRows: expect.arrayContaining([
+        expect.objectContaining({
+          label: 'Pull asset',
+          value: TOKEN_OUT_ADDRESS,
+        }),
+      ]),
+    });
+  });
+
+  it('recognizes executeWithNftPull wrapping maker executeRuntimeApp', () => {
+    const appData = nftMarketInterface.encodeFunctionData(
+      'fillSignedTokenForNftOrderAsBuyer',
+      [
+        {
+          nft: NFT_ADDRESS,
+          tokenId: 42,
+          erc20: TOKEN_OUT_ADDRESS,
+          tokenAmount: 3000,
+          expiry: 4102444800,
+          nonce: 8,
+        },
+        MAKER_SIGNATURE,
+      ],
+    );
+    const makerRuntimeData = accountRuntimeInterface.encodeFunctionData(
+      'executeRuntimeApp',
+      [NFTMARKET_ADDRESS, appData],
+    );
+    const data = accountRuntimeInterface.encodeFunctionData(
+      'executeWithNftPull',
+      [MAKER_WALLET_ADDRESS, makerRuntimeData, NFT_ADDRESS, 42],
+    );
+
+    const info = getOneDoTransactionClearSigning({
+      chainId: '0xaa36a7',
+      delegationAddress: ONE_DO_7702_DELEGATE,
+      id: '7',
+      networkClientId: 'sepolia',
+      status: TransactionStatus.unapproved,
+      time: Date.now(),
+      type: TransactionType.contractInteraction,
+      txParams: {
+        from: WALLET_ADDRESS,
+        to: WALLET_ADDRESS,
+        data,
+      },
+    });
+
+    expect(info).toMatchObject({
+      title: 'Fill NFT Market order: token for NFT',
+      rows: expect.arrayContaining([
+        expect.objectContaining({
+          label: 'NFT collection',
+          value: NFT_ADDRESS,
+        }),
+        expect.objectContaining({ label: 'Token ID', value: '42' }),
+        expect.objectContaining({
+          label: 'Maker sells',
+          value: '3000 raw units',
+          valueType: 'tokenAmount',
+        }),
+      ]),
+    });
+  });
+
+  it('recognizes the 1Do runtime hash wrapper as hash-only clear signing', () => {
+    const confirmation = {
+      msgParams: {
+        from: WALLET_ADDRESS,
+        data: JSON.stringify({
+          domain: {
+            name: '1do 7702 Runtime',
+            version: '1',
+            chainId: 11155111,
+            verifyingContract: WALLET_ADDRESS,
+          },
+          primaryType: 'OnedoRuntimeMessage',
+          message: {
+            hash: '0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
+          },
+        }),
+      },
+    } as SignatureRequestType;
+
+    expect(getOneDoTypedDataClearSigning(confirmation)).toMatchObject({
+      descriptorId: 'runtime-message',
+      descriptorSha256:
+        '11813d4df24580ced56a0f21b91edbaf79f1cab422d1cc6b7b8f810d2f980e2b',
+      title: '1Do runtime message',
+      warning: expect.stringContaining('hash'),
+    });
+  });
+
+  it('recognizes ExecuteWithSig typed data with verified call data context', () => {
+    const appData = dexInterface.encodeFunctionData(
+      'fillSignedTokenForTokenOrderAsBuyer',
+      [
+        {
+          tokenIn: TOKEN_IN_ADDRESS,
+          tokenOut: TOKEN_OUT_ADDRESS,
+          amountIn: 1000,
+          amountOut: 2000,
+          expiry: 4102444800,
+          nonce: 7,
+        },
+        MAKER_SIGNATURE,
+      ],
+    );
+    const callData = accountRuntimeInterface.encodeFunctionData(
+      'executeRuntimeApp',
+      [DEX_ADDRESS, appData],
+    );
+
+    const confirmation = {
+      msgParams: {
+        from: WALLET_ADDRESS,
+        data: JSON.stringify({
+          domain: {
+            name: '1do ExecuteWithSig',
+            version: '1',
+            chainId: 11155111,
+            verifyingContract: WALLET_ADDRESS,
+          },
+          primaryType: 'ExecuteWithSig',
+          message: {
+            wallet: WALLET_ADDRESS,
+            target: WALLET_ADDRESS,
+            value: '0',
+            dataHash: ethersUtils.keccak256(callData),
+            nonce: '9',
+            deadline: '4102444800',
+          },
+          clearSigningContext: {
+            call: {
+              target: WALLET_ADDRESS,
+              value: '0',
+              data: callData,
+            },
+          },
+        }),
+      },
+    } as SignatureRequestType;
+
+    expect(getOneDoTypedDataClearSigning(confirmation)).toMatchObject({
+      descriptorId: 'execute-with-sig',
+      descriptorSha256:
+        '2abeba646958ee6fcdc091c2a1e89103c425f20e8bd6f6ad35b7f198d3046470',
+      title: '1Do gasless signed execution',
+      rows: expect.arrayContaining([
+        expect.objectContaining({ label: 'Runtime app', value: 'Dex' }),
+        expect.objectContaining({
+          label: 'Maker sells',
+          value: '1000 raw units',
+          valueType: 'tokenAmount',
+        }),
+      ]),
+    });
+  });
+
+  it('does not recognize 1Do typed data when the wallet scope does not match', () => {
+    const confirmation = {
+      msgParams: {
+        from: WALLET_ADDRESS,
+        data: JSON.stringify({
+          domain: {
+            name: 'Dex Order on 1Do',
+            version: '1',
+            chainId: 11155111,
+            verifyingContract: '0x2222222222222222222222222222222222222222',
+          },
+          primaryType: 'TokenForTokenOrder',
+          message: {
+            tokenIn: '0x2222222222222222222222222222222222222222',
+            tokenOut: '0x3333333333333333333333333333333333333333',
+            amountIn: '1000',
+            amountOut: '2000',
+            expiry: '4102444800',
+            nonce: '7',
+          },
+        }),
+      },
+    } as SignatureRequestType;
+
+    expect(getOneDoTypedDataClearSigning(confirmation)).toBeUndefined();
+  });
+
+  it('does not recognize incomplete 1Do typed data', () => {
+    const confirmation = {
+      msgParams: {
+        from: WALLET_ADDRESS,
+        data: JSON.stringify({
+          domain: {
+            name: 'Session Pay on 1Do',
+            version: '1',
+            chainId: 11155111,
+            verifyingContract: WALLET_ADDRESS,
+          },
+          primaryType: 'SessionGrant',
+          message: {
+            sessionKey: '0x2222222222222222222222222222222222222222',
+            payee: '0x3333333333333333333333333333333333333333',
+            token: '0x4444444444444444444444444444444444444444',
+            spendLimit: '1000000',
+            sessionExpiresAt: '4102444800',
+          },
+        }),
+      },
+    } as SignatureRequestType;
+
+    expect(getOneDoTypedDataClearSigning(confirmation)).toBeUndefined();
+  });
+});

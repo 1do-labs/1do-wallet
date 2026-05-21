@@ -1,6 +1,12 @@
 import { useMemo } from 'react';
+import { TransactionStatus } from '@metamask/transaction-controller';
 import { hexToDecimal } from '../../shared/lib/conversion.utils';
 import { PENDING_STATUS_HASH } from '../helpers/constants/transactions';
+
+const NONCE_ORDERED_PENDING_STATUS_HASH = {
+  ...PENDING_STATUS_HASH,
+  [TransactionStatus.signed]: true,
+};
 
 type TransactionGroup = {
   nonce?: string;
@@ -34,7 +40,7 @@ export function useEarliestNonceByChain(
         !nonce ||
         !chainId ||
         !primaryTransaction?.status ||
-        !(primaryTransaction.status in PENDING_STATUS_HASH)
+        !(primaryTransaction.status in NONCE_ORDERED_PENDING_STATUS_HASH)
       ) {
         return;
       }
@@ -64,7 +70,7 @@ export function isTransactionEarliestNonce(
   earliestNonceByChain: Record<string, number>,
 ): boolean {
   if (!nonce || !chainId) {
-    return false;
+    return true;
   }
 
   const nonceValue = Number(hexToDecimal(nonce));

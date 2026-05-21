@@ -14,6 +14,7 @@ import {
   findAtomicBatchSupportForChain,
   checkEip7702Support,
 } from '../../../../../shared/lib/eip7702-support-utils';
+import { NATIVE_TOKEN_ADDRESS } from '../../../../../shared/constants/transaction';
 import { TransactionControllerInitMessenger } from '../../../messenger-client-init/messengers/transaction-controller-messenger';
 import {
   RelayStatus,
@@ -106,6 +107,15 @@ export class Delegation7702PublishHook {
     const isSponsored = Boolean(transactionMeta.isGasFeeSponsored);
 
     if (
+      !isGaslessSwap &&
+      !isSponsored &&
+      selectedGasFeeToken?.toLowerCase() === NATIVE_TOKEN_ADDRESS
+    ) {
+      log('Skipping relay as native gas fee token is selected');
+      return EMPTY_RESULT;
+    }
+
+    if (
       (!selectedGasFeeToken || !gasFeeTokens?.length) &&
       !isGaslessSwap &&
       !isSponsored
@@ -193,6 +203,10 @@ export class Delegation7702PublishHook {
 
     if (status !== RelayStatus.Success) {
       throw new Error(`Transaction relay error - ${status}`);
+    }
+
+    if (!transactionHash) {
+      throw new Error('Transaction relay returned success without a hash');
     }
 
     return {

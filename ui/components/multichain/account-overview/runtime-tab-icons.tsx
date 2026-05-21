@@ -10,17 +10,17 @@ const ICON_CLASS = 'runtime-app-icon';
 const withIconClass = (className?: string) =>
   className && className.length > 0 ? `${ICON_CLASS} ${className}` : ICON_CLASS;
 
-export const BlinkPayIcon = ({ className, ...props }: IconProps) => (
+export const SessionPayIcon = ({ className, ...props }: IconProps) => (
   <svg
     viewBox="0 0 512 512"
     className={withIconClass(className)}
     xmlns="http://www.w3.org/2000/svg"
     role="img"
-    aria-label="BlinkPay icon"
+    aria-label="Session Pay icon"
     {...props}
   >
     <rect width="512" height="512" rx="120" fill="#111827" />
-    <rect width="512" height="512" rx="120" fill="url(#blinkpay-grad)" />
+    <rect width="512" height="512" rx="120" fill="url(#sessionpay-grad)" />
     <circle
       cx="256"
       cy="256"
@@ -31,7 +31,7 @@ export const BlinkPayIcon = ({ className, ...props }: IconProps) => (
     />
     <path
       d="M256 160C309.019 160 352 202.981 352 256C352 309.019 309.019 352 256 352C202.981 352 160 309.019 160 256C160 202.981 202.981 160 256 160Z"
-      fill="url(#blinkpay-eye-grad)"
+      fill="url(#sessionpay-eye-grad)"
     />
     <path
       d="M256 224C273.673 224 288 238.327 288 256C288 273.673 273.673 288 256 288C238.327 288 224 273.673 224 256C224 238.327 238.327 224 256 224Z"
@@ -50,12 +50,12 @@ export const BlinkPayIcon = ({ className, ...props }: IconProps) => (
       strokeLinecap="round"
     />
     <defs>
-      <linearGradient id="blinkpay-grad" x1="0" y1="0" x2="512" y2="512">
+      <linearGradient id="sessionpay-grad" x1="0" y1="0" x2="512" y2="512">
         <stop stopColor="#1F2937" />
         <stop offset="1" stopColor="#000000" />
       </linearGradient>
       <linearGradient
-        id="blinkpay-eye-grad"
+        id="sessionpay-eye-grad"
         x1="160"
         y1="160"
         x2="352"
@@ -96,17 +96,17 @@ export const PayIcon = ({ className, ...props }: IconProps) => (
   </svg>
 );
 
-export const PeerDexPixel = ({ className, ...props }: IconProps) => (
+export const DexPixel = ({ className, ...props }: IconProps) => (
   <svg
     viewBox="0 0 100 100"
     className={withIconClass(className)}
     xmlns="http://www.w3.org/2000/svg"
     role="img"
-    aria-label="PeerDex icon"
+    aria-label="Dex icon"
     {...props}
   >
     <defs>
-      <linearGradient id="peerdex-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <linearGradient id="dex-grad" x1="0%" y1="0%" x2="100%" y2="100%">
         <stop offset="0%" stopColor="#1e1b4b" />
         <stop offset="100%" stopColor="#4c1d95" />
       </linearGradient>
@@ -117,7 +117,7 @@ export const PeerDexPixel = ({ className, ...props }: IconProps) => (
       width="100"
       height="100"
       rx="20"
-      fill="url(#peerdex-grad)"
+      fill="url(#dex-grad)"
     />
     <path
       d="M0 0 H100 A20 20 0 0 1 100 20 V50 C100 50 80 20 50 20 C20 20 0 50 0 50 V20 A20 20 0 0 1 0 0 Z"
@@ -144,17 +144,17 @@ export const PeerDexPixel = ({ className, ...props }: IconProps) => (
   </svg>
 );
 
-export const FlashManPower = ({ className, ...props }: IconProps) => (
+export const FlashLoanPower = ({ className, ...props }: IconProps) => (
   <svg
     viewBox="0 0 100 100"
     className={withIconClass(className)}
     xmlns="http://www.w3.org/2000/svg"
     role="img"
-    aria-label="FlashMan icon"
+    aria-label="Flash Loan icon"
     {...props}
   >
     <defs>
-      <linearGradient id="flashman-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <linearGradient id="flashloan-grad" x1="0%" y1="0%" x2="100%" y2="100%">
         <stop offset="0%" stopColor="#fbbf24" />
         <stop offset="100%" stopColor="#ea580c" />
       </linearGradient>
@@ -165,7 +165,7 @@ export const FlashManPower = ({ className, ...props }: IconProps) => (
       width="100"
       height="100"
       rx="22"
-      fill="url(#flashman-grad)"
+      fill="url(#flashloan-grad)"
     />
     <path
       d="M0 0 H100 A22 22 0 0 1 100 22 V50 C100 50 80 30 50 30 C20 30 0 50 0 50 V22 A22 22 0 0 1 0 0 Z"
@@ -187,17 +187,17 @@ export const FlashManPower = ({ className, ...props }: IconProps) => (
   </svg>
 );
 
-export const CryptoWillMonolith = ({ className, ...props }: IconProps) => (
+export const WillMonolith = ({ className, ...props }: IconProps) => (
   <svg
     viewBox="0 0 100 100"
     className={withIconClass(className)}
     xmlns="http://www.w3.org/2000/svg"
     role="img"
-    aria-label="CryptoWill icon"
+    aria-label="Will icon"
     {...props}
   >
     <defs>
-      <linearGradient id="cryptowill-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <linearGradient id="will-grad" x1="0%" y1="0%" x2="0%" y2="100%">
         <stop offset="0%" stopColor="#f59e0b" />
         <stop offset="40%" stopColor="#fcd34d" />
         <stop offset="100%" stopColor="#fbbf24" />
@@ -209,7 +209,7 @@ export const CryptoWillMonolith = ({ className, ...props }: IconProps) => (
       width="100"
       height="100"
       rx="24"
-      fill="url(#cryptowill-grad)"
+      fill="url(#will-grad)"
     />
     <rect
       x="6"
@@ -235,17 +235,17 @@ export const CryptoWillMonolith = ({ className, ...props }: IconProps) => (
   </svg>
 );
 
-export const CloseSkyVoxelDart = ({ className, ...props }: IconProps) => (
+export const NFTMarketVoxelDart = ({ className, ...props }: IconProps) => (
   <svg
     viewBox="0 0 100 100"
     className={withIconClass(className)}
     xmlns="http://www.w3.org/2000/svg"
     role="img"
-    aria-label="CloseSky icon"
+    aria-label="NFT Market icon"
     {...props}
   >
     <defs>
-      <linearGradient id="closesky-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <linearGradient id="nftmarket-grad" x1="0%" y1="0%" x2="0%" y2="100%">
         <stop offset="0%" stopColor="#fce7f3" />
         <stop offset="100%" stopColor="#f9a8d4" />
       </linearGradient>
@@ -256,7 +256,7 @@ export const CloseSkyVoxelDart = ({ className, ...props }: IconProps) => (
       width="100"
       height="100"
       rx="24"
-      fill="url(#closesky-grad)"
+      fill="url(#nftmarket-grad)"
     />
     <rect
       x="6"

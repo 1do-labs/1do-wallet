@@ -5,6 +5,15 @@ import { getMockTokenTransferConfirmState } from '../../../../../../../test/data
 import { renderWithConfirmContextProvider } from '../../../../../../../test/lib/confirmations/render-helpers';
 import NativeTransferInfo from './native-transfer';
 
+const DNS_STATE = {
+  chainId: null,
+  domainName: null,
+  error: null,
+  resolutions: null,
+  stage: 'UNINITIALIZED',
+  warning: null,
+};
+
 jest.mock('../../../simulation-details/useBalanceChanges', () => ({
   useBalanceChanges: jest.fn(() => ({ pending: false, value: [] })),
 }));
@@ -34,7 +43,10 @@ jest.mock('../../../../../../store/actions', () => ({
 
 describe('NativeTransferInfo', () => {
   it('renders correctly', () => {
-    const state = getMockTokenTransferConfirmState({});
+    const state = {
+      ...getMockTokenTransferConfirmState({}),
+      DNS: DNS_STATE,
+    };
     const mockStore = configureMockStore([])(state);
     const { container } = renderWithConfirmContextProvider(
       <NativeTransferInfo />,

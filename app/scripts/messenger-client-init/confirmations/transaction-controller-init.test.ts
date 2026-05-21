@@ -25,6 +25,7 @@ import { MessengerClientInitRequest, MessengerClientName } from '../types';
 import * as smartTransactionsModule from '../../lib/smart-transaction/smart-transactions';
 import * as sentinelApiModule from '../../lib/transaction/sentinel-api';
 import * as selectorsModule from '../../../../shared/lib/selectors';
+import { NATIVE_TOKEN_ADDRESS } from '../../../../shared/constants/transaction';
 import { Delegation7702PublishHook } from '../../lib/transaction/hooks/delegation-7702-publish';
 import {
   TransactionControllerInit,
@@ -408,6 +409,9 @@ describe('Transaction Controller Init', () => {
   });
 
   describe('publish hook', () => {
+    const NON_NATIVE_GAS_FEE_TOKEN =
+      '0x1234567890123456789012345678901234567890';
+
     const mockTransactionMeta: TransactionMeta = {
       id: '123',
       chainId: CHAIN_ID_MOCK,
@@ -466,7 +470,37 @@ describe('Transaction Controller Init', () => {
       expect(jest.mocked(Delegation7702PublishHook)).not.toHaveBeenCalled();
     });
 
-    it('calls Delegation7702PublishHook for HD keyring accounts', async () => {
+    it('calls Delegation7702PublishHook for HD keyring accounts with a non-native gas fee token', async () => {
+      const requestMock = buildInitRequestMock();
+      requestMock.getMessengerClient.mockImplementation(((
+        name: MessengerClientName,
+      ) => {
+        if (name === 'KeyringController') {
+          return {
+            getKeyringForAccount: jest.fn().mockResolvedValue({
+              type: 'HD Key Tree',
+            }),
+          };
+        }
+        return buildControllerMock();
+      }) as unknown as MessengerClientInitRequest<
+        TransactionControllerMessenger,
+        TransactionControllerInitMessenger
+      >['getMessengerClient']);
+
+      TransactionControllerInit(requestMock);
+
+      const { hooks } = transactionControllerClassMock.mock.calls[0][0];
+
+      await hooks?.publish?.({
+        ...mockTransactionMeta,
+        selectedGasFeeToken: NON_NATIVE_GAS_FEE_TOKEN,
+      } as TransactionMeta);
+
+      expect(jest.mocked(Delegation7702PublishHook)).toHaveBeenCalled();
+    });
+
+    it('skips Delegation7702PublishHook for HD keyring accounts using ordinary native gas', async () => {
       const requestMock = buildInitRequestMock();
       requestMock.getMessengerClient.mockImplementation(((
         name: MessengerClientName,
@@ -491,12 +525,13 @@ describe('Transaction Controller Init', () => {
       await hooks?.publish?.({
         ...mockTransactionMeta,
         isExternalSign: true,
+        selectedGasFeeToken: NATIVE_TOKEN_ADDRESS,
       } as TransactionMeta);
 
-      expect(jest.mocked(Delegation7702PublishHook)).toHaveBeenCalled();
+      expect(jest.mocked(Delegation7702PublishHook)).not.toHaveBeenCalled();
     });
 
-    it('skips submitSmartTransactionHook for 7702-capable accounts even when smart transactions are enabled', async () => {
+    it('uses default submission for 7702-capable ordinary transactions even when smart transactions are enabled', async () => {
       jest
         .mocked(smartTransactionsModule.getSmartTransactionCommonParams)
         .mockReturnValue({
@@ -537,7 +572,7 @@ describe('Transaction Controller Init', () => {
 
       await hooks?.publish?.(mockTransactionMeta);
 
-      expect(jest.mocked(Delegation7702PublishHook)).toHaveBeenCalled();
+      expect(jest.mocked(Delegation7702PublishHook)).not.toHaveBeenCalled();
       expect(
         jest.mocked(smartTransactionsModule.submitSmartTransactionHook),
       ).not.toHaveBeenCalled();
@@ -614,7 +649,7 @@ describe('Transaction Controller Init', () => {
         } as unknown as PHArgs['transactionController'],
         transactionMeta: {
           ...mockTransactionMeta,
-          isExternalSign: true,
+          selectedGasFeeToken: NON_NATIVE_GAS_FEE_TOKEN,
         } as TransactionMeta,
       });
 
@@ -768,7 +803,7 @@ describe('Transaction Controller Init', () => {
         } as unknown as PHArgs['transactionController'],
         transactionMeta: {
           ...mockTransactionMeta,
-          isExternalSign: true,
+          selectedGasFeeToken: NON_NATIVE_GAS_FEE_TOKEN,
         } as TransactionMeta,
       });
 

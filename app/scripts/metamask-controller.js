@@ -129,7 +129,6 @@ import { isSnapId } from '@metamask/snaps-utils';
 import {
   findAtomicBatchSupportForChain,
   checkEip7702Support,
-  getEip7702SupportedChains,
 } from '../../shared/lib/eip7702-support-utils';
 import { createEIP7702UpgradeTransaction } from '../../shared/lib/eip7702-utils';
 import { captureException } from '../../shared/lib/sentry';
@@ -203,7 +202,6 @@ import { FirstTimeFlowType } from '../../shared/constants/onboarding';
 import { updateCurrentLocale } from '../../shared/lib/translate';
 import {
   getIsSeedlessOnboardingFeatureEnabled,
-  getEnabledAdvancedPermissions,
   getIsPerpsIncludedInBuild,
   getIsAssetsUnifiedStateIncludedInBuild,
 } from '../../shared/lib/environment';
@@ -250,9 +248,7 @@ import {
   makeMethodMiddlewareMaker,
 } from './lib/rpc-method-middleware';
 import createOriginMiddleware from './lib/createOriginMiddleware';
-import createRpcBlockingMiddleware, {
-  createRpcBlockingCallbacks,
-} from './lib/rpcBlockingMiddleware';
+import createRpcBlockingMiddleware from './lib/rpcBlockingMiddleware';
 import createMainFrameOriginMiddleware from './lib/createMainFrameOriginMiddleware';
 import createTabIdMiddleware from './lib/createTabIdMiddleware';
 import createFrameIdMiddleware from './lib/createFrameIdMiddleware';
@@ -966,12 +962,6 @@ export default class MetamaskController extends EventEmitter {
           // edge flows the selected account may not yet be available.
           const selected = this.accountsController.getSelectedAccount();
           const address = selected?.address;
-          // After onboarding, default selected account will be an EVM
-          // account, and those accounts are `Bip44Account`s which should have
-          // an `entropy` property.
-          // If not, discovery will fallback to the primary keyring ID anyway.
-          const id = selected?.options?.entropy?.id;
-
           if (firstTimeFlowType === FirstTimeFlowType.socialImport) {
             log.debug(
               'Skipping non-EVM multichain account import during onboarding',
@@ -2251,6 +2241,7 @@ export default class MetamaskController extends EventEmitter {
       markNotificationPopupAsAutomaticallyClosed: () =>
         this.notificationManager.markAsAutomaticallyClosed(),
       getCode: this.getCode.bind(this),
+      isAppEnabled: this.isAppEnabled.bind(this),
 
       // primary keyring management
       addNewAccount: this.addNewAccount.bind(this),
@@ -4081,8 +4072,7 @@ export default class MetamaskController extends EventEmitter {
   /**
    * Counts the number of accounts discovered by provider.
    *
-   * @param {Array} accounts - The discovered accounts to count by provider.
-   * @param _accounts
+   * @param {Array} _accounts - The discovered accounts to count by provider.
    */
   getDiscoveryCountByProvider(_accounts) {
     return {
@@ -4095,11 +4085,10 @@ export default class MetamaskController extends EventEmitter {
   /**
    * Discovers and creates accounts for the given keyring id.
    *
-   * @param {string} id - The keyring id to discover and create accounts for.
+   * @param {string} _id - The keyring id to discover and create accounts for.
    * @returns {Promise<Record<string, number>>} Discovered account counts by chain.
    */
-  async discoverAndCreateAccounts(id) {
-    void id;
+  async discoverAndCreateAccounts(_id) {
     return {
       Bitcoin: 0,
       Solana: 0,
@@ -4400,19 +4389,18 @@ export default class MetamaskController extends EventEmitter {
   /**
    * Imports accounts with balances to the keyring.
    */
-  async _importAccountsWithBalances() {}
+  async _importAccountsWithBalances() {
+    return undefined;
+  }
 
   /**
    * Adds Snap account to the keyring.
    *
-   * @param {string} keyringId - The ID of the keyring to add the account to.
-   * @param {object} client - The Snap client instance.
-   * @param {object} options - The options to pass to the createAccount method.
+   * @param {string} _keyringId - The ID of the keyring to add the account to.
+   * @param {object} _client - The Snap client instance.
+   * @param {object} _options - The options to pass to the createAccount method.
    */
-  async _addSnapAccount(keyringId, client, options = {}) {
-    void keyringId;
-    void client;
-    void options;
+  async _addSnapAccount(_keyringId, _client, _options = {}) {
     throw new Error('Non-EVM Snap accounts are disabled in the 1Do build');
   }
 
@@ -5577,23 +5565,7 @@ export default class MetamaskController extends EventEmitter {
    * @param {string} origin - The origin to notify with the current account
    */
   notifyNonEVMAccountChangedForCurrentAccount(origin) {
-    let caip25Caveat;
-    try {
-      caip25Caveat = this.permissionController.getCaveat(
-        origin,
-        Caip25EndowmentPermissionName,
-        Caip25CaveatType,
-      );
-    } catch {
-      // noop
-    }
-    if (!caip25Caveat) {
-      return;
-    }
-
-    const sessionScopes = getSessionScopes(caip25Caveat.value, {
-      getNonEvmSupportedMethods: this.getNonEvmSupportedMethods.bind(this),
-    });
+    log.debug('Skipping non-EVM account changed notification', { origin });
   }
   // Identity Management (signature operations)
 
@@ -8097,6 +8069,27 @@ export default class MetamaskController extends EventEmitter {
       method: 'eth_getCode',
       params: [address],
     });
+  }
+
+  async isAppEnabled(address, app, networkClientId) {
+    const { provider } =
+      this.networkController.getNetworkClientById(networkClientId);
+    const contractCall = new Interface([
+      'function isAppEnabled(address app) view returns (bool)',
+    ]);
+    const data = contractCall.encodeFunctionData('isAppEnabled', [app]);
+    const result = await provider.request({
+      method: 'eth_call',
+      params: [
+        {
+          to: address,
+          data,
+        },
+        'latest',
+      ],
+    });
+    const [enabled] = contractCall.decodeFunctionResult('isAppEnabled', result);
+    return Boolean(enabled);
   }
 
   async _onAccountChange(newAddress) {

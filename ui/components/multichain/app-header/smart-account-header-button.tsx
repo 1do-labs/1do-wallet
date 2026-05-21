@@ -1,7 +1,5 @@
-import React, { useCallback, useEffect, useId, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import {
-  Box,
-  ButtonIcon,
   Icon,
   IconColor,
   IconName,
@@ -14,22 +12,24 @@ import { Hex } from '@metamask/utils';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { KeyringTypes } from '@metamask/keyring-controller';
-import { useI18nContext } from '../../../hooks/useI18nContext';
 import { useEIP7702Account } from '../../../pages/confirmations/hooks/useEIP7702Account';
-import { isAtomicBatchSupported } from '../../../store/controller-actions/transaction-controller';
 import { getSelectedInternalAccount } from '../../../selectors';
 import { getCurrentChainId } from '../../../../shared/lib/selectors/networks';
 import { KEYRING_TYPES_SUPPORTING_7702 } from '../../../../shared/constants/keyring';
-import { MULTICHAIN_SMART_ACCOUNT_PAGE_ROUTE } from '../../../helpers/constants/routes';
+import {
+  CONFIRM_TRANSACTION_ROUTE,
+  MULTICHAIN_SMART_ACCOUNT_PAGE_ROUTE,
+} from '../../../helpers/constants/routes';
+import {
+  ONE_DO_7702_DELEGATE,
+  useOneDoSmartAccountStatus,
+} from '../../../hooks/accounts/useOneDoSmartAccountStatus';
 
 /* eslint-disable @metamask/design-tokens/color-no-hex */
 
-const ONE_DO_7702_DELEGATE =
-  '0x69d2927735c3E57c512177B32e216431B1Aba1fF' as Hex;
+const ONE_DO_WALLET_AVATAR_MASK_ID = 'one-do-wallet-avatar-mask';
 
 const OneDoWalletAvatar = () => {
-  const maskId = useId();
-
   return (
     <svg
       width="18"
@@ -40,7 +40,7 @@ const OneDoWalletAvatar = () => {
       className="smart-account-header-logo__avatar"
     >
       <defs>
-        <mask id={maskId}>
+        <mask id={ONE_DO_WALLET_AVATAR_MASK_ID}>
           <rect width="40" height="40" fill="white" />
           <circle cx="16" cy="12" r="2" fill="black" />
         </mask>
@@ -52,7 +52,7 @@ const OneDoWalletAvatar = () => {
         height="16"
         rx="5"
         fill="black"
-        mask={`url(#${maskId})`}
+        mask={`url(#${ONE_DO_WALLET_AVATAR_MASK_ID})`}
       />
       <path
         d="M7 38 C7 29 12 23 20 23 C28 23 33 29 33 38"
@@ -111,12 +111,11 @@ const OneDoWalletAvatar = () => {
 };
 
 export const SmartAccountHeaderButton = () => {
-  const t = useI18nContext();
   const navigate = useNavigate();
   const selectedAccount = useSelector(getSelectedInternalAccount);
   const currentChainId = useSelector(getCurrentChainId);
-  const address = selectedAccount?.address as Hex | undefined;
-  const keyringType = selectedAccount?.metadata?.keyring?.type;
+  const { address, metadata } = selectedAccount ?? {};
+  const keyringType = metadata?.keyring?.type;
 
   const isSupportedKeyring = Boolean(
     keyringType &&
@@ -126,55 +125,35 @@ export const SmartAccountHeaderButton = () => {
   const { upgradeAccount } = useEIP7702Account({
     chainId: currentChainId,
   });
-  const [upgraded, setUpgraded] = useState(false);
   const [pending, setPending] = useState(false);
+  const {
+    isActive,
+    pendingUpgradeTransaction,
+    refresh: refreshSmartAccountStatus,
+    setActive: setSmartAccountActive,
+  } = useOneDoSmartAccountStatus({
+    address: address as Hex | undefined,
+    chainId: currentChainId,
+    enabled: isSupportedKeyring,
+  });
 
   useEffect(() => {
-    let cancelled = false;
-
-    const checkStatus = async () => {
-      if (!address || !isSupportedKeyring || !currentChainId) {
-        if (!cancelled) {
-          setUpgraded(false);
-        }
-        return;
-      }
-
-      try {
-        const support = await isAtomicBatchSupported({
-          address,
-          chainIds: [currentChainId],
-        });
-        const currentChainSupport = support.find(
-          ({ chainId }) => chainId === currentChainId,
-        );
-        const delegationAddress = currentChainSupport?.delegationAddress;
-        const result =
-          delegationAddress?.toLowerCase() ===
-          ONE_DO_7702_DELEGATE.toLowerCase();
-        if (!cancelled) {
-          setUpgraded(result);
-        }
-      } catch {
-        if (!cancelled) {
-          setUpgraded(false);
-        }
-      }
-    };
-
-    checkStatus();
-
-    return () => {
-      cancelled = true;
-    };
-  }, [address, currentChainId, isSupportedKeyring]);
+    if (pendingUpgradeTransaction) {
+      setPending(false);
+    }
+  }, [pendingUpgradeTransaction]);
 
   const onClick = useCallback(async () => {
     if (!address || !isSupportedKeyring || pending) {
       return;
     }
 
-    if (upgraded) {
+    if (pendingUpgradeTransaction?.id) {
+      navigate(`${CONFIRM_TRANSACTION_ROUTE}/${pendingUpgradeTransaction.id}`);
+      return;
+    }
+
+    if (isActive) {
       navigate(
         `${MULTICHAIN_SMART_ACCOUNT_PAGE_ROUTE}/${encodeURIComponent(address)}`,
       );
@@ -183,6 +162,15 @@ export const SmartAccountHeaderButton = () => {
 
     setPending(true);
     try {
+      if (await refreshSmartAccountStatus()) {
+        setSmartAccountActive(true);
+        navigate(
+          `${MULTICHAIN_SMART_ACCOUNT_PAGE_ROUTE}/${encodeURIComponent(
+            address,
+          )}`,
+        );
+        return;
+      }
       await upgradeAccount(address, ONE_DO_7702_DELEGATE);
     } finally {
       setPending(false);
@@ -191,49 +179,54 @@ export const SmartAccountHeaderButton = () => {
     address,
     isSupportedKeyring,
     pending,
-    upgraded,
+    pendingUpgradeTransaction?.id,
+    isActive,
     navigate,
     upgradeAccount,
+    refreshSmartAccountStatus,
+    setSmartAccountActive,
   ]);
 
   const content = useMemo(() => {
-    if (upgraded && address) {
+    if (isActive && address) {
       return (
-        <Box
+        <button
+          type="button"
           className="smart-account-header-logo"
           onClick={onClick}
           data-testid="smart-account-header-button"
+          aria-label="Smart account active on this network"
+          title="Smart account active on this network"
         >
           <OneDoWalletAvatar />
-        </Box>
+        </button>
       );
     }
 
     return (
-      <Box
+      <button
+        type="button"
         className="smart-account-header-button"
         onClick={onClick}
         data-testid="smart-account-header-button"
+        aria-label="Activate smart account on this network"
+        aria-busy={pending || Boolean(pendingUpgradeTransaction)}
+        title="Activate smart account on this network"
+        disabled={pending}
       >
-        {pending ? (
+        {pending || pendingUpgradeTransaction ? (
           <Icon
             name={IconName.Loading}
             size={IconSize.Md}
             color={IconColor.PrimaryDefault}
           />
-        ) : (
-          <ButtonIcon
-            ariaLabel={t('smartAccount')}
-            iconName={IconName.UserCircleAdd}
-            className="smart-account-header-button__icon"
-          />
-        )}
+        ) : null}
         <Text variant={TextVariant.BodySm} color={TextColor.TextDefault}>
           Smart
         </Text>
-      </Box>
+      </button>
     );
-  }, [address, onClick, pending, t, upgraded]);
+  }, [address, isActive, onClick, pending, pendingUpgradeTransaction]);
 
   if (!address || !isSupportedKeyring) {
     return null;

@@ -1,6 +1,10 @@
 import { renderHook } from '@testing-library/react-hooks';
+import { TransactionStatus } from '@metamask/transaction-controller';
 import { CHAIN_IDS } from '../../shared/constants/network';
-import { useEarliestNonceByChain } from './useEarliestNonceByChain';
+import {
+  isTransactionEarliestNonce,
+  useEarliestNonceByChain,
+} from './useEarliestNonceByChain';
 
 function buildGroup(
   nonce: string | undefined,
@@ -121,5 +125,26 @@ describe('useEarliestNonceByChain', () => {
     expect(result.current).toEqual({
       [CHAIN_IDS.MAINNET]: 5,
     });
+  });
+
+  it('considers signed transactions as pending for nonce order', () => {
+    const transactionGroups = [
+      buildGroup('0xa', CHAIN_IDS.SEPOLIA, TransactionStatus.signed),
+      buildGroup('0xb', CHAIN_IDS.SEPOLIA, TransactionStatus.submitted),
+    ];
+
+    const { result } = renderHook(() =>
+      useEarliestNonceByChain(transactionGroups),
+    );
+
+    expect(result.current).toEqual({
+      [CHAIN_IDS.SEPOLIA]: 10,
+    });
+  });
+
+  it('treats transactions without nonce as not queued', () => {
+    expect(isTransactionEarliestNonce(undefined, CHAIN_IDS.SEPOLIA, {})).toBe(
+      true,
+    );
   });
 });

@@ -1,7 +1,7 @@
 import React from 'react';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-import { fireEvent, waitFor } from '@testing-library/react';
+import { fireEvent } from '@testing-library/react';
 import { EthAccountType, EthMethod, BtcScope } from '@metamask/keyring-api';
 import { AVAILABLE_MULTICHAIN_NETWORK_CONFIGURATIONS } from '@metamask/multichain-network-controller';
 import { CHAIN_IDS } from '../../../../shared/constants/network';
@@ -250,7 +250,7 @@ describe('EthOverview', () => {
 
       const primaryBalance = queryByTestId(ETH_OVERVIEW_PRIMARY_CURRENCY);
       expect(primaryBalance).toBeInTheDocument();
-      expect(primaryBalance).toHaveTextContent('0 ETH');
+      expect(primaryBalance).toHaveTextContent('$0.00');
       expect(queryByText('*')).not.toBeInTheDocument();
     });
 
@@ -282,11 +282,11 @@ describe('EthOverview', () => {
 
       const primaryBalance = queryByTestId(ETH_OVERVIEW_PRIMARY_CURRENCY);
       expect(primaryBalance).toBeInTheDocument();
-      expect(primaryBalance).toHaveTextContent('0.0104 ETH');
+      expect(primaryBalance).toHaveTextContent('$0.00');
       expect(queryByText('*')).not.toBeInTheDocument();
     });
 
-    it('should have the Swap button enabled if chain id is part of supported chains', () => {
+    it('should always disable the Swap button', () => {
       const mockedAvalancheStore = {
         ...mockStore,
         metamask: {
@@ -307,11 +307,7 @@ describe('EthOverview', () => {
       );
       const bridgeButton = queryByTestId(ETH_OVERVIEW_SWAP);
       expect(bridgeButton).toBeInTheDocument();
-      expect(bridgeButton).toBeEnabled();
-      expect(bridgeButton.parentElement).not.toHaveAttribute(
-        'data-original-title',
-        'Unavailable on this network',
-      );
+      expect(bridgeButton).toBeDisabled();
     });
 
     it('should not render the Bridge button on testnet chains', () => {
@@ -376,7 +372,7 @@ describe('EthOverview', () => {
       expect(buyButton).toBeDisabled();
     });
 
-    it('should have the Buy native token enabled if chain id is part of supported buyable chains', () => {
+    it('should have the Buy native token disabled if chain id is part of supported buyable chains', () => {
       const mockedStoreWithUnbuyableChainId = {
         ...mockStore,
         metamask: {
@@ -399,10 +395,10 @@ describe('EthOverview', () => {
       );
       const buyButton = queryByTestId(ETH_OVERVIEW_BUY);
       expect(buyButton).toBeInTheDocument();
-      expect(buyButton).not.toBeDisabled();
+      expect(buyButton).toBeDisabled();
     });
 
-    it('should open the Buy native token URI when clicking on Buy button for a buyable chain ID', async () => {
+    it('should not open the Buy native token URI when clicking on Buy button for a buyable chain ID', async () => {
       const mockedStoreWithBuyableChainId = {
         ...mockStore,
         metamask: {
@@ -426,22 +422,14 @@ describe('EthOverview', () => {
       const buyButton = queryByTestId(ETH_OVERVIEW_BUY);
 
       expect(buyButton).toBeInTheDocument();
-      expect(buyButton).not.toBeDisabled();
+      expect(buyButton).toBeDisabled();
 
       fireEvent.click(buyButton);
-      expect(openTabSpy).toHaveBeenCalledTimes(1);
-
-      await waitFor(() =>
-        expect(openTabSpy).toHaveBeenCalledWith({
-          url: expect.stringContaining(
-            `/buy?metamaskEntry=ext_buy_sell_button`,
-          ),
-        }),
-      );
+      expect(openTabSpy).not.toHaveBeenCalled();
     });
   });
 
-  it('sends an event when clicking the Buy button: %s', () => {
+  it('does not send an event when clicking the disabled Buy button', () => {
     const mockTrackEvent = jest.fn();
     const mockMetaMetricsContext = {
       trackEvent: mockTrackEvent,
@@ -460,22 +448,10 @@ describe('EthOverview', () => {
 
     const buyButton = queryByTestId(ETH_OVERVIEW_BUY);
     expect(buyButton).toBeInTheDocument();
-    expect(buyButton).not.toBeDisabled();
+    expect(buyButton).toBeDisabled();
     fireEvent.click(buyButton);
 
-    expect(mockTrackEvent).toHaveBeenCalledTimes(1);
-    expect(mockTrackEvent).toHaveBeenCalledWith({
-      event: MetaMetricsEventName.NavBuyButtonClicked,
-      category: MetaMetricsEventCategory.Navigation,
-      properties: {
-        account_type: mockEvmAccount1.type,
-        chain_id: CHAIN_IDS.MAINNET,
-        location: 'Home',
-        text: 'Buy',
-        // We use a `SwapsEthToken` in this case, so we're expecting an entire object here.
-        token_symbol: expect.any(Object),
-      },
-    });
+    expect(mockTrackEvent).not.toHaveBeenCalled();
   });
 
   describe('Disabled buttons when an account cannot sign transactions', () => {

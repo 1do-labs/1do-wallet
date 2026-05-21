@@ -63,9 +63,17 @@ jest.mock('react-redux', () => {
   };
 });
 
+const mockUseOneDoSmartAccountStatus = jest.fn();
+jest.mock('../../../hooks/accounts/useOneDoSmartAccountStatus', () => ({
+  useOneDoSmartAccountStatus: () => mockUseOneDoSmartAccountStatus(),
+}));
+
 describe('MultichainAccountDetailsPage', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    mockUseOneDoSmartAccountStatus.mockReturnValue({
+      isActive: false,
+    });
     setSearchParams();
   });
 
@@ -158,6 +166,18 @@ describe('MultichainAccountDetailsPage', () => {
     expect(
       screen.queryByTestId(accountDetailsRowSmartAccountTestId),
     ).not.toBeInTheDocument();
+  });
+
+  it('displays Active when the current chain smart account is active', () => {
+    mockUseOneDoSmartAccountStatus.mockReturnValue({
+      isActive: true,
+    });
+
+    renderComponent();
+
+    expect(
+      screen.getByTestId('account-details-row-value-smart-account'),
+    ).toHaveTextContent(messages.active.message);
   });
 
   it('opens account rename modal when account name action button is clicked', () => {

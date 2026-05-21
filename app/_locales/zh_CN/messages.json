@@ -7106,6 +7106,10 @@
     "message": "设置",
     "description": "Action label for Smart Accounts. Used on multichain details page."
   },
+  "upgradeSmartAccount": {
+    "message": "升级智能账户",
+    "description": "Primary action label for upgrading an account to a Smart Account."
+  },
   "settingAddSnapAccount": {
     "message": "添加账户 Snap"
   },

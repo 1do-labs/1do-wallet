@@ -1,4 +1,5 @@
 import React from 'react';
+import { within } from '@testing-library/react';
 import configureMockStore from 'redux-mock-store';
 import {
   TransactionStatus,
@@ -23,6 +24,21 @@ import { RowAlertKey } from '../../../../../../components/app/confirm/info/row/c
 import { Severity } from '../../../../../../helpers/constants/design-system';
 import TypedSignInfo from './typed-sign';
 
+const DNS_STATE = {
+  chainId: null,
+  domainName: null,
+  error: null,
+  resolutions: null,
+  stage: 'UNINITIALIZED',
+  warning: null,
+};
+
+const createMockStore = (state: Record<string, unknown>) =>
+  configureMockStore([])({
+    ...state,
+    DNS: DNS_STATE,
+  });
+
 jest.mock(
   '../../../../../../components/app/alert-system/contexts/alertMetricsContext',
   () => ({
@@ -39,6 +55,14 @@ jest.mock('../../../../../../store/actions', () => {
   };
 });
 
+jest.mock('../../../../hooks/useGetTokenStandardAndDetails', () => ({
+  useGetTokenStandardAndDetails: jest.fn(() => ({
+    decimalsNumber: undefined,
+    standard: undefined,
+    symbol: undefined,
+  })),
+}));
+
 jest.mock('../../../../../../../node_modules/@metamask/snaps-utils', () => {
   const originalUtils = jest.requireActual(
     '../../../../../../../node_modules/@metamask/snaps-utils',
@@ -54,7 +78,7 @@ jest.mock('../../../../../../../node_modules/@metamask/snaps-utils', () => {
 describe('TypedSignInfo', () => {
   it('renders origin for typed sign data request', () => {
     const state = getMockTypedSignConfirmState();
-    const mockStore = configureMockStore([])(state);
+    const mockStore = createMockStore(state);
     const { container } = renderWithConfirmContextProvider(
       <TypedSignInfo />,
       mockStore,
@@ -71,7 +95,7 @@ describe('TypedSignInfo', () => {
       chainId: '0x5',
     });
 
-    const mockStore = configureMockStore([])(state);
+    const mockStore = createMockStore(state);
     const { container } = renderWithConfirmContextProvider(
       <TypedSignInfo />,
       mockStore,
@@ -83,7 +107,7 @@ describe('TypedSignInfo', () => {
     const state = getMockTypedSignConfirmStateForRequest(
       unapprovedTypedSignMsgV3,
     );
-    const mockStore = configureMockStore([])(state);
+    const mockStore = createMockStore(state);
     const { container } = renderWithConfirmContextProvider(
       <TypedSignInfo />,
       mockStore,
@@ -93,7 +117,7 @@ describe('TypedSignInfo', () => {
 
   it('should render message for typed sign v4 request', () => {
     const state = getMockTypedSignConfirmState();
-    const mockStore = configureMockStore([])(state);
+    const mockStore = createMockStore(state);
     const { container } = renderWithConfirmContextProvider(
       <TypedSignInfo />,
       mockStore,
@@ -107,7 +131,7 @@ describe('TypedSignInfo', () => {
         useTransactionSimulations: true,
       },
     });
-    const mockStore = configureMockStore([])(state);
+    const mockStore = createMockStore(state);
     const { getByText } = renderWithConfirmContextProvider(
       <TypedSignInfo />,
       mockStore,
@@ -121,7 +145,7 @@ describe('TypedSignInfo', () => {
         useTransactionSimulations: true,
       },
     });
-    const mockStore = configureMockStore([])(state);
+    const mockStore = createMockStore(state);
     const { container } = renderWithConfirmContextProvider(
       <TypedSignInfo />,
       mockStore,
@@ -138,12 +162,125 @@ describe('TypedSignInfo', () => {
         },
       },
     );
-    const mockStore = configureMockStore([])(state);
+    const mockStore = createMockStore(state);
     const { container } = renderWithConfirmContextProvider(
       <TypedSignInfo />,
       mockStore,
     );
     expect(container).toMatchSnapshot();
+  });
+
+  it('renders built-in ERC-7730 registry clear signing for Permit2 typed data', () => {
+    const permit2Signature = {
+      ...unapprovedTypedSignMsgV4,
+      id: 'permit2-registry-clear-signing',
+      chainId: '0xa',
+      msgParams: {
+        ...unapprovedTypedSignMsgV4.msgParams,
+        origin: 'https://app.uniswap.org',
+        data: JSON.stringify({
+          domain: {
+            chainId: 10,
+            verifyingContract: '0x000000000022D473030F116dDEE9F6B43aC78BA3',
+          },
+          types: {
+            EIP712Domain: [
+              { name: 'chainId', type: 'uint256' },
+              { name: 'verifyingContract', type: 'address' },
+            ],
+            PermitDetails: [
+              { name: 'token', type: 'address' },
+              { name: 'amount', type: 'uint160' },
+              { name: 'expiration', type: 'uint48' },
+              { name: 'nonce', type: 'uint48' },
+            ],
+            PermitSingle: [
+              { name: 'details', type: 'PermitDetails' },
+              { name: 'spender', type: 'address' },
+              { name: 'sigDeadline', type: 'uint256' },
+            ],
+          },
+          primaryType: 'PermitSingle',
+          message: {
+            spender: '0x2222222222222222222222222222222222222222',
+            details: {
+              token: '0x1111111111111111111111111111111111111111',
+              amount: '1000000',
+              expiration: '4102444800',
+              nonce: '7',
+            },
+            sigDeadline: '4102444800',
+          },
+        }),
+      },
+    };
+    const state = getMockTypedSignConfirmStateForRequest(permit2Signature);
+    const mockStore = createMockStore(state);
+    const { getByTestId } = renderWithConfirmContextProvider(
+      <TypedSignInfo />,
+      mockStore,
+    );
+    const clearSigningSection = within(
+      getByTestId('onedo-clear-signing-section'),
+    );
+
+    expect(
+      clearSigningSection.getByText('Authorize spending of token'),
+    ).toBeInTheDocument();
+    expect(clearSigningSection.getByText('Spender')).toBeInTheDocument();
+    expect(
+      clearSigningSection.getByText('Amount allowance'),
+    ).toBeInTheDocument();
+    expect(
+      clearSigningSection.getByText('1000000 raw units'),
+    ).toBeInTheDocument();
+  });
+
+  it('formats 1Do token clear signing amounts with known token metadata', () => {
+    const dexSignature = {
+      ...unapprovedTypedSignMsgV4,
+      id: 'dex-clear-signing',
+      chainId: '0xaa36a7',
+      msgParams: {
+        ...unapprovedTypedSignMsgV4.msgParams,
+        from: '0x1111111111111111111111111111111111111111',
+        origin: 'http://localhost:3001',
+        data: JSON.stringify({
+          domain: {
+            name: 'Dex Order on 1Do',
+            version: '1',
+            chainId: 11155111,
+            verifyingContract: '0x1111111111111111111111111111111111111111',
+          },
+          primaryType: 'TokenForTokenOrder',
+          message: {
+            tokenIn: '0x9d4b951592c31dc042efdc4e1f8ae00718b96fe1',
+            tokenOut: '0xdd7468f993c52fcf43cef80c9a4e042de4920f2d',
+            amountIn: '1000000',
+            amountOut: '1000000',
+            expiry: '0',
+            nonce: '7',
+          },
+        }),
+      },
+    };
+    const state = getMockTypedSignConfirmStateForRequest(dexSignature);
+    const mockStore = createMockStore(state);
+    const { getByTestId, queryByText } = renderWithConfirmContextProvider(
+      <TypedSignInfo />,
+      mockStore,
+    );
+    const clearSigningSection = within(
+      getByTestId('onedo-clear-signing-section'),
+    );
+
+    expect(
+      clearSigningSection.getByText('Create Dex token order on 1Do'),
+    ).toBeInTheDocument();
+    expect(clearSigningSection.getByText('1 tUSDC')).toBeInTheDocument();
+    expect(clearSigningSection.getByText('1 tUSDT')).toBeInTheDocument();
+    expect(queryByText('Advanced details')).not.toBeInTheDocument();
+    expect(queryByText('1000000 raw units')).not.toBeInTheDocument();
   });
 
   it('displays "requestFromInfoSnap" tooltip when origin is a snap', async () => {
@@ -154,7 +291,7 @@ describe('TypedSignInfo', () => {
       chainId: '0x5',
     });
     (isSnapId as unknown as jest.Mock).mockReturnValue(true);
-    const mockStore = configureMockStore([])(mockState);
+    const mockStore = createMockStore(mockState);
     const { queryByText } = renderWithConfirmContextProvider(
       <TypedSignInfo />,
       mockStore,
@@ -176,7 +313,7 @@ describe('TypedSignInfo', () => {
       chainId: '0x5',
     });
     (isSnapId as unknown as jest.Mock).mockReturnValue(false);
-    const mockStore = configureMockStore([])(mockState);
+    const mockStore = createMockStore(mockState);
     const { queryByText } = renderWithConfirmContextProvider(
       <TypedSignInfo />,
       mockStore,
@@ -208,7 +345,7 @@ describe('TypedSignInfo', () => {
         confirmed: {},
       },
     };
-    const mockStore = configureMockStore([])(state);
+    const mockStore = createMockStore(state);
     const { getByText } = renderWithConfirmContextProvider(
       <TypedSignInfo />,
       mockStore,

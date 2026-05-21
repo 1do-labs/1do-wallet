@@ -25,6 +25,7 @@ import { trace } from '../../../../shared/lib/trace';
 import { hasTransactionType } from '../../../../shared/lib/transactions.utils';
 import { getIsSmartTransaction } from '../../../../shared/lib/selectors';
 import { getShieldGatewayConfig } from '../../../../shared/lib/shield';
+import { NATIVE_TOKEN_ADDRESS } from '../../../../shared/constants/transaction';
 import { isEnforcedSimulationsEligible } from '../../../../shared/lib/transaction/enforced-simulations';
 import { TransactionMetricsRequest } from '../../../../shared/types/metametrics';
 import {
@@ -636,7 +637,11 @@ export async function publishHook({
     keyringController,
   );
 
-  if (keyringSupports7702 && !isUpgradeOnly7702Transaction) {
+  if (
+    keyringSupports7702 &&
+    !isUpgradeOnly7702Transaction &&
+    shouldPublishWithDelegationRelay(transactionMeta)
+  ) {
     const hook = new Delegation7702PublishHook({
       isAtomicBatchSupported: transactionController.isAtomicBatchSupported.bind(
         transactionController,
@@ -701,6 +706,20 @@ export async function publishHook({
 
   // Default: fall back to regular transaction submission
   return { transactionHash: undefined };
+}
+
+function shouldPublishWithDelegationRelay(transactionMeta: TransactionMeta) {
+  if (transactionMeta.isGasFeeIncluded || transactionMeta.isGasFeeSponsored) {
+    return true;
+  }
+
+  const { selectedGasFeeToken } = transactionMeta;
+
+  if (!selectedGasFeeToken) {
+    return false;
+  }
+
+  return selectedGasFeeToken.toLowerCase() !== NATIVE_TOKEN_ADDRESS;
 }
 
 export function publishBatchHook({

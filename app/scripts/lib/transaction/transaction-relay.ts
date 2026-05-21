@@ -22,6 +22,7 @@ export type RelaySubmitRequest = {
 export type RelayWaitRequest = {
   chainId: Hex;
   interval: number;
+  timeout?: number;
   uuid: string;
 };
 
@@ -40,6 +41,7 @@ export enum RelayStatus {
 }
 
 export const RELAY_RPC_METHOD = 'eth_sendRelayTransaction';
+export const DEFAULT_RELAY_WAIT_TIMEOUT_MS = 2 * 60 * 1000;
 
 export async function submitRelayTransaction(
   request: RelaySubmitRequest,
@@ -68,7 +70,12 @@ export async function submitRelayTransaction(
 export async function waitForRelayResult(
   request: RelayWaitRequest,
 ): Promise<RelayWaitResponse> {
-  const { chainId, interval, uuid } = request;
+  const {
+    chainId,
+    interval,
+    timeout = DEFAULT_RELAY_WAIT_TIMEOUT_MS,
+    uuid,
+  } = request;
 
   const baseUrl = await getRelayUrl(chainId);
 
@@ -79,20 +86,43 @@ export async function waitForRelayResult(
   const url = `${baseUrl}smart-transactions/${uuid}`;
 
   return new Promise<RelayWaitResponse>((resolve, reject) => {
-    const intervalId = setInterval(async () => {
+    const timers: {
+      intervalId?: ReturnType<typeof setInterval>;
+      timeoutId?: ReturnType<typeof setTimeout>;
+    } = {};
+
+    const cleanup = () => {
+      if (timers.intervalId) {
+        clearInterval(timers.intervalId);
+      }
+
+      if (timers.timeoutId) {
+        clearTimeout(timers.timeoutId);
+      }
+    };
+
+    timers.intervalId = setInterval(async () => {
       try {
         const headers = await getSentinelApiHeadersAsync();
         const result = await pollResult(url, headers);
 
-        if (result.status !== RelayStatus.Pending) {
-          clearInterval(intervalId);
+        if (
+          result.status !== RelayStatus.Pending &&
+          (result.status !== RelayStatus.Success || result.transactionHash)
+        ) {
+          cleanup();
           resolve(result);
         }
       } catch (error) {
-        clearInterval(intervalId);
+        cleanup();
         reject(error);
       }
     }, interval);
+
+    timers.timeoutId = setTimeout(() => {
+      cleanup();
+      reject(new Error(`Transaction relay timed out after ${timeout}ms`));
+    }, timeout);
   });
 }
 

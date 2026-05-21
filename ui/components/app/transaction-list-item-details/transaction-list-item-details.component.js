@@ -2,8 +2,10 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import copyToClipboard from 'copy-to-clipboard';
 import { getBlockExplorerLink } from '@metamask/etherscan-link';
+import { keccak256 } from 'ethereum-cryptography/keccak';
 import { TransactionType } from '@metamask/transaction-controller';
 import { Button, ButtonSize } from '@metamask/design-system-react';
+import { bytesToHex, hexToBytes } from '@metamask/utils';
 import SenderToRecipient from '../../ui/sender-to-recipient';
 import { DEFAULT_VARIANT } from '../../ui/sender-to-recipient/sender-to-recipient.constants';
 import TransactionBreakdown from '../transaction-breakdown';
@@ -16,6 +18,27 @@ import { getURLHostName } from '../../../helpers/utils/util';
 import { NETWORKS_ROUTE } from '../../../helpers/constants/routes';
 import { COPY_OPTIONS } from '../../../../shared/constants/copy';
 import { CHAIN_ID_TO_NETWORK_IMAGE_URL_MAP } from '../../../../shared/constants/network';
+
+function getRawTransactionHash(rawTransaction) {
+  if (!rawTransaction) {
+    return undefined;
+  }
+
+  try {
+    return bytesToHex(keccak256(hexToBytes(rawTransaction)));
+  } catch {
+    return undefined;
+  }
+}
+
+function getTransactionHash(transaction) {
+  return (
+    transaction?.hash ||
+    transaction?.txReceipt?.transactionHash ||
+    transaction?.transactionHash ||
+    getRawTransactionHash(transaction?.rawTx)
+  );
+}
 
 export default class TransactionListItemDetails extends PureComponent {
   static contextTypes = {
@@ -66,6 +89,7 @@ export default class TransactionListItemDetails extends PureComponent {
       onClose,
       chainId,
     } = this.props;
+    const transactionHash = getTransactionHash(primaryTransaction);
     const blockExplorerUrl =
       networkConfiguration?.[chainId]?.blockExplorerUrls[
         networkConfiguration?.[chainId]?.defaultBlockExplorerUrlIndex
@@ -77,7 +101,9 @@ export default class TransactionListItemDetails extends PureComponent {
     };
 
     const blockExplorerLink = getBlockExplorerLink(
-      primaryTransaction,
+      transactionHash
+        ? { ...primaryTransaction, hash: transactionHash }
+        : primaryTransaction,
       rpcPrefs,
     );
 
@@ -116,7 +142,11 @@ export default class TransactionListItemDetails extends PureComponent {
   handleCopyTxId = () => {
     const { transactionGroup } = this.props;
     const { primaryTransaction: transaction } = transactionGroup;
-    const { hash } = transaction;
+    const transactionHash = getTransactionHash(transaction);
+
+    if (!transactionHash) {
+      return;
+    }
 
     this.context.trackEvent({
       category: MetaMetricsEventCategory.Navigation,
@@ -128,7 +158,7 @@ export default class TransactionListItemDetails extends PureComponent {
     });
 
     this.setState({ justCopied: true }, () => {
-      copyToClipboard(hash, COPY_OPTIONS);
+      copyToClipboard(transactionHash, COPY_OPTIONS);
       setTimeout(() => this.setState({ justCopied: false }), SECOND);
     });
   };
@@ -163,7 +193,8 @@ export default class TransactionListItemDetails extends PureComponent {
       primaryTransaction: transaction,
       initialTransaction: { type },
     } = transactionGroup;
-    const { chainId, hash } = transaction;
+    const { chainId } = transaction;
+    const transactionHash = getTransactionHash(transaction);
 
     return (
       <Popover title={title} onClose={onClose}>
@@ -216,7 +247,7 @@ export default class TransactionListItemDetails extends PureComponent {
                 type="button"
                 className="text-primary-default"
                 onClick={this.handleBlockExplorerClick}
-                disabled={!hash}
+                disabled={!transactionHash}
               >
                 {blockExplorerLinkText.firstPart === 'addBlockExplorer'
                   ? t('addBlockExplorer')
@@ -232,7 +263,7 @@ export default class TransactionListItemDetails extends PureComponent {
                   type="button"
                   className="text-primary-default"
                   onClick={this.handleCopyTxId}
-                  disabled={!hash}
+                  disabled={!transactionHash}
                 >
                   {t('copyTransactionId')}
                 </button>

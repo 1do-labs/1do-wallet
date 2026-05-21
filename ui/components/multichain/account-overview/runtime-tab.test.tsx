@@ -14,12 +14,25 @@ describe('RuntimeTab', () => {
       metamask: mockState.metamask,
     });
 
-    const { getByTestId } = renderWithProvider(<RuntimeTab />, store);
+    const { getByTestId, queryByTestId } = renderWithProvider(
+      <RuntimeTab />,
+      store,
+    );
 
-    fireEvent.click(getByTestId('runtime-app-card-pay'));
+    expect(getByTestId('runtime-app-card-dex')).toBeInTheDocument();
+    expect(getByTestId('runtime-app-card-nftmarket')).toBeInTheDocument();
+    expect(getByTestId('runtime-app-card-flashloan')).toBeInTheDocument();
+    expect(getByTestId('runtime-app-card-will')).toBeInTheDocument();
+    expect(getByTestId('runtime-app-card-sessionpay')).toBeInTheDocument();
+    expect(queryByTestId('runtime-app-card-pay')).not.toBeInTheDocument();
+    expect(queryByTestId('runtime-app-card-gift')).not.toBeInTheDocument();
+    expect(queryByTestId('runtime-app-card-redpacket')).not.toBeInTheDocument();
+    expect(queryByTestId('runtime-app-card-store')).not.toBeInTheDocument();
+
+    fireEvent.click(getByTestId('runtime-app-card-dex'));
 
     expect(global.platform.openTab).toHaveBeenCalledWith({
-      url: 'https://app.1do.io/pay',
+      url: 'https://app.1do.io/dex',
     });
   });
 });

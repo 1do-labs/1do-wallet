@@ -116,9 +116,10 @@
 .smart-account-header-button {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
+  justify-content: center;
+  gap: 3px;
   min-width: 0;
-  padding: 5px 8px;
+  padding: 5px 9px;
   border: 1px solid rgba(232, 143, 181, 0.32);
   border-radius: 999px;
   background:
@@ -132,6 +133,7 @@
   cursor: pointer;
   flex: 0 0 auto;
   min-height: 28px;
+  font: inherit;
   transition:
     transform 160ms ease,
     box-shadow 160ms ease,
@@ -150,16 +152,12 @@
     );
 }
 
-.smart-account-header-button .mm-button-icon {
-  pointer-events: none;
+.smart-account-header-button:disabled {
+  cursor: default;
+  opacity: 0.72;
+  transform: none;
 }
 
-.smart-account-header-button__icon {
-  width: 18px;
-  height: 18px;
-}
-
-.smart-account-header-button .mm-button-icon,
 .smart-account-header-button .mm-icon,
 .smart-account-header-button .mm-text {
   color: var(--color-primary-default);
@@ -172,18 +170,19 @@
   width: 28px;
   height: 28px;
   padding: 4px;
-  border: 1px solid rgba(221, 112, 161, 0.38);
+  border: 1px solid rgba(26, 140, 87, 0.42);
   border-radius: 999px;
   background:
     linear-gradient(
       135deg,
-      rgba(255, 233, 242, 0.98) 0%,
-      rgba(255, 214, 230, 0.98) 58%,
-      rgba(255, 197, 219, 0.98) 100%
+      rgba(236, 253, 245, 0.98) 0%,
+      rgba(209, 250, 229, 0.98) 58%,
+      rgba(187, 247, 208, 0.98) 100%
     );
-  box-shadow: 0 8px 18px rgba(235, 154, 188, 0.18);
+  box-shadow: 0 8px 18px rgba(16, 185, 129, 0.14);
   cursor: pointer;
   flex: 0 0 auto;
+  position: relative;
   transition:
     transform 160ms ease,
     box-shadow 160ms ease,
@@ -192,7 +191,19 @@
 
 .smart-account-header-logo:hover {
   transform: translateY(-1px);
-  box-shadow: 0 12px 24px rgba(235, 154, 188, 0.24);
+  box-shadow: 0 12px 24px rgba(16, 185, 129, 0.2);
+}
+
+.smart-account-header-logo::after {
+  content: '';
+  position: absolute;
+  right: 1px;
+  bottom: 1px;
+  width: 7px;
+  height: 7px;
+  border: 1px solid var(--color-background-default);
+  border-radius: 999px;
+  background: var(--color-success-default);
 }
 
 .smart-account-header-logo__avatar {

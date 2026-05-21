@@ -7222,6 +7222,10 @@
     "message": "Set up",
     "description": "Action label for Smart Accounts. Used on multichain details page."
   },
+  "upgradeSmartAccount": {
+    "message": "Upgrade smart account",
+    "description": "Primary action label for upgrading an account to a Smart Account."
+  },
   "settingAddSnapAccount": {
     "message": "Add account Snap"
   },

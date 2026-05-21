@@ -69,6 +69,11 @@ function runInChildProcess(
   }
 
   return instrumentForTaskStats(taskName, async () => {
+    const activeFeatures = getActiveFeatures();
+    const featureArg =
+      activeFeatures.length > 0
+        ? [`--features=${activeFeatures.join(' ')}`]
+        : [];
     const childProcess = spawn(
       'yarn',
       [
@@ -79,7 +84,7 @@ function runInChildProcess(
         `--snow=${shouldIncludeSnow ? 'true' : 'false'}`,
         `--apply-lavamoat=${applyLavaMoat ? 'true' : 'false'}`,
         `--build-type=${buildType}`,
-        `--features=${getActiveFeatures().join(' ')}`,
+        ...featureArg,
         `--lint-fence-files=${shouldLintFenceFiles ? 'true' : 'false'}`,
         `--policyOnly=${policyOnly ? 'true' : 'false'}`,
         '--skip-stats=true',

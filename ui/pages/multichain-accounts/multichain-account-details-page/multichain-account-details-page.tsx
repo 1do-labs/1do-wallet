@@ -60,6 +60,8 @@ import {
 } from '../../../../shared/constants/metametrics';
 import { MetaMetricsContext } from '../../../contexts/metametrics';
 import { trace, TraceName, TraceOperation } from '../../../../shared/lib/trace';
+import { getCurrentChainId } from '../../../../shared/lib/selectors/networks';
+import { useOneDoSmartAccountStatus } from '../../../hooks/accounts/useOneDoSmartAccountStatus';
 
 export const MultichainAccountDetailsPage = () => {
   const t = useI18nContext();
@@ -108,6 +110,12 @@ export const MultichainAccountDetailsPage = () => {
   const isEip7702SupportedKeyring =
     evmKeyringType &&
     KEYRING_TYPES_SUPPORTING_7702.includes(evmKeyringType as KeyringTypes);
+  const currentChainId = useSelector(getCurrentChainId);
+  const { isActive: isSmartAccountActive } = useOneDoSmartAccountStatus({
+    address: evmInternalAccount?.address,
+    chainId: currentChainId,
+    enabled: Boolean(isEip7702SupportedKeyring),
+  });
 
   const handleAddressesClick = () => {
     trace({
@@ -257,7 +265,7 @@ export const MultichainAccountDetailsPage = () => {
           {isEip7702SupportedKeyring && (
             <AccountDetailsRow
               label={t('smartAccountLabel')}
-              value={t('setUp')}
+              value={isSmartAccountActive ? t('active') : t('setUp')}
               onClick={handleSmartAccountClick}
               endAccessory={
                 <Box className="ml-2">

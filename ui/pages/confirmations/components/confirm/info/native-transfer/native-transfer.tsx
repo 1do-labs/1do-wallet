@@ -10,6 +10,7 @@ import { TokenDetailsSection } from '../token-transfer/token-details-section';
 import { TransactionFlowSection } from '../token-transfer/transaction-flow-section';
 import { useMaxValueRefresher } from '../hooks/useMaxValueRefresher';
 import { EnforcedSimulationsRow } from '../../../rows/enforced-simulations-row';
+import { OneDoTransactionClearSigningSection } from '../shared/onedo-clear-signing/onedo-clear-signing';
 
 const NativeTransferInfo = () => {
   const { currentConfirmation: transactionMeta } =
@@ -29,6 +30,7 @@ const NativeTransferInfo = () => {
         metricsOnly={isWalletInitiated}
       />
       <EnforcedSimulationsRow />
+      <OneDoTransactionClearSigningSection />
       <TokenDetailsSection />
       <TransactionPaySection />
       <GasFeesSection />
