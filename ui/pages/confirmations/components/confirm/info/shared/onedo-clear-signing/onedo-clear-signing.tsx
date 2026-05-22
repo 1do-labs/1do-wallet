@@ -32,6 +32,8 @@ import {
 } from '../../../../../utils/onedo-clear-signing';
 import { getBuiltInRegistryErc7730TransactionClearSigning } from '../../../../../utils/erc7730-registry';
 
+const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000';
+
 const SEPOLIA_1DO_TOKEN_DETAILS: Record<
   string,
   { decimals: number; symbol: string }
@@ -58,6 +60,9 @@ const getFallbackTokenDetails = (tokenAddress?: string) =>
   tokenAddress
     ? SEPOLIA_1DO_TOKEN_DETAILS[tokenAddress.toLowerCase()]
     : undefined;
+
+const isZeroAddress = (tokenAddress?: string) =>
+  tokenAddress?.toLowerCase() === ZERO_ADDRESS;
 
 const OneDoClearSigningRowValue = ({
   chainId,
@@ -89,6 +94,15 @@ const OneDoClearSigningRowValue = ({
   }
 
   if (item.valueType === 'tokenAmount' && item.rawValue) {
+    if (isZeroAddress(item.tokenAddress)) {
+      const nativeAmount = calcTokenAmount(item.rawValue, 18);
+      const text = `${formatAmount('en-US', nativeAmount)} ${
+        networkConfiguration?.nativeCurrency ?? 'ETH'
+      }`;
+
+      return <ConfirmInfoRowText text={text} />;
+    }
+
     const decimals =
       tokenDetails.standard === TokenStandard.ERC20
         ? tokenDetails.decimalsNumber

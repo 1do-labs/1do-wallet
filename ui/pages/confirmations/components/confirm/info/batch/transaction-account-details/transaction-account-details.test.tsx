@@ -31,9 +31,11 @@ jest.mock(
 
 function render({
   authorizationList,
+  delegationAddress,
   nestedTransactions,
 }: {
   authorizationList?: AuthorizationList;
+  delegationAddress?: `0x${string}`;
   nestedTransactions?: NestedTransactionMetadata[];
 }) {
   const store = configureStore(
@@ -41,6 +43,7 @@ function render({
       genUnapprovedContractInteractionConfirmation({
         address: FROM_MOCK,
         authorizationList,
+        delegationAddress,
         nestedTransactions,
       }),
     ),
@@ -102,6 +105,20 @@ describe('TransactionAccountDetails', () => {
     expect(getByText('0x935E7...05477')).toBeInTheDocument();
     expect(
       getByText(messages.standardAccountLabel.message),
+    ).toBeInTheDocument();
+  });
+
+  it('renders an existing smart account switch to 1Do smart account', () => {
+    const { getByText } = renderConfirmation({
+      ...upgradeAccountConfirmationOnly,
+      delegationAddress: '0x1111111111111111111111111111111111111111',
+    });
+
+    expect(
+      getByText(messages.confirmAccountTypeSmartContract.message),
+    ).toBeInTheDocument();
+    expect(
+      getByText(messages.confirmAccountTypeOneDoSmartContract.message),
     ).toBeInTheDocument();
   });
 

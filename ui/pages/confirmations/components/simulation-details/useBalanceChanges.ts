@@ -5,6 +5,7 @@ import {
   SimulationData,
   SimulationTokenBalanceChange,
   SimulationTokenStandard,
+  TransactionMeta,
 } from '@metamask/transaction-controller';
 import { BigNumber } from 'bignumber.js';
 import { ContractExchangeRates } from '@metamask/assets-controllers';
@@ -22,6 +23,7 @@ import {
   ERC20_DEFAULT_DECIMALS,
   fetchAllErc20Decimals,
 } from '../../utils/token';
+import { isOneDo7702UpgradeAuthorization } from '../../../../../shared/lib/eip7702-utils';
 
 import {
   BalanceChange,
@@ -32,6 +34,7 @@ import {
 
 const NATIVE_DECIMALS = 18;
 const CURRENCY_USD = 'usd';
+const GAS_NATIVE_CHANGE_TOLERANCE_RATIO = 0.5;
 
 // See https://github.com/MikeMcl/bignumber.js/issues/11#issuecomment-23053776
 function convertNumberToStringWithPrecisionWarning(value: number): string {
@@ -113,6 +116,73 @@ function getNativeBalanceChange(
   return { asset, amount, fiatAmount, usdAmount };
 }
 
+function parseHexToBigNumber(value?: string | null): BigNumber {
+  if (!value) {
+    return new BigNumber(0);
+  }
+
+  return new BigNumber(value, 16);
+}
+
+function getTransactionGasFeeUpperBoundWei(
+  transaction?: TransactionMeta,
+): BigNumber {
+  const txParams = transaction?.txParams;
+  const gasLimit = parseHexToBigNumber(
+    (txParams?.gasLimit ?? txParams?.gas) as string | undefined,
+  );
+  const feePerGas = parseHexToBigNumber(
+    (txParams?.maxFeePerGas ?? txParams?.gasPrice) as string | undefined,
+  );
+
+  return gasLimit.times(feePerGas);
+}
+
+function hasOneDo7702Context(transaction?: TransactionMeta): boolean {
+  if (isOneDo7702UpgradeAuthorization(transaction?.delegationAddress)) {
+    return true;
+  }
+
+  return (
+    transaction?.txParams?.authorizationList?.some(({ address }) =>
+      isOneDo7702UpgradeAuthorization(address),
+    ) ?? false
+  );
+}
+
+function isLikelyGasRefundNativeChange({
+  nativeBalanceChange,
+  tokenBalanceChanges,
+  transaction,
+}: {
+  nativeBalanceChange?: SimulationBalanceChange;
+  tokenBalanceChanges: SimulationTokenBalanceChange[];
+  transaction?: TransactionMeta;
+}): boolean {
+  if (
+    !nativeBalanceChange ||
+    nativeBalanceChange.isDecrease ||
+    tokenBalanceChanges.length === 0 ||
+    !hasOneDo7702Context(transaction)
+  ) {
+    return false;
+  }
+
+  const nativeDifferenceWei = parseHexToBigNumber(
+    nativeBalanceChange.difference,
+  );
+  const gasFeeUpperBoundWei = getTransactionGasFeeUpperBoundWei(transaction);
+
+  if (nativeDifferenceWei.isZero() || gasFeeUpperBoundWei.isZero()) {
+    return false;
+  }
+
+  return nativeDifferenceWei
+    .minus(gasFeeUpperBoundWei)
+    .abs()
+    .lte(gasFeeUpperBoundWei.times(GAS_NATIVE_CHANGE_TOLERANCE_RATIO));
+}
+
 // Compiles the balance changes for token assets
 function getTokenBalanceChanges(
   tokenBalanceChanges: SimulationTokenBalanceChange[],
@@ -155,9 +225,11 @@ function getTokenBalanceChanges(
 export const useBalanceChanges = ({
   chainId,
   simulationData,
+  transaction,
 }: {
   chainId: Hex;
   simulationData?: SimulationData;
+  transaction?: TransactionMeta;
 }): { pending: boolean; value: BalanceChange[] } => {
   const fiatCurrency = useSelector(getCurrentCurrency);
 
@@ -208,12 +280,18 @@ export const useBalanceChanges = ({
     return { pending: true, value: [] };
   }
 
-  const nativeChange = getNativeBalanceChange(
+  const nativeChange = isLikelyGasRefundNativeChange({
     nativeBalanceChange,
-    nativeFiatRate,
-    nativeUsdRate,
-    chainId,
-  );
+    tokenBalanceChanges,
+    transaction,
+  })
+    ? undefined
+    : getNativeBalanceChange(
+        nativeBalanceChange,
+        nativeFiatRate,
+        nativeUsdRate,
+        chainId,
+      );
 
   const tokenChanges = getTokenBalanceChanges(
     tokenBalanceChanges,

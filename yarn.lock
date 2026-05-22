@@ -8851,7 +8851,7 @@ __metadata:
 
 "@metamask/transaction-controller@patch:@metamask/transaction-controller@npm%3A64.2.0#~/.yarn/patches/@metamask-transaction-controller-npm-64.2.0-540bc2a651.patch":
   version: 64.2.0
-  resolution: "@metamask/transaction-controller@patch:@metamask/transaction-controller@npm%3A64.2.0#~/.yarn/patches/@metamask-transaction-controller-npm-64.2.0-540bc2a651.patch::version=64.2.0&hash=55ae91"
+  resolution: "@metamask/transaction-controller@patch:@metamask/transaction-controller@npm%3A64.2.0#~/.yarn/patches/@metamask-transaction-controller-npm-64.2.0-540bc2a651.patch::version=64.2.0&hash=eb08b9"
   dependencies:
     "@ethereumjs/common": "npm:^4.4.0"
     "@ethereumjs/tx": "npm:^5.4.0"
@@ -8883,7 +8883,7 @@ __metadata:
   peerDependencies:
     "@babel/runtime": ^7.0.0
     "@metamask/eth-block-tracker": ">=9"
-  checksum: 10/1f61476ec8b53055c59ae145daf6c5e76a5a50ad77c63a2adadca009aaa384188c7148ff2c964b3e6e2f8547c09c0521501e8669d7115103233b4b070ec519f9
+  checksum: 10/db8e0f0205fd21e1341ab07184c3e1eaac60542d1f9f48f72da9f8498228ce8396224cea2a34d24253b2e0821ecd1449bb54b3abee31b45cb2e951d7640030ea
   languageName: node
   linkType: hard
 

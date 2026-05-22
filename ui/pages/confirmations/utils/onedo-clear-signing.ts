@@ -91,6 +91,26 @@ const RUNTIME_APPS: Record<string, { id: string; name: string }> = {
     id: 'sessionpay',
     name: 'Session Pay',
   },
+  '0x94d92d6d93dfaf325084458763c87e25335906bd': {
+    id: 'peerdex',
+    name: 'PeerDex',
+  },
+  '0xcdc3cb85fa46626c5d427042cbd7e6fad0287c3d': {
+    id: 'closesky',
+    name: 'Closesky',
+  },
+  '0x8333bccdbcb3ab7739cb29bf3e435503edd0d5a9': {
+    id: 'flashman',
+    name: 'Flashman',
+  },
+  '0xc84e1126b558b8b33fd453713dc684ed94db9f39': {
+    id: 'cryptowill',
+    name: 'CryptoWill',
+  },
+  '0xad60e9c0ba61eaa9ced65d23e4eb184358a6511c': {
+    id: 'blinkpay',
+    name: 'Blink Pay',
+  },
 };
 
 const ACCOUNT_RUNTIME_INTERFACE = new Interface([
@@ -141,6 +161,35 @@ const WILL_INTERFACE = new Interface([
   'function setPaused(bool paused_)',
   'function resetWill()',
   'function executeWill(tuple(uint256 expiresAt,uint256 timeUnlock,uint256 executorFeeBps,uint8 triggerMode,uint256 willVersion,tuple(address addr,uint256 weight)[] beneficiaries) plan, bytes selfSig, address[] tokens)',
+]);
+
+const PEERDEX_INTERFACE = new Interface([
+  'function fillSignedOrderAsBuyer(tuple(address tokenIn,address tokenOut,uint256 amountIn,uint256 amountOut,uint256 expiry,uint256 nonce) order, bytes makerSignature)',
+  'function cancelSignedOrder(tuple(address tokenIn,address tokenOut,uint256 amountIn,uint256 amountOut,uint256 expiry,uint256 nonce) order)',
+]);
+
+const CLOSESKY_INTERFACE = new Interface([
+  'function fillSignedOrderAsBuyer(tuple(tuple(address makerWallet,tuple(uint8 assetType,address token,uint256 tokenId,uint256 amount) give,tuple(uint8 assetType,address token,uint256 tokenId,uint256 amount) want,uint256 expiry,uint256 nonce) order) params, bytes makerSignature)',
+  'function cancelSignedOrder(tuple(address makerWallet,tuple(uint8 assetType,address token,uint256 tokenId,uint256 amount) give,tuple(uint8 assetType,address token,uint256 tokenId,uint256 amount) want,uint256 expiry,uint256 nonce) order)',
+]);
+
+const BLINKPAY_INTERFACE = new Interface([
+  'function settle(tuple(address sessionKey,address payee,address token,uint256 spendLimit,uint48 sessionExpiry,bytes32 salt) grant, tuple(bytes32 sessionId,uint256 newCumulative,uint48 intentExpiry) intent, bytes selfSig, bytes sessionSig)',
+  'function revokeSession(bytes32 sessionId)',
+]);
+
+const CRYPTOWILL_INTERFACE = new Interface([
+  'function configureInactivity(uint256 inactiveDelay, uint256 gracePeriod)',
+  'function ping()',
+  'function resetInactivity()',
+  'function setPaused(bool paused)',
+  'function claim(tuple(address beneficiary,address token)[] requests)',
+  'function claimFor(address beneficiary, address token)',
+  'function executeWill(tuple(bytes32 planId,uint256 chainId,uint256 expiresAt,uint256 timeUnlock,uint256 executorFeeBps,bool requiresTrustee,bytes32 docHash,tuple(address token,uint8 mode,uint256 cap,tuple(address addr,uint256 weight)[] dist)[] erc20,tuple(address token,uint256[] tokenIds,address beneficiary)[] nft) plan, address[] wildcardTokens, bytes sigOwner, address trustee, bytes sigTrustee)',
+]);
+
+const FLASHMAN_INTERFACE = new Interface([
+  'function flashLoan(address receiver, address token, uint256 amount, bytes data)',
 ]);
 
 export const ONEDO_CLEAR_SIGNING_TRUST_POLICY = {
@@ -196,6 +245,36 @@ export const DESCRIPTORS: Record<string, TrustedDescriptor> = {
   walletNativeTransfers: {
     id: 'wallet-native-transfers',
     sha256: '3fac1b55c499c9f20eec1d0a51c2c006902216d14e3e0f2866a7eaee9c8bd6f0',
+    source: 'onedo-registry-mirror',
+    trust: 'pinned-cache',
+  },
+  peerdex: {
+    id: 'peerdex',
+    sha256: '23ecc8453b3edbe0aa0d89e9650f803af52c249c7dff6e2ddcc881616f356ec7',
+    source: 'onedo-registry-mirror',
+    trust: 'pinned-cache',
+  },
+  closesky: {
+    id: 'closesky',
+    sha256: 'ba87096dd0deb02e02336f710e1e5f3f943082b8813d6596bfb5fbe8724eb97e',
+    source: 'onedo-registry-mirror',
+    trust: 'pinned-cache',
+  },
+  flashman: {
+    id: 'flashman',
+    sha256: '7f33d9e2318f0b5c127bab0ede4b884d8cd9b3a61843c99cb3e46783e54a894d',
+    source: 'onedo-registry-mirror',
+    trust: 'pinned-cache',
+  },
+  cryptowill: {
+    id: 'cryptowill',
+    sha256: 'c8440fb9055835fd64edc8e9f5186131866ef277ea0206d5ad0fdb9c223c3368',
+    source: 'onedo-registry-mirror',
+    trust: 'pinned-cache',
+  },
+  blinkpay: {
+    id: 'blinkpay',
+    sha256: 'e8cd30b418efd2f818defbe671975e5f84512173e7911641415342f18aa67e68',
     source: 'onedo-registry-mirror',
     trust: 'pinned-cache',
   },
@@ -354,6 +433,9 @@ const dateRow = (label: string, value: unknown): OneDoClearSigningRow => ({
 
 const triggerModeLabel = (value: unknown) =>
   String(value) === '1' ? 'Inactivity' : 'Time unlock';
+
+const assetTypeLabel = (value: unknown) =>
+  String(value) === '1' ? 'NFT' : 'Token';
 
 const withoutRows = (
   rows: OneDoClearSigningRow[] | undefined,
@@ -1112,6 +1194,21 @@ const parseRuntimeAccessUpdate = (
   }
 };
 
+export const isOneDoRuntimeAccessUpdateTransactionCandidate = (
+  transaction?: TransactionMeta,
+) => {
+  const data = transaction?.txParams?.data;
+  if (
+    !data ||
+    !isAddress(transaction?.txParams?.from) ||
+    !isAddress(transaction?.txParams?.to)
+  ) {
+    return false;
+  }
+
+  return Boolean(parseRuntimeAccessUpdate(data));
+};
+
 const getDexCallRows = (data: string) => {
   try {
     const parsed = DEX_INTERFACE.parseTransaction({ data });
@@ -1390,6 +1487,280 @@ const getNFTMarketCallRows = (data: string) => {
   return undefined;
 };
 
+const getPeerDexCallRows = (data: string) => {
+  try {
+    const parsed = PEERDEX_INTERFACE.parseTransaction({ data });
+    const order = parsed.args.order as Record<string, unknown>;
+    const isFill = parsed.name === 'fillSignedOrderAsBuyer';
+
+    if (
+      !hasRequiredFields(order, [
+        { path: 'tokenIn', type: 'address' },
+        { path: 'tokenOut', type: 'address' },
+        { path: 'amountIn' },
+        { path: 'amountOut' },
+        { path: 'expiry' },
+        { path: 'nonce' },
+      ])
+    ) {
+      return undefined;
+    }
+
+    return {
+      action: isFill ? 'Fill PeerDex order' : 'Cancel PeerDex order',
+      rows: [
+        tokenAmountRow(
+          isFill ? 'Maker sells' : 'Sell',
+          order.amountIn,
+          order.tokenIn,
+        ),
+        tokenAmountRow(
+          isFill ? 'Buyer pays' : 'Receive',
+          order.amountOut,
+          order.tokenOut,
+        ),
+        dateRow('Expiry', order.expiry),
+      ],
+      advancedRows: [
+        addressRow(isFill ? 'Maker sells token' : 'Sell token', order.tokenIn),
+        addressRow(
+          isFill ? 'Buyer pays token' : 'Receive token',
+          order.tokenOut,
+        ),
+        row('Nonce', order.nonce),
+      ],
+    };
+  } catch {
+    return undefined;
+  }
+};
+
+const closeskyAssetRows = (
+  prefix: string,
+  asset: Record<string, unknown>,
+): OneDoClearSigningRow[] => {
+  if (String(asset.assetType) === '1') {
+    return [
+      addressRow(`${prefix} NFT collection`, asset.token),
+      row(`${prefix} token ID`, asset.tokenId),
+    ];
+  }
+
+  return [tokenAmountRow(prefix, asset.amount, asset.token)];
+};
+
+const getCloseskyCallRows = (data: string) => {
+  try {
+    const parsed = CLOSESKY_INTERFACE.parseTransaction({ data });
+    const order =
+      parsed.name === 'fillSignedOrderAsBuyer'
+        ? (parsed.args.params.order as Record<string, unknown>)
+        : (parsed.args.order as Record<string, unknown>);
+    const give = order.give as Record<string, unknown>;
+    const want = order.want as Record<string, unknown>;
+    const isFill = parsed.name === 'fillSignedOrderAsBuyer';
+
+    if (
+      !hasRequiredFields(order, [
+        { path: 'makerWallet', type: 'address' },
+        { path: 'expiry' },
+        { path: 'nonce' },
+      ]) ||
+      !give ||
+      !want ||
+      typeof give !== 'object' ||
+      typeof want !== 'object' ||
+      !hasRequiredFields(give, [
+        { path: 'assetType' },
+        { path: 'token', type: 'address' },
+        { path: 'tokenId' },
+        { path: 'amount' },
+      ]) ||
+      !hasRequiredFields(want, [
+        { path: 'assetType' },
+        { path: 'token', type: 'address' },
+        { path: 'tokenId' },
+        { path: 'amount' },
+      ])
+    ) {
+      return undefined;
+    }
+
+    return {
+      action: isFill ? 'Fill Closesky order' : 'Cancel Closesky order',
+      rows: [
+        ...closeskyAssetRows(isFill ? 'Maker gives' : 'Give', give),
+        ...closeskyAssetRows(isFill ? 'Buyer pays' : 'Want', want),
+        dateRow('Expiry', order.expiry),
+      ],
+      advancedRows: [
+        addressRow('Maker wallet', order.makerWallet),
+        row('Give asset type', assetTypeLabel(give.assetType)),
+        row('Want asset type', assetTypeLabel(want.assetType)),
+        row('Nonce', order.nonce),
+      ],
+    };
+  } catch {
+    return undefined;
+  }
+};
+
+const getBlinkPayCallRows = (data: string) => {
+  try {
+    const parsed = BLINKPAY_INTERFACE.parseTransaction({ data });
+
+    if (parsed.name === 'revokeSession') {
+      return {
+        action: 'Revoke Blink Pay session',
+        rows: [row('Session ID', parsed.args.sessionId)],
+      };
+    }
+
+    if (parsed.name === 'settle') {
+      const grant = parsed.args.grant as Record<string, unknown>;
+      const intent = parsed.args.intent as Record<string, unknown>;
+
+      return {
+        action: 'Settle Blink Pay session',
+        rows: [
+          tokenAmountRow(
+            'New cumulative paid',
+            intent.newCumulative,
+            grant.token,
+          ),
+          addressRow('Payee', grant.payee),
+          tokenAmountRow('Spend limit', grant.spendLimit, grant.token),
+          dateRow('Intent expires', intent.intentExpiry),
+          dateRow('Session expires', grant.sessionExpiry),
+        ],
+        advancedRows: [
+          addressRow('Payment token', grant.token),
+          addressRow('Session key', grant.sessionKey),
+          row('Session ID', intent.sessionId),
+          row('Salt', grant.salt),
+        ],
+      };
+    }
+  } catch {
+    return undefined;
+  }
+
+  return undefined;
+};
+
+const getCryptoWillCallRows = (data: string) => {
+  try {
+    const parsed = CRYPTOWILL_INTERFACE.parseTransaction({ data });
+
+    if (parsed.name === 'configureInactivity') {
+      return {
+        action: 'Configure CryptoWill inactivity',
+        rows: [
+          row('Inactive delay', parsed.args.inactiveDelay),
+          row('Grace period', parsed.args.gracePeriod),
+        ],
+      };
+    }
+
+    if (parsed.name === 'ping' || parsed.name === 'resetInactivity') {
+      return {
+        action:
+          parsed.name === 'ping'
+            ? 'Record CryptoWill heartbeat'
+            : 'Reset CryptoWill inactivity',
+        rows: [],
+      };
+    }
+
+    if (parsed.name === 'setPaused') {
+      return {
+        action: 'Set CryptoWill paused state',
+        rows: [row('Paused', parsed.args.paused)],
+      };
+    }
+
+    if (parsed.name === 'claim') {
+      return {
+        action: 'Claim CryptoWill assets',
+        rows: [
+          row('Claim count', parsed.args.requests.length),
+          ...parsed.args.requests
+            .slice(0, 3)
+            .flatMap((request: Record<string, unknown>, index: number) => [
+              addressRow(`Claim ${index + 1} beneficiary`, request.beneficiary),
+              addressRow(`Claim ${index + 1} token`, request.token),
+            ]),
+        ],
+      };
+    }
+
+    if (parsed.name === 'claimFor') {
+      return {
+        action: 'Claim CryptoWill asset',
+        rows: [
+          addressRow('Beneficiary', parsed.args.beneficiary),
+          addressRow('Token', parsed.args.token),
+        ],
+      };
+    }
+
+    if (parsed.name === 'executeWill') {
+      const plan = parsed.args.plan as Record<string, unknown>;
+      const erc20 = Array.isArray(plan.erc20) ? plan.erc20 : [];
+      const nft = Array.isArray(plan.nft) ? plan.nft : [];
+
+      return {
+        action: 'Execute CryptoWill plan',
+        rows: [
+          row('Plan ID', plan.planId),
+          row('ERC20 distribution count', erc20.length),
+          row('NFT distribution count', nft.length),
+          row('Executor fee bps', plan.executorFeeBps),
+          row('Requires trustee', plan.requiresTrustee),
+          dateRow('Plan expires', plan.expiresAt),
+          dateRow('Time unlock', plan.timeUnlock),
+        ],
+        advancedRows: [
+          row('Plan chain ID', plan.chainId),
+          row('Document hash', plan.docHash),
+          addressRow('Trustee', parsed.args.trustee),
+          row('Wildcard token count', parsed.args.wildcardTokens.length),
+        ],
+      };
+    }
+  } catch {
+    return undefined;
+  }
+
+  return undefined;
+};
+
+const getFlashmanCallRows = (data: string) => {
+  try {
+    const parsed = FLASHMAN_INTERFACE.parseTransaction({ data });
+
+    if (parsed.name === 'flashLoan') {
+      return {
+        action: 'Execute Flashman flash loan',
+        rows: [
+          addressRow('Receiver', parsed.args.receiver),
+          tokenAmountRow('Loan amount', parsed.args.amount, parsed.args.token),
+          row('Fee rate', '0.05%'),
+          row('1Do fee share', '10% of fee'),
+        ],
+        advancedRows: [
+          addressRow('Loan token', parsed.args.token),
+          hashRow('Callback data hash', parsed.args.data),
+        ],
+      };
+    }
+  } catch {
+    return undefined;
+  }
+
+  return undefined;
+};
+
 const getRuntimeAppCallRows = (appAddress: string, data: string) => {
   const appName = appNameForAddress(appAddress);
 
@@ -1462,6 +1833,26 @@ const getRuntimeAppCallRows = (appAddress: string, data: string) => {
     } catch {
       return undefined;
     }
+  }
+
+  if (appName === 'PeerDex') {
+    return getPeerDexCallRows(data);
+  }
+
+  if (appName === 'Closesky') {
+    return getCloseskyCallRows(data);
+  }
+
+  if (appName === 'Blink Pay') {
+    return getBlinkPayCallRows(data);
+  }
+
+  if (appName === 'CryptoWill') {
+    return getCryptoWillCallRows(data);
+  }
+
+  if (appName === 'Flashman') {
+    return getFlashmanCallRows(data);
   }
 
   return undefined;

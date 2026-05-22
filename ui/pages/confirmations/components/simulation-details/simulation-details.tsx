@@ -45,6 +45,7 @@ import { BalanceChangeList } from './balance-change-list';
 import { BalanceChange } from './types';
 import { useBalanceChanges } from './useBalanceChanges';
 import { useSimulationMetrics } from './useSimulationMetrics';
+import { isOneDoRuntimeAccessUpdateTransactionCandidate } from '../../utils/onedo-clear-signing';
 
 export type StaticRow = {
   label: string;
@@ -423,7 +424,13 @@ export const SimulationDetails: React.FC<SimulationDetailsProps> = ({
 }: SimulationDetailsProps) => {
   const t = useI18nContext();
   const { chainId, id: transactionId, simulationData } = transaction;
-  const balanceChangesResult = useBalanceChanges({ chainId, simulationData });
+  const isOneDoRuntimeAccessUpdate =
+    isOneDoRuntimeAccessUpdateTransactionCandidate(transaction);
+  const balanceChangesResult = useBalanceChanges({
+    chainId,
+    simulationData,
+    transaction,
+  });
   const loading = !simulationData || balanceChangesResult.pending;
 
   const hasStaticData =
@@ -442,7 +449,7 @@ export const SimulationDetails: React.FC<SimulationDetailsProps> = ({
   const fieldAlerts = getFieldAlerts(RowAlertKey.EstimatedChangesStatic);
   const selectedAlertSeverity = fieldAlerts[0]?.severity;
 
-  if (metricsOnly) {
+  if (metricsOnly || isOneDoRuntimeAccessUpdate) {
     return null;
   }
 

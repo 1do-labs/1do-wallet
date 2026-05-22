@@ -60,11 +60,11 @@ export function getPendingOneDoUpgradeTransaction({
 export async function getOneDoSmartAccountIsActive({
   address,
   chainId,
-  isUpgraded,
+  getDelegationAddress,
 }: {
   address: Hex;
   chainId: Hex;
-  isUpgraded: (address: Hex) => Promise<boolean>;
+  getDelegationAddress: (address: Hex) => Promise<Hex | undefined>;
 }) {
   const support = await isAtomicBatchSupported({
     address,
@@ -77,7 +77,8 @@ export async function getOneDoSmartAccountIsActive({
     isSameAddress(
       currentChainSupport?.delegationAddress,
       ONE_DO_7702_DELEGATE,
-    ) || (await isUpgraded(address))
+    ) ||
+    isSameAddress(await getDelegationAddress(address), ONE_DO_7702_DELEGATE)
   );
 }
 
@@ -87,7 +88,7 @@ export function useOneDoSmartAccountStatus({
   enabled = true,
 }: UseOneDoSmartAccountStatusParams): OneDoSmartAccountStatus {
   const transactions = useSelector(getTransactions) as TransactionMeta[];
-  const { isUpgraded } = useEIP7702Account({
+  const { getDelegationAddress } = useEIP7702Account({
     chainId: chainId ?? ('0x' as Hex),
   });
   const [isActive, setIsActive] = useState(false);
@@ -111,9 +112,9 @@ export function useOneDoSmartAccountStatus({
     return getOneDoSmartAccountIsActive({
       address,
       chainId,
-      isUpgraded,
+      getDelegationAddress,
     });
-  }, [address, chainId, enabled, isUpgraded]);
+  }, [address, chainId, enabled, getDelegationAddress]);
 
   useEffect(() => {
     let cancelled = false;

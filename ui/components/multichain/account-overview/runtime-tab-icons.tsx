@@ -79,16 +79,16 @@ export const PayIcon = ({ className, ...props }: IconProps) => (
   >
     <defs>
       <linearGradient id="pay-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0%" stopColor="#a7f3d0" />
-        <stop offset="60%" stopColor="#34d399" />
-        <stop offset="100%" stopColor="#22c55e" />
+        <stop offset="0%" stopColor="#6EE7B7" />
+        <stop offset="55%" stopColor="#34D399" />
+        <stop offset="100%" stopColor="#10B981" />
       </linearGradient>
     </defs>
-    <rect x="10" y="10" width="80" height="80" rx="20" fill="url(#pay-grad)" />
+    <rect x="16" y="16" width="68" height="68" rx="18" fill="url(#pay-grad)" />
     <path
-      d="M32 64 Q36 36 50 52 Q64 36 68 64"
+      d="M39 51L47 59L62 43"
       stroke="#ffffff"
-      strokeWidth="5.5"
+      strokeWidth="4.5"
       strokeLinecap="round"
       strokeLinejoin="round"
       fill="none"
@@ -111,14 +111,7 @@ export const DexPixel = ({ className, ...props }: IconProps) => (
         <stop offset="100%" stopColor="#4c1d95" />
       </linearGradient>
     </defs>
-    <rect
-      x="0"
-      y="0"
-      width="100"
-      height="100"
-      rx="20"
-      fill="url(#dex-grad)"
-    />
+    <rect x="0" y="0" width="100" height="100" rx="20" fill="url(#dex-grad)" />
     <path
       d="M0 0 H100 A20 20 0 0 1 100 20 V50 C100 50 80 20 50 20 C20 20 0 50 0 50 V20 A20 20 0 0 1 0 0 Z"
       fill="#ffffff"
@@ -203,14 +196,7 @@ export const WillMonolith = ({ className, ...props }: IconProps) => (
         <stop offset="100%" stopColor="#fbbf24" />
       </linearGradient>
     </defs>
-    <rect
-      x="0"
-      y="0"
-      width="100"
-      height="100"
-      rx="24"
-      fill="url(#will-grad)"
-    />
+    <rect x="0" y="0" width="100" height="100" rx="24" fill="url(#will-grad)" />
     <rect
       x="6"
       y="6"

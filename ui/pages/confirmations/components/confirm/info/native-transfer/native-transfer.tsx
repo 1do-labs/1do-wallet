@@ -11,6 +11,7 @@ import { TransactionFlowSection } from '../token-transfer/transaction-flow-secti
 import { useMaxValueRefresher } from '../hooks/useMaxValueRefresher';
 import { EnforcedSimulationsRow } from '../../../rows/enforced-simulations-row';
 import { OneDoTransactionClearSigningSection } from '../shared/onedo-clear-signing/onedo-clear-signing';
+import { isOneDoWalletNativeTransferTransactionCandidate } from '../../../../utils/onedo-clear-signing';
 
 const NativeTransferInfo = () => {
   const { currentConfirmation: transactionMeta } =
@@ -18,6 +19,8 @@ const NativeTransferInfo = () => {
   useMaxValueRefresher();
 
   const isWalletInitiated = transactionMeta.origin === 'metamask';
+  const isOneDoWalletNativeTransfer =
+    isOneDoWalletNativeTransferTransactionCandidate(transactionMeta);
 
   return (
     <>
@@ -27,9 +30,9 @@ const NativeTransferInfo = () => {
         transaction={transactionMeta}
         isTransactionsRedesign
         enableMetrics
-        metricsOnly={isWalletInitiated}
+        metricsOnly={isWalletInitiated || isOneDoWalletNativeTransfer}
       />
-      <EnforcedSimulationsRow />
+      {!isOneDoWalletNativeTransfer && <EnforcedSimulationsRow />}
       <OneDoTransactionClearSigningSection />
       <TokenDetailsSection />
       <TransactionPaySection />

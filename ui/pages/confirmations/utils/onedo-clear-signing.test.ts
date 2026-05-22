@@ -20,9 +20,15 @@ const MAKER_WALLET_ADDRESS = '0x2222222222222222222222222222222222222222';
 const DEX_ADDRESS = '0x199DFfe30b8B5Ab611d952289a2674c5E826Dcb9';
 const NFTMARKET_ADDRESS = '0x7C8f64a017D026c889eFAC3D72CDBB2fd2ea0daA';
 const SESSIONPAY_ADDRESS = '0x55Dc56E517E5371313bA2932d712029d334DF006';
+const PEERDEX_ADDRESS = '0x94d92d6D93dFAf325084458763c87e25335906Bd';
+const CLOSESKY_ADDRESS = '0xcDc3CB85fA46626C5d427042cbd7e6fad0287C3d';
+const FLASHMAN_ADDRESS = '0x8333BCCDBcb3ab7739CB29Bf3E435503EdD0D5a9';
+const CRYPTOWILL_ADDRESS = '0xC84E1126b558B8b33Fd453713dC684ed94db9F39';
+const BLINKPAY_ADDRESS = '0xAD60E9c0ba61EAa9cEd65d23E4eb184358a6511c';
 const TOKEN_IN_ADDRESS = '0x3333333333333333333333333333333333333333';
 const TOKEN_OUT_ADDRESS = '0x4444444444444444444444444444444444444444';
 const NFT_ADDRESS = '0x5555555555555555555555555555555555555555';
+const FLASH_RECEIVER_ADDRESS = '0x7777777777777777777777777777777777777777';
 const CLAIMANT_ADDRESS = '0x6666666666666666666666666666666666666666';
 const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000';
 const MAKER_SIGNATURE = `0x${'11'.repeat(65)}`;
@@ -48,6 +54,28 @@ const dexInterface = new Interface([
 
 const nftMarketInterface = new Interface([
   'function fillSignedTokenForNftOrderAsBuyer(tuple(address nft,uint256 tokenId,address erc20,uint256 tokenAmount,uint256 expiry,uint256 nonce) order, bytes makerSignature)',
+]);
+
+const peerDexInterface = new Interface([
+  'function fillSignedOrderAsBuyer(tuple(address tokenIn,address tokenOut,uint256 amountIn,uint256 amountOut,uint256 expiry,uint256 nonce) order, bytes makerSignature)',
+  'function cancelSignedOrder(tuple(address tokenIn,address tokenOut,uint256 amountIn,uint256 amountOut,uint256 expiry,uint256 nonce) order)',
+]);
+
+const closeskyInterface = new Interface([
+  'function fillSignedOrderAsBuyer(tuple(tuple(address makerWallet,tuple(uint8 assetType,address token,uint256 tokenId,uint256 amount) give,tuple(uint8 assetType,address token,uint256 tokenId,uint256 amount) want,uint256 expiry,uint256 nonce) order) params, bytes makerSignature)',
+]);
+
+const blinkPayInterface = new Interface([
+  'function settle(tuple(address sessionKey,address payee,address token,uint256 spendLimit,uint48 sessionExpiry,bytes32 salt) grant, tuple(bytes32 sessionId,uint256 newCumulative,uint48 intentExpiry) intent, bytes selfSig, bytes sessionSig)',
+]);
+
+const cryptoWillInterface = new Interface([
+  'function executeWill(tuple(bytes32 planId,uint256 chainId,uint256 expiresAt,uint256 timeUnlock,uint256 executorFeeBps,bool requiresTrustee,bytes32 docHash,tuple(address token,uint8 mode,uint256 cap,tuple(address addr,uint256 weight)[] dist)[] erc20,tuple(address token,uint256[] tokenIds,address beneficiary)[] nft) plan, address[] wildcardTokens, bytes sigOwner, address trustee, bytes sigTrustee)',
+  'function claimFor(address beneficiary, address token)',
+]);
+
+const flashmanInterface = new Interface([
+  'function flashLoan(address receiver, address token, uint256 amount, bytes data)',
 ]);
 
 describe('1Do clear signing utilities', () => {
@@ -744,6 +772,355 @@ describe('1Do clear signing utilities', () => {
           label: 'Maker sells',
           value: '3000 raw units',
           valueType: 'tokenAmount',
+        }),
+      ]),
+    });
+  });
+
+  it('recognizes PeerDex fill transactions', () => {
+    const appData = peerDexInterface.encodeFunctionData(
+      'fillSignedOrderAsBuyer',
+      [
+        {
+          tokenIn: TOKEN_IN_ADDRESS,
+          tokenOut: TOKEN_OUT_ADDRESS,
+          amountIn: 1000,
+          amountOut: 2000,
+          expiry: 4102444800,
+          nonce: 11,
+        },
+        MAKER_SIGNATURE,
+      ],
+    );
+    const data = accountRuntimeInterface.encodeFunctionData(
+      'executeRuntimeApp',
+      [PEERDEX_ADDRESS, appData],
+    );
+
+    const info = getOneDoTransactionClearSigning({
+      chainId: '0xaa36a7',
+      delegationAddress: ONE_DO_7702_DELEGATE,
+      id: 'peerdex-fill',
+      networkClientId: 'sepolia',
+      status: TransactionStatus.unapproved,
+      time: Date.now(),
+      type: TransactionType.contractInteraction,
+      txParams: {
+        from: WALLET_ADDRESS,
+        to: WALLET_ADDRESS,
+        data,
+      },
+    });
+
+    expect(info).toMatchObject({
+      title: 'Fill PeerDex order',
+      rows: expect.arrayContaining([
+        expect.objectContaining({ label: 'Runtime app', value: 'PeerDex' }),
+        expect.objectContaining({
+          label: 'Maker sells',
+          value: '1000 raw units',
+          valueType: 'tokenAmount',
+        }),
+        expect.objectContaining({
+          label: 'Buyer pays',
+          value: '2000 raw units',
+          valueType: 'tokenAmount',
+        }),
+      ]),
+      advancedRows: expect.arrayContaining([
+        expect.objectContaining({ label: 'Nonce', value: '11' }),
+      ]),
+    });
+  });
+
+  it('recognizes PeerDex cancel transactions', () => {
+    const appData = peerDexInterface.encodeFunctionData('cancelSignedOrder', [
+      {
+        tokenIn: TOKEN_IN_ADDRESS,
+        tokenOut: TOKEN_OUT_ADDRESS,
+        amountIn: 1000,
+        amountOut: 2000,
+        expiry: 4102444800,
+        nonce: 12,
+      },
+    ]);
+    const data = accountRuntimeInterface.encodeFunctionData(
+      'executeRuntimeApp',
+      [PEERDEX_ADDRESS, appData],
+    );
+
+    const info = getOneDoTransactionClearSigning({
+      chainId: '0xaa36a7',
+      delegationAddress: ONE_DO_7702_DELEGATE,
+      id: 'peerdex-cancel',
+      networkClientId: 'sepolia',
+      status: TransactionStatus.unapproved,
+      time: Date.now(),
+      type: TransactionType.contractInteraction,
+      txParams: {
+        from: WALLET_ADDRESS,
+        to: WALLET_ADDRESS,
+        data,
+      },
+    });
+
+    expect(info).toMatchObject({
+      title: 'Cancel PeerDex order',
+      rows: expect.arrayContaining([
+        expect.objectContaining({ label: 'Sell', value: '1000 raw units' }),
+        expect.objectContaining({ label: 'Receive', value: '2000 raw units' }),
+      ]),
+    });
+  });
+
+  it('recognizes Closesky fill transactions', () => {
+    const appData = closeskyInterface.encodeFunctionData(
+      'fillSignedOrderAsBuyer',
+      [
+        {
+          order: {
+            makerWallet: MAKER_WALLET_ADDRESS,
+            give: {
+              assetType: 1,
+              token: NFT_ADDRESS,
+              tokenId: 42,
+              amount: 1,
+            },
+            want: {
+              assetType: 0,
+              token: TOKEN_OUT_ADDRESS,
+              tokenId: 0,
+              amount: 3000,
+            },
+            expiry: 4102444800,
+            nonce: 13,
+          },
+        },
+        MAKER_SIGNATURE,
+      ],
+    );
+    const data = accountRuntimeInterface.encodeFunctionData(
+      'executeRuntimeApp',
+      [CLOSESKY_ADDRESS, appData],
+    );
+
+    const info = getOneDoTransactionClearSigning({
+      chainId: '0xaa36a7',
+      delegationAddress: ONE_DO_7702_DELEGATE,
+      id: 'closesky-fill',
+      networkClientId: 'sepolia',
+      status: TransactionStatus.unapproved,
+      time: Date.now(),
+      type: TransactionType.contractInteraction,
+      txParams: {
+        from: WALLET_ADDRESS,
+        to: WALLET_ADDRESS,
+        data,
+      },
+    });
+
+    expect(info).toMatchObject({
+      title: 'Fill Closesky order',
+      rows: expect.arrayContaining([
+        expect.objectContaining({ label: 'Runtime app', value: 'Closesky' }),
+        expect.objectContaining({
+          label: 'Maker gives NFT collection',
+          value: NFT_ADDRESS,
+        }),
+        expect.objectContaining({ label: 'Maker gives token ID', value: '42' }),
+        expect.objectContaining({
+          label: 'Buyer pays',
+          value: '3000 raw units',
+          valueType: 'tokenAmount',
+        }),
+      ]),
+      advancedRows: expect.arrayContaining([
+        expect.objectContaining({
+          label: 'Maker wallet',
+          value: MAKER_WALLET_ADDRESS,
+        }),
+      ]),
+    });
+  });
+
+  it('recognizes Blink Pay settlement transactions', () => {
+    const sessionId =
+      '0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa';
+    const salt =
+      '0xbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb';
+    const appData = blinkPayInterface.encodeFunctionData('settle', [
+      {
+        sessionKey: FLASH_RECEIVER_ADDRESS,
+        payee: CLAIMANT_ADDRESS,
+        token: TOKEN_OUT_ADDRESS,
+        spendLimit: 5000,
+        sessionExpiry: 4102444800,
+        salt,
+      },
+      {
+        sessionId,
+        newCumulative: 2000,
+        intentExpiry: 4102444700,
+      },
+      MAKER_SIGNATURE,
+      TRANSFER_SIGNATURE,
+    ]);
+    const data = accountRuntimeInterface.encodeFunctionData(
+      'executeRuntimeApp',
+      [BLINKPAY_ADDRESS, appData],
+    );
+
+    const info = getOneDoTransactionClearSigning({
+      chainId: '0xaa36a7',
+      delegationAddress: ONE_DO_7702_DELEGATE,
+      id: 'blinkpay-settle',
+      networkClientId: 'sepolia',
+      status: TransactionStatus.unapproved,
+      time: Date.now(),
+      type: TransactionType.contractInteraction,
+      txParams: {
+        from: WALLET_ADDRESS,
+        to: WALLET_ADDRESS,
+        data,
+      },
+    });
+
+    expect(info).toMatchObject({
+      title: 'Settle Blink Pay session',
+      rows: expect.arrayContaining([
+        expect.objectContaining({ label: 'Runtime app', value: 'Blink Pay' }),
+        expect.objectContaining({
+          label: 'New cumulative paid',
+          value: '2000 raw units',
+        }),
+        expect.objectContaining({ label: 'Payee', value: CLAIMANT_ADDRESS }),
+      ]),
+      advancedRows: expect.arrayContaining([
+        expect.objectContaining({ label: 'Session ID', value: sessionId }),
+      ]),
+    });
+  });
+
+  it('recognizes CryptoWill execute transactions', () => {
+    const planId =
+      '0xcccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc';
+    const docHash =
+      '0xdddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd';
+    const appData = cryptoWillInterface.encodeFunctionData('executeWill', [
+      {
+        planId,
+        chainId: 11155111,
+        expiresAt: 4102444800,
+        timeUnlock: 4102444700,
+        executorFeeBps: 50,
+        requiresTrustee: true,
+        docHash,
+        erc20: [
+          {
+            token: TOKEN_IN_ADDRESS,
+            mode: 0,
+            cap: 0,
+            dist: [{ addr: CLAIMANT_ADDRESS, weight: 100 }],
+          },
+        ],
+        nft: [
+          {
+            token: NFT_ADDRESS,
+            tokenIds: [42],
+            beneficiary: CLAIMANT_ADDRESS,
+          },
+        ],
+      },
+      [TOKEN_OUT_ADDRESS],
+      MAKER_SIGNATURE,
+      FLASH_RECEIVER_ADDRESS,
+      TRANSFER_SIGNATURE,
+    ]);
+    const data = accountRuntimeInterface.encodeFunctionData(
+      'executeRuntimeApp',
+      [CRYPTOWILL_ADDRESS, appData],
+    );
+
+    const info = getOneDoTransactionClearSigning({
+      chainId: '0xaa36a7',
+      delegationAddress: ONE_DO_7702_DELEGATE,
+      id: 'cryptowill-execute',
+      networkClientId: 'sepolia',
+      status: TransactionStatus.unapproved,
+      time: Date.now(),
+      type: TransactionType.contractInteraction,
+      txParams: {
+        from: WALLET_ADDRESS,
+        to: WALLET_ADDRESS,
+        data,
+      },
+    });
+
+    expect(info).toMatchObject({
+      title: 'Execute CryptoWill plan',
+      rows: expect.arrayContaining([
+        expect.objectContaining({ label: 'Runtime app', value: 'CryptoWill' }),
+        expect.objectContaining({ label: 'Plan ID', value: planId }),
+        expect.objectContaining({
+          label: 'ERC20 distribution count',
+          value: '1',
+        }),
+        expect.objectContaining({
+          label: 'NFT distribution count',
+          value: '1',
+        }),
+      ]),
+      advancedRows: expect.arrayContaining([
+        expect.objectContaining({ label: 'Document hash', value: docHash }),
+      ]),
+    });
+  });
+
+  it('recognizes Flashman flash loan transactions', () => {
+    const appData = flashmanInterface.encodeFunctionData('flashLoan', [
+      FLASH_RECEIVER_ADDRESS,
+      TOKEN_IN_ADDRESS,
+      1000000,
+      '0x1234',
+    ]);
+    const data = accountRuntimeInterface.encodeFunctionData(
+      'executeRuntimeApp',
+      [FLASHMAN_ADDRESS, appData],
+    );
+
+    const info = getOneDoTransactionClearSigning({
+      chainId: '0xaa36a7',
+      delegationAddress: ONE_DO_7702_DELEGATE,
+      id: 'flashman-loan',
+      networkClientId: 'sepolia',
+      status: TransactionStatus.unapproved,
+      time: Date.now(),
+      type: TransactionType.contractInteraction,
+      txParams: {
+        from: WALLET_ADDRESS,
+        to: WALLET_ADDRESS,
+        data,
+      },
+    });
+
+    expect(info).toMatchObject({
+      title: 'Execute Flashman flash loan',
+      rows: expect.arrayContaining([
+        expect.objectContaining({ label: 'Runtime app', value: 'Flashman' }),
+        expect.objectContaining({
+          label: 'Receiver',
+          value: FLASH_RECEIVER_ADDRESS,
+        }),
+        expect.objectContaining({
+          label: 'Loan amount',
+          value: '1000000 raw units',
+        }),
+        expect.objectContaining({ label: 'Fee rate', value: '0.05%' }),
+      ]),
+      advancedRows: expect.arrayContaining([
+        expect.objectContaining({
+          label: 'Loan token',
+          value: TOKEN_IN_ADDRESS,
         }),
       ]),
     });

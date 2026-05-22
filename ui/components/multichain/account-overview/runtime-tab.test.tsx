@@ -19,14 +19,14 @@ describe('RuntimeTab', () => {
       store,
     );
 
+    expect(getByTestId('runtime-app-card-redpacket')).toBeInTheDocument();
+    expect(getByTestId('runtime-app-card-gift')).toBeInTheDocument();
+    expect(getByTestId('runtime-app-card-pay')).toBeInTheDocument();
     expect(getByTestId('runtime-app-card-dex')).toBeInTheDocument();
     expect(getByTestId('runtime-app-card-nftmarket')).toBeInTheDocument();
     expect(getByTestId('runtime-app-card-flashloan')).toBeInTheDocument();
     expect(getByTestId('runtime-app-card-will')).toBeInTheDocument();
     expect(getByTestId('runtime-app-card-sessionpay')).toBeInTheDocument();
-    expect(queryByTestId('runtime-app-card-pay')).not.toBeInTheDocument();
-    expect(queryByTestId('runtime-app-card-gift')).not.toBeInTheDocument();
-    expect(queryByTestId('runtime-app-card-redpacket')).not.toBeInTheDocument();
     expect(queryByTestId('runtime-app-card-store')).not.toBeInTheDocument();
 
     fireEvent.click(getByTestId('runtime-app-card-dex'));

@@ -1,6 +1,5 @@
 import { PRODUCT_TYPES } from '@metamask/subscription-controller';
 import { ORIGIN_METAMASK } from '@metamask/controller-utils';
-import { keccak256 } from 'ethereum-cryptography/keccak';
 import {
   type PublishBatchHookRequest,
   type PublishBatchHookTransaction,
@@ -8,11 +7,9 @@ import {
   TransactionController,
   TransactionControllerMessenger,
   TransactionMeta,
-  TransactionStatus,
   TransactionType,
 } from '@metamask/transaction-controller';
 import {
-  type NetworkController,
   SmartTransactionsController,
   SmartTransactionStatuses,
 } from '@metamask/smart-transactions-controller';
@@ -20,7 +17,7 @@ import {
   TransactionPayControllerMessenger,
   TransactionPayPublishHook,
 } from '@metamask/transaction-pay-controller';
-import { bytesToHex, Hex, hexToBytes } from '@metamask/utils';
+import { Hex } from '@metamask/utils';
 import { trace } from '../../../../shared/lib/trace';
 import { hasTransactionType } from '../../../../shared/lib/transactions.utils';
 import { getIsSmartTransaction } from '../../../../shared/lib/selectors';
@@ -75,14 +72,6 @@ const TRANSACTION_SUBMISSION_METHOD = {
   SENTINEL_RELAY: 'sentinel_relay',
 };
 
-const SIGNED_TRANSACTION_RECOVERY_NOTE =
-  'Recovered signed transaction after extension restart';
-
-const RECOVERABLE_STARTUP_TRANSACTION_ERRORS = [
-  'Transaction incomplete at startup',
-  'Transaction incomplete at startup with all required transactions confirmed',
-];
-
 export const TransactionControllerInit: MessengerClientInitFunction<
   TransactionController,
   TransactionControllerMessenger,
@@ -105,11 +94,6 @@ export const TransactionControllerInit: MessengerClientInitFunction<
     preferencesController,
     smartTransactionsController,
   } = getControllers(request);
-
-  const recoveredPersistedTransactionState =
-    getRecoverableTransactionControllerState(
-      persistedState.TransactionController,
-    );
 
   const messengerClient: TransactionController = new TransactionController({
     getCurrentNetworkEIP1559Compatibility: () =>
@@ -206,7 +190,7 @@ export const TransactionControllerInit: MessengerClientInitFunction<
           },
         };
       },
-      beforePublish: () => undefined,
+      beforePublish: () => true,
       beforeSign: new EnforceSimulationHook({
         messenger: initMessenger,
         isEligible: (transactionMeta) =>
@@ -215,7 +199,6 @@ export const TransactionControllerInit: MessengerClientInitFunction<
             initMessenger.call('AppStateController:getState'),
           ),
       }).getBeforeSignHook(),
-      beforeCheckPendingTransactions: () => undefined,
       // @ts-expect-error Controller type does not support undefined return value
       publish: (transactionMeta, signedTx) =>
         publishHook({
@@ -264,21 +247,13 @@ export const TransactionControllerInit: MessengerClientInitFunction<
     },
     // @ts-expect-error Keyring controller expects TxData returned but TransactionController expects TypedTransaction
     sign: (...args) => keyringController().signTransaction(...args),
-    state: recoveredPersistedTransactionState,
+    state: persistedState.TransactionController,
   });
 
   addTransactionControllerListeners(
     initMessenger,
     getTransactionMetricsRequest,
   );
-
-  recoverSignedTransactions({
-    initMessenger,
-    networkController: networkController(),
-    transactionController: messengerClient,
-  }).catch((error) => {
-    console.error('Failed to recover signed transactions', error);
-  });
 
   const api = getApi(messengerClient);
 
@@ -412,179 +387,6 @@ function getUIState(flatState: MessengerClientFlatState) {
   return { metamask: flatState };
 }
 
-export async function recoverSignedTransactions({
-  initMessenger,
-  networkController,
-  transactionController,
-}: {
-  initMessenger: TransactionControllerInitMessenger;
-  networkController: NetworkController;
-  transactionController: TransactionController;
-}) {
-  const signedTransactions =
-    transactionController.state?.transactions?.filter((transaction) =>
-      isRecoverableIncompleteTransaction(transaction),
-    ) ?? [];
-
-  await Promise.allSettled(
-    signedTransactions.map(async (transactionMeta) => {
-      const recoveredHash = await recoverSignedTransactionHash({
-        networkController,
-        transactionMeta,
-      });
-
-      if (!recoveredHash) {
-        return;
-      }
-
-      const recoveredTransactionMeta = {
-        ...transactionMeta,
-        hash: recoveredHash,
-        status: TransactionStatus.submitted,
-        submittedTime: Date.now(),
-      };
-
-      transactionController.updateTransaction(
-        recoveredTransactionMeta,
-        SIGNED_TRANSACTION_RECOVERY_NOTE,
-      );
-
-      initMessenger.publish('TransactionController:transactionSubmitted', {
-        transactionMeta: recoveredTransactionMeta,
-      });
-    }),
-  );
-}
-
-export function getRecoverableTransactionControllerState(
-  transactionControllerState: TransactionController['state'] | undefined,
-) {
-  if (!transactionControllerState?.transactions?.length) {
-    return transactionControllerState;
-  }
-
-  const recoveredAt = Date.now();
-  let hasRecoveredTransactions = false;
-
-  const transactions = transactionControllerState.transactions.map(
-    (transactionMeta) => {
-      if (!isRecoverableIncompleteTransaction(transactionMeta)) {
-        return transactionMeta;
-      }
-
-      hasRecoveredTransactions = true;
-
-      return {
-        ...transactionMeta,
-        error: undefined,
-        status: TransactionStatus.submitted,
-        submittedTime: transactionMeta.submittedTime ?? recoveredAt,
-      };
-    },
-  );
-
-  if (!hasRecoveredTransactions) {
-    return transactionControllerState;
-  }
-
-  return {
-    ...transactionControllerState,
-    transactions,
-  };
-}
-
-async function recoverSignedTransactionHash({
-  networkController,
-  transactionMeta,
-}: {
-  networkController: NetworkController;
-  transactionMeta: TransactionMeta;
-}): Promise<string | undefined> {
-  if (!transactionMeta.rawTx || !transactionMeta.networkClientId) {
-    return undefined;
-  }
-
-  const { provider } = networkController.getNetworkClientById(
-    transactionMeta.networkClientId,
-  );
-  const expectedHash = getRawTransactionHash(transactionMeta.rawTx);
-
-  if (expectedHash) {
-    const existingTransaction = await provider.request({
-      method: 'eth_getTransactionByHash',
-      params: [expectedHash],
-    });
-
-    if (existingTransaction) {
-      return expectedHash;
-    }
-  }
-
-  try {
-    return (await provider.request({
-      method: 'eth_sendRawTransaction',
-      params: [transactionMeta.rawTx],
-    })) as string;
-  } catch (error) {
-    if (!expectedHash || !isRecoverableSignedTransactionError(error)) {
-      return undefined;
-    }
-
-    const existingTransaction = await provider.request({
-      method: 'eth_getTransactionByHash',
-      params: [expectedHash],
-    });
-
-    return existingTransaction ? expectedHash : undefined;
-  }
-}
-
-function getRawTransactionHash(rawTransaction: string): string | undefined {
-  try {
-    return bytesToHex(keccak256(hexToBytes(rawTransaction)));
-  } catch {
-    return undefined;
-  }
-}
-
-function isRecoverableSignedTransactionError(error: unknown): boolean {
-  const message = String(
-    (error as { data?: { message?: string }; message?: string })?.data
-      ?.message ??
-      (error as { message?: string })?.message ??
-      error,
-  ).toLowerCase();
-
-  return [
-    'already known',
-    'already imported',
-    'nonce too low',
-    'replacement transaction underpriced',
-  ].some((match) => message.includes(match));
-}
-
-function isRecoverableIncompleteTransaction(transaction: TransactionMeta) {
-  if (!transaction.rawTx || transaction.hash || !transaction.networkClientId) {
-    return false;
-  }
-
-  return (
-    transaction.status === TransactionStatus.signed ||
-    transaction.status === TransactionStatus.submitted ||
-    (transaction.status === TransactionStatus.failed &&
-      isStartupIncompleteTransactionError(transaction.error))
-  );
-}
-
-function isStartupIncompleteTransactionError(error: TransactionMeta['error']) {
-  const message = error?.message;
-
-  return (
-    typeof message === 'string' &&
-    RECOVERABLE_STARTUP_TRANSACTION_ERRORS.includes(message)
-  );
-}
-
 export async function publishHook({
   flatState,
   getTransactionMetricsRequest,
@@ -612,6 +414,13 @@ export async function publishHook({
     transactionMeta.chainId,
   );
 
+  const isUpgradeOnly7702Transaction =
+    isUpgradeOnly7702TransactionMeta(transactionMeta);
+
+  if (isUpgradeOnly7702Transaction) {
+    return { transactionHash: undefined };
+  }
+
   const payResult = await new TransactionPayPublishHook({
     isSmartTransaction: () => isSmartTransaction,
     messenger: initMessenger as unknown as TransactionPayControllerMessenger,
@@ -622,16 +431,6 @@ export async function publishHook({
   }
 
   const { isExternalSign } = transactionMeta;
-  const isUpgradeOnly7702Transaction = Boolean(
-    transactionMeta.txParams?.authorizationList?.length &&
-      (!transactionMeta.txParams?.data ||
-        transactionMeta.txParams.data === '0x') &&
-      transactionMeta.selectedGasFeeToken === undefined &&
-      !transactionMeta.gasFeeTokens?.length &&
-      !transactionMeta.isGasFeeIncluded &&
-      !transactionMeta.isGasFeeSponsored,
-  );
-
   const keyringSupports7702 = await accountSupports7702(
     transactionMeta.txParams?.from,
     keyringController,
@@ -672,6 +471,7 @@ export async function publishHook({
   if (
     !keyringSupports7702 &&
     !isUpgradeOnly7702Transaction &&
+    shouldPublishWithSmartTransaction(transactionMeta) &&
     isSmartTransaction &&
     (sendBundleSupport || transactionMeta.selectedGasFeeToken === undefined)
   ) {
@@ -708,6 +508,18 @@ export async function publishHook({
   return { transactionHash: undefined };
 }
 
+function isUpgradeOnly7702TransactionMeta(transactionMeta: TransactionMeta) {
+  return Boolean(
+    transactionMeta.txParams?.authorizationList?.length &&
+      (!transactionMeta.txParams?.data ||
+        transactionMeta.txParams.data === '0x') &&
+      transactionMeta.selectedGasFeeToken === undefined &&
+      !transactionMeta.gasFeeTokens?.length &&
+      !transactionMeta.isGasFeeIncluded &&
+      !transactionMeta.isGasFeeSponsored,
+  );
+}
+
 function shouldPublishWithDelegationRelay(transactionMeta: TransactionMeta) {
   if (transactionMeta.isGasFeeIncluded || transactionMeta.isGasFeeSponsored) {
     return true;
@@ -720,6 +532,16 @@ function shouldPublishWithDelegationRelay(transactionMeta: TransactionMeta) {
   }
 
   return selectedGasFeeToken.toLowerCase() !== NATIVE_TOKEN_ADDRESS;
+}
+
+function shouldPublishWithSmartTransaction(transactionMeta: TransactionMeta) {
+  return Boolean(
+    transactionMeta.isGasFeeIncluded ||
+      transactionMeta.isGasFeeSponsored ||
+      (transactionMeta.selectedGasFeeToken &&
+        transactionMeta.selectedGasFeeToken.toLowerCase() !==
+          NATIVE_TOKEN_ADDRESS),
+  );
 }
 
 export function publishBatchHook({

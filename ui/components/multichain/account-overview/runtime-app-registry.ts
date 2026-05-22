@@ -2,6 +2,9 @@ const APP_BASE_URL = 'https://app.1do.io';
 
 export type RuntimeAppId =
   | 'settings'
+  | 'redpacket'
+  | 'gift'
+  | 'pay'
   | 'dex'
   | 'nftmarket'
   | 'flashloan'
@@ -22,6 +25,24 @@ const RUNTIME_APP_REGISTRY: RuntimeAppDefinition[] = [
     id: 'settings',
     label: 'Settings',
     path: '',
+    surfaces: ['wallet'],
+  },
+  {
+    id: 'redpacket',
+    label: 'Red Packet',
+    path: 'redpacket',
+    surfaces: ['wallet'],
+  },
+  {
+    id: 'gift',
+    label: 'Gift',
+    path: 'gift',
+    surfaces: ['wallet'],
+  },
+  {
+    id: 'pay',
+    label: 'Pay',
+    path: 'pay',
     surfaces: ['wallet'],
   },
   {

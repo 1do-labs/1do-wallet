@@ -1519,6 +1519,9 @@
   "confirmAccountTypeSmartContract": {
     "message": "智能账户"
   },
+  "confirmAccountTypeOneDoSmartContract": {
+    "message": "1Do 智能账户"
+  },
   "confirmAccountTypeStandard": {
     "message": "标准账户"
   },

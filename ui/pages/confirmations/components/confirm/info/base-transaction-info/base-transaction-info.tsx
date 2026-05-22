@@ -12,11 +12,14 @@ import { TransactionAccountDetails } from '../batch/transaction-account-details'
 import { BatchSimulationDetails } from '../batch/batch-simulation-details/batch-simulation-details';
 import { EstimatedPointsSection } from '../../../estimated-points';
 import { EnforcedSimulationsRow } from '../../../rows/enforced-simulations-row';
+import { isOneDoWalletNativeTransferTransactionCandidate } from '../../../../utils/onedo-clear-signing';
 
 const BaseTransactionInfo = () => {
   const { currentConfirmation: transactionMeta } =
     useConfirmContext<TransactionMeta>();
   const { isQuotedSwapDisplayedInInfo } = useDappSwapContext();
+  const isOneDoWalletNativeTransfer =
+    isOneDoWalletNativeTransferTransactionCandidate(transactionMeta);
 
   if (!transactionMeta?.txParams) {
     return null;
@@ -29,7 +32,7 @@ const BaseTransactionInfo = () => {
         <>
           <TransactionAccountDetails />
           <BatchSimulationDetails />
-          <EnforcedSimulationsRow />
+          {!isOneDoWalletNativeTransfer && <EnforcedSimulationsRow />}
           <TransactionDetails />
         </>
       )}

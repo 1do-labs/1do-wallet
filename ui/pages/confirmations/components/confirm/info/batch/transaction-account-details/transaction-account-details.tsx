@@ -25,9 +25,11 @@ export function TransactionAccountDetails() {
   const { currentConfirmation } = useConfirmContext<TransactionMeta>();
   const { isUpgrade, isUpgradeOnly } = useIsUpgradeTransaction();
   const isDowngrade = useIsDowngradeTransaction();
-  const { chainId, nestedTransactions, txParams, id } = currentConfirmation;
+  const { chainId, delegationAddress, nestedTransactions, txParams, id } =
+    currentConfirmation;
   const { from } = txParams;
   const isBatch = isBatchTransaction(nestedTransactions);
+  const isSwitchingExistingSmartAccount = Boolean(delegationAddress);
 
   if (!isUpgrade && !isDowngrade) {
     return null;
@@ -47,7 +49,11 @@ export function TransactionAccountDetails() {
           ownerId={id}
         >
           <ConfirmInfoRowText
-            text={t('confirmAccountTypeStandard')}
+            text={t(
+              isSwitchingExistingSmartAccount
+                ? 'confirmAccountTypeSmartContract'
+                : 'confirmAccountTypeStandard',
+            )}
             data-testid="tx-type"
           />
         </ConfirmInfoAlertRow>
@@ -58,7 +64,13 @@ export function TransactionAccountDetails() {
           label={t('confirmInfoSwitchingTo')}
           ownerId={isUpgradeOnly ? '' : id}
         >
-          <ConfirmInfoRowText text={t('confirmAccountTypeSmartContract')} />
+          <ConfirmInfoRowText
+            text={t(
+              isSwitchingExistingSmartAccount
+                ? 'confirmAccountTypeOneDoSmartContract'
+                : 'confirmAccountTypeSmartContract',
+            )}
+          />
         </ConfirmInfoAlertRow>
       )}
       {isDowngrade && (

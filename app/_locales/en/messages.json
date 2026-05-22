@@ -1519,6 +1519,9 @@
   "confirmAccountTypeSmartContract": {
     "message": "Smart account"
   },
+  "confirmAccountTypeOneDoSmartContract": {
+    "message": "1Do smart account"
+  },
   "confirmAccountTypeStandard": {
     "message": "Standard account"
   },

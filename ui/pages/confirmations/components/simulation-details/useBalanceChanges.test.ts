@@ -3,6 +3,7 @@ import { renderHook } from '@testing-library/react-hooks';
 import {
   SimulationData,
   SimulationTokenStandard,
+  TransactionMeta,
 } from '@metamask/transaction-controller';
 import { BigNumber } from 'bignumber.js';
 import { TokenStandard } from '../../../../../shared/constants/transaction';
@@ -32,6 +33,13 @@ jest.mock('../../../../helpers/utils/util', () => ({
 
 jest.mock('../../../../store/actions', () => ({
   getTokenStandardAndDetailsByChain: jest.fn(),
+}));
+
+jest.mock('../../../../../shared/lib/eip7702-utils', () => ({
+  isOneDo7702UpgradeAuthorization: jest.fn(
+    (address?: string) =>
+      address === '0x1do000000000000000000000000000000000000',
+  ),
 }));
 
 const mockSelectConversionRateByChainId = jest.mocked(
@@ -433,5 +441,50 @@ describe('useBalanceChanges', () => {
       standard: TokenStandard.ERC20,
     });
     expect(changes[1].amount).toEqual(new BigNumber('0.002'));
+  });
+
+  it('hides likely 1Do gas refund native balance changes while preserving token receipts', async () => {
+    const simulationData: SimulationData = {
+      nativeBalanceChange: {
+        ...dummyBalanceChange,
+        difference: '0x2632e314a000',
+        isDecrease: false,
+      },
+      tokenBalanceChanges: [
+        {
+          ...dummyBalanceChange,
+          difference: '0x186a0',
+          isDecrease: false,
+          address: ERC20_TOKEN_ADDRESS_1_MOCK,
+          standard: SimulationTokenStandard.erc20,
+        },
+      ],
+    };
+    const transaction = {
+      delegationAddress: '0x1do000000000000000000000000000000000000',
+      txParams: {
+        gas: '0x5208',
+        maxFeePerGas: '0x77359400',
+      },
+    } as TransactionMeta;
+
+    const { result, waitForNextUpdate } = renderHook(() =>
+      useBalanceChanges({
+        chainId: CHAIN_ID_MOCK,
+        simulationData,
+        transaction,
+      }),
+    );
+
+    await waitForNextUpdate();
+
+    const changes = result.current.value;
+    expect(changes).toHaveLength(1);
+    expect(changes[0].asset).toEqual({
+      chainId: CHAIN_ID_MOCK,
+      address: ERC20_TOKEN_ADDRESS_1_MOCK,
+      standard: TokenStandard.ERC20,
+    });
+    expect(changes[0].amount).toEqual(new BigNumber('100'));
   });
 });

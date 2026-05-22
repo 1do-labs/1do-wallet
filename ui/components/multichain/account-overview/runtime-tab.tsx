@@ -17,6 +17,9 @@ import {
   WillMonolith,
   FlashLoanPower,
   DexPixel,
+  GiftIcon,
+  PayIcon,
+  RedPacketIcon,
 } from './runtime-tab-icons';
 
 const walletRuntimeApps = getRuntimeAppsForSurface('wallet').filter(
@@ -24,6 +27,9 @@ const walletRuntimeApps = getRuntimeAppsForSurface('wallet').filter(
 );
 
 const ICON_BY_APP_ID = {
+  redpacket: RedPacketIcon,
+  gift: GiftIcon,
+  pay: PayIcon,
   dex: DexPixel,
   nftmarket: NFTMarketVoxelDart,
   flashloan: FlashLoanPower,

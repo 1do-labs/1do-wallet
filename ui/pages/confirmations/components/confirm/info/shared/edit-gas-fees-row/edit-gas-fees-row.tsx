@@ -69,7 +69,11 @@ export const EditGasFeesRow = ({
   const metamaskFeeFiat = gasFeeToken?.metamaskFeeFiat;
   const nativeTokenSymbol = useTransactionNativeTicker() ?? '';
 
-  const balanceChangesResult = useBalanceChanges({ chainId, simulationData });
+  const balanceChangesResult = useBalanceChanges({
+    chainId,
+    simulationData,
+    transaction: transactionMeta,
+  });
   const isLoadingGasUsed = !simulationData || balanceChangesResult.pending;
 
   // This prevents the gas fee row from showing as sponsored if stx is disabled

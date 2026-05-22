@@ -36,20 +36,32 @@ describe('getOneDoSmartAccountIsActive', () => {
     const isActive = await getOneDoSmartAccountIsActive({
       address: MOCK_ADDRESS,
       chainId: MOCK_CHAIN_ID,
-      isUpgraded: jest.fn().mockResolvedValue(false),
+      getDelegationAddress: jest.fn().mockResolvedValue(undefined),
     });
 
     expect(isActive).toBe(true);
   });
 
-  it('uses the account code fallback when delegation support has no 1Do address', async () => {
+  it('uses the account code fallback when it delegates to 1Do', async () => {
     const isActive = await getOneDoSmartAccountIsActive({
       address: MOCK_ADDRESS,
       chainId: MOCK_CHAIN_ID,
-      isUpgraded: jest.fn().mockResolvedValue(true),
+      getDelegationAddress: jest.fn().mockResolvedValue(ONE_DO_7702_DELEGATE),
     });
 
     expect(isActive).toBe(true);
+  });
+
+  it('returns false when account code delegates to a different runtime', async () => {
+    const isActive = await getOneDoSmartAccountIsActive({
+      address: MOCK_ADDRESS,
+      chainId: MOCK_CHAIN_ID,
+      getDelegationAddress: jest
+        .fn()
+        .mockResolvedValue('0x6e9e00000000000000000000000000000000eef0'),
+    });
+
+    expect(isActive).toBe(false);
   });
 });
 

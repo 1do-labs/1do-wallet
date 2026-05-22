@@ -175,3 +175,20 @@ export async function isAccountUpgraded(
   const code = await getCode(address, networkClientId);
   return Boolean(code && code.length > 2);
 }
+
+/**
+ * Gets the current EIP-7702 delegation address for an account.
+ *
+ * @param address - The account address to check
+ * @param networkClientId - The network client ID
+ * @param getCode - Function to get account code
+ * @returns Promise with the delegated address, if the account has EIP-7702 delegation code
+ */
+export async function getAccountDelegationAddress(
+  address: Hex,
+  networkClientId: string,
+  getCode: (address: Hex, networkClientId: string) => Promise<string | null>,
+): Promise<Hex | undefined> {
+  const code = await getCode(address, networkClientId);
+  return getEip7702DelegationAddress(code);
+}

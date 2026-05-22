@@ -9,8 +9,11 @@ import {
   mapChainIdToSupportedEVMChain,
   ResultType,
 } from '../trust-signals';
+import { isOneDo7702UpgradeAuthorization } from '../eip7702-utils';
 
 const DEFAULT_ENFORCED_SIMULATIONS_SLIPPAGE = 10;
+const ERC8112_TOKEN_TRANSFER_WITH_SIG_SELECTOR = '0xe7fd2b11';
+const ERC8114_NFT_TRANSFER_WITH_SIG_SELECTOR = '0xf87338cc';
 
 /**
  * State required by the enforced simulations trust signal check.
@@ -57,6 +60,10 @@ export function isEnforcedSimulationsEligible(
   }
 
   if (!delegationAddress) {
+    return false;
+  }
+
+  if (isOneDoWalletNativeTransferTransaction(transactionMeta)) {
     return false;
   }
 
@@ -134,5 +141,19 @@ function hasBalanceChanges(simulationData?: SimulationData | null): boolean {
   return (
     Boolean(simulationData?.nativeBalanceChange) ||
     Boolean(simulationData?.tokenBalanceChanges?.length)
+  );
+}
+
+function isOneDoWalletNativeTransferTransaction(
+  transactionMeta: TransactionMeta,
+): boolean {
+  if (!isOneDo7702UpgradeAuthorization(transactionMeta.delegationAddress)) {
+    return false;
+  }
+
+  const data = transactionMeta.txParams?.data?.toLowerCase();
+  return (
+    data?.startsWith(ERC8112_TOKEN_TRANSFER_WITH_SIG_SELECTOR) === true ||
+    data?.startsWith(ERC8114_NFT_TRANSFER_WITH_SIG_SELECTOR) === true
   );
 }

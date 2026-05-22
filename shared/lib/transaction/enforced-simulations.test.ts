@@ -5,6 +5,7 @@ import {
   TransactionStatus,
 } from '@metamask/transaction-controller';
 import { CachedScanAddressResponse, ResultType } from '../trust-signals';
+import { ONE_DO_7702_DELEGATE } from '../eip7702-utils';
 import {
   EnforcedSimulationsState,
   getEnforcedSimulationsSlippage,
@@ -160,6 +161,32 @@ describe('enforced-simulations', () => {
           },
         }),
       ).toBe(true);
+    });
+
+    it('returns false for 1Do wallet-native token transfer claims', () => {
+      expect(
+        isEnforcedSimulationsEligible({
+          ...BASE_TRANSACTION_META,
+          delegationAddress: ONE_DO_7702_DELEGATE,
+          txParams: {
+            ...BASE_TRANSACTION_META.txParams,
+            data: '0xe7fd2b11',
+          },
+        }),
+      ).toBe(false);
+    });
+
+    it('returns false for 1Do wallet-native NFT transfer claims', () => {
+      expect(
+        isEnforcedSimulationsEligible({
+          ...BASE_TRANSACTION_META,
+          delegationAddress: ONE_DO_7702_DELEGATE,
+          txParams: {
+            ...BASE_TRANSACTION_META.txParams,
+            data: '0xf87338cc',
+          },
+        }),
+      ).toBe(false);
     });
 
     describe('with trust signal state', () => {

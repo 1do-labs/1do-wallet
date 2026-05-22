@@ -283,6 +283,53 @@ describe('TypedSignInfo', () => {
     expect(queryByText('1000000 raw units')).not.toBeInTheDocument();
   });
 
+  it('formats 1Do native claimable transfer clear signing amounts', () => {
+    const claimableNativeSignature = {
+      ...unapprovedTypedSignMsgV4,
+      id: 'claimable-native-clear-signing',
+      chainId: '0xaa36a7',
+      msgParams: {
+        ...unapprovedTypedSignMsgV4.msgParams,
+        from: '0x1111111111111111111111111111111111111111',
+        origin: 'http://localhost:3001',
+        data: JSON.stringify({
+          domain: {
+            name: 'ERC8112 Token Transfer',
+            version: '1',
+            chainId: 11155111,
+            verifyingContract: '0x1111111111111111111111111111111111111111',
+          },
+          primaryType: 'TokenTransferWithSig',
+          message: {
+            wallet: '0x1111111111111111111111111111111111111111',
+            asset: '0x0000000000000000000000000000000000000000',
+            to: '0x0000000000000000000000000000000000000000',
+            value: '200000000000000',
+            nonce: '2',
+            deadline: '4102444800',
+          },
+        }),
+      },
+    };
+    const state = getMockTypedSignConfirmStateForRequest(
+      claimableNativeSignature,
+    );
+    const mockStore = createMockStore(state);
+    const { getByTestId, queryByText } = renderWithConfirmContextProvider(
+      <TypedSignInfo />,
+      mockStore,
+    );
+    const clearSigningSection = within(
+      getByTestId('onedo-clear-signing-section'),
+    );
+
+    expect(
+      clearSigningSection.getByText('Create claimable token transfer'),
+    ).toBeInTheDocument();
+    expect(clearSigningSection.getByText('0.0002 ETH')).toBeInTheDocument();
+    expect(queryByText('200000000000000 raw units')).not.toBeInTheDocument();
+  });
+
   it('displays "requestFromInfoSnap" tooltip when origin is a snap', async () => {
     const mockState = getMockTypedSignConfirmStateForRequest({
       ...unapprovedTypedSignMsgV4,

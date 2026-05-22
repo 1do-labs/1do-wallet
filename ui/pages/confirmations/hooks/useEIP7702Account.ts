@@ -9,6 +9,7 @@ import { Hex } from '@metamask/utils';
 import {
   isAccountUpgraded,
   EIP_7702_REVOKE_ADDRESS,
+  getAccountDelegationAddress,
 } from '../../../../shared/lib/eip7702-utils';
 import {
   addTransactionAndRouteToConfirmationPage,
@@ -103,6 +104,13 @@ export function useEIP7702Account(
     [networkClientId],
   );
 
+  const getDelegationAddress = useCallback(
+    async (address: Hex) => {
+      return getAccountDelegationAddress(address, networkClientId, getCode);
+    },
+    [networkClientId],
+  );
+
   useEffect(() => {
     if (isRedirectPending) {
       navigateToId(transactionId);
@@ -110,7 +118,7 @@ export function useEIP7702Account(
     }
   }, [isRedirectPending, navigateToId, transactionId, onRedirect]);
 
-  return { isUpgraded, downgradeAccount, upgradeAccount };
+  return { isUpgraded, getDelegationAddress, downgradeAccount, upgradeAccount };
 }
 
 export { EIP_7702_REVOKE_ADDRESS };

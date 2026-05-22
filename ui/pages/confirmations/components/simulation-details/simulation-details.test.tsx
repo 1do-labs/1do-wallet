@@ -6,6 +6,7 @@ import {
   TransactionStatus,
 } from '@metamask/transaction-controller';
 import { screen } from '@testing-library/react';
+import { Interface } from '@ethersproject/abi';
 import { BigNumber } from 'bignumber.js';
 import React from 'react';
 import configureStore from 'redux-mock-store';
@@ -21,6 +22,7 @@ import { BalanceChange } from './types';
 import { useBalanceChanges } from './useBalanceChanges';
 
 const TRANSACTION_ID_MOCK = 'testTransactionId';
+const accountRuntimeInterface = new Interface(['function enableApp(address app)']);
 
 const BALANCE_CHANGES_MOCK = [
   { amount: new BigNumber(-123) },
@@ -116,6 +118,25 @@ describe('SimulationDetails', () => {
   it('renders skeleton loader when simulation data is not available', () => {
     const { container } = renderSimulationDetails();
     expect(container.querySelector('.mm-skeleton')).toBeInTheDocument();
+  });
+
+  it('does not render for 1Do runtime access updates', () => {
+    const { queryByTestId } = renderSimulationDetails(
+      { tokenBalanceChanges: [] },
+      false,
+      [],
+      {
+        txParams: {
+          data: accountRuntimeInterface.encodeFunctionData('enableApp', [
+            '0x199dffe30b8b5ab611d952289a2674c5e826dcb9',
+          ]),
+          from: '0x038714B6C1D6b449383cc6faE23Bf4F2eb7Ff262',
+          to: '0x038714B6C1D6b449383cc6faE23Bf4F2eb7Ff262',
+        },
+      } as Partial<TransactionMeta>,
+    );
+
+    expect(queryByTestId('simulation-details-layout')).toBeNull();
   });
 
   it('renders skeleton loader when balance changes are pending', () => {

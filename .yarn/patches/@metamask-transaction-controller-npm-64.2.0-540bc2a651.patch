@@ -66,3 +66,133 @@ index e61c079e4b5be6a75e58fc73f3e030786b384e1b..0ee7d0d7a9b46ca55590038d122d7a6e
      if (isExternal && request.transactions.length > sizeLimit) {
          throw new JsonRpcError(ErrorCode.BundleTooLarge, `Batch size cannot exceed ${sizeLimit}. got: ${request.transactions.length}`);
      }
+diff --git a/dist/utils/balance-changes.cjs b/dist/utils/balance-changes.cjs
+index 96e0fb1c0f64b886596ee5bfe9dab44646c67839..c7b12776b781ce52f66d934b31392c51d8609a7d 100644
+--- a/dist/utils/balance-changes.cjs
++++ b/dist/utils/balance-changes.cjs
+@@ -139,8 +139,60 @@ function getNativeBalanceChange(request, response) {
+     if (!previousBalance || !newBalance) {
+         return undefined;
+     }
++    const traceBalanceChange = getNativeBalanceChangeFromTrace(transactionResponse.callTrace, userAddress);
++    if (traceBalanceChange) {
++        return getSimulationBalanceChange(previousBalance, (0, controller_utils_1.toHex)((0, controller_utils_1.hexToBN)(previousBalance).add(traceBalanceChange)));
++    }
++    if (hasAuthorizationOrSelfCall(txParams)) {
++        return undefined;
++    }
+     return getSimulationBalanceChange(previousBalance, newBalance, transactionResponse.gasCost);
+ }
++/**
++ * Extract native asset transfers involving the user from a call trace.
++ *
++ * @param call - The call trace root.
++ * @param userAddress - The transaction sender.
++ * @returns Net native balance change or undefined if no value transfer exists.
++ */
++function getNativeBalanceChangeFromTrace(call, userAddress) {
++    if (!call) {
++        return undefined;
++    }
++    const userAddressLowercase = userAddress.toLowerCase();
++    const from = call.from?.toLowerCase?.();
++    const to = call.to?.toLowerCase?.();
++    const value = (0, controller_utils_1.hexToBN)(call.value ?? '0x0');
++    let balanceChange = new bn_js_1.default(0);
++    if (!value.isZero()) {
++        if (from === userAddressLowercase) {
++            balanceChange = balanceChange.sub(value);
++        }
++        if (to === userAddressLowercase) {
++            balanceChange = balanceChange.add(value);
++        }
++    }
++    const nestedCalls = call.calls ?? [];
++    for (const nestedCall of nestedCalls) {
++        const nestedBalanceChange = getNativeBalanceChangeFromTrace(nestedCall, userAddress);
++        if (nestedBalanceChange) {
++            balanceChange = balanceChange.add(nestedBalanceChange);
++        }
++    }
++    return balanceChange.isZero() ? undefined : balanceChange;
++}
++/**
++ * Check if a transaction is likely to use delegated account execution.
++ *
++ * @param txParams - Transaction parameters.
++ * @returns True if native balance changes should come from trace value transfers.
++ */
++function hasAuthorizationOrSelfCall(txParams) {
++    return Boolean(txParams.authorizationList?.length ||
++        (txParams.from &&
++            txParams.to &&
++            txParams.from.toLowerCase() === txParams.to.toLowerCase()));
++}
+ /**
+  * Extract events from a simulation response.
+  *
+diff --git a/dist/utils/balance-changes.mjs b/dist/utils/balance-changes.mjs
+index 4a0e382abcf56f9aab71dd75153912d7698c98cc..b1975b514f328ed0ce3b88706a6e0ce0a02703bc 100644
+--- a/dist/utils/balance-changes.mjs
++++ b/dist/utils/balance-changes.mjs
+@@ -139,8 +139,60 @@ function getNativeBalanceChange(request, response) {
+     if (!previousBalance || !newBalance) {
+         return undefined;
+     }
++    const traceBalanceChange = getNativeBalanceChangeFromTrace(transactionResponse.callTrace, userAddress);
++    if (traceBalanceChange) {
++        return getSimulationBalanceChange(previousBalance, toHex(hexToBN(previousBalance).add(traceBalanceChange)));
++    }
++    if (hasAuthorizationOrSelfCall(txParams)) {
++        return undefined;
++    }
+     return getSimulationBalanceChange(previousBalance, newBalance, transactionResponse.gasCost);
+ }
++/**
++ * Extract native asset transfers involving the user from a call trace.
++ *
++ * @param call - The call trace root.
++ * @param userAddress - The transaction sender.
++ * @returns Net native balance change or undefined if no value transfer exists.
++ */
++function getNativeBalanceChangeFromTrace(call, userAddress) {
++    if (!call) {
++        return undefined;
++    }
++    const userAddressLowercase = userAddress.toLowerCase();
++    const from = call.from?.toLowerCase?.();
++    const to = call.to?.toLowerCase?.();
++    const value = hexToBN(call.value ?? '0x0');
++    let balanceChange = new BN(0);
++    if (!value.isZero()) {
++        if (from === userAddressLowercase) {
++            balanceChange = balanceChange.sub(value);
++        }
++        if (to === userAddressLowercase) {
++            balanceChange = balanceChange.add(value);
++        }
++    }
++    const nestedCalls = call.calls ?? [];
++    for (const nestedCall of nestedCalls) {
++        const nestedBalanceChange = getNativeBalanceChangeFromTrace(nestedCall, userAddress);
++        if (nestedBalanceChange) {
++            balanceChange = balanceChange.add(nestedBalanceChange);
++        }
++    }
++    return balanceChange.isZero() ? undefined : balanceChange;
++}
++/**
++ * Check if a transaction is likely to use delegated account execution.
++ *
++ * @param txParams - Transaction parameters.
++ * @returns True if native balance changes should come from trace value transfers.
++ */
++function hasAuthorizationOrSelfCall(txParams) {
++    return Boolean(txParams.authorizationList?.length ||
++        (txParams.from &&
++            txParams.to &&
++            txParams.from.toLowerCase() === txParams.to.toLowerCase()));
++}
+ /**
+  * Extract events from a simulation response.
+  *

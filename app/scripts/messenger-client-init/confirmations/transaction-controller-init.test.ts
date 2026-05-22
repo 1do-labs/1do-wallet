@@ -29,10 +29,8 @@ import { NATIVE_TOKEN_ADDRESS } from '../../../../shared/constants/transaction';
 import { Delegation7702PublishHook } from '../../lib/transaction/hooks/delegation-7702-publish';
 import {
   TransactionControllerInit,
-  getRecoverableTransactionControllerState,
   publishBatchHook,
   publishHook,
-  recoverSignedTransactions,
 } from './transaction-controller-init';
 
 jest.mock('@metamask/transaction-controller');
@@ -246,6 +244,12 @@ describe('Transaction Controller Init', () => {
     });
 
     expect(isSimulationEnabled?.()).toBe(true);
+  });
+
+  it('allows transactions to publish by default', async () => {
+    const hooks = testConstructorOption('hooks');
+
+    expect(await hooks?.beforePublish?.({} as TransactionMeta)).toBe(true);
   });
 
   it('always disables pending transaction resubmit', () => {
@@ -699,7 +703,10 @@ describe('Transaction Controller Init', () => {
         smartTransactionsController:
           {} as PHArgs['smartTransactionsController'],
         transactionController: {} as PHArgs['transactionController'],
-        transactionMeta: mockTransactionMeta,
+        transactionMeta: {
+          ...mockTransactionMeta,
+          isGasFeeSponsored: true,
+        },
       });
 
       expect(upsertFragmentMock).toHaveBeenCalledWith(mockTransactionMeta.id, {
@@ -708,7 +715,59 @@ describe('Transaction Controller Init', () => {
       });
     });
 
-    it('does not call submitSmartTransactionHook for upgrade-only 7702 transactions', async () => {
+    it('uses default submission for ordinary native gas transactions even when smart transactions are enabled', async () => {
+      jest
+        .mocked(smartTransactionsModule.getSmartTransactionCommonParams)
+        .mockReturnValue({
+          isSmartTransaction: true,
+          featureFlags: {
+            extensionReturnTxHashAsap: false,
+            extensionReturnTxHashAsapBatch: false,
+            extensionSkipTransactionStatusPage: false,
+            mobileActive: false,
+            extensionActive: true,
+          },
+          isHardwareWalletAccount: false,
+        });
+
+      jest
+        .mocked(sentinelApiModule.isSendBundleSupported)
+        .mockResolvedValue(true);
+
+      type PHArgs = Parameters<typeof publishHook>[0];
+      const result = await publishHook({
+        flatState: {} as PHArgs['flatState'],
+        getTransactionMetricsRequest: () =>
+          ({
+            upsertTransactionUIMetricsFragment: jest.fn(),
+          }) as unknown as ReturnType<PHArgs['getTransactionMetricsRequest']>,
+        initMessenger: {
+          call: jest.fn(),
+        } as unknown as TransactionControllerInitMessenger,
+        keyringController: {
+          getKeyringForAccount: jest
+            .fn()
+            .mockResolvedValue({ type: 'Ledger Hardware' }),
+        },
+        signedTx: '0xsigned',
+        smartTransactionsController:
+          {} as PHArgs['smartTransactionsController'],
+        transactionController: {} as PHArgs['transactionController'],
+        transactionMeta: {
+          ...mockTransactionMeta,
+          selectedGasFeeToken: undefined,
+          isGasFeeIncluded: false,
+          isGasFeeSponsored: false,
+        } as TransactionMeta,
+      });
+
+      expect(result).toStrictEqual({ transactionHash: undefined });
+      expect(
+        jest.mocked(smartTransactionsModule.submitSmartTransactionHook),
+      ).not.toHaveBeenCalled();
+    });
+
+    it('uses default submission for upgrade-only 7702 transactions without special publish hooks', async () => {
       jest
         .mocked(smartTransactionsModule.getSmartTransactionCommonParams)
         .mockReturnValue({
@@ -761,6 +820,8 @@ describe('Transaction Controller Init', () => {
       });
 
       expect(result).toStrictEqual({ transactionHash: undefined });
+      expect(payHookMock).not.toHaveBeenCalled();
+      expect(jest.mocked(Delegation7702PublishHook)).not.toHaveBeenCalled();
       expect(
         jest.mocked(smartTransactionsModule.submitSmartTransactionHook),
       ).not.toHaveBeenCalled();
@@ -852,7 +913,10 @@ describe('Transaction Controller Init', () => {
         smartTransactionsController:
           {} as PHArgs['smartTransactionsController'],
         transactionController: {} as PHArgs['transactionController'],
-        transactionMeta: mockTransactionMeta,
+        transactionMeta: {
+          ...mockTransactionMeta,
+          isGasFeeSponsored: true,
+        },
       });
 
       expect(result).toStrictEqual({ transactionHash: '0xstxHash' });
@@ -1176,321 +1240,4 @@ describe('Transaction Controller Init', () => {
     });
   });
 
-  describe('recoverSignedTransactions', () => {
-    const signedRawTx =
-      '0x04f8ce83aa36a7048459682f008459682f4b82b56594a0224a3d1fb66134d2af1afa0b5862e39ac4bdd88080c0f85ff85d83aa36a79469d2927735c3e57c512177b32e216431b1aba1ff0580a032ed4021cae0e5eada1cd11de13c3f85ce5ba14da9f6d4e7ce32b9a277eee81fa01f6629bbf3f4feab226a760c66226e432281470511e05b80a84cbecd4784a7f201a0a5081230481ea8b03beb9fdb5fb965b557a761c8f7c5db2a8eecc8c73b7dd73aa04af4bfaf607c284b593d4dcc6e3ce3082725e39d473910eb8386ad4d4ab17b93';
-    const signedTxHash =
-      '0xaa03bb9ff360f322e6a8e21ab7c49638e969084686ea5cb459150ca2cd289c8f';
-
-    function buildSignedTransactionMeta(
-      overrides: Partial<TransactionMeta> = {},
-    ): TransactionMeta {
-      return {
-        id: 'signed-tx-id',
-        chainId: CHAIN_ID_MOCK,
-        networkClientId: 'sepolia',
-        status: TransactionStatus.signed,
-        time: Date.now(),
-        rawTx: signedRawTx,
-        txParams: {
-          from: '0x0000000000000000000000000000000000000000',
-          nonce: '0x4',
-        },
-        ...overrides,
-      } as TransactionMeta;
-    }
-
-    it('rebroadcasts signed transactions without a hash on startup', async () => {
-      const providerRequestMock = jest
-        .fn()
-        .mockResolvedValueOnce(null)
-        .mockResolvedValueOnce(signedTxHash);
-      const updateTransactionMock = jest.fn();
-      const publishMock = jest.fn();
-
-      await recoverSignedTransactions({
-        initMessenger: {
-          publish: publishMock,
-        } as unknown as TransactionControllerInitMessenger,
-        networkController: {
-          getNetworkClientById: jest.fn().mockReturnValue({
-            provider: {
-              request: providerRequestMock,
-            },
-          }),
-        } as unknown as NetworkController,
-        transactionController: {
-          state: {
-            transactions: [buildSignedTransactionMeta()],
-          },
-          updateTransaction: updateTransactionMock,
-        } as unknown as TransactionController,
-      });
-
-      expect(providerRequestMock).toHaveBeenNthCalledWith(1, {
-        method: 'eth_getTransactionByHash',
-        params: [signedTxHash],
-      });
-      expect(providerRequestMock).toHaveBeenNthCalledWith(2, {
-        method: 'eth_sendRawTransaction',
-        params: [signedRawTx],
-      });
-      expect(updateTransactionMock).toHaveBeenCalledWith(
-        expect.objectContaining({
-          id: 'signed-tx-id',
-          hash: signedTxHash,
-          status: TransactionStatus.submitted,
-        }),
-        'Recovered signed transaction after extension restart',
-      );
-      expect(publishMock).toHaveBeenCalledWith(
-        'TransactionController:transactionSubmitted',
-        expect.objectContaining({
-          transactionMeta: expect.objectContaining({
-            id: 'signed-tx-id',
-            hash: signedTxHash,
-            status: TransactionStatus.submitted,
-          }),
-        }),
-      );
-    });
-
-    it('only backfills hash if signed transaction already exists on chain', async () => {
-      const providerRequestMock = jest.fn().mockResolvedValueOnce({
-        hash: signedTxHash,
-      });
-      const updateTransactionMock = jest.fn();
-
-      await recoverSignedTransactions({
-        initMessenger: {
-          publish: jest.fn(),
-        } as unknown as TransactionControllerInitMessenger,
-        networkController: {
-          getNetworkClientById: jest.fn().mockReturnValue({
-            provider: {
-              request: providerRequestMock,
-            },
-          }),
-        } as unknown as NetworkController,
-        transactionController: {
-          state: {
-            transactions: [buildSignedTransactionMeta()],
-          },
-          updateTransaction: updateTransactionMock,
-        } as unknown as TransactionController,
-      });
-
-      expect(providerRequestMock).toHaveBeenCalledTimes(1);
-      expect(providerRequestMock).toHaveBeenCalledWith({
-        method: 'eth_getTransactionByHash',
-        params: [signedTxHash],
-      });
-      expect(updateTransactionMock).toHaveBeenCalledWith(
-        expect.objectContaining({
-          hash: signedTxHash,
-          status: TransactionStatus.submitted,
-        }),
-        'Recovered signed transaction after extension restart',
-      );
-    });
-
-    it('ignores transactions that already have a hash or are in unrelated failed states', async () => {
-      const providerRequestMock = jest.fn();
-      const updateTransactionMock = jest.fn();
-
-      await recoverSignedTransactions({
-        initMessenger: {
-          publish: jest.fn(),
-        } as unknown as TransactionControllerInitMessenger,
-        networkController: {
-          getNetworkClientById: jest.fn().mockReturnValue({
-            provider: {
-              request: providerRequestMock,
-            },
-          }),
-        } as unknown as NetworkController,
-        transactionController: {
-          state: {
-            transactions: [
-              buildSignedTransactionMeta({
-                status: TransactionStatus.failed,
-                error: {
-                  message: 'replacement transaction underpriced',
-                  name: 'Error',
-                } as Error,
-              }),
-              buildSignedTransactionMeta({
-                id: 'signed-with-hash',
-                hash: signedTxHash,
-              }),
-              buildSignedTransactionMeta({
-                id: 'confirmed-tx',
-                status: TransactionStatus.confirmed,
-              }),
-            ],
-          },
-          updateTransaction: updateTransactionMock,
-        } as unknown as TransactionController,
-      });
-
-      expect(providerRequestMock).not.toHaveBeenCalled();
-      expect(updateTransactionMock).not.toHaveBeenCalled();
-    });
-
-    it('recovers startup-failed transactions without a hash', async () => {
-      const providerRequestMock = jest
-        .fn()
-        .mockResolvedValueOnce(null)
-        .mockResolvedValueOnce(signedTxHash);
-      const updateTransactionMock = jest.fn();
-
-      await recoverSignedTransactions({
-        initMessenger: {
-          publish: jest.fn(),
-        } as unknown as TransactionControllerInitMessenger,
-        networkController: {
-          getNetworkClientById: jest.fn().mockReturnValue({
-            provider: {
-              request: providerRequestMock,
-            },
-          }),
-        } as unknown as NetworkController,
-        transactionController: {
-          state: {
-            transactions: [
-              buildSignedTransactionMeta({
-                status: TransactionStatus.failed,
-                error: {
-                  message: 'Transaction incomplete at startup',
-                  name: 'Error',
-                } as Error,
-              }),
-            ],
-          },
-          updateTransaction: updateTransactionMock,
-        } as unknown as TransactionController,
-      });
-
-      expect(providerRequestMock).toHaveBeenNthCalledWith(1, {
-        method: 'eth_getTransactionByHash',
-        params: [signedTxHash],
-      });
-      expect(providerRequestMock).toHaveBeenNthCalledWith(2, {
-        method: 'eth_sendRawTransaction',
-        params: [signedRawTx],
-      });
-      expect(updateTransactionMock).toHaveBeenCalledWith(
-        expect.objectContaining({
-          hash: signedTxHash,
-          status: TransactionStatus.submitted,
-        }),
-        'Recovered signed transaction after extension restart',
-      );
-    });
-  });
-
-  describe('getRecoverableTransactionControllerState', () => {
-    const signedRawTx =
-      '0x04f8ce83aa36a7048459682f008459682f4b82b56594a0224a3d1fb66134d2af1afa0b5862e39ac4bdd88080c0f85ff85d83aa36a79469d2927735c3e57c512177b32e216431b1aba1ff0580a032ed4021cae0e5eada1cd11de13c3f85ce5ba14da9f6d4e7ce32b9a277eee81fa01f6629bbf3f4feab226a760c66226e432281470511e05b80a84cbecd4784a7f201a0a5081230481ea8b03beb9fdb5fb965b557a761c8f7c5db2a8eecc8c73b7dd73aa04af4bfaf607c284b593d4dcc6e3ce3082725e39d473910eb8386ad4d4ab17b93';
-
-    it('upgrades recoverable signed transaction state before controller boot cleanup', () => {
-      const state = getRecoverableTransactionControllerState({
-        lastFetchedBlockNumbers: {},
-        methodData: {},
-        submitHistory: [],
-        transactionBatches: [],
-        transactions: [
-          {
-            id: 'signed-startup',
-            status: TransactionStatus.signed,
-            rawTx: signedRawTx,
-            networkClientId: 'sepolia',
-            chainId: CHAIN_ID_MOCK,
-            time: Date.now(),
-            txParams: {
-              from: '0x0000000000000000000000000000000000000000',
-              nonce: '0x1',
-            },
-          } as TransactionMeta,
-        ],
-      } as TransactionController['state']);
-
-      expect(state?.transactions[0]).toEqual(
-        expect.objectContaining({
-          status: TransactionStatus.submitted,
-          rawTx: signedRawTx,
-          networkClientId: 'sepolia',
-        }),
-      );
-      expect(state?.transactions[0].submittedTime).toBeDefined();
-      expect(state?.transactions[0].error).toBeUndefined();
-    });
-
-    it('upgrades startup-failed recoverable transactions before controller boot cleanup', () => {
-      const state = getRecoverableTransactionControllerState({
-        lastFetchedBlockNumbers: {},
-        methodData: {},
-        submitHistory: [],
-        transactionBatches: [],
-        transactions: [
-          {
-            id: 'failed-startup',
-            status: TransactionStatus.failed,
-            error: {
-              message: 'Transaction incomplete at startup',
-              name: 'Error',
-            } as Error,
-            rawTx: signedRawTx,
-            networkClientId: 'sepolia',
-            chainId: CHAIN_ID_MOCK,
-            time: Date.now(),
-            txParams: {
-              from: '0x0000000000000000000000000000000000000000',
-              nonce: '0x1',
-            },
-          } as TransactionMeta,
-        ],
-      } as TransactionController['state']);
-
-      expect(state?.transactions[0]).toEqual(
-        expect.objectContaining({
-          status: TransactionStatus.submitted,
-          rawTx: signedRawTx,
-          networkClientId: 'sepolia',
-        }),
-      );
-      expect(state?.transactions[0].error).toBeUndefined();
-    });
-
-    it('does not upgrade regular failed transactions', () => {
-      const originalState = {
-        lastFetchedBlockNumbers: {},
-        methodData: {},
-        submitHistory: [],
-        transactionBatches: [],
-        transactions: [
-          {
-            id: 'real-failed',
-            status: TransactionStatus.failed,
-            error: {
-              message: 'replacement transaction underpriced',
-              name: 'Error',
-            } as Error,
-            rawTx: signedRawTx,
-            networkClientId: 'sepolia',
-            chainId: CHAIN_ID_MOCK,
-            time: Date.now(),
-            txParams: {
-              from: '0x0000000000000000000000000000000000000000',
-              nonce: '0x1',
-            },
-          } as TransactionMeta,
-        ],
-      } as TransactionController['state'];
-
-      expect(getRecoverableTransactionControllerState(originalState)).toBe(
-        originalState,
-      );
-    });
-  });
 });

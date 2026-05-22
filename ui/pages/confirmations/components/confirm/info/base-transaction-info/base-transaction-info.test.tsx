@@ -16,6 +16,21 @@ import { enLocale as messages } from '../../../../../../../test/lib/i18n-helpers
 import * as DappSwapContext from '../../../../context/dapp-swap';
 import BaseTransactionInfo from './base-transaction-info';
 
+const DNS_STATE = {
+  chainId: null,
+  domainName: null,
+  error: null,
+  resolutions: null,
+  stage: 'UNINITIALIZED',
+  warning: null,
+};
+
+const createMockStore = (state: Record<string, unknown>) =>
+  configureMockStore([thunk])({
+    ...state,
+    DNS: DNS_STATE,
+  });
+
 jest.mock('../../../simulation-details/useBalanceChanges', () => ({
   useBalanceChanges: jest.fn(() => ({ pending: false, value: [] })),
 }));
@@ -42,11 +57,9 @@ jest.mock(
 );
 
 describe('<BaseTransactionInfo />', () => {
-  const middleware = [thunk];
-
   it('renders component for contract interaction request', async () => {
     const state = getMockContractInteractionConfirmState();
-    const mockStore = configureMockStore(middleware)(state);
+    const mockStore = createMockStore(state);
 
     const { container } = renderWithConfirmContextProvider(
       <BaseTransactionInfo />,
@@ -65,7 +78,7 @@ describe('<BaseTransactionInfo />', () => {
       time: new Date().getTime(),
       type: TransactionType.contractInteraction,
     });
-    const mockStore = configureMockStore(middleware)(state);
+    const mockStore = createMockStore(state);
     const { container } = renderWithConfirmContextProvider(
       <BaseTransactionInfo />,
       mockStore,
@@ -75,7 +88,7 @@ describe('<BaseTransactionInfo />', () => {
 
   it('renders partially if quoted swap view is displayed in info', () => {
     const state = getMockContractInteractionConfirmState();
-    const mockStore = configureMockStore(middleware)(state);
+    const mockStore = createMockStore(state);
     jest.spyOn(DappSwapContext, 'useDappSwapContext').mockReturnValue({
       isQuotedSwapDisplayedInInfo: true,
       selectedQuote: undefined,
@@ -95,4 +108,5 @@ describe('<BaseTransactionInfo />', () => {
     expect(queryByText(messages.token.message)).toBeNull();
     expect(queryByText('Gas fee')).toBeNull();
   });
+
 });
