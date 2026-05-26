@@ -23,7 +23,6 @@ import {
   ERC20_DEFAULT_DECIMALS,
   fetchAllErc20Decimals,
 } from '../../utils/token';
-import { isOneDo7702UpgradeAuthorization } from '../../../../../shared/lib/eip7702-utils';
 
 import {
   BalanceChange,
@@ -138,18 +137,6 @@ function getTransactionGasFeeUpperBoundWei(
   return gasLimit.times(feePerGas);
 }
 
-function hasOneDo7702Context(transaction?: TransactionMeta): boolean {
-  if (isOneDo7702UpgradeAuthorization(transaction?.delegationAddress)) {
-    return true;
-  }
-
-  return (
-    transaction?.txParams?.authorizationList?.some(({ address }) =>
-      isOneDo7702UpgradeAuthorization(address),
-    ) ?? false
-  );
-}
-
 function isLikelyGasRefundNativeChange({
   nativeBalanceChange,
   tokenBalanceChanges,
@@ -163,7 +150,9 @@ function isLikelyGasRefundNativeChange({
     !nativeBalanceChange ||
     nativeBalanceChange.isDecrease ||
     tokenBalanceChanges.length === 0 ||
-    !hasOneDo7702Context(transaction)
+    !parseHexToBigNumber(
+      transaction?.txParams?.value as string | undefined,
+    ).isZero()
   ) {
     return false;
   }

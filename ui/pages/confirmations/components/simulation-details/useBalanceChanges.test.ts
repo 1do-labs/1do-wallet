@@ -35,13 +35,6 @@ jest.mock('../../../../store/actions', () => ({
   getTokenStandardAndDetailsByChain: jest.fn(),
 }));
 
-jest.mock('../../../../../shared/lib/eip7702-utils', () => ({
-  isOneDo7702UpgradeAuthorization: jest.fn(
-    (address?: string) =>
-      address === '0x1do000000000000000000000000000000000000',
-  ),
-}));
-
 const mockSelectConversionRateByChainId = jest.mocked(
   selectConversionRateByChainId,
 );
@@ -443,7 +436,7 @@ describe('useBalanceChanges', () => {
     expect(changes[1].amount).toEqual(new BigNumber('0.002'));
   });
 
-  it('hides likely 1Do gas refund native balance changes while preserving token receipts', async () => {
+  it('hides likely gas refund native balance changes while preserving token receipts', async () => {
     const simulationData: SimulationData = {
       nativeBalanceChange: {
         ...dummyBalanceChange,
@@ -461,10 +454,10 @@ describe('useBalanceChanges', () => {
       ],
     };
     const transaction = {
-      delegationAddress: '0x1do000000000000000000000000000000000000',
       txParams: {
         gas: '0x5208',
         maxFeePerGas: '0x77359400',
+        value: '0x0',
       },
     } as TransactionMeta;
 
@@ -486,5 +479,54 @@ describe('useBalanceChanges', () => {
       standard: TokenStandard.ERC20,
     });
     expect(changes[0].amount).toEqual(new BigNumber('100'));
+  });
+
+  it('preserves native receipts that are not close to the gas fee', async () => {
+    const simulationData: SimulationData = {
+      nativeBalanceChange: {
+        ...dummyBalanceChange,
+        difference: '0xde0b6b3a7640000',
+        isDecrease: false,
+      },
+      tokenBalanceChanges: [
+        {
+          ...dummyBalanceChange,
+          difference: '0x186a0',
+          isDecrease: false,
+          address: ERC20_TOKEN_ADDRESS_1_MOCK,
+          standard: SimulationTokenStandard.erc20,
+        },
+      ],
+    };
+    const transaction = {
+      txParams: {
+        gas: '0x5208',
+        maxFeePerGas: '0x77359400',
+        value: '0x0',
+      },
+    } as TransactionMeta;
+
+    const { result, waitForNextUpdate } = renderHook(() =>
+      useBalanceChanges({
+        chainId: CHAIN_ID_MOCK,
+        simulationData,
+        transaction,
+      }),
+    );
+
+    await waitForNextUpdate();
+
+    const changes = result.current.value;
+    expect(changes).toHaveLength(2);
+    expect(changes[0].asset).toEqual({
+      chainId: CHAIN_ID_MOCK,
+      standard: TokenStandard.none,
+    });
+    expect(changes[0].amount).toEqual(new BigNumber('1'));
+    expect(changes[1].asset).toEqual({
+      chainId: CHAIN_ID_MOCK,
+      address: ERC20_TOKEN_ADDRESS_1_MOCK,
+      standard: TokenStandard.ERC20,
+    });
   });
 });
