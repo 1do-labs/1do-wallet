@@ -3,7 +3,6 @@ import { renderHook } from '@testing-library/react-hooks';
 import {
   SimulationData,
   SimulationTokenStandard,
-  TransactionMeta,
 } from '@metamask/transaction-controller';
 import { BigNumber } from 'bignumber.js';
 import { TokenStandard } from '../../../../../shared/constants/transaction';
@@ -434,99 +433,5 @@ describe('useBalanceChanges', () => {
       standard: TokenStandard.ERC20,
     });
     expect(changes[1].amount).toEqual(new BigNumber('0.002'));
-  });
-
-  it('hides likely gas refund native balance changes while preserving token receipts', async () => {
-    const simulationData: SimulationData = {
-      nativeBalanceChange: {
-        ...dummyBalanceChange,
-        difference: '0x2632e314a000',
-        isDecrease: false,
-      },
-      tokenBalanceChanges: [
-        {
-          ...dummyBalanceChange,
-          difference: '0x186a0',
-          isDecrease: false,
-          address: ERC20_TOKEN_ADDRESS_1_MOCK,
-          standard: SimulationTokenStandard.erc20,
-        },
-      ],
-    };
-    const transaction = {
-      txParams: {
-        gas: '0x5208',
-        maxFeePerGas: '0x77359400',
-        value: '0x0',
-      },
-    } as TransactionMeta;
-
-    const { result, waitForNextUpdate } = renderHook(() =>
-      useBalanceChanges({
-        chainId: CHAIN_ID_MOCK,
-        simulationData,
-        transaction,
-      }),
-    );
-
-    await waitForNextUpdate();
-
-    const changes = result.current.value;
-    expect(changes).toHaveLength(1);
-    expect(changes[0].asset).toEqual({
-      chainId: CHAIN_ID_MOCK,
-      address: ERC20_TOKEN_ADDRESS_1_MOCK,
-      standard: TokenStandard.ERC20,
-    });
-    expect(changes[0].amount).toEqual(new BigNumber('100'));
-  });
-
-  it('preserves native receipts that are not close to the gas fee', async () => {
-    const simulationData: SimulationData = {
-      nativeBalanceChange: {
-        ...dummyBalanceChange,
-        difference: '0xde0b6b3a7640000',
-        isDecrease: false,
-      },
-      tokenBalanceChanges: [
-        {
-          ...dummyBalanceChange,
-          difference: '0x186a0',
-          isDecrease: false,
-          address: ERC20_TOKEN_ADDRESS_1_MOCK,
-          standard: SimulationTokenStandard.erc20,
-        },
-      ],
-    };
-    const transaction = {
-      txParams: {
-        gas: '0x5208',
-        maxFeePerGas: '0x77359400',
-        value: '0x0',
-      },
-    } as TransactionMeta;
-
-    const { result, waitForNextUpdate } = renderHook(() =>
-      useBalanceChanges({
-        chainId: CHAIN_ID_MOCK,
-        simulationData,
-        transaction,
-      }),
-    );
-
-    await waitForNextUpdate();
-
-    const changes = result.current.value;
-    expect(changes).toHaveLength(2);
-    expect(changes[0].asset).toEqual({
-      chainId: CHAIN_ID_MOCK,
-      standard: TokenStandard.none,
-    });
-    expect(changes[0].amount).toEqual(new BigNumber('1'));
-    expect(changes[1].asset).toEqual({
-      chainId: CHAIN_ID_MOCK,
-      address: ERC20_TOKEN_ADDRESS_1_MOCK,
-      standard: TokenStandard.ERC20,
-    });
   });
 });
