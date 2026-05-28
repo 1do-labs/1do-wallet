@@ -442,6 +442,29 @@ const withoutRows = (
   labels: string[],
 ) => (rows ?? []).filter((item) => !labels.includes(item.label));
 
+const relabelRows = (
+  rows: OneDoClearSigningRow[],
+  labels: Record<string, string>,
+) =>
+  rows.map((item) => ({
+    ...item,
+    label: labels[item.label] ?? item.label,
+  }));
+
+const normalizeFillRows = (rows: OneDoClearSigningRow[]) =>
+  relabelRows(rows, {
+    'Maker sells': 'You receive',
+    'Maker sends native': 'You receive',
+    'Maker sells NFT collection': 'You receive NFT collection',
+    'Maker sells token ID': 'You receive token ID',
+    'Maker gives NFT collection': 'You receive NFT collection',
+    'Maker gives token ID': 'You receive token ID',
+    'Buyer pays': 'You pay',
+    'Buyer pays native': 'You pay',
+    'Buyer pays NFT collection': 'You pay NFT collection',
+    'Buyer pays token ID': 'You pay token ID',
+  });
+
 const parseTypedData = (data?: SignatureRequestType['msgParams']['data']) => {
   if (!data) {
     return undefined;
@@ -1228,8 +1251,8 @@ const getDexCallRows = (data: string) => {
       ])
     ) {
       return {
-        action: `${prefix}: token for token`,
-        rows: [
+        action: prefix,
+        rows: normalizeFillRows([
           tokenAmountRow(
             isFill ? 'Maker sells' : 'Sell',
             order.amountIn,
@@ -1241,7 +1264,7 @@ const getDexCallRows = (data: string) => {
             order.tokenOut,
           ),
           dateRow('Expiry', order.expiry),
-        ],
+        ]),
         advancedRows: [
           addressRow(
             isFill ? 'Maker sells token' : 'Sell token',
@@ -1267,8 +1290,8 @@ const getDexCallRows = (data: string) => {
       ])
     ) {
       return {
-        action: `${prefix}: native for token`,
-        rows: [
+        action: prefix,
+        rows: normalizeFillRows([
           nativeAmountRow(
             isFill ? 'Maker sends native' : 'Sell native',
             order.nativeAmount,
@@ -1279,7 +1302,7 @@ const getDexCallRows = (data: string) => {
             order.erc20,
           ),
           dateRow('Expiry', order.expiry),
-        ],
+        ]),
         advancedRows: [
           addressRow(
             isFill ? 'Buyer pays token' : 'Receive token',
@@ -1301,8 +1324,8 @@ const getDexCallRows = (data: string) => {
       ])
     ) {
       return {
-        action: `${prefix}: token for native`,
-        rows: [
+        action: prefix,
+        rows: normalizeFillRows([
           tokenAmountRow(
             isFill ? 'Maker sells' : 'Sell',
             order.tokenAmount,
@@ -1313,7 +1336,7 @@ const getDexCallRows = (data: string) => {
             order.nativeAmount,
           ),
           dateRow('Expiry', order.expiry),
-        ],
+        ]),
         advancedRows: [
           addressRow(isFill ? 'Maker sells token' : 'Sell token', order.erc20),
           row('Nonce', order.nonce),
@@ -1346,8 +1369,8 @@ const getNFTMarketCallRows = (data: string) => {
       ])
     ) {
       return {
-        action: `${prefix}: NFT for token`,
-        rows: [
+        action: prefix,
+        rows: normalizeFillRows([
           addressRow(
             isFill ? 'Maker sells NFT collection' : 'Sell NFT collection',
             order.nft,
@@ -1359,7 +1382,7 @@ const getNFTMarketCallRows = (data: string) => {
             order.erc20,
           ),
           dateRow('Expiry', order.expiry),
-        ],
+        ]),
         advancedRows: [
           addressRow(
             isFill ? 'Buyer pays token' : 'Receive token',
@@ -1382,8 +1405,8 @@ const getNFTMarketCallRows = (data: string) => {
       ])
     ) {
       return {
-        action: `${prefix}: token for NFT`,
-        rows: [
+        action: prefix,
+        rows: normalizeFillRows([
           tokenAmountRow(
             isFill ? 'Maker sells' : 'Sell',
             order.tokenAmount,
@@ -1398,7 +1421,7 @@ const getNFTMarketCallRows = (data: string) => {
             order.tokenId,
           ),
           dateRow('Expiry', order.expiry),
-        ],
+        ]),
         advancedRows: [
           addressRow(isFill ? 'Maker sells token' : 'Sell token', order.erc20),
           row('Nonce', order.nonce),
@@ -1435,13 +1458,13 @@ const getNFTMarketCallRows = (data: string) => {
       }
 
       return {
-        action: `${prefix}: ${nftForNative ? 'NFT for native' : 'native for NFT'}`,
-        rows: [
+        action: prefix,
+        rows: normalizeFillRows([
           addressRow(collectionLabel, order.nft),
           row(tokenIdLabel, order.tokenId),
           nativeAmountRow(nativeAmountLabel, order.nativeAmount),
           dateRow('Expiry', order.expiry),
-        ],
+        ]),
         advancedRows: [row('Nonce', order.nonce)],
       };
     }
@@ -1458,8 +1481,8 @@ const getNFTMarketCallRows = (data: string) => {
       ])
     ) {
       return {
-        action: `${prefix}: NFT for NFT`,
-        rows: [
+        action: prefix,
+        rows: normalizeFillRows([
           addressRow(
             isFill ? 'Maker sells NFT collection' : 'Sell NFT collection',
             order.giveNft,
@@ -1477,7 +1500,7 @@ const getNFTMarketCallRows = (data: string) => {
             order.wantTokenId,
           ),
           dateRow('Expiry', order.expiry),
-        ],
+        ]),
       };
     }
   } catch {
@@ -1508,7 +1531,7 @@ const getPeerDexCallRows = (data: string) => {
 
     return {
       action: isFill ? 'Fill PeerDex order' : 'Cancel PeerDex order',
-      rows: [
+      rows: normalizeFillRows([
         tokenAmountRow(
           isFill ? 'Maker sells' : 'Sell',
           order.amountIn,
@@ -1520,7 +1543,7 @@ const getPeerDexCallRows = (data: string) => {
           order.tokenOut,
         ),
         dateRow('Expiry', order.expiry),
-      ],
+      ]),
       advancedRows: [
         addressRow(isFill ? 'Maker sells token' : 'Sell token', order.tokenIn),
         addressRow(
@@ -1588,11 +1611,11 @@ const getCloseskyCallRows = (data: string) => {
 
     return {
       action: isFill ? 'Fill Closesky order' : 'Cancel Closesky order',
-      rows: [
+      rows: normalizeFillRows([
         ...closeskyAssetRows(isFill ? 'Maker gives' : 'Give', give),
         ...closeskyAssetRows(isFill ? 'Buyer pays' : 'Want', want),
         dateRow('Expiry', order.expiry),
-      ],
+      ]),
       advancedRows: [
         addressRow('Maker wallet', order.makerWallet),
         row('Give asset type', assetTypeLabel(give.assetType)),
@@ -1882,15 +1905,9 @@ function parseRuntimeExecutionRows(
 
       return {
         title: runtimeTitle,
-        rows: [
-          addressRow('Wallet', walletAddress),
-          row(
-            'Runtime app',
-            appNameForAddress(appAddress) ?? 'Unknown 1Do app',
-          ),
-          ...(appCall?.rows ?? []),
-        ],
+        rows: [addressRow('Wallet', walletAddress), ...(appCall?.rows ?? [])],
         advancedRows: [
+          row('App', appNameForAddress(appAddress) ?? 'Unknown 1Do app'),
           addressRow('App logic', appAddress),
           hashRow('App calldata hash', appData),
           ...(appCall?.advancedRows ?? []),
@@ -1909,16 +1926,16 @@ function parseRuntimeExecutionRows(
       return {
         title: nested?.title ?? 'Execute 1Do call with token pull',
         rows: [
-          addressRow('Buyer wallet', walletAddress),
-          addressRow('Target wallet', target),
+          addressRow('Wallet', walletAddress),
+          addressRow('Seller', target),
+          ...withoutRows(nested?.rows, ['Wallet']),
+        ],
+        advancedRows: [
           tokenAmountRow(
             'Max token pull',
             parsed.args.maxAmount,
             parsed.args.asset,
           ),
-          ...withoutRows(nested?.rows, ['Wallet']),
-        ],
-        advancedRows: [
           addressRow('Pull asset', parsed.args.asset),
           hashRow('Target calldata hash', targetData),
           ...(nested?.advancedRows ?? []),
@@ -1935,13 +1952,13 @@ function parseRuntimeExecutionRows(
       return {
         title: nested?.title ?? 'Execute 1Do call with NFT pull',
         rows: [
-          addressRow('Buyer wallet', walletAddress),
-          addressRow('Target wallet', target),
-          addressRow('NFT collection', parsed.args.asset),
-          row('Token ID', parsed.args.tokenId),
+          addressRow('Wallet', walletAddress),
+          addressRow('Seller', target),
           ...withoutRows(nested?.rows, ['Wallet']),
         ],
         advancedRows: [
+          addressRow('NFT collection', parsed.args.asset),
+          row('Token ID', parsed.args.tokenId),
           hashRow('Target calldata hash', targetData),
           ...(nested?.advancedRows ?? []),
         ],

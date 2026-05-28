@@ -628,21 +628,25 @@ describe('1Do clear signing utilities', () => {
       descriptorId: 'account-runtime',
       descriptorSha256:
         'aab7b3f722a6d8a9bed1100c228dea71c304efc0fdbdea6b15e8485301a51fff',
-      title: 'Fill Dex order: token for token',
+      title: 'Fill Dex order',
       rows: expect.arrayContaining([
-        expect.objectContaining({ label: 'Runtime app', value: 'Dex' }),
         expect.objectContaining({
-          label: 'Maker sells',
+          label: 'Wallet',
+          value: WALLET_ADDRESS,
+        }),
+        expect.objectContaining({
+          label: 'You receive',
           value: '1000 raw units',
           valueType: 'tokenAmount',
         }),
         expect.objectContaining({
-          label: 'Buyer pays',
+          label: 'You pay',
           value: '2000 raw units',
           valueType: 'tokenAmount',
         }),
       ]),
       advancedRows: expect.arrayContaining([
+        expect.objectContaining({ label: 'App', value: 'Dex' }),
         expect.objectContaining({
           label: 'Maker sells token',
           value: TOKEN_IN_ADDRESS,
@@ -691,28 +695,32 @@ describe('1Do clear signing utilities', () => {
     });
 
     expect(info).toMatchObject({
-      title: 'Fill Dex order: token for token',
+      title: 'Fill Dex order',
       rows: expect.arrayContaining([
         expect.objectContaining({
-          label: 'Buyer wallet',
+          label: 'Wallet',
           value: WALLET_ADDRESS,
         }),
         expect.objectContaining({
-          label: 'Target wallet',
+          label: 'Seller',
           value: MAKER_WALLET_ADDRESS,
         }),
         expect.objectContaining({
-          label: 'Max token pull',
-          value: '2000 raw units',
+          label: 'You receive',
+          value: '1000 raw units',
           valueType: 'tokenAmount',
         }),
         expect.objectContaining({
-          label: 'Maker sells',
-          value: '1000 raw units',
+          label: 'You pay',
+          value: '2000 raw units',
           valueType: 'tokenAmount',
         }),
       ]),
       advancedRows: expect.arrayContaining([
+        expect.objectContaining({
+          label: 'Max token pull',
+          value: '2000 raw units',
+        }),
         expect.objectContaining({
           label: 'Pull asset',
           value: TOKEN_OUT_ADDRESS,
@@ -761,18 +769,26 @@ describe('1Do clear signing utilities', () => {
     });
 
     expect(info).toMatchObject({
-      title: 'Fill NFT Market order: token for NFT',
+      title: 'Fill NFT Market order',
       rows: expect.arrayContaining([
         expect.objectContaining({
-          label: 'NFT collection',
-          value: NFT_ADDRESS,
+          label: 'Wallet',
+          value: WALLET_ADDRESS,
         }),
-        expect.objectContaining({ label: 'Token ID', value: '42' }),
         expect.objectContaining({
-          label: 'Maker sells',
+          label: 'Seller',
+          value: MAKER_WALLET_ADDRESS,
+        }),
+        expect.objectContaining({
+          label: 'You receive',
           value: '3000 raw units',
           valueType: 'tokenAmount',
         }),
+        expect.objectContaining({
+          label: 'You pay NFT collection',
+          value: NFT_ADDRESS,
+        }),
+        expect.objectContaining({ label: 'You pay token ID', value: '42' }),
       ]),
     });
   });
@@ -815,19 +831,23 @@ describe('1Do clear signing utilities', () => {
     expect(info).toMatchObject({
       title: 'Fill PeerDex order',
       rows: expect.arrayContaining([
-        expect.objectContaining({ label: 'Runtime app', value: 'PeerDex' }),
         expect.objectContaining({
-          label: 'Maker sells',
+          label: 'Wallet',
+          value: WALLET_ADDRESS,
+        }),
+        expect.objectContaining({
+          label: 'You receive',
           value: '1000 raw units',
           valueType: 'tokenAmount',
         }),
         expect.objectContaining({
-          label: 'Buyer pays',
+          label: 'You pay',
           value: '2000 raw units',
           valueType: 'tokenAmount',
         }),
       ]),
       advancedRows: expect.arrayContaining([
+        expect.objectContaining({ label: 'App', value: 'PeerDex' }),
         expect.objectContaining({ label: 'Nonce', value: '11' }),
       ]),
     });
@@ -922,19 +942,23 @@ describe('1Do clear signing utilities', () => {
     expect(info).toMatchObject({
       title: 'Fill Closesky order',
       rows: expect.arrayContaining([
-        expect.objectContaining({ label: 'Runtime app', value: 'Closesky' }),
         expect.objectContaining({
-          label: 'Maker gives NFT collection',
+          label: 'Wallet',
+          value: WALLET_ADDRESS,
+        }),
+        expect.objectContaining({
+          label: 'You receive NFT collection',
           value: NFT_ADDRESS,
         }),
-        expect.objectContaining({ label: 'Maker gives token ID', value: '42' }),
+        expect.objectContaining({ label: 'You receive token ID', value: '42' }),
         expect.objectContaining({
-          label: 'Buyer pays',
+          label: 'You pay',
           value: '3000 raw units',
           valueType: 'tokenAmount',
         }),
       ]),
       advancedRows: expect.arrayContaining([
+        expect.objectContaining({ label: 'App', value: 'Closesky' }),
         expect.objectContaining({
           label: 'Maker wallet',
           value: MAKER_WALLET_ADDRESS,
@@ -988,7 +1012,6 @@ describe('1Do clear signing utilities', () => {
     expect(info).toMatchObject({
       title: 'Settle Blink Pay session',
       rows: expect.arrayContaining([
-        expect.objectContaining({ label: 'Runtime app', value: 'Blink Pay' }),
         expect.objectContaining({
           label: 'New cumulative paid',
           value: '2000 raw units',
@@ -996,6 +1019,7 @@ describe('1Do clear signing utilities', () => {
         expect.objectContaining({ label: 'Payee', value: CLAIMANT_ADDRESS }),
       ]),
       advancedRows: expect.arrayContaining([
+        expect.objectContaining({ label: 'App', value: 'Blink Pay' }),
         expect.objectContaining({ label: 'Session ID', value: sessionId }),
       ]),
     });
@@ -1059,7 +1083,6 @@ describe('1Do clear signing utilities', () => {
     expect(info).toMatchObject({
       title: 'Execute CryptoWill plan',
       rows: expect.arrayContaining([
-        expect.objectContaining({ label: 'Runtime app', value: 'CryptoWill' }),
         expect.objectContaining({ label: 'Plan ID', value: planId }),
         expect.objectContaining({
           label: 'ERC20 distribution count',
@@ -1071,6 +1094,7 @@ describe('1Do clear signing utilities', () => {
         }),
       ]),
       advancedRows: expect.arrayContaining([
+        expect.objectContaining({ label: 'App', value: 'CryptoWill' }),
         expect.objectContaining({ label: 'Document hash', value: docHash }),
       ]),
     });
@@ -1106,7 +1130,6 @@ describe('1Do clear signing utilities', () => {
     expect(info).toMatchObject({
       title: 'Execute Flashman flash loan',
       rows: expect.arrayContaining([
-        expect.objectContaining({ label: 'Runtime app', value: 'Flashman' }),
         expect.objectContaining({
           label: 'Receiver',
           value: FLASH_RECEIVER_ADDRESS,
@@ -1118,6 +1141,7 @@ describe('1Do clear signing utilities', () => {
         expect.objectContaining({ label: 'Fee rate', value: '0.05%' }),
       ]),
       advancedRows: expect.arrayContaining([
+        expect.objectContaining({ label: 'App', value: 'Flashman' }),
         expect.objectContaining({
           label: 'Loan token',
           value: TOKEN_IN_ADDRESS,
@@ -1210,12 +1234,14 @@ describe('1Do clear signing utilities', () => {
         '2abeba646958ee6fcdc091c2a1e89103c425f20e8bd6f6ad35b7f198d3046470',
       title: '1Do gasless signed execution',
       rows: expect.arrayContaining([
-        expect.objectContaining({ label: 'Runtime app', value: 'Dex' }),
         expect.objectContaining({
-          label: 'Maker sells',
+          label: 'You receive',
           value: '1000 raw units',
           valueType: 'tokenAmount',
         }),
+      ]),
+      advancedRows: expect.arrayContaining([
+        expect.objectContaining({ label: 'App', value: 'Dex' }),
       ]),
     });
   });
