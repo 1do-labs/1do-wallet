@@ -2,9 +2,7 @@ import React, { useCallback, useContext, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { I18nContext } from '../../../contexts/i18n';
-import useRamps from '../../../hooks/ramps/useRamps/useRamps';
 import { getUseExternalServices } from '../../../selectors';
-import useBridging from '../../../hooks/bridge/useBridging';
 
 import { INVALID_ASSET_TYPE } from '../../../helpers/constants/error-keys';
 import { showModal } from '../../../store/actions';
@@ -13,7 +11,6 @@ import { AssetType } from '../../../../shared/constants/transaction';
 import {
   MetaMetricsEventCategory,
   MetaMetricsEventName,
-  MetaMetricsSwapsEventSource,
 } from '../../../../shared/constants/metametrics';
 import {
   Display,
@@ -27,7 +24,6 @@ import {
   IconName,
   IconSize,
 } from '../../../components/component-library';
-import { getIsNativeTokenBuyable } from '../../../ducks/ramps';
 
 import { Asset } from '../types/asset';
 import { navigateToSendRoute } from '../../confirmations/utils/send';
@@ -51,12 +47,6 @@ const TokenButtons = ({
   const isExternalServicesEnabled = useSelector(getUseExternalServices);
   const isEvm = isEvmChainId(token.chainId);
 
-  const currentChainId = token.chainId;
-
-  const isBuyableChain = useSelector(getIsNativeTokenBuyable);
-  const { openBuyCryptoInPdapp } = useRamps();
-  const { openBridgeExperience } = useBridging();
-
   useEffect(() => {
     if (token.isERC721) {
       dispatch(
@@ -67,24 +57,6 @@ const TokenButtons = ({
       );
     }
   }, [token.isERC721, token.address, dispatch]);
-
-  const handleBuyAndSellOnClick = useCallback(() => {
-    openBuyCryptoInPdapp();
-    trackEvent({
-      event: MetaMetricsEventName.NavBuyButtonClicked,
-      category: MetaMetricsEventCategory.Navigation,
-      properties: {
-        location: 'Token Overview',
-        text: 'Buy',
-        // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        chain_id: currentChainId,
-        // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        token_symbol: token.symbol,
-      },
-    });
-  }, [currentChainId, token.symbol, trackEvent, openBuyCryptoInPdapp]);
 
   const handleSendOnClick = useCallback(async () => {
     trackEvent(
@@ -120,33 +92,12 @@ const TokenButtons = ({
     }
   }, [trackEvent, navigate, token]);
 
-  const handleSwapOnClick = useCallback(async () => {
-    openBridgeExperience(MetaMetricsSwapsEventSource.TokenView, token);
-  }, [token, openBridgeExperience]);
-
   return (
     <Box
       display={Display.Flex}
       gap={3}
       justifyContent={JustifyContent.spaceEvenly}
     >
-      <IconButton
-        className="token-overview__button"
-        Icon={
-          <Icon
-            name={IconName.Dollar}
-            color={IconColor.iconAlternative}
-            size={IconSize.Md}
-          />
-        }
-        label={t('buy')}
-        data-testid="token-overview-buy"
-        onClick={handleBuyAndSellOnClick}
-        // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31880
-        // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
-        disabled={token.isERC721 || !isBuyableChain}
-      />
-
       <IconButton
         className="token-overview__button"
         onClick={handleSendOnClick}
@@ -163,21 +114,6 @@ const TokenButtons = ({
           token.isERC721 ||
           (disableSendForNonEvm && !isEvm && !isExternalServicesEnabled)
         }
-      />
-
-      <IconButton
-        className="token-overview__button"
-        Icon={
-          <Icon
-            name={IconName.SwapVertical}
-            color={IconColor.iconAlternative}
-            size={IconSize.Md}
-          />
-        }
-        onClick={handleSwapOnClick}
-        data-testid="token-overview-swap"
-        label={t('swap')}
-        disabled={!isExternalServicesEnabled || isMarketClosed}
       />
     </Box>
   );

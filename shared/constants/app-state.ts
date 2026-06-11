@@ -8,7 +8,6 @@ export enum AccountOverviewTabKey {
   Nfts = 'nfts',
   Activity = 'activity',
   DeFi = 'defi',
-  Perps = 'perps',
   Runtime = 'runtime',
 }
 
@@ -25,7 +24,6 @@ export const ACCOUNT_OVERVIEW_TAB_KEY_TO_TRACE_NAME_MAP = {
   [AccountOverviewTabKey.Nfts]: TraceName.AccountOverviewNftsTab,
   [AccountOverviewTabKey.Activity]: TraceName.AccountOverviewActivityTab,
   [AccountOverviewTabKey.DeFi]: TraceName.AccountOverviewDeFiTab,
-  [AccountOverviewTabKey.Perps]: TraceName.AccountOverviewPerpsTab,
   [AccountOverviewTabKey.Runtime]: TraceName.AccountOverviewRuntimeTab,
 } as const;
 

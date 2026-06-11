@@ -26,12 +26,9 @@ import {
 } from '../../../../../shared/constants/metametrics';
 import { MetaMetricsContext } from '../../../../contexts/metametrics';
 import { SafeChain } from '../../../../pages/settings/networks-tab/networks-form/use-safe-chains';
-import {
-  isEvmChainId,
-} from '../../../../../shared/lib/asset-utils';
+import { isEvmChainId } from '../../../../../shared/lib/asset-utils';
 import { sortAssetsWithPriority } from '../util/sortAssetsWithPriority';
 import { VirtualizedList } from '../../../ui/virtualized-list/virtualized-list';
-import { TOKEN_LIST_CELL_MUSD_OPTIONS } from '../../musd/musd-events';
 
 type TokenListProps = {
   onTokenClick: (chainId: string, address: string) => void;
@@ -159,7 +156,6 @@ function TokenList({ onTokenClick, safeChains }: TokenListProps) {
               privacyMode={privacyMode}
               onClick={handleTokenClick(token)}
               safeChains={safeChains}
-              musd={TOKEN_LIST_CELL_MUSD_OPTIONS}
             />
           );
         })}
@@ -182,7 +178,6 @@ function TokenList({ onTokenClick, safeChains }: TokenListProps) {
             privacyMode={privacyMode}
             onClick={handleTokenClick(token)}
             safeChains={safeChains}
-            musd={TOKEN_LIST_CELL_MUSD_OPTIONS}
           />
         );
       }}

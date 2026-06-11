@@ -11,7 +11,6 @@ import {
 import {
   CONFIRM_TRANSACTION_ROUTE,
   SEND_ROUTE,
-  CROSS_CHAIN_SWAP_ROUTE,
 } from '../../../helpers/constants/routes';
 
 import {
@@ -69,12 +68,6 @@ export const AppHeader = ({ location }) => {
       location?.pathname || '',
     ),
   );
-  const isSwapsPage = Boolean(
-    matchPath(
-      { path: CROSS_CHAIN_SWAP_ROUTE, end: false },
-      location?.pathname || '',
-    ),
-  );
   const isSendPage = Boolean(
     matchPath({ path: SEND_ROUTE, end: false }, location?.pathname || ''),
   );
@@ -84,13 +77,10 @@ export const AppHeader = ({ location }) => {
   const hasUnapprovedTransactions =
     Object.keys(unapprovedTransactions).length > 0;
 
-  const disableAccountPicker = isConfirmationPage || isSwapsPage;
+  const disableAccountPicker = isConfirmationPage;
 
   const disableNetworkPicker =
-    isSwapsPage ||
-    isConfirmationPage ||
-    isSendPage ||
-    hasUnapprovedTransactions;
+    isConfirmationPage || isSendPage || hasUnapprovedTransactions;
 
   // Callback for network dropdown
   const networkOpenCallback = useCallback(() => {

@@ -1,5 +1,6 @@
-import { AuthConnection } from '@metamask/seedless-onboarding-controller';
 import { Driver } from '../../../webdriver/driver';
+
+export type SocialLoginConnection = 'google' | 'apple';
 
 class StartOnboardingPage {
   private driver: Driver;
@@ -72,12 +73,12 @@ class StartOnboardingPage {
   }
 
   async createWalletWithSocialLogin(
-    authConnection = AuthConnection.Google,
+    authConnection: SocialLoginConnection = 'google',
   ): Promise<void> {
     await this.driver.clickElement(this.createWalletButton);
 
     const socialLoginButton =
-      authConnection === AuthConnection.Google
+      authConnection === 'google'
         ? this.onboardingCreateWithGoogleButton
         : this.onboardingCreateWithAppleButton;
 
@@ -86,12 +87,12 @@ class StartOnboardingPage {
   }
 
   async importWalletWithSocialLogin(
-    authConnection = AuthConnection.Google,
+    authConnection: SocialLoginConnection = 'google',
   ): Promise<void> {
     await this.driver.clickElement(this.importWalletButton);
 
     const socialLoginButton =
-      authConnection === AuthConnection.Google
+      authConnection === 'google'
         ? this.onboardingImportWithGoogleButton
         : this.onboardingImportWithAppleButton;
 

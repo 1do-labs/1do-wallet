@@ -15,13 +15,6 @@ const store = configureStore({
   },
 });
 
-const mockSignOut = jest.fn();
-jest.mock('../../../hooks/identity/useAuthentication', () => ({
-  useSignOut: () => ({
-    signOut: mockSignOut,
-  }),
-}));
-
 describe('CreateNewVault', () => {
   it('renders CreateNewVault component and shows Secret Recovery Phrase text', () => {
     renderWithProvider(
@@ -165,7 +158,6 @@ describe('CreateNewVault', () => {
     fireEvent.click(submitButton);
 
     waitFor(() => {
-      expect(mockSignOut).toHaveBeenCalled();
       expect(props.onSubmit).toHaveBeenCalledWith(password, TEST_SEED);
     });
   });

@@ -16,7 +16,6 @@ const { SECURITY_ALERTS_PROD_API_BASE_URL } = require('./tests/ppom/constants');
 const {
   ACCOUNT_ACTIVITY_WS_PORT,
 } = require('./websocket/account-activity-mocks');
-const { PERPS_WS_PORT } = require('./websocket/perps-mocks');
 
 const { ALLOWLISTED_URLS } = require('./mock-e2e-allowlist');
 const {
@@ -47,7 +46,6 @@ const CHAIN_ID_NETWORKS_PATH =
   'test/e2e/mock-response-data/chain-id-network-chains.json';
 const CLIENT_SIDE_DETECTION_BLOCKLIST_PATH =
   'test/e2e/mock-response-data/client-side-detection-blocklist.json';
-const ON_RAMP_CONTENT_PATH = 'test/e2e/mock-response-data/on-ramp-content.json';
 const TEST_DAPP_STYLES_1_PATH =
   'test/e2e/mock-response-data/test-dapp-styles-1.txt';
 const TEST_DAPP_STYLES_2_PATH =
@@ -96,7 +94,6 @@ const blocklistedHosts = [
 const {
   mockEmptyStalelistAndHotlist,
 } = require('./tests/phishing-controller/mocks');
-const { mockIdentityServices } = require('./tests/identity/mocks');
 
 const emptyHtmlPage = () => `<!DOCTYPE html>
 <html lang="en">
@@ -1060,33 +1057,11 @@ async function setupMocking(
       };
     });
 
-  // Override notification list with empty response to prevent unread dot.
-  // .always() ensures every fetch returns [] (not just the first one).
-  // Notification-specific tests re-register this endpoint via testSpecificMock.
-  await server
-    .forPost('https://notification.api.cx.metamask.io/api/v3/notifications')
-    .always()
-    .thenCallback(() => ({ statusCode: 200, json: [] }));
-
-  // Identity APIs
-  await mockIdentityServices(server);
-
   await server.forGet(/^https:\/\/sourcify.dev\/(.*)/u).thenCallback(() => {
     return {
       statusCode: 404,
     };
   });
-
-  // On Ramp Content
-  const ON_RAMP_CONTENT = fs.readFileSync(ON_RAMP_CONTENT_PATH);
-  await server
-    .forGet('https://on-ramp-content.api.cx.metamask.io/regions/networks')
-    .thenCallback(() => {
-      return {
-        statusCode: 200,
-        json: JSON.parse(ON_RAMP_CONTENT),
-      };
-    });
 
   // Chains Metadata
   const CHAIN_ID_NETWORKS = fs.readFileSync(CHAIN_ID_NETWORKS_PATH);
@@ -1169,35 +1144,6 @@ async function setupMocking(
       };
     });
 
-  // On Ramp: Eligibility MetaMask Card
-  await server
-    .forGet('https://on-ramp.api.cx.metamask.io/eligibility/mm-card')
-    .thenCallback(() => {
-      return {
-        statusCode: 200,
-        body: true,
-        headers: {
-          'Content-Type': 'text/html; charset=utf-8',
-        },
-      };
-    });
-
-  // On Ramp: Geolocation (production and dev environments)
-  for (const host of [
-    'on-ramp.api.cx.metamask.io',
-    'on-ramp.dev-api.cx.metamask.io',
-  ]) {
-    await server.forGet(`https://${host}/geolocation`).thenCallback(() => {
-      return {
-        statusCode: 200,
-        body: 'US-TX',
-        headers: {
-          'Content-Type': 'text/plain; charset=utf-8',
-        },
-      };
-    });
-  }
-
   // Snaps: Execution environment html
   await server
     .forGet(/^https:\/\/execution\.metamask\.io\/iframe\/[^/]+\/index\.html$/u)
@@ -1230,77 +1176,6 @@ async function setupMocking(
       /^wss:\/\/gateway\.api\.cx\.metamask\.io\//u.test(req.url),
     )
     .thenForwardTo(`ws://localhost:${ACCOUNT_ACTIVITY_WS_PORT}`);
-
-  /**
-   * Hyperliquid Perps Websocket
-   * Redirect Hyperliquid API WebSocket calls to local mock server for E2E tests.
-   * Used when PerpsController makes real Hyperliquid calls (e.g. from background).
-   */
-  await server
-    .forAnyWebSocket()
-    .matching((req) => /^wss:\/\/api\.hyperliquid\.xyz\/ws/u.test(req.url))
-    .thenForwardTo(`ws://localhost:${PERPS_WS_PORT}`);
-
-  /**
-   * Hyperliquid REST API mocks for Perps E2E tests.
-   * When PerpsController makes REST calls to api.hyperliquid.xyz, return mock data.
-   * Reads request body via mockttp's req.body.getJson()/getText() and parses safely.
-   */
-  await server
-    .forPost(/^https:\/\/api\.hyperliquid\.xyz\/info$/u)
-    .thenCallback(async (req) => {
-      let type;
-      const { body } = req;
-      if (body) {
-        let parsed = null;
-        const json = await body.getJson().catch(() => undefined);
-        if (json !== undefined && json !== null && typeof json === 'object') {
-          parsed = json;
-        }
-        if (parsed === null) {
-          const raw = await body.getText().catch(() => '');
-          if (raw && typeof raw === 'string' && raw.trim() !== '') {
-            try {
-              parsed = JSON.parse(raw);
-            } catch {
-              parsed = null;
-            }
-          }
-        }
-        if (parsed !== null && typeof parsed === 'object') {
-          const { type: parsedType, method: parsedMethod } = parsed;
-          type = parsedType ?? parsedMethod;
-        }
-      }
-      if (type === 'meta') {
-        return {
-          statusCode: 200,
-          json: {
-            universe: [
-              {
-                name: 'BTC',
-                szDecimals: 5,
-                maxLeverage: 50,
-              },
-            ],
-          },
-        };
-      }
-      if (type === 'allMids') {
-        return {
-          statusCode: 200,
-          json: { mids: { BTC: '50000', ETH: '3000' } },
-        };
-      }
-      return { statusCode: 200, json: {} };
-    });
-
-  await server
-    .forPost(/^https:\/\/api\.hyperliquid\.xyz\/exchange$/u)
-    .thenCallback(() => ({
-      statusCode: 200,
-      json: { status: 'ok', response: { type: 'order', data: {} } },
-    }));
 
   // Test Dapp Styles
   const TEST_DAPP_STYLES_1 = fs.readFileSync(TEST_DAPP_STYLES_1_PATH);

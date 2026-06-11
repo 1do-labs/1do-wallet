@@ -46,7 +46,6 @@ import { endTrace, TraceName } from '../../../../shared/lib/trace';
 import { CreateEthAccount } from '../create-eth-account';
 import { ImportAccount } from '../import-account';
 import { SrpList } from '../multi-srp/srp-list';
-import { useSyncSRPs } from '../../../hooks/social-sync/useSyncSRPs';
 
 // TODO: Should we use an enum for this instead?
 export const ACTION_MODES = {
@@ -114,8 +113,6 @@ export const AccountMenu = ({
   const navigate = useNavigate();
 
   // sync SRPs list when menu opens
-  useSyncSRPs();
-
   const [actionMode, setActionMode] = useState<ActionMode>(ACTION_MODES.LIST);
   const [previousActionMode, setPreviousActionMode] = useState<ActionMode>(
     ACTION_MODES.LIST,

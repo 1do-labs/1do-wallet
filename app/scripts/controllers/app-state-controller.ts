@@ -11,12 +11,7 @@ import {
   ApprovalControllerAcceptRequestAction,
   ApprovalControllerAddRequestAction,
 } from '@metamask/approval-controller';
-import {
-  DeferredPromise,
-  Hex,
-  Json,
-  createDeferredPromise,
-} from '@metamask/utils';
+import { DeferredPromise, Json, createDeferredPromise } from '@metamask/utils';
 import type { QrScanRequest, SerializedUR } from '@metamask/eth-qr-keyring';
 import type { Messenger } from '@metamask/messenger';
 import { Browser } from 'webextension-polyfill';
@@ -24,7 +19,6 @@ import {
   KeyringControllerGetStateAction,
   KeyringControllerUnlockEvent,
 } from '@metamask/keyring-controller';
-import { QuoteResponse } from '@metamask/bridge-controller';
 import { ProfileMetricsControllerSkipInitialDelayAction } from '@metamask/profile-metrics-controller';
 
 import { MINUTE } from '../../../shared/constants/time';
@@ -56,12 +50,7 @@ import {
   GetAddressSecurityAlertResponse,
   AddAddressSecurityAlertResponse,
 } from '../../../shared/lib/trust-signals';
-import {
-  DefaultSubscriptionPaymentOptions,
-  ShieldSubscriptionMetricsPropsFromUI,
-} from '../../../shared/types';
 import { PendingRedirectRoute } from '../../../shared/lib/pending-redirect-state';
-import { ShieldSubscriptionError } from '../../../shared/lib/shield';
 import type { DeferredDeepLink } from '../../../shared/lib/deep-links/types';
 import type {
   Preferences,
@@ -69,19 +58,6 @@ import type {
   PreferencesControllerStateChangeEvent,
 } from './preferences-controller';
 import { AppStateControllerMethodActions } from './app-state-controller-method-action-types';
-
-export type DappSwapComparisonData = {
-  quotes?: QuoteResponse[];
-  latency?: number;
-  commands?: string;
-  error?: string;
-  swapInfo?: {
-    srcTokenAddress: Hex;
-    destTokenAddress: Hex;
-    srcTokenAmount: Hex;
-    destTokenAmountMin: Hex;
-  };
-};
 
 export type AppStateControllerState = {
   activeQrCodeScanRequest: QrScanRequest | null;
@@ -139,36 +115,18 @@ export type AppStateControllerState = {
   signatureSecurityAlertResponses: Record<string, SecurityAlertResponse>;
   slides: CarouselSlide[];
   surveyLinkLastClickedOrClosed: number | null;
-  shieldSubscriptionError: ShieldSubscriptionError | null;
-  shieldEndingToastLastClickedOrClosed: number | null;
-  shieldPausedToastLastClickedOrClosed: number | null;
   termsOfUseLastAgreed?: number;
   throttledOrigins: ThrottledOrigins;
   timeoutMinutes: number;
   trezorModel: string | null;
   updateModalLastDismissedAt: number | null;
   hasShownMultichainAccountsIntroModal: boolean;
-  musdConversionEducationSeen: boolean;
-  musdConversionDismissedCtaKeys: string[];
-  showShieldEntryModalOnce: boolean | null;
   /**
    * The pending redirect route to be applied after the default page is loaded.
    * If this is set, next time default page is loaded, the redirect will be applied.
    */
   pendingRedirectRoute: PendingRedirectRoute | null;
-  pendingShieldCohort: string | null;
-  pendingShieldCohortTxType: string | null;
-  defaultSubscriptionPaymentOptions?: DefaultSubscriptionPaymentOptions;
-  dappSwapComparisonData?: {
-    [uniqueId: string]: DappSwapComparisonData;
-  };
   deferredDeepLink?: DeferredDeepLink;
-
-  /**
-   * The properties for the Shield subscription metrics.
-   * Since we can't access some of these properties in the background, we need to get them from the UI.
-   */
-  shieldSubscriptionMetricsProps?: ShieldSubscriptionMetricsPropsFromUI;
 
   /**
    * Whether the wallet reset is in progress.
@@ -303,22 +261,13 @@ const getDefaultAppStateControllerState = (): AppStateControllerState => ({
   showTestnetMessageInDropdown: true,
   slides: [],
   surveyLinkLastClickedOrClosed: null,
-  shieldSubscriptionError: null,
-  shieldEndingToastLastClickedOrClosed: null,
-  shieldPausedToastLastClickedOrClosed: null,
   throttledOrigins: {},
   timeoutMinutes: DEFAULT_AUTO_LOCK_TIME_LIMIT,
   trezorModel: null,
   updateModalLastDismissedAt: null,
   hasShownMultichainAccountsIntroModal: false,
-  musdConversionEducationSeen: false,
-  musdConversionDismissedCtaKeys: [],
-  showShieldEntryModalOnce: null,
   pendingRedirectRoute: null,
-  pendingShieldCohort: null,
-  pendingShieldCohortTxType: null,
   isWalletResetInProgress: false,
-  dappSwapComparisonData: {},
   storageWriteErrorType: null,
   ...getInitialStateOverrides(),
 });
@@ -585,24 +534,6 @@ const controllerMetadata: StateMetadata<AppStateControllerState> = {
     includeInDebugSnapshot: true,
     usedInUi: true,
   },
-  shieldSubscriptionError: {
-    includeInStateLogs: true,
-    persist: false,
-    includeInDebugSnapshot: true,
-    usedInUi: true,
-  },
-  shieldEndingToastLastClickedOrClosed: {
-    includeInStateLogs: true,
-    persist: true,
-    includeInDebugSnapshot: true,
-    usedInUi: true,
-  },
-  shieldPausedToastLastClickedOrClosed: {
-    includeInStateLogs: true,
-    persist: true,
-    includeInDebugSnapshot: true,
-    usedInUi: true,
-  },
   termsOfUseLastAgreed: {
     includeInStateLogs: true,
     persist: true,
@@ -639,39 +570,9 @@ const controllerMetadata: StateMetadata<AppStateControllerState> = {
     usedInUi: true,
     includeInStateLogs: true,
   },
-  musdConversionEducationSeen: {
-    persist: true,
-    includeInDebugSnapshot: true,
-    usedInUi: true,
-    includeInStateLogs: true,
-  },
-  musdConversionDismissedCtaKeys: {
-    persist: true,
-    includeInDebugSnapshot: true,
-    usedInUi: true,
-    includeInStateLogs: true,
-  },
-  showShieldEntryModalOnce: {
-    includeInStateLogs: true,
-    persist: true,
-    includeInDebugSnapshot: true,
-    usedInUi: true,
-  },
   pendingRedirectRoute: {
     includeInStateLogs: true,
     persist: false,
-    includeInDebugSnapshot: true,
-    usedInUi: true,
-  },
-  pendingShieldCohort: {
-    includeInStateLogs: true,
-    persist: true,
-    includeInDebugSnapshot: true,
-    usedInUi: true,
-  },
-  pendingShieldCohortTxType: {
-    includeInStateLogs: true,
-    persist: true,
     includeInDebugSnapshot: true,
     usedInUi: true,
   },
@@ -680,24 +581,6 @@ const controllerMetadata: StateMetadata<AppStateControllerState> = {
     includeInDebugSnapshot: true,
     usedInUi: true,
     includeInStateLogs: true,
-  },
-  defaultSubscriptionPaymentOptions: {
-    includeInStateLogs: false,
-    persist: true,
-    includeInDebugSnapshot: false,
-    usedInUi: false,
-  },
-  shieldSubscriptionMetricsProps: {
-    includeInStateLogs: false,
-    persist: true,
-    includeInDebugSnapshot: false,
-    usedInUi: false,
-  },
-  dappSwapComparisonData: {
-    includeInStateLogs: false,
-    persist: false,
-    includeInDebugSnapshot: false,
-    usedInUi: true,
   },
   storageWriteErrorType: {
     includeInStateLogs: true,
@@ -715,17 +598,14 @@ const controllerMetadata: StateMetadata<AppStateControllerState> = {
 
 const MESSENGER_EXPOSED_METHODS = [
   'addAddressSecurityAlertResponse',
-  'addMusdConversionDismissedCtaKey',
   'addPollingToken',
   'addSignatureSecurityAlertResponse',
   'cancelQrCodeScan',
   'clearAppActiveTab',
   'clearPollingTokens',
   'completeQrCodeScan',
-  'deleteDappSwapComparisonData',
   'getAddressSecurityAlertResponse',
   'getCurrentPopupId',
-  'getDappSwapComparisonData',
   'getIsWalletResetInProgress',
   'getLastInteractedConfirmationInfo',
   'getSignatureSecurityAlertResponse',
@@ -741,9 +621,7 @@ const MESSENGER_EXPOSED_METHODS = [
   'setConnectedStatusPopoverHasBeenShown',
   'setCurrentExtensionPopupId',
   'setCurrentPopupId',
-  'setDappSwapComparisonData',
   'setDefaultHomeActiveTabName',
-  'setDefaultSubscriptionPaymentOptions',
   'setDeferredDeepLink',
   'setHasShownMultichainAccountsIntroModal',
   'setIsWalletResetInProgress',
@@ -752,28 +630,21 @@ const MESSENGER_EXPOSED_METHODS = [
   'setLastUpdatedAt',
   'setLastUpdatedFromVersion',
   'setLastViewedUserSurvey',
-  'setMusdConversionEducationSeen',
   'setNewPrivacyPolicyToastClickedOrClosed',
   'setNewPrivacyPolicyToastShownDate',
   'setOnboardingDate',
   'setOutdatedBrowserWarningLastShown',
   'setPendingExtensionVersion',
   'setPendingRedirectRoute',
-  'setPendingShieldCohort',
   'setPna25Acknowledged',
   'setProductTour',
   'setRampCardClosed',
   'setRecoveryPhraseReminderHasBeenShown',
   'setRecoveryPhraseReminderLastShown',
-  'setShieldEndingToastLastClickedOrClosed',
-  'setShieldPausedToastLastClickedOrClosed',
-  'setShieldSubscriptionError',
-  'setShieldSubscriptionMetricsProps',
   'setShowAccountBanner',
   'setShowBetaHeader',
   'setShowNetworkBanner',
   'setShowPermissionsTour',
-  'setShowShieldEntryModalOnce',
   'setShowTestnetMessageInDropdown',
   'setStorageWriteErrorType',
   'setSurveyLinkLastClickedOrClosed',
@@ -985,31 +856,6 @@ export class AppStateController extends BaseController<
     if (disableDelay && acknowledged) {
       this.messenger.call('ProfileMetricsController:skipInitialDelay');
     }
-  }
-
-  setShieldPausedToastLastClickedOrClosed(time: number): void {
-    this.update((state) => {
-      state.shieldPausedToastLastClickedOrClosed = time;
-    });
-  }
-
-  setShieldEndingToastLastClickedOrClosed(time: number): void {
-    this.update((state) => {
-      state.shieldEndingToastLastClickedOrClosed = time;
-    });
-  }
-
-  /**
-   * Sets a generic shield API error.
-   * When set to a non-null object, a toast is shown on the homepage with the error.
-   * Setting to null clears/dismisses the error.
-   *
-   * @param error - The error object with message and optional code, or null to clear
-   */
-  setShieldSubscriptionError(error: ShieldSubscriptionError | null): void {
-    this.update((state) => {
-      state.shieldSubscriptionError = error;
-    });
   }
 
   /**
@@ -1363,31 +1209,6 @@ export class AppStateController extends BaseController<
   }
 
   /**
-   * Sets whether the mUSD conversion education screen has been seen.
-   *
-   * @param value - Whether the education screen has been seen
-   */
-  setMusdConversionEducationSeen(value: boolean): void {
-    this.update((state) => {
-      state.musdConversionEducationSeen = value;
-    });
-  }
-
-  /**
-   * Adds a dismissed mUSD asset-detail CTA key (chainId-tokenAddress format).
-   * Used to hide the CTA for that token on that chain once dismissed.
-   *
-   * @param key - Key in format "chainId-tokenAddress" (e.g. "0x1-0xa0b86991...")
-   */
-  addMusdConversionDismissedCtaKey(key: string): void {
-    this.update((state) => {
-      if (!state.musdConversionDismissedCtaKeys.includes(key)) {
-        state.musdConversionDismissedCtaKeys.push(key);
-      }
-    });
-  }
-
-  /**
    * Sets the product tour to be shown to the user
    *
    * @param productTour - Tour name to show (e.g., 'accountIcon') or empty string to hide
@@ -1705,12 +1526,6 @@ export class AppStateController extends BaseController<
     });
   }
 
-  setShowShieldEntryModalOnce(showShieldEntryModalOnce: boolean | null): void {
-    this.update((state) => {
-      state.showShieldEntryModalOnce = showShieldEntryModalOnce;
-    });
-  }
-
   /**
    * Sets the pending redirect route to be applied after the default page is loaded.
    *
@@ -1719,15 +1534,6 @@ export class AppStateController extends BaseController<
   setPendingRedirectRoute(route: PendingRedirectRoute | null): void {
     this.update((state) => {
       state.pendingRedirectRoute = route;
-    });
-  }
-
-  setPendingShieldCohort(cohort: string | null, txType?: string | null): void {
-    this.update((state) => {
-      state.pendingShieldCohort = cohort;
-      if (txType !== undefined) {
-        state.pendingShieldCohortTxType = txType;
-      }
     });
   }
 
@@ -1745,58 +1551,6 @@ export class AppStateController extends BaseController<
 
   getIsWalletResetInProgress(): boolean {
     return this.state.isWalletResetInProgress;
-  }
-
-  setDefaultSubscriptionPaymentOptions(
-    defaultSubscriptionPaymentOptions: DefaultSubscriptionPaymentOptions,
-  ): void {
-    this.update((state) => {
-      state.defaultSubscriptionPaymentOptions =
-        defaultSubscriptionPaymentOptions;
-    });
-  }
-
-  /**
-   * Update the Shield subscription metrics properties which are not accessible in the background directly.
-   *
-   * @param shieldSubscriptionMetricsProps - The Shield subscription metrics properties.
-   */
-  setShieldSubscriptionMetricsProps(
-    shieldSubscriptionMetricsProps: ShieldSubscriptionMetricsPropsFromUI,
-  ): void {
-    this.update((state) => {
-      state.shieldSubscriptionMetricsProps = shieldSubscriptionMetricsProps;
-    });
-  }
-
-  deleteDappSwapComparisonData(uniqueId: string): void {
-    this.update((state) => {
-      delete state.dappSwapComparisonData?.[uniqueId];
-      state.dappSwapComparisonData = {
-        ...state.dappSwapComparisonData,
-      };
-    });
-  }
-
-  setDappSwapComparisonData(
-    uniqueId: string,
-    info: DappSwapComparisonData,
-  ): void {
-    this.update((state) => {
-      state.dappSwapComparisonData = {
-        ...state.dappSwapComparisonData,
-        [uniqueId]: {
-          ...(state.dappSwapComparisonData?.[uniqueId] ?? {}),
-          ...info,
-        },
-      };
-    });
-  }
-
-  getDappSwapComparisonData(
-    uniqueId: string,
-  ): DappSwapComparisonData | undefined {
-    return this.state.dappSwapComparisonData?.[uniqueId] ?? undefined;
   }
 
   /**

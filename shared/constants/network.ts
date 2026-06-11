@@ -399,21 +399,42 @@ export const TEMPO_MAINNET_DISPLAY_NAME = 'Tempo';
 export const STABLE_DISPLAY_NAME = 'Stable';
 export const MANTLE_DISPLAY_NAME = 'Mantle';
 
-// If `network.ts` is being run in the Node.js environment, `infura-project-id.ts` will not be imported,
-// so we need to look at process.env.INFURA_PROJECT_ID instead.
-export const infuraProjectId =
+export const ALCHEMY_API_KEY_PLACEHOLDER = '{alchemyApiKey}';
+
+export const alchemyApiKey =
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore: yarn test:api-specs-multichain complains "Element implicitly has an 'any' type because type 'typeof globalThis' has no index signature"
-  globalThis.INFURA_PROJECT_ID ?? process.env.INFURA_PROJECT_ID;
+  globalThis.ALCHEMY_API_KEY ?? process.env.ALCHEMY_API_KEY;
+
+const ALCHEMY_NETWORK_SLUGS = {
+  [NETWORK_TYPES.MAINNET]: 'eth-mainnet',
+  [NETWORK_TYPES.GOERLI]: 'eth-goerli',
+  [NETWORK_TYPES.SEPOLIA]: 'eth-sepolia',
+  [NETWORK_TYPES.LINEA_GOERLI]: 'linea-goerli',
+  [NETWORK_TYPES.LINEA_SEPOLIA]: 'linea-sepolia',
+  [NETWORK_TYPES.LINEA_MAINNET]: 'linea-mainnet',
+  'arbitrum-mainnet': 'arb-mainnet',
+  'avalanche-mainnet': 'avax-mainnet',
+  'bsc-mainnet': 'bnb-mainnet',
+  'optimism-mainnet': 'opt-mainnet',
+  'polygon-mainnet': 'polygon-mainnet',
+  'base-mainnet': 'base-mainnet',
+  'sei-mainnet': 'sei-mainnet',
+  'monad-mainnet': 'monad-mainnet',
+  'hyperevm-mainnet': 'hyperliquid-mainnet',
+  'megaeth-mainnet': 'megaeth-mainnet',
+} as const;
 
 export const getRpcUrl = ({
   network,
   excludeProjectId = false,
 }: {
-  network: NetworkType;
+  network: keyof typeof ALCHEMY_NETWORK_SLUGS;
   excludeProjectId?: boolean;
 }) =>
-  `https://${network}.infura.io/v3/${excludeProjectId ? '' : infuraProjectId}`;
+  `https://${ALCHEMY_NETWORK_SLUGS[network]}.g.alchemy.com/v2/${
+    excludeProjectId ? '' : (alchemyApiKey ?? ALCHEMY_API_KEY_PLACEHOLDER)
+  }`;
 
 export const MAINNET_RPC_URL = getRpcUrl({
   network: NETWORK_TYPES.MAINNET,
@@ -1375,11 +1396,7 @@ export const CHAIN_ID_TOKEN_IMAGE_MAP = {
 export const CHAIN_ID_PORTFOLIO_LANDING_PAGE_URL_MAP: Record<
   Hex | `${string}:${string}`,
   string
-> = {
-  [CHAIN_IDS.LINEA_MAINNET]: 'https://app.metamask.io/explore/networks/linea',
-  [CHAIN_IDS.SEI]: 'https://app.metamask.io/explore/networks/sei',
-  [CHAIN_IDS.MONAD]: 'https://app.metamask.io/explore/networks/monad',
-} as const;
+> = {};
 
 export const INFURA_BLOCKED_KEY = 'countryBlocked';
 
@@ -1528,7 +1545,7 @@ export const FEATURED_RPCS: AddNetworkFields[] = [
     nativeCurrency: CURRENCY_SYMBOLS.ETH,
     rpcEndpoints: [
       {
-        url: `https://linea-mainnet.infura.io/v3/${infuraProjectId}`,
+        url: getRpcUrl({ network: 'linea-mainnet' }),
         failoverUrls: getFailoverUrlsForInfuraNetwork('linea-mainnet'),
         type: RpcEndpointType.Custom,
       },
@@ -1543,7 +1560,7 @@ export const FEATURED_RPCS: AddNetworkFields[] = [
     nativeCurrency: CURRENCY_SYMBOLS.ARBITRUM,
     rpcEndpoints: [
       {
-        url: `https://arbitrum-mainnet.infura.io/v3/${infuraProjectId}`,
+        url: getRpcUrl({ network: 'arbitrum-mainnet' }),
         failoverUrls: getFailoverUrlsForInfuraNetwork('arbitrum-mainnet'),
         type: RpcEndpointType.Custom,
       },
@@ -1558,7 +1575,7 @@ export const FEATURED_RPCS: AddNetworkFields[] = [
     nativeCurrency: CURRENCY_SYMBOLS.AVALANCHE,
     rpcEndpoints: [
       {
-        url: `https://avalanche-mainnet.infura.io/v3/${infuraProjectId}`,
+        url: getRpcUrl({ network: 'avalanche-mainnet' }),
         failoverUrls: getFailoverUrlsForInfuraNetwork('avalanche-mainnet'),
         type: RpcEndpointType.Custom,
       },
@@ -1573,7 +1590,7 @@ export const FEATURED_RPCS: AddNetworkFields[] = [
     nativeCurrency: CURRENCY_SYMBOLS.BNB,
     rpcEndpoints: [
       {
-        url: `https://bsc-mainnet.infura.io/v3/${infuraProjectId}`,
+        url: getRpcUrl({ network: 'bsc-mainnet' }),
         failoverUrls: getFailoverUrlsForInfuraNetwork('bsc-mainnet'),
         type: RpcEndpointType.Custom,
       },
@@ -1588,7 +1605,7 @@ export const FEATURED_RPCS: AddNetworkFields[] = [
     nativeCurrency: CURRENCY_SYMBOLS.ETH,
     rpcEndpoints: [
       {
-        url: `https://optimism-mainnet.infura.io/v3/${infuraProjectId}`,
+        url: getRpcUrl({ network: 'optimism-mainnet' }),
         failoverUrls: getFailoverUrlsForInfuraNetwork('optimism-mainnet'),
         type: RpcEndpointType.Custom,
       },
@@ -1603,7 +1620,7 @@ export const FEATURED_RPCS: AddNetworkFields[] = [
     nativeCurrency: CURRENCY_SYMBOLS.POL,
     rpcEndpoints: [
       {
-        url: `https://polygon-mainnet.infura.io/v3/${infuraProjectId}`,
+        url: getRpcUrl({ network: 'polygon-mainnet' }),
         failoverUrls: getFailoverUrlsForInfuraNetwork('polygon-mainnet'),
         type: RpcEndpointType.Custom,
       },
@@ -1633,7 +1650,7 @@ export const FEATURED_RPCS: AddNetworkFields[] = [
     nativeCurrency: CURRENCY_SYMBOLS.SEI,
     rpcEndpoints: [
       {
-        url: `https://sei-mainnet.infura.io/v3/${infuraProjectId}`,
+        url: getRpcUrl({ network: 'sei-mainnet' }),
         failoverUrls: getFailoverUrlsForInfuraNetwork('sei-mainnet'),
         type: RpcEndpointType.Custom,
       },
@@ -1648,7 +1665,7 @@ export const FEATURED_RPCS: AddNetworkFields[] = [
     nativeCurrency: CURRENCY_SYMBOLS.MONAD,
     rpcEndpoints: [
       {
-        url: `https://monad-mainnet.infura.io/v3/${infuraProjectId}`,
+        url: getRpcUrl({ network: 'monad-mainnet' }),
         failoverUrls: getFailoverUrlsForInfuraNetwork('monad-mainnet'),
         type: RpcEndpointType.Custom,
       },
@@ -1663,7 +1680,7 @@ export const FEATURED_RPCS: AddNetworkFields[] = [
     nativeCurrency: CURRENCY_SYMBOLS.HYPE,
     rpcEndpoints: [
       {
-        url: `https://hyperevm-mainnet.infura.io/v3/${infuraProjectId}`,
+        url: getRpcUrl({ network: 'hyperevm-mainnet' }),
         failoverUrls: getFailoverUrlsForInfuraNetwork('hyperevm-mainnet'),
         type: RpcEndpointType.Custom,
       },
@@ -1678,7 +1695,7 @@ export const FEATURED_RPCS: AddNetworkFields[] = [
     nativeCurrency: CURRENCY_SYMBOLS.ETH,
     rpcEndpoints: [
       {
-        url: `https://base-mainnet.infura.io/v3/${infuraProjectId}`,
+        url: getRpcUrl({ network: 'base-mainnet' }),
         failoverUrls: getFailoverUrlsForInfuraNetwork('base-mainnet'),
         type: RpcEndpointType.Custom,
       },
@@ -1693,7 +1710,7 @@ export const FEATURED_RPCS: AddNetworkFields[] = [
     nativeCurrency: CURRENCY_SYMBOLS.ETH,
     rpcEndpoints: [
       {
-        url: `https://megaeth-mainnet.infura.io/v3/${infuraProjectId}`,
+        url: getRpcUrl({ network: 'megaeth-mainnet' }),
         failoverUrls: [],
         type: RpcEndpointType.Custom,
       },

@@ -7,7 +7,6 @@ import {
   useEnableMetametrics,
   useDisableMetametrics,
 } from '../../../hooks/useMetametrics';
-import { selectIsBackupAndSyncEnabled } from '../../../selectors/identity/backup-and-sync';
 import {
   getParticipateInMetaMetrics,
   getUseExternalServices,
@@ -37,7 +36,6 @@ export const MetametricsToggleItem = () => {
 
   const error = enableMetametricsError ?? disableMetametricsError;
 
-  const isBackupAndSyncEnabled = useSelector(selectIsBackupAndSyncEnabled);
   const participateInMetaMetrics = useSelector(getParticipateInMetaMetrics);
   const useExternalServices = useSelector(getUseExternalServices);
   const dataCollectionForMarketing = useSelector(getDataCollectionForMarketing);
@@ -52,7 +50,7 @@ export const MetametricsToggleItem = () => {
         category: MetaMetricsEventCategory.Settings,
         event: MetaMetricsEventName.TurnOnMetaMetrics,
         properties: {
-          isProfileSyncingEnabled: isBackupAndSyncEnabled,
+          isProfileSyncingEnabled: false,
           participateInMetaMetrics,
           location: 'Settings',
         },
@@ -69,7 +67,7 @@ export const MetametricsToggleItem = () => {
         category: MetaMetricsEventCategory.Settings,
         event: MetaMetricsEventName.TurnOffMetaMetrics,
         properties: {
-          isProfileSyncingEnabled: isBackupAndSyncEnabled,
+          isProfileSyncingEnabled: false,
           participateInMetaMetrics,
         },
       });

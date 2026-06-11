@@ -3,7 +3,6 @@ import { userEvent } from '@testing-library/user-event';
 import React from 'react';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-import { MetamaskNotificationsProvider } from '../../../contexts/metamask-notifications';
 // TODO: Remove restricted import
 // eslint-disable-next-line import-x/no-restricted-paths
 import { getEnvironmentType } from '../../../../app/scripts/lib/util';
@@ -61,10 +60,7 @@ describe('Security Tab', () => {
   const mockStore = configureMockStore([thunk])(mockState);
 
   function renderWithProviders(ui, store) {
-    return renderWithProvider(
-      <MetamaskNotificationsProvider>{ui}</MetamaskNotificationsProvider>,
-      store,
-    );
+    return renderWithProvider(ui, store);
   }
 
   function toggleCheckbox(testId, initialState, skipRender = false) {

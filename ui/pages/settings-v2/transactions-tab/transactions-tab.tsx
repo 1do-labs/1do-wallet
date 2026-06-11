@@ -16,7 +16,6 @@ import {
   getPreferences,
   getUseExternalNameSources,
 } from '../../../selectors';
-import { getIsActiveShieldSubscription } from '../../../selectors/subscription';
 import {
   setDismissSmartAccountSuggestionEnabled,
   setFeatureFlag,
@@ -27,11 +26,6 @@ import {
 } from '../../../store/actions';
 import type { MetaMaskReduxState } from '../../../store/store';
 import { TRANSACTION_ITEMS } from '../search-config';
-
-const selectIsDisabledByShieldSubscription = (state: MetaMaskReduxState) =>
-  getIsActiveShieldSubscription(
-    state as unknown as Parameters<typeof getIsActiveShieldSubscription>[0],
-  );
 
 const TransactionSimulationsItem = createToggleItem({
   name: 'TransactionSimulationsItem',
@@ -44,7 +38,6 @@ const TransactionSimulationsItem = createToggleItem({
     Boolean(state.metamask?.useTransactionSimulations),
   action: setUseTransactionSimulations,
   dataTestId: 'transactions-simulations-toggle',
-  disabledSelector: selectIsDisabledByShieldSubscription,
   trackEventProperty: 'use_transaction_simulations',
 });
 
@@ -59,7 +52,6 @@ const SecurityAlertsItem = createToggleItem({
   action: setSecurityAlertsEnabled,
   dataTestId: 'transactions-security-alerts-toggle',
   containerDataTestId: 'securityAlert',
-  disabledSelector: selectIsDisabledByShieldSubscription,
   trackEventProperty: 'blockaid_alerts_enabled',
 });
 

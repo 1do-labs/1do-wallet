@@ -101,18 +101,6 @@ export function setShowInfuraSwitchToast(value: boolean) {
   };
 }
 
-export function setShieldPausedToastLastClickedOrClosed(time: number) {
-  submitRequestToBackgroundAndCatch('setShieldPausedToastLastClickedOrClosed', [
-    time,
-  ]);
-}
-
-export function setShieldEndingToastLastClickedOrClosed(time: number) {
-  submitRequestToBackgroundAndCatch('setShieldEndingToastLastClickedOrClosed', [
-    time,
-  ]);
-}
-
 export function setPna25Acknowledged(acknowledged: boolean) {
   submitRequestToBackgroundAndCatch('setPna25Acknowledged', [acknowledged]);
 }

@@ -1,18 +1,17 @@
 import React from 'react';
 import { DefaultRootState } from 'react-redux';
-import { act, fireEvent } from '@testing-library/react';
+import { fireEvent } from '@testing-library/react';
 import { TransactionType } from '@metamask/transaction-controller';
 
 import { getMockConfirmStateForTransaction } from '../../../../../../test/data/confirmations/helper';
 import { genUnapprovedContractInteractionConfirmation } from '../../../../../../test/data/confirmations/contract-interaction';
-import { enLocale as messages } from '../../../../../../test/lib/i18n-helpers';
 import { renderWithConfirmContextProvider } from '../../../../../../test/lib/confirmations/render-helpers';
 import configureStore from '../../../../../store/store';
 import * as ConfirmActions from '../../../hooks/useConfirmActions';
 import { SimpleConfirmationHeader } from './simple-confirmation-header';
 
 function genConfirmation(
-  type: TransactionType = TransactionType.musdConversion,
+  type: TransactionType = TransactionType.contractInteraction,
 ) {
   const base = genUnapprovedContractInteractionConfirmation({
     chainId: '0x1',
@@ -30,7 +29,7 @@ jest.mock('react-router-dom', () => ({
 }));
 
 function render(
-  type: TransactionType = TransactionType.musdConversion,
+  type: TransactionType = TransactionType.contractInteraction,
   state?: DefaultRootState,
 ) {
   const store = configureStore(
@@ -64,55 +63,7 @@ describe('<SimpleConfirmationHeader />', () => {
     });
   });
 
-  describe('musdConversion type', () => {
-    it('renders the "Convert and get 3%" title', () => {
-      const { getByTestId } = render(TransactionType.musdConversion);
-
-      expect(getByTestId('simple-confirmation-header-title')).toHaveTextContent(
-        'Convert and get 3%',
-      );
-    });
-
-    it('renders the mUSD info tooltip as endAccessory', () => {
-      const { getByTestId } = render(TransactionType.musdConversion);
-
-      expect(
-        getByTestId('musd-conversion-header-tooltip-button'),
-      ).toBeInTheDocument();
-    });
-
-    it('exposes an accessible name on the mUSD bonus info control', () => {
-      const { getByRole } = render(TransactionType.musdConversion);
-
-      expect(
-        getByRole('button', {
-          name: messages.musdConversionBonusTooltipAria.message,
-        }),
-      ).toBeInTheDocument();
-    });
-
-    it('shows tooltip when info button is clicked', () => {
-      const { getByTestId } = render(TransactionType.musdConversion);
-
-      fireEvent.click(getByTestId('musd-conversion-header-tooltip-button'));
-
-      expect(getByTestId('musd-conversion-header-tooltip')).toBeInTheDocument();
-    });
-
-    it('shows Powered by Relay attribution in the mUSD bonus tooltip', async () => {
-      const { getByTestId, getByText } = render(TransactionType.musdConversion);
-
-      await act(async () => {
-        fireEvent.click(getByTestId('musd-conversion-header-tooltip-button'));
-      });
-
-      expect(
-        getByText(messages.musdBonusPoweredByRelay.message),
-      ).toBeInTheDocument();
-    });
-  });
-
-  describe('default (non-mUSD) type', () => {
+  describe('default type', () => {
     it('renders the "Review" title', () => {
       const { getByTestId } = render(TransactionType.contractInteraction);
 
@@ -127,12 +78,10 @@ describe('<SimpleConfirmationHeader />', () => {
       expect(getByTestId('header-advanced-details-button')).toBeInTheDocument();
     });
 
-    it('does not render the mUSD info tooltip', () => {
-      const { queryByTestId } = render(TransactionType.contractInteraction);
+    it('renders the default end accessory', () => {
+      const { getByTestId } = render(TransactionType.contractInteraction);
 
-      expect(
-        queryByTestId('musd-conversion-header-tooltip-button'),
-      ).not.toBeInTheDocument();
+      expect(getByTestId('header-advanced-details-button')).toBeInTheDocument();
     });
   });
 });

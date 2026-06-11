@@ -31,10 +31,7 @@ export function getProfileMetricsControllerMessenger(
   });
   messenger.delegate({
     messenger: controllerMessenger,
-    actions: [
-      'AccountsController:getState',
-      'ProfileMetricsService:submitMetrics',
-    ],
+    actions: ['AccountsController:getState'],
     events: [
       'AccountsController:accountAdded',
       'AccountsController:accountRemoved',

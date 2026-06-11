@@ -12,17 +12,14 @@ import {
   CONFIRM_TRANSACTION_ROUTE,
   CONFIRMATION_V_NEXT_ROUTE,
   CONNECT_ROUTE,
-  CROSS_CHAIN_SWAP_ROUTE,
   IMPORT_SRP_ROUTE,
   DEFAULT_ROUTE,
-  NOTIFICATIONS_ROUTE,
   ONBOARDING_ROUTE,
   PERMISSIONS,
   REVIEW_PERMISSIONS,
   SEND_ROUTE,
   DEEP_LINK_ROUTE,
   MULTICHAIN_ACCOUNT_DETAILS_PAGE_ROUTE,
-  SHIELD_PLAN_ROUTE,
   MULTICHAIN_WALLET_DETAILS_PAGE_ROUTE,
   GATOR_PERMISSIONS,
   TOKEN_TRANSFER_ROUTE,
@@ -98,20 +95,6 @@ export function getConnectingLabel(loadingMessage, props, context) {
 
 export function hideAppHeader(props) {
   const { location } = props;
-
-  const isNotificationsPage = Boolean(
-    matchPath(
-      {
-        path: `${NOTIFICATIONS_ROUTE}`,
-        end: false,
-      },
-      location.pathname,
-    ),
-  );
-
-  if (isNotificationsPage) {
-    return true;
-  }
 
   const isDeepLinksPage = Boolean(
     matchPath(
@@ -228,19 +211,6 @@ export function hideAppHeader(props) {
     return true;
   }
 
-  const isCrossChainSwapsPage = Boolean(
-    matchPath(
-      {
-        path: `${CROSS_CHAIN_SWAP_ROUTE}`,
-        end: false,
-      },
-      location.pathname,
-    ),
-  );
-  if (isCrossChainSwapsPage) {
-    return true;
-  }
-
   const isAssetsPage = Boolean(
     matchPath(
       {
@@ -274,20 +244,6 @@ export function hideAppHeader(props) {
       location.pathname,
     ),
   );
-
-  const isShieldPlanPage = Boolean(
-    matchPath(
-      {
-        path: SHIELD_PLAN_ROUTE,
-        end: false,
-      },
-      location.pathname,
-    ),
-  );
-
-  if (isShieldPlanPage) {
-    return true;
-  }
 
   const isGatorPermissionsPage = Boolean(
     matchPath(

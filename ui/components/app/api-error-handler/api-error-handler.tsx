@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import {
   Box,
   Button,
@@ -12,33 +12,20 @@ import {
 } from '@metamask/design-system-react';
 import classnames from 'clsx';
 import { useI18nContext } from '../../../hooks/useI18nContext';
-import { ShieldUnexpectedErrorEventLocationEnum } from '../../../../shared/constants/subscriptions';
-import { useSubscriptionMetrics } from '../../../hooks/shield/metrics/useSubscriptionMetrics';
 import { reloadExtensionFromUi } from '../../../helpers/utils/reload-extension-from-ui';
 
 type ApiErrorHandlerProps = {
   className?: string;
   error: Error;
-  location: ShieldUnexpectedErrorEventLocationEnum;
   message?: string;
 };
 
 const ApiErrorHandler = ({
   className = '',
   error,
-  location,
   message,
 }: ApiErrorHandlerProps) => {
   const t = useI18nContext();
-  const { captureShieldUnexpectedErrorEvent } = useSubscriptionMetrics();
-
-  useEffect(() => {
-    captureShieldUnexpectedErrorEvent({
-      errorMessage: error?.message || 'Unknown error',
-      location,
-    });
-    // eslint-disable-next-line react-compiler/react-compiler,react-hooks/exhaustive-deps -- we only want to capture the event once when the component is mounted
-  }, []);
 
   return (
     <Box
@@ -53,7 +40,7 @@ const ApiErrorHandler = ({
         color={IconColor.IconAlternative}
       />
       <Text variant={TextVariant.BodyMd}>
-        {message ?? t('shieldPlanErrorText')}
+        {message ?? error?.message ?? t('unknownError')}
       </Text>
       <Button
         className="w-full"

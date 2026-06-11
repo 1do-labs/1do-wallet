@@ -30,8 +30,6 @@ type State = {
       | 'newPrivacyPolicyToastShownDate'
       | 'onboardingDate'
       | 'surveyLinkLastClickedOrClosed'
-      | 'shieldEndingToastLastClickedOrClosed'
-      | 'shieldPausedToastLastClickedOrClosed'
       | 'participateInMetaMetrics'
       | 'remoteFeatureFlags'
       | 'pna25Acknowledged'
@@ -142,30 +140,6 @@ export function selectShowInfuraSwitchToast(
   state: Pick<State, 'appState'>,
 ): boolean {
   return Boolean(state.appState.showInfuraSwitchToast);
-}
-
-/**
- * Retrieves user preference to see the "Shield Payment Declined" toast
- *
- * @param state - Redux state object.
- * @returns Boolean preference value
- */
-export function selectShowShieldPausedToast(
-  state: Pick<State, 'metamask'>,
-): boolean {
-  return !state.metamask.shieldPausedToastLastClickedOrClosed;
-}
-
-/**
- * Retrieves user preference to see the "Shield Coverage Ending" toast
- *
- * @param state - Redux state object.
- * @returns Boolean preference value
- */
-export function selectShowShieldEndingToast(
-  state: Pick<State, 'metamask'>,
-): boolean {
-  return !state.metamask.shieldEndingToastLastClickedOrClosed;
 }
 
 /**

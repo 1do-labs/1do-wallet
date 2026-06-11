@@ -8,7 +8,6 @@ import {
   getTransactions,
   selectAllTokensFlat,
 } from '../../selectors';
-import { getMetamaskNotifications } from '../../selectors/metamask-notifications/metamask-notifications';
 import { selectAllNftsFlat } from '../../selectors/nft';
 import { MetaMaskReduxState } from '../../store/store';
 
@@ -23,7 +22,6 @@ export function getStartupTraceTags(state: MetaMaskReduxState) {
   const unlocked = getIsUnlocked(state) as boolean;
   const accountCount = getInternalAccounts(state).length;
   const nftCount = selectAllNftsFlat(state).length;
-  const notificationCount = getMetamaskNotifications(state).length;
   const tokenCount = selectAllTokensFlat(state).length as number;
   const transactionCount = getTransactions(state).length;
   const pendingApprovals = getPendingApprovals(state);
@@ -32,7 +30,7 @@ export function getStartupTraceTags(state: MetaMaskReduxState) {
   return {
     'wallet.account_count': accountCount,
     'wallet.nft_count': nftCount,
-    'wallet.notification_count': notificationCount,
+    'wallet.notification_count': 0,
     'wallet.pending_approval': firstApprovalType,
     'wallet.token_count': tokenCount,
     'wallet.transaction_count': transactionCount,

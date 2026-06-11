@@ -17,9 +17,9 @@ import {
 
 const WALLET_ADDRESS = '0x1111111111111111111111111111111111111111';
 const MAKER_WALLET_ADDRESS = '0x2222222222222222222222222222222222222222';
-const DEX_ADDRESS = '0x199DFfe30b8B5Ab611d952289a2674c5E826Dcb9';
-const NFTMARKET_ADDRESS = '0x7C8f64a017D026c889eFAC3D72CDBB2fd2ea0daA';
-const SESSIONPAY_ADDRESS = '0x55Dc56E517E5371313bA2932d712029d334DF006';
+const DEX_ADDRESS = '0x3C7618FdAb069e8888E5587cA2766497B866afD5';
+const NFTMARKET_ADDRESS = '0x7942Ea25F57409450edffc8019bC996cf70f40DF';
+const SESSIONPAY_ADDRESS = '0x982589B354bc749d385836913a599F703DD63aB8';
 const PEERDEX_ADDRESS = '0x94d92d6D93dFAf325084458763c87e25335906Bd';
 const CLOSESKY_ADDRESS = '0xcDc3CB85fA46626C5d427042cbd7e6fad0287C3d';
 const FLASHMAN_ADDRESS = '0x8333BCCDBcb3ab7739CB29Bf3E435503EdD0D5a9';
@@ -129,7 +129,7 @@ describe('1Do clear signing utilities', () => {
     expect(getOneDoTypedDataClearSigning(confirmation)).toMatchObject({
       descriptorId: 'dex',
       descriptorSha256:
-        'f79813148ff420600487ef9408b26533bb69a021d16e002637154c988fe179ba',
+        '337c990ea7de1b5add5c0a726717f44561679254c5f9968aeb23e733b33726e2',
       title: 'Create Dex token order on 1Do',
       rows: expect.arrayContaining([
         expect.objectContaining({
@@ -178,7 +178,7 @@ describe('1Do clear signing utilities', () => {
     expect(getOneDoTypedDataClearSigning(confirmation)).toMatchObject({
       descriptorId: 'sessionpay',
       descriptorSha256:
-        '995361a78b5dc328d96c782adb9506255edbc9ac03b531404220ae02081de60e',
+        '04c0e6318a1f543ad9205ba3f624cd4e79cce7cca10ef432ad059e46d82e835a',
       title: 'Grant Session Pay session on 1Do',
       rows: expect.arrayContaining([
         expect.objectContaining({ label: 'Session key' }),
@@ -333,7 +333,7 @@ describe('1Do clear signing utilities', () => {
     expect(info).toMatchObject({
       descriptorId: 'account-runtime',
       descriptorSha256:
-        'aab7b3f722a6d8a9bed1100c228dea71c304efc0fdbdea6b15e8485301a51fff',
+        '34dcacd3da585da19edd55daac95deccc150f6d2a898f9522a12305ed4409c79',
       title: 'Enable Session Pay',
       rows: expect.arrayContaining([
         expect.objectContaining({ label: 'Action', value: 'Enable app' }),
@@ -381,7 +381,7 @@ describe('1Do clear signing utilities', () => {
     expect(info).toMatchObject({
       descriptorId: 'account-runtime',
       descriptorSha256:
-        'aab7b3f722a6d8a9bed1100c228dea71c304efc0fdbdea6b15e8485301a51fff',
+        '34dcacd3da585da19edd55daac95deccc150f6d2a898f9522a12305ed4409c79',
       title: 'Disable Dex',
       rows: expect.arrayContaining([
         expect.objectContaining({
@@ -451,6 +451,41 @@ describe('1Do clear signing utilities', () => {
           label: 'App logic',
           value: SESSIONPAY_ADDRESS,
         }),
+      ]),
+    });
+  });
+
+  it('recognizes direct enableApp calldata sent to the 1Do delegate target', () => {
+    const data = accountRuntimeInterface.encodeFunctionData('enableApp', [
+      SESSIONPAY_ADDRESS,
+    ]);
+
+    const info = getOneDoTransactionClearSigning(
+      {
+        chainId: '0xaa36a7',
+        id: 'delegate-runtime-call',
+        networkClientId: 'sepolia',
+        origin: 'http://localhost:3001',
+        status: TransactionStatus.unapproved,
+        time: Date.now(),
+        type: TransactionType.contractInteraction,
+        txParams: {
+          from: WALLET_ADDRESS,
+          to: ONE_DO_7702_DELEGATE,
+          data,
+          value: '0x0',
+        },
+      },
+      { allowAccountRuntimeCalldata: true },
+    );
+
+    expect(info).toMatchObject({
+      descriptorId: 'account-runtime',
+      title: 'Enable Session Pay',
+      rows: expect.arrayContaining([
+        expect.objectContaining({ label: 'Wallet', value: WALLET_ADDRESS }),
+        expect.objectContaining({ label: 'Action', value: 'Enable app' }),
+        expect.objectContaining({ label: 'App', value: 'Session Pay' }),
       ]),
     });
   });
@@ -627,7 +662,7 @@ describe('1Do clear signing utilities', () => {
     expect(info).toMatchObject({
       descriptorId: 'account-runtime',
       descriptorSha256:
-        'aab7b3f722a6d8a9bed1100c228dea71c304efc0fdbdea6b15e8485301a51fff',
+        '34dcacd3da585da19edd55daac95deccc150f6d2a898f9522a12305ed4409c79',
       title: 'Fill Dex order',
       rows: expect.arrayContaining([
         expect.objectContaining({

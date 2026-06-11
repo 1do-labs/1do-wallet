@@ -366,10 +366,10 @@ describe('ActivityList', () => {
         from: {
           amount: '-3000000',
           token: {
-            address: '0xmusd',
+            address: '0xusdc',
             chainId: '0x1',
             decimals: 6,
-            symbol: 'mUSD',
+            symbol: 'USDC',
           },
         },
         to: {

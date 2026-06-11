@@ -42,23 +42,13 @@ import {
   RateLimitController,
   RateLimitedApiMap,
 } from '@metamask/rate-limit-controller';
-import { Controller as AuthenticationController } from '@metamask/profile-sync-controller/auth';
-import { Controller as UserStorageController } from '@metamask/profile-sync-controller/user-storage';
-import { Controller as NotificationServicesController } from '@metamask/notification-services-controller/notification-services';
-import { Controller as NotificationServicesPushController } from '@metamask/notification-services-controller/push-services';
 import { DelegationController } from '@metamask/delegation-controller';
 
 import { RemoteFeatureFlagController } from '@metamask/remote-feature-flag-controller';
 import { AccountTreeController } from '@metamask/account-tree-controller';
-import { SeedlessOnboardingController } from '@metamask/seedless-onboarding-controller';
-import { EncryptionKey } from '@metamask/browser-passworder';
-import { ShieldController } from '@metamask/shield-controller';
-import { SubscriptionController } from '@metamask/subscription-controller';
 import { EnsController } from '@metamask/ens-controller';
 import { NameController } from '@metamask/name-controller';
 import { SelectedNetworkController } from '@metamask/selected-network-controller';
-import { BridgeController } from '@metamask/bridge-controller';
-import { BridgeStatusController } from '@metamask/bridge-status-controller';
 import { ApprovalController } from '@metamask/approval-controller';
 import { NetworkEnablementController } from '@metamask/network-enablement-controller';
 import { PermissionLogController } from '@metamask/permission-log-controller';
@@ -73,37 +63,24 @@ import {
 } from '@metamask/message-manager';
 import { SignatureController } from '@metamask/signature-controller';
 import { UserOperationController } from '@metamask/user-operation-controller';
-import {
-  AccountActivityService,
-  BackendWebSocketService,
-} from '@metamask/core-backend';
-import { ClaimsController, ClaimsService } from '@metamask/claims-controller';
 import { ClientController } from '@metamask/client-controller';
 import { ConnectivityController } from '@metamask/connectivity-controller';
-import {
-  ProfileMetricsController,
-  ProfileMetricsService,
-} from '@metamask/profile-metrics-controller';
+import { ProfileMetricsController } from '@metamask/profile-metrics-controller';
 import {
   GeolocationApiService,
   GeolocationController,
 } from '@metamask/geolocation-controller';
-import { PerpsController } from '@metamask/perps-controller';
 import { OnboardingController } from '../controllers/onboarding';
 import { PreferencesController } from '../controllers/preferences-controller';
 import { NetworkOrderController } from '../controllers/network-order';
 import { MetaMetricsController } from '../controllers/metametrics-controller';
-import { OAuthService } from '../services/oauth/oauth-service';
 import { AppStateController } from '../controllers/app-state-controller';
-import { SubscriptionService } from '../services/subscription/subscription-service';
 import { AccountOrderController } from '../controllers/account-order';
 import { AlertController } from '../controllers/alert-controller';
 import { MetaMetricsDataDeletionController } from '../controllers/metametrics-data-deletion/metametrics-data-deletion';
 import { AppMetadataController } from '../controllers/app-metadata';
 import { DecryptMessageController } from '../controllers/decrypt-message';
 import { EncryptionPublicKeyController } from '../controllers/encryption-public-key';
-import { RewardsDataService } from '../controllers/rewards/rewards-data-service';
-import { RewardsController } from '../controllers/rewards/rewards-controller';
 import { StaticAssetsController } from '../controllers/static-assets-controller';
 import { DataDeletionService } from '../services/data-deletion-service';
 import { LegacyBackgroundApiService } from '../services/legacy-background-api-service';
@@ -122,10 +99,6 @@ export type MessengerClient =
   | ApprovalController
   | AppStateController
   | AssetsController
-  | AuthenticationController
-  | BridgeController
-  | BridgeStatusController
-  | ClaimsController
   | CronjobController
   | CurrencyRateController
   | DataDeletionService
@@ -154,32 +127,22 @@ export type MessengerClient =
   | NameController
   | NetworkController
   | NetworkOrderController
-  | NotificationServicesController
-  | NotificationServicesPushController
-  | OAuthService
   | OnboardingController
   | PermissionController<
       PermissionSpecificationConstraint,
       CaveatSpecificationConstraint
     >
   | PermissionLogController
-  | PerpsController
   | PhishingController
   | PPOMController
   | PreferencesController
   | RateLimitController<RateLimitedApiMap>
   | RatesController
   | RemoteFeatureFlagController
-  | RewardsController
-  | RewardsDataService
-  | SeedlessOnboardingController<EncryptionKey>
   | SelectedNetworkController
-  | ShieldController
   | SignatureController
   | SmartTransactionsController
-  | SubscriptionController
   | SubjectMetadataController
-  | SubscriptionService
   | TokenBalancesController
   | TokenDetectionController
   | TokenListController
@@ -187,22 +150,17 @@ export type MessengerClient =
   | TransactionController
   | TransactionPayController
   | UserOperationController
-  | UserStorageController
   | TokenRatesController
   | NftController
   | NftDetectionController
   | AssetsContractController
   | AccountTreeController
   | WebSocketService
-  | BackendWebSocketService
-  | AccountActivityService
   | MultichainAccountService
   | NetworkEnablementController
-  | ClaimsService
   | ClientController
   | StaticAssetsController
   | ProfileMetricsController
-  | ProfileMetricsService
   | ConnectivityController;
 
 /**
@@ -219,10 +177,6 @@ export type MessengerClientFlatState = AccountOrderController['state'] &
   ApprovalController['state'] &
   AppStateController['state'] &
   AssetsController['state'] &
-  AuthenticationController['state'] &
-  BridgeController['state'] &
-  BridgeStatusController['state'] &
-  ClaimsController['state'] &
   ClientController['state'] &
   CronjobController['state'] &
   CurrencyRateController['state'] &
@@ -249,19 +203,14 @@ export type MessengerClientFlatState = AccountOrderController['state'] &
     CaveatSpecificationConstraint
   >['state'] &
   PermissionLogController['state'] &
-  PerpsController['state'] &
   PhishingController['state'] &
   PPOMController['state'] &
   PreferencesController['state'] &
   RatesController['state'] &
   RemoteFeatureFlagController['state'] &
-  RewardsController['state'] &
-  SeedlessOnboardingController<EncryptionKey>['state'] &
   SelectedNetworkController['state'] &
-  ShieldController['state'] &
   SignatureController['state'] &
   SmartTransactionsController['state'] &
-  SubscriptionController['state'] &
   TokenBalancesController['state'] &
   TokenDetectionController['state'] &
   TokenListController['state'] &
@@ -270,7 +219,6 @@ export type MessengerClientFlatState = AccountOrderController['state'] &
   TransactionController['state'] &
   TransactionPayController['state'] &
   UserOperationController['state'] &
-  UserStorageController['state'] &
   TokenRatesController['state'] &
   NftController['state'] &
   NftDetectionController['state'] &

@@ -18,10 +18,6 @@ import {
 } from '@metamask/keyring-controller';
 import type { NetworkControllerStateChangeEvent } from '@metamask/network-controller';
 import type {
-  BackendWebSocketServiceActions,
-  BackendWebSocketServiceEvents,
-} from '@metamask/core-backend';
-import type {
   TransactionControllerTransactionConfirmedEvent,
   TransactionControllerIncomingTransactionsReceivedEvent,
   TransactionControllerUnapprovedTransactionAddedEvent,
@@ -35,7 +31,6 @@ import type {
   SnapControllerGetRunnableSnapsAction,
   SnapControllerHandleRequestAction,
 } from '@metamask/snaps-controllers';
-import { AuthenticationControllerGetBearerTokenAction } from '@metamask/profile-sync-controller/auth';
 import {
   OnboardingControllerGetStateAction,
   OnboardingControllerStateChangeEvent,
@@ -103,20 +98,6 @@ type RpcDataSourceEvents =
   | TransactionControllerUnapprovedTransactionAddedEvent;
 
 /**
- * Actions required by BackendWebsocketDataSource.
- *
- * @see BackendWebsocketDataSource in @metamask/assets-controller
- */
-type BackendWebsocketDataSourceActions = BackendWebSocketServiceActions;
-
-/**
- * Events required by BackendWebsocketDataSource.
- *
- * @see BackendWebsocketDataSource in @metamask/assets-controller
- */
-type BackendWebsocketDataSourceEvents = BackendWebSocketServiceEvents;
-
-/**
  * AccountsController:accountBalancesUpdated event for SnapDataSource.
  * Re-published from SnapKeyring:accountBalancesUpdated.
  */
@@ -166,7 +147,6 @@ type SnapDataSourceEvents =
 type AllowedActions =
   | CoreAssetsControllerActions
   | RpcDataSourceActions
-  | BackendWebsocketDataSourceActions
   | SnapDataSourceActions
   | PhishingControllerBulkScanTokensAction
   | AccountsControllerGetSelectedAccountAction;
@@ -181,7 +161,6 @@ type AllowedActions =
 type AllowedEvents =
   | CoreAssetsControllerEvents
   | RpcDataSourceEvents
-  | BackendWebsocketDataSourceEvents
   | SnapDataSourceEvents
   | PreferencesControllerStateChangeEvent
   | AccountTreeControllerStateChangeEvent;
@@ -225,9 +204,6 @@ export function getAssetsControllerMessenger(
       'NetworkEnablementController:getState',
       'NetworkController:getState',
       'NetworkController:getNetworkClientById',
-      'BackendWebSocketService:subscribe',
-      'BackendWebSocketService:getConnectionInfo',
-      'BackendWebSocketService:findSubscriptionsByChannelPrefix',
       'SnapController:handleRequest',
       'SnapController:getRunnableSnaps',
       'PermissionController:getPermissions',
@@ -241,7 +217,6 @@ export function getAssetsControllerMessenger(
       'KeyringController:lock',
       'KeyringController:unlock',
       'NetworkController:stateChange',
-      'BackendWebSocketService:connectionStateChanged',
       'AccountsController:accountBalancesUpdated',
       'PermissionController:stateChange',
       'PreferencesController:stateChange',
@@ -267,7 +242,6 @@ type PreferencesControllerGetStateAction = {
  * Actions needed during AssetsController initialization.
  */
 type AllowedInitializationActions =
-  | AuthenticationControllerGetBearerTokenAction
   | SnapControllerHandleRequestAction
   | PreferencesControllerGetStateAction
   | OnboardingControllerGetStateAction;
@@ -303,7 +277,6 @@ export function getAssetsControllerInitMessenger(
   messenger.delegate({
     messenger: initMessenger,
     actions: [
-      'AuthenticationController:getBearerToken',
       'SnapController:handleRequest',
       'PreferencesController:getState',
       'OnboardingController:getState',

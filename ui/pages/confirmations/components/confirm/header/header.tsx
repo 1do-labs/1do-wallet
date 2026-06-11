@@ -21,11 +21,7 @@ import HeaderInfo from './header-info';
 import { SimpleConfirmationHeader } from './simple-confirmation-header';
 import { WalletInitiatedHeader } from './wallet-initiated-header';
 
-const SIMPLE_HEADER_TYPES = [TransactionType.musdConversion];
-
 const CONFIRMATIONS_WITH_ALT_HEADER = [
-  ...SIMPLE_HEADER_TYPES,
-  TransactionType.musdClaim,
   TransactionType.perpsDeposit,
   TransactionType.simpleSend,
   TransactionType.shieldSubscriptionApprove,

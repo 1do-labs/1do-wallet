@@ -14,7 +14,6 @@ import { Title } from '../components/confirm/title';
 import { ConfirmContextProvider } from '../context/confirm';
 import { ConfirmNav } from '../components/confirm/nav/nav';
 import { GasFeeTokenToast } from '../components/confirm/info/shared/gas-fee-token-toast/gas-fee-token-toast';
-import { DappSwapContextProvider } from '../context/dapp-swap';
 import {
   GasFeeModalContextProvider,
   GasFeeModalWrapper,
@@ -22,30 +21,28 @@ import {
 
 const Confirm: React.FC<{ confirmationId?: string }> = ({ confirmationId }) => (
   <ConfirmContextProvider confirmationId={confirmationId}>
-    <DappSwapContextProvider>
-      <GasFeeModalContextProvider>
-        <TransactionModalContextProvider>
-          <ConfirmAlerts>
-            <>
-              <Page className="confirm_wrapper">
-                <ConfirmNav />
-                <Header />
-                <SmartTransactionsBannerAlert marginType="noTop" />
-                <ScrollToBottom>
-                  <BlockaidLoadingIndicator />
-                  <Title />
-                  <Info />
-                  <PluggableSection />
-                </ScrollToBottom>
-                <GasFeeTokenToast />
-                <Footer />
-              </Page>
-              <GasFeeModalWrapper />
-            </>
-          </ConfirmAlerts>
-        </TransactionModalContextProvider>
-      </GasFeeModalContextProvider>
-    </DappSwapContextProvider>
+    <GasFeeModalContextProvider>
+      <TransactionModalContextProvider>
+        <ConfirmAlerts>
+          <>
+            <Page className="confirm_wrapper">
+              <ConfirmNav />
+              <Header />
+              <SmartTransactionsBannerAlert marginType="noTop" />
+              <ScrollToBottom>
+                <BlockaidLoadingIndicator />
+                <Title />
+                <Info />
+                <PluggableSection />
+              </ScrollToBottom>
+              <GasFeeTokenToast />
+              <Footer />
+            </Page>
+            <GasFeeModalWrapper />
+          </>
+        </ConfirmAlerts>
+      </TransactionModalContextProvider>
+    </GasFeeModalContextProvider>
   </ConfirmContextProvider>
 );
 

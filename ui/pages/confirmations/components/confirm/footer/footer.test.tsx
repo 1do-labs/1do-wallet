@@ -41,7 +41,6 @@ import { useInsufficientBalanceAlerts } from '../../../hooks/alerts/transactions
 import { useIsGaslessLoading } from '../../../hooks/gas/useIsGaslessLoading';
 import { useConfirmationNavigation } from '../../../hooks/useConfirmationNavigation';
 import { useAddEthereumChain } from '../../../hooks/useAddEthereumChain';
-import { useUserSubscriptions } from '../../../../../hooks/subscription/useSubscription';
 import Footer from './footer';
 
 jest.mock('../../../hooks/gas/useIsGaslessLoading');
@@ -117,7 +116,6 @@ jest.mock('../../../hooks/useOriginThrottling');
 jest.mock(
   '../../../../../helpers/utils/track-hardware-wallet-recovery-connect-cta-clicked',
 );
-jest.mock('../../../../../hooks/subscription/useSubscription');
 jest.mock(
   '../../../../../contexts/hardware-wallets/HardwareWalletContext',
   () => ({
@@ -235,7 +233,6 @@ describe('ConfirmFooter', () => {
   const useIsGaslessLoadingMock = jest.mocked(useIsGaslessLoading);
   const useAddEthereumChainMock = jest.mocked(useAddEthereumChain);
   const useConfirmationNavigationMock = jest.mocked(useConfirmationNavigation);
-  const useUserSubscriptionsMock = jest.mocked(useUserSubscriptions);
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -293,12 +290,6 @@ describe('ConfirmFooter', () => {
     });
 
     mockUseLocation.mockImplementation(getDefaultFooterTestLocation);
-    useUserSubscriptionsMock.mockReturnValue({
-      trialedProducts: [],
-      loading: false,
-      subscriptions: [],
-      error: undefined,
-    });
     mockGetEnvironmentType.mockReturnValue(ENVIRONMENT_TYPE_NOTIFICATION);
   });
 
@@ -1185,24 +1176,6 @@ describe('ConfirmFooter', () => {
         });
       });
     });
-  });
-
-  it('renders SingleActionFooter for musdConversion transaction type', () => {
-    jest.spyOn(confirmContext, 'useConfirmContext').mockReturnValue({
-      currentConfirmation: {
-        ...genUnapprovedContractInteractionConfirmation(),
-        type: TransactionType.musdConversion,
-      },
-      isScrollToBottomCompleted: true,
-      setIsScrollToBottomCompleted: () => undefined,
-    } as unknown as ReturnType<typeof confirmContext.useConfirmContext>);
-
-    const { getByTestId, queryByText } = render(
-      getMockContractInteractionConfirmState(),
-    );
-
-    expect(getByTestId('confirm-footer-button')).toBeInTheDocument();
-    expect(queryByText(messages.cancel.message)).not.toBeInTheDocument();
   });
 
   it('renders SingleActionFooter for perpsDeposit transaction type', () => {

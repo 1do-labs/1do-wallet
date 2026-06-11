@@ -17,7 +17,6 @@ jest.mock('../../../../shared/lib/build-types', () => ({
 const PORTFOLIO_ORIGINS: string[] = [
   'https://app.metamask.io',
   'https://dev.app.metamask.io',
-  'https://ramps-dev.app.metamask.io',
 ];
 
 describe('keyringSnapPermissionsBuilder', () => {

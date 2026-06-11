@@ -27,7 +27,6 @@ import { useAddressTrustSignalAlerts } from './alerts/useAddressTrustSignalAlert
 import { useOriginTrustSignalAlerts } from './alerts/useOriginTrustSignalAlerts';
 import { useSpenderAlerts } from './alerts/useSpenderAlerts';
 import { useTokenTrustSignalAlerts } from './alerts/useTokenTrustSignalAlerts';
-import { useShieldCoverageAlert } from './alerts/useShieldCoverageAlert';
 import { useAddEthereumChainAlerts } from './alerts/useAddEthereumChainAlerts';
 import { useBurnAddressAlert } from './alerts/transactions/useBurnAddressAlert';
 import { useTokenContractAlert } from './alerts/transactions/useTokenContractAlert';
@@ -60,7 +59,6 @@ function useTransactionAlerts(): Alert[] {
   const pendingTransactionAlerts = usePendingTransactionAlerts();
   const payHardwareAccountAlerts = usePayHardwareAccountAlert();
   const resimulationAlert = useResimulationAlert();
-  const shieldCoverageAlert = useShieldCoverageAlert();
   const signingOrSubmittingAlerts = useSigningOrSubmittingAlerts();
   const suggestedGasFeeHighAlert = useSuggestedGasFeeHighAlert();
   const tokenContractAlert = useTokenContractAlert();
@@ -84,7 +82,6 @@ function useTransactionAlerts(): Alert[] {
       ...pendingTransactionAlerts,
       ...payHardwareAccountAlerts,
       ...resimulationAlert,
-      ...shieldCoverageAlert,
       ...signingOrSubmittingAlerts,
       ...suggestedGasFeeHighAlert,
       ...tokenContractAlert,
@@ -107,7 +104,6 @@ function useTransactionAlerts(): Alert[] {
       pendingTransactionAlerts,
       payHardwareAccountAlerts,
       resimulationAlert,
-      shieldCoverageAlert,
       signingOrSubmittingAlerts,
       suggestedGasFeeHighAlert,
       tokenContractAlert,

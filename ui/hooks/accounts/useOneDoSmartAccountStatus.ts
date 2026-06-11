@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { TransactionMeta } from '@metamask/transaction-controller';
 import { Hex } from '@metamask/utils';
 import { useSelector } from 'react-redux';
@@ -23,6 +23,9 @@ type OneDoSmartAccountStatus = {
   refresh: () => Promise<boolean>;
   setActive: (isActive: boolean) => void;
 };
+
+const SMART_ACCOUNT_PENDING_REFRESH_INTERVAL_MS = 2500;
+const SMART_ACCOUNT_COMPLETED_REFRESH_ATTEMPTS = 6;
 
 const isSameAddress = (addressA?: string, addressB?: string) =>
   addressA?.toLowerCase() === addressB?.toLowerCase();
@@ -93,6 +96,7 @@ export function useOneDoSmartAccountStatus({
   });
   const [isActive, setIsActive] = useState(false);
   const [isChecking, setIsChecking] = useState(false);
+  const hadPendingUpgradeTransaction = useRef(false);
 
   const pendingUpgradeTransaction = useMemo(
     () =>
@@ -148,6 +152,95 @@ export function useOneDoSmartAccountStatus({
       cancelled = true;
     };
   }, [address, chainId, enabled, refresh]);
+
+  useEffect(() => {
+    if (!pendingUpgradeTransaction || isActive) {
+      return undefined;
+    }
+
+    let cancelled = false;
+    let isRefreshing = false;
+
+    const refreshPendingUpgrade = async () => {
+      if (isRefreshing) {
+        return;
+      }
+
+      isRefreshing = true;
+      try {
+        const result = await refresh();
+        if (!cancelled && result) {
+          setIsActive(true);
+        }
+      } catch {
+        // Keep the current UI state and retry while the upgrade transaction is pending.
+      } finally {
+        isRefreshing = false;
+      }
+    };
+
+    refreshPendingUpgrade();
+    const intervalId = setInterval(
+      refreshPendingUpgrade,
+      SMART_ACCOUNT_PENDING_REFRESH_INTERVAL_MS,
+    );
+
+    return () => {
+      cancelled = true;
+      clearInterval(intervalId);
+    };
+  }, [isActive, pendingUpgradeTransaction, refresh]);
+
+  useEffect(() => {
+    if (pendingUpgradeTransaction) {
+      hadPendingUpgradeTransaction.current = true;
+      return;
+    }
+
+    if (!hadPendingUpgradeTransaction.current || isActive) {
+      return;
+    }
+
+    hadPendingUpgradeTransaction.current = false;
+    let cancelled = false;
+    let attempts = 0;
+    // Assigned after the async callback is declared so the callback can clear its own interval.
+    // eslint-disable-next-line prefer-const
+    let intervalId: ReturnType<typeof setInterval>;
+
+    const refreshCompletedUpgrade = async () => {
+      attempts += 1;
+      try {
+        const result = await refresh();
+        if (!cancelled && result) {
+          setIsActive(true);
+          if (intervalId) {
+            clearInterval(intervalId);
+          }
+        }
+      } catch {
+        // Keep the existing state; the normal address/network refresh path will retry.
+      } finally {
+        if (
+          attempts >= SMART_ACCOUNT_COMPLETED_REFRESH_ATTEMPTS &&
+          intervalId
+        ) {
+          clearInterval(intervalId);
+        }
+      }
+    };
+
+    intervalId = setInterval(
+      refreshCompletedUpgrade,
+      SMART_ACCOUNT_PENDING_REFRESH_INTERVAL_MS,
+    );
+    refreshCompletedUpgrade();
+
+    return () => {
+      cancelled = true;
+      clearInterval(intervalId);
+    };
+  }, [isActive, pendingUpgradeTransaction, refresh]);
 
   return {
     isActive,

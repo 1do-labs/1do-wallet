@@ -72,7 +72,12 @@
   "bridge": "object",
   "confirmAlerts": "object",
   "confirmTransaction": "object",
-  "gas": { "customData": { "limit": null, "price": null } },
+  "gas": {
+    "customData": {
+      "limit": null,
+      "price": null
+    }
+  },
   "history": {
     "mostRecentOverviewPage": "/",
     "redirectAfterDefaultPage": null
@@ -111,7 +116,10 @@
     "assetExchangeRates": "object",
     "assetsMetadata": "object",
     "balances": "object",
-    "browserEnvironment": { "browser": "string", "os": "string" },
+    "browserEnvironment": {
+      "browser": "string",
+      "os": "string"
+    },
     "cacheTimestamp": "number",
     "cachedMarketDataByProvider": "object",
     "cachedUserDataByProvider": "object",
@@ -123,7 +131,10 @@
     "connectivityStatus": "online",
     "conversionRates": "object",
     "coverageResults": "object",
-    "cryptocurrencies": ["btc", "sol"],
+    "cryptocurrencies": [
+      "btc",
+      "sol"
+    ],
     "currencyRates": {
       "BNB": {
         "conversionDate": null,
@@ -146,7 +157,6 @@
     "currentExtensionPopupId": "number",
     "currentLocale": "en",
     "currentMigrationVersion": "number",
-    "dappSwapComparisonData": "object",
     "dataCollectionForMarketing": "boolean",
     "database": "object",
     "databaseUnavailable": "boolean",
@@ -197,11 +207,13 @@
     "initializationState": "string",
     "insights": "object",
     "interfaces": "object",
-    "internalAccounts": { "accounts": "object", "selectedAccount": "string" },
+    "internalAccounts": {
+      "accounts": "object",
+      "selectedAccount": "string"
+    },
     "ipfsGateway": "string",
     "isAccountSyncingEnabled": true,
     "isAccountTreeSyncingInProgress": "boolean",
-    "isBackupAndSyncEnabled": true,
     "isBackupAndSyncUpdateLoading": "boolean",
     "isCheckingAccountsPresence": "boolean",
     "isContactSyncingEnabled": true,
@@ -216,11 +228,9 @@
     "isIpfsGatewayEnabled": "boolean",
     "isMetamaskNotificationsFeatureSeen": "boolean",
     "isMultiAccountBalancesEnabled": "boolean",
-    "isNotificationServicesEnabled": "boolean",
     "isPushEnabled": "boolean",
     "isRampCardClosed": false,
     "isReady": "boolean",
-    "isSeedlessOnboardingUserAuthenticated": "boolean",
     "isSignedIn": "boolean",
     "isTestnet": "boolean",
     "isUiOpen": "boolean",
@@ -260,8 +270,6 @@
     "methodData": "object",
     "minimumBalanceForRentExemptionInLamports": "string",
     "multichainNetworkConfigurationsByChainId": "object",
-    "musdConversionDismissedCtaKeys": "object",
-    "musdConversionEducationSeen": "boolean",
     "nameSources": "object",
     "names": "object",
     "nativeAssetIdentifiers": "object",
@@ -314,7 +322,9 @@
       "skipDeepLinkInterstitial": "boolean",
       "smartTransactionsMigrationApplied": "boolean",
       "smartTransactionsOptInStatus": true,
-      "tokenNetworkFilter": { "0x539": "boolean" },
+      "tokenNetworkFilter": {
+        "0x539": "boolean"
+      },
       "tokenSortConfig": "object",
       "useNativeCurrencyAsPrimaryCurrency": "boolean",
       "useSidePanelAsDefault": "boolean"
@@ -333,8 +343,14 @@
     "quotesLoadingStatus": null,
     "quotesRefreshCount": 0,
     "rates": {
-      "btc": { "conversionDate": 0, "conversionRate": 0 },
-      "sol": { "conversionDate": 0, "conversionRate": 0 }
+      "btc": {
+        "conversionDate": 0,
+        "conversionRate": 0
+      },
+      "sol": {
+        "conversionDate": 0,
+        "conversionRate": 0
+      }
     },
     "rawRemoteFeatureFlags": "object",
     "recoveryPhraseReminderHasBeenShown": false,
@@ -343,7 +359,10 @@
     "remoteFeatureFlags": {
       "feature1": true,
       "feature2": false,
-      "feature3": { "name": "groupA", "value": "valueA" }
+      "feature3": {
+        "name": "groupA",
+        "value": "valueA"
+      }
     },
     "rewardsAccounts": "object",
     "rewardsActiveAccount": null,
@@ -366,7 +385,6 @@
     "showDownloadMobileAppSlide": "boolean",
     "showNetworkBanner": true,
     "showPermissionsTour": true,
-    "showShieldEntryModalOnce": null,
     "showSidePanelMigrationToast": "boolean",
     "showTestnetMessageInDropdown": true,
     "sidePanelGasPollTokens": [],
@@ -375,7 +393,10 @@
     "signatureSecurityAlertResponses": "object",
     "slides": "object",
     "smartTransactionsState": {
-      "fees": { "approvalTxFees": null, "tradeTxFees": null },
+      "fees": {
+        "approvalTxFees": null,
+        "tradeTxFees": null
+      },
       "feesByChainId": "object",
       "liveness": true,
       "livenessByChainId": "object",
@@ -404,7 +425,9 @@
     "tokenBalances": "object",
     "tokenScanCache": "object",
     "tokenWarnings": "object",
-    "tokensChainsCache": { "0x539": "object" },
+    "tokensChainsCache": {
+      "0x539": "object"
+    },
     "tracesBeforeMetricsOptIn": "object",
     "tradeConfigurations": "object",
     "traits": "object",
@@ -445,9 +468,10 @@
     "withdrawalRequests": "object"
   },
   "perpsTutorial": "object",
-  "ramps": "object",
   "rewards": "object",
   "smartAccounts": "object",
   "swaps": "object",
-  "unconnectedAccount": { "state": "CLOSED" }
+  "unconnectedAccount": {
+    "state": "CLOSED"
+  }
 }

@@ -6,6 +6,7 @@ import {
   isHardwareWallet,
 } from '../selectors';
 import { convertCaipToHexChainId } from '../../shared/lib/network.utils';
+import { isMetaMaskGaslessFeatureEnabled } from '../../shared/lib/metamask-gasless';
 
 export const useIsNetworkGasSponsored = (
   networkChainId: string | undefined,
@@ -16,9 +17,14 @@ export const useIsNetworkGasSponsored = (
     getGasFeesSponsoredNetworkEnabled,
   );
   const isHardwareWalletAccount = useSelector(isHardwareWallet);
+  const isMetaMaskGaslessEnabled = isMetaMaskGaslessFeatureEnabled();
   // Check if a network has gas sponsorship enabled
   return useMemo(() => {
-    if (!networkChainId || isHardwareWalletAccount) {
+    if (
+      !isMetaMaskGaslessEnabled ||
+      !networkChainId ||
+      isHardwareWalletAccount
+    ) {
       return { isNetworkGasSponsored: false };
     }
     // Convert chainId to hex if it's in CAIP format, otherwise use as-is
@@ -45,6 +51,7 @@ export const useIsNetworkGasSponsored = (
   }, [
     gasFeesSponsoredNetworkEnabledMap,
     isHardwareWalletAccount,
+    isMetaMaskGaslessEnabled,
     networkChainId,
   ]);
 };

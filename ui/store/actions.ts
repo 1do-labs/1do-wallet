@@ -47,8 +47,6 @@ import {
 } from '@metamask/network-controller';
 import { KeyringObject, KeyringTypes } from '@metamask/keyring-controller';
 import type { InternalAccount } from '@metamask/keyring-internal-api';
-import type { NotificationServicesController } from '@metamask/notification-services-controller';
-import { UserProfileLineage } from '@metamask/profile-sync-controller/sdk';
 import { Immer, Patch } from 'immer';
 import {
   GetAppNameAndVersionResponse,
@@ -59,36 +57,11 @@ import {
   USER_STORAGE_GROUPS_FEATURE_KEY,
   USER_STORAGE_WALLETS_FEATURE_KEY,
 } from '@metamask/account-tree-controller';
-import { BACKUPANDSYNC_FEATURES } from '@metamask/profile-sync-controller/user-storage';
 import { isInternalAccountInPermittedAccountIds } from '@metamask/chain-agnostic-permission';
-import { AuthConnection } from '@metamask/seedless-onboarding-controller';
 import { AccountGroupId, AccountWalletId } from '@metamask/account-api';
 import { SerializedUR } from '@metamask/eth-qr-keyring';
-import {
-  BillingPortalResponse,
-  GetCryptoApproveTransactionRequest,
-  GetCryptoApproveTransactionResponse,
-  PaymentType,
-  PricingResponse,
-  ProductType,
-  RecurringInterval,
-  Subscription,
-  UpdatePaymentMethodOpts,
-  SubmitUserEventRequest,
-  SubscriptionEligibility,
-  BalanceCategory,
-  CachedLastSelectedPaymentMethod,
-} from '@metamask/subscription-controller';
-
-import {
-  Claim,
-  ClaimDraft,
-  CreateClaimRequest,
-  SubmitClaimConfig,
-} from '@metamask/claims-controller';
 import { toHardwareWalletError } from '../contexts/hardware-wallets/rpcErrorUtils';
 import { HardwareWalletType } from '../contexts/hardware-wallets/types';
-import { ModalType } from '../selectors/subscription/subscription';
 import { captureException } from '../../shared/lib/sentry';
 import { switchDirection } from '../../shared/lib/switch-direction';
 import {
@@ -145,7 +118,6 @@ import {
   MetaMetricsUserTraits,
   MetaMetricsUserTrait,
 } from '../../shared/constants/metametrics';
-import { parseSmartTransactionsError } from '../pages/swaps/swaps.util';
 import { isEqualCaseInsensitive } from '../../shared/lib/string-utils';
 import { getSmartTransactionsOptInStatusInternal } from '../../shared/lib/selectors';
 import {
@@ -177,29 +149,10 @@ import { SortCriteria } from '../components/app/assets/util/sort';
 import { NOTIFICATIONS_EXPIRATION_DELAY } from '../helpers/constants/notifications';
 import { getDismissSmartAccountSuggestionEnabled } from '../pages/confirmations/selectors/preferences';
 import { stripWalletTypePrefixFromWalletId } from '../hooks/multichain-accounts/utils';
-import {
-  ClaimSubmitToastType,
-  type NetworkConnectionBanner,
-} from '../../shared/constants/app-state';
-import {
-  SeasonDtoState,
-  SeasonStatusState,
-  EstimatePointsDto,
-  EstimatedPointsDto,
-  RewardsGeoMetadata,
-  OptInStatusDto,
-  OptInStatusInputDto,
-} from '../../shared/types/rewards';
-import { SubmitClaimErrorResponse } from '../pages/settings/transaction-shield-tab/types';
-import { SubmitClaimError } from '../pages/settings/transaction-shield-tab/claim-error';
-import {
-  DefaultSubscriptionPaymentOptions,
-  ShieldSubscriptionMetricsPropsFromUI,
-} from '../../shared/types';
+import { type NetworkConnectionBanner } from '../../shared/constants/app-state';
 // eslint-disable-next-line import-x/no-restricted-paths
 import { OAuthLoginResult } from '../../app/scripts/services/oauth/types';
 import { isHardwareAccount } from '../../shared/lib/accounts';
-import { SUBSCRIPTIONS_POLLING_INPUT } from '../../shared/constants/subscriptions';
 import { getIsSidePanelFeatureEnabled } from '../../shared/lib/environment';
 import { PendingRedirectRoute } from '../../shared/lib/pending-redirect-state';
 import { keyringTypeToHardwareWalletType } from '../contexts/hardware-wallets/utils';
@@ -215,6 +168,11 @@ import type {
   MetaMaskReduxState,
   TemporaryMessageDataType,
 } from './store';
+
+const parseSmartTransactionsError = (errorMessage: string): string => {
+  const errorJson = errorMessage.slice(12);
+  return JSON.parse(errorJson.trim());
+};
 
 type CustomGasSettings = {
   gas?: string;
@@ -234,104 +192,22 @@ export function goHome() {
  * Starts the OAuth2 login process for the given Social Login type
  * and authenticate the user with the Seedless Onboarding Services.
  *
- * @param authConnection - The authentication connection to use (google | apple).
- * @param bufferedTrace - The buffered trace function from MetaMetrics context.
- * @param bufferedEndTrace - The buffered end trace function from MetaMetrics context.
- * @param trackEvent - The track event function from MetaMetrics context.
+ * @param _authConnection - The authentication connection to use (google | apple).
+ * @param _bufferedTrace - The buffered trace function from MetaMetrics context.
+ * @param _bufferedEndTrace - The buffered end trace function from MetaMetrics context.
+ * @param _trackEvent - The track event function from MetaMetrics context.
  * @returns The social login result.
  */
 export function startOAuthLogin(
-  authConnection: AuthConnection,
-  bufferedTrace?: (request: TraceRequest) => void,
-  bufferedEndTrace?: (request: EndTraceRequest) => void,
-  trackEvent?: (
+  _authConnection: string,
+  _bufferedTrace?: (request: TraceRequest) => void,
+  _bufferedEndTrace?: (request: EndTraceRequest) => void,
+  _trackEvent?: (
     payload: MetaMetricsEventPayload,
     options?: MetaMetricsEventOptions,
   ) => Promise<void>,
 ): ThunkAction<Promise<boolean>, MetaMaskReduxState, unknown, AnyAction> {
-  return async (dispatch: MetaMaskReduxDispatch, getState) => {
-    dispatch(showLoadingIndication());
-
-    // Calculate isRehydration for seedless auth error tracking
-    let isRehydration: boolean | null = null;
-    try {
-      const state = getState();
-      const firstTimeFlowType = getFirstTimeFlowType(state);
-      const isOnboardingCompleted = getCompletedOnboarding(state);
-      isRehydration =
-        firstTimeFlowType === FirstTimeFlowType.socialImport &&
-        !isOnboardingCompleted;
-    } catch {
-      isRehydration = null;
-    }
-
-    try {
-      const [oauth2LoginResult] = await Promise.all([
-        submitRequestToBackground<OAuthLoginResult>('startOAuthLogin', [
-          authConnection,
-        ]),
-        submitRequestToBackground('preloadToprfNodeDetails'), // fetch the toprf node details for seedless authentication in parallel
-      ]);
-
-      let seedlessAuthSuccess = false;
-      let isNewUser = false;
-      try {
-        bufferedTrace?.({
-          name: TraceName.OnboardingOAuthSeedlessAuthenticate,
-          op: TraceOperation.OnboardingSecurityOp,
-        });
-        ({ isNewUser } = await submitRequestToBackground('authenticate', [
-          oauth2LoginResult,
-        ]));
-        seedlessAuthSuccess = true;
-      } catch (error) {
-        trackEvent?.({
-          event: MetaMetricsEventName.SocialLoginFailed,
-          category: MetaMetricsEventCategory.Onboarding,
-          properties: {
-            // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-            // eslint-disable-next-line @typescript-eslint/naming-convention
-            account_type: `${MetaMetricsEventAccountType.Default}_${authConnection}`,
-            // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-            // eslint-disable-next-line @typescript-eslint/naming-convention
-            is_rehydration:
-              isRehydration === null ? 'unknown' : String(isRehydration),
-            // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-            // eslint-disable-next-line @typescript-eslint/naming-convention
-            failure_type: 'error',
-            // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-            // eslint-disable-next-line @typescript-eslint/naming-convention
-            error_category: 'seedless_auth',
-          },
-        });
-
-        captureException(
-          createSentryError(
-            TraceName.OnboardingOAuthSeedlessAuthenticateError,
-            error as Error,
-          ),
-        );
-
-        throw error;
-      } finally {
-        bufferedEndTrace?.({
-          name: TraceName.OnboardingOAuthSeedlessAuthenticate,
-          data: { success: seedlessAuthSuccess },
-        });
-      }
-
-      return isNewUser;
-    } catch (error) {
-      dispatch(displayWarning(error));
-      if (isErrorWithMessage(error)) {
-        throw new Error(getErrorMessage(error));
-      } else {
-        throw error;
-      }
-    } finally {
-      dispatch(hideLoadingIndication());
-    }
-  };
+  return async () => false;
 }
 
 /**
@@ -344,22 +220,10 @@ export function resetOAuthLoginState() {
   return async (dispatch: MetaMaskReduxDispatch) => {
     dispatch(showLoadingIndication());
 
-    try {
-      await submitRequestToBackground('resetOAuthLoginState');
-
-      dispatch({
-        type: actionConstants.RESET_SOCIAL_LOGIN_ONBOARDING,
-      });
-    } catch (error) {
-      dispatch(displayWarning(error));
-      if (isErrorWithMessage(error)) {
-        throw new Error(getErrorMessage(error));
-      } else {
-        throw error;
-      }
-    } finally {
-      dispatch(hideLoadingIndication());
-    }
+    dispatch({
+      type: actionConstants.RESET_SOCIAL_LOGIN_ONBOARDING,
+    });
+    dispatch(hideLoadingIndication());
   };
 }
 
@@ -402,335 +266,6 @@ export function createNewVaultAndSyncWithSocial(
   };
 }
 
-/**
- * Starts polling for the subscriptions.
- */
-export function subscriptionsStartPolling(): ThunkAction<
-  string | undefined,
-  MetaMaskReduxState,
-  unknown,
-  AnyAction
-> {
-  return async (dispatch: MetaMaskReduxDispatch) => {
-    try {
-      const pollingToken = await submitRequestToBackground(
-        'subscriptionsStartPolling',
-        // We need to provide the polling input when start polling
-        // Otherwise, stop polling won't work with `undefined` input.
-        [SUBSCRIPTIONS_POLLING_INPUT],
-      );
-      return pollingToken;
-    } catch (error) {
-      log.error('[subscriptionsStartPolling] error', error);
-      dispatch(displayWarning(error));
-    }
-    return undefined;
-  };
-}
-
-/**
- * Fetches the subscription eligibilities.
- *
- * @param params
- * @param params.balanceCategory
- * @returns The subscription eligibilities.
- */
-export function getSubscriptionsEligibilities(params?: {
-  balanceCategory?: BalanceCategory;
-}): ThunkAction<
-  SubscriptionEligibility[],
-  MetaMaskReduxState,
-  unknown,
-  AnyAction
-> {
-  return async (dispatch: MetaMaskReduxDispatch) => {
-    try {
-      return await submitRequestToBackground('getSubscriptionsEligibilities', [
-        params,
-      ]);
-    } catch (error) {
-      log.warn('[getSubscriptionsEligibilities] error', error);
-      dispatch(displayWarning(error));
-      throw error;
-    }
-  };
-}
-
-/**
- * Submits a user event.
- *
- * @param eventRequest - The event request.
- * @param eventRequest.event - The event type.
- * @param eventRequest.cohort - Optional cohort ID.
- * @returns resolved promise.
- */
-export function submitSubscriptionUserEvents(
-  eventRequest: SubmitUserEventRequest,
-): ThunkAction<void, MetaMaskReduxState, unknown, AnyAction> {
-  return async (dispatch: MetaMaskReduxDispatch) => {
-    try {
-      await submitRequestToBackground('submitSubscriptionUserEvents', [
-        eventRequest,
-      ]);
-    } catch (error) {
-      log.error('[submitSubscriptionUserEvents] error', error);
-      dispatch(displayWarning(error));
-    }
-  };
-}
-
-/**
- * Assigns a user to a cohort.
- *
- * @param params - The cohort assignment parameters.
- * @param params.cohort - The cohort to assign the user to.
- * @returns resolved promise.
- */
-export function assignUserToCohort(params: {
-  cohort: string;
-}): ThunkAction<void, MetaMaskReduxState, unknown, AnyAction> {
-  return async (dispatch: MetaMaskReduxDispatch) => {
-    try {
-      await submitRequestToBackground('assignUserToCohort', [params]);
-    } catch (error) {
-      log.error('[assignUserToCohort] error', error);
-      dispatch(displayWarning(error));
-      throw error;
-    }
-  };
-}
-
-/**
- * Fetches user subscriptions.
- *
- * @returns The subscriptions.
- */
-export function getSubscriptions(): ThunkAction<
-  Subscription[],
-  MetaMaskReduxState,
-  unknown,
-  AnyAction
-> {
-  return async (_dispatch: MetaMaskReduxDispatch) => {
-    try {
-      const subscriptions = await submitRequestToBackground('getSubscriptions');
-      return subscriptions;
-    } catch (error) {
-      log.error('[getSubscriptions] error', error);
-      throw error;
-    }
-  };
-}
-
-/**
- * Fetches the subscription pricing.
- *
- * @returns The subscription pricing.
- */
-export function getSubscriptionPricing(): ThunkAction<
-  PricingResponse,
-  MetaMaskReduxState,
-  unknown,
-  AnyAction
-> {
-  return async (_dispatch: MetaMaskReduxDispatch) => {
-    try {
-      const pricing = await submitRequestToBackground<PricingResponse>(
-        'getSubscriptionPricing',
-      );
-      return pricing;
-    } catch (error) {
-      log.error('[getSubscriptionPricing] error', error);
-      throw error;
-    }
-  };
-}
-
-/**
- * Get crypto total amount needed for a subscription.
- *
- * @param params - The parameters.
- * @param params.price - The price.
- * @param params.tokenPaymentInfo - The token payment info.
- * @returns The subscription crypto approval amount.
- */
-export async function getSubscriptionCryptoApprovalAmount(
-  params: GetCryptoApproveTransactionRequest,
-): Promise<GetCryptoApproveTransactionResponse> {
-  try {
-    const cryptoApprovalAmount = await submitRequestToBackground<string>(
-      'getSubscriptionCryptoApprovalAmount',
-      [params],
-    );
-    return cryptoApprovalAmount;
-  } catch (error) {
-    log.error('[getSubscriptionCryptoApprovalAmount] error', error);
-    throw error;
-  }
-}
-
-/**
- * Starts a subscription with a card.
- *
- * @param params - The parameters.
- * @param params.products - The list of products.
- * @param params.isTrialRequested - Is trial requested.
- * @param params.recurringInterval - The recurring interval.
- * @param params.useTestClock - Whether to use test clocks.
- * @returns The subscription response.
- */
-export function startSubscriptionWithCard(params: {
-  products: ProductType[];
-  isTrialRequested: boolean;
-  recurringInterval: RecurringInterval;
-  useTestClock: boolean;
-}): ThunkAction<Subscription[], MetaMaskReduxState, unknown, AnyAction> {
-  return async (_dispatch: MetaMaskReduxDispatch) => {
-    try {
-      const currentTab = await global.platform.currentTab();
-      const subscriptions = await submitRequestToBackground<Subscription[]>(
-        'startSubscriptionWithCard',
-        [params, currentTab?.id],
-      );
-
-      return subscriptions;
-    } catch (err) {
-      log.error('[startSubscriptionWithCard] error', err);
-      const error = new Error(
-        `Failed to start subscription with card, ${getErrorMessage(err)}`,
-      );
-      throw error;
-    }
-  };
-}
-
-export function updateSubscriptionCardPaymentMethod(params: {
-  paymentType: Extract<PaymentType, 'card'>;
-  subscriptionId: string;
-  recurringInterval: RecurringInterval;
-}): ThunkAction<void, MetaMaskReduxState, unknown, AnyAction> {
-  return async (_dispatch: MetaMaskReduxDispatch) => {
-    const currentTab = await global.platform.currentTab();
-    const subscriptions = await submitRequestToBackground(
-      'updateSubscriptionCardPaymentMethod',
-      [params, currentTab?.id],
-    );
-
-    return subscriptions;
-  };
-}
-
-export function updateSubscriptionCryptoPaymentMethod(
-  params: Extract<UpdatePaymentMethodOpts, { paymentType: 'crypto' }>,
-): ThunkAction<void, MetaMaskReduxState, unknown, AnyAction> {
-  return async (_dispatch: MetaMaskReduxDispatch) => {
-    await submitRequestToBackground('updateSubscriptionCryptoPaymentMethod', [
-      params,
-    ]);
-  };
-}
-
-export function cancelSubscription(params: {
-  subscriptionId: string;
-  cancelAtPeriodEnd?: boolean;
-}): ThunkAction<void, MetaMaskReduxState, unknown, AnyAction> {
-  return async (dispatch: MetaMaskReduxDispatch) => {
-    try {
-      await submitRequestToBackground('cancelSubscription', [params]);
-    } catch (error) {
-      dispatch(displayWarning(error));
-
-      // rethrow the original error
-      throw error;
-    }
-  };
-}
-
-export function unCancelSubscription(params: {
-  subscriptionId: string;
-}): ThunkAction<void, MetaMaskReduxState, unknown, AnyAction> {
-  return async (_dispatch: MetaMaskReduxDispatch) => {
-    try {
-      await submitRequestToBackground('unCancelSubscription', [params]);
-    } catch (error) {
-      const unCancelSubscriptionError = new Error(
-        `Failed to uncancel subscription, ${getErrorMessage(error)}`,
-      );
-      throw unCancelSubscriptionError;
-    }
-  };
-}
-
-export function getSubscriptionBillingPortalUrl(): ThunkAction<
-  BillingPortalResponse,
-  MetaMaskReduxState,
-  unknown,
-  AnyAction
-> {
-  return async (_dispatch: MetaMaskReduxDispatch) => {
-    try {
-      const billingPortalUrl = await submitRequestToBackground(
-        'getSubscriptionBillingPortalUrl',
-      );
-      return billingPortalUrl;
-    } catch (error) {
-      log.error('[getSubscriptionBillingPortalUrl] error', error);
-      // rethrow the original error
-      throw error;
-    }
-  };
-}
-
-export function setShowShieldEntryModalOnce({
-  show,
-  shouldSubmitEvents = false,
-  triggeringCohort,
-  modalType,
-  hasUserInteractedWithModal = false,
-  shouldUpdateBackgroundState = true,
-}: {
-  show: boolean | null;
-  shouldSubmitEvents?: boolean;
-  triggeringCohort?: string;
-  modalType?: ModalType;
-  hasUserInteractedWithModal?: boolean;
-  shouldUpdateBackgroundState?: boolean;
-}): ThunkAction<void, MetaMaskReduxState, unknown, AnyAction> {
-  return async (dispatch: MetaMaskReduxDispatch) => {
-    try {
-      if (shouldUpdateBackgroundState) {
-        await submitRequestToBackground('setShowShieldEntryModalOnce', [show]);
-      }
-      dispatch(
-        setShowShieldEntryModalOnceAction({
-          show: Boolean(show),
-          shouldSubmitEvents,
-          triggeringCohort,
-          modalType,
-          hasUserInteractedWithModal,
-        }),
-      );
-    } catch (error) {
-      log.error('[setShowShieldEntryModalOnce] error', error);
-      dispatch(displayWarning(error));
-      throw error;
-    }
-  };
-}
-
-function setShowShieldEntryModalOnceAction(payload: {
-  show: boolean;
-  shouldSubmitEvents: boolean;
-  triggeringCohort?: string;
-  modalType: ModalType;
-  hasUserInteractedWithModal?: boolean;
-}): ThunkAction<void, MetaMaskReduxState, unknown, AnyAction> {
-  return {
-    type: actionConstants.SET_SHIELD_ENTRY_MODAL_STATUS,
-    payload,
-  };
-}
-
 export function setPendingRedirectRoute(
   route: PendingRedirectRoute | null,
 ): ThunkAction<void, MetaMaskReduxState, unknown, AnyAction> {
@@ -744,118 +279,6 @@ export function setPendingRedirectRoute(
       throw error;
     }
   };
-}
-
-export function setPendingShieldCohort(
-  cohort: string | null,
-  txType?: string | null,
-): ThunkAction<void, MetaMaskReduxState, unknown, AnyAction> {
-  return async (dispatch: MetaMaskReduxDispatch) => {
-    try {
-      await submitRequestToBackground('setPendingShieldCohort', [
-        cohort,
-        txType,
-      ]);
-    } catch (error) {
-      log.error('[setPendingShieldCohort] error', error);
-      dispatch(displayWarning(error));
-      throw error;
-    }
-  };
-}
-
-export function setLastUsedSubscriptionPaymentDetails(
-  product: ProductType,
-  payload: CachedLastSelectedPaymentMethod,
-): ThunkAction<void, MetaMaskReduxState, unknown, AnyAction> {
-  return async (dispatch: MetaMaskReduxDispatch) => {
-    try {
-      await submitRequestToBackground('cacheLastSelectedPaymentMethod', [
-        product,
-        payload,
-      ]);
-    } catch (error) {
-      log.error('[setLastUsedSubscriptionPaymentDetails] error', error);
-      dispatch(displayWarning(error));
-      throw error;
-    }
-  };
-}
-
-export function setDefaultSubscriptionPaymentOptions(
-  payload: DefaultSubscriptionPaymentOptions,
-): ThunkAction<void, MetaMaskReduxState, unknown, AnyAction> {
-  return async (dispatch: MetaMaskReduxDispatch) => {
-    try {
-      await submitRequestToBackground('setDefaultSubscriptionPaymentOptions', [
-        payload,
-      ]);
-    } catch (error) {
-      log.error('[setDefaultSubscriptionPaymentOptions] error', error);
-      dispatch(displayWarning(error));
-      throw error;
-    }
-  };
-}
-
-export function setShieldSubscriptionMetricsProps(
-  payload: ShieldSubscriptionMetricsPropsFromUI,
-): ThunkAction<void, MetaMaskReduxState, unknown, AnyAction> {
-  return async (dispatch: MetaMaskReduxDispatch) => {
-    try {
-      await submitRequestToBackground('setShieldSubscriptionMetricsProps', [
-        payload,
-      ]);
-    } catch (error) {
-      log.error('[setShieldSubscriptionMetricsProps] error', error);
-      dispatch(displayWarning(error));
-      throw error;
-    }
-  };
-}
-
-/**
- * Links the reward to the existing shield subscription.
- *
- * @param subscriptionId - Shield subscription ID to link the reward to.
- * @param rewardPoints - The number of reward points which user will receive after linking the reward to the subscription.
- * @returns Promise<void> - The reward subscription ID or undefined if the season is not active or the primary account is not opted in to rewards.
- */
-export function linkRewardToShieldSubscription(
-  subscriptionId: string,
-  rewardPoints: number,
-): ThunkAction<void, MetaMaskReduxState, unknown, AnyAction> {
-  return async (dispatch: MetaMaskReduxDispatch) => {
-    try {
-      await submitRequestToBackground('linkRewardToShieldSubscription', [
-        subscriptionId,
-        rewardPoints,
-      ]);
-
-      // refetch the subscriptions
-      await dispatch(getSubscriptions());
-    } catch (error) {
-      dispatch(displayWarning(error));
-      throw error;
-    }
-  };
-}
-
-/**
- * Sets or clears the shield subscription error in app state.
- * Pass null to clear the error.
- *
- * @param error - The error object with message and optional code, or null to clear.
- */
-export async function setShieldSubscriptionError(
-  error: { message: string; code?: string } | null,
-): Promise<void> {
-  try {
-    await submitRequestToBackground('setShieldSubscriptionError', [error]);
-  } catch (e) {
-    logErrorWithMessage(e);
-    throw e;
-  }
 }
 
 /**
@@ -911,15 +334,8 @@ export function syncSeedPhrases(): ThunkAction<
   AnyAction
 > {
   return async (dispatch: MetaMaskReduxDispatch) => {
-    try {
-      await submitRequestToBackground('syncSeedPhrases');
-      dispatch(hideWarning());
-      await forceUpdateMetamaskState(dispatch);
-    } catch (error) {
-      log.error('[syncSeedPhrases] error', error);
-      dispatch(displayWarning(error.message));
-      throw error;
-    }
+    dispatch(hideWarning());
+    await forceUpdateMetamaskState(dispatch);
   };
 }
 
@@ -953,11 +369,9 @@ export function changePassword(
 }
 
 export function storeKeyringEncryptionKey(
-  encryptionKey: string,
+  _encryptionKey: string,
 ): Promise<void> {
-  return submitRequestToBackground('storeKeyringEncryptionKey', [
-    encryptionKey,
-  ]);
+  return Promise.resolve();
 }
 
 export function tryUnlockMetamask(
@@ -1176,14 +590,10 @@ export async function createSeedPhraseBackup(
   seedPhrase: string,
   keyringId: string,
 ): Promise<void> {
-  const encodedSeedPhrase = Array.from(
-    Buffer.from(seedPhrase, 'utf8').values(),
-  );
-  await submitRequestToBackground('createSeedPhraseBackup', [
-    password,
-    encodedSeedPhrase,
-    keyringId,
-  ]);
+  if (!password || !seedPhrase || !keyringId) {
+    return undefined;
+  }
+  return undefined;
 }
 
 function createNewVault(password: string): Promise<KeyringObject> {
@@ -2193,9 +1603,7 @@ export function deleteExpiredNotifications(): ThunkAction<
       .map(({ id }) => id);
 
     if (notificationIdsToDelete.length) {
-      await submitRequestToBackground('deleteNotificationsById', [
-        notificationIdsToDelete,
-      ]);
+      await dispatch(deleteNotificationsById(notificationIdsToDelete));
       await forceUpdateMetamaskState(dispatch);
     }
   };
@@ -4618,15 +4026,10 @@ export function setMarketingConsent(
   hasEmailMarketingConsent: boolean,
 ): ThunkAction<Promise<boolean>, MetaMaskReduxState, unknown, AnyAction> {
   return async () => {
-    try {
-      const res = await submitRequestToBackground('setMarketingConsent', [
-        hasEmailMarketingConsent,
-      ]);
-      return Boolean(res);
-    } catch (error) {
-      logErrorWithMessage(getErrorMessage(error));
+    if (hasEmailMarketingConsent) {
       return false;
     }
+    return false;
   };
 }
 
@@ -4634,13 +4037,7 @@ export function setMarketingConsent(
  * Gets marketing consent with OAuth service for social login users.
  */
 export async function getMarketingConsent() {
-  try {
-    const res = await submitRequestToBackground('getMarketingConsent');
-    return Boolean(res);
-  } catch (error) {
-    logErrorWithMessage(getErrorMessage(error));
-    return false;
-  }
+  return false;
 }
 
 export function setAvatarType(value: string) {
@@ -6754,172 +6151,6 @@ export function cancelQrCodeScan(): ThunkAction<
   };
 }
 
-// Rewards
-
-export function getRewardsHasAccountOptedIn(
-  account: CaipAccountId,
-): ThunkAction<Promise<boolean>, MetaMaskReduxState, unknown, AnyAction> {
-  return async () => {
-    return await submitRequestToBackground<boolean>(
-      'getRewardsHasAccountOptedIn',
-      [account],
-    );
-  };
-}
-
-export function getRewardsCandidateSubscriptionId(
-  primaryWalletGroupAccounts?: InternalAccount[],
-): ThunkAction<Promise<string | null>, MetaMaskReduxState, unknown, AnyAction> {
-  return async () => {
-    return await submitRequestToBackground<string | null>(
-      'getRewardsCandidateSubscriptionId',
-      primaryWalletGroupAccounts ? [primaryWalletGroupAccounts] : undefined,
-    );
-  };
-}
-
-export function getRewardsSeasonMetadata(
-  type?: 'current' | 'next' | 'previous',
-): ThunkAction<
-  Promise<SeasonDtoState>,
-  MetaMaskReduxState,
-  unknown,
-  AnyAction
-> {
-  return async () => {
-    return await submitRequestToBackground<SeasonDtoState>(
-      'getRewardsSeasonMetadata',
-      type ? [type] : [],
-    );
-  };
-}
-
-export function getRewardsSeasonStatus(
-  subscriptionId: string,
-  seasonId: string,
-): ThunkAction<
-  Promise<SeasonStatusState>,
-  MetaMaskReduxState,
-  unknown,
-  AnyAction
-> {
-  return async () => {
-    return await submitRequestToBackground<SeasonStatusState>(
-      'getRewardsSeasonStatus',
-      [subscriptionId, seasonId],
-    );
-  };
-}
-
-export function estimateRewardsPoints(
-  request: EstimatePointsDto,
-): ThunkAction<
-  Promise<EstimatedPointsDto>,
-  MetaMaskReduxState,
-  unknown,
-  AnyAction
-> {
-  return async () => {
-    return await submitRequestToBackground<EstimatedPointsDto>(
-      'estimateRewardsPoints',
-      [request],
-    );
-  };
-}
-
-export function validateRewardsReferralCode(
-  code: string,
-): ThunkAction<Promise<boolean>, MetaMaskReduxState, unknown, AnyAction> {
-  return async () => {
-    return await submitRequestToBackground<boolean>(
-      'validateRewardsReferralCode',
-      [code],
-    );
-  };
-}
-
-export function getRewardsGeoMetadata(): ThunkAction<
-  Promise<RewardsGeoMetadata | null>,
-  MetaMaskReduxState,
-  unknown,
-  AnyAction
-> {
-  return async () => {
-    return await submitRequestToBackground<RewardsGeoMetadata | null>(
-      'getRewardsGeoMetadata',
-    );
-  };
-}
-
-export function rewardsOptIn({
-  accounts,
-  referralCode,
-}: {
-  accounts: InternalAccount[];
-  referralCode?: string;
-}): ThunkAction<
-  Promise<string | null>,
-  MetaMaskReduxState,
-  unknown,
-  AnyAction
-> {
-  return async () => {
-    return await submitRequestToBackground<string | null>('rewardsOptIn', [
-      accounts,
-      referralCode,
-    ]);
-  };
-}
-
-export function rewardsIsOptInSupported({
-  account,
-}: {
-  account: InternalAccount;
-}): ThunkAction<Promise<boolean>, MetaMaskReduxState, unknown, AnyAction> {
-  return async () => {
-    return await submitRequestToBackground<boolean>('rewardsIsOptInSupported', [
-      account,
-    ]);
-  };
-}
-
-export function rewardsGetOptInStatus(
-  params: OptInStatusInputDto,
-): ThunkAction<
-  Promise<OptInStatusDto>,
-  MetaMaskReduxState,
-  unknown,
-  AnyAction
-> {
-  return async () => {
-    return await submitRequestToBackground<OptInStatusDto>(
-      'rewardsGetOptInStatus',
-      [params],
-    );
-  };
-}
-
-export function rewardsLinkAccountsToSubscriptionCandidate(
-  accounts: InternalAccount[],
-  primaryWalletGroupAccounts?: InternalAccount[],
-): ThunkAction<
-  Promise<{ account: InternalAccount; success: boolean }[]>,
-  MetaMaskReduxState,
-  unknown,
-  AnyAction
-> {
-  return async () => {
-    return await submitRequestToBackground<
-      { account: InternalAccount; success: boolean }[]
-    >(
-      'rewardsLinkAccountsToSubscriptionCandidate',
-      primaryWalletGroupAccounts
-        ? [accounts, primaryWalletGroupAccounts]
-        : [accounts],
-    );
-  };
-}
-
 export function requestUserApproval({
   origin,
   type,
@@ -7085,19 +6316,8 @@ export function performSignIn(): ThunkAction<
   unknown,
   AnyAction
 > {
-  // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31879
-  // eslint-disable-next-line @typescript-eslint/no-misused-promises
   return async () => {
-    try {
-      await submitRequestToBackground('performSignIn');
-    } catch (error) {
-      const errorMessage =
-        error instanceof Error
-          ? error.message
-          : 'Unknown error occurred during sign-in.';
-      logErrorWithMessage(errorMessage);
-      throw error;
-    }
+    return undefined;
   };
 }
 
@@ -7116,15 +6336,8 @@ export function performSignOut(): ThunkAction<
   unknown,
   AnyAction
 > {
-  // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31879
-  // eslint-disable-next-line @typescript-eslint/no-misused-promises
   return async () => {
-    try {
-      await submitRequestToBackground('performSignOut');
-    } catch (error) {
-      logErrorWithMessage(error);
-      throw error;
-    }
+    return undefined;
   };
 }
 
@@ -7140,21 +6353,14 @@ export function performSignOut(): ThunkAction<
  * @returns A thunk action that, when dispatched, attempts to enable or disable a backup and sync feature.
  */
 export function setIsBackupAndSyncFeatureEnabled(
-  feature: keyof typeof BACKUPANDSYNC_FEATURES,
+  feature: string,
   enabled: boolean,
 ): ThunkAction<void, MetaMaskReduxState, unknown, AnyAction> {
-  // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31879
-  // eslint-disable-next-line @typescript-eslint/no-misused-promises
   return async () => {
-    try {
-      await submitRequestToBackground('setIsBackupAndSyncFeatureEnabled', [
-        feature,
-        enabled,
-      ]);
-    } catch (error) {
-      logErrorWithMessage(error);
-      throw error;
+    if (!feature || enabled === undefined) {
+      return undefined;
     }
+    return undefined;
   };
 }
 
@@ -7163,18 +6369,8 @@ export function setIsBackupAndSyncFeatureEnabled(
  *
  * @returns A thunk action that, when dispatched, attempts to fetch the user profile lineage.
  */
-export async function getUserProfileLineage(): Promise<
-  UserProfileLineage | undefined
-> {
-  try {
-    const userProfileLineage = await submitRequestToBackground(
-      'getUserProfileLineage',
-    );
-    return userProfileLineage;
-  } catch (error) {
-    logErrorWithMessage(error);
-    return undefined;
-  }
+export async function getUserProfileLineage(): Promise<unknown | undefined> {
+  return undefined;
 }
 
 /**
@@ -7183,13 +6379,7 @@ export async function getUserProfileLineage(): Promise<
  * @returns A thunk action that, when dispatched, attempts to fetch the user's bearer token.
  */
 export async function getBearerToken(): Promise<string | undefined> {
-  try {
-    const bearerToken = await submitRequestToBackground('getBearerToken');
-    return bearerToken;
-  } catch (error) {
-    logErrorWithMessage(error);
-    return undefined;
-  }
+  return undefined;
 }
 
 /**
@@ -7207,15 +6397,8 @@ export function createOnChainTriggers(): ThunkAction<
   unknown,
   AnyAction
 > {
-  // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31879
-  // eslint-disable-next-line @typescript-eslint/no-misused-promises
   return async () => {
-    try {
-      await submitRequestToBackground('createOnChainTriggers');
-    } catch (error) {
-      logErrorWithMessage(error);
-      throw error;
-    }
+    return undefined;
   };
 }
 
@@ -7232,15 +6415,11 @@ export function createOnChainTriggers(): ThunkAction<
 export function disableAccounts(
   accounts: string[],
 ): ThunkAction<void, MetaMaskReduxState, unknown, AnyAction> {
-  // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31879
-  // eslint-disable-next-line @typescript-eslint/no-misused-promises
   return async () => {
-    try {
-      await submitRequestToBackground('disableAccounts', [accounts]);
-    } catch (error) {
-      logErrorWithMessage(error);
-      throw error;
+    if (!accounts.length) {
+      return undefined;
     }
+    return undefined;
   };
 }
 
@@ -7257,15 +6436,11 @@ export function disableAccounts(
 export function enableAccounts(
   accounts: string[],
 ): ThunkAction<void, MetaMaskReduxState, unknown, AnyAction> {
-  // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31879
-  // eslint-disable-next-line @typescript-eslint/no-misused-promises
   return async () => {
-    try {
-      await submitRequestToBackground('enableAccounts', [accounts]);
-    } catch (error) {
-      logErrorWithMessage(error);
-      throw error;
+    if (!accounts.length) {
+      return undefined;
     }
+    return undefined;
   };
 }
 
@@ -7281,19 +6456,11 @@ export function enableAccounts(
 export function fetchAndUpdateMetamaskNotifications(
   previewToken?: string,
 ): ThunkAction<void, MetaMaskReduxState, unknown, AnyAction> {
-  // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31879
-  // eslint-disable-next-line @typescript-eslint/no-misused-promises
   return async () => {
-    try {
-      const response = await submitRequestToBackground(
-        'fetchAndUpdateMetamaskNotifications',
-        [previewToken],
-      );
-      return response;
-    } catch (error) {
-      logErrorWithMessage(error);
-      throw error;
+    if (previewToken) {
+      return undefined;
     }
+    return undefined;
   };
 }
 
@@ -7309,19 +6476,11 @@ export function fetchAndUpdateMetamaskNotifications(
 export function deleteNotificationsById(
   ids: string[],
 ): ThunkAction<void, MetaMaskReduxState, unknown, AnyAction> {
-  // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31879
-  // eslint-disable-next-line @typescript-eslint/no-misused-promises
   return async () => {
-    try {
-      const response = await submitRequestToBackground(
-        'deleteNotificationsById',
-        [ids],
-      );
-      return response;
-    } catch (error) {
-      logErrorWithMessage(error);
-      throw error;
+    if (!ids.length) {
+      return undefined;
     }
+    return undefined;
   };
 }
 
@@ -7368,22 +6527,8 @@ export function deleteAccountSyncingDataFromUserStorage(): ThunkAction<
   unknown,
   AnyAction
 > {
-  // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31879
-  // eslint-disable-next-line @typescript-eslint/no-misused-promises
   return async () => {
-    try {
-      await Promise.all([
-        submitRequestToBackground('deleteAccountSyncingDataFromUserStorage', [
-          USER_STORAGE_GROUPS_FEATURE_KEY,
-        ]),
-        submitRequestToBackground('deleteAccountSyncingDataFromUserStorage', [
-          USER_STORAGE_WALLETS_FEATURE_KEY,
-        ]),
-      ]);
-    } catch (error) {
-      logErrorWithMessage(error);
-      throw error;
-    }
+    return undefined;
   };
 }
 
@@ -7402,15 +6547,7 @@ export function syncContactsWithUserStorage(): ThunkAction<
   AnyAction
 > {
   return async () => {
-    try {
-      const response = await submitRequestToBackground(
-        'syncContactsWithUserStorage',
-      );
-      return response;
-    } catch (error) {
-      logErrorWithMessage(error);
-      throw error;
-    }
+    return undefined;
   };
 }
 
@@ -7425,19 +6562,13 @@ export function syncContactsWithUserStorage(): ThunkAction<
  * @returns A thunk action that, when dispatched, attempts to mark MetaMask notifications as read.
  */
 export function markMetamaskNotificationsAsRead(
-  notifications: NotificationServicesController.Types.MarkAsReadNotificationsParam,
+  notifications: { id: string }[],
 ): ThunkAction<void, MetaMaskReduxState, unknown, AnyAction> {
-  // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31879
-  // eslint-disable-next-line @typescript-eslint/no-misused-promises
   return async () => {
-    try {
-      await submitRequestToBackground('markMetamaskNotificationsAsRead', [
-        notifications,
-      ]);
-    } catch (error) {
-      logErrorWithMessage(error);
-      throw error;
+    if (!notifications.length) {
+      return undefined;
     }
+    return undefined;
   };
 }
 
@@ -7454,17 +6585,11 @@ export function markMetamaskNotificationsAsRead(
 export function setFeatureAnnouncementsEnabled(
   state: boolean,
 ): ThunkAction<void, MetaMaskReduxState, unknown, AnyAction> {
-  // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31879
-  // eslint-disable-next-line @typescript-eslint/no-misused-promises
   return async () => {
-    try {
-      await submitRequestToBackground('setFeatureAnnouncementsEnabled', [
-        state,
-      ]);
-    } catch (error) {
-      logErrorWithMessage(error);
-      throw error;
+    if (state === undefined) {
+      return undefined;
     }
+    return undefined;
   };
 }
 
@@ -7481,19 +6606,11 @@ export function setFeatureAnnouncementsEnabled(
 export function checkAccountsPresence(
   accounts: string[],
 ): ThunkAction<void, MetaMaskReduxState, unknown, AnyAction> {
-  // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31879
-  // eslint-disable-next-line @typescript-eslint/no-misused-promises
   return async () => {
-    try {
-      const response = await submitRequestToBackground(
-        'checkAccountsPresence',
-        [accounts],
-      );
-      return response;
-    } catch (error) {
-      logErrorWithMessage(error);
-      throw error;
+    if (!accounts.length) {
+      return undefined;
     }
+    return undefined;
   };
 }
 /**
@@ -7530,12 +6647,7 @@ export function enableMetamaskNotifications(): ThunkAction<
   AnyAction
 > {
   return async () => {
-    try {
-      await submitRequestToBackground('enableMetamaskNotifications');
-    } catch (error) {
-      log.error(error);
-      throw error;
-    }
+    return undefined;
   };
 }
 
@@ -7552,12 +6664,7 @@ export function disableMetamaskNotifications(): ThunkAction<
   AnyAction
 > {
   return async () => {
-    try {
-      await submitRequestToBackground('disableMetamaskNotifications');
-    } catch (error) {
-      log.error(error);
-      throw error;
-    }
+    return undefined;
   };
 }
 
@@ -7570,30 +6677,6 @@ export function setMultichainAccountsIntroModalShown(value: boolean) {
     await submitRequestToBackground('setHasShownMultichainAccountsIntroModal', [
       value,
     ]);
-  };
-}
-
-/**
- * Persist that the mUSD conversion education screen has been seen.
- * Stored in AppStateController until uninstall.
- *
- * @param value
- */
-export function setMusdConversionEducationSeen(value: boolean) {
-  return async () => {
-    await submitRequestToBackground('setMusdConversionEducationSeen', [value]);
-  };
-}
-
-/**
- * Persist a dismissed mUSD asset-detail CTA key (chainId-tokenAddress).
- * Stored in AppStateController until uninstall.
- *
- * @param key
- */
-export function addMusdConversionDismissedCtaKey(key: string) {
-  return async () => {
-    await submitRequestToBackground('addMusdConversionDismissedCtaKey', [key]);
   };
 }
 
@@ -7650,14 +6733,6 @@ export async function getLastInteractedConfirmationInfo(): Promise<
   return await submitRequestToBackground<void>(
     'getLastInteractedConfirmationInfo',
   );
-}
-
-export async function deleteDappSwapComparisonData(
-  uniqueId: string,
-): Promise<void> {
-  return await submitRequestToBackground<void>('deleteDappSwapComparisonData', [
-    uniqueId,
-  ]);
 }
 
 export async function setLastInteractedConfirmationInfo(
@@ -7782,137 +6857,12 @@ export async function getLayer1GasFeeValue({
   ]);
 }
 
-/**
- * Submits a shield claim.
- *
- * @param params - The parameters.
- * @param params.chainId - The chain ID.
- * @param params.email - The email.
- * @param params.impactedWalletAddress - The impacted wallet address.
- * @param params.impactedTransactionHash - The impacted transaction hash.
- * @param params.reimbursementWalletAddress - The reimbursement wallet address.
- * @param params.caseDescription - The description.
- * @param params.files - The files.
- * @param params.signature - Claim signature.
- * @returns The subscription response.
- */
-export async function submitShieldClaim(
-  params: CreateClaimRequest & { files?: FileList },
-) {
-  const submitClaimConfig = await submitRequestToBackground<SubmitClaimConfig>(
-    'getSubmitClaimConfig',
-    [params],
-  );
-  const { headers, method, url } = submitClaimConfig;
-
-  const formData = new FormData();
-  formData.append('chainId', params.chainId);
-  formData.append('email', params.email);
-  formData.append('impactedWalletAddress', params.impactedWalletAddress);
-  formData.append('impactedTxHash', params.impactedTxHash);
-  formData.append(
-    'reimbursementWalletAddress',
-    params.reimbursementWalletAddress,
-  );
-  formData.append('description', params.description);
-  formData.append('signature', params.signature);
-  formData.append('timestamp', Date.now().toString());
-
-  // add files to form data
-  if (params.files) {
-    Array.from(params.files).forEach((file) => {
-      formData.append('attachments', file, file.name);
-    });
-  }
-
-  try {
-    // we do the request here instead of background controllers because files are not serializable
-    const response = await fetch(url, {
-      method,
-      body: formData,
-      headers: {
-        Authorization: headers.Authorization,
-      },
-    });
-
-    if (!response.ok) {
-      const error = (await response.json()) as SubmitClaimErrorResponse;
-      if (error?.errorCode) {
-        throw new SubmitClaimError(error.message, error);
-      }
-      throw new SubmitClaimError(ClaimSubmitToastType.Errored);
-    }
-
-    return ClaimSubmitToastType.Success;
-  } catch (error) {
-    captureException(createSentryError('Failed to submit shield claim', error));
-    if (error instanceof SubmitClaimError) {
-      throw error;
-    }
-    throw new SubmitClaimError(ClaimSubmitToastType.Errored);
-  }
-}
-
-/**
- * Fetches all shield claims, relates to the current user profile ID.
- *
- * @returns The shield claims.
- */
-export async function getShieldClaims() {
-  try {
-    const claims = await submitRequestToBackground<Claim[]>('getClaims');
-    return claims;
-  } catch (error) {
-    log.error('[getShieldClaims] Failed to get shield claims:', error);
-    throw error;
-  }
-}
-
-/**
- * Generates a signature for a claim.
- *
- * @param chainId - The chain ID.
- * @param walletAddress - The wallet address.
- * @returns The signature.
- */
-export async function generateClaimSignature(
-  chainId: string,
-  walletAddress: string,
-) {
-  return await submitRequestToBackground<string>('generateClaimSignature', [
-    chainId,
-    walletAddress,
-  ]);
-}
-
 export async function getHdPathForLedgerKeyring(): Promise<string> {
   const hdPath = await submitRequestToBackground<string>(
     'getHdPathForLedgerKeyring',
     [],
   );
   return hdPath;
-}
-
-/**
- * Saves a claim draft.
- *
- * @param draft - The draft to save.
- * @returns The saved draft.
- */
-export async function saveClaimDraft(
-  draft: Partial<ClaimDraft>,
-): Promise<ClaimDraft> {
-  return await submitRequestToBackground<ClaimDraft>('saveClaimDraft', [draft]);
-}
-
-/**
- * Deletes a claim draft.
- *
- * @param draftId - The ID of the draft to delete.
- * @returns The deleted draft.
- */
-export async function deleteClaimDraft(draftId: string): Promise<void> {
-  return await submitRequestToBackground<void>('deleteClaimDraft', [draftId]);
 }
 
 /**
@@ -7932,13 +6882,4 @@ export function removeDeferredDeepLink(): ThunkAction<
       logErrorWithMessage(error);
     }
   };
-}
-
-export async function perpsToggleTestnet(): Promise<void> {
-  log.debug(`background.perpsToggleTestnet`);
-  try {
-    await submitRequestToBackground<void>('perpsToggleTestnet');
-  } catch (error) {
-    logErrorWithMessage(error);
-  }
 }

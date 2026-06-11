@@ -9,20 +9,11 @@ export const isProduction = (): boolean => {
 };
 
 export const getIsSeedlessOnboardingFeatureEnabled = (): boolean => {
-  return process.env.SEEDLESS_ONBOARDING_ENABLED?.toString() === 'true';
+  return false;
 };
 
 export const getIsMetaMaskShieldFeatureEnabled = (): boolean => {
   return process.env.METAMASK_SHIELD_ENABLED?.toString() === 'true';
-};
-
-/**
- * Compile-time gate (`PERPS_ENABLED`): this extension binary includes PerpsController and
- * related background paths. Distinct from remote `perpsEnabledVersion` rollout (see
- * `isPerpsRemoteConfigSatisfied` and `getIsPerpsExperienceAvailable`).
- */
-export const getIsPerpsIncludedInBuild = (): boolean => {
-  return process.env.PERPS_ENABLED?.toString() === 'true';
 };
 
 /**

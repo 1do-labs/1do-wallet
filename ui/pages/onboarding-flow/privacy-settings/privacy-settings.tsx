@@ -69,8 +69,6 @@ import {
   IPFS_FORBIDDEN_GATEWAY,
   TEST_CHAINS,
 } from '../../../../shared/constants/network';
-import { selectIsBackupAndSyncEnabled } from '../../../selectors/identity/backup-and-sync';
-import { BackupAndSyncToggle } from '../../../components/app/identity/backup-and-sync-toggle/backup-and-sync-toggle';
 import DeleteMetaMetricsDataButton from '../../settings/security-tab/delete-metametrics-data-button';
 import MetametricsToggle from '../../settings/security-tab/metametrics-toggle/metametrics-toggle';
 import { MetaMaskReduxState } from '../../../store/store';
@@ -138,8 +136,6 @@ export default function PrivacySettings() {
     getExternalServicesOnboardingToggleState,
   );
 
-  const isBackupAndSyncEnabled = useSelector(selectIsBackupAndSyncEnabled);
-
   const { search } = useLocation();
   const searchParams = new URLSearchParams(search);
   const isFromReminder = searchParams.get('isFromReminder');
@@ -167,7 +163,7 @@ export default function PrivacySettings() {
         // eslint-disable-next-line @typescript-eslint/naming-convention
         settings_group: 'onboarding_advanced_configuration',
         // eslint-disable-next-line @typescript-eslint/naming-convention
-        is_profile_syncing_enabled: isBackupAndSyncEnabled,
+        is_profile_syncing_enabled: false,
         // eslint-disable-next-line @typescript-eslint/naming-convention
         is_basic_functionality_enabled: externalServicesOnboardingToggleState,
         // eslint-disable-next-line @typescript-eslint/naming-convention
@@ -425,9 +421,6 @@ export default function PrivacySettings() {
                       </a>,
                     ])}
                   />
-
-                  <BackupAndSyncToggle />
-
                   <Setting
                     title={t('onboardingAdvancedPrivacyNetworkTitle')}
                     showToggle={false}

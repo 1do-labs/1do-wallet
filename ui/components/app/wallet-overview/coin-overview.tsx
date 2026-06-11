@@ -22,10 +22,7 @@ import {
 } from '../../../pages/multichain-accounts/multichain-account-address-list-page';
 import Tooltip from '../../ui/tooltip';
 import { trace, TraceName } from '../../../../shared/lib/trace';
-import {
-  getPreferences,
-  getSelectedAddress,
-} from '../../../selectors';
+import { getPreferences, getSelectedAddress } from '../../../selectors';
 
 import { AccountGroupBalance } from '../assets/account-group-balance/account-group-balance';
 import { AccountGroupBalanceChange } from '../assets/account-group-balance-change/account-group-balance-change';
@@ -34,8 +31,6 @@ import { getMultichainIsTestnet } from '../../../selectors/multichain';
 import { setPrivacyMode } from '../../../store/actions';
 import { useI18nContext } from '../../../hooks/useI18nContext';
 
-import { RewardsPointsBalance } from '../rewards/RewardsPointsBalance';
-import { selectRewardsEnabled } from '../../../ducks/rewards/selectors';
 import { BalanceEmptyState } from '../balance-empty-state';
 import { selectAccountGroupBalanceForEmptyState } from '../../../selectors/assets';
 import { getSelectedAccountGroup } from '../../../selectors/multichain-accounts/account-tree';
@@ -50,7 +45,6 @@ export type CoinOverviewProps = {
   classPrefix?: string;
   chainId: CaipChainId | Hex;
   isBridgeChain: boolean;
-  isBuyableChain: boolean;
   isSwapsChain: boolean;
   isSigningEnabled: boolean;
 };
@@ -63,7 +57,6 @@ export const CoinOverview = ({
   classPrefix = 'coin',
   chainId,
   isBridgeChain,
-  isBuyableChain,
   isSwapsChain,
   isSigningEnabled,
 }: CoinOverviewProps) => {
@@ -78,7 +71,6 @@ export const CoinOverview = ({
 
   const selectedAccountGroup = useSelector(getSelectedAccountGroup);
 
-  const isRewardsEnabled = useSelector(selectRewardsEnabled);
   const selectedAddress = useSelector(getSelectedAddress);
 
   const hasBalance = useSelector(selectAccountGroupBalanceForEmptyState);
@@ -133,9 +125,6 @@ export const CoinOverview = ({
 
   const renderPercentageAndAmountChange = () => {
     const renderPercentageAndAmountChangeTrail = () => {
-      if (isRewardsEnabled) {
-        return <RewardsPointsBalance />;
-      }
       return (
         <ButtonLink
           endIconName={IconName.Export}
@@ -210,7 +199,6 @@ export const CoinOverview = ({
             isSwapsChain,
             isSigningEnabled,
             isBridgeChain,
-            isBuyableChain,
             classPrefix,
           }}
         />

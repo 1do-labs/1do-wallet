@@ -1,8 +1,10 @@
 import React from 'react';
+import { waitFor } from '@testing-library/react';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { Hex } from '@metamask/utils';
 import { toHex } from '@metamask/controller-utils';
+import { Interface } from '@ethersproject/abi';
 import {
   getMockConfirmState,
   getMockConfirmStateForTransaction,
@@ -21,6 +23,28 @@ import { Severity } from '../../../../../../../helpers/constants/design-system';
 import * as useUserPreferencedCurrencyModule from '../../../../../../../hooks/useUserPreferencedCurrency';
 import { RecipientRow, TransactionDetails } from './transaction-details';
 
+const accountRuntimeInterface = new Interface([
+  'function enableApp(address app)',
+]);
+
+const DNS_STATE = {
+  chainId: null,
+  domainName: null,
+  error: null,
+  resolutions: null,
+  stage: 'UNINITIALIZED',
+  warning: null,
+};
+
+const createMockStore = (
+  state: Record<string, unknown>,
+  middleware = [thunk],
+) =>
+  configureMockStore(middleware)({
+    ...state,
+    DNS: DNS_STATE,
+  });
+
 jest.mock(
   '../../../../../../../components/app/alert-system/contexts/alertMetricsContext',
   () => ({
@@ -36,7 +60,7 @@ describe('Transaction Details', () => {
   describe('<TransactionDetails />', () => {
     it('does not render component for transaction details', () => {
       const state = getMockConfirmState();
-      const mockStore = configureMockStore(middleware)(state);
+      const mockStore = createMockStore(state);
       const { container } = renderWithConfirmContextProvider(
         <TransactionDetails />,
         mockStore,
@@ -46,12 +70,41 @@ describe('Transaction Details', () => {
 
     it('renders component for transaction details', () => {
       const state = getMockContractInteractionConfirmState();
-      const mockStore = configureMockStore(middleware)(state);
+      const mockStore = createMockStore(state);
       const { container } = renderWithConfirmContextProvider(
         <TransactionDetails />,
         mockStore,
       );
       expect(container).toMatchSnapshot();
+    });
+
+    it('renders 1Do clear signing for direct enableApp calldata', async () => {
+      const transaction = genUnapprovedContractInteractionConfirmation({
+        address: '0x1111111111111111111111111111111111111111',
+        chainId: CHAIN_IDS.SEPOLIA,
+      });
+      transaction.txParams = {
+        ...transaction.txParams,
+        from: '0x1111111111111111111111111111111111111111',
+        to: '0x1111111111111111111111111111111111111111',
+        data: accountRuntimeInterface.encodeFunctionData('enableApp', [
+          '0x3C7618FdAb069e8888E5587cA2766497B866afD5',
+        ]),
+        value: '0x0',
+      };
+
+      const state = getMockConfirmStateForTransaction(transaction);
+      const mockStore = createMockStore(state);
+      const { getByTestId, getByText } = renderWithConfirmContextProvider(
+        <TransactionDetails />,
+        mockStore,
+      );
+
+      await waitFor(() => {
+        expect(getByTestId('onedo-clear-signing-section')).toBeInTheDocument();
+        expect(getByText('Enable Dex')).toBeInTheDocument();
+        expect(getByText('Enable app')).toBeInTheDocument();
+      });
     });
 
     describe('AmountRow', () => {
@@ -68,7 +121,7 @@ describe('Transaction Details', () => {
               },
             },
           });
-          const mockStore = configureMockStore(middleware)(state);
+          const mockStore = createMockStore(state);
           const { getByTestId } = renderWithConfirmContextProvider(
             <TransactionDetails />,
             mockStore,
@@ -102,7 +155,7 @@ describe('Transaction Details', () => {
               },
             },
           });
-          const mockStore = configureMockStore(middleware)(state);
+          const mockStore = createMockStore(state);
           const { getByTestId } = renderWithConfirmContextProvider(
             <TransactionDetails />,
             mockStore,
@@ -145,7 +198,7 @@ describe('Transaction Details', () => {
             },
           },
         });
-        const mockStore = configureMockStore(middleware)(state);
+        const mockStore = createMockStore(state);
         const { queryByTestId } = renderWithConfirmContextProvider(
           <TransactionDetails />,
           mockStore,
@@ -172,7 +225,7 @@ describe('Transaction Details', () => {
             },
           },
         });
-        const mockStore = configureMockStore(middleware)(state);
+        const mockStore = createMockStore(state);
         renderWithConfirmContextProvider(<TransactionDetails />, mockStore);
 
         // Verify useUserPreferencedCurrency was called with the transaction's chainId
@@ -197,7 +250,7 @@ describe('Transaction Details', () => {
             },
           },
         });
-        const mockStore = configureMockStore(middleware)(state);
+        const mockStore = createMockStore(state);
         const { getByTestId } = renderWithConfirmContextProvider(
           <TransactionDetails />,
           mockStore,
@@ -228,7 +281,7 @@ describe('Transaction Details', () => {
           confirmed: {},
         },
       };
-      const mockStore = configureMockStore([])(state);
+      const mockStore = createMockStore(state, []);
       const { getByText } = renderWithConfirmContextProvider(
         <TransactionDetails />,
         mockStore,
@@ -248,7 +301,7 @@ describe('Transaction Details', () => {
             },
           },
         });
-        const mockStore = configureMockStore(middleware)(state);
+        const mockStore = createMockStore(state);
         const { getByTestId } = renderWithConfirmContextProvider(
           <TransactionDetails />,
           mockStore,
@@ -270,7 +323,7 @@ describe('Transaction Details', () => {
             },
           },
         });
-        const mockStore = configureMockStore(middleware)(state);
+        const mockStore = createMockStore(state);
         const { getByTestId } = renderWithConfirmContextProvider(
           <TransactionDetails />,
           mockStore,
@@ -285,7 +338,7 @@ describe('Transaction Details', () => {
       const state = getMockConfirmStateForTransaction(
         downgradeAccountConfirmation,
       );
-      const mockStore = configureMockStore([])(state);
+      const mockStore = createMockStore(state, []);
       const { container } = renderWithConfirmContextProvider(
         <TransactionDetails />,
         mockStore,
@@ -297,7 +350,7 @@ describe('Transaction Details', () => {
       const state = getMockConfirmStateForTransaction(
         upgradeAccountConfirmationOnly,
       );
-      const mockStore = configureMockStore([])(state);
+      const mockStore = createMockStore(state, []);
       const { container } = renderWithConfirmContextProvider(
         <TransactionDetails />,
         mockStore,
@@ -329,7 +382,7 @@ describe('Transaction Details', () => {
         contractInteraction,
         useAdvanceDetails,
       );
-      const mockStore = configureMockStore(middleware)(state);
+      const mockStore = createMockStore(state);
       const { getByTestId } = renderWithConfirmContextProvider(
         <RecipientRow />,
         mockStore,

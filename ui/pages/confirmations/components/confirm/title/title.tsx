@@ -39,8 +39,6 @@ import {
 import { useCurrentSpendingCap } from './hooks/useCurrentSpendingCap';
 
 const TRANSACTION_TYPES_HIDE_BANNER: string[] = [
-  TransactionType.musdClaim,
-  TransactionType.musdConversion,
   TransactionType.perpsDeposit,
   TransactionType.predictDeposit,
   TransactionType.predictWithdraw,

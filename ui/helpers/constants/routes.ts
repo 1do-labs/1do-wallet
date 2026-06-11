@@ -1,7 +1,5 @@
 import { memoize } from 'lodash';
 
-import { MUSD_ROUTE_DEFINITIONS } from '../../pages/musd/constants/routes';
-
 type AppRoute = {
   path: string;
   label: string;
@@ -39,32 +37,6 @@ export const GENERAL_ROUTE = '/settings/general';
 export const ADVANCED_ROUTE = '/settings/advanced';
 export const DEVELOPER_OPTIONS_ROUTE = DEBUG_ROUTE;
 export const EXPERIMENTAL_ROUTE = '/settings/experimental';
-export const TRANSACTION_SHIELD_ROUTE = '/settings/transaction-shield';
-export const TRANSACTION_SHIELD_MANAGE_PLAN_ROUTE =
-  '/settings/transaction-shield/manage-plan';
-export const TRANSACTION_SHIELD_MANAGE_PAST_PLAN_ROUTE =
-  '/settings/transaction-shield/manage-past-plan';
-export const TRANSACTION_SHIELD_CLAIMS = '/settings/transaction-shield/claims';
-// Transaction Shield Claims routes
-export const TRANSACTION_SHIELD_CLAIM_ROUTES = {
-  BASE: TRANSACTION_SHIELD_CLAIMS,
-  NEW: {
-    FULL: `${TRANSACTION_SHIELD_CLAIMS}/new-claim`,
-    RELATIVE: '/new-claim',
-  },
-  EDIT_DRAFT: {
-    FULL: `${TRANSACTION_SHIELD_CLAIMS}/edit-draft`,
-    RELATIVE: '/edit-draft',
-  },
-  VIEW_PENDING: {
-    FULL: `${TRANSACTION_SHIELD_CLAIMS}/view-pending-claim`,
-    RELATIVE: '/view-pending-claim',
-  },
-  VIEW_HISTORY: {
-    FULL: `${TRANSACTION_SHIELD_CLAIMS}/view-history-claim`,
-    RELATIVE: '/view-history-claim',
-  },
-} as const;
 export const SECURITY_ROUTE = '/settings/security';
 export const ABOUT_US_ROUTE = '/settings/about-us';
 export const NETWORKS_ROUTE = '/settings/networks';
@@ -79,8 +51,6 @@ export const CONTACTS_VIEW_ROUTE = '/contacts/view';
 export const CONTACTS_EDIT_ROUTE = '/contacts/edit';
 export const SECURITY_PASSWORD_CHANGE_ROUTE =
   '/settings/security-and-privacy/password-change';
-export const BACKUPANDSYNC_ROUTE =
-  '/settings/security-and-privacy/backup-and-sync';
 export const REVEAL_SEED_ROUTE = '/seed';
 export const IMPORT_SRP_ROUTE = '/import-srp';
 export const RESTORE_VAULT_ROUTE = '/restore-vault';
@@ -114,8 +84,6 @@ export const REVIEW_GATOR_PERMISSIONS_ROUTE = '/review-gator-permissions';
 export const REVIEW_PERMISSIONS = '/review-permissions';
 export const CONNECT_ROUTE = '/connect';
 export const CONNECT_CONFIRM_PERMISSIONS_ROUTE = '/confirm-permissions';
-export const NOTIFICATIONS_ROUTE = '/notifications';
-export const NOTIFICATIONS_SETTINGS_ROUTE = '/settings/notifications';
 export const CONNECTED_ROUTE = '/connected';
 export const CONNECTED_ACCOUNTS_ROUTE = '/connected/accounts';
 export const CONFIRM_TRANSACTION_ROUTE = '/confirm-transaction';
@@ -124,11 +92,6 @@ export const SIGNATURE_REQUEST_PATH = '/signature-request';
 export const DECRYPT_MESSAGE_REQUEST_PATH = '/decrypt-message-request';
 export const ENCRYPTION_PUBLIC_KEY_REQUEST_PATH =
   '/encryption-public-key-request';
-export const CROSS_CHAIN_SWAP_ROUTE = '/cross-chain';
-export const CROSS_CHAIN_SWAP_TX_DETAILS_ROUTE = '/cross-chain/tx-details';
-export const PREPARE_SWAP_ROUTE = '/swaps/prepare-bridge-page';
-export const SWAP_PATH = `${CROSS_CHAIN_SWAP_ROUTE}${PREPARE_SWAP_ROUTE}`;
-export const AWAITING_SIGNATURES_ROUTE = '/swaps/awaiting-signatures';
 export const ONBOARDING_ROUTE = '/onboarding';
 export const ONBOARDING_REVEAL_SRP_ROUTE = '/onboarding/reveal-recovery-phrase';
 export const ONBOARDING_REVIEW_SRP_ROUTE = '/onboarding/review-recovery-phrase';
@@ -151,21 +114,10 @@ export const ONBOARDING_EXPERIMENTAL_AREA = '/onboarding/experimental-area';
 
 export const DEEP_LINK_ROUTE = '/link';
 
-/** Shown when Basic Functionality is off and user opens a route that requires it (e.g. swap, rewards). */
+/** Shown when Basic Functionality is off and user opens a route that requires it. */
 export const BASIC_FUNCTIONALITY_OFF_ROUTE = '/basic-functionality-off';
 
 export const DEFI_ROUTE = '/defi';
-
-// Perps routes
-export const PERPS_ROUTE = '/perps';
-export const PERPS_MARKET_DETAIL_ROUTE = '/perps/market';
-export const PERPS_ORDER_ENTRY_ROUTE = '/perps/trade';
-export const PERPS_ACTIVITY_ROUTE = '/perps/activity';
-export const PERPS_WITHDRAW_ROUTE = '/perps/withdraw';
-export const PERPS_MARKET_LIST_ROUTE = '/perps/market-list';
-
-export const SHIELD_PLAN_ROUTE = '/shield-plan';
-export const REWARDS_ROUTE = '/rewards';
 
 export const ROUTES = [
   { path: DEFAULT_ROUTE, label: 'Home', trackInAnalytics: true },
@@ -444,11 +396,6 @@ export const ROUTES = [
     trackInAnalytics: true,
   },
   {
-    path: SWAP_PATH,
-    label: 'Prepare Bridge Page',
-    trackInAnalytics: true,
-  },
-  {
     path: DEEP_LINK_ROUTE,
     label: 'Deep link Redirect Page',
     trackInAnalytics: true,
@@ -528,16 +475,6 @@ export const ROUTES = [
     trackInAnalytics: false,
   },
   {
-    path: CROSS_CHAIN_SWAP_TX_DETAILS_ROUTE,
-    label: 'Cross Chain Transaction Details',
-    trackInAnalytics: false,
-  },
-  {
-    path: AWAITING_SIGNATURES_ROUTE,
-    label: 'Swaps Awaiting Signatures',
-    trackInAnalytics: false,
-  },
-  {
     path: INITIALIZE_EXPERIMENTAL_AREA,
     label: 'Initialize Experimental Area',
     trackInAnalytics: false,
@@ -562,7 +499,6 @@ export const ROUTES = [
     label: 'Review Gator Permissions',
     trackInAnalytics: false,
   },
-  ...MUSD_ROUTE_DEFINITIONS,
 ] as const satisfies AppRoute[];
 
 export type AppRoutes = (typeof ROUTES)[number];

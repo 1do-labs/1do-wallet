@@ -10,7 +10,6 @@ import {
 } from '../../../../../../helpers/constants/design-system';
 import configureStore from '../../../../../../store/store';
 import { ConfirmContextProvider } from '../../../../context/confirm';
-import { DappSwapContextProvider } from '../../../../context/dapp-swap';
 import NFTTokenTransferInfo from './nft-token-transfer';
 
 const store = configureStore(getMockTokenTransferConfirmState({}));
@@ -22,8 +21,7 @@ const Story = {
     (story: () => any) => (
       <Provider store={store}>
         <ConfirmContextProvider>
-          <DappSwapContextProvider>
-            <Box
+          <Box
               display={Display.Flex}
               justifyContent={JustifyContent.center}
               alignItems={AlignItems.center}
@@ -31,7 +29,6 @@ const Story = {
             >
               {story()}
             </Box>
-          </DappSwapContextProvider>
         </ConfirmContextProvider>
       </Provider>
     ),

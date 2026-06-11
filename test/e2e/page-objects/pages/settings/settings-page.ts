@@ -65,9 +65,6 @@ class SettingsPage {
   private readonly transactionsSettingsButton =
     '[data-testid="settings-v2-tab-item-transactions"]';
 
-  private readonly transactionShieldButton =
-    '[data-testid="settings-v2-tab-item-transaction-shield"]';
-
   private readonly preinstalledExampleSnapSidebarItem = {
     text: 'Preinstalled Example Snap',
     tag: 'p',
@@ -119,19 +116,6 @@ class SettingsPage {
       `window.location.hash = ${JSON.stringify('/')}`,
     );
     await new HomePage(this.driver).checkPageIsLoaded();
-  }
-
-  async waitForTransactionShieldButtonReady(): Promise<void> {
-    console.log('Waiting for Transaction Shield button to be ready');
-    await this.driver.findClickableElement(this.transactionShieldButton);
-    await this.driver.waitForElementToStopMoving(this.transactionShieldButton);
-    console.log('Transaction Shield button is ready');
-  }
-
-  async goToTransactionShieldPage(): Promise<void> {
-    console.log('Navigating to Transaction Shield page');
-    await this.waitForTransactionShieldButtonReady();
-    await this.driver.clickElement(this.transactionShieldButton);
   }
 
   /**

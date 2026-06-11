@@ -238,7 +238,7 @@ describe('useTransactionPayMetrics', () => {
     } as ReturnType<typeof useTransactionPayToken>);
 
     renderHook(() => useTransactionPayMetrics(), {
-      wrapper: createWrapper(TransactionType.musdConversion),
+      wrapper: createWrapper(TransactionType.contractInteraction),
     });
 
     expect(upsertTransactionUIMetricsFragment).toHaveBeenCalledWith(

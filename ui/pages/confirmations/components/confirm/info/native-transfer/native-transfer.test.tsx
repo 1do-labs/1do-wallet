@@ -1,9 +1,23 @@
 import React from 'react';
+import { waitFor } from '@testing-library/react';
 import configureMockStore from 'redux-mock-store';
+import { Interface } from '@ethersproject/abi';
+import {
+  TransactionStatus,
+  TransactionType,
+} from '@metamask/transaction-controller';
 
-import { getMockTokenTransferConfirmState } from '../../../../../../../test/data/confirmations/helper';
+import {
+  getMockConfirmStateForTransaction,
+  getMockTokenTransferConfirmState,
+} from '../../../../../../../test/data/confirmations/helper';
 import { renderWithConfirmContextProvider } from '../../../../../../../test/lib/confirmations/render-helpers';
+import { CHAIN_IDS } from '../../../../../../../shared/constants/network';
 import NativeTransferInfo from './native-transfer';
+
+const accountRuntimeInterface = new Interface([
+  'function enableApp(address app)',
+]);
 
 const DNS_STATE = {
   chainId: null,
@@ -54,5 +68,41 @@ describe('NativeTransferInfo', () => {
     );
 
     expect(container).toMatchSnapshot();
+  });
+
+  it('renders 1Do clear signing for simpleSend enableApp calldata', async () => {
+    const walletAddress = '0x1111111111111111111111111111111111111111';
+    const transaction = {
+      chainId: CHAIN_IDS.SEPOLIA,
+      id: 'enable-dex-simple-send',
+      networkClientId: 'sepolia',
+      origin: 'http://localhost:3000',
+      status: TransactionStatus.unapproved,
+      time: Date.now(),
+      type: TransactionType.simpleSend,
+      txParams: {
+        from: walletAddress,
+        to: walletAddress,
+        data: accountRuntimeInterface.encodeFunctionData('enableApp', [
+          '0x3C7618FdAb069e8888E5587cA2766497B866afD5',
+        ]),
+        value: '0x0',
+      },
+    };
+    const state = {
+      ...getMockConfirmStateForTransaction(transaction),
+      DNS: DNS_STATE,
+    };
+    const mockStore = configureMockStore([])(state);
+    const { getByTestId, getByText } = renderWithConfirmContextProvider(
+      <NativeTransferInfo />,
+      mockStore,
+    );
+
+    await waitFor(() => {
+      expect(getByTestId('onedo-clear-signing-section')).toBeInTheDocument();
+      expect(getByText('Enable Dex')).toBeInTheDocument();
+      expect(getByText('Enable app')).toBeInTheDocument();
+    });
   });
 });

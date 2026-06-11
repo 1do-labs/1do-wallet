@@ -8,8 +8,8 @@ import { getMockConfirmStateForTransaction } from '../../../../../../../../test/
 import { renderWithConfirmContextProvider } from '../../../../../../../../test/lib/confirmations/render-helpers';
 import { GAS_FEE_TOKEN_MOCK } from '../../../../../../../../test/data/confirmations/gas';
 import { genUnapprovedContractInteractionConfirmation } from '../../../../../../../../test/data/confirmations/contract-interaction';
+import { upgradeAccountConfirmationOnly } from '../../../../../../../../test/data/confirmations/batch-transaction';
 import { enLocale as messages } from '../../../../../../../../test/lib/i18n-helpers';
-import * as DappSwapContext from '../../../../../context/dapp-swap';
 import { useEstimationFailed } from '../../../../../hooks/gas/useEstimationFailed';
 import { useIsGaslessSupported } from '../../../../../hooks/gas/useIsGaslessSupported';
 import { EditGasFeesRow } from './edit-gas-fees-row';
@@ -78,6 +78,39 @@ function render({
   );
 }
 
+function renderWithConfirmation({
+  confirmation,
+  fiatFee = '$1',
+  nativeFee = '0.001 ETH',
+  estimationFailed = false,
+  isGaslessSupported = false,
+}: {
+  confirmation: Parameters<typeof getMockConfirmStateForTransaction>[0];
+  fiatFee?: string;
+  nativeFee?: string;
+  estimationFailed?: boolean;
+  isGaslessSupported?: boolean;
+}) {
+  mockUseEstimationFailed.mockReturnValue(estimationFailed);
+  mockUseIsGaslessSupported.mockReturnValue({
+    isSupported: isGaslessSupported,
+    isSmartTransaction: false,
+    pending: false,
+  });
+
+  const state = getMockConfirmStateForTransaction(confirmation);
+  const mockStore = configureMockStore()(state);
+
+  return renderWithConfirmContextProvider(
+    <EditGasFeesRow
+      fiatFee={fiatFee}
+      nativeFee={nativeFee}
+      fiatFeeWith18SignificantDigits="0.001234"
+    />,
+    mockStore,
+  );
+}
+
 describe('<EditGasFeesRow />', () => {
   it('renders component', () => {
     const { container } = render();
@@ -109,21 +142,6 @@ describe('<EditGasFeesRow />', () => {
     expect(getByTestId('edit-gas-fee-icon')).toBeInTheDocument();
   });
 
-  it('does not renders edit gas fee button for quote suggested swap', () => {
-    jest.spyOn(DappSwapContext, 'useDappSwapContext').mockReturnValue({
-      isQuotedSwapDisplayedInInfo: true,
-      selectedQuote: {} as unknown as QuoteResponse,
-      setSelectedQuote: jest.fn(),
-      setQuotedSwapDisplayedInInfo: jest.fn(),
-    } as unknown as ReturnType<typeof DappSwapContext.useDappSwapContext>);
-    const { queryByTestId } = render({
-      gasFeeTokens: undefined,
-      selectedGasFeeToken: undefined,
-    });
-
-    expect(queryByTestId('edit-gas-fee-icon')).toBeNull();
-  });
-
   describe('estimationFailed', () => {
     it('renders "Unavailable" when estimation failed', () => {
       const { getByText, queryByTestId } = render({
@@ -151,6 +169,36 @@ describe('<EditGasFeesRow />', () => {
 
       expect(queryByText(messages.unavailable.message)).toBeNull();
       expect(getByTestId('paid-by-meta-mask')).toBeInTheDocument();
+    });
+
+    it('does not render sponsored gas label for upgrade-only 7702 transactions', () => {
+      const { queryByTestId, getByTestId } = renderWithConfirmation({
+        confirmation: {
+          ...upgradeAccountConfirmationOnly,
+          isGasFeeSponsored: true,
+        },
+        isGaslessSupported: true,
+      });
+
+      expect(queryByTestId('paid-by-meta-mask')).toBeNull();
+      expect(getByTestId('native-currency')).toHaveTextContent('0.001 ETH');
+    });
+
+    it('does not render sponsored gas label for 1Do app access updates', () => {
+      const { queryByTestId, getByTestId } = renderWithConfirmation({
+        confirmation: genUnapprovedContractInteractionConfirmation({
+          isGasFeeSponsored: true,
+          txParams: {
+            from: '0x0000000000000000000000000000000000000000',
+            to: '0x0000000000000000000000000000000000000000',
+            data: '0x787f863d0000000000000000000000003c7618fdab069e8888e5587ca2766497b866afd5',
+          },
+        }),
+        isGaslessSupported: true,
+      });
+
+      expect(queryByTestId('paid-by-meta-mask')).toBeNull();
+      expect(getByTestId('native-currency')).toHaveTextContent('0.001 ETH');
     });
   });
 });

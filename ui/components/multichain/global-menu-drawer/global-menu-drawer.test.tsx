@@ -35,20 +35,6 @@ jest.mock('../../../hooks/useBrowserSupportsSidePanel', () => ({
   useBrowserSupportsSidePanel: jest.fn(() => false),
 }));
 
-jest.mock('../../../hooks/shield/metrics/useSubscriptionMetrics', () => ({
-  useSubscriptionMetrics: jest.fn(() => ({
-    captureCommonExistingShieldSubscriptionEvents: jest.fn(),
-  })),
-}));
-
-jest.mock('../../../hooks/subscription/useSubscription', () => ({
-  useUserSubscriptions: jest.fn(() => ({ subscriptions: [] })),
-}));
-
-jest.mock('../notifications-tag-counter', () => ({
-  NotificationsTagCounter: () => <span data-testid="notifications-tag" />,
-}));
-
 jest.mock('../../../pages/notifications/NewFeatureTag', () => ({
   NewFeatureTag: () => null,
 }));

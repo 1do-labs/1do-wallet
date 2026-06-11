@@ -26,17 +26,13 @@ let apiClient: AssetsControllerOptions['queryApiClient'] | null = null;
 /**
  * Safely retrieves the bearer token for API authentication.
  *
- * @param initMessenger - The initialization messenger.
+ * @param _initMessenger - The initialization messenger.
  * @returns The bearer token or undefined if retrieval fails.
  */
 async function safeGetBearerToken(
-  initMessenger: AssetsControllerInitMessenger,
+  _initMessenger: AssetsControllerInitMessenger,
 ): Promise<string | undefined> {
-  try {
-    return await initMessenger.call('AuthenticationController:getBearerToken');
-  } catch {
-    return undefined;
-  }
+  return undefined;
 }
 
 /**

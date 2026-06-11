@@ -4,7 +4,6 @@ import { Provider } from 'react-redux';
 import { getMockApproveConfirmState } from '../../../../../../../test/data/confirmations/helper';
 import configureStore from '../../../../../../store/store';
 import { ConfirmContextProvider } from '../../../../context/confirm';
-import { DappSwapContextProvider } from '../../../../context/dapp-swap';
 import SetApprovalForAll from './set-approval-for-all-info';
 
 const store = configureStore(getMockApproveConfirmState());
@@ -16,7 +15,7 @@ const Story = {
     (story: () => Meta<typeof SetApprovalForAll>) => (
       <Provider store={store}>
         <ConfirmContextProvider>
-          <DappSwapContextProvider>{story()}</DappSwapContextProvider>
+          {story()}
         </ConfirmContextProvider>
       </Provider>
     ),

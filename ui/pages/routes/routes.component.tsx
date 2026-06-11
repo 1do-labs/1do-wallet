@@ -36,9 +36,6 @@ import {
   ONBOARDING_ROUTE,
   PERMISSIONS,
   REVIEW_PERMISSIONS,
-  NOTIFICATIONS_ROUTE,
-  CROSS_CHAIN_SWAP_ROUTE,
-  CROSS_CHAIN_SWAP_TX_DETAILS_ROUTE,
   IMPORT_SRP_ROUTE,
   BASIC_FUNCTIONALITY_OFF_ROUTE,
   DEFI_ROUTE,
@@ -50,21 +47,14 @@ import {
   MULTICHAIN_ACCOUNT_DETAILS_PAGE_ROUTE,
   MULTICHAIN_WALLET_DETAILS_PAGE_ROUTE,
   MULTICHAIN_SMART_ACCOUNT_PAGE_ROUTE,
-  SHIELD_PLAN_ROUTE,
   GATOR_PERMISSIONS,
   TOKEN_TRANSFER_ROUTE,
   REVIEW_GATOR_PERMISSIONS_ROUTE,
-  PERPS_MARKET_LIST_ROUTE,
   DECRYPT_MESSAGE_REQUEST_PATH,
   ENCRYPTION_PUBLIC_KEY_REQUEST_PATH,
-  PERPS_MARKET_DETAIL_ROUTE,
-  PERPS_ORDER_ENTRY_ROUTE,
-  PERPS_ACTIVITY_ROUTE,
-  PERPS_WITHDRAW_ROUTE,
   CONTACTS_ROUTE,
   SETTINGS_V2_ROUTE,
 } from '../../helpers/constants/routes';
-import { MUSD_CONVERSION_ROUTE } from '../musd/constants/routes';
 import { getProviderConfig } from '../../../shared/lib/selectors/networks';
 import {
   getNetworkIdentifier,
@@ -108,7 +98,6 @@ import { DeprecatedNetworkModal } from '../settings/deprecated-network-modal/Dep
 import NetworkConfirmationPopover from '../../components/multichain/network-list-menu/network-confirmation-popover/network-confirmation-popover';
 import { ToastMaster } from '../../components/app/toast-master/toast-master';
 import { mmLazy } from '../../helpers/utils/mm-lazy';
-import CrossChainSwapTxDetails from '../bridge/transaction-details/transaction-details';
 import { type Confirmation } from '../confirmations/types/confirm';
 import { MultichainAccountAddressListPage } from '../multichain-accounts/multichain-account-address-list-page';
 import { MultichainAccountPrivateKeyListPage } from '../multichain-accounts/multichain-account-private-key-list-page';
@@ -377,61 +366,8 @@ export const routeConfig = [
         element: <RequireBasicFunctionality />,
         children: [
           {
-            path: '/notifications/settings',
-            element: <Navigate to={DEFAULT_ROUTE} replace />,
-          },
-          {
-            path: `${NOTIFICATIONS_ROUTE}/:uuid`,
-            element: <Navigate to={DEFAULT_ROUTE} replace />,
-          },
-          {
-            path: NOTIFICATIONS_ROUTE,
-            element: <Navigate to={DEFAULT_ROUTE} replace />,
-          },
-          {
-            path: `${CROSS_CHAIN_SWAP_TX_DETAILS_ROUTE}/:txHash`,
-            element: <CrossChainSwapTxDetails />,
-          },
-          {
-            path: `${CROSS_CHAIN_SWAP_ROUTE}/*`,
-            element: <CrossChainSwap />,
-          },
-          {
             path: `${DEFI_ROUTE}/:chainId/:protocolId`,
             element: <DisabledFeatureRedirect />,
-          },
-          {
-            path: `${MUSD_CONVERSION_ROUTE}/*`,
-            element: <DisabledFeatureRedirect />,
-          },
-          {
-            path: SHIELD_PLAN_ROUTE,
-            element: <DisabledFeatureRedirect />,
-          },
-          {
-            element: <Outlet />,
-            children: [
-              {
-                path: `${PERPS_MARKET_DETAIL_ROUTE}/:symbol`,
-                element: <DisabledFeatureRedirect />,
-              },
-              {
-                path: `${PERPS_ORDER_ENTRY_ROUTE}/:symbol`,
-                element: <DisabledFeatureRedirect />,
-              },
-              {
-                path: PERPS_ACTIVITY_ROUTE,
-                element: <DisabledFeatureRedirect />,
-              },
-              {
-                path: PERPS_MARKET_LIST_ROUTE,
-                element: <DisabledFeatureRedirect />,
-              },
-              {
-                path: PERPS_WITHDRAW_ROUTE,
-                element: <DisabledFeatureRedirect />,
-              },
-            ],
           },
         ],
       },

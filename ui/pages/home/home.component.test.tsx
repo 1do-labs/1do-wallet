@@ -24,11 +24,6 @@ jest.mock(
 );
 jest.mock('../../components/app/update-modal/update-modal', () => () => null);
 jest.mock('../../components/app/password-outdated-modal', () => () => null);
-jest.mock('../../components/app/shield-entry-modal', () => () => null);
-jest.mock(
-  '../../components/app/rewards/onboarding/OnboardingModal',
-  () => () => null,
-);
 jest.mock('../../components/app/modals/pna25-modal', () => ({
   Pna25Modal: () => null,
 }));
@@ -82,7 +77,6 @@ function buildDefaultProps(overrides: Record<string, unknown> = {}) {
     attemptCloseNotificationPopup: jest.fn(),
     setNewTokensImported: jest.fn(),
     setNewTokensImportedError: jest.fn(),
-    fetchBuyableChains: jest.fn(),
     lookupSelectedNetworks: jest.fn(),
     showPna25Modal: false,
     envType: ENVIRONMENT_TYPE_POPUP,
@@ -124,11 +118,11 @@ describe('Home — checkPendingRedirectRoute', () => {
 
   it('redirects and clears when route has no environmentType restriction', () => {
     const { props } = renderHome({
-      pendingRedirectRoute: { path: '/shield-plan' },
+      pendingRedirectRoute: { path: '/asset' },
     });
 
     expect(props.setRedirectAfterDefaultPage).toHaveBeenCalledWith({
-      path: '/shield-plan',
+      path: '/asset',
     });
     expect(props.clearPendingRedirectRoute).toHaveBeenCalled();
   });
@@ -136,13 +130,13 @@ describe('Home — checkPendingRedirectRoute', () => {
   it('appends search when route includes a search query', () => {
     const { props } = renderHome({
       pendingRedirectRoute: {
-        path: '/shield-plan',
+        path: '/asset',
         search: '?source=checkout',
       },
     });
 
     expect(props.setRedirectAfterDefaultPage).toHaveBeenCalledWith({
-      path: '/shield-plan?source=checkout',
+      path: '/asset?source=checkout',
     });
     expect(props.clearPendingRedirectRoute).toHaveBeenCalled();
   });
@@ -151,13 +145,13 @@ describe('Home — checkPendingRedirectRoute', () => {
     const { props } = renderHome({
       envType: ENVIRONMENT_TYPE_POPUP,
       pendingRedirectRoute: {
-        path: '/shield-plan',
+        path: '/asset',
         environmentType: ENVIRONMENT_TYPE_POPUP,
       },
     });
 
     expect(props.setRedirectAfterDefaultPage).toHaveBeenCalledWith({
-      path: '/shield-plan',
+      path: '/asset',
     });
     expect(props.clearPendingRedirectRoute).toHaveBeenCalled();
   });
@@ -166,7 +160,7 @@ describe('Home — checkPendingRedirectRoute', () => {
     const { props } = renderHome({
       envType: ENVIRONMENT_TYPE_FULLSCREEN,
       pendingRedirectRoute: {
-        path: '/shield-plan',
+        path: '/asset',
         environmentType: ENVIRONMENT_TYPE_POPUP,
       },
     });
@@ -194,7 +188,7 @@ describe('Home — checkPendingRedirectRoute', () => {
     expect(clearPendingRedirectRoute).not.toHaveBeenCalled();
 
     const updatedProps = buildDefaultProps({
-      pendingRedirectRoute: { path: '/shield-plan' },
+      pendingRedirectRoute: { path: '/asset' },
       setRedirectAfterDefaultPage,
       clearPendingRedirectRoute,
     });
@@ -205,7 +199,7 @@ describe('Home — checkPendingRedirectRoute', () => {
     });
 
     expect(setRedirectAfterDefaultPage).toHaveBeenCalledWith({
-      path: '/shield-plan',
+      path: '/asset',
     });
     expect(clearPendingRedirectRoute).toHaveBeenCalled();
   });

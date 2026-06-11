@@ -167,7 +167,6 @@ import {
   getInternalAccountByAddress,
 } from './accounts';
 import { HARDWARE_WALLET_ERROR_MODAL_NAME } from '../contexts/hardware-wallets/constants';
-import { getHasShieldEntryModalShownOnce } from './subscription';
 import { getApprovalRequestsByType } from './approvals';
 import {
   getSelectedMultichainNetworkChainId,
@@ -313,38 +312,6 @@ export function getShowDataDeletionErrorModal(state) {
 }
 
 export const getPendingTokens = (state) => state.appState.pendingTokens;
-
-export function getShowShieldEntryModal(state) {
-  const { show, hasUserInteractedWithModal } =
-    state.appState.shieldEntryModal || {};
-  // only show the modal if `show` is true and user has not interacted with the modal
-  return Boolean(show) && !hasUserInteractedWithModal;
-}
-
-export function getPendingShieldCohort(state) {
-  return state.metamask.pendingShieldCohort;
-}
-
-export function getPendingShieldCohortTxType(state) {
-  return state.metamask.pendingShieldCohortTxType;
-}
-
-export function getShouldSubmitEventsForShieldEntryModal(state) {
-  const hasShieldEntryModalShownOnce = getHasShieldEntryModalShownOnce(state);
-  if (hasShieldEntryModalShownOnce) {
-    // if the modal has been shown to the user, we don't need to submit events anymore
-    return false;
-  }
-  return Boolean(state.appState.shieldEntryModal?.shouldSubmitEvents);
-}
-
-export function getModalTypeForShieldEntryModal(state) {
-  return state.appState.shieldEntryModal?.modalType;
-}
-
-export function getShieldEntryModalTriggeringCohort(state) {
-  return state.appState.shieldEntryModal?.triggeringCohort;
-}
 
 /** `metamask` slice selectors */
 
@@ -551,13 +518,7 @@ export const getMetaMaskAccounts = createChainIdSelector(
   getMetaMaskCachedBalances,
   getCurrentChainId,
   (_, chainId) => chainId,
-  (
-    internalAccounts,
-    balances,
-    cachedBalances,
-    currentChainId,
-    chainId,
-  ) => {
+  (internalAccounts, balances, cachedBalances, currentChainId, chainId) => {
     return internalAccounts.reduce((accounts, internalAccount) => {
       // TODO: mix in the identity state here as well, consolidating this
       // selector with `accountsWithSendEtherInfoSelector`
@@ -1612,14 +1573,6 @@ export function getTargetSubjectMetadata(state, origin) {
  * @returns Object - Redux state object.
  */
 const rawStateSelector = (state) => state;
-
-/**
- * Input selector for retrieving all installed Snaps.
- *
- * @param state - Redux state object.
- * @returns Object - Installed Snaps.
- */
-const selectInstalledSnaps = (state) => state.metamask.snaps;
 
 export const selectIsNetworkMenuOpen = (state) =>
   state.appState.isNetworkMenuOpen;

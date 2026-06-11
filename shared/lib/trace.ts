@@ -17,7 +17,6 @@ export enum TraceName {
   AccountOverviewNftsTab = 'Account Overview Nfts Tab',
   AccountOverviewActivityTab = 'Account Overview Activity Tab',
   AccountOverviewDeFiTab = 'Account Overview DeFi Tab',
-  AccountOverviewPerpsTab = 'Account Overview Perps Tab',
   AccountOverviewRuntimeTab = 'Account Overview Runtime Tab',
   AssetDetails = 'Asset Details',
   BackgroundConnect = 'Background Connect',
@@ -90,10 +89,6 @@ export enum TraceName {
   CreateMultichainAccount = 'Create Multichain Account',
   DiscoverAccounts = 'Discover Accounts',
   EvmDiscoverAccounts = 'EVM Discover Accounts',
-  // mUSD / 1-Click Convert
-  MusdConversionNavigation = 'mUSD Conversion Navigation',
-  MusdConversionQuote = 'mUSD Conversion Quote',
-  MusdConversionConfirm = 'mUSD Conversion Confirm',
   BackgroundRpc = 'Background RPC',
   MessengerCall = 'Messenger Call',
 }
@@ -110,9 +105,6 @@ export enum TraceOperation {
   AccountCreate = 'account.create',
   AccountUi = 'account.ui',
   AccountDiscover = 'account.discover',
-  // mUSD Conversion
-  MusdConversionOperation = 'musd.conversion.operation',
-  MusdConversionDataFetch = 'musd.conversion.data_fetch',
 }
 
 const log = createModuleLogger(sentryLogger, 'trace');

@@ -6,11 +6,9 @@ import { merge } from 'lodash';
 import {
   CONTRACT_INTERACTION_SENDER_ADDRESS,
   genUnapprovedContractInteractionConfirmation,
-  mockBridgeQuotes,
 } from '../../../../../../../test/data/confirmations/contract-interaction';
 import { renderHookWithConfirmContextProvider } from '../../../../../../../test/lib/confirmations/render-helpers';
 import mockState from '../../../../../../../test/data/mock-state.json';
-import * as DappSwapContext from '../../../../context/dapp-swap';
 import { useFeeCalculations } from './useFeeCalculations';
 
 describe('useFeeCalculations', () => {
@@ -202,33 +200,5 @@ describe('useFeeCalculations', () => {
 
     expect(result.current.estimatedFeeNative).toBe('< 0.0001');
     expect(result.current.maxFeeNative).toBe('< 0.0001');
-  });
-
-  it('returns the correct estimate if quoted swap is displayed in info', () => {
-    jest.spyOn(DappSwapContext, 'useDappSwapContextOptional').mockReturnValue({
-      selectedQuote: mockBridgeQuotes[0] as unknown as QuoteResponse,
-      setSelectedQuote: jest.fn(),
-      setQuotedSwapDisplayedInInfo: jest.fn(),
-      isQuotedSwapDisplayedInInfo: true,
-      isQuotedSwapPresent: true,
-    } as DappSwapContext.DappSwapContextType);
-    const transactionMeta = genUnapprovedContractInteractionConfirmation({
-      address: CONTRACT_INTERACTION_SENDER_ADDRESS,
-    }) as TransactionMeta;
-
-    transactionMeta.layer1GasFee = '0x10000000000000';
-
-    const { result } = renderHookWithConfirmContextProvider(
-      () => useFeeCalculations(transactionMeta),
-      mockState,
-    );
-
-    expect(result.current.estimatedFeeFiat).toBe('$2.89');
-    expect(result.current.estimatedFeeFiatWith18SignificantDigits).toBe(null);
-    expect(result.current.estimatedFeeNative).toBe('0.0052');
-    expect(result.current.estimatedFeeNativeHex).toBe('0x12779901f5aa00');
-    expect(result.current.maxFeeFiat).toBe('$3.24');
-    expect(result.current.maxFeeFiatWith18SignificantDigits).toBe(null);
-    expect(result.current.maxFeeNative).toBe('0.0058');
   });
 });

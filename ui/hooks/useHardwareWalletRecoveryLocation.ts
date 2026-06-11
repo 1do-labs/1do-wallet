@@ -5,7 +5,6 @@ import { MetaMetricsHardwareWalletRecoveryLocation } from '../../shared/constant
 import {
   CONFIRM_TRANSACTION_ROUTE,
   CONFIRMATION_V_NEXT_ROUTE,
-  CROSS_CHAIN_SWAP_ROUTE,
   SIGNATURE_REQUEST_PATH,
 } from '../helpers/constants/routes';
 import { getUnapprovedTransaction } from '../selectors';
@@ -37,10 +36,7 @@ export function useHardwareWalletRecoveryLocation(): MetaMetricsHardwareWalletRe
     confirmationId ? selectUnapprovedMessage(state, confirmationId) : undefined,
   );
 
-  if (
-    pathname.startsWith(CROSS_CHAIN_SWAP_ROUTE) ||
-    pathname.includes('/swaps/')
-  ) {
+  if (pathname.includes('/swaps/')) {
     return MetaMetricsHardwareWalletRecoveryLocation.Swaps;
   }
 

@@ -10,7 +10,6 @@ import { MetaMetricsContext } from '../../contexts/metametrics';
 import { getParticipateInMetaMetrics } from '../../selectors';
 import { getMessage } from '../../helpers/utils/i18n-helper';
 import { enLocale as messages } from '../../../test/lib/i18n-helpers';
-import { getUserSubscriptions } from '../../selectors/subscription';
 import mockState from '../../../test/data/mock-state.json';
 import { reloadExtensionFromUi } from '../../helpers/utils/reload-extension-from-ui';
 import ErrorPage from './error-page.component';
@@ -52,13 +51,6 @@ describe('ErrorPage', () => {
     useSelectorMock.mockImplementation((selector) => {
       if (selector === getParticipateInMetaMetrics) {
         return true;
-      }
-      if (selector === getUserSubscriptions) {
-        return {
-          customerId: 'test-shield-customer-id',
-          subscriptions: [],
-          trialedProducts: [],
-        };
       }
       return undefined;
     });

@@ -53,7 +53,6 @@ import {
   Page,
 } from '../../../components/multichain/pages/page';
 import { useAssetsUpdateAllAccountBalances } from '../../../hooks/useAssetsUpdateAllAccountBalances';
-import { useSyncSRPs } from '../../../hooks/social-sync/useSyncSRPs';
 import { ScrollContainer } from '../../../contexts/scroll-container';
 import { filterWalletsByGroupNameOrAddress } from './utils';
 
@@ -88,8 +87,6 @@ export const AccountList = () => {
   // TODO: Move this logic on the background side, so we don't trigger this sync
   // every time the account list is being opened.
   // See: https://github.com/MetaMask/metamask-extension/issues/36639
-  useSyncSRPs();
-
   const hasMultipleWallets = useMemo(
     () => Object.keys(wallets).length > 1,
     [wallets],

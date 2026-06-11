@@ -5,6 +5,7 @@ import {
   getIsSmartTransaction,
   SmartTransactionsState,
 } from '../../../../../shared/lib/selectors';
+import { isMetaMaskGaslessFeatureEnabled } from '../../../../../shared/lib/metamask-gasless';
 import { useAsyncResult } from '../../../../hooks/useAsync';
 import { isSendBundleSupported } from '../../../../store/actions';
 import { isHardwareWallet } from '../../../../selectors';
@@ -18,6 +19,7 @@ export function useGaslessSupportedSmartTransactions(): {
   const { currentConfirmation: transactionMeta } =
     useConfirmContext<TransactionMeta>();
 
+  const isMetaMaskGaslessEnabled = isMetaMaskGaslessFeatureEnabled();
   const { chainId } = transactionMeta ?? {};
   const isHardwareWalletAccount = useSelector(isHardwareWallet);
   const isSmartTransaction = useSelector((state: SmartTransactionsState) =>
@@ -25,15 +27,21 @@ export function useGaslessSupportedSmartTransactions(): {
   );
 
   const { value: sendBundleSupported, pending } = useAsyncResult(
-    async () => (chainId ? isSendBundleSupported(chainId as Hex) : false),
-    [chainId],
+    async () =>
+      isMetaMaskGaslessEnabled && chainId
+        ? isSendBundleSupported(chainId as Hex)
+        : false,
+    [chainId, isMetaMaskGaslessEnabled],
   );
 
   return {
     isSmartTransaction: Boolean(isSmartTransaction),
     isSupported: Boolean(
-      !isHardwareWalletAccount && isSmartTransaction && sendBundleSupported,
+      isMetaMaskGaslessEnabled &&
+        !isHardwareWalletAccount &&
+        isSmartTransaction &&
+        sendBundleSupported,
     ),
-    pending: !isHardwareWalletAccount && pending,
+    pending: isMetaMaskGaslessEnabled && !isHardwareWalletAccount && pending,
   };
 }

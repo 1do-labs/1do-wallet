@@ -10,7 +10,6 @@ import {
 } from '../../../../../../helpers/constants/design-system';
 import configureStore from '../../../../../../store/store';
 import { ConfirmContextProvider } from '../../../../context/confirm';
-import { DappSwapContextProvider } from '../../../../context/dapp-swap';
 import { GasFeeModalContextProvider } from '../../../../context/gas-fee-modal';
 import TokenTransferInfo from './token-transfer';
 
@@ -23,8 +22,7 @@ const Story = {
     (story: () => any) => (
       <Provider store={store}>
         <ConfirmContextProvider>
-          <DappSwapContextProvider>
-            <GasFeeModalContextProvider>
+          <GasFeeModalContextProvider>
               <Box
                 display={Display.Flex}
                 justifyContent={JustifyContent.center}
@@ -34,7 +32,6 @@ const Story = {
                 {story()}
               </Box>
             </GasFeeModalContextProvider>
-          </DappSwapContextProvider>
         </ConfirmContextProvider>
       </Provider>
     ),

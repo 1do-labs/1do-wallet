@@ -15,7 +15,6 @@ import {
   Display,
 } from '../../../../../../../helpers/constants/design-system';
 import { useConfirmContext } from '../../../../../context/confirm';
-import { useDappSwapContext } from '../../../../../context/dapp-swap';
 import { GasFeeTokenModal } from '../gas-fee-token-modal';
 import { useSelectedGasFeeToken } from '../../hooks/useGasFeeToken';
 import { GasFeeTokenIcon, GasFeeTokenIconSize } from '../gas-fee-token-icon';
@@ -28,7 +27,6 @@ import { useNativeCurrencySymbol } from '../../hooks/useNativeCurrencySymbol';
 export function SelectedGasFeeToken() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { currentConfirmation } = useConfirmContext<TransactionMeta>();
-  const { isQuotedSwapDisplayedInInfo } = useDappSwapContext();
   const { chainId, gasFeeTokens, excludeNativeTokenForFee } =
     currentConfirmation;
 
@@ -44,7 +42,6 @@ export function SelectedGasFeeToken() {
   const supportsFutureNative = hasInsufficientNative && isSmartTransaction;
 
   const hasGasFeeTokens =
-    !isQuotedSwapDisplayedInInfo &&
     isGaslessSupported &&
     Boolean(gasFeeTokens?.length) &&
     (!hasOnlyFutureNativeToken || supportsFutureNative);

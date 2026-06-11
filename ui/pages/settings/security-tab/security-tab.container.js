@@ -29,14 +29,12 @@ import {
   getHDEntropyIndex,
   getPreferences,
   getIsSocialLoginFlow,
-  getSocialLoginType,
   getParticipateInMetaMetrics,
   getDataCollectionForMarketing,
 } from '../../../selectors';
 import { getNetworkConfigurationsByChainId } from '../../../../shared/lib/selectors/networks';
 import { openBasicFunctionalityModal } from '../../../ducks/app/app';
 import { getIsPrimarySeedPhraseBackedUp } from '../../../ducks/metamask/metamask';
-import { getIsActiveShieldSubscription } from '../../../selectors/subscription';
 import SecurityTab from './security-tab.component';
 
 const mapStateToProps = (state) => {
@@ -66,7 +64,6 @@ const mapStateToProps = (state) => {
     dataCollectionForMarketing: getDataCollectionForMarketing(state),
     usePhishDetect,
     useTokenDetection,
-    hasActiveShieldSubscription: getIsActiveShieldSubscription(state),
     ipfsGateway,
     useMultiAccountBalanceChecker,
     useSafeChainsListValidation,
@@ -83,7 +80,7 @@ const mapStateToProps = (state) => {
     skipDeepLinkInterstitial: Boolean(skipDeepLinkInterstitial),
     isSeedPhraseBackedUp: getIsPrimarySeedPhraseBackedUp(state),
     socialLoginEnabled: getIsSocialLoginFlow(state),
-    socialLoginType: getSocialLoginType(state),
+    socialLoginType: undefined,
   };
 };
 

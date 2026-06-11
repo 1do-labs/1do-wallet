@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux';
 
 import { KEYRING_TYPES_SUPPORTING_7702 } from '../../../../shared/constants/keyring';
 import { TEST_CHAINS } from '../../../../shared/constants/network';
+import { ONE_DO_7702_DELEGATE } from '../../../../shared/lib/eip7702-utils';
 import { convertCaipToHexChainId } from '../../../../shared/lib/network.utils';
 import {
   AccountsState,
@@ -14,9 +15,6 @@ import {
 } from '../../../selectors';
 import { useAsyncResult } from '../../../hooks/useAsync';
 import { isAtomicBatchSupported } from '../../../store/controller-actions/transaction-controller';
-
-const ONE_DO_7702_DELEGATE =
-  '0x69d2927735c3E57c512177B32e216431B1Aba1fF' as Hex;
 
 export type EIP7702NetworkConfiguration = MultichainNetworkConfiguration & {
   chainIdHex: Hex;

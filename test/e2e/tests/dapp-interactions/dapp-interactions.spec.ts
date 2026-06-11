@@ -1,4 +1,3 @@
-import { MockedEndpoint, Mockttp } from 'mockttp';
 import {
   DAPP_ONE_ADDRESS,
   DAPP_ONE_URL,
@@ -20,19 +19,6 @@ import {
   login,
 } from '../../page-objects/flows/login.flow';
 import { openPermissionsPageFlow } from '../../page-objects/flows/permissions.flow';
-
-async function mockNotificationsEndpoint(
-  mockServer: Mockttp,
-): Promise<MockedEndpoint[]> {
-  return [
-    await mockServer
-      .forPost('https://notification.api.cx.metamask.io/api/v3/notifications')
-      .thenCallback(() => ({
-        statusCode: 200,
-        json: [],
-      })),
-  ];
-}
 
 describe('Dapp interactions', function () {
   it('should trigger the add chain confirmation despite MetaMask being locked', async function () {

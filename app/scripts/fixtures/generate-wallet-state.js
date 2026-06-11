@@ -17,7 +17,6 @@ import { withConfirmedTransactions } from './with-confirmed-transactions';
 import { FIXTURES_ERC20_TOKENS } from './with-erc20-tokens';
 import { ALL_POPULAR_NETWORKS, FIXTURES_NETWORKS } from './with-networks';
 import { FIXTURES_PREFERENCES } from './with-preferences';
-import { withUnreadNotifications } from './with-unread-notifications';
 
 let FIXTURES_CONFIG = {};
 
@@ -47,9 +46,6 @@ export async function generateWalletState(withState, fromTest) {
     .withAppStateController(FIXTURES_APP_STATE)
     .withKeyringController(generateKeyringControllerState(vault))
     .withNetworkController(generateNetworkControllerState())
-    .withNotificationServicesController(
-      generateNotificationControllerState(accounts[0]),
-    )
     .withPreferencesController(generatePreferencesControllerState())
     .withTokensController(generateTokensControllerState(accounts[0]))
     .withTransactionController(generateTransactionControllerState(accounts[0]))
@@ -195,26 +191,6 @@ function generateAnnouncementControllerState() {
     {},
   );
   return allAnnouncementsAlreadyShown;
-}
-
-/**
- * Generates the state for the NotificationController.
- *
- * @param {string} account - The account address to add the notifications to.
- * @returns {object} The generated NotificationController state.
- */
-function generateNotificationControllerState(account) {
-  console.log('Generating NotificationController state');
-
-  let notifications = {};
-
-  if (FIXTURES_CONFIG.withUnreadNotifications > 0) {
-    notifications = withUnreadNotifications(
-      account,
-      FIXTURES_CONFIG.withUnreadNotifications,
-    );
-  }
-  return notifications;
 }
 
 /**

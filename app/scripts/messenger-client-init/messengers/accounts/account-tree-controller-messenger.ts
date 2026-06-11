@@ -8,10 +8,6 @@ import {
   AccountsControllerSetSelectedAccountAction,
 } from '@metamask/accounts-controller';
 import { Messenger } from '@metamask/messenger';
-import {
-  AuthenticationController,
-  UserStorageController,
-} from '@metamask/profile-sync-controller';
 import { SnapControllerGetSnapAction } from '@metamask/snaps-controllers';
 import { KeyringControllerGetStateAction } from '@metamask/keyring-controller';
 import {
@@ -31,12 +27,6 @@ type Actions =
   | AccountsControllerListMultichainAccountsAction
   | SnapControllerGetSnapAction
   | KeyringControllerGetStateAction
-  | UserStorageController.UserStorageControllerGetStateAction
-  | UserStorageController.UserStorageControllerPerformGetStorageAction
-  | UserStorageController.UserStorageControllerPerformGetStorageAllFeatureEntriesAction
-  | UserStorageController.UserStorageControllerPerformSetStorageAction
-  | UserStorageController.UserStorageControllerPerformBatchSetStorageAction
-  | AuthenticationController.AuthenticationControllerGetSessionProfileAction
   | MultichainAccountServiceCreateMultichainAccountGroupAction
   | MultichainAccountServiceCreateMultichainAccountGroupsAction;
 
@@ -44,7 +34,6 @@ type Events =
   | AccountsControllerAccountsAddedEvent
   | AccountsControllerAccountsRemovedEvent
   | AccountsControllerSelectedAccountChangeEvent
-  | UserStorageController.UserStorageControllerStateChangeEvent
   | MultichainAccountServiceWalletStatusChangeEvent;
 
 export type AccountTreeControllerMessenger = AccountTreeControllerMessengerType;
@@ -74,7 +63,6 @@ export function getAccountTreeControllerMessenger(
       'AccountsController:accountsAdded',
       'AccountsController:accountsRemoved',
       'AccountsController:selectedAccountChange',
-      'UserStorageController:stateChange',
       'MultichainAccountService:walletStatusChange',
     ],
     actions: [
@@ -82,12 +70,6 @@ export function getAccountTreeControllerMessenger(
       'AccountsController:getAccount',
       'AccountsController:getSelectedMultichainAccount',
       'AccountsController:setSelectedAccount',
-      'UserStorageController:getState',
-      'UserStorageController:performGetStorage',
-      'UserStorageController:performGetStorageAllFeatureEntries',
-      'UserStorageController:performSetStorage',
-      'UserStorageController:performBatchSetStorage',
-      'AuthenticationController:getSessionProfile',
       'MultichainAccountService:createMultichainAccountGroup',
       'MultichainAccountService:createMultichainAccountGroups',
       'SnapController:getSnap',

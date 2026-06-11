@@ -35,10 +35,6 @@ describe('getAssetsControllerMessenger', () => {
           // Network dependencies
           'NetworkController:getState',
           'NetworkController:getNetworkClientById',
-          // Backend WebSocket dependencies
-          'BackendWebSocketService:subscribe',
-          'BackendWebSocketService:getConnectionInfo',
-          'BackendWebSocketService:findSubscriptionsByChannelPrefix',
           // SnapDataSource dependencies
           'SnapController:handleRequest',
           'SnapController:getRunnableSnaps',
@@ -65,7 +61,6 @@ describe('getAssetsControllerMessenger', () => {
           'KeyringController:unlock',
           // Data source events
           'NetworkController:stateChange',
-          'BackendWebSocketService:connectionStateChanged',
           'AccountsController:accountBalancesUpdated',
           'PermissionController:stateChange',
           'PreferencesController:stateChange',
@@ -101,9 +96,9 @@ describe('getAssetsControllerInitMessenger', () => {
     expect(delegateSpy).toHaveBeenCalledWith(
       expect.objectContaining({
         actions: expect.arrayContaining([
-          'AuthenticationController:getBearerToken',
           'SnapController:handleRequest',
           'PreferencesController:getState',
+          'OnboardingController:getState',
         ]),
       }),
     );

@@ -4,7 +4,6 @@ import {
 } from '@metamask/transaction-controller';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { PRODUCT_TYPES } from '@metamask/subscription-controller';
 import { useNavigate } from 'react-router-dom';
 import { MetaMetricsEventLocation } from '../../../../../../shared/constants/metametrics';
 import { isCorrectDeveloperTransactionType } from '../../../../../../shared/lib/confirmation.utils';
@@ -30,10 +29,8 @@ import { useConfirmationNavigation } from '../../../hooks/useConfirmationNavigat
 import { resolvePendingApproval } from '../../../../../store/actions';
 import { useConfirmContext } from '../../../context/confirm';
 import { useIsGaslessLoading } from '../../../hooks/gas/useIsGaslessLoading';
-import { useEnableShieldCoverageChecks } from '../../../hooks/transactions/useEnableShieldCoverageChecks';
 import { useTransactionConfirm } from '../../../hooks/transactions/useTransactionConfirm';
 import { useConfirmActions } from '../../../hooks/useConfirmActions';
-import { useDappSwapActions } from '../../../hooks/transactions/dapp-swap-comparison/useDappSwapActions';
 import { useOriginThrottling } from '../../../hooks/useOriginThrottling';
 import {
   isAddEthereumChainType,
@@ -41,20 +38,14 @@ import {
 } from '../../../hooks/useAddEthereumChain';
 import { isSignatureTransactionType } from '../../../utils';
 import { getConfirmationSender } from '../utils';
-import { useUserSubscriptions } from '../../../../../hooks/subscription/useSubscription';
 import {
   useHardwareFooter,
   useHardwareWalletError,
 } from '../../../../../contexts/hardware-wallets';
 import OriginThrottleModal from './origin-throttle-modal';
-import ShieldFooterAgreement from './shield-footer-agreement';
-import ShieldFooterCoverageIndicator from './shield-footer-coverage-indicator/shield-footer-coverage-indicator';
 import { SingleActionFooter } from './single-action-footer';
 
-const SINGLE_ACTION_FOOTER_TYPES = [
-  TransactionType.musdConversion,
-  TransactionType.perpsDeposit,
-];
+const SINGLE_ACTION_FOOTER_TYPES = [TransactionType.perpsDeposit];
 
 export type OnCancelHandler = ({
   location,
@@ -151,9 +142,6 @@ const ConfirmButton = ({
     unconfirmedDangerAlerts,
   ]);
 
-  const { trialedProducts } = useUserSubscriptions();
-  const isShieldTrialed = trialedProducts?.includes(PRODUCT_TYPES.SHIELD);
-
   return (
     <>
       {confirmModalVisible && (
@@ -192,14 +180,7 @@ const ConfirmButton = ({
           onClick={onSubmit}
           size={ButtonSize.Lg}
         >
-          {currentConfirmation?.type ===
-          TransactionType.shieldSubscriptionApprove
-            ? t(
-                isShieldTrialed
-                  ? 'shieldStartNowCTA'
-                  : 'shieldStartNowCTAWithTrial',
-              )
-            : t('confirm')}
+          {t('confirm')}
         </Button>
       )}
     </>
@@ -213,10 +194,6 @@ const CancelButton = ({
 }) => {
   const t = useI18nContext();
   const { currentConfirmation } = useConfirmContext<TransactionMeta>();
-
-  if (currentConfirmation?.type === TransactionType.shieldSubscriptionApprove) {
-    return null;
-  }
 
   return (
     <Button
@@ -234,7 +211,6 @@ const CancelButton = ({
 const Footer = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { onDappSwapCompleted } = useDappSwapActions();
   const { onTransactionConfirm } = useTransactionConfirm();
   const { navigateNext } = useConfirmationNavigation();
   const { onSubmit: onAddEthereumChain } = useAddEthereumChain();
@@ -397,7 +373,6 @@ const Footer = () => {
       navigateBackToPreviousPage: Boolean(goBackTo),
     });
 
-    onDappSwapCompleted();
     dismissErrorModal();
 
     if (goBackTo) {
@@ -420,11 +395,8 @@ const Footer = () => {
     currentConfirmationId,
     isAddEthereumChain,
     navigate,
-    onDappSwapCompleted,
     dismissErrorModal,
   ]);
-
-  const { isShowCoverageIndicator } = useEnableShieldCoverageChecks();
 
   if (!currentConfirmation) {
     return null;
@@ -443,49 +415,37 @@ const Footer = () => {
   }
 
   return (
-    <>
-      <ShieldFooterCoverageIndicator />
-      <PageFooter
-        className="confirm-footer_page-footer"
-        flexDirection={FlexDirection.Column}
-        // box shadow to match the original var(--shadow-size-md) on the footer,
-        // but only applied to the bottom of the box, so it doesn't overlap with
-        // the shield footer coverage indicator
-        style={
-          isShowCoverageIndicator
-            ? { boxShadow: '0 4px 16px -8px var(--color-shadow-default)' }
-            : undefined
-        }
-      >
-        <OriginThrottleModal
-          isOpen={showOriginThrottleModal}
-          onConfirmationCancel={onCancel}
-        />
-        <Box display={Display.Flex} flexDirection={FlexDirection.Row} gap={4}>
-          <CancelButton handleFooterCancel={handleFooterCancel} />
-          {shouldShowReconnectButton ? (
-            <Button
-              block
-              data-testid="reconnect-hardware-wallet-button"
-              onClick={onReconnectHardwareWalletCta}
-              size={ButtonSize.Lg}
-            >
-              {walletType
-                ? t('connectHardwareDevice', [t(walletType)])
-                : t('connect')}
-            </Button>
-          ) : (
-            <ConfirmButton
-              alertOwnerId={currentConfirmation?.id}
-              onSubmit={onSubmit}
-              disabled={isConfirmDisabled}
-              onCancel={onCancel}
-            />
-          )}
-        </Box>
-        <ShieldFooterAgreement />
-      </PageFooter>
-    </>
+    <PageFooter
+      className="confirm-footer_page-footer"
+      flexDirection={FlexDirection.Column}
+    >
+      <OriginThrottleModal
+        isOpen={showOriginThrottleModal}
+        onConfirmationCancel={onCancel}
+      />
+      <Box display={Display.Flex} flexDirection={FlexDirection.Row} gap={4}>
+        <CancelButton handleFooterCancel={handleFooterCancel} />
+        {shouldShowReconnectButton ? (
+          <Button
+            block
+            data-testid="reconnect-hardware-wallet-button"
+            onClick={onReconnectHardwareWalletCta}
+            size={ButtonSize.Lg}
+          >
+            {walletType
+              ? t('connectHardwareDevice', [t(walletType)])
+              : t('connect')}
+          </Button>
+        ) : (
+          <ConfirmButton
+            alertOwnerId={currentConfirmation?.id}
+            onSubmit={onSubmit}
+            disabled={isConfirmDisabled}
+            onCancel={onCancel}
+          />
+        )}
+      </Box>
+    </PageFooter>
   );
 };
 

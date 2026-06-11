@@ -361,13 +361,13 @@ describe('Transaction Controller Init', () => {
       },
     } as TransactionMeta;
 
-    it('returns true when smart transactions disabled and send bundle not supported', async () => {
+    it('returns false when MetaMask gasless is disabled', async () => {
       getIsSmartTransactionMock.mockReturnValue(false);
       isSendBundleSupportedMock.mockResolvedValue(false);
 
       const optionFn = testConstructorOption('isEIP7702GasFeeTokensEnabled');
 
-      expect(await optionFn?.(mockTransactionMeta)).toBe(true);
+      expect(await optionFn?.(mockTransactionMeta)).toBe(false);
     });
 
     it('returns false when smart transactions enabled and send bundle supported', async () => {
@@ -379,25 +379,25 @@ describe('Transaction Controller Init', () => {
       expect(await optionFn?.(mockTransactionMeta)).toBe(false);
     });
 
-    it('returns true when smart transactions disabled and send bundle supported', async () => {
+    it('returns false when smart transactions disabled and send bundle supported', async () => {
       getIsSmartTransactionMock.mockReturnValue(false);
       isSendBundleSupportedMock.mockResolvedValue(true);
 
       const optionFn = testConstructorOption('isEIP7702GasFeeTokensEnabled');
 
-      expect(await optionFn?.(mockTransactionMeta)).toBe(true);
+      expect(await optionFn?.(mockTransactionMeta)).toBe(false);
     });
 
-    it('returns true when smart transactions enabled and send bundle not supported', async () => {
+    it('returns false when smart transactions enabled and send bundle not supported', async () => {
       getIsSmartTransactionMock.mockReturnValue(true);
       isSendBundleSupportedMock.mockResolvedValue(false);
 
       const optionFn = testConstructorOption('isEIP7702GasFeeTokensEnabled');
 
-      expect(await optionFn?.(mockTransactionMeta)).toBe(true);
+      expect(await optionFn?.(mockTransactionMeta)).toBe(false);
     });
 
-    it('returns true when isExternalSign is true', async () => {
+    it('returns false when isExternalSign is true', async () => {
       getIsSmartTransactionMock.mockReturnValue(true);
       isSendBundleSupportedMock.mockResolvedValue(true);
 
@@ -408,7 +408,7 @@ describe('Transaction Controller Init', () => {
           ...mockTransactionMeta,
           isExternalSign: true,
         }),
-      ).toBe(true);
+      ).toBe(false);
     });
   });
 
@@ -427,15 +427,15 @@ describe('Transaction Controller Init', () => {
       networkClientId: 'test-network',
     };
 
-    it('calls TransactionPayPublishHook', async () => {
+    it('skips TransactionPayPublishHook when MetaMask gasless is disabled', async () => {
       const hooks = testConstructorOption('hooks');
 
       await hooks?.publish?.(mockTransactionMeta);
 
-      expect(payHookMock).toHaveBeenCalledTimes(1);
+      expect(payHookMock).not.toHaveBeenCalled();
     });
 
-    it('returns pay hook result when transactionHash is present', async () => {
+    it('uses default submission when MetaMask gasless is disabled even if pay hook could return a hash', async () => {
       payHookMock.mockResolvedValue({
         transactionHash: '0xpayHash',
       });
@@ -444,7 +444,8 @@ describe('Transaction Controller Init', () => {
 
       const result = await hooks?.publish?.(mockTransactionMeta);
 
-      expect(result).toStrictEqual({ transactionHash: '0xpayHash' });
+      expect(result).toStrictEqual({ transactionHash: undefined });
+      expect(payHookMock).not.toHaveBeenCalled();
     });
 
     it('skips Delegation7702PublishHook for hardware wallet accounts', async () => {
@@ -474,7 +475,7 @@ describe('Transaction Controller Init', () => {
       expect(jest.mocked(Delegation7702PublishHook)).not.toHaveBeenCalled();
     });
 
-    it('calls Delegation7702PublishHook for HD keyring accounts with a non-native gas fee token', async () => {
+    it('skips Delegation7702PublishHook for HD keyring accounts with a non-native gas fee token when MetaMask gasless is disabled', async () => {
       const requestMock = buildInitRequestMock();
       requestMock.getMessengerClient.mockImplementation(((
         name: MessengerClientName,
@@ -501,7 +502,7 @@ describe('Transaction Controller Init', () => {
         selectedGasFeeToken: NON_NATIVE_GAS_FEE_TOKEN,
       } as TransactionMeta);
 
-      expect(jest.mocked(Delegation7702PublishHook)).toHaveBeenCalled();
+      expect(jest.mocked(Delegation7702PublishHook)).not.toHaveBeenCalled();
     });
 
     it('skips Delegation7702PublishHook for HD keyring accounts using ordinary native gas', async () => {
@@ -618,7 +619,7 @@ describe('Transaction Controller Init', () => {
       expect(jest.mocked(Delegation7702PublishHook)).not.toHaveBeenCalled();
     });
 
-    it('records sentinel_relay submission via metrics fragment on delegation hook success', async () => {
+    it('skips sentinel_relay submission when MetaMask gasless is disabled', async () => {
       const delegation7702HookFn: jest.MockedFn<PublishHook> = jest.fn();
       delegation7702HookFn.mockResolvedValue({ transactionHash: '0xdelHash' });
       jest.mocked(Delegation7702PublishHook).mockImplementation(
@@ -631,7 +632,7 @@ describe('Transaction Controller Init', () => {
       const upsertFragmentMock = jest.fn();
 
       type PHArgs = Parameters<typeof publishHook>[0];
-      await publishHook({
+      const result = await publishHook({
         flatState: {} as PHArgs['flatState'],
         getTransactionMetricsRequest: () =>
           ({
@@ -657,13 +658,12 @@ describe('Transaction Controller Init', () => {
         } as TransactionMeta,
       });
 
-      expect(upsertFragmentMock).toHaveBeenCalledWith(mockTransactionMeta.id, {
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        properties: { transaction_submission_method: 'sentinel_relay' },
-      });
+      expect(result).toStrictEqual({ transactionHash: undefined });
+      expect(upsertFragmentMock).not.toHaveBeenCalled();
+      expect(jest.mocked(Delegation7702PublishHook)).not.toHaveBeenCalled();
     });
 
-    it('records sentinel_stx submission via metrics fragment on STX hook success', async () => {
+    it('skips sentinel_stx submission when MetaMask gasless is disabled', async () => {
       jest
         .mocked(smartTransactionsModule.getSmartTransactionCommonParams)
         .mockReturnValue({
@@ -685,7 +685,7 @@ describe('Transaction Controller Init', () => {
       const upsertFragmentMock = jest.fn();
 
       type PHArgs = Parameters<typeof publishHook>[0];
-      await publishHook({
+      const result = await publishHook({
         flatState: {} as PHArgs['flatState'],
         getTransactionMetricsRequest: () =>
           ({
@@ -709,10 +709,11 @@ describe('Transaction Controller Init', () => {
         },
       });
 
-      expect(upsertFragmentMock).toHaveBeenCalledWith(mockTransactionMeta.id, {
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        properties: { transaction_submission_method: 'sentinel_stx' },
-      });
+      expect(result).toStrictEqual({ transactionHash: undefined });
+      expect(upsertFragmentMock).not.toHaveBeenCalled();
+      expect(
+        jest.mocked(smartTransactionsModule.submitSmartTransactionHook),
+      ).not.toHaveBeenCalled();
     });
 
     it('uses default submission for ordinary native gas transactions even when smart transactions are enabled', async () => {
@@ -827,7 +828,47 @@ describe('Transaction Controller Init', () => {
       ).not.toHaveBeenCalled();
     });
 
-    it('returns transaction hash even if upsertTransactionUIMetricsFragment throws on sentinel_relay path', async () => {
+    it('uses default submission for 1Do app access updates even if marked as sponsored', async () => {
+      type PHArgs = Parameters<typeof publishHook>[0];
+      const result = await publishHook({
+        flatState: {} as PHArgs['flatState'],
+        getTransactionMetricsRequest: () =>
+          ({
+            upsertTransactionUIMetricsFragment: jest.fn(),
+          }) as unknown as ReturnType<PHArgs['getTransactionMetricsRequest']>,
+        initMessenger: {
+          call: jest.fn(),
+        } as unknown as TransactionControllerInitMessenger,
+        keyringController: {
+          getKeyringForAccount: jest
+            .fn()
+            .mockResolvedValue({ type: 'HD Key Tree' }),
+        },
+        signedTx: '0xsigned',
+        smartTransactionsController:
+          {} as PHArgs['smartTransactionsController'],
+        transactionController: {
+          isAtomicBatchSupported: jest.fn(),
+        } as unknown as PHArgs['transactionController'],
+        transactionMeta: {
+          ...mockTransactionMeta,
+          isGasFeeSponsored: true,
+          txParams: {
+            from: '0x0000000000000000000000000000000000000000',
+            to: '0x0000000000000000000000000000000000000000',
+            data: '0x787f863d0000000000000000000000003c7618fdab069e8888e5587ca2766497b866afd5',
+          },
+        } as TransactionMeta,
+      });
+
+      expect(result).toStrictEqual({ transactionHash: undefined });
+      expect(jest.mocked(Delegation7702PublishHook)).not.toHaveBeenCalled();
+      expect(
+        jest.mocked(smartTransactionsModule.submitSmartTransactionHook),
+      ).not.toHaveBeenCalled();
+    });
+
+    it('uses default submission if sentinel_relay would throw metrics while MetaMask gasless is disabled', async () => {
       const delegation7702HookFn: jest.MockedFn<PublishHook> = jest.fn();
       delegation7702HookFn.mockResolvedValue({ transactionHash: '0xdelHash' });
       jest.mocked(Delegation7702PublishHook).mockImplementation(
@@ -868,10 +909,11 @@ describe('Transaction Controller Init', () => {
         } as TransactionMeta,
       });
 
-      expect(result).toStrictEqual({ transactionHash: '0xdelHash' });
+      expect(result).toStrictEqual({ transactionHash: undefined });
+      expect(jest.mocked(Delegation7702PublishHook)).not.toHaveBeenCalled();
     });
 
-    it('returns transaction hash even if upsertTransactionUIMetricsFragment throws on sentinel_stx path', async () => {
+    it('uses default submission if sentinel_stx would throw metrics while MetaMask gasless is disabled', async () => {
       jest
         .mocked(smartTransactionsModule.getSmartTransactionCommonParams)
         .mockReturnValue({
@@ -919,7 +961,10 @@ describe('Transaction Controller Init', () => {
         },
       });
 
-      expect(result).toStrictEqual({ transactionHash: '0xstxHash' });
+      expect(result).toStrictEqual({ transactionHash: undefined });
+      expect(
+        jest.mocked(smartTransactionsModule.submitSmartTransactionHook),
+      ).not.toHaveBeenCalled();
     });
   });
 
@@ -990,7 +1035,7 @@ describe('Transaction Controller Init', () => {
       ).not.toHaveBeenCalled();
     });
 
-    it('calls upsertTransactionUIMetricsFragment with sentinel_stx for each batch tx with an id on STX success', async () => {
+    it('does not publish batch via sentinel_stx when MetaMask gasless is disabled', async () => {
       jest
         .mocked(smartTransactionsModule.getSmartTransactionCommonParams)
         .mockReturnValue({
@@ -1027,25 +1072,21 @@ describe('Transaction Controller Init', () => {
         transactions: [mockTransactionMeta],
       };
 
-      await hooks?.publishBatch?.({
+      const result = await hooks?.publishBatch?.({
         transactions: [
           { id: 'batch-tx-1' } as unknown as PublishBatchHookTransaction,
           { id: 'batch-tx-last' } as unknown as PublishBatchHookTransaction,
         ],
       } as unknown as PublishBatchHookRequest);
 
-      expect(upsertFragmentMock).toHaveBeenCalledTimes(2);
-      expect(upsertFragmentMock).toHaveBeenCalledWith('batch-tx-1', {
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        properties: { transaction_submission_method: 'sentinel_stx' },
-      });
-      expect(upsertFragmentMock).toHaveBeenCalledWith('batch-tx-last', {
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        properties: { transaction_submission_method: 'sentinel_stx' },
-      });
+      expect(result).toBeUndefined();
+      expect(upsertFragmentMock).not.toHaveBeenCalled();
+      expect(
+        jest.mocked(smartTransactionsModule.submitBatchSmartTransactionHook),
+      ).not.toHaveBeenCalled();
     });
 
-    it('skips upsertTransactionUIMetricsFragment for batch txs without an id', async () => {
+    it('skips upsertTransactionUIMetricsFragment for batch txs without an id when MetaMask gasless is disabled', async () => {
       jest
         .mocked(smartTransactionsModule.getSmartTransactionCommonParams)
         .mockReturnValue({
@@ -1082,18 +1123,18 @@ describe('Transaction Controller Init', () => {
         transactions: [mockTransactionMeta],
       };
 
-      await hooks?.publishBatch?.({
+      const result = await hooks?.publishBatch?.({
         transactions: [
           {} as unknown as PublishBatchHookTransaction,
           { id: 'batch-tx-last' } as unknown as PublishBatchHookTransaction,
         ],
       } as unknown as PublishBatchHookRequest);
 
-      expect(upsertFragmentMock).toHaveBeenCalledTimes(1);
-      expect(upsertFragmentMock).toHaveBeenCalledWith('batch-tx-last', {
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        properties: { transaction_submission_method: 'sentinel_stx' },
-      });
+      expect(result).toBeUndefined();
+      expect(upsertFragmentMock).not.toHaveBeenCalled();
+      expect(
+        jest.mocked(smartTransactionsModule.submitBatchSmartTransactionHook),
+      ).not.toHaveBeenCalled();
     });
 
     it('does not call upsertTransactionUIMetricsFragment when publishBatchHook returns undefined', async () => {
@@ -1239,5 +1280,4 @@ describe('Transaction Controller Init', () => {
       expect(result).toStrictEqual(expectedResult);
     });
   });
-
 });

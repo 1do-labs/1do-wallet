@@ -25,19 +25,6 @@ const mockUseParams = jest
   .fn()
   .mockReturnValue({ chainId: CHAIN_IDS.MAINNET, protocolId: 'aave' });
 
-jest.mock('../../../../ui/hooks/musd/useMusdGeoBlocking', () => ({
-  ...jest.requireActual('../../../../ui/hooks/musd/useMusdGeoBlocking'),
-  useMusdGeoBlocking: () => ({
-    isBlocked: false,
-    userCountry: 'US',
-    isLoading: false,
-    error: null,
-    blockedRegions: [],
-    blockedMessage: null,
-    refreshGeolocation: jest.fn(),
-  }),
-}));
-
 const mockUseNavigate = jest.fn();
 jest.mock('react-router-dom', () => {
   return {
@@ -102,7 +89,7 @@ describe('DefiDetailsList', () => {
     expect(container).toMatchSnapshot();
   });
 
-  it('does not pass musd Merkl or convert surfaces to TokenCell (DeFi list is not a Merkl / mUSD home-list surface)', () => {
+  it('does not pass convert surfaces to TokenCell', () => {
     renderWithProvider(
       <DefiDetailsList
         tokens={sampleTokens}
@@ -114,8 +101,7 @@ describe('DefiDetailsList', () => {
 
     expect(MockedTokenCell).toHaveBeenCalled();
     for (const [props] of MockedTokenCell.mock.calls) {
-      expect(props.musd?.merklClaimBonus).toBeUndefined();
-      expect(props.musd?.convert).toBeUndefined();
+      expect(props.convert).toBeUndefined();
     }
   });
 });

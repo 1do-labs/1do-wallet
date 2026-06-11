@@ -104,8 +104,6 @@ function determineTransactionTypeAndContractInteraction(
     'gasPayment',
     'batch',
     'shieldSubscriptionApprove',
-    'musdConversion',
-    'musdClaim',
     'perpsDeposit',
   ];
 

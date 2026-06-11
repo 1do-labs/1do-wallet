@@ -17,8 +17,6 @@ import {
   isUserRejectedHardwareWalletError,
   useHardwareWalletError,
 } from '../../../../contexts/hardware-wallets';
-import { useShieldConfirm } from './useShieldConfirm';
-import { useDappSwapActions } from './dapp-swap-comparison/useDappSwapActions';
 
 export function useTransactionConfirm() {
   const dispatch = useDispatch();
@@ -31,8 +29,6 @@ export function useTransactionConfirm() {
   const { isSupported: isGaslessSupportedSTX } =
     useGaslessSupportedSmartTransactions();
   const { isSupported: isGaslessSupported } = useIsGaslessSupported();
-  const { onDappSwapCompleted, updateSwapWithQuoteDetailsIfRequired } =
-    useDappSwapActions();
 
   const newTransactionMeta = useMemo(
     () => cloneDeep(transactionMeta),
@@ -84,15 +80,8 @@ export function useTransactionConfirm() {
     transactionMeta?.isGasFeeSponsored,
   ]);
 
-  const {
-    handleShieldSubscriptionApprovalTransactionAfterConfirm,
-    handleShieldSubscriptionApprovalTransactionAfterConfirmErr,
-  } = useShieldConfirm();
-
   const onTransactionConfirm = useCallback(async (): Promise<boolean> => {
     newTransactionMeta.customNonceValue = customNonceValue;
-
-    updateSwapWithQuoteDetailsIfRequired(newTransactionMeta);
 
     if (isGaslessSupportedSTX) {
       handleSmartTransaction();
@@ -100,18 +89,10 @@ export function useTransactionConfirm() {
       handleGasless7702();
     }
 
-    // transaction confirmation screen is a full screen modal that appear over the app and will be dismissed after transaction approved
-    // navigate to shield settings page first before approving transaction to wait for subscription creation there
-    handleShieldSubscriptionApprovalTransactionAfterConfirm(newTransactionMeta);
     try {
       await dispatch(updateAndApproveTx(newTransactionMeta, true, ''));
-      onDappSwapCompleted();
       return true;
     } catch (error) {
-      handleShieldSubscriptionApprovalTransactionAfterConfirmErr(
-        newTransactionMeta,
-      );
-
       if (!isHardwareWalletError(error)) {
         // Non-hardware wallet errors - just rethrow
         throw error;
@@ -132,10 +113,6 @@ export function useTransactionConfirm() {
     handleSmartTransaction,
     handleGasless7702,
     selectedGasFeeToken,
-    handleShieldSubscriptionApprovalTransactionAfterConfirm,
-    handleShieldSubscriptionApprovalTransactionAfterConfirmErr,
-    onDappSwapCompleted,
-    updateSwapWithQuoteDetailsIfRequired,
   ]);
 
   return {

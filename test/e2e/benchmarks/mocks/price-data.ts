@@ -53,14 +53,6 @@ export const POWER_USER_PRICES: Record<string, PriceData> = {
     price: 1.0,
     marketCap: 50_000_000_000,
   },
-  'eip155:1/erc20:0xacA92E438df0B2401fF60dA7E4337B687a2435DA': {
-    price: 0.9999,
-    marketCap: 35_000_000_000,
-  }, // MUSD
-  'eip155:1/erc20:0xaca92e438df0b2401ff60da7e4337b687a2435da': {
-    price: 0.9999,
-    marketCap: 35_000_000_000,
-  },
   'eip155:1/erc20:0xdAC17F958D2ee523a2206206994597C13D831ec7': {
     price: 1.0,
     marketCap: 90_000_000_000,

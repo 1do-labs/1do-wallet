@@ -2,7 +2,6 @@ import React from 'react';
 import configureMockStore from 'redux-mock-store';
 import { fireEvent, waitFor } from '@testing-library/react';
 import thunk from 'redux-thunk';
-import { SeedlessOnboardingControllerErrorMessage } from '@metamask/seedless-onboarding-controller';
 import { renderWithProvider } from '../../../test/lib/render-helpers-navigate';
 import { enLocale as messages } from '../../../test/lib/i18n-helpers';
 import { ONBOARDING_WELCOME_ROUTE } from '../../helpers/constants/routes';
@@ -13,6 +12,10 @@ import UnlockPageImport from '.';
 const UnlockPage = UnlockPageImport as React.ComponentType<
   Record<string, unknown>
 >;
+
+const SeedlessOnboardingControllerErrorMessage = {
+  AuthenticationError: 'Authentication error',
+} as const;
 
 const mockUseNavigate = jest.fn();
 jest.mock('react-router-dom', () => {

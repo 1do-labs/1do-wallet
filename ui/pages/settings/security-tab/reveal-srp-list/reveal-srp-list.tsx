@@ -1,7 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { AuthConnection } from '@metamask/seedless-onboarding-controller';
 import { capitalize } from 'lodash';
 import {
   Box,
@@ -34,7 +33,6 @@ import {
   getSocialLoginType,
 } from '../../../../selectors';
 import Card from '../../../../components/ui/card';
-import { useSyncSRPs } from '../../../../hooks/social-sync/useSyncSRPs';
 
 export const RevealSrpList = () => {
   const t = useI18nContext();
@@ -42,9 +40,6 @@ export const RevealSrpList = () => {
   const isSocialLoginFlow = useSelector(getIsSocialLoginFlow);
   const socialLoginType = useSelector(getSocialLoginType);
   const socialLoginEmail = useSelector(getSocialLoginEmail);
-
-  // sync SRPs list when page loads
-  useSyncSRPs();
 
   const onSrpActionComplete = (keyringId: string, triggerBackup?: boolean) => {
     if (triggerBackup) {
@@ -92,7 +87,7 @@ export const RevealSrpList = () => {
                 alignItems={AlignItems.center}
                 gap={2}
               >
-                {socialLoginType === AuthConnection.Apple ? (
+                {socialLoginType === 'apple' ? (
                   <Icon
                     name={IconName.Apple}
                     color={IconColor.iconDefault}

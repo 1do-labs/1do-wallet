@@ -6,7 +6,6 @@ import type {
   NetworkControllerGetStateAction,
   NetworkControllerNetworkDidChangeEvent,
 } from '@metamask/network-controller';
-import { AuthenticationController } from '@metamask/profile-sync-controller';
 import {
   AccountsControllerGetAccountAction,
   AccountsControllerGetSelectedAccountAction,
@@ -45,8 +44,7 @@ type AllowedActions =
   | TokensControllerGetStateAction
   | TokensControllerAddDetectedTokensAction
   | TokensControllerAddTokensAction
-  | NetworkControllerFindNetworkClientIdByChainIdAction
-  | AuthenticationController.AuthenticationControllerGetBearerTokenAction;
+  | NetworkControllerFindNetworkClientIdByChainIdAction;
 
 type AllowedEvents =
   | AccountsControllerSelectedEvmAccountChangeEvent
@@ -95,7 +93,6 @@ export function getTokenDetectionControllerMessenger(
       'PreferencesController:getState',
       'TokensController:addTokens',
       'NetworkController:findNetworkClientIdByChainId',
-      'AuthenticationController:getBearerToken',
     ],
     events: [
       'AccountsController:selectedEvmAccountChange',

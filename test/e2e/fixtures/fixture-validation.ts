@@ -59,7 +59,6 @@ const getFixtureIgnoredKeys = (): string[] => [
   'data.CurrencyController.currencyRates.ETH.conversionDate',
   'data.CurrencyController.currencyRates.ETH.conversionRate',
   'data.NetworkController.networkConfigurationsByChainId.0x539.lastUpdatedAt',
-  'data.NotificationServicesController.metamaskNotificationsList',
   'data.PhishingController.c2DomainBlocklistLastFetched',
   'data.PhishingController.hotlistLastFetched',
   'data.PhishingController.stalelistLastFetched',
@@ -71,7 +70,6 @@ const getFixtureIgnoredKeys = (): string[] => [
   // Entire objects/controllers ignored (dynamic or impractical to validate)
   'data.AccountTreeController.selectedAccountGroup', // Entropy source is random and non-deterministic, and the selected group can change on each run.
   'data.AccountsController.internalAccounts.accounts',
-  'data.AuthenticationController',
   'data.MetaMetricsController',
   'data.MultichainAssetsController',
   // Token balances are fetched dynamically after unlock; pre-seeding them in the

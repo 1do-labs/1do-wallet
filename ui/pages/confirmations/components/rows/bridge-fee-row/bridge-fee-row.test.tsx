@@ -128,19 +128,20 @@ describe('BridgeFeeRow', () => {
   });
 
   it('renders rich tooltip with description and fee labels when tooltipDescription is set', async () => {
+    const tooltipDescription = 'Fee details';
     const user = userEvent.setup();
     const { getByTestId, findByText } = render({
       variant: ConfirmInfoRowSize.Small,
-      tooltipDescription: messages.musdConversionFeeTooltipDescription.message,
+      tooltipDescription,
     });
 
     await user.hover(getByTestId('bridge-fee-row-tooltip'));
 
     const tooltip = await findByText((content) =>
-      content.includes(messages.musdConversionFeeTooltipDescription.message),
+      content.includes(tooltipDescription),
     );
     expect(tooltip.textContent).toContain(
-      `${messages.musdConversionFeeTooltipDescription.message}\n\n${messages.networkFee.message}:`,
+      `${tooltipDescription}\n\n${messages.networkFee.message}:`,
     );
     expect(tooltip.textContent).toContain(`${messages.bridgeFee.message}:`);
     expect(tooltip.textContent).toContain(`${messages.metamaskFee.message}:`);

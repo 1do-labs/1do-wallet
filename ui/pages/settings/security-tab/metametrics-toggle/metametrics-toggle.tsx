@@ -6,7 +6,6 @@ import {
   useEnableMetametrics,
   useDisableMetametrics,
 } from '../../../../hooks/useMetametrics';
-import { selectIsBackupAndSyncEnabled } from '../../../../selectors/identity/backup-and-sync';
 import {
   MetaMetricsEventCategory,
   MetaMetricsEventName,
@@ -46,7 +45,6 @@ const MetametricsToggle = ({
   // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
   const error = enableMetametricsError || disableMetametricsError;
 
-  const isBackupAndSyncEnabled = useSelector(selectIsBackupAndSyncEnabled);
   const participateInMetaMetrics = useSelector(getParticipateInMetaMetrics);
   const useExternalServices = useSelector(getUseExternalServices);
 
@@ -57,7 +55,7 @@ const MetametricsToggle = ({
         category: MetaMetricsEventCategory.Settings,
         event: MetaMetricsEventName.TurnOnMetaMetrics,
         properties: {
-          isProfileSyncingEnabled: isBackupAndSyncEnabled,
+          isProfileSyncingEnabled: false,
           participateInMetaMetrics,
           location: fromDefaultSettings ? 'Default Settings' : 'Settings',
         },
@@ -72,7 +70,7 @@ const MetametricsToggle = ({
         category: MetaMetricsEventCategory.Settings,
         event: MetaMetricsEventName.TurnOffMetaMetrics,
         properties: {
-          isProfileSyncingEnabled: isBackupAndSyncEnabled,
+          isProfileSyncingEnabled: false,
           participateInMetaMetrics,
         },
       });

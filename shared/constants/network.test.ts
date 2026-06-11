@@ -46,54 +46,26 @@ describe('NetworkConstants', () => {
     });
   });
 
-  describe('FEATURED_RPCS Infura Usage Tests', () => {
-    it('arbitrum entry should use Infura', () => {
-      const [arbitrumRpc] = FEATURED_RPCS.filter(
-        (rpc) => rpc.chainId === CHAIN_IDS.ARBITRUM,
-      );
-      expect(arbitrumRpc.rpcEndpoints[0].url).toContain('infura.io');
+  describe('FEATURED_RPCS provider usage', () => {
+    it.each([
+      CHAIN_IDS.ARBITRUM,
+      CHAIN_IDS.AVALANCHE,
+      CHAIN_IDS.BSC,
+      CHAIN_IDS.OPTIMISM,
+      CHAIN_IDS.POLYGON,
+      CHAIN_IDS.BASE,
+    ])('uses Alchemy for chain %s', (chainId) => {
+      const rpc = FEATURED_RPCS.find((entry) => entry.chainId === chainId);
+      expect(rpc?.rpcEndpoints[0].url).toContain('.g.alchemy.com/v2/');
     });
 
-    it('avalanche entry should use Infura', () => {
-      const [avalancheRpc] = FEATURED_RPCS.filter(
-        (rpc) => rpc.chainId === CHAIN_IDS.AVALANCHE,
-      );
-      expect(avalancheRpc.rpcEndpoints[0].url).toContain('infura.io');
-    });
-
-    it('bsc entry should not use Infura', () => {
-      const [bscRpc] = FEATURED_RPCS.filter(
-        (rpc) => rpc.chainId === CHAIN_IDS.BSC,
-      );
-      expect(bscRpc.rpcEndpoints[0].url).toContain('infura.io');
-    });
-
-    it('optimism entry should use Infura', () => {
-      const [optimismRpc] = FEATURED_RPCS.filter(
-        (rpc) => rpc.chainId === CHAIN_IDS.OPTIMISM,
-      );
-      expect(optimismRpc.rpcEndpoints[0].url).toContain('infura.io');
-    });
-
-    it('polygon entry should use Infura', () => {
-      const [polygonRpc] = FEATURED_RPCS.filter(
-        (rpc) => rpc.chainId === CHAIN_IDS.POLYGON,
-      );
-      expect(polygonRpc.rpcEndpoints[0].url).toContain('infura.io');
-    });
-
-    it('zkSync Era entry should not use Infura', () => {
+    it('uses the official zkSync Era RPC', () => {
       const [zksyncEraRpc] = FEATURED_RPCS.filter(
         (rpc) => rpc.chainId === CHAIN_IDS.ZKSYNC_ERA,
       );
-      expect(zksyncEraRpc.rpcEndpoints[0].url).not.toContain('infura.io');
-    });
-
-    it('base entry should use Infura', () => {
-      const [baseRpc] = FEATURED_RPCS.filter(
-        (rpc) => rpc.chainId === CHAIN_IDS.BASE,
+      expect(zksyncEraRpc.rpcEndpoints[0].url).toBe(
+        'https://mainnet.era.zksync.io',
       );
-      expect(baseRpc.rpcEndpoints[0].url).toContain('infura.io');
     });
   });
 });

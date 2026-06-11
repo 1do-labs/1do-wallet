@@ -9,7 +9,6 @@ import { withFixtures } from '../../../helpers';
 import { login } from '../../../page-objects/flows/login.flow';
 import AccountListPage from '../../../page-objects/pages/account-list-page';
 import HeaderNavbar from '../../../page-objects/pages/header-navbar';
-import { mockNotificationServices } from '../../../tests/notifications/mocks';
 import {
   BENCHMARK_PERSONA,
   type BenchmarkResults,
@@ -46,9 +45,7 @@ async function measurePagePowerUser(
       useMockingPassThrough: true,
       disableServerMochaToBackground: true,
       extendedTimeoutMultiplier: 3,
-      testSpecificMock: async (server: Mockttp) => {
-        await mockNotificationServices(server);
-      },
+      testSpecificMock: async (_server: Mockttp) => undefined,
     },
     async ({ driver, getNetworkReport, clearNetworkReport }) => {
       await login(driver, { validateBalance: false });

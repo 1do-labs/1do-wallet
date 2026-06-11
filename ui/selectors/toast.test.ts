@@ -217,64 +217,6 @@ describe('toast selectors', () => {
 
       expect(results).toStrictEqual([primary]);
     });
-
-    it('excludes Merkl musdClaim and attached gasPayment from toast eligibility', () => {
-      const gasPaymentSatellite = {
-        id: 'gas-payment-tx-id',
-        time: 1,
-        type: TransactionType.gasPayment,
-      };
-      const merklClaimPrimary = {
-        id: 'merkl-claim-tx-id',
-        time: 2,
-        type: TransactionType.musdClaim,
-        requiredTransactionIds: ['gas-payment-tx-id'],
-      };
-      const state = {
-        metamask: {
-          transactions: [gasPaymentSatellite, merklClaimPrimary],
-        },
-      } as unknown as SelectorState;
-
-      const results = selectEvmTransactionsForToast(state);
-
-      expect(results).toStrictEqual([]);
-    });
-
-    it('excludes gasPayment Merkl satellite by hash when id differs (claim flow)', () => {
-      const claimHash = '0xclaimgas';
-      const gasPaymentSatellite = {
-        id: 'gas-payment-tx-id',
-        time: 1,
-        type: TransactionType.gasPayment,
-        hash: claimHash,
-      };
-      const merklClaimPrimary = {
-        id: 'merkl-claim-tx-id',
-        time: 2,
-        type: TransactionType.musdClaim,
-        requiredTransactionIds: ['gas-payment-tx-id'],
-      };
-      const duplicateGasByHash = {
-        id: 'stale-local-gas-entry',
-        time: 3,
-        type: TransactionType.gasPayment,
-        hash: claimHash,
-      };
-      const state = {
-        metamask: {
-          transactions: [
-            gasPaymentSatellite,
-            merklClaimPrimary,
-            duplicateGasByHash,
-          ],
-        },
-      } as unknown as SelectorState;
-
-      const results = selectEvmTransactionsForToast(state);
-
-      expect(results).toStrictEqual([]);
-    });
   });
 
   describe('selectNonEvmTransactionsForToast', () => {

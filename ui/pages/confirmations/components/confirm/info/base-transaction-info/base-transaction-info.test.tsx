@@ -12,8 +12,6 @@ import {
   getMockContractInteractionConfirmState,
 } from '../../../../../../../test/data/confirmations/helper';
 import { renderWithConfirmContextProvider } from '../../../../../../../test/lib/confirmations/render-helpers';
-import { enLocale as messages } from '../../../../../../../test/lib/i18n-helpers';
-import * as DappSwapContext from '../../../../context/dapp-swap';
 import BaseTransactionInfo from './base-transaction-info';
 
 const DNS_STATE = {
@@ -85,28 +83,4 @@ describe('<BaseTransactionInfo />', () => {
     );
     expect(container).toMatchSnapshot();
   });
-
-  it('renders partially if quoted swap view is displayed in info', () => {
-    const state = getMockContractInteractionConfirmState();
-    const mockStore = createMockStore(state);
-    jest.spyOn(DappSwapContext, 'useDappSwapContext').mockReturnValue({
-      isQuotedSwapDisplayedInInfo: true,
-      selectedQuote: undefined,
-      setSelectedQuote: jest.fn(),
-      setQuotedSwapDisplayedInInfo: jest.fn(),
-      isQuotedSwapPresent: false,
-    } as ReturnType<typeof DappSwapContext.useDappSwapContext>);
-
-    const { getByText, queryByText } = renderWithConfirmContextProvider(
-      <BaseTransactionInfo />,
-      mockStore,
-    );
-    expect(getByText(messages.networkFee.message)).toBeInTheDocument();
-    expect(getByText(messages.speed.message)).toBeInTheDocument();
-    expect(queryByText(messages.origin.message)).toBeNull();
-    expect(queryByText(messages.amount.message)).toBeNull();
-    expect(queryByText(messages.token.message)).toBeNull();
-    expect(queryByText('Gas fee')).toBeNull();
-  });
-
 });

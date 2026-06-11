@@ -119,14 +119,6 @@ class HomePage {
   private readonly connectionsRemovedModal =
     '[data-testid="connections-removed-modal"]';
 
-  private readonly shieldEntryModal = '[data-testid="shield-entry-modal"]';
-
-  private readonly shieldEntryModalGetStarted =
-    '[data-testid="shield-entry-modal-get-started-button"]';
-
-  private readonly shieldEntryModalSkip =
-    '[data-testid="shield-entry-modal-close-button"]';
-
   private readonly emptyBalance =
     '[data-testid="coin-overview-balance-empty-state"]';
 
@@ -605,36 +597,6 @@ class HomePage {
   async checkDefaultAddressIsNotDisplayed(): Promise<void> {
     console.log('Check default address is not displayed in header on homepage');
     await this.driver.assertElementNotPresent(this.defaultAddressContainer);
-  }
-
-  async checkShieldEntryModalIsDisplayed(): Promise<void> {
-    console.log('Check shield entry modal is displayed on homepage');
-    await this.driver.waitForSelector(this.shieldEntryModal);
-  }
-
-  async clickOnShieldEntryModalGetStarted(): Promise<void> {
-    console.log('Click on shield entry modal get started');
-    await this.driver.clickElement(this.shieldEntryModalGetStarted);
-  }
-
-  async clickOnShieldEntryModalSkip(): Promise<void> {
-    console.log('Click on shield entry modal skip');
-    await this.driver.clickElement(this.shieldEntryModalSkip);
-  }
-
-  async checkNoShieldEntryModalIsDisplayed(): Promise<void> {
-    console.log('Check no shield entry modal is displayed on homepage');
-    await this.driver.assertElementNotPresent(this.shieldEntryModal, {
-      waitAtLeastGuard: regularDelayMs,
-    });
-  }
-
-  async checkShieldEntryModalNotPresent(): Promise<void> {
-    console.log('Check shield entry modal is not present on homepage');
-    await this.driver.assertElementNotPresent(this.shieldEntryModal, {
-      waitAtLeastGuard: regularDelayMs,
-      timeout: 2000,
-    });
   }
 }
 

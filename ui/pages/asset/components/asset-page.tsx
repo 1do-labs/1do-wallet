@@ -47,7 +47,6 @@ import CoinButtons from '../../../components/app/wallet-overview/coin-buttons';
 import { StockBadge } from '../../../components/app/assets/stock-badge/stock-badge';
 import { AddressCopyButton } from '../../../components/multichain';
 import { getCurrentCurrency } from '../../../ducks/metamask/metamask';
-import { getIsNativeTokenBuyable } from '../../../ducks/ramps';
 import { useI18nContext } from '../../../hooks/useI18nContext';
 import { useMultichainSelector } from '../../../hooks/useMultichainSelector';
 import { transitionBack } from '../../../components/ui/transition';
@@ -72,15 +71,9 @@ import { useSafeChains } from '../../settings/networks-tab/networks-form/use-saf
 import { useCurrentPrice } from '../hooks/useCurrentPrice';
 import { isNativeAsset, type Asset } from '../types/asset';
 import { useRWAToken } from '../../bridge/hooks/useRWAToken';
-import { isMusdToken } from '../../../components/app/musd/constants';
-import { useMusdMerklPosition } from '../../../hooks/musd';
-import { selectIsMusdConversionFlowEnabled } from '../../../selectors/musd';
 import { AssetMarketDetails } from './asset-market-details';
 import AssetChart from './chart/asset-chart';
 import { MarketClosedActionButton } from './market-closed-action-button';
-import MusdBonusSection from './musd-bonus-section';
-import MusdConvertSection from './musd-convert-section';
-import MusdPositionSection from './musd-position-section';
 import TokenButtons from './token-buttons';
 
 // TODO BIP44 Refactor: BIP-44 has been enabled and is stable, this page needs a significant refactor to remove confusing branching logic
@@ -94,7 +87,6 @@ const AssetPage = ({
   const t = useI18nContext();
   const navigate = useNavigate();
   const currency = useSelector(getCurrentCurrency);
-  const isBuyableChain = useSelector(getIsNativeTokenBuyable);
   const isEvm = isEvmChainId(asset.chainId);
   // TODO BIP44 Refactor: This selector does not work with BIP44 enabled, pass the information in the asset object
   const nativeAssetType = useSelector(getMultichainNativeAssetType);
@@ -142,18 +134,6 @@ const AssetPage = ({
     })() ?? '';
 
   const shouldShowContractAddress = type === AssetType.token;
-  const isMusdAssetPage =
-    shouldShowContractAddress &&
-    isEvm &&
-    isMusdToken(asset.address ?? undefined);
-  const isMusdConversionFlowEnabled = useSelector(
-    selectIsMusdConversionFlowEnabled,
-  );
-  const showMusdEnhancedPage = isMusdAssetPage && isMusdConversionFlowEnabled;
-  const {
-    aggregatedFiat: musdAggregatedFiat,
-    hasAnyBalance: musdHasAnyBalance,
-  } = useMusdMerklPosition(showMusdEnhancedPage);
   const contractAddress = (() => {
     if (shouldShowContractAddress) {
       return isEvm
@@ -288,7 +268,6 @@ const AssetPage = ({
             {...{
               account: selectedAccount,
               trackingLocation: 'asset-page',
-              isBuyableChain,
               isSigningEnabled,
               isSwapsChain,
               isBridgeChain,
@@ -311,38 +290,18 @@ const AssetPage = ({
         ) : null}
       </Box>
       <Box flexDirection={BoxFlexDirection.Column} paddingTop={3}>
-        {showMusdEnhancedPage ? (
-          <>
-            <MusdPositionSection
-              balanceDisplay={balance}
-              fiatValue={showFiat ? tokenFiatAmount : null}
-              showFiat={showFiat}
-            />
-            <MusdBonusSection
-              chainId={chainId}
-              tokenAddress={contractAddress as `0x${string}`}
-              positionFiatValue={showFiat ? musdAggregatedFiat : null}
-              showFiat={showFiat}
-              hasPositiveBalance={musdHasAnyBalance}
-            />
-            <MusdConvertSection />
-          </>
-        ) : (
-          <>
-            <Text
-              variant={TextVariant.HeadingSm}
-              className="asset-page__balance-heading"
-            >
-              {t('yourBalance')}
-            </Text>
-            {[AssetType.token, AssetType.native].includes(type) && (
-              <TokenCell
-                key={`${symbol}-${address}`}
-                token={tokenWithFiatAmount as TokenWithFiatAmount}
-                safeChains={safeChains}
-              />
-            )}
-          </>
+        <Text
+          variant={TextVariant.HeadingSm}
+          className="asset-page__balance-heading"
+        >
+          {t('yourBalance')}
+        </Text>
+        {[AssetType.token, AssetType.native].includes(type) && (
+          <TokenCell
+            key={`${symbol}-${address}`}
+            token={tokenWithFiatAmount as TokenWithFiatAmount}
+            safeChains={safeChains}
+          />
         )}
         <Box marginTop={6} flexDirection={BoxFlexDirection.Column} gap={4}>
           {[AssetType.token, AssetType.native].includes(type) && (
@@ -386,17 +345,6 @@ const AssetPage = ({
                       <AddressCopyButton address={contractAddress} shorten />,
                     )}
                     <Box flexDirection={BoxFlexDirection.Column} gap={2}>
-                      {isMusdAssetPage
-                        ? renderRow(
-                            t('tokenStandard'),
-                            <Text
-                              variant={TextVariant.BodyMd}
-                              fontWeight={FontWeight.Medium}
-                            >
-                              ERC-20
-                            </Text>,
-                          )
-                        : null}
                       {asset.decimals !== undefined &&
                         renderRow(
                           t('tokenDecimal'),

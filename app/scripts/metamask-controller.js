@@ -52,12 +52,6 @@ import { ERC1155, ERC20, ERC721, toHex } from '@metamask/controller-utils';
 import { wordlist } from '@metamask/scure-bip39/dist/wordlists/english';
 
 import {
-  BRIDGE_CONTROLLER_NAME,
-  BridgeUserAction,
-  BridgeBackgroundAction,
-} from '@metamask/bridge-controller';
-
-import {
   TransactionStatus,
   TransactionType,
 } from '@metamask/transaction-controller';
@@ -68,11 +62,6 @@ import {
   hexToBigInt,
   toCaipChainId,
   parseCaipAccountId,
-  add0x,
-  hexToBytes,
-  bytesToHex,
-  parseCaipAssetType,
-  KnownCaipNamespace,
   hasProperty,
   isObject,
   isJsonRpcRequest,
@@ -117,14 +106,6 @@ import {
   requestPermittedChainsPermissionIncremental,
   getCaip25PermissionFromLegacyPermissions,
 } from '@metamask/chain-agnostic-permission';
-import { BRIDGE_STATUS_CONTROLLER_NAME } from '@metamask/bridge-status-controller';
-
-import {
-  SeedlessOnboardingControllerErrorMessage,
-  SecretType,
-  RecoveryError,
-} from '@metamask/seedless-onboarding-controller';
-import { PRODUCT_TYPES } from '@metamask/subscription-controller';
 import { isSnapId } from '@metamask/snaps-utils';
 import {
   findAtomicBatchSupportForChain,
@@ -145,7 +126,7 @@ import {
   KEYRING_DEVICE_PROPERTY_MAP,
 } from '../../shared/constants/hardware-wallets';
 import { KeyringType } from '../../shared/constants/keyring';
-import { MILLISECOND, MINUTE, SECOND } from '../../shared/constants/time';
+import { MILLISECOND, SECOND } from '../../shared/constants/time';
 import {
   ORIGIN_METAMASK,
   POLLING_TOKEN_ENVIRONMENT_TYPES,
@@ -190,29 +171,13 @@ import {
 } from '../../shared/lib/transactions-controller-utils';
 import { getProviderConfig } from '../../shared/lib/selectors/networks';
 import { selectAllEnabledNetworkClientIds } from '../../shared/lib/selectors/multichain';
-import {
-  trace,
-  endTrace,
-  TraceName,
-  TraceOperation,
-} from '../../shared/lib/trace';
-import fetchWithCache from '../../shared/lib/fetch-with-cache';
+import { trace, endTrace, TraceName } from '../../shared/lib/trace';
 import { ALLOWED_BRIDGE_CHAIN_IDS } from '../../shared/constants/bridge';
 import { FirstTimeFlowType } from '../../shared/constants/onboarding';
 import { updateCurrentLocale } from '../../shared/lib/translate';
-import {
-  getIsSeedlessOnboardingFeatureEnabled,
-  getIsPerpsIncludedInBuild,
-  getIsAssetsUnifiedStateIncludedInBuild,
-} from '../../shared/lib/environment';
+import { getIsAssetsUnifiedStateIncludedInBuild } from '../../shared/lib/environment';
 import { isSnapPreinstalled } from '../../shared/lib/snaps/snaps';
 import { toChecksumHexAddress } from '../../shared/lib/hexstring-utils';
-import {
-  getShieldGatewayConfig,
-  updatePreferencesAndMetricsForShieldSubscription,
-  getIsShieldSubscriptionActive,
-} from '../../shared/lib/shield';
-import { createSentryError } from '../../shared/lib/error';
 import {
   getAccountTrackerControllerAccountsByChainId,
   getTokensControllerAllTokens,
@@ -229,9 +194,7 @@ import {
 import { onStreamClosed } from '../../shared/lib/stream-utils';
 
 import { AddressBookPetnamesBridge } from './lib/AddressBookPetnamesBridge';
-import { WalletFundsObtainedMonitor } from './lib/WalletFundsObtainedMonitor';
 import { createPPOMMiddleware } from './lib/ppom/ppom-middleware';
-import { createDappSwapMiddleware } from './lib/dapp-swap/dapp-swap-middleware';
 import { createTrustSignalsMiddleware } from './lib/trust-signals/trust-signals-middleware';
 import {
   onMessageReceived,
@@ -327,8 +290,6 @@ import { TransactionControllerInit } from './messenger-client-init/confirmations
 import { TransactionPayControllerInit } from './messenger-client-init/transaction-pay-controller-init';
 import { GeolocationApiServiceInit } from './messenger-client-init/geolocation-api-service-init';
 import { GeolocationControllerInit } from './messenger-client-init/geolocation-controller-init';
-import { PerpsControllerInit } from './messenger-client-init/perps-controller-init';
-import { PerpsStreamBridge } from './controllers/perps/perps-stream-bridge';
 import { PPOMControllerInit } from './messenger-client-init/confirmations/ppom-controller-init';
 import { SmartTransactionsControllerInit } from './messenger-client-init/smart-transactions/smart-transactions-controller-init';
 import { initMessengerClients } from './messenger-client-init/utils';
@@ -338,24 +299,12 @@ import {
   RateLimitControllerInit,
   WebSocketServiceInit,
 } from './messenger-client-init/snaps';
-import {
-  BackendWebSocketServiceInit,
-  AccountActivityServiceInit,
-} from './messenger-client-init/core-backend';
-import { AuthenticationControllerInit } from './messenger-client-init/identity/authentication-controller-init';
-import { UserStorageControllerInit } from './messenger-client-init/identity/user-storage-controller-init';
 import { DeFiPositionsControllerInit } from './messenger-client-init/defi-positions/defi-positions-controller-init';
-import { NotificationServicesControllerInit } from './messenger-client-init/notifications/notification-services-controller-init';
-import { NotificationServicesPushControllerInit } from './messenger-client-init/notifications/notification-services-push-controller-init';
 import { DelegationControllerInit } from './messenger-client-init/delegation/delegation-controller-init';
 import { isRelaySupported } from './lib/transaction/transaction-relay';
 import { openUpdateTabAndReload } from './lib/open-update-tab-and-reload';
 import { AccountTreeControllerInit } from './messenger-client-init/accounts/account-tree-controller-init';
 import { MultichainAccountServiceInit } from './messenger-client-init/multichain/multichain-account-service-init';
-import {
-  OAuthServiceInit,
-  SeedlessOnboardingControllerInit,
-} from './messenger-client-init/seedless-onboarding';
 import { applyTransactionContainersExisting } from './lib/transaction/containers/util';
 import {
   getSendBundleSupportedChains,
@@ -379,8 +328,6 @@ import { ConnectivityControllerInit } from './messenger-client-init/connectivity
 import { AccountTrackerControllerInit } from './messenger-client-init/account-tracker-controller-init';
 import { OnboardingControllerInit } from './messenger-client-init/onboarding-controller-init';
 import { RemoteFeatureFlagControllerInit } from './messenger-client-init/remote-feature-flag-controller-init';
-import { BridgeControllerInit } from './messenger-client-init/bridge-controller-init';
-import { BridgeStatusControllerInit } from './messenger-client-init/bridge-status-controller-init';
 import { PreferencesControllerInit } from './messenger-client-init/preferences-controller-init';
 import { AppStateControllerInit } from './messenger-client-init/app-state-controller-init';
 import { PermissionControllerInit } from './messenger-client-init/permission-controller-init';
@@ -409,25 +356,9 @@ import { UserOperationControllerInit } from './messenger-client-init/confirmatio
 import { getRootMessenger } from './lib/messenger';
 import { MessengerSubscriptions } from './lib/MessengerSubscriptions';
 import { ProfileMetricsControllerInit } from './messenger-client-init/profile-metrics-controller-init';
-import { ProfileMetricsServiceInit } from './messenger-client-init/profile-metrics-service-init';
 import { getAddTransactionSendCallExtraOptions } from './lib/transaction/tempo-tx-utils';
 import { DataDeletionServiceInit } from './messenger-client-init/data-deletion-service-init';
 import { LegacyBackgroundApiServiceInit } from './messenger-client-init/legacy-background-api-service-init';
-import {
-  createNoRemoteNotificationsController,
-  createNoRemoteOAuthService,
-  createNoRemotePushController,
-  createNoRemoteRewardsController,
-  createNoRemoteRewardsDataService,
-  createNoRemoteSeedlessOnboardingController,
-  NoRemoteClaimsControllerInit,
-  NoRemoteClaimsServiceInit,
-  NoRemoteRewardsControllerInit,
-  NoRemoteRewardsDataServiceInit,
-  NoRemoteShieldControllerInit,
-  NoRemoteSubscriptionControllerInit,
-  NoRemoteSubscriptionServiceInit,
-} from './lib/no-remote-services';
 
 export const METAMASK_CONTROLLER_EVENTS = {
   // Fired after state changes that impact the extension badge (unapproved msg count)
@@ -439,10 +370,6 @@ export const METAMASK_CONTROLLER_EVENTS = {
   // TODO: Add this and similar enums to the `controllers` repo and export them
   APPROVAL_STATE_CHANGE: 'ApprovalController:stateChange',
   APP_STATE_UNLOCK_CHANGE: 'AppStateController:unlockChange',
-  METAMASK_NOTIFICATIONS_LIST_UPDATED:
-    'NotificationServicesController:notificationsListUpdated',
-  METAMASK_NOTIFICATIONS_MARK_AS_READ:
-    'NotificationServicesController:markNotificationsAsRead',
 };
 
 /**
@@ -515,9 +442,6 @@ export default class MetamaskController extends EventEmitter {
 
     // lock to ensure only one vault created at once
     this.createVaultMutex = new Mutex();
-
-    // lock to ensure only one seedless onboarding operation is running at once
-    this.seedlessOperationMutex = new Mutex();
 
     this.extension.runtime.onInstalled.addListener((details) => {
       if (details.reason === 'update') {
@@ -596,21 +520,14 @@ export default class MetamaskController extends EventEmitter {
       CronjobController: CronjobControllerInit,
       SelectedNetworkController: SelectedNetworkControllerInit,
       WebSocketService: WebSocketServiceInit,
-      BackendWebSocketService: BackendWebSocketServiceInit,
-      AccountActivityService: AccountActivityServiceInit,
       GeolocationApiService: GeolocationApiServiceInit,
       GeolocationController: GeolocationControllerInit,
-      ...(getIsPerpsIncludedInBuild()
-        ? { PerpsController: PerpsControllerInit }
-        : {}),
       PPOMController: PPOMControllerInit,
       PhishingController: PhishingControllerInit,
       AccountTrackerController: AccountTrackerControllerInit,
       TransactionController: TransactionControllerInit,
       TransactionPayController: TransactionPayControllerInit,
       SmartTransactionsController: SmartTransactionsControllerInit,
-      BridgeController: BridgeControllerInit,
-      BridgeStatusController: BridgeStatusControllerInit,
       NftController: NftControllerInit,
       AssetsContractController: AssetsContractControllerInit,
       NftDetectionController: NftDetectionControllerInit,
@@ -636,29 +553,14 @@ export default class MetamaskController extends EventEmitter {
       MultichainBalancesController: MultichainBalancesControllerInit,
       MultichainTransactionsController: MultichainTransactionsControllerInit,
       MultichainAccountService: MultichainAccountServiceInit,
-      AuthenticationController: AuthenticationControllerInit,
-      UserStorageController: UserStorageControllerInit,
-      NotificationServicesController: NotificationServicesControllerInit,
-      NotificationServicesPushController:
-        NotificationServicesPushControllerInit,
       DeFiPositionsController: DeFiPositionsControllerInit,
       DelegationController: DelegationControllerInit,
-      OAuthService: OAuthServiceInit,
-      SeedlessOnboardingController: SeedlessOnboardingControllerInit,
-      SubscriptionController: NoRemoteSubscriptionControllerInit,
-      SubscriptionService: NoRemoteSubscriptionServiceInit,
       ConnectivityController: ConnectivityControllerInit,
       NetworkOrderController: NetworkOrderControllerInit,
-      ShieldController: NoRemoteShieldControllerInit,
-      ClaimsController: NoRemoteClaimsControllerInit,
-      ClaimsService: NoRemoteClaimsServiceInit,
       EnsController: EnsControllerInit,
       NameController: NameControllerInit,
       AnnouncementController: AnnouncementControllerInit,
-      RewardsDataService: NoRemoteRewardsDataServiceInit,
-      RewardsController: NoRemoteRewardsControllerInit,
       ProfileMetricsController: ProfileMetricsControllerInit,
-      ProfileMetricsService: ProfileMetricsServiceInit,
       // ClientController must be initialized before AssetsController (AssetsController subscribes to ClientController:stateChange).
       ClientController: ClientControllerInit,
       ...(getIsAssetsUnifiedStateIncludedInBuild()
@@ -724,11 +626,6 @@ export default class MetamaskController extends EventEmitter {
     this.txController = messengerClientsByName.TransactionController;
     this.smartTransactionsController =
       messengerClientsByName.SmartTransactionsController;
-    this.bridgeController = messengerClientsByName.BridgeController;
-    this.bridgeStatusController = messengerClientsByName.BridgeStatusController;
-    this.backendWebSocketService =
-      messengerClientsByName.BackendWebSocketService;
-    this.accountActivityService = messengerClientsByName.AccountActivityService;
     this.nftController = messengerClientsByName.NftController;
     this.nftDetectionController = messengerClientsByName.NftDetectionController;
     this.assetsContractController =
@@ -756,44 +653,17 @@ export default class MetamaskController extends EventEmitter {
     this.multichainNetworkController =
       messengerClientsByName.MultichainNetworkController;
     this.multichainRatesController = messengerClientsByName.RatesController;
-    this.authenticationController =
-      messengerClientsByName.AuthenticationController;
-    this.userStorageController = messengerClientsByName.UserStorageController;
     this.delegationController = messengerClientsByName.DelegationController;
-    const { useExternalServices } = this.preferencesController.state;
-    this.notificationServicesController = useExternalServices
-      ? messengerClientsByName.NotificationServicesController
-      : createNoRemoteNotificationsController();
-    this.notificationServicesPushController = useExternalServices
-      ? messengerClientsByName.NotificationServicesPushController
-      : createNoRemotePushController();
     this.deFiPositionsController =
       messengerClientsByName.DeFiPositionsController;
     this.accountTreeController = messengerClientsByName.AccountTreeController;
-    this.oauthService = useExternalServices
-      ? messengerClientsByName.OAuthService
-      : createNoRemoteOAuthService();
-    this.subscriptionService = messengerClientsByName.SubscriptionService;
-    this.seedlessOnboardingController = useExternalServices
-      ? messengerClientsByName.SeedlessOnboardingController
-      : createNoRemoteSeedlessOnboardingController();
-    this.subscriptionController = messengerClientsByName.SubscriptionController;
     this.networkOrderController = messengerClientsByName.NetworkOrderController;
     this.networkEnablementController =
       messengerClientsByName.NetworkEnablementController;
-    this.shieldController = messengerClientsByName.ShieldController;
     this.ensController = messengerClientsByName.EnsController;
     this.nameController = messengerClientsByName.NameController;
     this.announcementController = messengerClientsByName.AnnouncementController;
     this.accountOrderController = messengerClientsByName.AccountOrderController;
-    this.rewardsDataService = useExternalServices
-      ? messengerClientsByName.RewardsDataService
-      : createNoRemoteRewardsDataService();
-    this.rewardsController = useExternalServices
-      ? messengerClientsByName.RewardsController
-      : createNoRemoteRewardsController();
-    this.claimsController = messengerClientsByName.ClaimsController;
-    this.claimsService = messengerClientsByName.ClaimsService;
     this.profileMetricsController =
       messengerClientsByName.ProfileMetricsController;
     this.legacyBackgroundApiService =
@@ -830,39 +700,6 @@ export default class MetamaskController extends EventEmitter {
       this._onLock(),
     );
 
-    // on/off shield controller based on shield subscription
-    this.controllerMessenger.subscribe(
-      'SubscriptionController:stateChange',
-      (state) => {
-        const { useExternalServices: hasBasicFunctionalityEnabled } =
-          this.preferencesController.state;
-        // shield coverage use security alerts, phish detect and transaction simulations, which is only available when basic functionality is enabled
-        if (!hasBasicFunctionalityEnabled) {
-          return;
-        }
-
-        // check if the shield subscription is active after the state change
-        const hasActiveShieldSubscription = getIsShieldSubscriptionActive(
-          state.subscriptions,
-        );
-        if (hasActiveShieldSubscription) {
-          // fetch claims configurations when shield subscription is active
-          this.claimsController.fetchClaimsConfigurations().catch((err) => {
-            log.error('Error fetching claims configurations', err);
-          });
-
-          // update preferences and metrics optin status after shield subscription is active
-          updatePreferencesAndMetricsForShieldSubscription(
-            this.metaMetricsController,
-            this.preferencesController,
-          );
-          this.shieldController.start();
-        } else {
-          this.shieldController.stop();
-        }
-      },
-    );
-
     const petnamesBridgeMessenger = new Messenger({
       namespace: 'PetnamesBridge',
       parent: this.controllerMessenger,
@@ -881,71 +718,18 @@ export default class MetamaskController extends EventEmitter {
       messenger: petnamesBridgeMessenger,
     }).init();
 
-    const { useExternalServices: shouldUseExternalServices } =
-      this.preferencesController.state;
+    this.getSecurityAlertsConfig = async (url) => ({
+      newUrl: url,
+      authorization: undefined,
+    });
 
-    if (shouldUseExternalServices) {
-      const walletFundsObtainedMonitorMessenger = new Messenger({
-        namespace: 'WalletFundsObtainedMonitor',
-        parent: this.controllerMessenger,
-      });
-      this.controllerMessenger.delegate({
-        messenger: walletFundsObtainedMonitorMessenger,
-        events: ['NotificationServicesController:notificationsListUpdated'],
-        actions: [
-          'MetaMetricsController:trackEvent',
-          'AppStateController:setCanTrackWalletFundsObtained',
-          'OnboardingController:getState',
-          'NotificationServicesController:getState',
-          'TokenBalancesController:getState',
-          'MultichainBalancesController:getState',
-          'RemoteFeatureFlagController:getState',
-          'AssetsController:getState',
-        ],
-      });
-
-      this.walletFundsObtainedMonitor = new WalletFundsObtainedMonitor({
-        messenger: walletFundsObtainedMonitorMessenger,
-      });
-    }
-
-    this.getSecurityAlertsConfig = async (url) => {
-      const getShieldSubscription = () =>
-        this.controllerMessenger.call(
-          'SubscriptionController:getSubscriptionByProduct',
-          PRODUCT_TYPES.SHIELD,
-        );
-      const getToken = () =>
-        this.controllerMessenger.call(
-          'AuthenticationController:getBearerToken',
-        );
-      return getShieldGatewayConfig(getToken, getShieldSubscription, url);
-    };
-
-    // Authenticate Sentinel and Transaction API calls via core-backend (AuthenticationController)
-    if (shouldUseExternalServices) {
-      setSentinelApiAuth(() => this.authenticationController.getBearerToken());
-      this.notificationServicesController.init();
-    } else {
-      setSentinelApiAuth(() => undefined);
-    }
+    setSentinelApiAuth(() => undefined);
     this.cronjobController.init();
 
     this.controllerMessenger.subscribe(
       'TransactionController:transactionStatusUpdated',
       ({ transactionMeta }) => {
         this._onFinishedTransaction(transactionMeta);
-      },
-    );
-
-    this.controllerMessenger.subscribe(
-      'TransactionController:transactionSubmitted',
-      ({ transactionMeta }) => {
-        this.subscriptionService
-          .handlePostTransaction(transactionMeta)
-          .catch((err) => {
-            console.error('Error onShieldSubscriptionApprovalTransaction', err);
-          });
       },
     );
 
@@ -1210,8 +994,6 @@ export default class MetamaskController extends EventEmitter {
       DecryptMessageController: this.decryptMessageController,
       EncryptionPublicKeyController: this.encryptionPublicKeyController,
       SignatureController: this.signatureController,
-      BridgeController: this.bridgeController,
-      BridgeStatusController: this.bridgeStatusController,
       EnsController: this.ensController,
       ApprovalController: this.approvalController,
     };
@@ -1230,7 +1012,6 @@ export default class MetamaskController extends EventEmitter {
       NetworkController: this.networkController,
       AlertController: this.alertController,
       OnboardingController: this.onboardingController,
-      SeedlessOnboardingController: this.seedlessOnboardingController,
       PermissionController: this.permissionController,
       PermissionLogController: this.permissionLogController,
       SubjectMetadataController: this.subjectMetadataController,
@@ -1254,12 +1035,6 @@ export default class MetamaskController extends EventEmitter {
       MultichainRatesController: this.multichainRatesController,
       NameController: this.nameController,
       UserOperationController: this.userOperationController,
-      // Notification Controllers
-      AuthenticationController: this.authenticationController,
-      UserStorageController: this.userStorageController,
-      NotificationServicesController: this.notificationServicesController,
-      NotificationServicesPushController:
-        this.notificationServicesPushController,
       RemoteFeatureFlagController: this.remoteFeatureFlagController,
       DeFiPositionsController: this.deFiPositionsController,
       ProfileMetricsController: this.profileMetricsController,
@@ -1288,8 +1063,6 @@ export default class MetamaskController extends EventEmitter {
         CurrencyController: this.currencyRateController,
         AlertController: this.alertController,
         OnboardingController: this.onboardingController,
-        SeedlessOnboardingController: this.seedlessOnboardingController,
-        SubscriptionController: this.subscriptionController,
         PermissionController: this.permissionController,
         PermissionLogController: this.permissionLogController,
         SubjectMetadataController: this.subjectMetadataController,
@@ -1313,18 +1086,9 @@ export default class MetamaskController extends EventEmitter {
         CronjobController: this.cronjobController,
         NameController: this.nameController,
         UserOperationController: this.userOperationController,
-        // Notification Controllers
-        AuthenticationController: this.authenticationController,
-        UserStorageController: this.userStorageController,
-        NotificationServicesController: this.notificationServicesController,
-        NotificationServicesPushController:
-          this.notificationServicesPushController,
         RemoteFeatureFlagController: this.remoteFeatureFlagController,
         DeFiPositionsController: this.deFiPositionsController,
         PhishingController: this.phishingController,
-        ShieldController: this.shieldController,
-        ClaimsController: this.claimsController,
-        ClaimsService: this.claimsService,
         ProfileMetricsController: this.profileMetricsController,
         ...resetOnRestartStore,
         ...controllerMemState,
@@ -1452,50 +1216,11 @@ export default class MetamaskController extends EventEmitter {
     return rpcEndpoints[defaultRpcEndpointIndex].networkClientId;
   }
 
-  // Provides a method for getting feature flags for the multichain
-  // initial rollout, such that we can remotely modify polling interval
-  getInfuraFeatureFlags() {
-    if (!this.preferencesController.state.useExternalServices) {
-      return;
-    }
-
-    fetchWithCache({
-      url: 'https://bridge.api.cx.metamask.io/featureFlags',
-      cacheRefreshTime: MINUTE * 20,
-    })
-      .then(this.onFeatureFlagResponseReceived)
-      .catch((e) => {
-        // API unreachable (?)
-        log.warn('Feature flag endpoint is unreachable', e);
-      });
-  }
-
-  onFeatureFlagResponseReceived(response) {
-    const { multiChainAssets = {} } = response;
-    const { pollInterval } = multiChainAssets;
-    // Polling interval is provided in seconds
-    if (pollInterval > 0) {
-      this.tokenBalancesController.setIntervalLength(pollInterval * SECOND);
-    }
-  }
-
   postOnboardingInitialization() {
     const { usePhishDetect } = this.preferencesController.state;
 
     if (usePhishDetect) {
       this.phishingController.maybeUpdateState();
-    }
-
-    // Start perps eligibility monitoring only when basic functionality is on (no external calls when off)
-    if (
-      getIsPerpsIncludedInBuild() &&
-      this.preferencesController.state.useExternalServices
-    ) {
-      this.messengerClientApi
-        .perpsStartEligibilityMonitoring?.()
-        ?.catch((error) => {
-          console.error(error);
-        });
     }
   }
 
@@ -1518,7 +1243,6 @@ export default class MetamaskController extends EventEmitter {
 
   triggerNetworkrequests() {
     this.tokenDetectionController.enable();
-    this.getInfuraFeatureFlags();
     if (
       !isEvmAccountType(
         this.accountsController.getSelectedMultichainAccount().type,
@@ -1527,16 +1251,6 @@ export default class MetamaskController extends EventEmitter {
     ) {
       this.multichainRatesController.start();
     }
-    if (
-      getIsPerpsIncludedInBuild() &&
-      this.preferencesController.state.useExternalServices
-    ) {
-      this.messengerClientApi
-        .perpsStartEligibilityMonitoring?.()
-        ?.catch((error) => {
-          console.error(error);
-        });
-    }
   }
 
   stopNetworkRequests() {
@@ -1544,43 +1258,6 @@ export default class MetamaskController extends EventEmitter {
     this.tokenDetectionController.disable();
     if (!this.#isAssetsUnifyStateEnabled()) {
       this.multichainRatesController.stop();
-    }
-    if (getIsPerpsIncludedInBuild()) {
-      this.messengerClientApi
-        .perpsStopEligibilityMonitoring?.()
-        ?.catch((error) => {
-          console.error(error);
-        });
-    }
-  }
-
-  /**
-   * Disconnect an active Perps session without affecting non-Perps users.
-   *
-   * Perps is an optional feature, so guard on build inclusion, controller
-   * presence, and active connection state before calling into the controller.
-   */
-  #disconnectPerpsIfActive() {
-    try {
-      if (
-        !getIsPerpsIncludedInBuild() ||
-        !this.messengerClientsByName.PerpsController ||
-        typeof this.messengerClientApi.perpsDisconnect !== 'function'
-      ) {
-        return;
-      }
-
-      if (
-        this.messengerClientApi.perpsGetConnectionState?.() === 'disconnected'
-      ) {
-        return;
-      }
-
-      this.messengerClientApi.perpsDisconnect().catch((error) => {
-        console.error(error);
-      });
-    } catch (error) {
-      console.error(error);
     }
   }
 
@@ -1619,59 +1296,11 @@ export default class MetamaskController extends EventEmitter {
     );
 
     this.controllerMessenger.subscribe(
-      'PreferencesController:stateChange',
-      previousValueComparator((prevState, currState) => {
-        const { useExternalServices: prev } = prevState;
-        const { useExternalServices: curr } = currState;
-        if (
-          getIsPerpsIncludedInBuild() &&
-          prev !== curr &&
-          this.messengerClientApi.perpsStartEligibilityMonitoring &&
-          this.messengerClientApi.perpsStopEligibilityMonitoring
-        ) {
-          if (curr) {
-            this.messengerClientApi
-              .perpsStartEligibilityMonitoring?.()
-              ?.catch((error) => {
-                console.error(error);
-              });
-          } else {
-            this.messengerClientApi
-              .perpsStopEligibilityMonitoring?.()
-              ?.catch((error) => {
-                console.error(error);
-              });
-          }
-        }
-        return true;
-      }, this.preferencesController.state),
-    );
-
-    this.controllerMessenger.subscribe(
       `${this.accountsController.name}:selectedAccountChange`,
       async (account) => {
         if (account.address && account.address !== lastSelectedAddress) {
           lastSelectedAddress = account.address;
           await this._onAccountChange(account.address);
-        }
-      },
-    );
-
-    this.controllerMessenger.subscribe(
-      'BridgeStatusController:destinationTransactionCompleted',
-      (assetId) => {
-        const { chain } = parseCaipAssetType(assetId);
-
-        if (chain.namespace === KnownCaipNamespace.Eip155) {
-          const chainId = toHex(chain?.reference);
-
-          if (chainId) {
-            this.tokenDetectionController
-              .detectTokens({ chainIds: [chainId] })
-              .catch((err) => {
-                log.error('Error detecting tokens', { err });
-              });
-          }
         }
       },
     );
@@ -2130,11 +1759,6 @@ export default class MetamaskController extends EventEmitter {
       approvalController,
       phishingController,
       tokenRatesController,
-      // Notification Controllers
-      authenticationController,
-      userStorageController,
-      notificationServicesController,
-      notificationServicesPushController,
       deFiPositionsController,
       multichainAssetsRatesController,
       staticAssetsController,
@@ -2252,121 +1876,6 @@ export default class MetamaskController extends EventEmitter {
       checkIsSeedlessPasswordOutdated:
         this.checkIsSeedlessPasswordOutdated.bind(this),
       syncPasswordAndUnlockWallet: this.syncPasswordAndUnlockWallet.bind(this),
-
-      // subscription
-      subscriptionsStartPolling: this.subscriptionController.startPolling.bind(
-        this.subscriptionController,
-      ),
-      getSubscriptionsEligibilities:
-        this.subscriptionController.getSubscriptionsEligibilities.bind(
-          this.subscriptionController,
-        ),
-      assignUserToCohort: this.subscriptionController.assignUserToCohort.bind(
-        this.subscriptionController,
-      ),
-      getSubscriptions: this.subscriptionController.getSubscriptions.bind(
-        this.subscriptionController,
-      ),
-      getSubscriptionPricing: this.subscriptionController.getPricing.bind(
-        this.subscriptionController,
-      ),
-      cacheLastSelectedPaymentMethod:
-        this.subscriptionController.cacheLastSelectedPaymentMethod.bind(
-          this.subscriptionController,
-        ),
-      getSubscriptionCryptoApprovalAmount:
-        this.subscriptionController.getCryptoApproveTransactionParams.bind(
-          this.subscriptionController,
-        ),
-      cancelSubscription: this.subscriptionController.cancelSubscription.bind(
-        this.subscriptionController,
-      ),
-      unCancelSubscription:
-        this.subscriptionController.unCancelSubscription.bind(
-          this.subscriptionController,
-        ),
-      getSubscriptionBillingPortalUrl:
-        this.subscriptionController.getBillingPortalUrl.bind(
-          this.subscriptionController,
-        ),
-      startSubscriptionWithCard:
-        this.subscriptionService.startSubscriptionWithCard.bind(
-          this.subscriptionService,
-        ),
-      updateSubscriptionCardPaymentMethod:
-        this.subscriptionService.updateSubscriptionCardPaymentMethod.bind(
-          this.subscriptionService,
-        ),
-      updateSubscriptionCryptoPaymentMethod:
-        this.subscriptionService.updateSubscriptionCryptoPaymentMethod.bind(
-          this.subscriptionService,
-        ),
-      submitSubscriptionUserEvents:
-        this.subscriptionController.submitUserEvent.bind(
-          this.subscriptionController,
-        ),
-      linkRewardToShieldSubscription:
-        this.subscriptionService.linkRewardToExistingSubscription.bind(
-          this.subscriptionService,
-        ),
-
-      // rewards
-      getRewardsCandidateSubscriptionId:
-        this.rewardsController.getCandidateSubscriptionId.bind(
-          this.rewardsController,
-        ),
-      getRewardsSeasonMetadata: this.rewardsController.getSeasonMetadata.bind(
-        this.rewardsController,
-      ),
-      getRewardsSeasonStatus: this.rewardsController.getSeasonStatus.bind(
-        this.rewardsController,
-      ),
-      getRewardsHasAccountOptedIn:
-        this.rewardsController.getHasAccountOptedIn.bind(
-          this.rewardsController,
-        ),
-      estimateRewardsPoints: this.rewardsController.estimatePoints.bind(
-        this.rewardsController,
-      ),
-      validateRewardsReferralCode:
-        this.rewardsController.validateReferralCode.bind(
-          this.rewardsController,
-        ),
-      getRewardsGeoMetadata: this.rewardsController.getGeoRewardsMetadata.bind(
-        this.rewardsController,
-      ),
-      rewardsOptIn: this.rewardsController.optIn.bind(this.rewardsController),
-      rewardsIsOptInSupported: this.rewardsController.isOptInSupported.bind(
-        this.rewardsController,
-      ),
-      rewardsGetOptInStatus: this.rewardsController.getOptInStatus.bind(
-        this.rewardsController,
-      ),
-      rewardsLinkAccountsToSubscriptionCandidate:
-        this.rewardsController.linkAccountsToSubscriptionCandidate.bind(
-          this.rewardsController,
-        ),
-
-      // claims
-      getSubmitClaimConfig: this.claimsController.getSubmitClaimConfig.bind(
-        this.claimsController,
-      ),
-      generateClaimSignature: this.claimsController.generateClaimSignature.bind(
-        this.claimsController,
-      ),
-      getClaims: this.claimsController.getClaims.bind(this.claimsController),
-      saveClaimDraft: this.claimsController.saveOrUpdateClaimDraft.bind(
-        this.claimsController,
-      ),
-      getClaimDrafts: this.claimsController.getClaimDrafts.bind(
-        this.claimsController,
-      ),
-      deleteClaimDraft: this.claimsController.deleteClaimDraft.bind(
-        this.claimsController,
-      ),
-      deleteAllClaimDrafts: this.claimsController.deleteAllClaimDrafts.bind(
-        this.claimsController,
-      ),
 
       // hardware wallets
       connectHardware: this.connectHardware.bind(this),
@@ -2639,10 +2148,6 @@ export default class MetamaskController extends EventEmitter {
         appStateController.getLastInteractedConfirmationInfo.bind(
           appStateController,
         ),
-      deleteDappSwapComparisonData:
-        appStateController.deleteDappSwapComparisonData.bind(
-          appStateController,
-        ),
       setLastInteractedConfirmationInfo:
         appStateController.setLastInteractedConfirmationInfo.bind(
           appStateController,
@@ -2653,86 +2158,22 @@ export default class MetamaskController extends EventEmitter {
         appStateController.setHasShownMultichainAccountsIntroModal.bind(
           appStateController,
         ),
-      setMusdConversionEducationSeen:
-        appStateController.setMusdConversionEducationSeen.bind(
-          appStateController,
-        ),
-      addMusdConversionDismissedCtaKey:
-        appStateController.addMusdConversionDismissedCtaKey.bind(
-          appStateController,
-        ),
       updateNetworkConnectionBanner:
         appStateController.updateNetworkConnectionBanner.bind(
           appStateController,
         ),
-      setShowShieldEntryModalOnce:
-        appStateController.setShowShieldEntryModalOnce.bind(appStateController),
-      setPendingShieldCohort:
-        appStateController.setPendingShieldCohort.bind(appStateController),
       setPendingRedirectRoute:
         appStateController.setPendingRedirectRoute.bind(appStateController),
-      setShieldPausedToastLastClickedOrClosed:
-        appStateController.setShieldPausedToastLastClickedOrClosed.bind(
-          appStateController,
-        ),
-      setShieldEndingToastLastClickedOrClosed:
-        appStateController.setShieldEndingToastLastClickedOrClosed.bind(
-          appStateController,
-        ),
-      setShieldSubscriptionError:
-        appStateController.setShieldSubscriptionError.bind(appStateController),
       setPna25Acknowledged:
         appStateController.setPna25Acknowledged.bind(appStateController),
       setAppActiveTab:
         appStateController.setAppActiveTab.bind(appStateController),
-      setDefaultSubscriptionPaymentOptions:
-        appStateController.setDefaultSubscriptionPaymentOptions.bind(
-          appStateController,
-        ),
-      setShieldSubscriptionMetricsProps:
-        appStateController.setShieldSubscriptionMetricsProps.bind(
-          appStateController,
-        ),
 
       // EnsController
       tryReverseResolveAddress:
         ensController.reverseResolveAddress.bind(ensController),
 
-      // OAuthService
-      startOAuthLogin: this.oauthService.startOAuthLogin.bind(
-        this.oauthService,
-      ),
-      setMarketingConsent: this.oauthService.setMarketingConsent.bind(
-        this.oauthService,
-      ),
-      getMarketingConsent: this.oauthService.getMarketingConsent.bind(
-        this.oauthService,
-      ),
-
-      // SeedlessOnboardingController
-      preloadToprfNodeDetails:
-        this.seedlessOnboardingController.preloadToprfNodeDetails.bind(
-          this.seedlessOnboardingController,
-        ),
-      authenticate: this.seedlessOnboardingController.authenticate.bind(
-        this.seedlessOnboardingController,
-      ),
-      resetOAuthLoginState: this.seedlessOnboardingController.clearState.bind(
-        this.seedlessOnboardingController,
-      ),
-      createSeedPhraseBackup: this.createSeedPhraseBackup.bind(this),
-      storeKeyringEncryptionKey:
-        this.seedlessOnboardingController.storeKeyringEncryptionKey.bind(
-          this.seedlessOnboardingController,
-        ),
-      restoreSocialBackupAndGetSeedPhrase:
-        this.restoreSocialBackupAndGetSeedPhrase.bind(this),
-      syncSeedPhrases: this.syncSeedPhrases.bind(this),
       changePassword: this.changePassword.bind(this),
-      getIsSeedlessOnboardingUserAuthenticated:
-        this.seedlessOnboardingController.getIsUserAuthenticated.bind(
-          this.seedlessOnboardingController,
-        ),
 
       checkDelegationDisabled: this.checkDelegationDisabled.bind(this),
 
@@ -2864,36 +2305,6 @@ export default class MetamaskController extends EventEmitter {
       },
       deleteInterface: () => undefined,
       updateInterfaceState: () => undefined,
-
-      // Bridge
-      [BridgeBackgroundAction.RESET_STATE]: this.controllerMessenger.call.bind(
-        this.controllerMessenger,
-        `${BRIDGE_CONTROLLER_NAME}:${BridgeBackgroundAction.RESET_STATE}`,
-      ),
-      [BridgeUserAction.UPDATE_QUOTE_PARAMS]:
-        this.controllerMessenger.call.bind(
-          this.controllerMessenger,
-          `${BRIDGE_CONTROLLER_NAME}:${BridgeUserAction.UPDATE_QUOTE_PARAMS}`,
-        ),
-      [BridgeBackgroundAction.TRACK_METAMETRICS_EVENT]:
-        this.controllerMessenger.call.bind(
-          this.controllerMessenger,
-          `${BRIDGE_CONTROLLER_NAME}:${BridgeBackgroundAction.TRACK_METAMETRICS_EVENT}`,
-        ),
-      [BridgeBackgroundAction.FETCH_QUOTES]: this.controllerMessenger.call.bind(
-        this.controllerMessenger,
-        `${BRIDGE_CONTROLLER_NAME}:${BridgeBackgroundAction.FETCH_QUOTES}`,
-      ),
-
-      // Bridge Tx submission
-      submitTx: this.controllerMessenger.call.bind(
-        this.controllerMessenger,
-        `${BRIDGE_STATUS_CONTROLLER_NAME}:${'submitTx'}`,
-      ),
-      submitIntent: this.controllerMessenger.call.bind(
-        this.controllerMessenger,
-        `${BRIDGE_STATUS_CONTROLLER_NAME}:${'submitIntent'}`,
-      ),
 
       // Smart Transactions
       fetchSmartTransactionFees: smartTransactionsController.getFees.bind(
@@ -3104,86 +2515,6 @@ export default class MetamaskController extends EventEmitter {
         ),
       removeCustomAsset: (accountId, assetId) =>
         this.assetsController.removeCustomAsset(accountId, assetId),
-      // Authentication Controller
-      performSignIn: authenticationController.performSignIn.bind(
-        authenticationController,
-      ),
-      performSignOut: authenticationController.performSignOut.bind(
-        authenticationController,
-      ),
-      getUserProfileLineage:
-        authenticationController.getUserProfileLineage.bind(
-          authenticationController,
-        ),
-      getBearerToken: authenticationController.getBearerToken.bind(
-        authenticationController,
-      ),
-
-      // UserStorageController
-      setIsBackupAndSyncFeatureEnabled:
-        userStorageController.setIsBackupAndSyncFeatureEnabled.bind(
-          userStorageController,
-        ),
-      deleteAccountSyncingDataFromUserStorage:
-        userStorageController.performDeleteStorageAllFeatureEntries.bind(
-          userStorageController,
-        ),
-      syncContactsWithUserStorage:
-        userStorageController.syncContactsWithUserStorage.bind(
-          userStorageController,
-        ),
-      // NotificationServicesController
-      checkAccountsPresence:
-        notificationServicesController.checkAccountsPresence.bind(
-          notificationServicesController,
-        ),
-      createOnChainTriggers:
-        notificationServicesController.createOnChainTriggers.bind(
-          notificationServicesController,
-        ),
-      disableAccounts: notificationServicesController.disableAccounts.bind(
-        notificationServicesController,
-      ),
-      enableAccounts: notificationServicesController.enableAccounts.bind(
-        notificationServicesController,
-      ),
-      fetchAndUpdateMetamaskNotifications:
-        notificationServicesController.fetchAndUpdateMetamaskNotifications.bind(
-          notificationServicesController,
-        ),
-      deleteNotificationsById:
-        notificationServicesController.deleteNotificationsById.bind(
-          notificationServicesController,
-        ),
-      getNotificationsByType:
-        notificationServicesController.getNotificationsByType.bind(
-          notificationServicesController,
-        ),
-      markMetamaskNotificationsAsRead:
-        notificationServicesController.markMetamaskNotificationsAsRead.bind(
-          notificationServicesController,
-        ),
-      setFeatureAnnouncementsEnabled:
-        notificationServicesController.setFeatureAnnouncementsEnabled.bind(
-          notificationServicesController,
-        ),
-      enablePushNotifications:
-        notificationServicesPushController.enablePushNotifications.bind(
-          notificationServicesPushController,
-        ),
-      disablePushNotifications:
-        notificationServicesPushController.disablePushNotifications.bind(
-          notificationServicesPushController,
-        ),
-      enableMetamaskNotifications:
-        notificationServicesController.enableMetamaskNotifications.bind(
-          notificationServicesController,
-        ),
-      disableMetamaskNotifications:
-        notificationServicesController.disableNotificationServices.bind(
-          notificationServicesController,
-        ),
-
       // Testing
       throwTestError: this.throwTestError.bind(this),
       captureTestError: this.captureTestError.bind(this),
@@ -3269,20 +2600,6 @@ export default class MetamaskController extends EventEmitter {
    * @returns void
    */
   async resetWallet(restoreOnly = false) {
-    // sign out from Authentication service and clear the Session Data
-    this.authenticationController.performSignOut();
-
-    // clear SeedlessOnboardingController state
-    this.seedlessOnboardingController.clearState();
-
-    // stop subscription polling
-    this.subscriptionController.stopAllPolling();
-
-    // clear States
-    this.subscriptionController.clearState();
-    this.shieldController.clearState();
-    this.claimsController.clearState();
-
     // clear contacts (address book)
     this.addressBookController.clear();
 
@@ -3574,72 +2891,22 @@ export default class MetamaskController extends EventEmitter {
    * Generate Encryption Key from the password using the Threshold OPRF and encrypt the seed phrase with the key.
    * Save the encrypted seed phrase in the metadata store.
    *
-   * @param {string} password - The user's password.
-   * @param {number[]} encodedSeedPhrase - The seed phrase to backup.
-   * @param {string} keyringId - The keyring id of the backup seed phrase.
+   * @param {string} _password - The user's password.
+   * @param {number[]} _encodedSeedPhrase - The seed phrase to backup.
+   * @param {string} _keyringId - The keyring id of the backup seed phrase.
    */
-  async createSeedPhraseBackup(password, encodedSeedPhrase, keyringId) {
-    let createSeedPhraseBackupSuccess = false;
-    try {
-      this.metaMetricsController.bufferedTrace?.({
-        name: TraceName.OnboardingCreateKeyAndBackupSrp,
-        op: TraceOperation.OnboardingSecurityOp,
-      });
-      const seedPhraseAsBuffer = Buffer.from(encodedSeedPhrase);
-
-      const seedPhrase =
-        this._convertMnemonicToWordlistIndices(seedPhraseAsBuffer);
-
-      await this.seedlessOnboardingController.createToprfKeyAndBackupSeedPhrase(
-        password,
-        seedPhrase,
-        keyringId,
-      );
-      createSeedPhraseBackupSuccess = true;
-
-      await this.syncKeyringEncryptionKey();
-    } catch (error) {
-      this.controllerMessenger?.captureException?.(
-        createSentryError(
-          TraceName.OnboardingCreateKeyAndBackupSrpError,
-          error,
-        ),
-      );
-
-      log.error('[createSeedPhraseBackup] error', error);
-      throw error;
-    } finally {
-      this.metaMetricsController.bufferedEndTrace?.({
-        name: TraceName.OnboardingCreateKeyAndBackupSrp,
-        data: { success: createSeedPhraseBackupSuccess },
-      });
-    }
+  async createSeedPhraseBackup(_password, _encodedSeedPhrase, _keyringId) {
+    throw new Error('Seedless onboarding is disabled.');
   }
 
   /**
    * Fetches and restores all the backed-up Secret Data (SRPs and Private keys)
    *
-   * @param {string} password - The user's password.
+   * @param {string} _password - The user's password.
    * @returns {Promise<Buffer[]>} The seed phrase.
    */
-  async fetchAllSecretData(password) {
-    let fetchAllSeedPhrasesSuccess = false;
-    try {
-      this.metaMetricsController.bufferedTrace?.({
-        name: TraceName.OnboardingFetchSrps,
-        op: TraceOperation.OnboardingSecurityOp,
-      });
-      const allSeedPhrases =
-        await this.seedlessOnboardingController.fetchAllSecretData(password);
-      fetchAllSeedPhrasesSuccess = true;
-
-      return allSeedPhrases;
-    } finally {
-      this.metaMetricsController.bufferedEndTrace?.({
-        name: TraceName.OnboardingFetchSrps,
-        data: { success: fetchAllSeedPhrasesSuccess },
-      });
-    }
+  async fetchAllSecretData(_password) {
+    return [];
   }
 
   /**
@@ -3650,129 +2917,7 @@ export default class MetamaskController extends EventEmitter {
    * @returns {void}
    */
   async syncPasswordAndUnlockWallet(password) {
-    const isSocialLoginFlow = this.onboardingController.getIsSocialLoginFlow();
-    // check if the password is outdated
-    let isPasswordOutdated = false;
-    if (isSocialLoginFlow) {
-      try {
-        isPasswordOutdated = await this.checkIsSeedlessPasswordOutdated({
-          skipCache: false,
-          captureSentryError: true,
-        });
-      } catch (error) {
-        // we don't want to block the unlock flow if the password outdated check fails
-        log.error('error while checking if password is outdated', error);
-      }
-    }
-
-    // if the flow is not social login or the password is not outdated,
-    // we will proceed with the normal flow and use the password to unlock the vault
-    if (!isSocialLoginFlow || !isPasswordOutdated) {
-      await this.submitPassword(password);
-      if (isSocialLoginFlow) {
-        // try to revoke pending refresh tokens asynchronously
-        this.seedlessOnboardingController
-          .revokePendingRefreshTokens()
-          .catch((err) => {
-            log.error('error while revoking pending refresh tokens', err);
-          });
-      }
-      return;
-    }
-    const releaseLock = await this.seedlessOperationMutex.acquire();
-
-    try {
-      const isKeyringPasswordValid = await this.keyringController
-        .verifyPassword(password)
-        .then(() => true)
-        .catch((err) => {
-          if (err.message.includes('Incorrect password')) {
-            return false;
-          }
-          log.error('error while verifying keyring password', err.message);
-          throw err;
-        });
-
-      // here e could be invalid password or outdated password error, which can result in following cases:
-      // 1. Seedless controller password verification succeeded.
-      // 2. Seedless controller failed but Keyring controller password verification succeeded.
-      // 3. Both keyring and seedless controller password verification failed.
-      await this.seedlessOnboardingController
-        .submitGlobalPassword({
-          globalPassword: password,
-          maxKeyChainLength: 20,
-        })
-        .catch((err) => {
-          if (err instanceof RecoveryError) {
-            // Keyring controller password verification succeeds and seedless controller failed.
-            if (
-              err?.message ===
-                SeedlessOnboardingControllerErrorMessage.IncorrectPassword &&
-              isKeyringPasswordValid
-            ) {
-              throw new Error(
-                SeedlessOnboardingControllerErrorMessage.OutdatedPassword,
-              );
-            }
-            throw new JsonRpcError(-32603, err.message, err.data);
-          }
-          log.error(`error while submitting global password: ${err.message}`);
-          throw err;
-        });
-
-      // re-encrypt the old vault data with the latest global password
-      const keyringEncryptionKey =
-        await this.seedlessOnboardingController.loadKeyringEncryptionKey();
-      // use encryption key to unlock the keyring vault
-      await this.submitEncryptionKey(keyringEncryptionKey);
-
-      let changePasswordSuccess = false;
-      try {
-        // update seedlessOnboardingController to use latest global password
-        await this.seedlessOnboardingController.syncLatestGlobalPassword({
-          globalPassword: password,
-        });
-
-        this.metaMetricsController.bufferedTrace?.({
-          name: TraceName.OnboardingResetPassword,
-          op: TraceOperation.OnboardingSecurityOp,
-        });
-        // update vault password to global password
-        await this.keyringController.changePassword(password);
-        changePasswordSuccess = true;
-        // sync the new keyring encryption key after keyring changePassword to the seedless onboarding controller
-        await this.syncKeyringEncryptionKey();
-
-        // check password outdated again skip cache to reset the cache after successful syncing
-        await this.checkIsSeedlessPasswordOutdated({
-          skipCache: true,
-          captureSentryError: true,
-        });
-
-        // revoke pending refresh tokens asynchronously
-        this.seedlessOnboardingController
-          .revokePendingRefreshTokens()
-          .catch((err) => {
-            log.error('error while revoking pending refresh tokens', err);
-          });
-      } catch (err) {
-        this.controllerMessenger?.captureException?.(
-          createSentryError(TraceName.OnboardingResetPasswordError, err),
-        );
-
-        // lock app again on error after submitPassword succeeded
-        // here we skip the seedless operation lock as we are already in the seedless operation lock
-        await this.setLocked({ skipSeedlessOperationLock: true });
-        throw err;
-      } finally {
-        this.metaMetricsController.bufferedEndTrace?.({
-          name: TraceName.OnboardingResetPassword,
-          data: { success: changePasswordSuccess },
-        });
-      }
-    } finally {
-      releaseLock();
-    }
+    await this.submitPassword(password);
   }
 
   /**
@@ -3781,51 +2926,19 @@ export default class MetamaskController extends EventEmitter {
    * @returns {Promise<void>}
    */
   async syncKeyringEncryptionKey() {
-    // store the keyring encryption key in the seedless onboarding controller
-    const keyringEncryptionKey =
-      await this.keyringController.exportEncryptionKey();
-    await this.seedlessOnboardingController.storeKeyringEncryptionKey(
-      keyringEncryptionKey,
-    );
+    return undefined;
   }
 
   /**
    * Checks if the seedless password is outdated.
    *
-   * @param {object} args - The arguments for the checkIsSeedlessPasswordOutdated method.
-   * @param {boolean} args.skipCache - whether to skip the cache @default false
-   * @param {boolean} args.captureSentryError - whether to capture the sentry error. @default false
+   * @param {object} _args - The arguments for the checkIsSeedlessPasswordOutdated method.
+   * @param {boolean} _args.skipCache - whether to skip the cache @default false
+   * @param {boolean} _args.captureSentryError - whether to capture the sentry error. @default false
    * @returns {Promise<boolean | undefined>} true if the password is outdated, false otherwise, undefined if the flow is not seedless
    */
-  async checkIsSeedlessPasswordOutdated(args) {
-    const skipCache = args?.skipCache || false;
-    const captureSentryError = args?.captureSentryError || false;
-    try {
-      const isSocialLoginFlow =
-        this.onboardingController.getIsSocialLoginFlow();
-      const { completedOnboarding } = this.onboardingController.state;
-
-      if (!isSocialLoginFlow || !completedOnboarding) {
-        // this is only available for seedless onboarding flow and completed onboarding
-        return false;
-      }
-
-      const isPasswordOutdated =
-        await this.seedlessOnboardingController.checkIsPasswordOutdated({
-          skipCache,
-        });
-      return isPasswordOutdated;
-    } catch (error) {
-      if (captureSentryError) {
-        this.controllerMessenger?.captureException?.(
-          createSentryError(
-            'Failed to check if seedless password is outdated',
-            error,
-          ),
-        );
-      }
-      throw error;
-    }
+  async checkIsSeedlessPasswordOutdated(_args) {
+    return false;
   }
 
   /**
@@ -3834,68 +2947,7 @@ export default class MetamaskController extends EventEmitter {
    * @returns {Promise<void>}
    */
   async syncSeedPhrases() {
-    try {
-      const isSocialLoginFlow =
-        this.onboardingController.getIsSocialLoginFlow();
-
-      if (!isSocialLoginFlow) {
-        throw new Error(
-          'Syncing seed phrases is only available for social login flow',
-        );
-      }
-
-      // 1. fetch all seed phrases
-      const [rootSecret, ...otherSecrets] = await this.fetchAllSecretData();
-      if (!rootSecret) {
-        throw new Error('No root SRP found');
-      }
-
-      for (const secret of otherSecrets) {
-        // import SRP secret
-        // Get the SRP hash, and find the hash in the local state
-        const srpHash =
-          this.seedlessOnboardingController.getSecretDataBackupState(
-            secret.data,
-            secret.type,
-          );
-
-        if (!srpHash) {
-          // import private key secret
-          if (secret.type === SecretType.PrivateKey) {
-            await this.importAccountWithStrategy(
-              'privateKey',
-              [bytesToHex(secret.data)],
-              {
-                shouldCreateSocialBackup: false,
-                shouldSelectAccount: false,
-              },
-            );
-            continue;
-          }
-
-          // If SRP is not in the local state, import it to the vault
-          // convert the seed phrase to a mnemonic (string)
-          const encodedSrp = this._convertEnglishWordlistIndicesToCodepoints(
-            secret.data,
-          );
-          const mnemonicToRestore = Buffer.from(encodedSrp).toString('utf8');
-
-          // import the new mnemonic to the current vault
-          await this.importMnemonicToVault(mnemonicToRestore, {
-            shouldCreateSocialBackup: false,
-            shouldSelectAccount: false,
-          });
-        }
-      }
-    } catch (error) {
-      log.error('error while syncing seed phrases', error);
-
-      this.controllerMessenger?.captureException?.(
-        createSentryError('Error while syncing seed phrases', error),
-      );
-
-      throw error;
-    }
+    return undefined;
   }
 
   /**
@@ -3904,53 +2956,12 @@ export default class MetamaskController extends EventEmitter {
    * If `syncWithSocial` is false, it will only update the local state,
    * and not sync the seed phrase to the server.
    *
-   * @param {string} mnemonic - The mnemonic to derive the seed phrase from.
-   * @param {string} keyringId - The keyring id of the backup seed phrase.
-   * @param {boolean} syncWithSocial - whether to skip syncing with social login
+   * @param {string} _mnemonic - The mnemonic to derive the seed phrase from.
+   * @param {string} _keyringId - The keyring id of the backup seed phrase.
+   * @param {boolean} _syncWithSocial - whether to skip syncing with social login
    */
-  async addNewSeedPhraseBackup(mnemonic, keyringId, syncWithSocial = true) {
-    const seedPhraseAsBuffer = Buffer.from(mnemonic, 'utf8');
-
-    const seedPhraseAsUint8Array =
-      this._convertMnemonicToWordlistIndices(seedPhraseAsBuffer);
-
-    if (syncWithSocial) {
-      const releaseLock = await this.seedlessOperationMutex.acquire();
-      let addNewSeedPhraseBackupSuccess = false;
-      try {
-        this.metaMetricsController.bufferedTrace?.({
-          name: TraceName.OnboardingAddSrp,
-          op: TraceOperation.OnboardingSecurityOp,
-        });
-        await this.seedlessOnboardingController.addNewSecretData(
-          seedPhraseAsUint8Array,
-          SecretType.Mnemonic,
-          {
-            keyringId,
-          },
-        );
-        addNewSeedPhraseBackupSuccess = true;
-      } catch (err) {
-        this.controllerMessenger?.captureException?.(
-          createSentryError(TraceName.OnboardingAddSrpError, err),
-        );
-
-        throw err;
-      } finally {
-        this.metaMetricsController.bufferedEndTrace?.({
-          name: TraceName.OnboardingAddSrp,
-          data: { success: addNewSeedPhraseBackupSuccess },
-        });
-        releaseLock();
-      }
-    } else {
-      // Do not sync the seed phrase to the server, only update the local state
-      this.seedlessOnboardingController.updateBackupMetadataState({
-        keyringId,
-        data: seedPhraseAsUint8Array,
-        type: SecretType.Mnemonic,
-      });
-    }
+  async addNewSeedPhraseBackup(_mnemonic, _keyringId, _syncWithSocial = true) {
+    return undefined;
   }
 
   /**
@@ -3959,53 +2970,10 @@ export default class MetamaskController extends EventEmitter {
    * If the flow is social login flow, it will also change the password for the seedless onboarding controller.
    *
    * @param {string} newPassword - The new password.
-   * @param {string} oldPassword - The old password.
+   * @param {string} _oldPassword - The old password.
    */
-  async changePassword(newPassword, oldPassword) {
-    const releaseLock = await this.seedlessOperationMutex.acquire();
-    const isSocialLoginFlow = this.onboardingController.getIsSocialLoginFlow();
-    try {
-      await this.keyringController.changePassword(newPassword);
-
-      if (isSocialLoginFlow) {
-        try {
-          await this.seedlessOnboardingController.changePassword(
-            newPassword,
-            oldPassword,
-          );
-          // store the new keyring encryption key in the seedless onboarding controller
-          const keyringEncKey =
-            await this.keyringController.exportEncryptionKey();
-          await this.seedlessOnboardingController.storeKeyringEncryptionKey(
-            keyringEncKey,
-          );
-        } catch (err) {
-          log.error('error while changing seedless-onboarding password', err);
-          log.error('reverting keyring password change');
-          // revert the keyring password change by changing the password back to the old password
-          await this.keyringController.changePassword(oldPassword);
-          // store the old keyring encryption key in the seedless onboarding controller
-          const revertedKeyringEncKey =
-            await this.keyringController.exportEncryptionKey();
-          await this.seedlessOnboardingController.storeKeyringEncryptionKey(
-            revertedKeyringEncKey,
-          );
-
-          this.controllerMessenger?.captureException?.(
-            createSentryError(
-              'error while changing password for social login flow',
-              err,
-            ),
-          );
-          throw err;
-        }
-      }
-    } catch (error) {
-      log.error('error while changing password', error);
-      throw error;
-    } finally {
-      releaseLock();
-    }
+  async changePassword(newPassword, _oldPassword) {
+    await this.keyringController.changePassword(newPassword);
   }
 
   //=============================================================================
@@ -4187,108 +3155,21 @@ export default class MetamaskController extends EventEmitter {
    *
    * This method is used to restore seed phrases from the Social Backup.
    *
-   * @param {{data: Uint8Array, type: SecretType, timestamp: number, version: number}[]} secretDatas - The seed phrases to restore.
+   * @param {{data: Uint8Array, timestamp: number, version: number}[]} _secretDatas - The seed phrases to restore.
    * @returns {Promise<void>}
    */
-  async restoreSeedPhrasesToVault(secretDatas) {
-    const isSocialLoginFlow = this.onboardingController.getIsSocialLoginFlow();
-
-    if (!isSocialLoginFlow) {
-      // import the restored seed phrase (mnemonics) to the vault
-      // this is only available for social login flow
-      return; // or throw error here?
-    }
-
-    // These mnemonics are restored from the Social Backup, so we don't need to do it again
-    const shouldCreateSocialBackup = false;
-    // This is used to select the new account in the wallet.
-    // During the restore seed phrases, we just do the import, but don't change the selected account.
-    // Just let the user select the account manually after the restore.
-    const shouldSetSelectedAccount = false;
-
-    for (const secret of secretDatas) {
-      // import SRP secret
-      // Get the SRP hash, and find the hash in the local state
-      const srpHash =
-        this.seedlessOnboardingController.getSecretDataBackupState(
-          secret.data,
-          secret.type,
-        );
-      if (srpHash) {
-        // If SRP is in the local state, skip it
-        continue;
-      }
-
-      if (secret.type === SecretType.PrivateKey) {
-        await this.importAccountWithStrategy(
-          'privateKey',
-          [bytesToHex(secret.data)],
-          {
-            shouldCreateSocialBackup,
-            shouldSelectAccount: shouldSetSelectedAccount,
-          },
-        );
-        continue;
-      }
-
-      // If SRP is not in the local state, import it to the vault
-      // convert the seed phrase to a mnemonic (string)
-      const encodedSrp = this._convertEnglishWordlistIndicesToCodepoints(
-        secret.data,
-      );
-      const mnemonicToRestore = Buffer.from(encodedSrp).toString('utf8');
-
-      // import the new mnemonic to the vault
-      await this.importMnemonicToVault(mnemonicToRestore, {
-        shouldCreateSocialBackup,
-        shouldSelectAccount: shouldSetSelectedAccount,
-      });
-    }
+  async restoreSeedPhrasesToVault(_secretDatas) {
+    return undefined;
   }
 
   /**
    * Fetches and restores the seed phrase from the metadata store using the social login and restore the vault using the seed phrase.
    *
-   * @param {string} password - The password.
+   * @param {string} _password - The password.
    * @returns The seed phrase.
    */
-  async restoreSocialBackupAndGetSeedPhrase(password) {
-    try {
-      // get the first seed phrase from the array, this is the oldest seed phrase
-      // and we will use it to create the initial vault
-      const [firstSecretData, ...remainingSecretData] =
-        await this.fetchAllSecretData(password);
-
-      const firstSeedPhrase = this._convertEnglishWordlistIndicesToCodepoints(
-        firstSecretData.data,
-      );
-      const mnemonic = Buffer.from(firstSeedPhrase).toString('utf8');
-      const encodedSeedPhrase = Array.from(
-        Buffer.from(mnemonic, 'utf8').values(),
-      );
-      // restore the vault using the root seed phrase
-      await this.createNewVaultAndRestore(password, encodedSeedPhrase);
-
-      // restore the remaining Mnemonics/SeedPhrases/PrivateKeys to the vault
-      if (remainingSecretData.length > 0) {
-        await this.restoreSeedPhrasesToVault(remainingSecretData);
-      }
-
-      return mnemonic;
-    } catch (error) {
-      if (error instanceof RecoveryError) {
-        throw new JsonRpcError(-32603, error.message, error.data);
-      }
-
-      this.controllerMessenger?.captureException?.(
-        createSentryError(
-          'Failed to restore social backup and get seed phrase',
-          error,
-        ),
-      );
-
-      throw error;
-    }
+  async restoreSocialBackupAndGetSeedPhrase(_password) {
+    throw new Error('Seedless onboarding is disabled.');
   }
 
   /**
@@ -4363,23 +3244,6 @@ export default class MetamaskController extends EventEmitter {
           );
         }
         await this.discoverAndCreateAccounts(id);
-      }
-
-      if (getIsSeedlessOnboardingFeatureEnabled()) {
-        const isSocialLoginFlow =
-          this.onboardingController.getIsSocialLoginFlow();
-        if (isSocialLoginFlow) {
-          // if it's social login flow, update the local backup metadata state of SeedlessOnboarding Controller
-          const primaryKeyringId =
-            this.keyringController.state.keyrings[0].metadata.id;
-          this.seedlessOnboardingController.updateBackupMetadataState({
-            keyringId: primaryKeyringId,
-            data: seedPhraseAsUint8Array,
-            type: SecretType.Mnemonic,
-          });
-
-          await this.syncKeyringEncryptionKey();
-        }
       }
     } finally {
       releaseLock();
@@ -4493,8 +3357,6 @@ export default class MetamaskController extends EventEmitter {
    * @param {string} params.encryptionKey - The user's encryption key.
    */
   async submitPasswordOrEncryptionKey({ password, encryptionKey }) {
-    const isSocialLoginFlow = this.onboardingController.getIsSocialLoginFlow();
-
     // Before attempting to unlock the keyrings, we need the offscreen to have loaded.
     await this.offscreenPromise;
 
@@ -4502,10 +3364,6 @@ export default class MetamaskController extends EventEmitter {
       await this.keyringController.submitEncryptionKey(encryptionKey);
     } else {
       await this.keyringController.submitPassword(password);
-      if (isSocialLoginFlow) {
-        // unlock the seedless onboarding vault
-        await this.seedlessOnboardingController.submitPassword(password);
-      }
     }
 
     try {
@@ -4955,11 +3813,6 @@ export default class MetamaskController extends EventEmitter {
     });
 
     this.smartTransactionsController.wipeSmartTransactions({
-      address: selectedAddress,
-      ignoreNetwork: false,
-    });
-
-    this.bridgeStatusController.wipeBridgeStatus({
       address: selectedAddress,
       ignoreNetwork: false,
     });
@@ -5466,35 +4319,16 @@ export default class MetamaskController extends EventEmitter {
    * If `syncWithSocial` is false, it will only update the local state,
    * and not sync the private key to the server.
    *
-   * @param {string} privateKey - The privateKey from keyring.
-   * @param {string} keyringId - The keyring id to add the private key backup to.
-   * @param {boolean} syncWithSocial - whether to skip syncing with social login
+   * @param {string} _privateKey - The privateKey from keyring.
+   * @param {string} _keyringId - The keyring id to add the private key backup to.
+   * @param {boolean} _syncWithSocial - whether to skip syncing with social login
    */
-  async addNewPrivateKeyBackup(privateKey, keyringId, syncWithSocial = true) {
-    const bufferedPrivateKey = hexToBytes(add0x(privateKey));
-
-    if (syncWithSocial) {
-      const releaseLock = await this.seedlessOperationMutex.acquire();
-      try {
-        await this.seedlessOnboardingController.addNewSecretData(
-          bufferedPrivateKey,
-          SecretType.PrivateKey,
-          { keyringId },
-        );
-      } catch (error) {
-        log.error('Error adding new private key backup', error);
-        throw error;
-      } finally {
-        releaseLock();
-      }
-    } else {
-      // Do not sync the seed phrase to the server, only update the local state
-      this.seedlessOnboardingController.updateBackupMetadataState({
-        keyringId,
-        data: bufferedPrivateKey,
-        type: SecretType.PrivateKey,
-      });
-    }
+  async addNewPrivateKeyBackup(
+    _privateKey,
+    _keyringId,
+    _syncWithSocial = true,
+  ) {
+    return undefined;
   }
 
   /**
@@ -6211,53 +5045,9 @@ export default class MetamaskController extends EventEmitter {
       outStream,
     );
 
-    const perpsController = this.messengerClientsByName.PerpsController;
-    const perpsStream = perpsController
-      ? new PerpsStreamBridge({
-          controller: perpsController,
-          onControllerStateChange: (cb) => {
-            this.controllerMessenger.subscribe(
-              'PerpsController:stateChange',
-              cb,
-            );
-            return () =>
-              this.controllerMessenger.unsubscribe(
-                'PerpsController:stateChange',
-                cb,
-              );
-          },
-          onConnectivityChange: (cb) => {
-            this.controllerMessenger.subscribe(
-              'ConnectivityController:stateChange',
-              cb,
-            );
-            return () =>
-              this.controllerMessenger.unsubscribe(
-                'ConnectivityController:stateChange',
-                cb,
-              );
-          },
-          perpsInit: this.messengerClientApi.perpsInit,
-          perpsDisconnect: this.messengerClientApi.perpsDisconnect,
-          perpsToggleTestnet: this.messengerClientApi.perpsToggleTestnet,
-          isConnectionAlive: () => !outStream.mmFinished,
-          emit: (channel, data, extra) => {
-            if (!perpsStream.isActive || !isStreamWritable(outStream)) {
-              return;
-            }
-            outStream.write({
-              jsonrpc: '2.0',
-              method: 'perpsStreamUpdate',
-              params: [{ channel, data, ...extra }],
-            });
-          },
-        })
-      : null;
-
     const api = {
       ...this.getApi(),
       ...this.messengerClientApi,
-      ...(perpsStream ? perpsStream.bridgeApi() : {}),
       messengerSubscribe: messengerSubscriptions.subscribe.bind(
         messengerSubscriptions,
       ),
@@ -6306,11 +5096,6 @@ export default class MetamaskController extends EventEmitter {
         this.activeControllerConnections,
       );
       messengerSubscriptions.clear();
-      perpsStream?.destroy();
-      if (this.activeControllerConnections === 0) {
-        // Destroy the UI bridge stream first, then disconnect the controller-owned Perps WS.
-        this.#disconnectPerpsIfActive();
-      }
     });
   }
 
@@ -6676,26 +5461,6 @@ export default class MetamaskController extends EventEmitter {
         this.updateSecurityAlertResponse.bind(this),
         this.getSecurityAlertsConfig.bind(this),
       ),
-    );
-
-    engine.push(
-      createDappSwapMiddleware({
-        fetchQuotes: this.controllerMessenger.call.bind(
-          this.controllerMessenger,
-          `${BRIDGE_CONTROLLER_NAME}:${BridgeBackgroundAction.FETCH_QUOTES}`,
-        ),
-        setDappSwapComparisonData:
-          this.appStateController.setDappSwapComparisonData.bind(
-            this.appStateController,
-          ),
-        getNetworkConfigurationByNetworkClientId:
-          this.networkController.getNetworkConfigurationByNetworkClientId.bind(
-            this.networkController,
-          ),
-        dappSwapMetricsFlag:
-          this.remoteFeatureFlagController?.state?.remoteFeatureFlags
-            ?.dappSwapMetrics,
-      }),
     );
 
     engine.push(
@@ -7304,7 +6069,6 @@ export default class MetamaskController extends EventEmitter {
     // KeyringController event. Other controllers subscribe to the 'lock'
     // event of the MetaMaskController itself.
     this.emit('lock');
-    this.#disconnectPerpsIfActive();
   }
 
   /**
@@ -7627,26 +6391,12 @@ export default class MetamaskController extends EventEmitter {
     const nextValue = false;
 
     this.preferencesController.toggleExternalServices(nextValue);
-    const subscriptionState = this.controllerMessenger.call(
-      'SubscriptionController:getState',
-    );
-    const hasActiveShieldSubscription = getIsShieldSubscriptionActive(
-      subscriptionState.subscriptions,
-    );
     if (nextValue) {
       this.tokenDetectionController.enable();
       this.gasFeeController.enableNonRPCGasFeeApis();
-      if (hasActiveShieldSubscription) {
-        this.shieldController.start();
-      }
     } else {
       this.tokenDetectionController.disable();
       this.gasFeeController.disableNonRPCGasFeeApis();
-      // stop polling for the subscriptions if external services are disabled
-      this.subscriptionController.stopAllPolling();
-      if (hasActiveShieldSubscription) {
-        this.shieldController.stop();
-      }
     }
   }
 
@@ -7694,12 +6444,6 @@ export default class MetamaskController extends EventEmitter {
     if (isUnlocked) {
       // noop
     }
-
-    if (open) {
-      this.controllerMessenger.call('BackendWebSocketService:connect');
-    } else {
-      this.controllerMessenger.call('BackendWebSocketService:disconnect');
-    }
   }
   /* eslint-enable accessor-pairs */
 
@@ -7719,7 +6463,6 @@ export default class MetamaskController extends EventEmitter {
       this.appStateController.clearPollingTokens();
       this.accountTrackerController.stopAllPolling();
       this.deFiPositionsController.stopAllPolling();
-      this.subscriptionController.stopAllPolling();
     } catch (error) {
       console.error(error);
     }
@@ -7752,8 +6495,6 @@ export default class MetamaskController extends EventEmitter {
         appStatePollingTokenType,
       );
     });
-    // stop polling for the subscriptions
-    this.subscriptionController.stopAllPolling();
   }
 
   /**
@@ -7803,42 +6544,11 @@ export default class MetamaskController extends EventEmitter {
   /**
    * Locks MetaMask
    *
-   * @param {object} options - The options for setting the locked state.
-   * @param {boolean} options.skipSeedlessOperationLock - If true, the seedless operation mutex will not be locked.
+   * @param {object} _options - The options for setting the locked state.
+   * @param {boolean} _options.skipSeedlessOperationLock - If true, the seedless operation mutex will not be locked.
    */
-  async setLocked(options = { skipSeedlessOperationLock: false }) {
-    const { skipSeedlessOperationLock } = options;
-    const isSocialLoginFlow = this.onboardingController.getIsSocialLoginFlow();
-
-    let releaseLock;
-    if (isSocialLoginFlow && !skipSeedlessOperationLock) {
-      releaseLock = await this.seedlessOperationMutex.acquire();
-    }
-
-    try {
-      if (isSocialLoginFlow) {
-        await this.seedlessOnboardingController.setLocked();
-      }
-      await this.keyringController.setLocked();
-
-      // stop polling for the subscriptions when the wallet is locked manually and window/side-panel is still open
-      this.subscriptionController.stopAllPolling();
-
-      // sign out from Authentication service and clear the Session Data if user is signed in
-      // this check is to make sure that the user sensitive data is cleared when the wallet is locked.
-      // We have `useAutoSignOut` hook that should handle the automatic sign out, however, it's not always triggered.
-      const { isSignedIn } = this.authenticationController.state;
-      if (isSignedIn) {
-        this.authenticationController.performSignOut();
-      }
-    } catch (error) {
-      log.error('Error setting locked state', error);
-      throw error;
-    } finally {
-      if (releaseLock) {
-        releaseLock();
-      }
-    }
+  async setLocked(_options = { skipSeedlessOperationLock: false }) {
+    await this.keyringController.setLocked();
   }
 
   removePermissionsFor = (subjects) => {

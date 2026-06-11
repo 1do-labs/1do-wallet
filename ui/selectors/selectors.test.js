@@ -1172,7 +1172,6 @@ describe('Selectors', () => {
       },
     });
     expect(isFantomSupported).toBeFalsy();
-
   });
 
   it('#getTargetSubjectMetadata', () => {
@@ -3793,89 +3792,6 @@ describe('getHasAnyEvmNetworkEnabled', () => {
   });
 });
 
-describe('getShouldSubmitEventsForShieldEntryModal', () => {
-  it('returns true if `shouldSubmitEvents` is true', () => {
-    const state = {
-      appState: {
-        shieldEntryModal: {
-          show: true,
-          shouldSubmitEvents: true,
-        },
-      },
-    };
-
-    const result = selectors.getShouldSubmitEventsForShieldEntryModal(state);
-    expect(result).toBe(true);
-  });
-
-  it('returns true if `metamask.showShieldEntryModalOnce` is null', () => {
-    const state = {
-      metamask: {
-        showShieldEntryModalOnce: null,
-      },
-      appState: {
-        shieldEntryModal: {
-          show: true,
-          hasUserInteractedWithModal: false,
-          shouldSubmitEvents: true,
-        },
-      },
-    };
-
-    const result = selectors.getShouldSubmitEventsForShieldEntryModal(state);
-    expect(result).toBe(true);
-  });
-
-  it('returns false if `metamask.showShieldEntryModalOnce` is false', () => {
-    const state = {
-      metamask: {
-        showShieldEntryModalOnce: false,
-      },
-      appState: {
-        shieldEntryModal: {
-          show: true,
-          hasUserInteractedWithModal: false,
-        },
-      },
-    };
-
-    const result = selectors.getShouldSubmitEventsForShieldEntryModal(state);
-    expect(result).toBe(false);
-  });
-
-  it('returns false if `metamask.showShieldEntryModalOnce` is true', () => {
-    const state = {
-      metamask: {
-        showShieldEntryModalOnce: true,
-      },
-      appState: {
-        shieldEntryModal: {
-          show: true,
-          hasUserInteractedWithModal: false,
-        },
-      },
-    };
-
-    const result = selectors.getShouldSubmitEventsForShieldEntryModal(state);
-    expect(result).toBe(false);
-  });
-
-  it('returns false if shouldSubmitEvents is false', () => {
-    const state = {
-      appState: {
-        shieldEntryModal: {
-          show: true,
-          hasUserInteractedWithModal: false,
-          shouldSubmitEvents: false,
-        },
-      },
-    };
-
-    const result = selectors.getShouldSubmitEventsForShieldEntryModal(state);
-    expect(result).toBe(false);
-  });
-});
-
 describe('getPermissionsForActiveTab', () => {
   const permissionsTestState = {
     activeTab: {
@@ -4201,7 +4117,7 @@ describe('getShowUpdateModal', () => {
 
 describe('getPendingRedirectRoute', () => {
   it('returns the route when set', () => {
-    const route = { path: '/shield-plan' };
+    const route = { path: '/asset' };
     const state = {
       metamask: {
         pendingRedirectRoute: route,

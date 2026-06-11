@@ -38,15 +38,15 @@ const SEPOLIA_1DO_TOKEN_DETAILS: Record<
   string,
   { decimals: number; symbol: string }
 > = {
-  '0x9d4b951592c31dc042efdc4e1f8ae00718b96fe1': {
+  '0x78e8421fb1cb038bc63bc7450504ebe75d7d4725': {
     decimals: 6,
     symbol: 'tUSDC',
   },
-  '0xdd7468f993c52fcf43cef80c9a4e042de4920f2d': {
+  '0x15f758653dbd7e64e20ad0addbb4d43d773d369e': {
     decimals: 6,
     symbol: 'tUSDT',
   },
-  '0x74bf0ac1f1774f3e33042fea0a73fa9814f4ea7': {
+  '0x5963c71ff46600a08e54f66f5e10c68119a60728': {
     decimals: 18,
     symbol: '1DO',
   },

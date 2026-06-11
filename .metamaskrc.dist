@@ -2,7 +2,7 @@
 ; Defaults are set in builds.yml
 
 ; This variable is required
-INFURA_PROJECT_ID=00000000000
+ALCHEMY_API_KEY=
 
 ; Set this to `true` to enable Seedless onboarding (Social login flow)
 SEEDLESS_ONBOARDING_ENABLED='false'

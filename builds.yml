@@ -19,9 +19,9 @@ buildTypes:
       - multi-srp
     # Additional env variables that are specific to this build
     env:
-      - INFURA_PROD_PROJECT_ID
+      - ALCHEMY_PROD_API_KEY
       - SEGMENT_PROD_WRITE_KEY
-      - INFURA_ENV_KEY_REF: INFURA_PROD_PROJECT_ID
+      - ALCHEMY_ENV_KEY_REF: ALCHEMY_PROD_API_KEY
       - SEGMENT_WRITE_KEY_REF: SEGMENT_PROD_WRITE_KEY
       - ALLOW_LOCAL_SNAPS: false
       - REQUIRE_SNAPS_ALLOWLIST: true
@@ -47,9 +47,9 @@ buildTypes:
       - build-beta
       - multi-srp
     env:
-      - INFURA_BETA_PROJECT_ID
+      - ALCHEMY_BETA_API_KEY
       - SEGMENT_BETA_WRITE_KEY
-      - INFURA_ENV_KEY_REF: INFURA_BETA_PROJECT_ID
+      - ALCHEMY_ENV_KEY_REF: ALCHEMY_BETA_API_KEY
       - SEGMENT_WRITE_KEY_REF: SEGMENT_BETA_WRITE_KEY
       - SUPPORT_LINK: https://intercom.help/internal-beta-testing/
       - ALLOW_LOCAL_SNAPS: false
@@ -76,9 +76,9 @@ buildTypes:
       - build-experimental
       - multi-srp
     env:
-      - INFURA_EXPERIMENTAL_PROJECT_ID
+      - ALCHEMY_EXPERIMENTAL_API_KEY
       - SEGMENT_EXPERIMENTAL_WRITE_KEY
-      - INFURA_ENV_KEY_REF: INFURA_EXPERIMENTAL_PROJECT_ID
+      - ALCHEMY_ENV_KEY_REF: ALCHEMY_EXPERIMENTAL_API_KEY
       - SEGMENT_WRITE_KEY_REF: SEGMENT_EXPERIMENTAL_WRITE_KEY
       - ALLOW_LOCAL_SNAPS: false
       - REQUIRE_SNAPS_ALLOWLIST: true
@@ -105,14 +105,14 @@ buildTypes:
       - build-flask
       - multi-srp
     env:
-      - INFURA_FLASK_PROJECT_ID
+      - ALCHEMY_FLASK_API_KEY
       - SEGMENT_FLASK_WRITE_KEY
       - ALLOW_LOCAL_SNAPS: true
       - REQUIRE_SNAPS_ALLOWLIST: false
       - REJECT_INVALID_SNAPS_PLATFORM_VERSION: false
       - IFRAME_EXECUTION_ENVIRONMENT_URL: https://www.1do.io/
       - SUPPORT_LINK: ''
-      - INFURA_ENV_KEY_REF: INFURA_FLASK_PROJECT_ID
+      - ALCHEMY_ENV_KEY_REF: ALCHEMY_FLASK_API_KEY
       - SEGMENT_WRITE_KEY_REF: SEGMENT_FLASK_WRITE_KEY
       - ACCOUNT_SNAPS_DIRECTORY_URL: https://www.1do.io/
       - EIP_4337_ENTRYPOINT: '0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789'
@@ -211,21 +211,21 @@ env:
   ###
   # Core Backend Services
   ###
-  - MM_BACKEND_WEBSOCKET_URL: wss://gateway.api.cx.metamask.io/v1
+  - MM_BACKEND_WEBSOCKET_URL: ''
 
   ###
   # Notifications Feature
   ###
-  - AUTH_API: https://authentication.api.cx.metamask.io
-  - OIDC_API: https://oidc.api.cx.metamask.io
+  - AUTH_API: ''
+  - OIDC_API: ''
   - OIDC_CLIENT_ID: 1132f10a-b4e5-4390-a5f2-d9c6022db564
   - OIDC_GRANT_TYPE: urn:ietf:params:oauth:grant-type:jwt-bearer
-  - USER_STORAGE_API: https://user-storage.api.cx.metamask.io
+  - USER_STORAGE_API: ''
   - CONTENTFUL_ACCESS_SPACE_ID:
   - CONTENTFUL_ACCESS_TOKEN:
-  - NOTIFICATIONS_SERVICE_URL: https://notification.api.cx.metamask.io
-  - TRIGGERS_SERVICE_URL: https://trigger.api.cx.metamask.io
-  - PUSH_NOTIFICATIONS_SERVICE_URL: https://push.api.cx.metamask.io
+  - NOTIFICATIONS_SERVICE_URL: ''
+  - TRIGGERS_SERVICE_URL: ''
+  - PUSH_NOTIFICATIONS_SERVICE_URL: ''
   - VAPID_KEY:
   - FIREBASE_API_KEY:
   - FIREBASE_AUTH_DOMAIN:
@@ -260,13 +260,13 @@ env:
   - SENTRY_DSN: null
   - SENTRY_DSN_DEV: null
   - SENTRY_DSN_PERFORMANCE: null
-  # also INFURA_PROJECT_ID below
+  # also ALCHEMY_API_KEY below
 
   ###
   # Build system backwards compatibility
   ###
 
-  - INFURA_ENV_KEY_REF
+  - ALCHEMY_ENV_KEY_REF
   - SEGMENT_WRITE_KEY_REF
 
   ###
@@ -280,8 +280,10 @@ env:
   # Used for debugging changes to the phishing warning page.
   # Modified in <root>/development/build/scripts.js:@getPhishingWarningPageUrl
   - PHISHING_WARNING_PAGE_URL: null
-  # Modified in <root>/development/build/scripts.js:@getInfuraProjectId
-  - INFURA_PROJECT_ID
+  # Modified in <root>/development/build/scripts.js:@getAlchemyApiKey
+  - ALCHEMY_API_KEY
+  # Build-system compatibility for legacy code paths that still reference this variable.
+  - INFURA_PROJECT_ID: ''
   # Modified in <root>/development/build/scripts.js:@getSegmentWriteKey
   - SEGMENT_WRITE_KEY: ''
   # Modified in <root>/development/build/scripts.js:@getAnalyticsDataDeletionSourceId
@@ -331,7 +333,7 @@ env:
   # This will be defined if running a unit test
   - JEST_WORKER_ID: undefined
 
-  - METAMASK_RAMP_API_CONTENT_BASE_URL: https://on-ramp-content.api.cx.metamask.io
+  - METAMASK_RAMP_API_CONTENT_BASE_URL: ''
 
   # EIP-7715 Readable Permissions
   - GATOR_ENABLED_PERMISSION_TYPES: 'native-token-stream,native-token-periodic,erc20-token-stream,erc20-token-periodic'

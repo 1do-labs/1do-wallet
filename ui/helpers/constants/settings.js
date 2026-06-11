@@ -10,8 +10,6 @@ import {
   NETWORKS_ROUTE,
   DEVELOPER_OPTIONS_ROUTE,
   SECURITY_PASSWORD_CHANGE_ROUTE,
-  TRANSACTION_SHIELD_ROUTE,
-  TRANSACTION_SHIELD_CLAIM_ROUTES,
 } from './routes';
 
 /**
@@ -429,22 +427,6 @@ const SETTINGS_CONSTANTS = [
     descriptionMessage: (t) => t('betaTerms'),
     route: `${ABOUT_US_ROUTE}#beta-terms`,
     iconName: IconName.Info,
-  },
-  {
-    featureFlag: 'METAMASK_SHIELD_ENABLED',
-    tabMessage: (t) => t('shieldTx'),
-    sectionMessage: (t) => t('shieldTx'),
-    descriptionMessage: (t) => t('shieldTx'),
-    route: `${TRANSACTION_SHIELD_ROUTE}`,
-    iconName: IconName.ShieldLock,
-  },
-  {
-    featureFlag: 'METAMASK_SHIELD_ENABLED',
-    tabMessage: (t) => t('shieldClaim'),
-    sectionMessage: (t) => t('shieldClaim'),
-    descriptionMessage: (t) => t('shieldClaim'),
-    route: `${TRANSACTION_SHIELD_CLAIM_ROUTES.NEW.FULL}`,
-    iconName: IconName.ShieldLock,
   },
   // developerOptions settingsRefs[0]
   {

@@ -1,5 +1,3 @@
-import { AuthenticationControllerState } from '@metamask/profile-sync-controller/auth';
-import { SeedlessOnboardingControllerState } from '@metamask/seedless-onboarding-controller';
 import { SnapControllerState } from '@metamask/snaps-controllers';
 import { Snap } from '@metamask/snaps-utils';
 import { Patch } from 'immer';
@@ -42,9 +40,6 @@ const REMOVE_KEYS = [
   // SnapController
   'snapStates',
   'unencryptedSnapStates',
-
-  // RewardsController - sensitive tokens
-  'rewardsSubscriptionTokens',
 ];
 
 /*
@@ -84,8 +79,6 @@ export function sanitizeUIState(state: FlattenedUIState): FlattenedUIState {
   }
 
   sanitizeSnapData(newState);
-  sanitizeAuthenticationControllerState(newState);
-  sanitizeSeedlessOnboardingControllerState(newState);
 
   return newState;
 }

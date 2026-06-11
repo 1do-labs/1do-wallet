@@ -209,12 +209,13 @@ export const WETH_MEGAETH_CONTRACT_ADDRESS =
 
 const SWAPS_TESTNET_CHAIN_ID = '0x539';
 
-export const SWAPS_API_V2_BASE_URL = 'https://bridge.api.cx.metamask.io';
-export const SWAPS_DEV_API_V2_BASE_URL =
-  'https://bridge.dev-api.cx.metamask.io';
-export const TOKEN_API_BASE_URL = 'https://tokens.api.cx.metamask.io';
-export const GAS_API_BASE_URL = 'https://gas.api.cx.metamask.io';
-export const GAS_DEV_API_BASE_URL = 'https://gas.uat-api.cx.metamask.io';
+const DISABLED_REMOTE_API_BASE_URL = 'http://127.0.0.1:9';
+
+export const SWAPS_API_V2_BASE_URL = DISABLED_REMOTE_API_BASE_URL;
+export const SWAPS_DEV_API_V2_BASE_URL = DISABLED_REMOTE_API_BASE_URL;
+export const TOKEN_API_BASE_URL = DISABLED_REMOTE_API_BASE_URL;
+export const GAS_API_BASE_URL = DISABLED_REMOTE_API_BASE_URL;
+export const GAS_DEV_API_BASE_URL = DISABLED_REMOTE_API_BASE_URL;
 
 export const ALLOWED_PROD_SWAPS_CHAIN_IDS = [
   CHAIN_IDS.MAINNET,

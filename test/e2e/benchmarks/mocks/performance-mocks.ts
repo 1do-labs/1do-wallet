@@ -584,16 +584,6 @@ export async function mockBenchmarkEndpoints(
 
   endpoints.push(
     await server
-      .forGet(/on-ramp-content\.api\.cx\.metamask\.io/u)
-      .asPriority(MOCK_PRIORITIES.TEST_OVERRIDE)
-      .always()
-      .thenCallback(
-        delayedResponse(100, { statusCode: 200, json: { networks: [] } }),
-      ),
-  );
-
-  endpoints.push(
-    await server
       .forGet(/accounts\.api\.cx\.metamask\.io\/v1\/users\/.*\/surveys/u)
       .asPriority(MOCK_PRIORITIES.TEST_OVERRIDE)
       .always()

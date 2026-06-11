@@ -75,7 +75,6 @@ const meta: Meta<typeof Home> = {
     redirectAfterDefaultPage: null,
     isSeedlessPasswordOutdated: false,
     isPrimarySeedPhraseBackedUp: true,
-    showShieldEntryModal: false,
     isSocialLoginFlow: false,
 
     // Function props (mocked)
@@ -99,7 +98,6 @@ const meta: Meta<typeof Home> = {
     clearEditedNetwork: () => {},
     setActiveNetwork: () => {},
     setBasicFunctionalityModalOpen: () => {},
-    fetchBuyableChains: () => {},
     clearRedirectAfterDefaultPage: () => {},
     lookupSelectedNetworks: () => {},
   },

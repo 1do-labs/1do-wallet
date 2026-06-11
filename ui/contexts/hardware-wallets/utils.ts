@@ -1,9 +1,7 @@
 import { KeyringTypes } from '@metamask/keyring-controller';
 import {
-  AWAITING_SIGNATURES_ROUTE,
   CONFIRM_TRANSACTION_ROUTE,
   CONFIRMATION_V_NEXT_ROUTE,
-  CROSS_CHAIN_SWAP_ROUTE,
 } from '../../helpers/constants/routes';
 
 import { HardwareWalletType } from './types';
@@ -14,8 +12,6 @@ import { HardwareWalletType } from './types';
 export const HARDWARE_WALLET_ROUTE_PREFIXES = [
   CONFIRM_TRANSACTION_ROUTE, // /confirm-transaction (transactions + signature requests)
   CONFIRMATION_V_NEXT_ROUTE, // /confirmation (redesigned confirmation flow)
-  CROSS_CHAIN_SWAP_ROUTE, // /cross-chain (bridge pages)
-  AWAITING_SIGNATURES_ROUTE, // /swaps/awaiting-signatures
 ];
 
 /**

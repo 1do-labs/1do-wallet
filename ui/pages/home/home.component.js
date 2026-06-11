@@ -136,7 +136,6 @@ export default class Home extends PureComponent {
     setActiveNetwork: PropTypes.func,
     useExternalServices: PropTypes.bool,
     setBasicFunctionalityModalOpen: PropTypes.func,
-    fetchBuyableChains: PropTypes.func.isRequired,
     redirectAfterDefaultPage: PropTypes.object,
     setRedirectAfterDefaultPage: PropTypes.func,
     clearRedirectAfterDefaultPage: PropTypes.func,
@@ -218,8 +217,6 @@ export default class Home extends PureComponent {
   }
 
   componentDidMount() {
-    this.props.fetchBuyableChains();
-
     this.checkPendingRedirectRoute();
     this.checkRedirectAfterDefaultPage();
 

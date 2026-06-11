@@ -1,10 +1,11 @@
 import { Browser } from 'selenium-webdriver';
-import { AuthConnection } from '@metamask/seedless-onboarding-controller';
 import { Driver } from '../../webdriver/driver';
 import OnboardingMetricsPage from '../pages/onboarding/onboarding-metrics-page';
 import OnboardingPasswordPage from '../pages/onboarding/onboarding-password-page';
 import OnboardingSrpPage from '../pages/onboarding/onboarding-srp-page';
-import StartOnboardingPage from '../pages/onboarding/start-onboarding-page';
+import StartOnboardingPage, {
+  type SocialLoginConnection,
+} from '../pages/onboarding/start-onboarding-page';
 import SecureWalletPage from '../pages/onboarding/secure-wallet-page';
 import OnboardingCompletePage from '../pages/onboarding/onboarding-complete-page';
 import OnboardingPrivacySettingsPage from '../pages/onboarding/onboarding-privacy-settings-page';
@@ -91,19 +92,19 @@ const goToOnboardingWelcomeLoginPage = async ({
  * @param options.participateInMetaMetrics - Whether to participate in MetaMetrics. Defaults to false.
  * @param options.needNavigateToNewPage - Indicates whether to navigate to a new page before starting the onboarding flow. Defaults to true.
  * @param options.dataCollectionForMarketing - Whether to opt in to data collection for marketing. Defaults to false.
- * @param options.authConnection - The authentication connection to use. Defaults to AuthConnection.Google.
+ * @param options.authConnection - The authentication connection to use. Defaults to google.
  */
 export const createNewWalletWithSocialLoginOnboardingFlow = async ({
   driver,
   password = WALLET_PASSWORD,
-  authConnection = AuthConnection.Google,
+  authConnection = 'google',
   participateInMetaMetrics = false,
   needNavigateToNewPage = true,
   dataCollectionForMarketing = false,
 }: {
   driver: Driver;
   password?: string;
-  authConnection?: AuthConnection;
+  authConnection?: SocialLoginConnection;
   participateInMetaMetrics?: boolean;
   needNavigateToNewPage?: boolean;
   dataCollectionForMarketing?: boolean;
@@ -129,7 +130,7 @@ export const createNewWalletWithSocialLoginOnboardingFlow = async ({
  * Import wallet with social login onboarding flow
  *
  * @param options - The options object.
- * @param options.authConnection - The auth connection (social login type) to use. Defaults to AuthConnection.Google.
+ * @param options.authConnection - The auth connection (social login type) to use. Defaults to google.
  * @param options.driver - The WebDriver instance.
  * @param options.password - The password to create. Defaults to WALLET_PASSWORD.
  * @param options.participateInMetaMetrics - Whether to participate in MetaMetrics. Defaults to false.
@@ -143,7 +144,7 @@ export const importWalletWithSocialLoginOnboardingFlow = async ({
   participateInMetaMetrics = false,
   needNavigateToNewPage = true,
   dataCollectionForMarketing = false,
-  authConnection = AuthConnection.Google,
+  authConnection = 'google',
 }: {
   driver: Driver;
   newWallet?: boolean;
@@ -151,7 +152,7 @@ export const importWalletWithSocialLoginOnboardingFlow = async ({
   participateInMetaMetrics?: boolean;
   needNavigateToNewPage?: boolean;
   dataCollectionForMarketing?: boolean;
-  authConnection?: AuthConnection;
+  authConnection?: SocialLoginConnection;
 }) => {
   console.log('Starting the rehydration of a wallet onboarding flow');
   const startOnboardingPage = await goToOnboardingWelcomeLoginPage({

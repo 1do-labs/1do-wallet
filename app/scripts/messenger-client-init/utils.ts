@@ -38,7 +38,6 @@ type ControllerMessengerCallback = (
 
 export type MessengerClientsToInitialize =
   | 'AccountTrackerController'
-  | 'AuthenticationController'
   | 'ClientController'
   | 'CronjobController'
   | 'DeFiPositionsController'
@@ -48,16 +47,12 @@ export type MessengerClientsToInitialize =
   | 'MultichainBalancesController'
   | 'MultichainNetworkController'
   | 'MultichainTransactionsController'
-  | 'NotificationServicesController'
-  | 'NotificationServicesPushController'
   | 'RateLimitController'
   | 'GeolocationApiService'
   | 'GeolocationController'
-  | 'PerpsController'
   | 'PPOMController'
   | 'TransactionController'
-  | 'TransactionPayController'
-  | 'UserStorageController';
+  | 'TransactionPayController';
 
 type InitFunction<Name extends MessengerClientsToInitialize> =
   MessengerClientInitFunction<

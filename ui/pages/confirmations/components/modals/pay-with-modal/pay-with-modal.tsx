@@ -1,9 +1,5 @@
 import React, { useCallback } from 'react';
 import { Hex } from '@metamask/utils';
-import {
-  TransactionMeta,
-  TransactionType,
-} from '@metamask/transaction-controller';
 import { useI18nContext } from '../../../../../hooks/useI18nContext';
 import {
   Modal,
@@ -17,11 +13,6 @@ import { useTransactionPayRequiredTokens } from '../../../hooks/pay/useTransacti
 import { getAvailableTokens } from '../../../utils/transaction-pay';
 import { Asset } from '../../send/asset';
 import { type Asset as AssetType } from '../../../types/send';
-import {
-  useMusdConversionTokens,
-  useMusdPaymentToken,
-} from '../../../../../hooks/musd';
-import { useConfirmContext } from '../../../context/confirm';
 
 export type PayWithModalProps = {
   isOpen: boolean;
@@ -30,17 +21,8 @@ export type PayWithModalProps = {
 
 export const PayWithModal = ({ isOpen, onClose }: PayWithModalProps) => {
   const t = useI18nContext();
-  const { currentConfirmation } = useConfirmContext<TransactionMeta>();
   const { payToken, setPayToken } = useTransactionPayToken();
   const requiredTokens = useTransactionPayRequiredTokens();
-
-  const { filterTokens: musdTokenFilter } = useMusdConversionTokens({
-    transactionType: currentConfirmation?.type,
-  });
-
-  // Use the mUSD-specific payment token handler for same-chain enforcement
-  const { onPaymentTokenChange: onMusdPaymentTokenChange } =
-    useMusdPaymentToken();
 
   const handleClose = useCallback(() => {
     onClose();
@@ -57,34 +39,17 @@ export const PayWithModal = ({ isOpen, onClose }: PayWithModalProps) => {
         chainId: token.chainId as Hex,
       };
 
-      // For mUSD conversions, use the specialized handler that enforces same-chain
-      if (currentConfirmation?.type === TransactionType.musdConversion) {
-        onMusdPaymentTokenChange(tokenSelection);
-        handleClose();
-        return;
-      }
-
-      // Default behavior for other transaction types
       setPayToken(tokenSelection);
       handleClose();
     },
-    [
-      handleClose,
-      setPayToken,
-      onMusdPaymentTokenChange,
-      currentConfirmation?.type,
-    ],
+    [handleClose, setPayToken],
   );
 
   const tokenFilter = useCallback(
     (tokens: AssetType[]) => {
-      let available = getAvailableTokens({ payToken, requiredTokens, tokens });
-
-      available = musdTokenFilter(available);
-
-      return available;
+      return getAvailableTokens({ payToken, requiredTokens, tokens });
     },
-    [payToken, requiredTokens, musdTokenFilter],
+    [payToken, requiredTokens],
   );
 
   return (

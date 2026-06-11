@@ -1,6 +1,6 @@
 export const REWARDS_API_URL = {
-  UAT: 'https://rewards.uat-api.cx.metamask.io',
-  PRD: 'https://rewards.api.cx.metamask.io',
+  UAT: 'http://127.0.0.1:9',
+  PRD: 'http://127.0.0.1:9',
 };
 
 // Error message constants for rewards errors

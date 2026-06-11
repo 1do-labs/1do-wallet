@@ -59,31 +59,6 @@ describe('<WalletInitiatedHeader />', () => {
     expect(mockOnCancel).toHaveBeenCalled();
   });
 
-  it('calls onCancel with navigateBackToPreviousPage for musdClaim', () => {
-    const mockOnCancel = jest.fn();
-    jest.spyOn(ConfirmActions, 'useConfirmActions').mockImplementation(() => ({
-      onCancel: mockOnCancel,
-      resetTransactionState: jest.fn(),
-    }));
-
-    const base = genUnapprovedContractInteractionConfirmation({
-      chainId: '0x1',
-    });
-    const musdClaimState = getMockConfirmStateForTransaction({
-      ...base,
-      type: TransactionType.musdClaim,
-      origin: 'metamask',
-    } as TransactionMeta);
-
-    const { getByTestId } = render(musdClaimState);
-    fireEvent.click(getByTestId('wallet-initiated-header-back-button'));
-
-    expect(mockOnCancel).toHaveBeenCalledWith({
-      location: 'confirmation',
-      navigateBackToPreviousPage: true,
-    });
-  });
-
   it('calls onCancel with navigateBackToPreviousPage for perpsDeposit', () => {
     const mockOnCancel = jest.fn();
     jest.spyOn(ConfirmActions, 'useConfirmActions').mockImplementation(() => ({

@@ -484,75 +484,6 @@ describe('AppStateController', () => {
       });
     });
   });
-
-  describe('setShieldPausedToastLastClickedOrClosed', () => {
-    it('set the shieldPausedToastLastClickedOrClosed time', async () => {
-      await withController(({ controller }) => {
-        const mockParams = Date.now();
-        controller.setShieldPausedToastLastClickedOrClosed(mockParams);
-
-        expect(
-          controller.state.shieldPausedToastLastClickedOrClosed,
-        ).toStrictEqual(mockParams);
-      });
-    });
-  });
-
-  describe('setShieldEndingToastLastClickedOrClosed', () => {
-    it('set the shieldEndingToastLastClickedOrClosed time', async () => {
-      await withController(({ controller }) => {
-        const mockParams = Date.now();
-        controller.setShieldEndingToastLastClickedOrClosed(mockParams);
-
-        expect(
-          controller.state.shieldEndingToastLastClickedOrClosed,
-        ).toStrictEqual(mockParams);
-      });
-    });
-  });
-
-  describe('setShieldSubscriptionError', () => {
-    it('sets the error object with message and code', async () => {
-      await withController(({ controller }) => {
-        controller.setShieldSubscriptionError({
-          message: 'payer address is already used',
-          code: 'payer_address_already_used',
-        });
-        expect(controller.state.shieldSubscriptionError).toStrictEqual({
-          message: 'payer address is already used',
-          code: 'payer_address_already_used',
-        });
-      });
-    });
-
-    it('sets the error object with message only', async () => {
-      await withController(({ controller }) => {
-        controller.setShieldSubscriptionError({
-          message: 'some error',
-        });
-        expect(controller.state.shieldSubscriptionError).toStrictEqual({
-          message: 'some error',
-        });
-      });
-    });
-
-    it('clears the error when set to null', async () => {
-      await withController(({ controller }) => {
-        controller.setShieldSubscriptionError({ message: 'some error' });
-        expect(controller.state.shieldSubscriptionError).not.toBeNull();
-
-        controller.setShieldSubscriptionError(null);
-        expect(controller.state.shieldSubscriptionError).toBeNull();
-      });
-    });
-
-    it('defaults to null', async () => {
-      await withController(({ controller }) => {
-        expect(controller.state.shieldSubscriptionError).toBeNull();
-      });
-    });
-  });
-
   describe('setPendingRedirectRoute', () => {
     it('defaults to null', async () => {
       await withController(({ controller }) => {
@@ -562,9 +493,9 @@ describe('AppStateController', () => {
 
     it('sets a route with only path', async () => {
       await withController(({ controller }) => {
-        controller.setPendingRedirectRoute({ path: '/shield-plan' });
+        controller.setPendingRedirectRoute({ path: '/asset' });
         expect(controller.state.pendingRedirectRoute).toStrictEqual({
-          path: '/shield-plan',
+          path: '/asset',
         });
       });
     });
@@ -572,12 +503,12 @@ describe('AppStateController', () => {
     it('sets a route with path, search, and environmentType', async () => {
       await withController(({ controller }) => {
         controller.setPendingRedirectRoute({
-          path: '/shield-plan',
+          path: '/asset',
           search: '?source=checkout',
           environmentType: ENVIRONMENT_TYPE_POPUP,
         });
         expect(controller.state.pendingRedirectRoute).toStrictEqual({
-          path: '/shield-plan',
+          path: '/asset',
           search: '?source=checkout',
           environmentType: ENVIRONMENT_TYPE_POPUP,
         });
@@ -586,7 +517,7 @@ describe('AppStateController', () => {
 
     it('clears the route when set to null', async () => {
       await withController(({ controller }) => {
-        controller.setPendingRedirectRoute({ path: '/shield-plan' });
+        controller.setPendingRedirectRoute({ path: '/asset' });
         expect(controller.state.pendingRedirectRoute).not.toBeNull();
 
         controller.setPendingRedirectRoute(null);
@@ -805,8 +736,6 @@ describe('AppStateController', () => {
               "lastUpdatedAt": null,
               "lastUpdatedFromVersion": null,
               "lastViewedUserSurvey": null,
-              "musdConversionDismissedCtaKeys": [],
-              "musdConversionEducationSeen": false,
               "newPrivacyPolicyToastClickedOrClosed": null,
               "newPrivacyPolicyToastShownDate": null,
               "nftsDetectionNoticeDismissed": false,
@@ -816,22 +745,16 @@ describe('AppStateController', () => {
               "outdatedBrowserWarningLastShown": null,
               "pendingExtensionVersion": null,
               "pendingRedirectRoute": null,
-              "pendingShieldCohort": null,
-              "pendingShieldCohortTxType": null,
               "pna25Acknowledged": false,
               "popupGasPollTokens": [],
               "productTour": "accountIcon",
               "recoveryPhraseReminderHasBeenShown": false,
               "recoveryPhraseReminderLastShown": 1000,
-              "shieldEndingToastLastClickedOrClosed": null,
-              "shieldPausedToastLastClickedOrClosed": null,
-              "shieldSubscriptionError": null,
               "showAccountBanner": true,
               "showBetaHeader": false,
               "showDownloadMobileAppSlide": true,
               "showNetworkBanner": true,
               "showPermissionsTour": true,
-              "showShieldEntryModalOnce": null,
               "showTestnetMessageInDropdown": true,
               "sidePanelGasPollTokens": [],
               "signatureSecurityAlertResponses": {},
@@ -899,8 +822,6 @@ describe('AppStateController', () => {
               "lastUpdatedAt": null,
               "lastUpdatedFromVersion": null,
               "lastViewedUserSurvey": null,
-              "musdConversionDismissedCtaKeys": [],
-              "musdConversionEducationSeen": false,
               "newPrivacyPolicyToastClickedOrClosed": null,
               "newPrivacyPolicyToastShownDate": null,
               "nftsDetectionNoticeDismissed": false,
@@ -910,22 +831,16 @@ describe('AppStateController', () => {
               "outdatedBrowserWarningLastShown": null,
               "pendingExtensionVersion": null,
               "pendingRedirectRoute": null,
-              "pendingShieldCohort": null,
-              "pendingShieldCohortTxType": null,
               "pna25Acknowledged": false,
               "popupGasPollTokens": [],
               "productTour": "accountIcon",
               "recoveryPhraseReminderHasBeenShown": false,
               "recoveryPhraseReminderLastShown": 1000,
-              "shieldEndingToastLastClickedOrClosed": null,
-              "shieldPausedToastLastClickedOrClosed": null,
-              "shieldSubscriptionError": null,
               "showAccountBanner": true,
               "showBetaHeader": false,
               "showDownloadMobileAppSlide": true,
               "showNetworkBanner": true,
               "showPermissionsTour": true,
-              "showShieldEntryModalOnce": null,
               "showTestnetMessageInDropdown": true,
               "sidePanelGasPollTokens": [],
               "signatureSecurityAlertResponses": {},
@@ -988,27 +903,20 @@ describe('AppStateController', () => {
               "lastUpdatedAt": null,
               "lastUpdatedFromVersion": null,
               "lastViewedUserSurvey": null,
-              "musdConversionDismissedCtaKeys": [],
-              "musdConversionEducationSeen": false,
               "newPrivacyPolicyToastClickedOrClosed": null,
               "newPrivacyPolicyToastShownDate": null,
               "nftsDetectionNoticeDismissed": false,
               "onboardingDate": null,
               "outdatedBrowserWarningLastShown": null,
-              "pendingShieldCohort": null,
-              "pendingShieldCohortTxType": null,
               "pna25Acknowledged": false,
               "productTour": "accountIcon",
               "recoveryPhraseReminderHasBeenShown": false,
               "recoveryPhraseReminderLastShown": 1000,
-              "shieldEndingToastLastClickedOrClosed": null,
-              "shieldPausedToastLastClickedOrClosed": null,
               "showAccountBanner": true,
               "showBetaHeader": false,
               "showDownloadMobileAppSlide": true,
               "showNetworkBanner": true,
               "showPermissionsTour": true,
-              "showShieldEntryModalOnce": null,
               "showTestnetMessageInDropdown": true,
               "slides": [],
               "snapsInstallPrivacyWarningShown": false,
@@ -1057,7 +965,6 @@ describe('AppStateController', () => {
               "connectedStatusPopoverHasBeenShown": true,
               "currentExtensionPopupId": 0,
               "currentPopupId": 0,
-              "dappSwapComparisonData": {},
               "defaultHomeActiveTabName": null,
               "fullScreenGasPollTokens": [],
               "hasShownMultichainAccountsIntroModal": false,
@@ -1072,8 +979,6 @@ describe('AppStateController', () => {
               "lastUpdatedAt": null,
               "lastUpdatedFromVersion": null,
               "lastViewedUserSurvey": null,
-              "musdConversionDismissedCtaKeys": [],
-              "musdConversionEducationSeen": false,
               "networkConnectionBanner": {
                 "status": "unknown",
               },
@@ -1085,22 +990,16 @@ describe('AppStateController', () => {
               "outdatedBrowserWarningLastShown": null,
               "pendingExtensionVersion": null,
               "pendingRedirectRoute": null,
-              "pendingShieldCohort": null,
-              "pendingShieldCohortTxType": null,
               "pna25Acknowledged": false,
               "popupGasPollTokens": [],
               "productTour": "accountIcon",
               "recoveryPhraseReminderHasBeenShown": false,
               "recoveryPhraseReminderLastShown": 1000,
-              "shieldEndingToastLastClickedOrClosed": null,
-              "shieldPausedToastLastClickedOrClosed": null,
-              "shieldSubscriptionError": null,
               "showAccountBanner": true,
               "showBetaHeader": false,
               "showDownloadMobileAppSlide": true,
               "showNetworkBanner": true,
               "showPermissionsTour": true,
-              "showShieldEntryModalOnce": null,
               "sidePanelGasPollTokens": [],
               "signatureSecurityAlertResponses": {},
               "slides": [],

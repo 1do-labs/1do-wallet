@@ -8,7 +8,6 @@ import React, {
 } from 'react';
 import PropTypes from 'prop-types';
 import { Location as RouterLocation, NavigateFunction } from 'react-router-dom';
-import { SeedlessOnboardingControllerErrorMessage } from '@metamask/seedless-onboarding-controller';
 import {
   TextVariant,
   TextColor,
@@ -57,6 +56,16 @@ import { getCaretCoordinates } from './unlock-page.util';
 import ResetPasswordModal from './reset-password-modal';
 import FormattedCounter from './formatted-counter';
 import { OneDoUnlockLogo } from './one-do-unlock-logo';
+
+const SeedlessOnboardingControllerErrorMessage = {
+  IncorrectPassword: 'Incorrect password',
+  TooManyLoginAttempts: 'Too many login attempts',
+  OutdatedPassword: 'Outdated password',
+  AuthenticationError: 'Authentication error',
+  InvalidRevokeToken: 'Invalid revoke token',
+  InvalidRefreshToken: 'Invalid refresh token',
+  MaxKeyChainLengthExceeded: 'Max key chain length exceeded',
+} as const;
 
 type UnlockPageProps = {
   navigate: NavigateFunction;

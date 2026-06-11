@@ -25,14 +25,6 @@ async function mockApis(mockServer: Mockttp): Promise<MockedEndpoint[]> {
         };
       }),
     await mockServer
-      .forGet('https://on-ramp-content.api.cx.metamask.io/regions/networks')
-      .thenCallback(() => {
-        return {
-          statusCode: 200,
-          json: [{ fakedata: true }],
-        };
-      }),
-    await mockServer
       .forGet('https://chainid.network/chains.json')
       .thenCallback(() => {
         return {

@@ -22,7 +22,9 @@ import { BalanceChange } from './types';
 import { useBalanceChanges } from './useBalanceChanges';
 
 const TRANSACTION_ID_MOCK = 'testTransactionId';
-const accountRuntimeInterface = new Interface(['function enableApp(address app)']);
+const accountRuntimeInterface = new Interface([
+  'function enableApp(address app)',
+]);
 
 const BALANCE_CHANGES_MOCK = [
   { amount: new BigNumber(-123) },
@@ -128,7 +130,7 @@ describe('SimulationDetails', () => {
       {
         txParams: {
           data: accountRuntimeInterface.encodeFunctionData('enableApp', [
-            '0x199dffe30b8b5ab611d952289a2674c5e826dcb9',
+            '0x3C7618FdAb069e8888E5587cA2766497B866afD5',
           ]),
           from: '0x038714B6C1D6b449383cc6faE23Bf4F2eb7Ff262',
           to: '0x038714B6C1D6b449383cc6faE23Bf4F2eb7Ff262',

@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useMemo, useState } from 'react';
+import React, { useCallback, useContext, useState } from 'react';
 import {
   Box,
   Icon,
@@ -8,8 +8,6 @@ import {
   Text,
   TextVariant,
 } from '@metamask/design-system-react';
-import { useSelector } from 'react-redux';
-import { TokenPaymentInfo } from '@metamask/subscription-controller';
 import { Hex } from '@metamask/utils';
 import { useI18nContext } from '../../../../hooks/useI18nContext';
 import {
@@ -19,19 +17,18 @@ import {
   ModalHeader,
   ModalOverlay,
 } from '../../../component-library';
-import { getBuyableChains } from '../../../../ducks/ramps';
-import useRamps from '../../../../hooks/ramps/useRamps/useRamps';
 import { ReceiveModal } from '../../../multichain/receive-modal';
-import useBridging from '../../../../hooks/bridge/useBridging';
 import {
   MetaMetricsEventCategory,
   MetaMetricsEventName,
-  MetaMetricsSwapsEventSource,
 } from '../../../../../shared/constants/metametrics';
 import { MetaMetricsContext } from '../../../../contexts/metametrics';
-import { hexToDecimal } from '../../../../../shared/lib/conversion.utils';
-import { AggregatorNetwork } from '../../../../ducks/ramps/types';
 import { trace, TraceName } from '../../../../../shared/lib/trace';
+
+type AddFundsToken = {
+  address: string;
+  symbol: string;
+};
 
 const AddFundsModal = ({
   onClose,
@@ -40,48 +37,13 @@ const AddFundsModal = ({
   payerAddress,
 }: {
   onClose: () => void;
-  token: TokenPaymentInfo;
+  token: AddFundsToken;
   chainId: string | number;
   payerAddress: Hex;
 }) => {
   const t = useI18nContext();
-  const { openBuyCryptoInPdapp } = useRamps();
   const { trackEvent } = useContext(MetaMetricsContext);
-
-  const buyableChains = useSelector(getBuyableChains);
-
-  const { openBridgeExperience } = useBridging();
-
   const [showReceiveModal, setShowReceiveModal] = useState(false);
-
-  const isBuyableChain = useMemo(() => {
-    if (!chainId) {
-      return false;
-    }
-    return buyableChains.some(
-      (network: AggregatorNetwork) =>
-        String(network.chainId) === hexToDecimal(chainId),
-    );
-  }, [buyableChains, chainId]);
-
-  const handleBuyAndSellOnClick = useCallback(() => {
-    openBuyCryptoInPdapp();
-    trackEvent({
-      event: MetaMetricsEventName.NavBuyButtonClicked,
-      category: MetaMetricsEventCategory.Navigation,
-      properties: {
-        location: 'Transaction Shield',
-        text: 'Buy',
-        // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        chain_id: chainId,
-        // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        token_symbol: token.symbol,
-      },
-    });
-    onClose();
-  }, [chainId, onClose, openBuyCryptoInPdapp, token.symbol, trackEvent]);
 
   const handleReceiveOnClick = useCallback(() => {
     trace({ name: TraceName.ReceiveModal });
@@ -99,14 +61,6 @@ const AddFundsModal = ({
 
     setShowReceiveModal(true);
   }, [chainId, trackEvent]);
-
-  const handleSwapOnClick = useCallback(async () => {
-    openBridgeExperience(MetaMetricsSwapsEventSource.TransactionShield, {
-      symbol: token.symbol,
-      address: token.address,
-      chainId,
-    });
-  }, [chainId, token, openBridgeExperience]);
 
   const buttonRow = ({
     label,
@@ -156,23 +110,10 @@ const AddFundsModal = ({
           paddingRight={0}
         >
           {buttonRow({
-            id: 'add-funds-modal-buy-crypto-button',
-            label: t('addFundsModalBuyCrypto'),
-            iconName: IconName.Add,
-            onClick: handleBuyAndSellOnClick,
-            disabled: !isBuyableChain,
-          })}
-          {buttonRow({
             id: 'add-funds-modal-receive-crypto-button',
             label: t('addFundsModalReceiveTokens'),
             iconName: IconName.QrCode,
             onClick: handleReceiveOnClick,
-          })}
-          {buttonRow({
-            id: 'add-funds-modal-swap-crypto-button',
-            label: t('addFundsModalSwapTokens'),
-            iconName: IconName.SwapHorizontal,
-            onClick: handleSwapOnClick,
           })}
           {showReceiveModal && (
             <ReceiveModal

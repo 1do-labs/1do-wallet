@@ -17,7 +17,6 @@ import type {
 import type { KeyringControllerState } from '@metamask/keyring-controller';
 import { type NameControllerState, NameType } from '@metamask/name-controller';
 import type { NetworkEnablementControllerState } from '@metamask/network-enablement-controller';
-import type { NotificationServicesController } from '@metamask/notification-services-controller';
 import type { SelectedNetworkControllerState } from '@metamask/selected-network-controller';
 import type {
   PermissionConstraint,
@@ -225,13 +224,6 @@ class FixtureBuilderV2 {
 
   withNftController(data: Partial<NftControllerState>): this {
     merge(this.fixture.data.NftController, data);
-    return this;
-  }
-
-  withNotificationServicesController(
-    data: Partial<NotificationServicesController.NotificationServicesControllerState>,
-  ): this {
-    merge(this.fixture.data.NotificationServicesController, data);
     return this;
   }
 

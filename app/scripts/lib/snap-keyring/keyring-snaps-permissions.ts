@@ -15,7 +15,6 @@ const PORTFOLIO_ORIGINS: string[] = [
     ? [
         'https://dev.app.metamask.io',
         'https://stage.app.metamask.io',
-        'https://ramps-dev.app.metamask.io',
         'https://portfolio-builds.metafi-dev.codefi.network',
       ]
     : []),

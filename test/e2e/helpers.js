@@ -23,12 +23,10 @@ const WebSocketRegistry = require('./websocket/registry').default;
 const {
   accountActivityWebSocketConfig,
 } = require('./websocket/account-activity-mocks');
-const { perpsWebSocketConfig } = require('./websocket/perps-mocks');
 const { WEBSOCKET_SERVICES } = require('./websocket/constants');
 
 // Register each WebSocket service explicitly.
 WebSocketRegistry.register(accountActivityWebSocketConfig);
-WebSocketRegistry.register(perpsWebSocketConfig);
 
 const tinyDelayMs = 200;
 const regularDelayMs = tinyDelayMs * 2;
@@ -159,7 +157,6 @@ async function withFixtures(options, testSuite) {
     manifestFlags,
     solanaWebSocketSpecificMocks = [],
     accountActivityWebSocketSpecificMocks = [],
-    perpsWebSocketSpecificMocks = [],
     extendedTimeoutMultiplier = 1,
   } = options;
 
@@ -327,7 +324,6 @@ async function withFixtures(options, testSuite) {
       [WEBSOCKET_SERVICES.accountActivity]: {
         mocks: accountActivityWebSocketSpecificMocks,
       },
-      [WEBSOCKET_SERVICES.perps]: { mocks: perpsWebSocketSpecificMocks },
     });
 
     // Decide between the regular setupMocking and the passThrough version

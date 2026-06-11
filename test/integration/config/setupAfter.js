@@ -33,12 +33,6 @@ jest.mock(
   }),
 );
 
-jest.mock(
-  '../../../ui/pages/confirmations/components/info/musd-conversion-info',
-  () => ({
-    MusdConversionInfo: () => null,
-  }),
-);
 
 jest.mock(
   '../../../ui/pages/confirmations/components/info/custom-amount-info',

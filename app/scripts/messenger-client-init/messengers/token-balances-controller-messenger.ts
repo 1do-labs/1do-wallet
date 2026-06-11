@@ -8,7 +8,6 @@ import type {
   NetworkControllerGetStateAction,
   NetworkControllerStateChangeEvent,
 } from '@metamask/network-controller';
-import { AuthenticationController } from '@metamask/profile-sync-controller';
 import {
   AccountsControllerGetSelectedAccountAction,
   AccountsControllerListAccountsAction,
@@ -34,10 +33,6 @@ import {
   KeyringControllerUnlockEvent,
 } from '@metamask/keyring-controller';
 import { RemoteFeatureFlagControllerGetStateAction } from '@metamask/remote-feature-flag-controller';
-import type {
-  AccountActivityServiceStatusChangedEvent,
-  AccountActivityServiceBalanceUpdatedEvent,
-} from '@metamask/core-backend';
 import type {
   PreferencesControllerGetStateAction,
   PreferencesControllerStateChangeEvent,
@@ -69,8 +64,7 @@ type AllowedActions =
   | AccountTrackerControllerGetStateAction
   | AccountTrackerControllerUpdateNativeBalancesAction
   | AccountTrackerControllerUpdateStakedBalancesAction
-  | KeyringControllerGetStateAction
-  | AuthenticationController.AuthenticationControllerGetBearerTokenAction;
+  | KeyringControllerGetStateAction;
 
 type AllowedEvents =
   | TokensControllerStateChangeEvent
@@ -79,8 +73,6 @@ type AllowedEvents =
   | KeyringControllerAccountRemovedEvent
   | KeyringControllerLockEvent
   | KeyringControllerUnlockEvent
-  | AccountActivityServiceBalanceUpdatedEvent
-  | AccountActivityServiceStatusChangedEvent
   | AccountsControllerSelectedEvmAccountChangeEvent
   | TransactionControllerTransactionConfirmedEvent
   | TransactionControllerIncomingTransactionsReceivedEvent;
@@ -124,7 +116,6 @@ export function getTokenBalancesControllerMessenger(
       'AccountTrackerController:updateNativeBalances',
       'AccountTrackerController:updateStakedBalances',
       'KeyringController:getState',
-      'AuthenticationController:getBearerToken',
     ],
     events: [
       'NetworkController:stateChange',
@@ -133,8 +124,6 @@ export function getTokenBalancesControllerMessenger(
       'KeyringController:accountRemoved',
       'KeyringController:lock',
       'KeyringController:unlock',
-      'AccountActivityService:balanceUpdated',
-      'AccountActivityService:statusChanged',
       'AccountsController:selectedEvmAccountChange',
       'TransactionController:transactionConfirmed',
       'TransactionController:incomingTransactionsReceived',

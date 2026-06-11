@@ -70,7 +70,7 @@ import { EnvironmentType } from '../constants/app';
  * - **History duck**: `ui/ducks/history/history.js` — `setRedirectAfterDefaultPage()`
  */
 export type PendingRedirectRoute = {
-  /** The route path to redirect to (e.g. `'/shield-plan'`). */
+  /** The route path to redirect to (e.g. `'/asset'`). */
   path: string;
   /** Optional query string to append (e.g. `'?source=checkout'`). */
   search?: `?${string}`;

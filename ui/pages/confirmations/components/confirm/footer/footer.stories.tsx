@@ -5,7 +5,6 @@ import { getMockPersonalSignConfirmState } from '../../../../../../test/data/con
 import configureStore from '../../../../../store/store';
 import { HardwareWalletErrorProvider } from '../../../../../contexts/hardware-wallets';
 import { ConfirmContextProvider } from '../../../context/confirm';
-import { DappSwapContextProvider } from '../../../context/dapp-swap';
 
 import Footer from './footer';
 
@@ -19,7 +18,7 @@ const Story = {
       <Provider store={store}>
         <HardwareWalletErrorProvider>
           <ConfirmContextProvider>
-            <DappSwapContextProvider>{story()}</DappSwapContextProvider>
+            {story()}
           </ConfirmContextProvider>
         </HardwareWalletErrorProvider>
       </Provider>

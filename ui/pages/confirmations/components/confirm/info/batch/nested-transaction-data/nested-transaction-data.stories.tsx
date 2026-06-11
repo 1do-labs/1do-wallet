@@ -9,7 +9,6 @@ import {
   CONTRACT_ADDRESS_SOURCIFY,
 } from '../../../../../../../../test/data/confirmations/transaction-decode';
 import { ConfirmContextProvider } from '../../../../../context/confirm';
-import { DappSwapContextProvider } from '../../../../../context/dapp-swap';
 import { NestedTransactionData } from './nested-transaction-data';
 
 const FOUR_BYTE_DATA = '0xabcdefab';
@@ -58,7 +57,7 @@ const Story = {
       return (
         <Provider store={store}>
           <ConfirmContextProvider>
-            <DappSwapContextProvider>{story()}</DappSwapContextProvider>
+            {story()}
           </ConfirmContextProvider>
         </Provider>
       );

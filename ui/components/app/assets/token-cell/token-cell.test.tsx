@@ -3,7 +3,6 @@ import thunk from 'redux-thunk';
 import configureMockStore from 'redux-mock-store';
 import { fireEvent, waitFor } from '@testing-library/react';
 import { useSelector } from 'react-redux';
-import { Hex } from '@metamask/utils';
 import { renderWithProvider } from '../../../../../test/lib/render-helpers-navigate';
 import { useTokenFiatAmount } from '../../../../hooks/useTokenFiatAmount';
 import { getCurrentCurrency } from '../../../../ducks/metamask/metamask';
@@ -24,7 +23,6 @@ import { getProviderConfig } from '../../../../../shared/lib/selectors/networks'
 import { useIsOriginalTokenSymbol } from '../../../../hooks/useIsOriginalTokenSymbol';
 import { getIntlLocale } from '../../../../ducks/locale/locale';
 import { TokenWithFiatAmount } from '../types';
-import { TOKEN_LIST_CELL_MUSD_OPTIONS } from '../../musd/musd-events';
 import { TokenCellProps } from './token-cell';
 import TokenCell from '.';
 
@@ -49,16 +47,6 @@ jest.mock('../../../../hooks/useIsOriginalTokenSymbol', () => {
   };
 });
 
-const mockShouldShowTokenListItemCta = jest.fn().mockReturnValue(false);
-jest.mock('../../../../hooks/musd', () => ({
-  useMusdCtaVisibility: () => ({
-    shouldShowTokenListItemCta: mockShouldShowTokenListItemCta,
-  }),
-  useMusdBalance: () => ({
-    hasMusdBalance: true,
-  }),
-}));
-
 const mockUseNavigate = jest.fn();
 jest.mock('react-router-dom', () => {
   return {
@@ -66,20 +54,6 @@ jest.mock('react-router-dom', () => {
     useNavigate: () => mockUseNavigate,
   };
 });
-
-const mockUseMerklRewards = jest.fn().mockReturnValue({
-  isEligible: false,
-  hasClaimableReward: false,
-  hasClaimedBefore: false,
-  claimableRewardDisplay: null,
-  refetch: jest.fn(),
-});
-jest.mock('../../musd', () => ({
-  ClaimBonusBadge: () => <div data-testid="claim-bonus-badge-mock" />,
-  MusdConvertLink: () => <div data-testid="musd-convert-link-mock" />,
-  isEligibleForMerklRewards: jest.fn().mockReturnValue(false),
-  useMerklRewards: (...args: unknown[]) => mockUseMerklRewards(...args),
-}));
 
 describe('Token Cell', () => {
   const mockState = {
@@ -161,9 +135,6 @@ describe('Token Cell', () => {
     token: {
       ...propToken,
     },
-    musd: {
-      merklClaimBonus: TOKEN_LIST_CELL_MUSD_OPTIONS.merklClaimBonus,
-    },
     onClick: jest.fn(),
   };
   const propAnotherToken: Partial<TokenWithFiatAmount> & {
@@ -184,9 +155,6 @@ describe('Token Cell', () => {
   const propsLargeAmount = {
     token: {
       ...propAnotherToken,
-    },
-    musd: {
-      merklClaimBonus: TOKEN_LIST_CELL_MUSD_OPTIONS.merklClaimBonus,
     },
     onClick: jest.fn(),
   };
@@ -281,110 +249,6 @@ describe('Token Cell', () => {
 
     expect(amountElement).toBeInTheDocument();
     expect(amountElement.textContent).toBe('5.00M TEST');
-  });
-
-  describe('musd.convert', () => {
-    it('does not show the mUSD convert CTA when musd.convert is not passed', () => {
-      mockShouldShowTokenListItemCta.mockReturnValue(true);
-
-      const { queryByTestId } = renderWithProvider(
-        <TokenCell {...(props as TokenCellProps)} />,
-        mockStore,
-      );
-
-      expect(queryByTestId('musd-convert-link-mock')).not.toBeInTheDocument();
-    });
-
-    it('shows the mUSD convert CTA when musd.convert is set and token is eligible', () => {
-      mockShouldShowTokenListItemCta.mockReturnValue(true);
-
-      const { queryByTestId } = renderWithProvider(
-        <TokenCell
-          {...(props as TokenCellProps)}
-          musd={TOKEN_LIST_CELL_MUSD_OPTIONS}
-        />,
-        mockStore,
-      );
-
-      expect(queryByTestId('musd-convert-link-mock')).toBeInTheDocument();
-    });
-
-    it('does not show the mUSD convert CTA when musd.convert is set but token is not eligible', () => {
-      mockShouldShowTokenListItemCta.mockReturnValue(false);
-
-      const { queryByTestId } = renderWithProvider(
-        <TokenCell
-          {...(props as TokenCellProps)}
-          musd={TOKEN_LIST_CELL_MUSD_OPTIONS}
-        />,
-        mockStore,
-      );
-
-      expect(queryByTestId('musd-convert-link-mock')).not.toBeInTheDocument();
-    });
-  });
-
-  describe('ClaimBonusBadge visibility', () => {
-    afterEach(() => {
-      mockUseMerklRewards.mockReturnValue({
-        isEligible: false,
-        hasClaimableReward: false,
-        hasClaimedBefore: false,
-        claimableRewardDisplay: null,
-        refetch: jest.fn(),
-      });
-    });
-
-    it('shows ClaimBonusBadge when isEligible and hasClaimableReward are both true', () => {
-      mockUseMerklRewards.mockReturnValue({
-        isEligible: true,
-        hasClaimableReward: true,
-        hasClaimedBefore: false,
-        claimableRewardDisplay: '10.50',
-        refetch: jest.fn(),
-      });
-
-      const { queryByTestId } = renderWithProvider(
-        <TokenCell {...(props as TokenCellProps)} />,
-        mockStore,
-      );
-
-      expect(queryByTestId('claim-bonus-badge-mock')).toBeInTheDocument();
-    });
-
-    it('does not show ClaimBonusBadge when isEligible is false', () => {
-      mockUseMerklRewards.mockReturnValue({
-        isEligible: false,
-        hasClaimableReward: true,
-        hasClaimedBefore: false,
-        claimableRewardDisplay: null,
-        refetch: jest.fn(),
-      });
-
-      const { queryByTestId } = renderWithProvider(
-        <TokenCell {...(props as TokenCellProps)} />,
-        mockStore,
-      );
-
-      expect(queryByTestId('claim-bonus-badge-mock')).not.toBeInTheDocument();
-    });
-
-    it('does not show ClaimBonusBadge when hasClaimableReward is false', () => {
-      mockUseMerklRewards.mockReturnValue({
-        isEligible: true,
-        hasClaimableReward: false,
-        hasClaimedBefore: false,
-        claimableRewardDisplay: null,
-        refetch: jest.fn(),
-      });
-
-      const { queryByTestId } = renderWithProvider(
-        <TokenCell {...(props as TokenCellProps)} />,
-        mockStore,
-      );
-
-      expect(queryByTestId('claim-bonus-badge-mock')).not.toBeInTheDocument();
-    });
   });
 
   it('should show a scam warning if the native ticker does not match the expected ticker', async () => {

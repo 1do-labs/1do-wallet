@@ -1,11 +1,8 @@
 import { ApprovalType } from '@metamask/controller-utils';
-import { Hex } from '@metamask/utils';
-import { QuoteResponse } from '@metamask/bridge-controller';
 
 import { createSelector } from 'reselect';
 import { getPendingApprovals } from '../../../selectors/approvals';
 import { createDeepEqualSelector } from '../../../../shared/lib/selectors/selector-creators';
-import { ConfirmMetamaskState } from '../types/confirm';
 
 const ConfirmationApprovalTypes = [
   ApprovalType.PersonalSign,
@@ -31,23 +28,3 @@ export const oldestPendingConfirmationSelector = createDeepEqualSelector(
   firstPendingConfirmationSelector,
   (firstPendingConfirmation) => firstPendingConfirmation,
 );
-
-export function selectDappSwapComparisonData(
-  state: ConfirmMetamaskState,
-  transactionId: string,
-):
-  | {
-      quotes?: QuoteResponse[];
-      latency?: number;
-      commands?: string;
-      error?: string;
-      swapInfo?: {
-        srcTokenAddress: Hex;
-        destTokenAddress: Hex;
-        srcTokenAmount: Hex;
-        destTokenAmountMin: Hex;
-      };
-    }
-  | undefined {
-  return state.metamask.dappSwapComparisonData?.[transactionId] ?? undefined;
-}

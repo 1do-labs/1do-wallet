@@ -192,9 +192,6 @@ export function useGetTitle(transaction: TransactionViewModel): string {
   });
 
   const resolvedType = resolveTransactionType(transaction);
-  if (resolvedType === TransactionType.musdClaim) {
-    return t('musdClaimTitle');
-  }
 
   const readableLabel = transaction.readable?.trim();
   if (isExtensionTransactionLabelsEnabled && readableLabel) {

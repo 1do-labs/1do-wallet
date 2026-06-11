@@ -23,11 +23,6 @@ jest.mock('react-router-dom', () => ({
 
 const MOCK_ON_SUBMIT = jest.fn();
 
-function genMusdConversion() {
-  const base = genUnapprovedContractInteractionConfirmation({ chainId: '0x1' });
-  return { ...base, type: TransactionType.musdConversion, origin: 'metamask' };
-}
-
 function genPerpsDeposit() {
   const base = genUnapprovedContractInteractionConfirmation({ chainId: '0x1' });
   return { ...base, type: TransactionType.perpsDeposit, origin: 'metamask' };
@@ -35,7 +30,7 @@ function genPerpsDeposit() {
 
 function render({
   isGaslessLoading = false,
-  confirmation = genMusdConversion(),
+  confirmation = genPerpsDeposit(),
   alerts = [] as {
     key: string;
     severity: string;
@@ -44,9 +39,7 @@ function render({
   }[],
 }: {
   isGaslessLoading?: boolean;
-  confirmation?:
-    | ReturnType<typeof genMusdConversion>
-    | ReturnType<typeof genPerpsDeposit>;
+  confirmation?: ReturnType<typeof genPerpsDeposit>;
   alerts?: {
     key: string;
     severity: string;
@@ -130,7 +123,7 @@ describe('<SingleActionFooter />', () => {
 
     const button = getByTestId('confirm-footer-button');
     expect(button).toBeDisabled();
-    expect(button).toHaveTextContent(messages.musdConvert.message);
+    expect(button).toHaveTextContent(messages.addFunds.message);
   });
 
   it('disables button when amount is zero', () => {

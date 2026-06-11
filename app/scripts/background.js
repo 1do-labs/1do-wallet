@@ -9,7 +9,8 @@
 // eslint-disable-next-line import-x/order -- intentional first import for Sentry
 import { persistenceManager } from './lib/setup-initial-state-hooks';
 
-// Import this very early, so globalThis.INFURA_PROJECT_ID_FROM_MANIFEST_FLAGS is always defined
+// Import these before network constants are evaluated.
+import '../../shared/constants/alchemy-api-key';
 import '../../shared/constants/infura-project-id';
 
 import { lightTheme } from '@metamask/design-tokens';

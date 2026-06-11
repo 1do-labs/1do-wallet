@@ -12,7 +12,8 @@ import '@lavamoat/lavadome-react';
 import './lib/setup-initial-state-hooks';
 import '../../development/wdyr';
 
-// Import this very early, so globalThis.INFURA_PROJECT_ID_FROM_MANIFEST_FLAGS is always defined
+// Import these before network constants are evaluated.
+import '../../shared/constants/alchemy-api-key';
 import '../../shared/constants/infura-project-id';
 
 import * as reactDevtoolsCore from 'react-devtools-core';

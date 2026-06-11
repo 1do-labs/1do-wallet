@@ -58,7 +58,6 @@ import {
 import { getStartupTraceTags } from './helpers/utils/tags';
 import { SEEDLESS_PASSWORD_OUTDATED_CHECK_INTERVAL_MS } from './constants';
 import { initWebVitals } from './helpers/utils/web-vitals';
-import { getPerpsStreamManager } from './providers/perps';
 import { setupPatchStoreSubstreamConnection } from './store/patch-store-substream-connection';
 
 export { CriticalStartupErrorHandler } from './helpers/utils/critical-startup-error-handler';
@@ -93,8 +92,6 @@ export const connectToBackground = (
     const { method } = data;
     if (method === START_UI_SYNC) {
       await handleStartUISync(data.params[0]);
-    } else if (method === 'perpsStreamUpdate') {
-      getPerpsStreamManager().handleBackgroundUpdate(data.params[0]);
     } else if (method !== MESSENGER_SUBSCRIPTION_NOTIFICATION) {
       throw new Error(
         `Internal JSON-RPC Notification Not Handled:\n\n ${JSON.stringify(
@@ -467,7 +464,6 @@ function setupStateHooks(store) {
   if (process.env.METAMASK_DEBUG) {
     globalThis.stateHooks.store = store;
     globalThis.stateHooks.submitRequestToBackground = submitRequestToBackground;
-    globalThis.stateHooks.getPerpsStreamManager = getPerpsStreamManager;
   }
 }
 

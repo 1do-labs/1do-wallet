@@ -14,12 +14,6 @@ import * as actions from '../../../store/actions';
 
 import { NetworkManager } from '../../multichain/network-manager';
 import { HARDWARE_WALLET_ERROR_MODAL_NAME } from '../../../contexts/hardware-wallets/constants';
-import {
-  CONFIRM_TURN_ON_BACKUP_AND_SYNC_MODAL_NAME,
-  ConfirmTurnOnBackupAndSyncModal,
-  TURN_ON_BACKUP_AND_SYNC_MODAL_NAME,
-  TurnOnBackupAndSyncModal,
-} from './identity';
 import HideTokenConfirmationModal from './hide-token-confirmation-modal';
 import QRScanner from './qr-scanner';
 import { HardwareWalletErrorModal } from './hardware-wallet-error-modal';
@@ -153,32 +147,6 @@ const MODALS = {
 
   CUSTOMIZE_NONCE: {
     contents: <CustomizeNonceModal />,
-    mobileModalStyle: {
-      ...modalContainerMobileStyle,
-    },
-    laptopModalStyle: {
-      ...modalContainerLaptopStyle,
-    },
-    contentStyle: {
-      borderRadius: '8px',
-    },
-  },
-
-  [CONFIRM_TURN_ON_BACKUP_AND_SYNC_MODAL_NAME]: {
-    contents: <ConfirmTurnOnBackupAndSyncModal />,
-    mobileModalStyle: {
-      ...modalContainerMobileStyle,
-    },
-    laptopModalStyle: {
-      ...modalContainerLaptopStyle,
-    },
-    contentStyle: {
-      borderRadius: '8px',
-    },
-  },
-
-  [TURN_ON_BACKUP_AND_SYNC_MODAL_NAME]: {
-    contents: <TurnOnBackupAndSyncModal />,
     mobileModalStyle: {
       ...modalContainerMobileStyle,
     },

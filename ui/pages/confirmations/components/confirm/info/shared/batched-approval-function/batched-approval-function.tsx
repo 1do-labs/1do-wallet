@@ -1,10 +1,7 @@
 import React from 'react';
 import { BigNumber } from 'bignumber.js';
 import { Hex } from '@metamask/utils';
-import {
-  BatchTransactionParams,
-  TransactionMeta,
-} from '@metamask/transaction-controller';
+import { TransactionMeta } from '@metamask/transaction-controller';
 
 import { DecodedTransactionDataMethod } from '../../../../../../../../shared/types/transaction-decode';
 import { TokenStandard } from '../../../../../../../../shared/constants/transaction';
@@ -20,7 +17,6 @@ import { useI18nContext } from '../../../../../../../hooks/useI18nContext';
 import { Box } from '../../../../../../../components/component-library';
 import { ERC20_DEFAULT_DECIMALS } from '../../../../../utils/token';
 import { useConfirmContext } from '../../../../../context/confirm';
-import { useDappSwapContext } from '../../../../../context/dapp-swap';
 import { isSpendingCapUnlimited } from '../../approve/hooks/use-approve-token-simulation';
 
 export type TranslateFunction = (arg: string) => string;
@@ -104,15 +100,10 @@ export function BatchedApprovalFunction({
 }) {
   const t = useI18nContext();
   const { currentConfirmation } = useConfirmContext<TransactionMeta>();
-  const { isQuotedSwapDisplayedInInfo, selectedQuote } = useDappSwapContext();
 
   const { chainId } = currentConfirmation;
-  let transaction =
+  const transaction =
     currentConfirmation?.nestedTransactions?.[nestedTransactionIndex];
-
-  if (isQuotedSwapDisplayedInInfo) {
-    transaction = selectedQuote?.approval as BatchTransactionParams;
-  }
 
   const { data, to } = transaction ?? {};
 

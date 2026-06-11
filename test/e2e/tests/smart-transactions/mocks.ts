@@ -543,9 +543,9 @@ export async function mockChooseGasFeeTokenRequests(mockServer: MockttpServer) {
 
 /**
  * Single quote payload for getQuoteStream (SSE data: field).
- * ETH 20 -> MUSD, pancakeswap. Used by "should Swap with gas included fee" test.
+ * ETH 20 -> USDC, pancakeswap. Used by "should Swap with gas included fee" test.
  */
-const MOCK_ETH_MUSD_QUOTE_STREAM = [
+const MOCK_ETH_USDC_QUOTE_STREAM = [
   {
     quote: {
       requestId:
@@ -571,17 +571,17 @@ const MOCK_ETH_MUSD_QUOTE_STREAM = [
       },
       srcTokenAmount: '20000000000000000000',
       destAsset: {
-        address: '0xaca92e438df0b2401ff60da7e4337b687a2435da',
+        address: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
         chainId: 1,
-        assetId: 'eip155:1/erc20:0xaca92e438df0b2401ff60da7e4337b687a2435da',
-        symbol: 'MUSD',
+        assetId: 'eip155:1/erc20:0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
+        symbol: 'USDC',
         decimals: 6,
-        name: 'MetaMask USD',
-        coingeckoId: 'metamask-usd',
-        aggregators: ['metamask', 'liFi', 'socket', 'rubic', 'rango'],
-        occurrences: 5,
+        name: 'USD Coin',
+        coingeckoId: 'usd-coin',
+        aggregators: [],
+        occurrences: 100,
         iconUrl:
-          'https://static.cx.metamask.io/api/v2/tokenIcons/assets/eip155/1/erc20/0xaca92e438df0b2401ff60da7e4337b687a2435da.png',
+          'https://static.cx.metamask.io/api/v1/tokenIcons/1/0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48.png',
         metadata: {},
       },
       destTokenAmount: '267044',
@@ -646,12 +646,12 @@ export async function mockGasIncludedTransactionRequests(
   // Sentinel /networks (sendBundle: true so quote request includes gasIncluded: true).
   await mockSentinelNetworks(mockServer);
 
-  // Mock getQuoteStream (SSE) so the swap page receives a quote (ETH -> MUSD).
+  // Mock getQuoteStream (SSE) so the swap page receives a quote (ETH -> USDC).
   await mockServer
     .forGet(/getQuoteStream/u)
     .thenStream(
       200,
-      mockSseEventSource(MOCK_ETH_MUSD_QUOTE_STREAM),
+      mockSseEventSource(MOCK_ETH_USDC_QUOTE_STREAM),
       SSE_RESPONSE_HEADER,
     );
 

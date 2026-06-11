@@ -44,10 +44,6 @@ export const SENTRY_BACKGROUND_STATE: SentryBackgroundControllerMasks = {
   AnnouncementController: {
     announcements: false,
   },
-  AuthenticationController: {
-    isSignedIn: false,
-    srpSessionData: false,
-  },
   NetworkOrderController: {
     orderedNetworkList: [],
   },
@@ -105,9 +101,6 @@ export const SENTRY_BACKGROUND_STATE: SentryBackgroundControllerMasks = {
     pendingExtensionVersion: true,
     updateModalLastDismissedAt: true,
     lastUpdatedAt: true,
-    shieldSubscriptionError: true,
-    shieldEndingToastLastClickedOrClosed: true,
-    shieldPausedToastLastClickedOrClosed: true,
     storageWriteErrorType: true,
     isWalletResetInProgress: false,
     pna25Acknowledged: false,
@@ -122,28 +115,6 @@ export const SENTRY_BACKGROUND_STATE: SentryBackgroundControllerMasks = {
   },
   MultichainAssetsRatesController: {
     assetsRates: false,
-  },
-  BridgeController: {
-    assetExchangeRates: false,
-    minimumBalanceForRentExemptionInLamports: false,
-    quoteRequest: {
-      walletAddress: false,
-      srcTokenAddress: true,
-      slippage: true,
-      srcChainId: true,
-      destChainId: true,
-      destTokenAddress: true,
-      srcTokenAmount: true,
-    },
-    quotes: [],
-    quotesInitialLoadTime: true,
-    quotesLastFetched: true,
-    quotesLoadingStatus: true,
-    quoteFetchError: true,
-    quotesRefreshCount: true,
-  },
-  BridgeStatusController: {
-    txHistory: false,
   },
   ConnectivityController: {
     connectivityStatus: true,
@@ -180,18 +151,6 @@ export const SENTRY_BACKGROUND_STATE: SentryBackgroundControllerMasks = {
   },
   LoggingController: {
     logs: false,
-  },
-  NotificationServicesController: {
-    subscriptionAccountsSeen: false,
-    isMetamaskNotificationsFeatureSeen: false,
-    isNotificationServicesEnabled: false,
-    isFeatureAnnouncementsEnabled: false,
-    metamaskNotificationsList: false,
-    metamaskNotificationsReadList: false,
-    isCheckingAccountsPresence: false,
-    isFetchingMetamaskNotifications: false,
-    isUpdatingMetamaskNotifications: false,
-    isUpdatingMetamaskNotificationsAccount: false,
   },
   MetaMetricsController: {
     eventsBeforeMetricsOptIn: false,
@@ -287,18 +246,6 @@ export const SENTRY_BACKGROUND_STATE: SentryBackgroundControllerMasks = {
     remoteFeatureFlags: true,
     cacheTimestamp: false,
   },
-  RewardsController: {
-    rewardsActiveAccount: false,
-    rewardsAccounts: false,
-    rewardsSubscriptions: false,
-    rewardsSeasons: false,
-    rewardsSeasonStatuses: false,
-    rewardsSubscriptionTokens: false,
-    rewardsPointsEstimateHistory: false,
-  },
-  NotificationServicesPushController: {
-    fcmToken: false,
-  },
   MultichainRatesController: {
     fiatCurrency: true,
     rates: true,
@@ -364,12 +311,6 @@ export const SENTRY_BACKGROUND_STATE: SentryBackgroundControllerMasks = {
   },
   UserOperationController: {
     userOperations: false,
-  },
-  UserStorageController: {
-    isBackupAndSyncEnabled: true,
-    isBackupAndSyncUpdateLoading: false,
-    isAccountSyncingEnabled: true,
-    isContactSyncingEnabled: true,
   },
 };
 

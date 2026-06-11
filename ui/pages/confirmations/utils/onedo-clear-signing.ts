@@ -4,6 +4,7 @@ import { utils as ethersUtils } from 'ethers';
 import type { TransactionMeta } from '@metamask/transaction-controller';
 
 import { ONE_DO_7702_DELEGATE } from '../../../../shared/lib/eip7702-utils';
+import { isOneDoRuntimeAccessUpdateTransaction } from '../../../../shared/lib/onedo-runtime-access';
 import type { SignatureRequestType } from '../types/confirm';
 
 export { ONE_DO_7702_DELEGATE };
@@ -71,23 +72,23 @@ type TrustedDescriptor = {
 };
 
 const RUNTIME_APPS: Record<string, { id: string; name: string }> = {
-  '0x199dffe30b8b5ab611d952289a2674c5e826dcb9': {
+  '0x3c7618fdab069e8888e5587ca2766497b866afd5': {
     id: 'dex',
     name: 'Dex',
   },
-  '0x7c8f64a017d026c889efac3d72cdbb2fd2ea0daa': {
+  '0x7942ea25f57409450edffc8019bc996cf70f40df': {
     id: 'nftmarket',
     name: 'NFT Market',
   },
-  '0xad2e742a68e3c49c0aa0be40ee36dcf4a46fd4db': {
+  '0x537848ebfcf09d9947b8863a09a400fed71ba0a2': {
     id: 'flashloan',
     name: 'Flash Loan',
   },
-  '0xae75723a8b942fcf4fb18e435bef649b4a5f51db': {
+  '0xb07af534da045558d27c2388b1253f85bab146ab': {
     id: 'will',
     name: 'Will',
   },
-  '0x55dc56e517e5371313ba2932d712029d334df006': {
+  '0x982589b354bc749d385836913a599f703dd63ab8': {
     id: 'sessionpay',
     name: 'Session Pay',
   },
@@ -202,25 +203,25 @@ export const ONEDO_CLEAR_SIGNING_TRUST_POLICY = {
 export const DESCRIPTORS: Record<string, TrustedDescriptor> = {
   accountRuntime: {
     id: 'account-runtime',
-    sha256: 'aab7b3f722a6d8a9bed1100c228dea71c304efc0fdbdea6b15e8485301a51fff',
+    sha256: '34dcacd3da585da19edd55daac95deccc150f6d2a898f9522a12305ed4409c79',
     source: 'onedo-registry-mirror',
     trust: 'pinned-cache',
   },
   sessionpay: {
     id: 'sessionpay',
-    sha256: '995361a78b5dc328d96c782adb9506255edbc9ac03b531404220ae02081de60e',
+    sha256: '04c0e6318a1f543ad9205ba3f624cd4e79cce7cca10ef432ad059e46d82e835a',
     source: 'onedo-registry-mirror',
     trust: 'pinned-cache',
   },
   nftmarket: {
     id: 'nftmarket',
-    sha256: '3c5ac013cd6161741eeeaf42b12c4d144839087f50382617f36d1d948ceb2011',
+    sha256: '232345c21bf8681c75a9c77e513905be37fe4d9420162c624b0f94ecc201b839',
     source: 'onedo-registry-mirror',
     trust: 'pinned-cache',
   },
   will: {
     id: 'will',
-    sha256: '18db022038da76663ba63707664ed71e185b5fad8855932bfbb370f2f7c46564',
+    sha256: '33b42b0207e633663260666400c02601a62222d2a31add8ca77263d65cb0e0bc',
     source: 'onedo-registry-mirror',
     trust: 'pinned-cache',
   },
@@ -232,7 +233,7 @@ export const DESCRIPTORS: Record<string, TrustedDescriptor> = {
   },
   dex: {
     id: 'dex',
-    sha256: 'f79813148ff420600487ef9408b26533bb69a021d16e002637154c988fe179ba',
+    sha256: '337c990ea7de1b5add5c0a726717f44561679254c5f9968aeb23e733b33726e2',
     source: 'onedo-registry-mirror',
     trust: 'pinned-cache',
   },
@@ -1219,18 +1220,7 @@ const parseRuntimeAccessUpdate = (
 
 export const isOneDoRuntimeAccessUpdateTransactionCandidate = (
   transaction?: TransactionMeta,
-) => {
-  const data = transaction?.txParams?.data;
-  if (
-    !data ||
-    !isAddress(transaction?.txParams?.from) ||
-    !isAddress(transaction?.txParams?.to)
-  ) {
-    return false;
-  }
-
-  return Boolean(parseRuntimeAccessUpdate(data));
-};
+) => isOneDoRuntimeAccessUpdateTransaction(transaction);
 
 const getDexCallRows = (data: string) => {
   try {
@@ -2131,7 +2121,10 @@ export const getOneDoTransactionClearSigning = (
   }
 
   const walletAddress = transactionSender;
-  if (!isSameAddress(targetAddress, walletAddress)) {
+  const isAccountRuntimeTarget =
+    isSameAddress(targetAddress, walletAddress) ||
+    isSameAddress(targetAddress, ONE_DO_7702_DELEGATE);
+  if (!isAccountRuntimeTarget) {
     return undefined;
   }
 

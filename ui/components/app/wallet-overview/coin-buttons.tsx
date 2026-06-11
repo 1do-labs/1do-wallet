@@ -1,17 +1,10 @@
 import React, { useCallback, useContext, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { toHex } from '@metamask/controller-utils';
-import {
-  isCaipChainId,
-  CaipChainId,
-  isCaipAssetType,
-  parseCaipAssetType,
-} from '@metamask/utils';
-import { getNativeAssetForChainId } from '@metamask/bridge-controller';
+import { isCaipChainId, CaipChainId } from '@metamask/utils';
 
 import { InternalAccount } from '@metamask/keyring-internal-api';
-import { ChainId } from '../../../../shared/constants/network';
 import { transitionForward } from '../../ui/transition';
 
 import { I18nContext } from '../../../contexts/i18n';
@@ -24,14 +17,12 @@ import {
 import {
   getUseExternalServices,
   getNetworkConfigurationIdByChainId,
-  getSwapsDefaultToken,
 } from '../../../selectors';
 import { getSelectedAccountGroup } from '../../../selectors/multichain-accounts/account-tree';
 import Tooltip from '../../ui/tooltip';
 import {
   MetaMetricsEventCategory,
   MetaMetricsEventName,
-  MetaMetricsSwapsEventSource,
 } from '../../../../shared/constants/metametrics';
 import { MetaMetricsContext } from '../../../contexts/metametrics';
 import {
@@ -42,10 +33,7 @@ import {
 } from '../../../helpers/constants/design-system';
 import { Box, Icon, IconName, IconSize } from '../../component-library';
 import IconButton from '../../ui/icon-button';
-import useRamps from '../../../hooks/ramps/useRamps/useRamps';
-import useBridging from '../../../hooks/bridge/useBridging';
 import { ReceiveModal } from '../../multichain/receive-modal';
-import { Toast, ToastContainer } from '../../multichain/toast';
 import { setActiveNetworkWithError } from '../../../store/actions';
 import {
   getMultichainNativeCurrency,
@@ -54,36 +42,14 @@ import {
 import { useMultichainSelector } from '../../../hooks/useMultichainSelector';
 import { getCurrentChainId } from '../../../../shared/lib/selectors/networks';
 import { isEvmChainId } from '../../../../shared/lib/asset-utils';
-import { ALL_ALLOWED_BRIDGE_CHAIN_IDS } from '../../../../shared/constants/bridge';
 import { trace, TraceName } from '../../../../shared/lib/trace';
 import { navigateToSendRoute } from '../../../pages/confirmations/utils/send';
-
-const TabOpenedToast = ({ onClose }: { onClose: () => void }) => {
-  const t = useContext(I18nContext);
-
-  return (
-    <ToastContainer>
-      <Toast
-        startAdornment={
-          <Icon name={IconName.Export} color={IconColor.iconDefault} />
-        }
-        text={t('buyTabOpenedToastText')}
-        description={t('buyTabOpenedToastDescription')}
-        onClose={onClose}
-        autoHideTime={3000}
-        onAutoHideToast={onClose}
-      />
-    </ToastContainer>
-  );
-};
 
 type CoinButtonsProps = {
   account: InternalAccount;
   chainId: `0x${string}` | CaipChainId | number;
   trackingLocation: string;
-  isSwapsChain: boolean;
   isSigningEnabled: boolean;
-  isBuyableChain: boolean;
   classPrefix?: string;
   /** When true, disables the send button for non-EVM chains (used on asset page) */
   disableSendForNonEvm?: boolean;
@@ -93,9 +59,7 @@ const CoinButtons = ({
   account,
   chainId,
   trackingLocation,
-  isSwapsChain,
   isSigningEnabled,
-  isBuyableChain,
   classPrefix = 'coin',
   disableSendForNonEvm = false,
 }: CoinButtonsProps) => {
@@ -104,7 +68,6 @@ const CoinButtons = ({
 
   const { trackEvent } = useContext(MetaMetricsContext);
   const [showReceiveModal, setShowReceiveModal] = useState(false);
-  const [showTabOpenedToast, setShowTabOpenedToast] = useState(false);
 
   const { address: selectedAddress } = account;
   const navigate = useNavigate();
@@ -114,17 +77,6 @@ const CoinButtons = ({
   >;
   const currentChainId = useSelector(getCurrentChainId);
   const selectedAccountGroup = useSelector(getSelectedAccountGroup);
-
-  const defaultSwapsToken = useSelector((state) =>
-    getSwapsDefaultToken(state, chainId.toString()),
-  );
-
-  // Pre-conditions
-  if (isSwapsChain && defaultSwapsToken === undefined) {
-    throw new Error('defaultSwapsToken is required');
-  }
-
-  const location = useLocation();
 
   // Initially, those events were using a "ETH" as `token_symbol`, so we keep this behavior
   // for EVM, no matter the currently selected native token (e.g. SepoliaETH if you are on Sepolia
@@ -144,7 +96,6 @@ const CoinButtons = ({
   const isEvmAsset = isEvmChainId(normalizedChainId);
 
   const buttonTooltips = {
-    buyButton: [{ condition: !isBuyableChain, message: '' }],
     sendButton: [
       { condition: !isSigningEnabled, message: 'methodNotSupported' },
       {
@@ -152,16 +103,6 @@ const CoinButtons = ({
           disableSendForNonEvm && !isEvmAsset && !isExternalServicesEnabled,
         message: 'currentlyUnavailable',
       },
-    ],
-    swapButton: [
-      {
-        condition: !isExternalServicesEnabled,
-        message: 'currentlyUnavailable',
-      },
-      { condition: !isSigningEnabled, message: 'methodNotSupported' },
-    ],
-    bridgeButton: [
-      { condition: !isSigningEnabled, message: 'methodNotSupported' },
     ],
   };
 
@@ -185,14 +126,6 @@ const CoinButtons = ({
     return contents;
   };
 
-  const getChainId = (): CaipChainId | ChainId => {
-    if (isCaipChainId(chainId)) {
-      return chainId as CaipChainId;
-    }
-    // Otherwise we assume that's an EVM chain ID, so use the usual 0x prefix
-    return toHex(chainId) as ChainId;
-  };
-
   const getSnapAccountMetaMetricsPropertiesIfAny = (
     internalAccount: InternalAccount,
     // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
@@ -213,10 +146,6 @@ const CoinButtons = ({
     // some reason, we don't add any extra property.
     return {};
   };
-
-  const { openBuyCryptoInPdapp } = useRamps();
-
-  const { openBridgeExperience } = useBridging();
 
   const setCorrectChain = useCallback(async () => {
     if (currentChainId !== chainId && multichainChainId !== chainId) {
@@ -266,50 +195,6 @@ const CoinButtons = ({
     transitionForward(() => navigateToSendRoute(navigate, params));
   }, [chainId, account, setCorrectChain, trackingLocation]);
 
-  const handleBuyAndSellOnClick = useCallback(() => {
-    setShowTabOpenedToast(true);
-    openBuyCryptoInPdapp(getChainId());
-    trackEvent({
-      event: MetaMetricsEventName.NavBuyButtonClicked,
-      category: MetaMetricsEventCategory.Navigation,
-      properties: {
-        // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        account_type: account.type,
-        location: 'Home',
-        text: 'Buy',
-        // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        chain_id: chainId,
-        // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        token_symbol: defaultSwapsToken,
-        ...getSnapAccountMetaMetricsPropertiesIfAny(account),
-      },
-    });
-  }, [chainId, defaultSwapsToken]);
-
-  const handleSwapOnClick = useCallback(async () => {
-    // Determine the chainId to use in the Swap experience using the url
-    const urlSuffix = location.pathname.split('/').filter(Boolean).at(-1);
-    const hexChainOrAssetId = urlSuffix
-      ? decodeURIComponent(urlSuffix)
-      : undefined;
-    const chainIdToUse = isCaipAssetType(hexChainOrAssetId)
-      ? parseCaipAssetType(hexChainOrAssetId).chainId
-      : hexChainOrAssetId;
-
-    // Handle clicking from the wallet or native asset overview page
-    transitionForward(() =>
-      openBridgeExperience(
-        MetaMetricsSwapsEventSource.MainView,
-        chainIdToUse && ALL_ALLOWED_BRIDGE_CHAIN_IDS.includes(chainIdToUse)
-          ? getNativeAssetForChainId(chainIdToUse)
-          : undefined,
-      ),
-    );
-  }, [location, openBridgeExperience]);
-
   const handleReceiveOnClick = useCallback(() => {
     trace({ name: TraceName.ReceiveModal });
     trackEvent({
@@ -344,42 +229,6 @@ const CoinButtons = ({
       width={BlockSize.Full}
       gap={3}
     >
-      <IconButton
-        className={`${classPrefix}-overview__button`}
-        Icon={
-          <Icon
-            name={IconName.Dollar}
-            color={IconColor.iconAlternative}
-            size={IconSize.Md}
-          />
-        }
-        disabled
-        data-testid={`${classPrefix}-overview-buy`}
-        label={t('buy')}
-        onClick={handleBuyAndSellOnClick}
-        width={BlockSize.Full}
-        tooltipRender={(contents: React.ReactElement) =>
-          generateTooltip('buyButton', contents)
-        }
-      />
-      <IconButton
-        className={`${classPrefix}-overview__button`}
-        disabled
-        Icon={
-          <Icon
-            name={IconName.SwapVertical}
-            color={IconColor.iconAlternative}
-            size={IconSize.Md}
-          />
-        }
-        onClick={handleSwapOnClick}
-        label={t('swap')}
-        data-testid={`${classPrefix}-overview-swap`}
-        width={BlockSize.Full}
-        tooltipRender={(contents: React.ReactElement) =>
-          generateTooltip('swapButton', contents)
-        }
-      />
       <IconButton
         className={`${classPrefix}-overview__button`}
         data-testid={`${classPrefix}-overview-send`}
@@ -421,9 +270,6 @@ const CoinButtons = ({
         width={BlockSize.Full}
         onClick={handleReceiveOnClick}
       />
-      {showTabOpenedToast && (
-        <TabOpenedToast onClose={() => setShowTabOpenedToast(false)} />
-      )}
     </Box>
   );
 };

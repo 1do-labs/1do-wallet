@@ -7,10 +7,6 @@ import {
   AccountTrackerControllerGetStateAction,
   CurrencyRateControllerActions,
 } from '@metamask/assets-controllers';
-import {
-  BridgeStatusControllerActions,
-  BridgeStatusControllerStateChangeEvent,
-} from '@metamask/bridge-status-controller';
 import { DelegationControllerSignDelegationAction } from '@metamask/delegation-controller';
 import {
   KeyringControllerSignEip7702AuthorizationAction,
@@ -27,10 +23,8 @@ import {
   NetworkControllerGetNetworkClientByIdAction,
   NetworkControllerStateChangeEvent,
 } from '@metamask/network-controller';
-import type { AuthenticationController } from '@metamask/profile-sync-controller';
 import { RemoteFeatureFlagControllerGetStateAction } from '@metamask/remote-feature-flag-controller';
 import { SmartTransactionsControllerSmartTransactionEvent } from '@metamask/smart-transactions-controller';
-import { SubscriptionControllerActions } from '@metamask/subscription-controller';
 import {
   TransactionControllerAddTransactionAction,
   TransactionControllerAddTransactionBatchAction,
@@ -57,7 +51,6 @@ import {
 } from '@metamask/transaction-pay-controller';
 import { RootMessenger } from '../../lib/messenger';
 import { AppStateControllerGetStateAction } from '../../controllers/app-state-controller';
-import { SubscriptionServiceSubmitSubscriptionSponsorshipIntentAction } from '../../services/subscription/types';
 
 type AllowedActions = MessengerActions<TransactionControllerMessenger>;
 
@@ -91,10 +84,7 @@ export function getTransactionControllerMessenger(
       'RemoteFeatureFlagController:getState',
     ],
     events: [
-      'AccountActivityService:transactionUpdated',
-      'AccountActivityService:statusChanged',
       'AccountsController:selectedAccountChange',
-      'BackendWebSocketService:connectionStateChanged',
       'NetworkController:stateChange',
     ],
   });
@@ -107,8 +97,6 @@ type InitMessengerActions =
   | AccountTrackerControllerGetStateAction
   | ApprovalControllerActions
   | AppStateControllerGetStateAction
-  | AuthenticationController.AuthenticationControllerGetBearerTokenAction
-  | BridgeStatusControllerActions
   | CurrencyRateControllerActions
   | DelegationControllerSignDelegationAction
   | KeyringControllerSignEip7702AuthorizationAction
@@ -117,8 +105,6 @@ type InitMessengerActions =
   | NetworkControllerGetEIP1559CompatibilityAction
   | NetworkControllerGetNetworkClientByIdAction
   | RemoteFeatureFlagControllerGetStateAction
-  | SubscriptionControllerActions
-  | SubscriptionServiceSubmitSubscriptionSponsorshipIntentAction
   | TransactionControllerAddTransactionAction
   | TransactionControllerAddTransactionBatchAction
   | TransactionControllerEstimateGasAction
@@ -129,7 +115,6 @@ type InitMessengerActions =
   | TransactionPayControllerGetStrategyAction;
 
 type InitMessengerEvents =
-  | BridgeStatusControllerStateChangeEvent
   | NetworkControllerStateChangeEvent
   | SmartTransactionsControllerSmartTransactionEvent
   | TransactionControllerPostTransactionBalanceUpdatedEvent
@@ -159,7 +144,6 @@ export function getTransactionControllerInitMessenger(
   messenger.delegate({
     messenger: controllerInitMessenger,
     events: [
-      'BridgeStatusController:stateChange',
       'SmartTransactionsController:smartTransaction',
       'TransactionController:postTransactionBalanceUpdated',
       'TransactionController:stateChange',
@@ -181,9 +165,6 @@ export function getTransactionControllerInitMessenger(
       'ApprovalController:startFlow',
       'ApprovalController:updateRequestState',
       'AppStateController:getState',
-      'AuthenticationController:getBearerToken',
-      'BridgeStatusController:getState',
-      'BridgeStatusController:submitTx',
       'CurrencyRateController:getState',
       'DelegationController:signDelegation',
       'KeyringController:signEip7702Authorization',
@@ -192,8 +173,6 @@ export function getTransactionControllerInitMessenger(
       'NetworkController:getEIP1559Compatibility',
       'NetworkController:getNetworkClientById',
       'RemoteFeatureFlagController:getState',
-      'SubscriptionController:getSubscriptionByProduct',
-      'SubscriptionService:submitSubscriptionSponsorshipIntent',
       'TransactionController:addTransaction',
       'TransactionController:addTransactionBatch',
       'TransactionController:estimateGas',

@@ -21,6 +21,7 @@ import {
 } from '../lib/network-controller/messenger-action-handlers';
 import {
   CHAIN_IDS,
+  getRpcUrl,
   getFailoverUrlsForInfuraNetwork,
 } from '../../../shared/constants/network';
 import { captureException } from '../../../shared/lib/sentry';
@@ -32,10 +33,68 @@ export const ADDITIONAL_DEFAULT_NETWORKS = [
   ChainId['megaeth-testnet-v2'],
 ];
 
+const ALCHEMY_NETWORKS = {
+  [CHAIN_IDS.MAINNET]: {
+    legacyNetworkClientId: 'mainnet',
+    network: 'mainnet',
+  },
+  [CHAIN_IDS.SEPOLIA]: {
+    legacyNetworkClientId: 'sepolia',
+    network: 'sepolia',
+  },
+  [CHAIN_IDS.LINEA_MAINNET]: {
+    legacyNetworkClientId: 'linea-mainnet',
+    network: 'linea-mainnet',
+  },
+  [CHAIN_IDS.LINEA_SEPOLIA]: {
+    legacyNetworkClientId: 'linea-sepolia',
+    network: 'linea-sepolia',
+  },
+} as const;
+
+function normalizeAlchemyRpcEndpoints(
+  networks: NetworkController['state']['networkConfigurationsByChainId'],
+  selectedNetworkClientId?: string,
+) {
+  let normalizedSelectedNetworkClientId = selectedNetworkClientId;
+
+  for (const [chainId, { legacyNetworkClientId, network }] of Object.entries(
+    ALCHEMY_NETWORKS,
+  )) {
+    const networkClientId = `${legacyNetworkClientId}-alchemy`;
+    const rpcEndpoint = networks?.[
+      chainId as keyof typeof networks
+    ]?.rpcEndpoints.find(
+      (endpoint) =>
+        endpoint.networkClientId === legacyNetworkClientId ||
+        endpoint.networkClientId === networkClientId,
+    );
+
+    if (rpcEndpoint) {
+      rpcEndpoint.networkClientId = networkClientId;
+      rpcEndpoint.url = getRpcUrl({ network });
+      rpcEndpoint.type = RpcEndpointType.Custom;
+      rpcEndpoint.failoverUrls = [];
+    }
+
+    if (normalizedSelectedNetworkClientId === legacyNetworkClientId) {
+      normalizedSelectedNetworkClientId = networkClientId;
+    }
+  }
+
+  return normalizedSelectedNetworkClientId;
+}
+
 function getInitialState(initialState?: Partial<NetworkController['state']>) {
   let initialNetworkControllerState = initialState;
 
-  if (!initialNetworkControllerState) {
+  if (initialNetworkControllerState) {
+    initialNetworkControllerState.selectedNetworkClientId =
+      normalizeAlchemyRpcEndpoints(
+        initialNetworkControllerState.networkConfigurationsByChainId,
+        initialNetworkControllerState.selectedNetworkClientId,
+      );
+  } else {
     initialNetworkControllerState = getDefaultNetworkControllerState(
       ADDITIONAL_DEFAULT_NETWORKS,
     );
@@ -79,6 +138,7 @@ function getInitialState(initialState?: Partial<NetworkController['state']>) {
       networks[CHAIN_IDS.POLYGON].rpcEndpoints[0].failoverUrls =
         getFailoverUrlsForInfuraNetwork('polygon-mainnet');
     }
+    normalizeAlchemyRpcEndpoints(networks);
 
     // Update default popular network names.
     networks[CHAIN_IDS.MAINNET].name = 'Ethereum';

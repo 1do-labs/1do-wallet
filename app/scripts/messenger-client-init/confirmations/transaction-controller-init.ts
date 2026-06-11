@@ -1,4 +1,3 @@
-import { PRODUCT_TYPES } from '@metamask/subscription-controller';
 import { ORIGIN_METAMASK } from '@metamask/controller-utils';
 import {
   type PublishBatchHookRequest,
@@ -21,10 +20,11 @@ import { Hex } from '@metamask/utils';
 import { trace } from '../../../../shared/lib/trace';
 import { hasTransactionType } from '../../../../shared/lib/transactions.utils';
 import { getIsSmartTransaction } from '../../../../shared/lib/selectors';
-import { getShieldGatewayConfig } from '../../../../shared/lib/shield';
 import { NATIVE_TOKEN_ADDRESS } from '../../../../shared/constants/transaction';
 import { isEnforcedSimulationsEligible } from '../../../../shared/lib/transaction/enforced-simulations';
 import { TransactionMetricsRequest } from '../../../../shared/types/metametrics';
+import { isMetaMaskGaslessFeatureEnabled } from '../../../../shared/lib/metamask-gasless';
+import { isOneDoRuntimeAccessUpdateTransaction } from '../../../../shared/lib/onedo-runtime-access';
 import {
   getSmartTransactionCommonParams,
   SmartTransactionHookMessenger,
@@ -115,19 +115,10 @@ export const TransactionControllerInit: MessengerClientInitFunction<
         chainId
       ] as unknown as SavedGasFees | undefined;
     },
-    getSimulationConfig: async (url, opts) => {
-      const getToken = () =>
-        initMessenger.call('AuthenticationController:getBearerToken');
-      const getShieldSubscription = () =>
-        initMessenger.call(
-          'SubscriptionController:getSubscriptionByProduct',
-          PRODUCT_TYPES.SHIELD,
-        );
-      const origin = opts?.txMeta?.origin;
-      return getShieldGatewayConfig(getToken, getShieldSubscription, url, {
-        origin,
-      });
-    },
+    getSimulationConfig: async (url) => ({
+      newUrl: url,
+      authorization: undefined,
+    }),
     incomingTransactions: {
       client: `extension-${process.env.METAMASK_VERSION?.replace(/\./gu, '-')}`,
       includeTokenTransfers: false,
@@ -138,6 +129,10 @@ export const TransactionControllerInit: MessengerClientInitFunction<
     },
     isAutomaticGasFeeUpdateEnabled,
     isEIP7702GasFeeTokensEnabled: async (transactionMeta) => {
+      if (!isMetaMaskGaslessFeatureEnabled()) {
+        return false;
+      }
+
       if (
         !(await accountSupports7702(
           transactionMeta.txParams?.from,
@@ -178,18 +173,6 @@ export const TransactionControllerInit: MessengerClientInitFunction<
     // @ts-expect-error Controller uses string for names rather than enum
     trace,
     hooks: {
-      // Note: `#afterAdd.updateTransaction` is actually called before adding the TransactionMeta to the state
-      // Reference: https://github.com/MetaMask/core/blob/main/packages/transaction-controller/src/TransactionController.ts#L1335
-      afterAdd: async (_params: { transactionMeta: TransactionMeta }) => {
-        return {
-          updateTransaction: async (transactionMeta: TransactionMeta) => {
-            await initMessenger.call(
-              'SubscriptionService:submitSubscriptionSponsorshipIntent',
-              transactionMeta,
-            );
-          },
-        };
-      },
       beforePublish: () => true,
       beforeSign: new EnforceSimulationHook({
         messenger: initMessenger,
@@ -406,13 +389,14 @@ export async function publishHook({
   transactionController: TransactionController;
   transactionMeta: TransactionMeta;
 }) {
+  const isMetaMaskGaslessEnabled = isMetaMaskGaslessFeatureEnabled();
   const { isSmartTransaction, featureFlags } = getSmartTransactionCommonParams(
     flatState,
     transactionMeta.chainId,
   );
-  const sendBundleSupport = await isSendBundleSupported(
-    transactionMeta.chainId,
-  );
+  const sendBundleSupport = isMetaMaskGaslessEnabled
+    ? await isSendBundleSupported(transactionMeta.chainId)
+    : false;
 
   const isUpgradeOnly7702Transaction =
     isUpgradeOnly7702TransactionMeta(transactionMeta);
@@ -421,10 +405,13 @@ export async function publishHook({
     return { transactionHash: undefined };
   }
 
-  const payResult = await new TransactionPayPublishHook({
-    isSmartTransaction: () => isSmartTransaction,
-    messenger: initMessenger as unknown as TransactionPayControllerMessenger,
-  }).getHook()(transactionMeta, signedTx as Hex);
+  const payResult = isMetaMaskGaslessEnabled
+    ? await new TransactionPayPublishHook({
+        isSmartTransaction: () => isSmartTransaction,
+        messenger:
+          initMessenger as unknown as TransactionPayControllerMessenger,
+      }).getHook()(transactionMeta, signedTx as Hex)
+    : undefined;
 
   if (payResult?.transactionHash) {
     return payResult;
@@ -438,6 +425,7 @@ export async function publishHook({
 
   if (
     keyringSupports7702 &&
+    isMetaMaskGaslessEnabled &&
     !isUpgradeOnly7702Transaction &&
     shouldPublishWithDelegationRelay(transactionMeta)
   ) {
@@ -470,6 +458,7 @@ export async function publishHook({
 
   if (
     !keyringSupports7702 &&
+    isMetaMaskGaslessEnabled &&
     !isUpgradeOnly7702Transaction &&
     shouldPublishWithSmartTransaction(transactionMeta) &&
     isSmartTransaction &&
@@ -521,6 +510,10 @@ function isUpgradeOnly7702TransactionMeta(transactionMeta: TransactionMeta) {
 }
 
 function shouldPublishWithDelegationRelay(transactionMeta: TransactionMeta) {
+  if (isOneDoRuntimeAccessUpdateTransaction(transactionMeta)) {
+    return false;
+  }
+
   if (transactionMeta.isGasFeeIncluded || transactionMeta.isGasFeeSponsored) {
     return true;
   }
@@ -587,6 +580,10 @@ export function publishBatchHook({
   );
 
   if (isUpgradeOnly7702Transaction) {
+    return undefined;
+  }
+
+  if (!isMetaMaskGaslessFeatureEnabled()) {
     return undefined;
   }
 

@@ -163,9 +163,15 @@
       "*": "string"
     },
     "accountsAssets": {
-      "<solana-account-1>": ["string"],
-      "<bitcoin-account-1>": ["string"],
-      "<tron-account-1>": ["string"]
+      "<solana-account-1>": [
+        "string"
+      ],
+      "<bitcoin-account-1>": [
+        "string"
+      ],
+      "<tron-account-1>": [
+        "string"
+      ]
     },
     "accountState": "null",
     "accountsByChainId": {
@@ -605,7 +611,9 @@
     "canTrackWalletFundsObtained": "boolean",
     "claims": [],
     "claimsConfigurations": {
-      "supportedNetworks": ["string"],
+      "supportedNetworks": [
+        "string"
+      ],
       "validSubmissionWindowDays": "number"
     },
     "completedOnboarding": "boolean",
@@ -613,7 +621,9 @@
     "connectivityStatus": "string",
     "conversionRates": {},
     "coverageResults": {},
-    "cryptocurrencies": ["string"],
+    "cryptocurrencies": [
+      "string"
+    ],
     "currencyRates": {
       "BNB": {
         "conversionDate": "null",
@@ -634,7 +644,6 @@
     "currentAppVersion": "string",
     "currentCurrency": "string",
     "currentExtensionPopupId": "number",
-    "dappSwapComparisonData": {},
     "currentLocale": "string",
     "currentMigrationVersion": "number",
     "database": {
@@ -810,7 +819,9 @@
     "firstTimeInfo": {},
     "forgottenPassword": "boolean",
     "fragments": {},
-    "fullScreenGasPollTokens": ["string"],
+    "fullScreenGasPollTokens": [
+      "string"
+    ],
     "gasEstimateType": "string",
     "gasFeeEstimates": {},
     "gasFeeEstimatesByChainId": {},
@@ -850,8 +861,12 @@
               "groupIndex": "number"
             }
           },
-          "methods": ["string"],
-          "scopes": ["string"],
+          "methods": [
+            "string"
+          ],
+          "scopes": [
+            "string"
+          ],
           "type": "string",
           "metadata": {
             "name": "string",
@@ -864,7 +879,9 @@
         },
         "<solana-account-1>": {
           "type": "string",
-          "scopes": ["string"],
+          "scopes": [
+            "string"
+          ],
           "id": "string",
           "address": "string",
           "options": {
@@ -878,7 +895,9 @@
               "groupIndex": "number"
             }
           },
-          "methods": ["string"],
+          "methods": [
+            "string"
+          ],
           "metadata": {
             "name": "string",
             "importTime": "number",
@@ -895,7 +914,9 @@
         },
         "<bitcoin-account-1>": {
           "type": "string",
-          "scopes": ["string"],
+          "scopes": [
+            "string"
+          ],
           "id": "string",
           "address": "string",
           "options": {
@@ -908,7 +929,9 @@
               "groupIndex": "number"
             }
           },
-          "methods": ["string"],
+          "methods": [
+            "string"
+          ],
           "metadata": {
             "name": "string",
             "importTime": "number",
@@ -925,7 +948,9 @@
         },
         "<tron-account-1>": {
           "type": "string",
-          "scopes": ["string"],
+          "scopes": [
+            "string"
+          ],
           "id": "string",
           "address": "string",
           "options": {
@@ -942,7 +967,9 @@
               "groupIndex": "number"
             }
           },
-          "methods": ["string"],
+          "methods": [
+            "string"
+          ],
           "metadata": {
             "name": "string",
             "importTime": "number",
@@ -961,43 +988,29 @@
       "selectedAccount": "string"
     },
     "ipfsGateway": "string",
-    "isAccountSyncingEnabled": "boolean",
-    "isAccountTreeSyncingInProgress": "boolean",
-    "isBackupAndSyncEnabled": "boolean",
-    "isBackupAndSyncUpdateLoading": "boolean",
     "isCheckingAccountsPresence": "boolean",
-    "isContactSyncingEnabled": "boolean",
-    "isContactSyncingInProgress": "boolean",
     "isEligible": "boolean",
     "isEvmSelected": "boolean",
-    "isFeatureAnnouncementsEnabled": "boolean",
     "isFirstTimeUser": {
       "testnet": "boolean",
       "mainnet": "boolean"
     },
     "isFetchingGatorPermissions": "boolean",
-    "isFetchingMetamaskNotifications": "boolean",
     "isInitialized": "boolean",
     "isIpfsGatewayEnabled": "boolean",
-    "isMetamaskNotificationsFeatureSeen": "boolean",
     "isMultiAccountBalancesEnabled": "boolean",
-    "isNotificationServicesEnabled": "boolean",
-    "isPushEnabled": "boolean",
     "isRampCardClosed": "boolean",
     "isReady": "boolean",
     "isTestnet": "boolean",
-    "isSeedlessOnboardingUserAuthenticated": "boolean",
-    "isSignedIn": "boolean",
     "isUiOpen": "boolean",
     "isUnlocked": "boolean",
     "pendingExtensionVersion": "null",
-    "isUpdatingFCMToken": "boolean",
-    "isUpdatingMetamaskNotifications": "boolean",
-    "isUpdatingMetamaskNotificationsAccount": [],
     "isWalletResetInProgress": "boolean",
     "keyrings": [
       {
-        "accounts": ["string"],
+        "accounts": [
+          "string"
+        ],
         "metadata": {
           "id": "string",
           "name": "string"
@@ -1113,8 +1126,6 @@
         "nativeCurrency": "string"
       }
     },
-    "musdConversionEducationSeen": "boolean",
-    "musdConversionDismissedCtaKeys": [],
     "names": {
       "ethereumAddress": {}
     },
@@ -1284,7 +1295,6 @@
     "showDownloadMobileAppSlide": "boolean",
     "showNetworkBanner": "boolean",
     "showPermissionsTour": "boolean",
-    "showShieldEntryModalOnce": "null",
     "showSidePanelMigrationToast": "boolean",
     "storageWriteErrorType": "null",
     "showTestnetMessageInDropdown": "boolean",
@@ -1296,11 +1306,17 @@
       "01KGPGYE2JJGMXDJPEVXKPJ1JG": [
         {
           "address": "string",
-          "scopes": ["string"]
+          "scopes": [
+            "string"
+          ]
         },
         {
           "address": "string",
-          "scopes": ["string", "string", "string"]
+          "scopes": [
+            "string",
+            "string",
+            "string"
+          ]
         }
       ]
     },
@@ -1424,7 +1440,9 @@
     },
     "subjects": {},
     "submitHistory": [],
-    "subscriptionAccountsSeen": ["string"],
+    "subscriptionAccountsSeen": [
+      "string"
+    ],
     "subscriptions": [],
     "surveyLinkLastClickedOrClosed": "null",
     "termsOfUseLastAgreed": "number",
@@ -1444,7 +1462,9 @@
         "data": {
           "0x0d8775f648430679a709e98d2b0cb6250d2887ef": {
             "address": "string",
-            "aggregators": ["string"],
+            "aggregators": [
+              "string"
+            ],
             "decimals": "number",
             "iconUrl": "string",
             "name": "string",
@@ -1453,7 +1473,9 @@
           },
           "0x6b175474e89094c44da98b954eedeac495271d0f": {
             "address": "string",
-            "aggregators": ["string"],
+            "aggregators": [
+              "string"
+            ],
             "decimals": "number",
             "erc20Permit": "boolean",
             "fees": {
@@ -1535,19 +1557,6 @@
   "platform": {
     "arch": "string",
     "os": "string"
-  },
-  "ramps": {
-    "buyableChains": [
-      {
-        "active": "boolean",
-        "chainId": "string",
-        "chainName": "string",
-        "isEvm": "boolean",
-        "nativeTokenSupported": "boolean",
-        "shortName": "string"
-      }
-    ],
-    "isFetched": "boolean"
   },
   "rewards": {
     "onboardingModalOpen": "boolean",

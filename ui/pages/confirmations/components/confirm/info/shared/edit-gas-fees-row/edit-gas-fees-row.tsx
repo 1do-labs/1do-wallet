@@ -23,14 +23,15 @@ import {
 } from '../../../../../../../helpers/constants/design-system';
 import { useI18nContext } from '../../../../../../../hooks/useI18nContext';
 import { getPreferences } from '../../../../../../../selectors';
+import { isOneDoRuntimeAccessUpdateTransaction } from '../../../../../../../../shared/lib/onedo-runtime-access';
 import { useConfirmContext } from '../../../../../context/confirm';
-import { useDappSwapContext } from '../../../../../context/dapp-swap';
 import { useEstimationFailed } from '../../../../../hooks/gas/useEstimationFailed';
 import { useIsGaslessSupported } from '../../../../../hooks/gas/useIsGaslessSupported';
 import { selectConfirmationAdvancedDetailsOpen } from '../../../../../selectors/preferences';
 import { useBalanceChanges } from '../../../../simulation-details/useBalanceChanges';
 import { useTransactionNativeTicker } from '../../../../../hooks/transactions/useTransactionNativeTicker';
 import { useSelectedGasFeeToken } from '../../hooks/useGasFeeToken';
+import { useIsUpgradeTransaction } from '../../hooks/useIsUpgradeTransaction';
 import { EditGasIconButton } from '../edit-gas-icon/edit-gas-icon-button';
 import { SelectedGasFeeToken } from '../selected-gas-fee-token';
 
@@ -49,7 +50,6 @@ export const EditGasFeesRow = ({
 
   const { currentConfirmation: transactionMeta } =
     useConfirmContext<TransactionMeta>();
-  const { isQuotedSwapDisplayedInInfo } = useDappSwapContext();
 
   const showAdvancedDetails = useSelector(
     selectConfirmationAdvancedDetailsOpen,
@@ -62,6 +62,9 @@ export const EditGasFeesRow = ({
 
   const estimationFailed = useEstimationFailed();
   const gasFeeToken = useSelectedGasFeeToken();
+  const { isUpgradeOnly } = useIsUpgradeTransaction();
+  const isOneDoRuntimeAccessUpdate =
+    isOneDoRuntimeAccessUpdateTransaction(transactionMeta);
   const showFiat = useShowFiat(chainId);
   const fiatValue = gasFeeToken?.amountFiat || fiatFee;
   const hasFiatValue = Boolean(fiatValue);
@@ -79,7 +82,11 @@ export const EditGasFeesRow = ({
   // This prevents the gas fee row from showing as sponsored if stx is disabled
   // by the user and 7702 is not supported in the chain.
   const { isSupported: isGaslessSupported } = useIsGaslessSupported();
-  const isGasFeeSponsored = isGaslessSupported && doesSentinelAllowSponsorship;
+  const isGasFeeSponsored =
+    isGaslessSupported &&
+    doesSentinelAllowSponsorship &&
+    !isUpgradeOnly &&
+    !isOneDoRuntimeAccessUpdate;
 
   let tooltip = t('estimatedFeeTooltip');
   if (isGasFeeSponsored) {
@@ -88,11 +95,7 @@ export const EditGasFeesRow = ({
     tooltip = t('confirmGasFeeTokenTooltip', [metamaskFeeFiat]);
   }
 
-  const isGasFeeEditable =
-    !disableUpdate &&
-    !isQuotedSwapDisplayedInInfo &&
-    !gasFeeToken &&
-    !isGasFeeSponsored;
+  const isGasFeeEditable = !disableUpdate && !gasFeeToken && !isGasFeeSponsored;
   const shouldShowPrimaryFiatValue =
     showFiat && hasFiatValue && !showAdvancedDetails && !isGasFeeSponsored;
 

@@ -123,9 +123,9 @@ describe('NetworkControllerInit', () => {
             "rpcEndpoints": [
               {
                 "failoverUrls": [],
-                "networkClientId": "mainnet",
-                "type": "infura",
-                "url": "https://mainnet.infura.io/v3/{infuraProjectId}",
+                "networkClientId": "mainnet-alchemy",
+                "type": "custom",
+                "url": "https://eth-mainnet.g.alchemy.com/v2/{alchemyApiKey}",
               },
             ],
           },
@@ -282,9 +282,9 @@ describe('NetworkControllerInit', () => {
             "rpcEndpoints": [
               {
                 "failoverUrls": [],
-                "networkClientId": "sepolia",
-                "type": "infura",
-                "url": "https://sepolia.infura.io/v3/{infuraProjectId}",
+                "networkClientId": "sepolia-alchemy",
+                "type": "custom",
+                "url": "https://eth-sepolia.g.alchemy.com/v2/{alchemyApiKey}",
               },
             ],
           },
@@ -300,9 +300,9 @@ describe('NetworkControllerInit', () => {
             "rpcEndpoints": [
               {
                 "failoverUrls": [],
-                "networkClientId": "linea-sepolia",
-                "type": "infura",
-                "url": "https://linea-sepolia.infura.io/v3/{infuraProjectId}",
+                "networkClientId": "linea-sepolia-alchemy",
+                "type": "custom",
+                "url": "https://linea-sepolia.g.alchemy.com/v2/{alchemyApiKey}",
               },
             ],
           },
@@ -318,9 +318,9 @@ describe('NetworkControllerInit', () => {
             "rpcEndpoints": [
               {
                 "failoverUrls": [],
-                "networkClientId": "linea-mainnet",
-                "type": "infura",
-                "url": "https://linea-mainnet.infura.io/v3/{infuraProjectId}",
+                "networkClientId": "linea-mainnet-alchemy",
+                "type": "custom",
+                "url": "https://linea-mainnet.g.alchemy.com/v2/{alchemyApiKey}",
               },
             ],
           },
@@ -329,6 +329,64 @@ describe('NetworkControllerInit', () => {
         "selectedNetworkClientId": "networkConfigurationId",
       }
     `);
+  });
+
+  it('normalizes persisted Sepolia custom RPC state to a non-Infura network client ID', () => {
+    const request = getInitRequestMock();
+    request.persistedState = {
+      NetworkController: {
+        selectedNetworkClientId: 'sepolia',
+        networksMetadata: {},
+        networkConfigurationsByChainId: {
+          '0x1': {
+            chainId: '0x1',
+            name: 'Ethereum',
+            nativeCurrency: 'ETH',
+            blockExplorerUrls: ['https://etherscan.io'],
+            defaultBlockExplorerUrlIndex: 0,
+            defaultRpcEndpointIndex: 0,
+            rpcEndpoints: [
+              {
+                networkClientId: 'mainnet',
+                url: 'https://mainnet.infura.io/v3/{infuraProjectId}',
+                type: 'infura',
+                failoverUrls: [],
+              },
+            ],
+          },
+          '0xaa36a7': {
+            chainId: '0xaa36a7',
+            name: 'Sepolia',
+            nativeCurrency: 'SepoliaETH',
+            blockExplorerUrls: ['https://sepolia.etherscan.io'],
+            defaultBlockExplorerUrlIndex: 0,
+            defaultRpcEndpointIndex: 0,
+            rpcEndpoints: [
+              {
+                networkClientId: 'sepolia',
+                url: 'https://sepolia.infura.io/v3/{infuraProjectId}',
+                type: 'infura',
+                failoverUrls: [],
+              },
+            ],
+          },
+        },
+      },
+    };
+
+    NetworkControllerInit(request);
+
+    const controllerMock = jest.mocked(NetworkController);
+    const initialState = controllerMock.mock.calls[0][0].state;
+    expect(initialState.selectedNetworkClientId).toBe('sepolia-alchemy');
+    expect(
+      initialState.networkConfigurationsByChainId['0xaa36a7'].rpcEndpoints[0],
+    ).toStrictEqual({
+      failoverUrls: [],
+      networkClientId: 'sepolia-alchemy',
+      type: 'custom',
+      url: 'https://eth-sepolia.g.alchemy.com/v2/{alchemyApiKey}',
+    });
   });
 
   it('enables RPC failover when the `walletFrameworkRpcFailoverEnabled` feature flag is enabled', () => {

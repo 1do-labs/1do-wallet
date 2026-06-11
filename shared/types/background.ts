@@ -19,8 +19,6 @@ import type { MultichainNetworkControllerState } from '@metamask/multichain-netw
 import type { KeyringControllerState } from '@metamask/keyring-controller';
 import type { AddressBookControllerState } from '@metamask/address-book-controller';
 import type { ApprovalControllerState } from '@metamask/approval-controller';
-import type { BridgeControllerState } from '@metamask/bridge-controller';
-import type { BridgeStatusControllerState } from '@metamask/bridge-status-controller';
 import type { EnsControllerState } from '@metamask/ens-controller';
 import type { AnnouncementControllerState } from '@metamask/announcement-controller';
 import type { NetworkState } from '@metamask/network-controller';
@@ -42,18 +40,9 @@ import type { PPOMState } from '@metamask/ppom-validator';
 import type { NameControllerState } from '@metamask/name-controller';
 import type { UserOperationControllerState } from '@metamask/user-operation-controller';
 import type { TransactionControllerState } from '@metamask/transaction-controller';
-import type {
-  AuthenticationController,
-  UserStorageController,
-} from '@metamask/profile-sync-controller';
-import type {
-  NotificationServicesController,
-  NotificationServicesPushController,
-} from '@metamask/notification-services-controller';
 import type { SmartTransactionsControllerState } from '@metamask/smart-transactions-controller';
 import type { ConnectivityControllerState } from '@metamask/connectivity-controller';
 
-import type { ClaimsControllerState } from '@metamask/claims-controller';
 import type { NetworkOrderControllerState } from '../../app/scripts/controllers/network-order';
 import type { AccountOrderControllerState } from '../../app/scripts/controllers/account-order';
 import type { PreferencesControllerState } from '../../app/scripts/controllers/preferences-controller';
@@ -65,7 +54,6 @@ import type { DecryptMessageControllerState } from '../../app/scripts/controller
 import type { OnboardingControllerState } from '../../app/scripts/controllers/onboarding';
 import type { MetaMetricsControllerState } from '../../app/scripts/controllers/metametrics-controller';
 import type { AppMetadataControllerState } from '../../app/scripts/controllers/app-metadata';
-import type { RewardsControllerState } from '../../app/scripts/controllers/rewards/rewards-controller.types';
 import type { IsEquivalent } from './type-level-utils';
 
 export type ControllerStatePropertiesEnumerated = {
@@ -77,8 +65,6 @@ export type ControllerStatePropertiesEnumerated = {
   unconnectedAccountAlertShownOrigins: AlertControllerState['unconnectedAccountAlertShownOrigins'];
   web3ShimUsageOrigins?: AlertControllerState['web3ShimUsageOrigins'];
   announcements: AnnouncementControllerState['announcements'];
-  isSignedIn: AuthenticationController.AuthenticationControllerState['isSignedIn'];
-  srpSessionData?: AuthenticationController.AuthenticationControllerState['srpSessionData'];
   pinnedAccountList: AccountOrderControllerState['pinnedAccountList'];
   hiddenAccountList: AccountOrderControllerState['hiddenAccountList'];
   currentAppVersion: AppMetadataControllerState['currentAppVersion'];
@@ -121,16 +107,11 @@ export type ControllerStatePropertiesEnumerated = {
   activeQrCodeScanRequest: AppStateControllerState['activeQrCodeScanRequest'];
   nftsDropdownState: AppStateControllerState['nftsDropdownState'];
   surveyLinkLastClickedOrClosed: AppStateControllerState['surveyLinkLastClickedOrClosed'];
-  shieldSubscriptionError: AppStateControllerState['shieldSubscriptionError'];
-  shieldEndingToastLastClickedOrClosed: AppStateControllerState['shieldEndingToastLastClickedOrClosed'];
-  shieldPausedToastLastClickedOrClosed: AppStateControllerState['shieldPausedToastLastClickedOrClosed'];
   storageWriteErrorType: AppStateControllerState['storageWriteErrorType'];
   signatureSecurityAlertResponses: AppStateControllerState['signatureSecurityAlertResponses'];
   addressSecurityAlertResponses: AppStateControllerState['addressSecurityAlertResponses'];
   currentExtensionPopupId: AppStateControllerState['currentExtensionPopupId'];
   hasShownMultichainAccountsIntroModal: AppStateControllerState['hasShownMultichainAccountsIntroModal'];
-  musdConversionEducationSeen: AppStateControllerState['musdConversionEducationSeen'];
-  musdConversionDismissedCtaKeys: AppStateControllerState['musdConversionDismissedCtaKeys'];
   lastInteractedConfirmationInfo?: AppStateControllerState['lastInteractedConfirmationInfo'];
   termsOfUseLastAgreed?: AppStateControllerState['termsOfUseLastAgreed'];
   slides: AppStateControllerState['slides'];
@@ -138,26 +119,11 @@ export type ControllerStatePropertiesEnumerated = {
   updateModalLastDismissedAt: AppStateControllerState['updateModalLastDismissedAt'];
   lastUpdatedAt: AppStateControllerState['lastUpdatedAt'];
   lastUpdatedFromVersion: AppStateControllerState['lastUpdatedFromVersion'];
-  showShieldEntryModalOnce: AppStateControllerState['showShieldEntryModalOnce'];
   pendingRedirectRoute: AppStateControllerState['pendingRedirectRoute'];
-  pendingShieldCohort: AppStateControllerState['pendingShieldCohort'];
-  pendingShieldCohortTxType: AppStateControllerState['pendingShieldCohortTxType'];
   throttledOrigins: AppStateControllerState['throttledOrigins'];
   networkConnectionBanner: AppStateControllerState['networkConnectionBanner'];
   isWalletResetInProgress: AppStateControllerState['isWalletResetInProgress'];
   sidePanelGasPollTokens: AppStateControllerState['sidePanelGasPollTokens'];
-  quoteRequest: BridgeControllerState['quoteRequest'];
-  quotes: BridgeControllerState['quotes'];
-  quotesInitialLoadTime: BridgeControllerState['quotesInitialLoadTime'];
-  quotesLastFetched: BridgeControllerState['quotesLastFetched'];
-  quotesLoadingStatus: BridgeControllerState['quotesLoadingStatus'];
-  quoteFetchError: BridgeControllerState['quoteFetchError'];
-  quotesRefreshCount: BridgeControllerState['quotesRefreshCount'];
-  quoteStreamComplete: BridgeControllerState['quoteStreamComplete'];
-  minimumBalanceForRentExemptionInLamports: BridgeControllerState['minimumBalanceForRentExemptionInLamports'];
-  assetExchangeRates: BridgeControllerState['assetExchangeRates'];
-  tokenWarnings: BridgeControllerState['tokenWarnings'];
-  txHistory: BridgeStatusControllerState['txHistory'];
   events: CronjobControllerState['events'];
   currentCurrency: CurrencyRateState['currentCurrency'];
   currencyRates: CurrencyRateState['currencyRates'];
@@ -215,19 +181,6 @@ export type ControllerStatePropertiesEnumerated = {
   allNftContracts: NftControllerState['allNftContracts'];
   allNfts: NftControllerState['allNfts'];
   ignoredNfts: NftControllerState['ignoredNfts'];
-  subscriptionAccountsSeen: NotificationServicesController.NotificationServicesControllerState['subscriptionAccountsSeen'];
-  isMetamaskNotificationsFeatureSeen: NotificationServicesController.NotificationServicesControllerState['isMetamaskNotificationsFeatureSeen'];
-  isNotificationServicesEnabled: NotificationServicesController.NotificationServicesControllerState['isNotificationServicesEnabled'];
-  isFeatureAnnouncementsEnabled: NotificationServicesController.NotificationServicesControllerState['isFeatureAnnouncementsEnabled'];
-  metamaskNotificationsList: NotificationServicesController.NotificationServicesControllerState['metamaskNotificationsList'];
-  metamaskNotificationsReadList: NotificationServicesController.NotificationServicesControllerState['metamaskNotificationsReadList'];
-  isCheckingAccountsPresence: NotificationServicesController.NotificationServicesControllerState['isCheckingAccountsPresence'];
-  isFetchingMetamaskNotifications: NotificationServicesController.NotificationServicesControllerState['isFetchingMetamaskNotifications'];
-  isUpdatingMetamaskNotifications: NotificationServicesController.NotificationServicesControllerState['isUpdatingMetamaskNotifications'];
-  isUpdatingMetamaskNotificationsAccount: NotificationServicesController.NotificationServicesControllerState['isUpdatingMetamaskNotificationsAccount'];
-  isPushEnabled: NotificationServicesPushController.NotificationServicesPushControllerState['isPushEnabled'];
-  fcmToken: NotificationServicesPushController.NotificationServicesPushControllerState['fcmToken'];
-  isUpdatingFCMToken: NotificationServicesPushController.NotificationServicesPushControllerState['isUpdatingFCMToken'];
   completedOnboarding: OnboardingControllerState['completedOnboarding'];
   firstTimeFlowType: OnboardingControllerState['firstTimeFlowType'];
   onboardingTabs?: OnboardingControllerState['onboardingTabs'];
@@ -293,21 +246,6 @@ export type ControllerStatePropertiesEnumerated = {
   transactionBatches: TransactionControllerState['transactionBatches'];
   submitHistory: TransactionControllerState['submitHistory'];
   userOperations: UserOperationControllerState['userOperations'];
-  isBackupAndSyncEnabled: UserStorageController.UserStorageControllerState['isBackupAndSyncEnabled'];
-  isBackupAndSyncUpdateLoading: UserStorageController.UserStorageControllerState['isBackupAndSyncUpdateLoading'];
-  isAccountSyncingEnabled: UserStorageController.UserStorageControllerState['isAccountSyncingEnabled'];
-  isContactSyncingEnabled: UserStorageController.UserStorageControllerState['isContactSyncingEnabled'];
-  isContactSyncingInProgress: UserStorageController.UserStorageControllerState['isContactSyncingInProgress'];
-  rewardsActiveAccount: RewardsControllerState['rewardsActiveAccount'];
-  rewardsAccounts: RewardsControllerState['rewardsAccounts'];
-  rewardsSubscriptions: RewardsControllerState['rewardsSubscriptions'];
-  rewardsSeasons: RewardsControllerState['rewardsSeasons'];
-  rewardsSeasonStatuses: RewardsControllerState['rewardsSeasonStatuses'];
-  rewardsSubscriptionTokens: RewardsControllerState['rewardsSubscriptionTokens'];
-  rewardsPointsEstimateHistory: RewardsControllerState['rewardsPointsEstimateHistory'];
-  claims: ClaimsControllerState['claims'];
-  claimsConfigurations: ClaimsControllerState['claimsConfigurations'];
-  drafts: ClaimsControllerState['drafts'];
   connectivityStatus: ConnectivityControllerState['connectivityStatus'];
 };
 
@@ -316,14 +254,10 @@ type ControllerStateTypesMerged = AccountsControllerState &
   AddressBookControllerState &
   AlertControllerState &
   AnnouncementControllerState &
-  AuthenticationController.AuthenticationControllerState &
   AccountOrderControllerState &
   AppMetadataControllerState &
   ApprovalControllerState &
   AppStateControllerState &
-  BridgeControllerState &
-  BridgeStatusControllerState &
-  ClaimsControllerState &
   CronjobControllerState &
   CurrencyRateState &
   DecryptMessageControllerState &
@@ -346,8 +280,6 @@ type ControllerStateTypesMerged = AccountsControllerState &
   NetworkOrderControllerState &
   NetworkEnablementControllerState &
   NftControllerState &
-  NotificationServicesController.NotificationServicesControllerState &
-  NotificationServicesPushController.NotificationServicesPushControllerState &
   OnboardingControllerState &
   PermissionControllerState<PermissionConstraint> &
   PermissionLogControllerState &
@@ -365,8 +297,6 @@ type ControllerStateTypesMerged = AccountsControllerState &
   TokenRatesControllerState &
   TransactionControllerState &
   UserOperationControllerState &
-  UserStorageController.UserStorageControllerState &
-  RewardsControllerState &
   ConnectivityControllerState;
 
 /**

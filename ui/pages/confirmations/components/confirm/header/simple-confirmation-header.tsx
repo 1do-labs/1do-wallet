@@ -1,7 +1,3 @@
-import {
-  TransactionMeta,
-  TransactionType,
-} from '@metamask/transaction-controller';
 import React, { useCallback, type ReactNode } from 'react';
 import {
   ButtonIcon,
@@ -21,9 +17,7 @@ import {
   JustifyContent,
 } from '../../../../../helpers/constants/design-system';
 import { useI18nContext } from '../../../../../hooks/useI18nContext';
-import { useConfirmContext } from '../../../context/confirm';
 import { useConfirmActions } from '../../../hooks/useConfirmActions';
-import { useMusdConversionHeaderContent } from '../../info/musd-conversion-info';
 import { AdvancedDetailsButton } from './advanced-details-button';
 
 const SimpleHeaderLayout = ({
@@ -82,11 +76,6 @@ const SimpleHeaderLayout = ({
   );
 };
 
-const MusdConversionSimpleHeader = () => {
-  const { title, endAccessory } = useMusdConversionHeaderContent();
-  return <SimpleHeaderLayout title={title} endAccessory={endAccessory} />;
-};
-
 const DefaultSimpleHeader = () => {
   const t = useI18nContext();
   return (
@@ -98,11 +87,5 @@ const DefaultSimpleHeader = () => {
 };
 
 export const SimpleConfirmationHeader = () => {
-  const { currentConfirmation } = useConfirmContext<TransactionMeta>();
-
-  if (currentConfirmation?.type === TransactionType.musdConversion) {
-    return <MusdConversionSimpleHeader />;
-  }
-
   return <DefaultSimpleHeader />;
 };

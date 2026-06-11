@@ -46,7 +46,7 @@ function setEnvironmentVariables({
       ? '0x18b06605539dc02ecD3f7AB314e38eB7c1dA5c9b'
       : variables.getMaybe('EIP_4337_ENTRYPOINT'),
     IN_TEST: isTestBuild,
-    INFURA_PROJECT_ID: getInfuraProjectId({
+    ALCHEMY_API_KEY: getAlchemyApiKey({
       buildType,
       variables,
       environment,
@@ -135,43 +135,43 @@ function assertAndLoadEnvVar(envVarName, buildType, variables) {
 }
 
 /**
- * Get the appropriate Infura project ID.
+ * Get the appropriate Alchemy API key.
  *
- * @param {object} options - The Infura project ID options.
+ * @param {object} options - The Alchemy API key options.
  * @param {string} options.buildType - The current build type.
  * @param {ENVIRONMENT[keyof ENVIRONMENT]} options.environment - The build environment.
  * @param {boolean} options.testing - Whether this is a test build or not.
  * @param options.variables
- * @returns {string} The Infura project ID.
+ * @returns {string} The Alchemy API key.
  */
-function getInfuraProjectId({ buildType, variables, environment, testing }) {
-  const EMPTY_PROJECT_ID = '00000000000000000000000000000000';
+function getAlchemyApiKey({ buildType, variables, environment, testing }) {
+  const EMPTY_API_KEY = '';
   if (testing) {
-    return EMPTY_PROJECT_ID;
+    return EMPTY_API_KEY;
   } else if (environment !== ENVIRONMENT.PRODUCTION) {
     // Skip validation because this is unset on PRs from forks.
-    // For forks, return empty project ID if we don't have one.
+    // For forks, return empty API key if we don't have one.
     if (
-      !variables.isDefined('INFURA_PROJECT_ID') &&
+      !variables.isDefined('ALCHEMY_API_KEY') &&
       environment === ENVIRONMENT.PULL_REQUEST
     ) {
-      return EMPTY_PROJECT_ID;
+      return EMPTY_API_KEY;
     }
-    return variables.get('INFURA_PROJECT_ID');
+    return variables.get('ALCHEMY_API_KEY');
   }
   /** @type {string|undefined} */
-  const infuraKeyReference = variables.get('INFURA_ENV_KEY_REF');
+  const alchemyKeyReference = variables.get('ALCHEMY_ENV_KEY_REF');
   assert(
-    typeof infuraKeyReference === 'string' && infuraKeyReference.length > 0,
-    `Build type "${buildType}" has improperly set INFURA_ENV_KEY_REF in builds.yml. Current value: "${infuraKeyReference}"`,
+    typeof alchemyKeyReference === 'string' && alchemyKeyReference.length > 0,
+    `Build type "${buildType}" has improperly set ALCHEMY_ENV_KEY_REF in builds.yml. Current value: "${alchemyKeyReference}"`,
   );
   /** @type {string|undefined} */
-  const infuraProjectId = variables.get(infuraKeyReference);
+  const alchemyApiKey = variables.get(alchemyKeyReference);
   assert(
-    typeof infuraProjectId === 'string' && infuraProjectId.length > 0,
-    `Infura Project ID environmental variable "${infuraKeyReference}" is set improperly.`,
+    typeof alchemyApiKey === 'string' && alchemyApiKey.length > 0,
+    `Alchemy API key environmental variable "${alchemyKeyReference}" is set improperly.`,
   );
-  return infuraProjectId;
+  return alchemyApiKey;
 }
 
 /**

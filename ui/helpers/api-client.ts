@@ -1,5 +1,4 @@
 import { createApiPlatformClient } from '@metamask/core-backend';
-import { submitRequestToBackground } from '../store/background-connection';
 import { queryClient } from '../contexts/query-client';
 
 type QueryClient = NonNullable<
@@ -9,6 +8,5 @@ type QueryClient = NonNullable<
 export const apiClient = createApiPlatformClient({
   clientProduct: 'metamask-extension',
   queryClient: queryClient as unknown as QueryClient,
-  getBearerToken: () =>
-    submitRequestToBackground<string | undefined>('getBearerToken'),
+  getBearerToken: async () => undefined,
 });

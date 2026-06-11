@@ -123,11 +123,7 @@ function TransactionSummaryLine({
     );
   }
 
-  if (
-    type === TransactionType.musdClaim ||
-    type === TransactionType.musdConversion ||
-    type === TransactionType.perpsDeposit
-  ) {
+  if (type === TransactionType.perpsDeposit) {
     return (
       <ReceiveSummaryLine
         transactionMeta={transactionMeta}
@@ -229,7 +225,6 @@ function ReceiveSummaryLine({
   const t = useI18nContext() as TranslateFunction;
   const { type, chainId, txParams } = transactionMeta;
   const isPerpsDeposit = type === TransactionType.perpsDeposit;
-  const isMusdConversion = type === TransactionType.musdConversion;
 
   const targetTokenAddress = txParams?.to as Hex | undefined;
 
@@ -262,21 +257,8 @@ function ReceiveSummaryLine({
       ? t('bridgeReceive', [tokenSymbol, networkName])
       : t('bridgeReceiveLoading');
 
-  let hash: string | undefined =
+  const hash: string | undefined =
     transactionMeta?.hash === '0x0' ? undefined : transactionMeta?.hash;
-
-  if (isMusdConversion && !hash) {
-    // For same-chain aggregator routes (e.g. Linea USDT/DAI), the relay
-    // strategy skips polling and sets the musdConversion hash to '0x0'.
-    // Fall back to the relay deposit's on-chain hash, which represents
-    // the actual swap transaction where mUSD was received.
-    const relayDepositTx = relatedTransactions.find((tx) =>
-      hasTransactionType(tx, [TransactionType.relayDeposit]),
-    );
-    if (relayDepositTx?.hash && relayDepositTx.hash !== '0x0') {
-      hash = relayDepositTx.hash as Hex;
-    }
-  }
 
   return (
     <SummaryLine

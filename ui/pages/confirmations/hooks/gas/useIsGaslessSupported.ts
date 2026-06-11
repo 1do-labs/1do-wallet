@@ -1,6 +1,7 @@
 import { TransactionMeta } from '@metamask/transaction-controller';
 import { useSelector } from 'react-redux';
 import { EIP_7702_REVOKE_ADDRESS } from '../../../../../shared/lib/eip7702-utils';
+import { isMetaMaskGaslessFeatureEnabled } from '../../../../../shared/lib/metamask-gasless';
 import { useAsyncResult } from '../../../../hooks/useAsync';
 import { isHardwareWallet } from '../../../../selectors';
 import { useConfirmContext } from '../../context/confirm';
@@ -29,6 +30,7 @@ export function useIsGaslessSupported() {
   const { currentConfirmation: transactionMeta } =
     useConfirmContext<TransactionMeta>();
 
+  const isMetaMaskGaslessEnabled = isMetaMaskGaslessFeatureEnabled();
   const { chainId } = transactionMeta ?? {};
   const isHardwareWalletAccount = useSelector(isHardwareWallet);
 
@@ -43,6 +45,7 @@ export function useIsGaslessSupported() {
   } = useGaslessSupportedSmartTransactions();
 
   const shouldCheck7702Eligibility =
+    isMetaMaskGaslessEnabled &&
     !isHardwareWalletAccount &&
     !smartTransactionPending &&
     !isSmartTransactionAndBundleSupported;
@@ -56,19 +59,22 @@ export function useIsGaslessSupported() {
     }, [chainId, shouldCheck7702Eligibility]);
 
   const is7702Supported = Boolean(
-    !isHardwareWalletAccount &&
+    isMetaMaskGaslessEnabled &&
+      !isHardwareWalletAccount &&
       relaySupportsChain &&
       // contract deployments can't be delegated
       transactionMeta?.txParams?.to !== undefined,
   );
 
   const isSupported = Boolean(
-    !isHardwareWalletAccount &&
+    isMetaMaskGaslessEnabled &&
+      !isHardwareWalletAccount &&
       !isDowngradeTransaction &&
       (isSmartTransactionAndBundleSupported || is7702Supported),
   );
 
   const isPending =
+    isMetaMaskGaslessEnabled &&
     !isHardwareWalletAccount &&
     !isDowngradeTransaction &&
     (smartTransactionPending || (shouldCheck7702Eligibility && relayPending));

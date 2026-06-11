@@ -7,7 +7,6 @@ import type {
   TransactionViewModel,
 } from '../../../../shared/lib/multichain/types';
 import { NATIVE_TOKEN_ADDRESS } from '../../../../shared/constants/transaction';
-import { resolveTransactionType as resolveMusdClaimType } from '../../app/transaction-list-item/helpers';
 import { formatUnits } from '../../../../shared/lib/unit';
 
 export type AssetScope =
@@ -90,7 +89,12 @@ export function filterLocalNotInApi(
 
 type MergedItem =
   | { type: 'local'; group: TransactionGroup; time: number; nonce: number }
-  | { type: 'completed'; tx: TransactionViewModel; time: number; nonce: number };
+  | {
+      type: 'completed';
+      tx: TransactionViewModel;
+      time: number;
+      nonce: number;
+    };
 
 export function mergeAllTransactionsByTime(
   localTransactionGroups: TransactionGroup[],
@@ -281,13 +285,5 @@ export function resolveTransactionType(
     }
   }
 
-  // Detect Merkl claim transactions — only when the tx would otherwise be
-  // a generic contractInteraction, matching the legacy activity list guard.
-  return (
-    resolveMusdClaimType(
-      TransactionType.contractInteraction,
-      tx.txParams?.to,
-      tx.txParams?.data,
-    ) ?? TransactionType.contractInteraction
-  );
+  return TransactionType.contractInteraction;
 }

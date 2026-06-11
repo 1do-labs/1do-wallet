@@ -122,7 +122,7 @@ describe('BatchSimulationDetails 1Do wallet-native transfers', () => {
     (functionName) => {
       const transactionMeta = buildTransactionMeta(
         accountRuntimeInterface.encodeFunctionData(functionName, [
-          '0x199dffe30b8b5ab611d952289a2674c5e826dcb9',
+          '0x3C7618FdAb069e8888E5587cA2766497B866afD5',
         ]),
       );
       useConfirmContextMock.mockReturnValue({
@@ -145,14 +145,14 @@ describe('BatchSimulationDetails 1Do wallet-native transfers', () => {
     [
       'executeRuntimeApp',
       accountRuntimeInterface.encodeFunctionData('executeRuntimeApp', [
-        '0x199dffe30b8b5ab611d952289a2674c5e826dcb9',
+        '0x3C7618FdAb069e8888E5587cA2766497B866afD5',
         '0x12345678',
       ]),
     ],
     [
       'executeWithTokenPull',
       accountRuntimeInterface.encodeFunctionData('executeWithTokenPull', [
-        '0x199dffe30b8b5ab611d952289a2674c5e826dcb9',
+        '0x3C7618FdAb069e8888E5587cA2766497B866afD5',
         '0x12345678',
         '0x0000000000000000000000000000000000000000',
         '1',
@@ -161,7 +161,7 @@ describe('BatchSimulationDetails 1Do wallet-native transfers', () => {
     [
       'executeWithNftPull',
       accountRuntimeInterface.encodeFunctionData('executeWithNftPull', [
-        '0x199dffe30b8b5ab611d952289a2674c5e826dcb9',
+        '0x3C7618FdAb069e8888E5587cA2766497B866afD5',
         '0x12345678',
         '0x0000000000000000000000000000000000000000',
         '1',

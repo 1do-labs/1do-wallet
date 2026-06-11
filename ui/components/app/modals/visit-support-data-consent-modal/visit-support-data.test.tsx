@@ -14,8 +14,6 @@ import mockState from '../../../../../test/data/mock-state.json';
 import { renderWithProvider } from '../../../../../test/lib/render-helpers-navigate';
 import { MetaMetricsContext } from '../../../../contexts/metametrics';
 import { openWindow } from '../../../../helpers/utils/window';
-import { useUserSubscriptions } from '../../../../hooks/subscription/useSubscription';
-import { selectSessionData } from '../../../../selectors/identity/authentication';
 import { getMetaMetricsId } from '../../../../selectors/selectors';
 import VisitSupportDataConsentModal from './visit-support-data-consent-modal';
 
@@ -28,10 +26,6 @@ jest.mock('../../../../helpers/utils/window', () => ({
   openWindow: jest.fn(),
 }));
 
-jest.mock('../../../../hooks/subscription/useSubscription', () => ({
-  useUserSubscriptions: jest.fn(),
-}));
-
 describe('VisitSupportDataConsentModal', () => {
   const store = configureMockState([thunk])(mockState);
   const mockTrackEvent = jest.fn();
@@ -42,29 +36,15 @@ describe('VisitSupportDataConsentModal', () => {
     onboardingParentContext: { current: null },
   };
   const mockOnClose = jest.fn();
-  const mockProfileId = 'test-profile-id';
   const mockMetaMetricsId = 'test-metrics-id';
-  const mockShieldCustomerId = 'test-shield-customer-id';
   const useSelectorMock = useSelector as jest.Mock;
-  const useUserSubscriptionsMock = useUserSubscriptions as jest.Mock;
 
   beforeEach(() => {
     useSelectorMock.mockImplementation((selector) => {
-      if (selector === selectSessionData) {
-        return { profile: { profileId: mockProfileId } };
-      }
       if (selector === getMetaMetricsId) {
         return mockMetaMetricsId;
       }
       return undefined;
-    });
-
-    useUserSubscriptionsMock.mockReturnValue({
-      customerId: mockShieldCustomerId,
-      subscriptions: [],
-      trialedProducts: [],
-      loading: false,
-      error: undefined,
     });
   });
 
@@ -104,9 +84,7 @@ describe('VisitSupportDataConsentModal', () => {
 
     const url = new URL(SUPPORT_LINK as string);
     url.searchParams.append('metamask_version', 'MOCK_VERSION');
-    url.searchParams.append('metamask_profile_id', mockProfileId);
     url.searchParams.append('metamask_metametrics_id', mockMetaMetricsId);
-    url.searchParams.append('shield_id', mockShieldCustomerId);
     const expectedUrl = url.toString();
 
     expect(mockTrackEvent).toHaveBeenCalledWith(
@@ -152,14 +130,17 @@ describe('VisitSupportDataConsentModal', () => {
     expect(openWindow).toHaveBeenCalledWith(expectedUrl);
   });
 
-  it('handles clicking the accept button with undefined shield customer ID', async () => {
-    useUserSubscriptionsMock.mockReturnValue({
-      customerId: undefined,
-      subscriptions: [],
-      trialedProducts: [],
-      loading: false,
-      error: undefined,
+  it('handles clicking the accept button without profile data', async () => {
+    useSelectorMock.mockImplementation((selector) => {
+      if (selector === selectSessionData) {
+        return {};
+      }
+      if (selector === getMetaMetricsId) {
+        return undefined;
+      }
+      return undefined;
     });
+
     const { getByTestId } = renderModal();
 
     await waitFor(() => {
@@ -170,8 +151,6 @@ describe('VisitSupportDataConsentModal', () => {
 
     const url = new URL(SUPPORT_LINK as string);
     url.searchParams.append('metamask_version', 'MOCK_VERSION');
-    url.searchParams.append('metamask_profile_id', mockProfileId);
-    url.searchParams.append('metamask_metametrics_id', mockMetaMetricsId);
     const expectedUrl = url.toString();
 
     expect(mockTrackEvent).toHaveBeenCalledWith(
@@ -198,14 +177,6 @@ describe('VisitSupportDataConsentModal', () => {
         return undefined;
       }
       return undefined;
-    });
-
-    useUserSubscriptionsMock.mockReturnValue({
-      customerId: undefined,
-      subscriptions: [],
-      trialedProducts: [],
-      loading: false,
-      error: undefined,
     });
 
     const { getByTestId } = renderModal();
@@ -268,7 +239,6 @@ describe('VisitSupportDataConsentModal', () => {
     // Verify personal params are not in URL
     expect(calledUrl).not.toContain('metamask_profile_id');
     expect(calledUrl).not.toContain('metamask_metametrics_id');
-    expect(calledUrl).not.toContain('shield_id');
     expect(calledUrl).not.toContain('metamask_version');
   });
 
@@ -331,7 +301,6 @@ describe('VisitSupportDataConsentModal', () => {
     const url = new URL(SUPPORT_LINK as string);
     url.searchParams.append('metamask_version', 'MOCK_VERSION');
     url.searchParams.append('metamask_metametrics_id', mockMetaMetricsId);
-    url.searchParams.append('shield_id', mockShieldCustomerId);
     const expectedUrl = url.toString();
 
     expect(openWindow).toHaveBeenCalledWith(expectedUrl);
@@ -359,7 +328,6 @@ describe('VisitSupportDataConsentModal', () => {
     const url = new URL(SUPPORT_LINK as string);
     url.searchParams.append('metamask_version', 'MOCK_VERSION');
     url.searchParams.append('metamask_metametrics_id', mockMetaMetricsId);
-    url.searchParams.append('shield_id', mockShieldCustomerId);
     const expectedUrl = url.toString();
 
     expect(openWindow).toHaveBeenCalledWith(expectedUrl);
@@ -374,14 +342,6 @@ describe('VisitSupportDataConsentModal', () => {
         return mockMetaMetricsId;
       }
       return undefined;
-    });
-
-    useUserSubscriptionsMock.mockReturnValue({
-      customerId: undefined,
-      subscriptions: [],
-      trialedProducts: [],
-      loading: false,
-      error: undefined,
     });
 
     const { getByTestId } = renderModal();

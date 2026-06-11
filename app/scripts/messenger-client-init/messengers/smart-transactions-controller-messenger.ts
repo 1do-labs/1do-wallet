@@ -29,7 +29,6 @@ export function getSmartTransactionsControllerMessenger(
   rootMessenger.delegate({
     messenger: controllerMessenger,
     actions: [
-      'AuthenticationController:getBearerToken',
       'NetworkController:getNetworkClientById',
       'NetworkController:getState',
       'RemoteFeatureFlagController:getState',

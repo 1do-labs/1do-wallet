@@ -11,7 +11,6 @@ import {
   CURRENCY_ROUTE,
   DEFAULT_ROUTE,
   SETTINGS_V2_ROUTE,
-  TRANSACTION_SHIELD_ROUTE,
 } from '../../helpers/constants/routes';
 import {
   ENVIRONMENT_TYPE_FULLSCREEN,
@@ -30,15 +29,6 @@ jest.mock('react-router-dom', () => ({
 jest.mock('../../../app/scripts/lib/util', () => ({
   getEnvironmentType: () => mockGetEnvironmentType(),
 }));
-
-jest.mock(
-  '../../components/app/shield-entry-modal/shield-illustration-animation',
-  () => ({
-    // eslint-disable-next-line @typescript-eslint/naming-convention
-    __esModule: true,
-    default: () => <div data-testid="shield-illustration-animation" />,
-  }),
-);
 
 let mockPathname = SETTINGS_V2_ROUTE;
 
@@ -64,14 +54,6 @@ describe('SettingsV2', () => {
   });
 
   describe('navigation', () => {
-    it('renders transaction shield on the settings root page', () => {
-      renderSettingsV2(mockStore);
-
-      expect(
-        screen.getByTestId('settings-v2-root-item-transaction-shield'),
-      ).toBeInTheDocument();
-    });
-
     it('shows grouped tabs in fullscreen at the settings root', async () => {
       mockGetEnvironmentType.mockReturnValue(ENVIRONMENT_TYPE_FULLSCREEN);
 
@@ -81,9 +63,6 @@ describe('SettingsV2', () => {
         screen.getByTestId('settings-v2-tab-bar-grouped'),
       ).toBeInTheDocument();
       expect(screen.getByText(messages.general.message)).toBeInTheDocument();
-      expect(
-        screen.getByTestId('settings-v2-tab-item-transaction-shield'),
-      ).toBeInTheDocument();
       expect(screen.queryByTestId('settings-v2-root')).not.toBeInTheDocument();
       expect(
         await screen.findByText(messages.theme.message),
@@ -109,18 +88,6 @@ describe('SettingsV2', () => {
       expect(
         await screen.findByText(messages.theme.message),
       ).toBeInTheDocument();
-    });
-
-    it('navigates to transaction shield from the root page', async () => {
-      renderSettingsV2(mockStore);
-
-      fireEvent.click(
-        screen.getByTestId('settings-v2-root-item-transaction-shield'),
-      );
-
-      await waitFor(() => {
-        expect(mockNavigate).toHaveBeenCalledWith(TRANSACTION_SHIELD_ROUTE);
-      });
     });
 
     it('navigates to home with the global menu drawer open when back is clicked at settings root', async () => {

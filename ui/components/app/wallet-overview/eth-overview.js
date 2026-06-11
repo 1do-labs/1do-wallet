@@ -11,12 +11,10 @@ import {
   getSelectedAccountCachedBalance,
   getIsBridgeChain,
 } from '../../../selectors';
-import { getIsNativeTokenBuyable } from '../../../ducks/ramps';
 import { CoinOverview } from './coin-overview';
 
 const EthOverview = ({ className }) => {
   const isBridgeChain = useSelector(getIsBridgeChain);
-  const isBuyableChain = useSelector(getIsNativeTokenBuyable);
   const balanceIsCached = useSelector(isBalanceCached);
   const chainId = useSelector(getCurrentChainId);
   const balance = useSelector(getSelectedAccountCachedBalance);
@@ -39,7 +37,6 @@ const EthOverview = ({ className }) => {
       isSigningEnabled={isSigningEnabled}
       isSwapsChain={isSwapsChain}
       isBridgeChain={isBridgeChain}
-      isBuyableChain={isBuyableChain}
     />
   );
 };
