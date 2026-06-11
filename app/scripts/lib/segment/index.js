@@ -1,8 +1,4 @@
 import { SECOND } from '../../../../shared/constants/time';
-import Analytics from './analytics';
-
-const SEGMENT_WRITE_KEY = process.env.SEGMENT_WRITE_KEY ?? null;
-const SEGMENT_HOST = process.env.SEGMENT_HOST ?? null;
 
 // flushAt controls how many events are sent to segment at once. Segment will
 // hold onto a queue of events until it hits this number, then it sends them as
@@ -78,10 +74,7 @@ export const createSegmentMock = (flushAt = SEGMENT_FLUSH_AT) => {
   return segmentMock;
 };
 
-export const segment = SEGMENT_WRITE_KEY
-  ? new Analytics(SEGMENT_WRITE_KEY, {
-      host: SEGMENT_HOST,
-      flushAt: SEGMENT_FLUSH_AT,
-      flushInterval: SEGMENT_FLUSH_INTERVAL,
-    })
-  : createSegmentMock(SEGMENT_FLUSH_AT, SEGMENT_FLUSH_INTERVAL);
+export const segment = createSegmentMock(
+  SEGMENT_FLUSH_AT,
+  SEGMENT_FLUSH_INTERVAL,
+);

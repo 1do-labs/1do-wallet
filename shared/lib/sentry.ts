@@ -20,11 +20,7 @@ export function captureException(
   hint?: Parameters<(typeof Sentry)['captureException']>[1],
 ): string | undefined {
   console.error(exception, ...(hint ? [hint] : []));
-  if (!globalThis.sentry?.captureException) {
-    console.warn('Sentry not initialized');
-    return undefined;
-  }
-  return globalThis.sentry.captureException(exception, ...(hint ? [hint] : []));
+  return undefined;
 }
 
 /**
@@ -38,13 +34,6 @@ export function captureMessage(
   message: string,
   captureContext?: Parameters<(typeof Sentry)['captureMessage']>[1],
 ): string | undefined {
-  if (!globalThis.sentry?.captureMessage) {
-    console.warn('Sentry not initialized');
-    console.log(message, ...(captureContext ? [captureContext] : []));
-    return undefined;
-  }
-  return globalThis.sentry.captureMessage(
-    message,
-    ...(captureContext ? [captureContext] : []),
-  );
+  console.log(message, ...(captureContext ? [captureContext] : []));
+  return undefined;
 }
