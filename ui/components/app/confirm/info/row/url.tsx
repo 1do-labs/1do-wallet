@@ -1,5 +1,4 @@
 import React from 'react';
-import { isSnapId } from '@metamask/snaps-utils';
 import {
   Box,
   Icon,
@@ -50,11 +49,6 @@ const HttpWarning = () => (
 export const ConfirmInfoRowUrl = ({ url }: ConfirmInfoRowUrlProps) => {
   const t = useI18nContext();
   const originTrustSignals = useOriginTrustSignals(url);
-
-  // Check if it's a Snap ID first to avoid unnecessary processing
-  if (isSnapId(url)) {
-    return <Text color={TextColor.inherit}>{url}</Text>;
-  }
 
   let urlObject;
   try {

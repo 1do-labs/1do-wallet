@@ -125,7 +125,7 @@ describe('PermissionControllerInit', () => {
         return true;
       }
       if (action === 'MultichainRoutingService:getSupportedAccounts') {
-        return ['bip122:abc'];
+        return ['0xabc'];
       }
       return undefined;
     });
@@ -146,7 +146,7 @@ describe('PermissionControllerInit', () => {
       );
       expect(deps.isNonEvmScopeSupported('eip155:0')).toBe(true);
       expect(deps.getNonEvmAccountAddresses('eip155:0')).toStrictEqual([
-        'bip122:abc',
+        '0xabc',
       ]);
 
       expect(callMock).toHaveBeenCalledWith('AccountsController:listAccounts');

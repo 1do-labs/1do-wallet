@@ -27,19 +27,5 @@ export const extractWalletIdFromGroupId = (
     throw new Error('Account group ID is required');
   }
 
-  if (accountGroupId.startsWith('snap:')) {
-    if (accountGroupId.includes('@') && accountGroupId.includes('/')) {
-      const lastSlashIndex = accountGroupId.lastIndexOf('/');
-      return accountGroupId.substring(0, lastSlashIndex) as AccountWalletId;
-    }
-
-    if (accountGroupId.includes('/')) {
-      const parts = accountGroupId.split('/');
-      return parts.slice(0, -1).join('/') as AccountWalletId;
-    }
-
-    return accountGroupId as AccountWalletId;
-  }
-
   return accountGroupId.split('/')[0] as AccountWalletId;
 };

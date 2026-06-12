@@ -19,7 +19,6 @@ import { selectEnabledNetworksAsCaipChainIds } from '../../../selectors/multicha
 import { getIsTransactionLabelsEnabled } from '../../../selectors/multichain/feature-flags';
 import { selectRequiredTransactionHashes } from '../../../selectors/transactionController';
 import { getIntlLocale } from '../../../ducks/locale/locale';
-import { useBridgeActivityData } from '../../../hooks/bridge/useBridgeActivityData';
 import { apiClient } from '../../../helpers/api-client';
 import {
   calculateFiatFromMarketRates,
@@ -187,10 +186,6 @@ export function useGetTitle(transaction: TransactionViewModel): string {
     getIsTransactionLabelsEnabled,
   );
 
-  const { sourceTokenSymbol, destNetwork, isBridgeTx } = useBridgeActivityData({
-    transaction,
-  });
-
   const resolvedType = resolveTransactionType(transaction);
 
   const readableLabel = transaction.readable?.trim();
@@ -238,12 +233,6 @@ export function useGetTitle(transaction: TransactionViewModel): string {
 
   // This should be server-side
   if (transactionCategory === 'APPROVE') {
-    if (sourceTokenSymbol) {
-      return t(isBridgeTx ? 'bridgeApproval' : 'swapApproval', [
-        sourceTokenSymbol,
-      ]);
-    }
-
     const data = transaction.txParams?.data;
     const selectorFromData =
       typeof data === 'string' ? data.slice(0, 10) : undefined;
@@ -297,10 +286,7 @@ export function useGetTitle(transaction: TransactionViewModel): string {
 
   // This should be server-side
   if (transactionCategory === 'BRIDGE_OUT') {
-    if (!destNetwork?.name || !isBridgeTx) {
-      return t('bridged');
-    }
-    return t('bridgedToChain', [destNetwork.name]);
+    return t('bridged');
   }
 
   if (transactionCategory === 'BRIDGE_IN') {

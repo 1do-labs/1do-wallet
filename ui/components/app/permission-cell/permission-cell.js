@@ -31,8 +31,6 @@ import { PermissionCellOptions } from './permission-cell-options';
 import { PermissionCellStatus } from './permission-cell-status';
 
 const PermissionCell = ({
-  snapId,
-  permissionName,
   title,
   description,
   weight,
@@ -161,9 +159,7 @@ const PermissionCell = ({
       </Box>
       <Box display={Display.Flex}>
         {showOptions ? (
-          <PermissionCellOptions
-            description={description}
-          />
+          <PermissionCellOptions description={description} />
         ) : (
           description && (
             <Tooltip
@@ -187,9 +183,6 @@ const PermissionCell = ({
 };
 
 PermissionCell.propTypes = {
-  snapId: PropTypes.string,
-  permissionName: PropTypes.oneOfType([PropTypes.string, PropTypes.element])
-    .isRequired,
   title: PropTypes.oneOfType([
     PropTypes.string.isRequired,
     PropTypes.object.isRequired,
@@ -204,7 +197,7 @@ PermissionCell.propTypes = {
   hideStatus: PropTypes.bool,
   accounts: PropTypes.array,
   chainIds: PropTypes.array,
-  /** CAIP chain IDs for multichain display (e.g., 'solana:...') */
+  /** CAIP chain IDs for multichain display (e.g., 'eip155:1') */
   caipChainIds: PropTypes.array,
 };
 

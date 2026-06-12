@@ -1,5 +1,4 @@
 import { AVAILABLE_MULTICHAIN_NETWORK_CONFIGURATIONS } from '@metamask/multichain-network-controller';
-import { BtcScope } from '@metamask/keyring-api';
 import { renderHookWithProvider } from '../../test/lib/render-helpers-navigate';
 import { getOriginalNativeTokenSymbol } from '../helpers/utils/isOriginalNativeTokenSymbol';
 import {
@@ -65,7 +64,7 @@ describe('useCurrencyRatePolling', () => {
       preferences: {},
       multichainNetworkConfigurationsByChainId:
         AVAILABLE_MULTICHAIN_NETWORK_CONFIGURATIONS,
-      selectedMultichainNetworkChainId: BtcScope.Mainnet,
+      selectedMultichainNetworkChainId: '0x1',
       isEvmSelected: true,
     },
   });

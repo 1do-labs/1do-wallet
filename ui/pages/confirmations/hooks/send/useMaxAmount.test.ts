@@ -4,7 +4,6 @@ import { Numeric } from '../../../../../shared/lib/Numeric';
 import {
   EVM_ASSET,
   EVM_NATIVE_ASSET,
-  SOLANA_ASSET,
 } from '../../../../../test/data/send/assets';
 import mockState from '../../../../../test/data/mock-state.json';
 import { renderHookWithProvider } from '../../../../../test/lib/render-helpers-navigate';
@@ -127,18 +126,5 @@ describe('useMaxAmount', () => {
     } as unknown as SendContext.SendContextType);
     const result = renderHook();
     expect(result.getMaxAmount()).toEqual('48573');
-  });
-
-  it('return correct max amount for solana assets', () => {
-    useBalanceMock.mockReturnValue({
-      balance: '10.00',
-      decimals: 6,
-      rawBalanceNumeric: new Numeric('1007248', 10),
-    });
-    jest.spyOn(SendContext, 'useSendContext').mockReturnValue({
-      asset: SOLANA_ASSET,
-    } as unknown as SendContext.SendContextType);
-    const result = renderHook();
-    expect(result.getMaxAmount()).toEqual('1.007248');
   });
 });

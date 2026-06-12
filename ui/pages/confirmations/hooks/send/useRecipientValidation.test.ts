@@ -1,11 +1,7 @@
 import { act, waitFor } from '@testing-library/react';
 
 import mockState from '../../../../../test/data/mock-state.json';
-import {
-  BITCOIN_ASSET,
-  EVM_ASSET,
-  SOLANA_ASSET,
-} from '../../../../../test/data/send/assets';
+import { EVM_ASSET } from '../../../../../test/data/send/assets';
 import { renderHookWithProvider } from '../../../../../test/lib/render-helpers-navigate';
 import { useI18nContext } from '../../../../hooks/useI18nContext';
 import { useSendContext } from '../../context/send';
@@ -44,7 +40,6 @@ describe('useRecipientValidation', () => {
     } as unknown as ReturnType<typeof useSendContext>);
     mockUseSendType.mockReturnValue({
       isEvmSendType: true,
-      isSolanaSendType: false,
     } as unknown as ReturnType<typeof useSendType>);
   });
 
@@ -194,7 +189,6 @@ describe('useRecipientValidation', () => {
   it('validate hex value for EVM send type', async () => {
     mockUseSendType.mockReturnValue({
       isEvmSendType: true,
-      isSolanaSendType: false,
     } as unknown as ReturnType<typeof useSendType>);
 
     const mockValidateHexAddress = jest
@@ -207,73 +201,6 @@ describe('useRecipientValidation', () => {
 
     await waitFor(() => {
       expect(mockValidateHexAddress).toHaveBeenCalled();
-      expect(result.current.recipientError).toEqual('invalidAddress');
-    });
-  });
-
-  it('validate solana address for Solana send type', async () => {
-    mockUseSendType.mockReturnValue({
-      isEvmSendType: false,
-      isSolanaSendType: true,
-    } as unknown as ReturnType<typeof useSendType>);
-
-    mockUseSendContext.mockReturnValue({
-      asset: SOLANA_ASSET,
-      to: 'H8UekPGwePSmQ3ttuYGPU1sxKnk7K3SR4VBGp5dAEwQs',
-      chainId: 'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp',
-    } as unknown as ReturnType<typeof useSendContext>);
-
-    jest.spyOn(NameValidation, 'useNameValidation').mockReturnValue({
-      validateName: () =>
-        Promise.resolve({
-          error: 'nameResolutionFailedError',
-        }),
-    });
-
-    const mockValidateSolanaAddress = jest
-      .spyOn(SendValidationUtils, 'validateSolanaAddress')
-      .mockReturnValue({
-        error: 'invalidAddress',
-      });
-
-    const { result } = renderHook();
-
-    await waitFor(() => {
-      expect(mockValidateSolanaAddress).toHaveBeenCalled();
-      expect(result.current.recipientError).toEqual('invalidAddress');
-    });
-  });
-
-  it('validate bitcoin address for Bitcoin send type', async () => {
-    mockUseSendType.mockReturnValue({
-      isEvmSendType: false,
-      isSolanaSendType: false,
-      isBitcoinSendType: true,
-    } as unknown as ReturnType<typeof useSendType>);
-
-    mockUseSendContext.mockReturnValue({
-      asset: BITCOIN_ASSET,
-      to: 'bc1qux5pw7w5cjjs375at0c8j96le7nuky693uj3rm',
-      chainId: 'bip122:000000000019d6689c085ae165831e93',
-    } as unknown as ReturnType<typeof useSendContext>);
-
-    jest.spyOn(NameValidation, 'useNameValidation').mockReturnValue({
-      validateName: () =>
-        Promise.resolve({
-          error: 'nameResolutionFailedError',
-        }),
-    });
-
-    const mockValidateBtcAddress = jest
-      .spyOn(SendValidationUtils, 'validateBtcAddress')
-      .mockReturnValue({
-        error: 'invalidAddress',
-      });
-
-    const { result } = renderHook();
-
-    await waitFor(() => {
-      expect(mockValidateBtcAddress).toHaveBeenCalled();
       expect(result.current.recipientError).toEqual('invalidAddress');
     });
   });

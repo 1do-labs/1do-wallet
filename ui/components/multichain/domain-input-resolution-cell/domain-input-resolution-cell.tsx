@@ -27,14 +27,14 @@ type DomainInputResolutionCellArgs = {
   address: string;
   protocol?: string;
   domainName: string;
-  resolvingSnap?: string;
+  resolvingSource?: string;
   onClick: () => void;
 };
 
 export const DomainInputResolutionCell = ({
   address,
   domainName,
-  resolvingSnap = '',
+  resolvingSource = '',
   onClick,
   protocol,
 }: DomainInputResolutionCellArgs) => {
@@ -87,7 +87,6 @@ export const DomainInputResolutionCell = ({
     </Tooltip>
   );
 
-  // Snap provided resolution.
   return (
     <Box
       key={address}
@@ -99,11 +98,11 @@ export const DomainInputResolutionCell = ({
       style={{ cursor: 'pointer' }}
       data-testid="multichain-send-page__recipient__item"
     >
-      <Tooltip title={t('suggestedBySnap', [resolvingSnap])}>
+      <Tooltip title={t('suggestedBySource', [resolvingSource])}>
         <BadgeWrapper
           badge={
             <AvatarIcon
-              iconName={IconName.Snaps}
+              iconName={IconName.Global}
               size={AvatarIconSize.Xs}
               className="multichain-send-page__recipient__item__avatar"
               backgroundColor={BackgroundColor.infoDefault}
@@ -112,7 +111,7 @@ export const DomainInputResolutionCell = ({
               iconProps={{
                 color: IconColor.infoInverse,
                 style: { width: '12px', height: '12px' },
-                name: IconName.Snaps,
+                name: IconName.Global,
               }}
             />
           }
@@ -161,7 +160,7 @@ export const DomainInputResolutionCell = ({
 DomainInputResolutionCell.propTypes = {
   address: PropTypes.string.isRequired,
   domainName: PropTypes.string.isRequired,
-  resolvingSnap: PropTypes.string.isRequired,
+  resolvingSource: PropTypes.string.isRequired,
   onClick: PropTypes.func,
   protocol: PropTypes.string,
 };

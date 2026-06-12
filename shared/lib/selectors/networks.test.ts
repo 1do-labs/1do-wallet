@@ -157,7 +157,7 @@ describe('Network Selectors', () => {
     });
 
     it('returns multiple networks for multiple scopes', () => {
-      const scopes = ['eip155:0', 'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp'];
+      const scopes = ['eip155:0', 'eip155:137'];
       const result = getNetworksByScopes(typedMockState, scopes);
 
       expect(result).toHaveLength(5);

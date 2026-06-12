@@ -1,8 +1,4 @@
 import {
-  caveatSpecifications as snapsCaveatsSpecifications,
-  endowmentCaveatSpecifications as snapsEndowmentCaveatSpecifications,
-} from '@metamask/snaps-rpc-methods';
-import {
   createCaip25Caveat,
   Caip25CaveatType,
   caip25EndowmentBuilder,
@@ -64,8 +60,6 @@ export const getCaveatSpecifications = ({
       isNonEvmScopeSupported,
       getNonEvmAccountAddresses,
     }),
-    ...snapsCaveatsSpecifications,
-    ...snapsEndowmentCaveatSpecifications,
   };
 };
 

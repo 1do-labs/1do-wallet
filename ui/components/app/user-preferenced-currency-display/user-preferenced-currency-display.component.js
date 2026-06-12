@@ -27,8 +27,7 @@ export default function UserPreferencedCurrencyDisplay({
   // multichain world or EVM-only world.
   // To preserve the original behavior of this component, we default to the lastly selected
   // EVM accounts (when used in an EVM-only context).
-  // The caller has to pass the account in a multichain context to properly display the currency
-  // here (e.g for Bitcoin).
+  // The caller has to pass the account in a multichain context to properly display the currency.
   const evmAccount = useSelector(getSelectedEvmInternalAccount);
   const account = multichainAccount ?? evmAccount;
 

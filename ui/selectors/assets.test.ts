@@ -1,4 +1,4 @@
-import { EthScope, SolScope } from '@metamask/keyring-api';
+import { EthScope } from '@metamask/keyring-api';
 import { InternalAccount } from '@metamask/keyring-internal-api';
 import { AVAILABLE_MULTICHAIN_NETWORK_CONFIGURATIONS } from '@metamask/multichain-network-controller';
 import { cloneDeep } from 'lodash';
@@ -23,7 +23,6 @@ import {
   getCustomAssets,
   getAssetsRates,
   getMultiChainAssets,
-  getMultichainNativeAssetType,
   getTokenByAccountAndAddressAndChainId,
   getHistoricalMultichainAggregatedBalance,
   selectBalanceForAllWallets,
@@ -37,7 +36,6 @@ import {
   getAsset,
   getAllIgnoredAssets,
   selectAggregatedBalanceForSelectedAccount,
-  getAssetsBySelectedAccountGroupWithTronSpecialAssets,
 } from './assets';
 
 /**
@@ -81,7 +79,7 @@ const mockRatesState = {
       'token-2': { rate: 0.8, currency: 'EUR' },
     },
     historicalPrices: {
-      'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp/slip44:501': {
+      'eip155:1/slip44:60': {
         usd: {
           intervals: {},
           updateTime: 1737542312,
@@ -96,17 +94,15 @@ const mockRatesState = {
 const mockAssetsState: AssetsState = {
   metamask: {
     accountsAssets: {
-      '5132883f-598e-482c-a02b-84eeaa352f5b': [
-        'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp/slip44:501',
-      ],
+      '5132883f-598e-482c-a02b-84eeaa352f5b': ['eip155:1/slip44:60'],
     },
     assetsMetadata: {
-      'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp/slip44:501': {
-        name: 'Token 1',
-        symbol: 'TKN1',
+      'eip155:1/slip44:60': {
+        name: 'Ether',
+        symbol: 'ETH',
         iconUrl: 'https://example.com/token-1.png',
         fungible: true,
-        units: [{ symbol: 'TKN1', name: 'Token 1', decimals: 9 }],
+        units: [{ symbol: 'ETH', name: 'Ether', decimals: 18 }],
       },
     },
     allIgnoredAssets: {},
@@ -364,22 +360,21 @@ describe('getMultiChainAssets', () => {
   const mockAccountId = '5132883f-598e-482c-a02b-84eeaa352f5b';
   const mockMultichainBalances = {
     [mockAccountId]: {
-      'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp/slip44:501': {
+      'eip155:1/slip44:60': {
         amount: '0.051724127',
-        unit: 'SOL',
+        unit: 'ETH',
       },
-      'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp/token:EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v':
-        {
-          amount: '0',
-          unit: 'USDC',
-        },
+      'eip155:1/erc20:0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48': {
+        amount: '0',
+        unit: 'USDC',
+      },
     },
   };
 
   const mockAccountAssets = {
     [mockAccountId]: [
-      'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp/slip44:501',
-      'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp/token:EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v',
+      'eip155:1/slip44:60',
+      'eip155:1/erc20:0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
     ],
   };
   it('should return assets with zero balance with hideZeroBalanceTokens set to false', () => {
@@ -401,24 +396,23 @@ describe('getMultiChainAssets', () => {
     expect(result).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
-          title: 'Token 1',
-          address: 'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp/slip44:501',
-          symbol: 'TKN1',
+          title: 'Ether',
+          address: 'eip155:1/slip44:60',
+          symbol: 'ETH',
           image: 'https://example.com/token-1.png',
-          decimals: 9,
-          chainId: 'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp',
+          decimals: 18,
+          chainId: 'eip155:1',
           isNative: true,
           balance: '0.051724127',
           secondary: null,
         }),
         expect.objectContaining({
           title: 'USDC',
-          address:
-            'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp/token:EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v',
+          address: 'eip155:1/erc20:0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
           symbol: 'USDC',
           image: undefined,
           decimals: 0,
-          chainId: 'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp',
+          chainId: 'eip155:1',
           isNative: false,
           balance: '0',
           secondary: null,
@@ -445,12 +439,12 @@ describe('getMultiChainAssets', () => {
     expect(result).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
-          title: 'Token 1',
-          address: 'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp/slip44:501',
-          symbol: 'TKN1',
+          title: 'Ether',
+          address: 'eip155:1/slip44:60',
+          symbol: 'ETH',
           image: 'https://example.com/token-1.png',
-          decimals: 9,
-          chainId: 'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp',
+          decimals: 18,
+          chainId: 'eip155:1',
           isNative: true,
           balance: '0.051724127',
           secondary: null,
@@ -529,12 +523,6 @@ describe('getTokenByAccountAndAddressAndChainId', () => {
             type: 'eip155:eoa',
             scopes: [EthScope.Eoa],
           },
-          '5132883f-598e-482c-a02b-84eeaa352f5b': {
-            id: '5132883f-598e-482c-a02b-84eeaa352f5b',
-            address: '8A4AptCThfbuknsbteHgGKXczfJpfjuVA9SLTSGaaLGC',
-            type: 'solana:data-account',
-            scopes: [SolScope.Mainnet],
-          },
         },
         selectedAccount: '', // To be populated in each case
       },
@@ -544,20 +532,8 @@ describe('getTokenByAccountAndAddressAndChainId', () => {
           balance: '0x0',
         },
       },
-      accountsAssets: {
-        '5132883f-598e-482c-a02b-84eeaa352f5b': [
-          'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp/slip44:501',
-        ],
-      },
-      assetsMetadata: {
-        'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp/slip44:501': {
-          name: 'Token 1',
-          symbol: 'TKN1',
-          iconUrl: 'https://example.com/token-1.png',
-          fungible: true,
-          units: [{ symbol: 'TKN1', name: 'Token 1', decimals: 9 }],
-        },
-      },
+      accountsAssets: {},
+      assetsMetadata: {},
       allIgnoredAssets: {},
       allTokens: {
         'eip155:1': {
@@ -611,128 +587,26 @@ describe('getTokenByAccountAndAddressAndChainId', () => {
       });
     });
   });
-
-  describe('when the passed account is a non-EVM account', () => {
-    const account = mockState.metamask.internalAccounts.accounts[
-      '5132883f-598e-482c-a02b-84eeaa352f5b'
-    ] as unknown as InternalAccount;
-
-    it('should return the token from the state', () => {
-      const result = getTokenByAccountAndAddressAndChainId(
-        mockState,
-        account,
-        'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp/slip44:501',
-        'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp',
-      );
-
-      expect(result).toEqual({
-        address: 'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp/slip44:501',
-        chainId: 'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp',
-        decimals: 9,
-        image: 'https://example.com/token-1.png',
-        isNative: true,
-        isStakeable: false,
-        balance: '0',
-        secondary: null,
-        string: '',
-        symbol: 'TKN1',
-        title: 'Token 1',
-        tokenFiatAmount: null,
-      });
-    });
-  });
-
   describe('when the passed account is undefined', () => {
     it('should use the selected account to return the token from the state', () => {
       const account = undefined;
       const mockStateWithSelectedAccount = cloneDeep(mockState);
       mockStateWithSelectedAccount.metamask.internalAccounts.selectedAccount =
-        '5132883f-598e-482c-a02b-84eeaa352f5b';
+        '81b1ead4-334c-4921-9adf-282fde539752';
 
       const result = getTokenByAccountAndAddressAndChainId(
         mockStateWithSelectedAccount,
         account,
-        'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp/slip44:501',
-        'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp',
+        '0x458036e7bc0612e9b207640dc07ca7711346aae5',
+        'eip155:1',
       );
 
       expect(result).toEqual({
-        address: 'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp/slip44:501',
-        chainId: 'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp',
-        decimals: 9,
-        image: 'https://example.com/token-1.png',
-        isNative: true,
-        isStakeable: false,
-        balance: '0',
-        secondary: null,
-        string: '',
-        symbol: 'TKN1',
-        title: 'Token 1',
-        tokenFiatAmount: null,
+        address: '0x458036e7bc0612e9b207640dc07ca7711346aae5',
+        chainId: 'eip155:1',
+        isNative: false,
+        name: 'Token 2',
       });
-    });
-  });
-});
-
-describe('getMultichainNativeAssetType', () => {
-  const mockState = {
-    metamask: {
-      internalAccounts: {
-        accounts: {
-          '5132883f-598e-482c-a02b-84eeaa352f5b': {
-            id: '5132883f-598e-482c-a02b-84eeaa352f5b',
-            address: '8A4AptCThfbuknsbteHgGKXczfJpfjuVA9SLTSGaaLGC',
-            type: 'solana:data-account',
-          },
-        },
-        selectedAccount: '5132883f-598e-482c-a02b-84eeaa352f5b',
-      },
-      accountsAssets: {
-        '5132883f-598e-482c-a02b-84eeaa352f5b': [
-          'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp/slip44:501',
-          'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp/token:EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v',
-        ],
-      },
-      networkConfigurationsByChainId: {},
-      multichainNetworkConfigurationsByChainId:
-        AVAILABLE_MULTICHAIN_NETWORK_CONFIGURATIONS,
-      completedOnboarding: true,
-      selectedMultichainNetworkChainId: SolScope.Mainnet,
-      isEvmSelected: false,
-      remoteFeatureFlags: {
-        solanaAccounts: { enabled: true, minimumVersion: '13.6.0' },
-        bitcoinAccounts: { enabled: true, minimumVersion: '13.6.0' },
-      },
-    },
-
-    // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31973
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  } as any;
-
-  describe('when a native asset type is available', () => {
-    it('should return the native asset type', () => {
-      const result = getMultichainNativeAssetType(mockState);
-
-      expect(result).toEqual(
-        'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp/slip44:501',
-      );
-    });
-  });
-
-  describe('when a native asset type is not available', () => {
-    const mockStateWithoutNativeAssetType = cloneDeep(mockState);
-    mockStateWithoutNativeAssetType.metamask.accountsAssets[
-      '5132883f-598e-482c-a02b-84eeaa352f5b'
-    ] = [
-      'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp/token:EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v',
-    ];
-
-    it('should return undefined', () => {
-      const result = getMultichainNativeAssetType(
-        mockStateWithoutNativeAssetType,
-      );
-
-      expect(result).toBeUndefined();
     });
   });
 });
@@ -743,29 +617,28 @@ describe('getHistoricalMultichainAggregatedBalance', () => {
   // Mock balances state
   const mockBalances = {
     [mockAccountId]: {
-      'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp/slip44:501': {
+      'eip155:1/slip44:60': {
         amount: '100',
-        unit: 'SOL',
+        unit: 'ETH',
       },
-      'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp/token:EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v':
-        {
-          amount: '50',
-          unit: 'USDC',
-        },
+      'eip155:1/erc20:0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48': {
+        amount: '50',
+        unit: 'USDC',
+      },
     },
   };
 
   // Mock account assets state
   const mockAccountAssets = {
     [mockAccountId]: [
-      'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp/slip44:501',
-      'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp/token:EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v',
+      'eip155:1/slip44:60',
+      'eip155:1/erc20:0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
     ],
   };
 
   // Mock conversion rates state
   const mockConversionRates = {
-    'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp/slip44:501': {
+    'eip155:1/slip44:60': {
       rate: '10',
       marketData: {
         pricePercentChange: {
@@ -774,16 +647,15 @@ describe('getHistoricalMultichainAggregatedBalance', () => {
         },
       },
     },
-    'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp/token:EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v':
-      {
-        rate: '1',
-        marketData: {
-          pricePercentChange: {
-            P1D: 10, // 10% increase
-            P7D: 5, // 5% increase
-          },
+    'eip155:1/erc20:0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48': {
+      rate: '1',
+      marketData: {
+        pricePercentChange: {
+          P1D: 10, // 10% increase
+          P7D: 5, // 5% increase
         },
       },
+    },
   };
 
   // Complete mock state
@@ -812,20 +684,19 @@ describe('getHistoricalMultichainAggregatedBalance', () => {
       metamask: {
         accountsAssets: mockAccountAssets,
         conversionRates: {
-          'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp/slip44:501': {
+          'eip155:1/slip44:60': {
             rate: '10',
             // No marketData
           },
-          'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp/token:EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v':
-            {
-              rate: '1',
-              marketData: {
-                pricePercentChange: {
-                  P1D: 10,
-                  P7D: 5,
-                },
+          'eip155:1/erc20:0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48': {
+            rate: '1',
+            marketData: {
+              pricePercentChange: {
+                P1D: 10,
+                P7D: 5,
               },
             },
+          },
         },
         balances: mockBalances,
       },
@@ -847,15 +718,14 @@ describe('getHistoricalMultichainAggregatedBalance', () => {
       metamask: {
         accountsAssets: mockAccountAssets,
         conversionRates: {
-          'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp/slip44:501': {
+          'eip155:1/slip44:60': {
             rate: '10',
             // No marketData
           },
-          'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp/token:EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v':
-            {
-              rate: '1',
-              // No marketData
-            },
+          'eip155:1/erc20:0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48': {
+            rate: '1',
+            // No marketData
+          },
         },
         balances: mockBalances,
       },
@@ -880,7 +750,7 @@ describe('getHistoricalMultichainAggregatedBalance', () => {
       metamask: {
         accountsAssets: mockAccountAssets,
         conversionRates: {
-          'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp/slip44:501': {
+          'eip155:1/slip44:60': {
             rate: '10.123456789',
             marketData: {
               pricePercentChange: {
@@ -1245,45 +1115,6 @@ describe('selectAccountGroupBalanceForEmptyState', () => {
     };
   };
 
-  const createMockStateWithNonEVMNetworks = (
-    includeTestnets = false,
-  ): BalanceCalculationState => {
-    const multichainNetworks: Record<string, unknown> = {
-      'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp': {
-        chainId: 'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp',
-        type: 'mainnet',
-      }, // Solana mainnet
-    };
-
-    if (includeTestnets) {
-      multichainNetworks['solana:4uhcVJyU9pJkvQyS88uRDiswHXSCkY3z'] = {
-        chainId: 'solana:4uhcVJyU9pJkvQyS88uRDiswHXSCkY3z',
-        type: 'testnet',
-      }; // Solana testnet
-      multichainNetworks['solana:EtWTRABZaYq6iMfeYKouRu166VU2xqa1'] = {
-        chainId: 'solana:EtWTRABZaYq6iMfeYKouRu166VU2xqa1',
-        type: 'testnet',
-      }; // Solana devnet
-    }
-
-    const baseState = createBaseMockState(
-      'account2',
-      'solana:data-account',
-      [SolScope.Mainnet],
-      {
-        snap: { id: 'npm:@metamask/solana-wallet-snap', enabled: true },
-      },
-    );
-
-    return {
-      metamask: {
-        ...baseState,
-        networkConfigurationsByChainId: {},
-        multichainNetworkConfigurationsByChainId: multichainNetworks,
-      } as unknown as BalanceCalculationState['metamask'],
-    };
-  };
-
   it('should return true when balance is greater than 0 for EVM networks', () => {
     const state = createMockStateWithEVMNetworks();
 
@@ -1292,24 +1123,6 @@ describe('selectAccountGroupBalanceForEmptyState', () => {
       '0x1': {
         '0x0': {
           balance: '0x8ac7230489e80000', // 10 ETH
-        },
-      },
-    };
-
-    const result = selectAccountGroupBalanceForEmptyState(state);
-
-    expect(result).toBe(true);
-  });
-
-  it('should return true when balance is greater than 0 for non-EVM networks like Solana', () => {
-    const state = createMockStateWithNonEVMNetworks();
-
-    // Add multichainBalancesState with non-zero Solana balance
-    state.metamask.balances = {
-      account2: {
-        'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp/slip44:501': {
-          amount: '10.5',
-          unit: 'SOL',
         },
       },
     };
@@ -1390,31 +1203,6 @@ describe('selectAccountGroupBalanceForEmptyState', () => {
     expect(result).toBe(false);
   });
 
-  it('should exclude non-EVM testnets like Solana from balance calculation', () => {
-    const state = createMockStateWithNonEVMNetworks(true); // Include non-EVM testnets
-
-    // Add balances for both mainnet and testnet
-    state.metamask.balances = {
-      account2: {
-        'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp/slip44:501': {
-          // Mainnet
-          amount: '0',
-          unit: 'SOL',
-        },
-        'solana:4uhcVJyU9pJkvQyS88uRDiswHXSCkY3z/slip44:501': {
-          // Testnet (should be ignored)
-          amount: '10.5',
-          unit: 'SOL',
-        },
-      },
-    };
-
-    const result = selectAccountGroupBalanceForEmptyState(state);
-
-    // Should return false because testnet balance is ignored
-    expect(result).toBe(false);
-  });
-
   describe('native token balance checks', () => {
     it('should return true when EVM native token balance exists', () => {
       const state = createMockStateWithEVMNetworks();
@@ -1424,24 +1212,6 @@ describe('selectAccountGroupBalanceForEmptyState', () => {
         '0x1': {
           '0x0': {
             balance: '0x8ac7230489e80000', // 10 ETH
-          },
-        },
-      };
-
-      const result = selectAccountGroupBalanceForEmptyState(state);
-
-      expect(result).toBe(true);
-    });
-
-    it('should return true when non-EVM native token balance exists', () => {
-      const state = createMockStateWithNonEVMNetworks();
-
-      // Add multichainBalancesState with non-zero Solana balance
-      state.metamask.balances = {
-        account2: {
-          'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp/slip44:501': {
-            amount: '10.5',
-            unit: 'SOL',
           },
         },
       };
@@ -1465,24 +1235,6 @@ describe('selectAccountGroupBalanceForEmptyState', () => {
 
       // Add multichainBalancesState with zero balance
       state.metamask.balances = {};
-
-      const result = selectAccountGroupBalanceForEmptyState(state);
-
-      expect(result).toBe(false);
-    });
-
-    it('should return false when non-EVM balance is decimal zero like "0.0" or "0.00"', () => {
-      const state = createMockStateWithNonEVMNetworks();
-
-      // Add multichainBalancesState with decimal zero Solana balance
-      state.metamask.balances = {
-        account2: {
-          'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp/slip44:501': {
-            amount: '0.00', // Decimal zero
-            unit: 'SOL',
-          },
-        },
-      };
 
       const result = selectAccountGroupBalanceForEmptyState(state);
 
@@ -1558,47 +1310,6 @@ describe('getAssetsBySelectedAccountGroup', () => {
   });
 });
 
-describe('getAssetsBySelectedAccountGroupWithTronSpecialAssets', () => {
-  beforeEach(() => {
-    getAssetsBySelectedAccountGroupWithTronSpecialAssets.clearCache();
-    getAssetsBySelectedAccountGroupWithTronSpecialAssets.memoizedResultFunc.clearCache();
-  });
-
-  const mockState = {
-    metamask: {
-      accountTree: 'mockAccountTree',
-      internalAccounts: 'mockInternalAccounts',
-      allTokens: 'mockAllTokens',
-      allIgnoredTokens: 'mockAllIgnoredTokens',
-      tokenBalances: 'mockTokenBalances',
-      marketData: 'mockMarketData',
-      currencyRates: 'mockCurrencyRates',
-      currentCurrency: 'mockCurrentCurrency',
-      networkConfigurationsByChainId: 'mockNetworkConfigurationsByChainId',
-      accountsByChainId: 'mockAccountsByChainId',
-      accountsAssets: 'mockAccountsAssets',
-      assetsMetadata: 'mockAssetsMetadata',
-      allIgnoredAssets: 'mockAllIgnoredAssets',
-      balances: 'mockBalances',
-      conversionRates: 'mockConversionRates',
-    },
-  };
-
-  it('calls selector with option to not filter tron special assets', () => {
-    const selectorMock = jest
-      .mocked(selectAssetsBySelectedAccountGroup)
-      .mockReturnValue({});
-
-    const result =
-      getAssetsBySelectedAccountGroupWithTronSpecialAssets(mockState);
-
-    expect(selectorMock).toHaveBeenCalledWith(mockState.metamask, {
-      filterTronStakedTokens: false,
-    });
-    expect(result).toStrictEqual({});
-  });
-});
-
 describe('getAsset', () => {
   beforeEach(() => {
     getAssetsBySelectedAccountGroup.memoizedResultFunc.clearCache();
@@ -1649,49 +1360,30 @@ describe('getAsset', () => {
           },
         },
       ],
-      'bip122:000000000019d6689c085ae165831e93': [
-        {
-          accountType: 'bip122:p2wpkh',
-          accountId: '2d89e6a0-b4e6-45a8-a707-f10cef143b42',
-          chainId: 'bip122:000000000019d6689c085ae165831e93',
-          assetId: 'bip122:000000000019d6689c085ae165831e93/slip44:0',
-          image: '',
-          name: 'Bitcoin',
-          symbol: 'BTC',
-          isNative: true,
-          decimals: 9,
-          rawBalance: '0x2540be400',
-          balance: '10',
-          fiat: {
-            balance: 1635.5,
-            conversionRate: 163.55,
-            currency: 'USD',
-          },
-        },
-      ],
     } as AccountGroupAssets;
     selectorMock.mockReturnValueOnce(selectorMockResult);
 
     const result = getAsset(
       mockState,
-      'bip122:000000000019d6689c085ae165831e93/slip44:0',
-      'bip122:000000000019d6689c085ae165831e93',
+      '0x0000000000000000000000000000000000000000',
+      '0x1',
     );
     expect(result).toStrictEqual({
-      accountType: 'bip122:p2wpkh',
-      accountId: '2d89e6a0-b4e6-45a8-a707-f10cef143b42',
-      chainId: 'bip122:000000000019d6689c085ae165831e93',
-      assetId: 'bip122:000000000019d6689c085ae165831e93/slip44:0',
+      accountType: 'eip155:eoa',
+      accountId: 'd7f11451-9d79-4df4-a012-afd253443639',
+      chainId: '0x1',
+      assetId: '0x0000000000000000000000000000000000000000',
+      address: '0x0000000000000000000000000000000000000000',
       image: '',
-      name: 'Bitcoin',
-      symbol: 'BTC',
+      name: 'Ethereum',
+      symbol: 'ETH',
       isNative: true,
-      decimals: 9,
-      rawBalance: '0x2540be400',
+      decimals: 18,
+      rawBalance: '0x8AC7230489E80000',
       balance: '10',
       fiat: {
-        balance: 1635.5,
-        conversionRate: 163.55,
+        balance: 24000,
+        conversionRate: 2400,
         currency: 'USD',
       },
     });

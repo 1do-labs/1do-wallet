@@ -1,11 +1,5 @@
 import { toUnicode } from 'punycode/punycode.js';
-import { SubjectType } from '@metamask/permission-controller';
 import { ApprovalType } from '@metamask/controller-utils';
-import {
-  stripSnapPrefix,
-  getLocalizedSnapManifest,
-} from '@metamask/snaps-utils';
-import { memoize } from 'lodash';
 import semver from 'semver';
 import { createSelector } from 'reselect';
 import { TransactionStatus } from '@metamask/transaction-controller';
@@ -52,15 +46,6 @@ import { getRemoteFeatureFlags } from './remote-feature-flags';
 // To avoid import evaluating as `undefined` due to circular dependency,
 // this needs to be imported before `'../pages/confirmations/confirmation/templates'`
 // eslint-disable-next-line import-x/order
-import {
-  getIsBitcoinSupportEnabled,
-  getIsSolanaSupportEnabled,
-  getIsTronSupportEnabled,
-  getIsSolanaTestnetSupportEnabled,
-  getIsBitcoinTestnetSupportEnabled,
-  getIsTronTestnetSupportEnabled,
-} from './multichain/feature-flags';
-
 // TODO: Remove restricted import
 // eslint-disable-next-line import-x/no-restricted-paths
 import { addHexPrefix, getEnvironmentType } from '../../app/scripts/lib/util';
@@ -156,10 +141,6 @@ import {
   createParameterizedShallowEqualSelector,
   createResultEqualSelector,
 } from '../../shared/lib/selectors/selector-creators';
-import {
-  FeatureFlagNames,
-  DEFAULT_FEATURE_FLAG_VALUES,
-} from '../../shared/lib/feature-flags';
 // eslint-disable-next-line import-x/order
 import {
   getSelectedInternalAccount,
@@ -189,15 +170,7 @@ const PERMITTED_ACCOUNTS_LRU_CACHE_SIZE = 5;
 
 // Re-export this file so we don't have to update all references
 // TODO: Update all references
-export {
-  getEnabledNetworks,
-  getIsBitcoinSupportEnabled,
-  getIsSolanaSupportEnabled,
-  getIsTronSupportEnabled,
-  getIsSolanaTestnetSupportEnabled,
-  getIsBitcoinTestnetSupportEnabled,
-  getIsTronTestnetSupportEnabled,
-};
+export { getEnabledNetworks };
 
 /** `appState` slice selectors */
 
@@ -397,8 +370,7 @@ export function isHardwareWallet(state) {
  * @returns {boolean}
  */
 export function accountSupportsSmartTx(state) {
-  const accountType = getAccountType(state);
-  return Boolean(accountType !== 'snap');
+  return Boolean(getAccountType(state));
 }
 
 /**
@@ -433,8 +405,6 @@ export function getAccountTypeForKeyring(keyring) {
       return 'hardware';
     case KeyringType.imported:
       return 'imported';
-    case KeyringType.snap:
-      return 'snap';
     default:
       return 'default';
   }
@@ -987,7 +957,7 @@ export const selectAllTokensFlat = createSelector(
  * Selector to return an origin to network ID map
  *
  * @param state - Redux state object.
- * @returns Object - Installed Snaps.
+ * @returns Object - Origin to network ID map.
  */
 export function getAllDomains(state) {
   return state.metamask.domains;
@@ -1542,25 +1512,12 @@ export function getAdvancedInlineGasShown(state) {
 }
 
 /**
- * @param {string} svgString - The raw SVG string to make embeddable.
- * @returns {string} The embeddable SVG string.
+ * @param state
+ * @param origin
+ * @returns {object | undefined} The subject metadata for the origin.
  */
-const getEmbeddableSvg = memoize(
-  (svgString) => `data:image/svg+xml;utf8,${encodeURIComponent(svgString)}`,
-);
-
 export function getTargetSubjectMetadata(state, origin) {
-  const metadata = getSubjectMetadata(state)[origin];
-
-  if (metadata?.subjectType === SubjectType.Snap) {
-    const { svgIcon, ...remainingMetadata } = metadata;
-    return {
-      ...remainingMetadata,
-      iconUrl: svgIcon ? getEmbeddableSvg(svgIcon) : null,
-    };
-  }
-
-  return metadata;
+  return getSubjectMetadata(state)[origin];
 }
 
 /**
@@ -1576,14 +1533,6 @@ const rawStateSelector = (state) => state;
 
 export const selectIsNetworkMenuOpen = (state) =>
   state.appState.isNetworkMenuOpen;
-
-/**
- * Get the content from a Snap interface with a given ID.
- */
-
-/**
- * Get a memoized version of the content from a Snap interface with a given ID.
- */
 
 /**
  * Input selector providing a way to pass the origins as an argument.
@@ -1992,71 +1941,9 @@ export const getConnectedSitesList = createSelector(
   },
 );
 
-export function getSnaps(state) {
-  return state.metamask.snaps;
-}
-
 export function getLocale(state) {
   return state.metamask.currentLocale;
 }
-
-export const getSnap = createDeepEqualSelector(
-  getSnaps,
-  (_, snapId) => snapId,
-  (snaps, snapId) => {
-    return snaps[snapId];
-  },
-);
-
-/**
- * Get a selector that returns all Snaps metadata (name and description) for all Snaps.
- *
- * @param {object} state - The Redux state object.
- * @returns {object} An object mapping all installed snaps to their metadata, which contains the snap name and description.
- */
-export const getSnapsMetadata = createDeepEqualSelector(
-  getLocale,
-  getSnaps,
-  (locale, snaps) => {
-    return Object.values(snaps).reduce((snapsMetadata, snap) => {
-      const snapId = snap.id;
-      const manifest = snap.localizationFiles
-        ? getLocalizedSnapManifest(
-            snap.manifest,
-            locale,
-            snap.localizationFiles,
-          )
-        : snap.manifest;
-
-      snapsMetadata[snapId] = {
-        name: manifest.proposedName,
-        description: manifest.description,
-        hidden: snap.hidden,
-      };
-      return snapsMetadata;
-    }, {});
-  },
-);
-
-/**
- * Get a selector that returns the snap metadata (name and description) for a
- * given `snapId`.
- *
- * @param {object} state - The Redux state object.
- * @param {string} snapId - The snap ID to get the metadata for.
- * @returns {object} An object containing the snap name and description.
- */
-export const getSnapMetadata = createDeepEqualSelector(
-  getSnapsMetadata,
-  (_, snapId) => snapId,
-  (metadata, snapId) => {
-    return (
-      metadata[snapId] ?? {
-        name: snapId ? stripSnapPrefix(snapId) : null,
-      }
-    );
-  },
-);
 
 /**
  * @param state
@@ -2647,22 +2534,6 @@ export const getTokenScanResultsForAddresses = createDeepEqualSelector(
  * @param state - The state of the application
  * @returns true if the new settings redesign is enabled, false otherwise
  */
-/**
- * Get the state of the `defiPositionsEnabled` remote feature flag.
- *
- * @param state - The MetaMask state object
- * @returns The state of the `defiPositionsEnabled` remote feature flag.
- */
-export const getIsDefiPositionsEnabled = createSelector(
-  getRemoteFeatureFlags,
-  (remoteFeatureFlags) =>
-    Boolean(
-      remoteFeatureFlags[FeatureFlagNames.AssetsDefiPositionsEnabled] ??
-        DEFAULT_FEATURE_FLAG_VALUES[
-          FeatureFlagNames.AssetsDefiPositionsEnabled
-        ],
-    ),
-);
 
 /**
  * Returns true if any EVM networks are enabled in the network filter.
@@ -2941,12 +2812,6 @@ export function getMetaMetricsDataDeletionStatus(state) {
   return state.metamask.metaMetricsDataDeletionStatus;
 }
 
-/**
- * To get all installed snaps with proper metadata
- *
- * @param {*} state
- * @returns Boolean
- */
 export const getSelectedKeyringByIdOrDefault = createSelector(
   getMetaMaskKeyrings,
   (_state, keyringId) => keyringId,

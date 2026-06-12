@@ -3556,8 +3556,8 @@ describe('Actions', () => {
     it('returns discovered accounts from background', async () => {
       const store = mockStore();
       const mockResult = {
-        newAccountAddress: '9fE6zKgca6K2EEa3yjbcq7zGMusUNqSQeWQNL2YDZ2Yi',
-        discoveredAccounts: { bitcoin: 2, solana: 1 },
+        newAccountAddress: '0x123',
+        discoveredAccounts: {},
       };
 
       const importMnemonicToVaultStub = sinon.stub().resolves(mockResult);

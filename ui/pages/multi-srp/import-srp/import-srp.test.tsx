@@ -15,7 +15,7 @@ jest.mock('../../../store/actions', () => ({
   importMnemonicToVault: jest.fn().mockReturnValue(
     jest.fn().mockResolvedValue({
       newAccountAddress: '0x123',
-      discoveredAccounts: { Bitcoin: 0, Solana: 0 },
+      discoveredAccounts: {},
     }),
   ),
   showAlert: jest.fn().mockReturnValue({ type: 'ALERT_OPEN' }),

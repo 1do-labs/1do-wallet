@@ -311,7 +311,7 @@ export function AddContactForm({ onCancel, onSuccess }: AddContactFormProps) {
               {domainResolutions.map(
                 (resolution: {
                   resolvedAddress: string;
-                  resolvingSnap?: string;
+                  resolvingSource?: string;
                   addressBookEntryName?: string;
                   protocol?: string;
                   domainName?: string;
@@ -345,7 +345,7 @@ export function AddContactForm({ onCancel, onSuccess }: AddContactFormProps) {
                       setAddressInputError('');
                     }}
                     protocol={resolution.protocol}
-                    resolvingSnap={resolution.resolvingSnap}
+                    resolvingSource={resolution.resolvingSource}
                   />
                 ),
               )}

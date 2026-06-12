@@ -1,5 +1,4 @@
 const fs = require('fs');
-const path = require('path');
 const { escapeRegExp } = require('lodash');
 
 const {
@@ -21,9 +20,6 @@ const { ALLOWLISTED_URLS } = require('./mock-e2e-allowlist');
 const {
   getProductionRemoteFlagApiResponse,
 } = require('./feature-flags/feature-flag-registry');
-const {
-  setupSnapRegistryMocks,
-} = require('./mock-response-data/snaps/snap-registry-mocks');
 
 const CDN_CONFIG_PATH = 'test/e2e/mock-cdn/cdn-config.txt';
 const CDN_STALE_DIFF_PATH = 'test/e2e/mock-cdn/cdn-stale-diff.txt';
@@ -51,30 +47,6 @@ const TEST_DAPP_STYLES_1_PATH =
 const TEST_DAPP_STYLES_2_PATH =
   'test/e2e/mock-response-data/test-dapp-styles-2.txt';
 const TOKEN_BLOCKLIST_PATH = 'test/e2e/mock-response-data/token-blocklist.json';
-
-const snapsExecutionEnvBasePath = path.dirname(
-  require.resolve('@metamask/snaps-execution-environments/package.json'),
-);
-const snapsExecutionEnvHtmlPath = path.join(
-  snapsExecutionEnvBasePath,
-  'dist',
-  'webpack',
-  'iframe',
-  'index.html',
-);
-const snapsExecutionEnvHtml = fs.readFileSync(
-  snapsExecutionEnvHtmlPath,
-  'utf-8',
-);
-
-const snapsExecutionEnvJsPath = path.join(
-  snapsExecutionEnvBasePath,
-  'dist',
-  'webpack',
-  'iframe',
-  'bundle.js',
-);
-const snapsExecutionEnvJs = fs.readFileSync(snapsExecutionEnvJsPath, 'utf-8');
 
 const blocklistedHosts = [
   'arbitrum-mainnet.infura.io',
@@ -198,9 +170,6 @@ async function setupMocking(
 
   const mockedEndpoint = await testSpecificMock(server);
   // Mocks below this line can be overridden by test-specific mocks
-
-  // Snaps execution ACL registry
-  await setupSnapRegistryMocks(server);
 
   // remote feature flags — production-accurate defaults from the registry
   // FF will apply to all environments: rc, prod and dev
@@ -1141,28 +1110,6 @@ async function setupMocking(
           tokens: [],
           continuation: null,
         },
-      };
-    });
-
-  // Snaps: Execution environment html
-  await server
-    .forGet(/^https:\/\/execution\.metamask\.io\/iframe\/[^/]+\/index\.html$/u)
-    .thenCallback(() => {
-      return {
-        statusCode: 200,
-        body: snapsExecutionEnvHtml,
-        headers: { 'Content-Type': 'text/html; charset=utf-8' },
-      };
-    });
-
-  // Snaps: Execution environment js
-  await server
-    .forGet(/^https:\/\/execution\.metamask\.io\/iframe\/[^/]+\/bundle\.js$/u)
-    .thenCallback(() => {
-      return {
-        statusCode: 200,
-        body: snapsExecutionEnvJs,
-        headers: { 'Content-Type': 'application/javascript; charset=utf-8' },
       };
     });
 

@@ -1,7 +1,6 @@
 import React from 'react';
 import configureMockStore from 'redux-mock-store';
 import { TransactionType } from '@metamask/transaction-controller';
-import { isSnapId } from '@metamask/snaps-utils';
 
 import {
   getMockConfirmState,
@@ -35,18 +34,6 @@ jest.mock('../../../../utils', () => {
   return {
     ...originalUtils,
     isSIWESignatureRequest: jest.fn().mockReturnValue(false),
-  };
-});
-
-jest.mock('../../../../../../../node_modules/@metamask/snaps-utils', () => {
-  const originalUtils = jest.requireActual(
-    '../../../../../../../node_modules/@metamask/snaps-utils',
-  );
-  return {
-    ...originalUtils,
-    stripSnapPrefix: jest.fn().mockReturnValue('@metamask/examplesnap'),
-    getSnapPrefix: jest.fn().mockReturnValue('npm:'),
-    isSnapId: jest.fn(),
   };
 });
 
@@ -137,35 +124,12 @@ describe('PersonalSignInfo', () => {
     );
 
     expect(queryByText(messages.requestFromInfo.message)).toBeNull();
-    expect(queryByText(messages.requestFromInfoSnap.message)).toBeNull();
   });
 
-  it('displays "requestFromInfoSnap" tooltip when isSIWE is false and origin is a snap', async () => {
-    const state =
-      getMockPersonalSignConfirmStateForRequest(signatureRequestSIWE);
-
-    (utils.isSIWESignatureRequest as jest.Mock).mockReturnValue(false);
-    (isSnapId as unknown as jest.Mock).mockReturnValue(true);
-
-    const mockStore = configureMockStore([])(state);
-    const { queryByText, getByText } = renderWithConfirmContextProvider(
-      <PersonalSignInfo />,
-      mockStore,
-    );
-
-    const requestFromLabel = getByText(messages.requestFrom.message);
-    await requestFromLabel.dispatchEvent(
-      new MouseEvent('mouseenter', { bubbles: true }),
-    );
-
-    expect(queryByText(messages.requestFromInfoSnap.message)).toBeDefined();
-  });
-
-  it('displays "requestFromInfo" tooltip when isSIWE is false and origin is not a snap', async () => {
+  it('displays "requestFromInfo" tooltip when isSIWE is false', async () => {
     const state =
       getMockPersonalSignConfirmStateForRequest(signatureRequestSIWE);
     (utils.isSIWESignatureRequest as jest.Mock).mockReturnValue(false);
-    (isSnapId as unknown as jest.Mock).mockReturnValue(true);
 
     const mockStore = configureMockStore([])(state);
     const { getByText, queryByText } = renderWithConfirmContextProvider(

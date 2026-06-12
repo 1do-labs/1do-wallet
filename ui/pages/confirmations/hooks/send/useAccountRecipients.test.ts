@@ -55,9 +55,7 @@ describe('useAccountRecipients', () => {
           metadata: {
             name: 'Account Group 2',
           },
-          accounts: [
-            { address: '5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty' },
-          ],
+          accounts: [{ address: '0x1111111111111111111111111111111111111111' }],
         },
       },
     },
@@ -75,7 +73,6 @@ describe('useAccountRecipients', () => {
   it('returns EVM account recipients when isEvmSendType is true', () => {
     mockUseSendType.mockReturnValue({
       isEvmSendType: true,
-      isSolanaSendType: false,
     } as unknown as ReturnType<typeof useSendType>);
 
     const { result } = renderHookWithProvider(
@@ -96,7 +93,7 @@ describe('useAccountRecipients', () => {
       },
       {
         accountGroupName: 'Account Group 2',
-        address: '5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty',
+        address: '0x1111111111111111111111111111111111111111',
         walletName: 'Hardware Wallet',
       },
     ]);
@@ -108,7 +105,6 @@ describe('useAccountRecipients', () => {
     } as unknown as ReturnType<typeof useSendContext>);
     mockUseSendType.mockReturnValue({
       isEvmSendType: true,
-      isSolanaSendType: false,
     } as unknown as ReturnType<typeof useSendType>);
     const { result } = renderHookWithProvider(
       () => useAccountRecipients(),
@@ -123,7 +119,7 @@ describe('useAccountRecipients', () => {
       },
       {
         accountGroupName: 'Account Group 2',
-        address: '5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty',
+        address: '0x1111111111111111111111111111111111111111',
         walletName: 'Hardware Wallet',
       },
     ]);
@@ -132,7 +128,6 @@ describe('useAccountRecipients', () => {
   it('returns empty array when send type is not EVM', () => {
     mockUseSendType.mockReturnValue({
       isEvmSendType: false,
-      isSolanaSendType: false,
     } as unknown as ReturnType<typeof useSendType>);
 
     const { result } = renderHookWithProvider(
@@ -146,7 +141,6 @@ describe('useAccountRecipients', () => {
   it('filters accounts based on account type compatibility', () => {
     mockUseSendType.mockReturnValue({
       isEvmSendType: true,
-      isSolanaSendType: false,
     } as unknown as ReturnType<typeof useSendType>);
     mockIsEVMAccountForSend.mockImplementation(
       (account) =>
@@ -171,7 +165,6 @@ describe('useAccountRecipients', () => {
     mockGetWalletsWithAccounts.mockReturnValue({});
     mockUseSendType.mockReturnValue({
       isEvmSendType: true,
-      isSolanaSendType: false,
     } as unknown as ReturnType<typeof useSendType>);
 
     const { result } = renderHookWithProvider(
@@ -198,11 +191,8 @@ describe('useAccountRecipients', () => {
     } as unknown as ConsolidatedWallets);
     mockUseSendType.mockReturnValue({
       isEvmSendType: true,
-      isSolanaSendType: false,
     } as unknown as ReturnType<typeof useSendType> & {
       isEvmNativeSendType: boolean;
-      isNonEvmSendType: boolean;
-      isNonEvmNativeSendType: boolean;
     });
 
     const { result } = renderHookWithProvider(
@@ -222,11 +212,8 @@ describe('useAccountRecipients', () => {
   it('calls required hooks and selectors', () => {
     mockUseSendType.mockReturnValue({
       isEvmSendType: true,
-      isSolanaSendType: false,
     } as unknown as ReturnType<typeof useSendType> & {
       isEvmNativeSendType: boolean;
-      isNonEvmSendType: boolean;
-      isNonEvmNativeSendType: boolean;
     });
 
     renderHookWithProvider(() => useAccountRecipients(), mockState);

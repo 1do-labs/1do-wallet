@@ -1,12 +1,7 @@
-import { waitFor } from '@testing-library/react';
 import { renderHook } from '@testing-library/react-hooks';
 import { useSelector } from 'react-redux';
-import {
-  formatChainIdToCaip,
-  isNativeAddress,
-} from '@metamask/bridge-controller';
-import { handleFetch } from '@metamask/controller-utils';
-import { isEvmChainId, toAssetId } from '../../shared/lib/asset-utils';
+import { isNativeAddress } from '@metamask/bridge-controller';
+import { isEvmChainId } from '../../shared/lib/asset-utils';
 import { formatCompactCurrency } from '../helpers/utils/token-insights';
 import { useFormatters } from './useFormatters';
 import {
@@ -45,11 +40,6 @@ jest.mock('@metamask/utils', () => ({
 
 jest.mock('../../shared/lib/asset-utils', () => ({
   isEvmChainId: jest.fn(),
-  toAssetId: jest.fn(),
-}));
-
-jest.mock('@metamask/controller-utils', () => ({
-  handleFetch: jest.fn(),
 }));
 
 jest.mock('./useFormatters', () => ({
@@ -63,9 +53,6 @@ jest.mock('../helpers/utils/token-insights', () => ({
 const mockUseSelector = useSelector as jest.Mock;
 const mockIsEvmChainId = isEvmChainId as jest.Mock;
 const mockIsNativeAddress = isNativeAddress as jest.Mock;
-const mockFormatChainIdToCaip = formatChainIdToCaip as jest.Mock;
-const mockToAssetId = toAssetId as jest.Mock;
-const mockHandleFetch = handleFetch as jest.Mock;
 const mockUseFormatters = useFormatters as jest.Mock;
 const mockFormatCompactCurrency = formatCompactCurrency as jest.Mock;
 
@@ -101,10 +88,6 @@ describe('useTokenInsightsData', () => {
     jest.clearAllMocks();
     mockIsEvmChainId.mockReturnValue(true);
     mockIsNativeAddress.mockReturnValue(false);
-    mockFormatChainIdToCaip.mockReturnValue('eip155:1');
-    mockToAssetId.mockReturnValue(
-      'eip155:1/erc20:0x1234567890123456789012345678901234567890',
-    );
     mockUseFormatters.mockReturnValue({
       formatCurrencyWithMinThreshold: jest
         .fn()
@@ -140,7 +123,6 @@ describe('useTokenInsightsData', () => {
         dilutedMarketCap: 55000000,
       });
       expect(result.current.error).toBe(null);
-      expect(mockHandleFetch).not.toHaveBeenCalled();
     });
 
     it('should convert EVM token prices to fiat', () => {
@@ -205,84 +187,6 @@ describe('useTokenInsightsData', () => {
     });
   });
 
-  describe('Non-EVM tokens', () => {
-    beforeEach(() => {
-      mockIsEvmChainId.mockReturnValue(false);
-    });
-
-    it('should fetch data from API for non-EVM tokens', async () => {
-      mockUseSelector
-        .mockReturnValueOnce('USD') // getCurrentCurrency
-        .mockReturnValueOnce(defaultCurrencyRates) // getCurrencyRates
-        .mockReturnValueOnce(null); // getMarketData
-
-      const apiResponse = {
-        'eip155:1/erc20:0x1234567890123456789012345678901234567890': {
-          price: 150,
-          pricePercentChange1d: 3.5,
-          totalVolume: 2000000,
-          marketCap: 75000000,
-          dilutedMarketCap: 80000000,
-        },
-      };
-
-      mockHandleFetch.mockResolvedValue(apiResponse);
-
-      const { result } = renderHook(() => useTokenInsightsData(defaultToken));
-
-      // Wait for loading to complete
-      await waitFor(() => {
-        expect(result.current.isLoading).toBe(false);
-      });
-
-      expect(result.current.marketData).toEqual({
-        price: 150,
-        pricePercentChange1d: 3.5,
-        totalVolume: 2000000,
-        marketCap: 75000000,
-        dilutedMarketCap: 80000000,
-      });
-
-      expect(mockHandleFetch).toHaveBeenCalledWith(
-        expect.stringContaining(
-          'https://price.api.cx.metamask.io/v3/spot-prices',
-        ),
-        {
-          method: 'GET',
-          headers: { 'X-Client-Id': 'extension' },
-        },
-      );
-    });
-
-    it('should use direct values for non-EVM tokens without conversion', async () => {
-      mockUseSelector
-        .mockReturnValueOnce('USD') // getCurrentCurrency
-        .mockReturnValueOnce(defaultCurrencyRates) // getCurrencyRates
-        .mockReturnValueOnce(null); // getMarketData
-
-      const apiResponse = {
-        'eip155:1/erc20:0x1234567890123456789012345678901234567890': {
-          price: 150,
-          totalVolume: 2000000,
-          marketCap: 75000000,
-        },
-      };
-
-      mockHandleFetch.mockResolvedValue(apiResponse);
-
-      const { result } = renderHook(() => useTokenInsightsData(defaultToken));
-
-      await waitFor(() => {
-        expect(result.current.isLoading).toBe(false);
-      });
-
-      expect(result.current.marketDataFiat.price).toBe(150);
-      expect(result.current.marketDataFiat.formattedPrice).toBe('$150');
-      expect(result.current.marketDataFiat.formattedVolume).toBe('$2.00M');
-      expect(result.current.marketDataFiat.formattedMarketCap).toBe('$75.00M');
-    });
-  });
-
   describe('Native tokens', () => {
     beforeEach(() => {
       mockIsNativeAddress.mockReturnValue(true);
@@ -326,62 +230,6 @@ describe('useTokenInsightsData', () => {
 
       expect(result.current.marketDataFiat.price).toBe(2000);
       expect(result.current.marketDataFiat.formattedPrice).toBe('$2000');
-    });
-  });
-
-  describe('API fetching scenarios', () => {
-    it('should handle API errors gracefully', async () => {
-      mockUseSelector
-        .mockReturnValueOnce('USD') // getCurrentCurrency
-        .mockReturnValueOnce(defaultCurrencyRates) // getCurrencyRates
-        .mockReturnValueOnce(null); // getMarketData
-
-      mockHandleFetch.mockRejectedValue(new Error('Network error'));
-
-      const { result } = renderHook(() => useTokenInsightsData(defaultToken));
-
-      await waitFor(() => {
-        expect(result.current.isLoading).toBe(false);
-      });
-
-      expect(result.current.error).toBe('Network error');
-      expect(result.current.marketData).toBe(null);
-    });
-
-    it('should handle empty API response', async () => {
-      mockUseSelector
-        .mockReturnValueOnce('USD') // getCurrentCurrency
-        .mockReturnValueOnce(defaultCurrencyRates) // getCurrencyRates
-        .mockReturnValueOnce(null); // getMarketData
-
-      mockHandleFetch.mockResolvedValue({});
-
-      const { result } = renderHook(() => useTokenInsightsData(defaultToken));
-
-      await waitFor(() => {
-        expect(result.current.isLoading).toBe(false);
-      });
-
-      // Empty API response doesn't populate marketData
-      expect(result.current.marketData).toBe(null);
-    });
-
-    it('should use correct URL with currency parameter', async () => {
-      mockUseSelector
-        .mockReturnValueOnce('EUR') // getCurrentCurrency
-        .mockReturnValueOnce(defaultCurrencyRates) // getCurrencyRates
-        .mockReturnValueOnce(null); // getMarketData
-
-      mockHandleFetch.mockResolvedValue({});
-
-      renderHook(() => useTokenInsightsData(defaultToken));
-
-      await waitFor(() => {
-        expect(mockHandleFetch).toHaveBeenCalled();
-      });
-
-      const callArgs = mockHandleFetch.mock.calls[0][0];
-      expect(callArgs).toContain('vsCurrency=eur');
     });
   });
 
@@ -439,7 +287,6 @@ describe('useTokenInsightsData', () => {
       expect(result.current.isLoading).toBe(false);
       expect(result.current.error).toBe(null);
       expect(result.current.isNativeToken).toBe(false);
-      expect(mockHandleFetch).not.toHaveBeenCalled();
     });
 
     it('should handle token without address', () => {
@@ -460,7 +307,7 @@ describe('useTokenInsightsData', () => {
       expect(result.current.isNativeToken).toBe(false);
     });
 
-    it('should handle CAIP chain IDs correctly', () => {
+    it('should handle CAIP chain IDs without remote fetches', () => {
       mockUseSelector
         .mockReturnValueOnce('USD') // getCurrentCurrency
         .mockReturnValueOnce(defaultCurrencyRates) // getCurrencyRates
@@ -471,9 +318,11 @@ describe('useTokenInsightsData', () => {
         chainId: 'eip155:1',
       };
 
-      renderHook(() => useTokenInsightsData(tokenWithCaipChainId));
+      const { result } = renderHook(() =>
+        useTokenInsightsData(tokenWithCaipChainId),
+      );
 
-      expect(mockFormatChainIdToCaip).not.toHaveBeenCalled();
+      expect(result.current.marketData).toBeNull();
     });
 
     it('should not fetch when token is in cache for EVM', () => {
@@ -488,34 +337,6 @@ describe('useTokenInsightsData', () => {
         });
 
       renderHook(() => useTokenInsightsData(defaultToken));
-
-      expect(mockHandleFetch).not.toHaveBeenCalled();
-    });
-
-    it('should handle zero price change', async () => {
-      mockUseSelector
-        .mockReturnValueOnce('USD') // getCurrentCurrency
-        .mockReturnValueOnce(defaultCurrencyRates) // getCurrencyRates
-        .mockReturnValueOnce(null); // getMarketData
-
-      const apiResponse = {
-        'eip155:1/erc20:0x1234567890123456789012345678901234567890': {
-          price: 150,
-          pricePercentChange1d: 0,
-          totalVolume: 2000000,
-          marketCap: 75000000,
-        },
-      };
-
-      mockHandleFetch.mockResolvedValue(apiResponse);
-
-      const { result } = renderHook(() => useTokenInsightsData(defaultToken));
-
-      await waitFor(() => {
-        expect(result.current.isLoading).toBe(false);
-      });
-
-      expect(result.current.marketData?.pricePercentChange1d).toBe(0);
     });
   });
 });

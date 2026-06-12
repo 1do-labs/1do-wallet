@@ -123,7 +123,6 @@ const MOCK_INTERNAL_ACCOUNT = createMockInternalAccount({
   address: ADDRESS_MOCK,
   name: NAME_MOCK,
   keyringType: KeyringType.hd,
-  snapOptions: undefined,
 });
 
 const getMockState = () => ({

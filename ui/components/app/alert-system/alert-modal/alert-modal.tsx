@@ -1,4 +1,3 @@
-import { ButtonVariant } from '@metamask/snaps-sdk';
 import React, { useCallback, useEffect } from 'react';
 import {
   BlockaidReason,
@@ -25,6 +24,7 @@ import {
   Box,
   Button,
   ButtonSize,
+  ButtonVariant,
   Checkbox,
   Icon,
   IconName,

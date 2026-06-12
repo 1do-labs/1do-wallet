@@ -1,10 +1,4 @@
 import { CaipAssetType, CaipChainId, Hex } from '@metamask/utils';
-import { useSelector } from 'react-redux';
-import { getUseExternalServices } from '../../../../../selectors';
-import {
-  fetchAssetMetadata,
-  getAssetImageUrl,
-} from '../../../../../../shared/lib/asset-utils';
 import { AssetType } from '../../../../../../shared/constants/transaction';
 import { useAsyncResult } from '../../../../../hooks/useAsync';
 
@@ -23,8 +17,6 @@ export const useAssetMetadata = (
   abortControllerRef: React.MutableRefObject<AbortController | null>,
   chainId?: Hex | CaipChainId,
 ) => {
-  const allowExternalServices = useSelector(getUseExternalServices);
-
   const { value: assetMetadata } = useAsyncResult<
     | {
         address: Hex | CaipAssetType | string;
@@ -39,39 +31,17 @@ export const useAssetMetadata = (
       }
     | undefined
   >(async () => {
-    if (!chainId || !searchQuery) {
-      return undefined;
-    }
-
-    const trimmedSearchQuery = searchQuery.trim();
+    // Remote token metadata lookup is disabled in this build.
     if (
-      allowExternalServices &&
-      shouldFetchMetadata &&
-      trimmedSearchQuery.length > 30
+      !searchQuery ||
+      !shouldFetchMetadata ||
+      !abortControllerRef ||
+      !chainId
     ) {
-      // eslint-disable-next-line react-compiler/react-compiler
-      abortControllerRef.current = new AbortController();
-      const metadata = await fetchAssetMetadata(
-        trimmedSearchQuery,
-        chainId,
-        abortControllerRef.current.signal,
-      );
-
-      if (metadata) {
-        return {
-          ...metadata,
-          chainId,
-          isNative: false,
-          type: AssetType.token,
-          image: getAssetImageUrl(metadata.assetId, chainId) ?? '',
-          balance: '',
-          string: '',
-        } as const;
-      }
       return undefined;
     }
     return undefined;
-  }, [shouldFetchMetadata, searchQuery, chainId, allowExternalServices]);
+  }, [abortControllerRef, shouldFetchMetadata, searchQuery, chainId]);
 
   return assetMetadata;
 };

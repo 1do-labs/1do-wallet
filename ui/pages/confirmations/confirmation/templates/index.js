@@ -110,9 +110,7 @@ export async function getTemplateState(pendingApproval) {
 /**
  * We do not want to pass the entire dispatch function to the template.
  * This function should return an object of actions that we generally consider
- * to be safe for templates to invoke. In the future we could put these behind
- * permission sets so that snaps that wish to manipulate state must ask for
- * explicit permission to do so.
+ * to be safe for templates to invoke.
  *
  * @param {Function} dispatch - Redux dispatch function
  */

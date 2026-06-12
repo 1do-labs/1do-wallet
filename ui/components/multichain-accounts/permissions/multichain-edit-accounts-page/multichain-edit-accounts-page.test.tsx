@@ -1,6 +1,6 @@
 import React from 'react';
 import { fireEvent, waitFor } from '@testing-library/react';
-import { EthAccountType, SolAccountType } from '@metamask/keyring-api';
+import { EthAccountType } from '@metamask/keyring-api';
 import {
   AccountGroupType,
   AccountWalletType,
@@ -17,12 +17,7 @@ import {
 } from '../../../../selectors/multichain-accounts/account-tree.types';
 import { createMockMultichainAccountsState } from '../../../../selectors/multichain-accounts/test-utils';
 import * as assetsSelectors from '../../../../selectors/assets';
-import {
-  MultichainEditAccountsPage,
-  SnapsPermissionsRequestType,
-} from './multichain-edit-accounts-page';
-
-const { Initial, Existing, None } = SnapsPermissionsRequestType;
+import { MultichainEditAccountsPage } from './multichain-edit-accounts-page';
 
 jest.mock('../../../../store/actions', () => ({
   ...jest.requireActual('../../../../store/actions'),
@@ -65,25 +60,25 @@ const mockEvmAccount3 = createMockInternalAccount({
   type: EthAccountType.Eoa,
 });
 
-const mockSolAccount1 = createMockInternalAccount({
+const mockEvmAccount4 = createMockInternalAccount({
   id: '9b6b30a0-3c87-4a33-9d10-a27a2aba2ba2',
-  name: 'Solana Account 1',
-  address: 'So1anaAddr1111111111111111111111111111111111',
-  type: SolAccountType.DataAccount,
+  name: 'EVM Account 4',
+  address: '0x4444444444444444444444444444444444444444',
+  type: EthAccountType.Eoa,
 });
 
-const mockSolAccount2 = createMockInternalAccount({
+const mockEvmAccount5 = createMockInternalAccount({
   id: 'a1b2c3d4-5e6f-7890-abcd-ef1234567890',
-  name: 'Solana Account 2',
-  address: 'So1anaAddr2222222222222222222222222222222222',
-  type: SolAccountType.DataAccount,
+  name: 'EVM Account 5',
+  address: '0x5555555555555555555555555555555555555555',
+  type: EthAccountType.Eoa,
 });
 
-const mockSolAccount3 = createMockInternalAccount({
+const mockEvmAccount6 = createMockInternalAccount({
   id: 'b2c3d4e5-6f78-90ab-cdef-123456789012',
-  name: 'Solana Account 3',
-  address: 'So1anaAddr3333333333333333333333333333333333',
-  type: SolAccountType.DataAccount,
+  name: 'EVM Account 6',
+  address: '0x6666666666666666666666666666666666666666',
+  type: EthAccountType.Eoa,
 });
 
 const createMockAccountGroups = (): AccountGroupWithInternalAccounts[] => [
@@ -105,8 +100,8 @@ const createMockAccountGroups = (): AccountGroupWithInternalAccounts[] => [
         scopes: ['eip155:1'],
       },
       {
-        ...mockSolAccount1,
-        scopes: ['solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp'],
+        ...mockEvmAccount4,
+        scopes: ['eip155:1'],
       },
     ],
     walletName: 'Test Wallet',
@@ -130,8 +125,8 @@ const createMockAccountGroups = (): AccountGroupWithInternalAccounts[] => [
         scopes: ['eip155:1'],
       },
       {
-        ...mockSolAccount2,
-        scopes: ['solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp'],
+        ...mockEvmAccount5,
+        scopes: ['eip155:1'],
       },
     ],
     walletName: 'Test Wallet',
@@ -155,8 +150,8 @@ const createMockAccountGroups = (): AccountGroupWithInternalAccounts[] => [
         scopes: ['eip155:1'],
       },
       {
-        ...mockSolAccount3,
-        scopes: ['solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp'],
+        ...mockEvmAccount6,
+        scopes: ['eip155:137'],
       },
     ],
     walletName: 'Test Wallet',
@@ -189,7 +184,7 @@ const createMockState = (overrides = {}) => {
               },
               lastSelected: 0,
             },
-            accounts: [mockEvmAccount1.id, mockSolAccount1.id],
+            accounts: [mockEvmAccount1.id, mockEvmAccount3.id],
           },
           [MOCK_GROUP_ID_2]: {
             id: MOCK_GROUP_ID_2,
@@ -203,7 +198,7 @@ const createMockState = (overrides = {}) => {
               },
               lastSelected: 0,
             },
-            accounts: [mockEvmAccount2.id, mockSolAccount2.id],
+            accounts: [mockEvmAccount2.id, mockEvmAccount4.id],
           },
           [MOCK_GROUP_ID_3]: {
             id: MOCK_GROUP_ID_3,
@@ -217,7 +212,7 @@ const createMockState = (overrides = {}) => {
               },
               lastSelected: 0,
             },
-            accounts: [mockEvmAccount3.id, mockSolAccount3.id],
+            accounts: [mockEvmAccount3.id, mockEvmAccount6.id],
           },
         },
       },
@@ -238,17 +233,17 @@ const createMockState = (overrides = {}) => {
         ...mockEvmAccount3,
         scopes: ['eip155:1'],
       },
-      [mockSolAccount1.id]: {
-        ...mockSolAccount1,
-        scopes: ['solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp'],
+      [mockEvmAccount3.id]: {
+        ...mockEvmAccount3,
+        scopes: ['eip155:137'],
       },
-      [mockSolAccount2.id]: {
-        ...mockSolAccount2,
-        scopes: ['solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp'],
+      [mockEvmAccount4.id]: {
+        ...mockEvmAccount4,
+        scopes: ['eip155:137'],
       },
-      [mockSolAccount3.id]: {
-        ...mockSolAccount3,
-        scopes: ['solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp'],
+      [mockEvmAccount6.id]: {
+        ...mockEvmAccount6,
+        scopes: ['eip155:137'],
       },
     },
     selectedAccount: mockEvmAccount1.id,
@@ -291,7 +286,6 @@ const render = (
     defaultSelectedAccountGroups?: AccountGroupId[];
     onSubmit?: (accountGroups: AccountGroupId[]) => void;
     onClose?: () => void;
-    snapsPermissionsRequestType?: SnapsPermissionsRequestType;
   } = {},
   state = {},
 ) => {
@@ -300,7 +294,6 @@ const render = (
   const defaultProps = {
     supportedAccountGroups: createMockAccountGroups(),
     defaultSelectedAccountGroups: [MOCK_GROUP_ID_1],
-    snapsPermissionsRequestType: None,
     onSubmit: jest.fn(),
     onClose: jest.fn(),
     ...props,
@@ -448,7 +441,6 @@ describe('MultichainEditAccountsPage', () => {
         ]}
         onSubmit={jest.fn()}
         onClose={jest.fn()}
-        snapsPermissionsRequestType={None}
       />,
     );
 
@@ -465,109 +457,19 @@ describe('MultichainEditAccountsPage', () => {
     });
   });
 
-  describe('snapsPermissionsRequestType', () => {
-    describe('button disabled state', () => {
-      it('disables button when Initial and no accounts selected', () => {
-        const { getByTestId } = render({
-          defaultSelectedAccountGroups: [],
-          snapsPermissionsRequestType: Initial,
-        });
-
-        expect(
-          getByTestId(TEST_IDS.CONNECT_MORE_ACCOUNTS_BUTTON),
-        ).toBeDisabled();
-      });
-
-      it('enables button when Initial and accounts selected', () => {
-        const { getByTestId } = render({
-          defaultSelectedAccountGroups: [MOCK_GROUP_ID_1],
-          snapsPermissionsRequestType: Initial,
-        });
-
-        expect(
-          getByTestId(TEST_IDS.CONNECT_MORE_ACCOUNTS_BUTTON),
-        ).not.toBeDisabled();
-      });
-
-      it('enables button when Existing and no accounts selected', () => {
-        const { getByTestId } = render({
-          defaultSelectedAccountGroups: [],
-          snapsPermissionsRequestType: Existing,
-        });
-
-        expect(
-          getByTestId(TEST_IDS.CONNECT_MORE_ACCOUNTS_BUTTON),
-        ).not.toBeDisabled();
-      });
-
-      it('enables button when None and no accounts selected', () => {
-        const { getByTestId } = render({
-          defaultSelectedAccountGroups: [],
-          snapsPermissionsRequestType: None,
-        });
-
-        expect(
-          getByTestId(TEST_IDS.CONNECT_MORE_ACCOUNTS_BUTTON),
-        ).not.toBeDisabled();
-      });
+  it('enables button when no accounts are selected', () => {
+    const { getByTestId } = render({
+      defaultSelectedAccountGroups: [],
     });
 
-    describe('snap CSS class', () => {
-      it('applies snap class when snapsPermissionsRequestType is Initial', () => {
-        const { getByTestId } = render({
-          snapsPermissionsRequestType: Initial,
-        });
+    expect(
+      getByTestId(TEST_IDS.CONNECT_MORE_ACCOUNTS_BUTTON),
+    ).not.toBeDisabled();
+  });
 
-        expect(getByTestId('modal-page')).toHaveClass(
-          'multichain-edit-accounts-page--snap',
-        );
-      });
+  it('always shows the header', () => {
+    const { getByTestId } = render();
 
-      it('applies snap class when snapsPermissionsRequestType is Existing', () => {
-        const { getByTestId } = render({
-          snapsPermissionsRequestType: Existing,
-        });
-
-        expect(getByTestId('modal-page')).toHaveClass(
-          'multichain-edit-accounts-page--snap',
-        );
-      });
-
-      it('does not apply snap class when snapsPermissionsRequestType is None', () => {
-        const { getByTestId } = render({
-          snapsPermissionsRequestType: None,
-        });
-
-        expect(getByTestId('modal-page')).not.toHaveClass(
-          'multichain-edit-accounts-page--snap',
-        );
-      });
-    });
-
-    describe('header visibility', () => {
-      it('shows header when snapsPermissionsRequestType is None', () => {
-        const { getByTestId } = render({
-          snapsPermissionsRequestType: None,
-        });
-
-        expect(getByTestId(TEST_IDS.BACK_BUTTON)).toBeInTheDocument();
-      });
-
-      it('hides header when snapsPermissionsRequestType is Initial', () => {
-        const { queryByTestId } = render({
-          snapsPermissionsRequestType: Initial,
-        });
-
-        expect(queryByTestId(TEST_IDS.BACK_BUTTON)).not.toBeInTheDocument();
-      });
-
-      it('hides header when snapsPermissionsRequestType is Existing', () => {
-        const { queryByTestId } = render({
-          snapsPermissionsRequestType: Existing,
-        });
-
-        expect(queryByTestId(TEST_IDS.BACK_BUTTON)).not.toBeInTheDocument();
-      });
-    });
+    expect(getByTestId(TEST_IDS.BACK_BUTTON)).toBeInTheDocument();
   });
 });

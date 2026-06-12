@@ -107,7 +107,6 @@ export async function runImportSrpHomeBenchmark(): Promise<BenchmarkRunResult> {
               const assetListPage = new AssetListPage(driver);
               await assetListPage.checkTokenListIsDisplayed();
               await assetListPage.checkTokenExistsInList('Ethereum');
-              await assetListPage.waitForTokenToBeDisplayed('Solana', 60000);
             },
           ),
         );

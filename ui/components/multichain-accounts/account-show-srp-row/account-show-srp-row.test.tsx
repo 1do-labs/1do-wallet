@@ -207,25 +207,25 @@ describe('AccountShowSrpRow', () => {
 
     it('should handle non-HD keyring types gracefully', () => {
       const nonHdKeyring = {
-        type: 'Snap Keyring',
+        type: 'Hardware',
         accounts: [MOCK_ACCOUNT_EOA.address],
         metadata: {
-          id: 'snap-keyring-id',
-          name: 'Snap Keyring',
+          id: 'hardware-keyring-id',
+          name: 'Hardware',
         },
       };
       const state = createMockState(false, [nonHdKeyring]);
       const store = mockStore(state);
 
-      const accountWithSnapKeyring = {
+      const accountWithHardwareKeyring = {
         ...MOCK_ACCOUNT_EOA,
         options: {
-          entropySource: 'snap-keyring-id',
+          entropySource: 'hardware-keyring-id',
         },
       };
 
       renderWithProvider(
-        <AccountShowSrpRow account={accountWithSnapKeyring} />,
+        <AccountShowSrpRow account={accountWithHardwareKeyring} />,
         store,
       );
 

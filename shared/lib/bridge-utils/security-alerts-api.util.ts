@@ -1,7 +1,4 @@
 import { CHAIN_IDS } from '@metamask/transaction-controller';
-import { SolMethod } from '@metamask/keyring-api';
-import { base58 } from 'ethers/lib/utils';
-import { assert } from '@metamask/superstruct';
 import {
   KnownCaipNamespace,
   parseCaipChainId,
@@ -13,7 +10,6 @@ import {
   TokenFeatureType,
   TokenAlertWithLabelIds,
   type TxAlert,
-  MessageScanResponse,
 } from '../../types/security-alerts-api';
 import { decimalToPrefixedHex } from '../conversion.utils';
 
@@ -171,75 +167,12 @@ export function convertChainIdToBlockAidChainName(
 }
 
 export async function fetchTxAlerts(
-  params: {
+  _params: {
     signal: AbortSignal;
     chainId: CaipChainId;
     trade: string;
     accountAddress: string;
   } | null,
 ): Promise<TxAlert | null> {
-  if (!isSecurityAlertsAPIEnabled() || !params) {
-    return null;
-  }
-
-  const { chainId, trade, accountAddress, signal } = params;
-
-  const chain = convertChainIdToBlockAidChainName(chainId);
-
-  if (!chain) {
-    return null;
-  }
-
-  const url = getUrl(`${chain}/message/scan`);
-  const body = {
-    method: SolMethod.SignAndSendTransaction,
-    encoding: 'base64',
-    // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-    // eslint-disable-next-line @typescript-eslint/naming-convention
-    account_address: Buffer.from(base58.decode(accountAddress)).toString(
-      'base64',
-    ),
-    chain: 'mainnet',
-    transactions: [trade],
-    options: ['simulation', 'validation'],
-    metadata: {
-      url: null,
-    },
-  };
-
-  const response = await fetch(url, {
-    method: 'POST',
-    body: JSON.stringify(body),
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    signal,
-  });
-
-  if (!response.ok) {
-    throw new Error(
-      `Security alerts message scan request failed with status: ${response.status}`,
-    );
-  }
-
-  const respBody = await response.json();
-
-  assert<MessageScanResponse, unknown>(respBody, MessageScanResponse);
-
-  if (respBody.status === 'ERROR') {
-    // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-    // eslint-disable-next-line camelcase, @typescript-eslint/naming-convention
-    const { error_details } = respBody;
-    return {
-      titleId: 'txAlertTitle',
-      // eslint-disable-next-line camelcase
-      description: error_details?.message
-        ? // eslint-disable-next-line camelcase
-          `The ${error_details.message}.`
-        : '',
-      descriptionId: 'bridgeSelectDifferentQuote',
-    };
-  }
-
   return null;
 }

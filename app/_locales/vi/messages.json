@@ -315,12 +315,6 @@
   "addRpcUrl": {
     "message": "Thêm URL RPC"
   },
-  "addSnapAccountToggle": {
-    "message": "Bật \"Thêm tài khoản Snap (Beta)\""
-  },
-  "addSnapAccountsDescription": {
-    "message": "Bật tính năng này sẽ cho phép bạn thêm tài khoản Snap (Beta) mới ngay từ danh sách tài khoản của bạn. Nếu bạn cài đặt tài khoản Snap, hãy nhớ rằng đây là một dịch vụ của bên thứ ba."
-  },
   "addSuggestedNFTs": {
     "message": "Thêm NFT được đề xuất"
   },
@@ -651,11 +645,11 @@
   },
   "andForListItems": {
     "message": "$1, và $2",
-    "description": "$1 is the first item, $2 is the last item in a list of items. Used in Snap Install Warning modal."
+    "description": "$1 is the first item, $2 is the last item in a list of items."
   },
   "andForTwoItems": {
     "message": "$1 và $2",
-    "description": "$1 is the first item, $2 is the second item. Used in Snap Install Warning modal."
+    "description": "$1 is the first item, $2 is the second item."
   },
   "annual": {
     "message": "Hằng năm"
@@ -842,9 +836,6 @@
   "backupApprovalNotice": {
     "message": "Sao lưu Cụm từ khôi phục bí mật để đảm bảo an toàn cho ví và tiền của bạn."
   },
-  "backupKeyringSnapReminder": {
-    "message": "Đảm bảo bạn có thể truy cập mọi tài khoản do Snap này tạo trước khi xóa"
-  },
   "backupNow": {
     "message": "Sao lưu ngay"
   },
@@ -895,9 +886,6 @@
   "basicFunctionalityRequired_goToHome": {
     "message": "Đến trang chủ"
   },
-  "basicFunctionalityRequired_openCreateSnapAccountPage": {
-    "message": "Mở trang Tạo tài khoản"
-  },
   "basicFunctionalityRequired_openDefiPage": {
     "message": "Mở trang DeFi"
   },
@@ -912,9 +900,6 @@
   },
   "basicFunctionalityRequired_openRewardsPage": {
     "message": "Mở trang Phần thưởng"
-  },
-  "basicFunctionalityRequired_openSnapsPage": {
-    "message": "Mở trang Snap"
   },
   "basicFunctionalityRequired_openSwapsPage": {
     "message": "Mở trang Hoán đổi"
@@ -1498,21 +1483,6 @@
   "concentratedSupplyDistributionTitle": {
     "message": "Phân bổ nguồn cung tập trung"
   },
-  "configureSnapPopupDescription": {
-    "message": "Bây giờ bạn đang rời 1do để định cấu hình Snap này."
-  },
-  "configureSnapPopupInstallDescription": {
-    "message": "Bây giờ bạn đang rời 1do để cài đặt Snap này."
-  },
-  "configureSnapPopupInstallTitle": {
-    "message": "Cài đặt Snap"
-  },
-  "configureSnapPopupLink": {
-    "message": "Nhấp vào liên kết này để tiếp tục:"
-  },
-  "configureSnapPopupTitle": {
-    "message": "Định cấu hình Snap"
-  },
   "confirm": {
     "message": "Xác nhận"
   },
@@ -1749,10 +1719,6 @@
   "connectMoreAccounts": {
     "message": "Kết nối thêm tài khoản"
   },
-  "connectSnap": {
-    "message": "Kết nối $1",
-    "description": "$1 is the snap for which a connection is being requested."
-  },
   "connectWithMetaMask": {
     "message": "Kết nối với 1do"
   },
@@ -1773,9 +1739,6 @@
   "connectedSites": {
     "message": "Trang web đã kết nối"
   },
-  "connectedSitesAndSnaps": {
-    "message": "Trang web và Snap đã kết nối"
-  },
   "connectedSitesDescription": {
     "message": "$1 đã được kết nối với các trang web này. Các trang web này có thể xem địa chỉ tài khoản của bạn.",
     "description": "$1 is the account name"
@@ -1783,12 +1746,6 @@
   "connectedSitesEmptyDescription": {
     "message": "$1 chưa được kết nối với bất kỳ trang web nào.",
     "description": "$1 is the account name"
-  },
-  "connectedSnapAndNoAccountDescription": {
-    "message": "1do được kết nối với trang web này, nhưng chưa có tài khoản nào được kết nối"
-  },
-  "connectedSnaps": {
-    "message": "Snap đã kết nối"
   },
   "connectedWithAccount": {
     "message": "Đã kết nối $1 tài khoản",
@@ -1836,10 +1793,6 @@
   "connectionFailed": {
     "message": "Kết nối thất bại"
   },
-  "connectionFailedDescription": {
-    "message": "Tìm nạp $1 thất bại, hãy kiểm tra mạng của bạn và thử lại.",
-    "description": "$1 is the name of the snap being fetched."
-  },
   "connectionPopoverDescription": {
     "message": "Để kết nối với trang web, hãy chọn nút kết nối. 1do chỉ có thể kết nối với các trang web web3."
   },
@@ -1847,7 +1800,7 @@
     "message": "Yêu cầu kết nối"
   },
   "connectionsRemovedModalDescription": {
-    "message": "Một số kết nối (chẳng hạn như ví cứng và snap) đã bị xóa do không hoạt động trên thiết bị này. Bạn có thể thêm lại bất kỳ lúc nào trong phần Cài đặt."
+    "message": "Some connections (like hardware wallets) were removed due to inactivity on this device. You can re-add them anytime in Settings."
   },
   "connectionsRemovedModalTitle": {
     "message": "Kết nối đã bị xóa"
@@ -1866,10 +1819,6 @@
   },
   "contacts": {
     "message": "Danh bạ"
-  },
-  "contentFromSnap": {
-    "message": "Nội dung từ $1",
-    "description": "$1 represents the name of the snap"
   },
   "continue": {
     "message": "Tiếp tục"
@@ -1954,12 +1903,6 @@
   },
   "createPasswordMarketing": {
     "message": "Nhận thông tin cập nhật về sản phẩm, lời khuyên và tin tức qua email. Chúng tôi có thể sử dụng cách tương tác của bạn để cải thiện nội dung chia sẻ."
-  },
-  "createSnapAccountDescription": {
-    "message": "$1 muốn thêm một tài khoản mới vào 1do."
-  },
-  "createSnapAccountTitle": {
-    "message": "Tạo tài khoản"
   },
   "createSolanaAccount": {
     "message": "Tạo tài khoản Solana"
@@ -2346,10 +2289,6 @@
   "description": {
     "message": "Mô tả"
   },
-  "descriptionFromSnap": {
-    "message": "Mô tả từ $1",
-    "description": "$1 represents the name of the snap"
-  },
   "destinationAccountPickerNoEligible": {
     "message": "Không tìm thấy tài khoản đủ điều kiện"
   },
@@ -2406,9 +2345,6 @@
   "disconnectAllSitesSuccess": {
     "message": "Đã ngắt kết nối tất cả dapp thành công."
   },
-  "disconnectAllSnapsText": {
-    "message": "Snap"
-  },
   "disconnectMessage": {
     "message": "Hành động này sẽ ngắt kết nối bạn khỏi trang web này"
   },
@@ -2420,10 +2356,6 @@
   },
   "discover": {
     "message": "Khám phá"
-  },
-  "discoverSnaps": {
-    "message": "Khám phá Snap",
-    "description": "Text that links to the Snaps website. Displayed in a banner on Snaps list page in settings."
   },
   "dismiss": {
     "message": "Đóng"
@@ -2619,9 +2551,6 @@
   "enableSmartContractAccountDescription": {
     "message": "Mở khóa giao dịch nhanh hơn, phí mạng thấp hơn và bảo mật nâng cao trên các mạng được hỗ trợ."
   },
-  "enableSnap": {
-    "message": "Bật"
-  },
   "enableToken": {
     "message": "bật $1",
     "description": "$1 is a token symbol, e.g. ETH"
@@ -2774,10 +2703,6 @@
   "errorWhileConnectingToRPC": {
     "message": "Gặp lỗi khi kết nối với mạng tùy chỉnh."
   },
-  "errorWithSnap": {
-    "message": "Lỗi với $1",
-    "description": "$1 represents the name of the snap"
-  },
   "estimatedChanges": {
     "message": "Thay đổi ước tính"
   },
@@ -2829,10 +2754,6 @@
   },
   "exportYourDataDescription": {
     "message": "Bạn có thể xuất các dữ liệu như địa chỉ liên hệ và tùy chọn của bạn."
-  },
-  "extendWalletWithSnaps": {
-    "message": "Khám phá các Snap do cộng đồng xây dựng để tùy chỉnh trải nghiệm web3 của bạn",
-    "description": "Banner description displayed on Snaps list page in Settings when less than 6 Snaps is installed."
   },
   "externalAccount": {
     "message": "Tài khoản bên ngoài"
@@ -2893,7 +2814,7 @@
     "description": "This is a warning shown on the Flask Welcome screen, intended to encourage non-developers not to proceed any further. $1 is the bolded message 'flaskWelcomeUninstall'"
   },
   "flaskWelcomeWarning2": {
-    "message": "Chúng tôi không đảm bảo tính an toàn hoặc ổn định của tiện ích mở rộng này. Các API mới do Flask cung cấp không đủ khả năng chống lại các đợt tấn công giả mạo, tức là bất kỳ trang web hoặc chương trình Snap nào yêu cầu Flask đều có thể đang âm mưu đánh cắp tài sản của bạn.",
+    "message": "We do not guarantee the safety or stability of this extension. The new APIs offered by Flask are not hardened against phishing attacks, meaning that any site that requires Flask might be a malicious attempt to steal your assets.",
     "description": "This explains the risks of using MetaMask Flask"
   },
   "flaskWelcomeWarning3": {
@@ -3450,10 +3371,6 @@
   "insights": {
     "message": "Thông tin chi tiết"
   },
-  "insightsFromSnap": {
-    "message": "Thông tin chi tiết từ $1",
-    "description": "$1 represents the name of the snap"
-  },
   "install": {
     "message": "Cài đặt"
   },
@@ -3462,10 +3379,6 @@
   },
   "installRequest": {
     "message": "Thêm vào 1do"
-  },
-  "installedOn": {
-    "message": "Đã cài đặt vào $1",
-    "description": "$1 is the date when the snap has been installed"
   },
   "insufficientBalance": {
     "message": "Không đủ số dư."
@@ -3599,18 +3512,6 @@
   },
   "keyringAccountPublicAddress": {
     "message": "Địa chỉ công khai"
-  },
-  "keyringSnapRemovalResult1": {
-    "message": "Đã xóa $1 $2",
-    "description": "Displays the result after removal of a keyring snap. $1 is the snap name, $2 is whether it is successful or not"
-  },
-  "keyringSnapRemovalResultNotSuccessful": {
-    "message": "không ",
-    "description": "Displays the `not` word in $2."
-  },
-  "keyringSnapRemoveConfirmation": {
-    "message": "Nhập $1 để xác nhận bạn muốn xóa Snap này:",
-    "description": "Asks user to input the name nap prior to deleting the snap. $1 is the snap name"
   },
   "keystone": {
     "message": "Keystone"
@@ -3765,9 +3666,6 @@
   },
   "loading": {
     "message": "Đang tải..."
-  },
-  "loadingScreenSnapMessage": {
-    "message": "Vui lòng hoàn tất giao dịch trên Snap."
   },
   "loadingTokenList": {
     "message": "Đang tải danh sách token"
@@ -3950,10 +3848,6 @@
   "metaMetricsIdNotAvailableError": {
     "message": "Vì bạn chưa bao giờ chọn tham gia 1do Metrics, nên ở đây không có dữ liệu nào để xóa."
   },
-  "metadataModalSourceTooltip": {
-    "message": "$1 được lưu trữ trên npm và $2 là mã định danh duy nhất của Snap này.",
-    "description": "$1 is the snap name and $2 is the snap NPM id."
-  },
   "metamaskFee": {
     "message": "Phí 1do"
   },
@@ -4091,10 +3985,6 @@
   },
   "multichainQuoteCardRateLabel": {
     "message": "Tỷ giá"
-  },
-  "multipleSnapConnectionWarning": {
-    "message": "$1 muốn sử dụng $2 Snap",
-    "description": "$1 is the dapp and $2 is the number of snaps it wants to connect to."
   },
   "musdBonusExplanation": {
     "message": "Chuyển đổi đồng ổn định của bạn sang mUSD và nhận thưởng quy đổi theo năm lên đến $1% mà bạn có thể nhận hằng ngày. $2",
@@ -4581,9 +4471,6 @@
   "noDomainResolution": {
     "message": "Không có nội dung phân giải cho tên miền được cung cấp."
   },
-  "noHardwareWalletOrSnapsSupport": {
-    "message": "Snap và hầu hết các ví cứng sẽ không hoạt động với phiên bản trình duyệt hiện tại của bạn."
-  },
   "noMMFeeSwapping": {
     "message": "Không có phí 1do"
   },
@@ -4601,9 +4488,6 @@
   },
   "noOptionsAvailableMessage": {
     "message": "Tuyến giao dịch này hiện không khả dụng. Hãy thử thay đổi số tiền, mạng hoặc token và chúng tôi sẽ tìm ra tùy chọn tốt nhất."
-  },
-  "noSnaps": {
-    "message": "Bạn chưa cài đặt bất kỳ Snap nào."
   },
   "noTokensMatchingYourFilters": {
     "message": "Không có token phù hợp với bộ lọc"
@@ -4998,10 +4882,6 @@
   "otherPermissionsOnSiteTitle": {
     "message": "Các quyền khác trên trang web này"
   },
-  "otherSnaps": {
-    "message": "Snap khác",
-    "description": "Used in the 'permission_rpc' message."
-  },
   "others": {
     "message": "loại khác"
   },
@@ -5116,49 +4996,13 @@
     "message": "Đã thu hồi trong bản cập nhật này cho $1",
     "description": "Permission cell status for revoked permission including accounts, rendered as AvatarGroup which is $1."
   },
-  "permission_accessNamedSnap": {
-    "message": "Kết nối với $1.",
-    "description": "The description for the `wallet_snap` permission. $1 is the human-readable name of the snap."
-  },
   "permission_accessNetwork": {
     "message": "Truy cập Internet.",
     "description": "The description of the `endowment:network-access` permission."
   },
-  "permission_accessNetworkDescription": {
-    "message": "Cho phép $1 truy cập Internet. Điều này có thể được sử dụng để gửi và nhận dữ liệu với máy chủ của bên thứ ba.",
-    "description": "An extended description of the `endowment:network-access` permission. $1 is the snap name."
-  },
-  "permission_accessSnap": {
-    "message": "Kết nối với Snap $1.",
-    "description": "The description for the `wallet_snap` permission. $1 is the name of the snap."
-  },
-  "permission_accessSnapDescription": {
-    "message": "Cho phép trang web hoặc Snap tương tác với $1.",
-    "description": "The description for the `wallet_snap_*` permission. $1 is the name of the Snap."
-  },
   "permission_assets": {
     "message": "Hiển thị tài sản của tài khoản trong 1do.",
     "description": "The description for the `endowment:assets` permission."
-  },
-  "permission_assetsDescription": {
-    "message": "Cho phép $1 cung cấp thông tin tài sản cho máy khách 1do. Tài sản có thể nằm trên chuỗi hoặc ngoài chuỗi.",
-    "description": "An extended description for the `endowment:assets` permission. $1 is the name of the Snap."
-  },
-  "permission_cronjob": {
-    "message": "Lên lịch và thực hiện các hành động theo định kỳ.",
-    "description": "The description for the `snap_cronjob` permission"
-  },
-  "permission_cronjobDescription": {
-    "message": "Cho phép $1 thực hiện các hành động định kỳ vào thời gian, ngày hoặc khoảng thời gian cố định. Điều này có thể được sử dụng để kích hoạt các tương tác hoặc thông báo nhạy cảm với thời gian.",
-    "description": "An extended description for the `snap_cronjob` permission. $1 is the snap name."
-  },
-  "permission_dialog": {
-    "message": "Hiển thị cửa sổ hộp thoại trong 1do.",
-    "description": "The description for the `snap_dialog` permission"
-  },
-  "permission_dialogDescription": {
-    "message": "Cho phép $1 hiển thị cửa sổ bật lên 1do cùng với văn bản tùy chỉnh, trường nhập thông tin và nút để chấp nhận hoặc từ chối một hành động.\nCó thể được sử dụng để tạo cảnh báo, xác nhận và quy trình đồng ý tham gia cho một Snap.",
-    "description": "An extended description for the `snap_dialog` permission. $1 is the snap name."
   },
   "permission_ethereumAccounts": {
     "message": "Xem địa chỉ, số dư tài khoản, hoạt động và đề xuất giao dịch để chấp thuận",
@@ -5168,125 +5012,29 @@
     "message": "Truy cập nhà cung cấp Ethereum.",
     "description": "The description for the `endowment:ethereum-provider` permission"
   },
-  "permission_ethereumProviderDescription": {
-    "message": "Cho phép $1 giao tiếp trực tiếp với 1do để đọc dữ liệu từ chuỗi khối và đề xuất các tin nhắn và giao dịch.",
-    "description": "An extended description for the `endowment:ethereum-provider` permission. $1 is the snap name."
-  },
-  "permission_getEntropy": {
-    "message": "Lấy các khóa tùy ý duy nhất cho $1.",
-    "description": "The description for the `snap_getEntropy` permission. $1 is the snap name."
-  },
-  "permission_getEntropyDescription": {
-    "message": "Cho phép $1 lấy các khóa tùy ý duy nhất cho $1 mà không để lộ. Các khóa này tách biệt với tài khoản 1do của bạn và không liên quan đến khóa riêng tư hoặc Cụm từ khôi phục bí mật của bạn. Các Snap khác không thể truy cập thông tin này.",
-    "description": "An extended description for the `snap_getEntropy` permission. $1 is the snap name."
-  },
-  "permission_getLocale": {
-    "message": "Xem ngôn ngữ ưa thích của bạn.",
-    "description": "The description for the `snap_getLocale` permission"
-  },
-  "permission_getLocaleDescription": {
-    "message": "Cho phép $1 truy cập ngôn ngữ ưa thích của bạn từ cài đặt 1do. Điều này có thể được sử dụng để dịch và hiển thị nội dung của $1 theo ngôn ngữ của bạn.",
-    "description": "An extended description for the `snap_getLocale` permission. $1 is the snap name."
-  },
-  "permission_getPreferences": {
-    "message": "Xem các thông tin như ngôn ngữ và tiền pháp định ưu tiên của bạn.",
-    "description": "The description for the `snap_getPreferences` permission"
-  },
-  "permission_getPreferencesDescription": {
-    "message": "Cho phép $1 truy cập các thông tin như ngôn ngữ ưu tiên và loại tiền pháp định trong cài đặt 1do của bạn. Điều này giúp $1 hiển thị nội dung phù hợp với sở thích của bạn. ",
-    "description": "An extended description for the `snap_getPreferences` permission. $1 is the snap name."
-  },
   "permission_homePage": {
     "message": "Hiển thị màn hình tùy chỉnh",
     "description": "The description for the `endowment:page-home` permission"
-  },
-  "permission_homePageDescription": {
-    "message": "Cho phép $1 hiển thị màn hình chính tùy chỉnh trong 1do. Có thể được sử dụng cho giao diện người dùng, cấu hình và trang tổng quan.",
-    "description": "An extended description for the `endowment:page-home` permission. $1 is the snap name."
   },
   "permission_keyring": {
     "message": "Cho phép các yêu cầu thêm và kiểm soát tài khoản Ethereum",
     "description": "The description for the `endowment:keyring` permission"
   },
-  "permission_keyringDescription": {
-    "message": "Cho phép $1 nhận các yêu cầu thêm hoặc xóa tài khoản, cũng như ký và giao dịch thay mặt cho các tài khoản này.",
-    "description": "An extended description for the `endowment:keyring` permission. $1 is the snap name."
-  },
   "permission_lifecycleHooks": {
     "message": "Sử dụng lifecycle hooks.",
     "description": "The description for the `endowment:lifecycle-hooks` permission"
-  },
-  "permission_lifecycleHooksDescription": {
-    "message": "Cho phép $1 sử dụng hook vòng đời để chạy mã vào những thời điểm cụ thể trong vòng đời của nó.",
-    "description": "An extended description for the `endowment:lifecycle-hooks` permission. $1 is the snap name."
-  },
-  "permission_manageAccounts": {
-    "message": "Thêm và kiểm soát các tài khoản Ethereum",
-    "description": "The description for `snap_manageAccounts` permission"
-  },
-  "permission_manageAccountsDescription": {
-    "message": "Cho phép $1 thêm hoặc xóa tài khoản Ethereum, sau đó thực hiện giao dịch và ký bằng các tài khoản này.",
-    "description": "An extended description for the `snap_manageAccounts` permission. $1 is the snap name."
-  },
-  "permission_manageBip32Keys": {
-    "message": "Quản lý tài khoản $1.",
-    "description": "The description for the `snap_getBip32Entropy` permission. $1 is a derivation path, e.g. 'm/44'/0'/0' (secp256k1)'."
-  },
-  "permission_manageBip44AndBip32KeysDescription": {
-    "message": "Cho phép $1 quản lý tài khoản và tài sản trên mạng được yêu cầu. Các tài khoản này được lấy và sao lưu bằng cụm từ khôi phục bí mật của bạn (mà không để lộ). Với khả năng lấy khóa, $1 có thể hỗ trợ nhiều giao thức chuỗi khối ngoài Ethereum (EVM).",
-    "description": "An extended description for the `snap_getBip44Entropy` and `snap_getBip44Entropy` permissions. $1 is the snap name."
-  },
-  "permission_manageBip44Keys": {
-    "message": "Quản lý tài khoản $1.",
-    "description": "The description for the `snap_getBip44Entropy` permission. $1 is the name of a protocol, e.g. 'Filecoin'."
-  },
-  "permission_manageState": {
-    "message": "Lưu trữ và quản lý dữ liệu trong thiết bị.",
-    "description": "The description for the `snap_manageState` permission"
-  },
-  "permission_manageStateDescription": {
-    "message": "Cho phép $1 lưu trữ, cập nhật và truy xuất dữ liệu một cách an toàn bằng mã hóa. Các Snap khác không thể truy cập thông tin này.",
-    "description": "An extended description for the `snap_manageState` permission. $1 is the snap name."
   },
   "permission_multichainProvider": {
     "message": "Truy cập nhà cung cấp Multichain.",
     "description": "The description for the `endowment:multichain-provider` permission"
   },
-  "permission_multichainProviderDescription": {
-    "message": "Cho phép $1 giao tiếp trực tiếp với 1do để đọc dữ liệu từ chuỗi khối và đề xuất các tin nhắn và giao dịch.",
-    "description": "An extended description for the `endowment:multichain-provider` permission. $1 is the snap name."
-  },
   "permission_nameLookup": {
     "message": "Cung cấp tra cứu tên miền và địa chỉ.",
     "description": "The description for the `endowment:name-lookup` permission."
   },
-  "permission_nameLookupDescription": {
-    "message": "Cho phép Snap tìm nạp, hiển thị địa chỉ và tra cứu tên miền trong các phần khác nhau của Giao diện người dùng 1do.",
-    "description": "An extended description for the `endowment:name-lookup` permission."
-  },
-  "permission_notifications": {
-    "message": "Hiển thị thông báo.",
-    "description": "The description for the `snap_notify` permission"
-  },
-  "permission_notificationsDescription": {
-    "message": "Cho phép $1 hiển thị thông báo trong 1do. Một văn bản thông báo ngắn có thể được kích hoạt bằng Snap đối với thông tin có thể thao tác hoặc nhạy cảm với thời gian.",
-    "description": "An extended description for the `snap_notify` permission. $1 is the snap name."
-  },
   "permission_protocol": {
     "message": "Cung cấp dữ liệu giao thức cho một hoặc nhiều chuỗi.",
     "description": "The description for the `endowment:protocol` permission."
-  },
-  "permission_protocolDescription": {
-    "message": "Cho phép $1 cung cấp dữ liệu giao thức cho 1do, chẳng hạn như ước tính phí gas hoặc thông tin token.",
-    "description": "An extended description for the `endowment:protocol` permission. $1 is the name of the Snap."
-  },
-  "permission_rpc": {
-    "message": "Cho phép $1 giao tiếp trực tiếp với $2.",
-    "description": "The description for the `endowment:rpc` permission. $1 is 'other snaps' or 'websites', $2 is the snap name."
-  },
-  "permission_rpcDescription": {
-    "message": "Cho phép $1 gửi tin nhắn đến $2 và nhận phản hồi từ $2.",
-    "description": "An extended description for the `endowment:rpc` permission. $1 is 'other snaps' or 'websites', $2 is the snap name."
   },
   "permission_rpcDescriptionOriginList": {
     "message": "$1 và $2",
@@ -5296,49 +5044,21 @@
     "message": "Hiển thị cửa sổ thông tin chi tiết về chữ ký.",
     "description": "The description for the `endowment:signature-insight` permission"
   },
-  "permission_signatureInsightDescription": {
-    "message": "Cho phép $1 hiển thị cửa sổ thông tin chi tiết về bất kỳ yêu cầu chữ ký nào trước khi phê duyệt. Điều này có thể được sử dụng cho các giải pháp bảo mật và chống lừa đảo.",
-    "description": "An extended description for the `endowment:signature-insight` permission. $1 is the snap name."
-  },
   "permission_signatureInsightOrigin": {
     "message": "Xem nguồn gốc của các trang web đưa ra yêu cầu chữ ký",
     "description": "The description for the `signatureOrigin` caveat, to be used with the `endowment:signature-insight` permission"
-  },
-  "permission_signatureInsightOriginDescription": {
-    "message": "Cho phép $1 xem nguồn gốc (URI) của các trang web đưa ra yêu cầu chữ ký. Điều này có thể được sử dụng cho các giải pháp bảo mật và chống lừa đảo.",
-    "description": "An extended description for the `signatureOrigin` caveat, to be used with the `endowment:signature-insight` permission. $1 is the snap name."
   },
   "permission_transactionInsight": {
     "message": "Tìm nạp và hiển thị thông tin chuyên sâu về giao dịch.",
     "description": "The description for the `endowment:transaction-insight` permission"
   },
-  "permission_transactionInsightDescription": {
-    "message": "Cho phép $1 giải mã các giao dịch và hiển thị thông tin chi tiết trong giao diện người dùng 1do. Điều này có thể được sử dụng cho các giải pháp bảo mật và chống lừa đảo.",
-    "description": "An extended description for the `endowment:transaction-insight` permission. $1 is the snap name."
-  },
   "permission_transactionInsightOrigin": {
     "message": "Xem nguồn gốc của các trang web đề xuất giao dịch",
     "description": "The description for the `transactionOrigin` caveat, to be used with the `endowment:transaction-insight` permission"
   },
-  "permission_transactionInsightOriginDescription": {
-    "message": "Cho phép $1 xem nguồn gốc (URI) của các trang web đề xuất giao dịch. Điều này có thể được sử dụng cho các giải pháp bảo mật và chống lừa đảo.",
-    "description": "An extended description for the `transactionOrigin` caveat, to be used with the `endowment:transaction-insight` permission. $1 is the snap name."
-  },
   "permission_unknown": {
     "message": "Quyền không xác định: $1",
     "description": "$1 is the name of a requested permission that is not recognized."
-  },
-  "permission_viewBip32PublicKeys": {
-    "message": "Xem khóa công khai của bạn cho $1 ($2).",
-    "description": "The description for the `snap_getBip32PublicKey` permission. $1 is a derivation path, e.g. 'm/44'/0'/0''. $2 is the elliptic curve name, e.g. 'secp256k1'."
-  },
-  "permission_viewBip32PublicKeysDescription": {
-    "message": "Cho phép $2 xem khóa công khai (và địa chỉ) của bạn đối với $1. Điều này sẽ không cấp bất kỳ quyền kiểm soát tài khoản hoặc tài sản nào.",
-    "description": "An extended description for the `snap_getBip32PublicKey` permission. $1 is a derivation path (name). $2 is the snap name."
-  },
-  "permission_viewNamedBip32PublicKeys": {
-    "message": "Xem khóa công khai của bạn cho $1.",
-    "description": "The description for the `snap_getBip32PublicKey` permission. $1 is a name for the derivation path, e.g., 'Ethereum accounts'."
   },
   "permission_walletSwitchEthereumChain": {
     "message": "Sử dụng mạng đã kích hoạt của bạn",
@@ -5348,15 +5068,11 @@
     "message": "Hỗ trợ dành cho WebAssembly.",
     "description": "The description of the `endowment:webassembly` permission."
   },
-  "permission_webAssemblyDescription": {
-    "message": "Cho phép $1 truy cập vào các môi trường thực thi cấp thấp thông qua WebAssembly.",
-    "description": "An extended description of the `endowment:webassembly` permission. $1 is the snap name."
-  },
   "permissions": {
     "message": "Quyền"
   },
   "permissionsPageEmptyDescription": {
-    "message": "Không phát hiện quyền nào. Sau khi bạn cấp quyền cho một trang web hoặc cài đặt một Snap, thông tin chi tiết sẽ xuất hiện ở đây."
+    "message": "No permissions detected. Once you grant permissions to a site, the details will appear here."
   },
   "permitSimulationChange_approve": {
     "message": "Hạn mức chi tiêu"
@@ -6491,12 +6207,6 @@
   "removeAll": {
     "message": "Xóa tất cả"
   },
-  "removeKeyringSnap": {
-    "message": "Thao tác xóa Snap này sẽ xóa các tài khoản này khỏi 1do:"
-  },
-  "removeKeyringSnapToolTip": {
-    "message": "Snap giúp kiểm soát các tài khoản và khi xóa Snap, các tài khoản cũng sẽ bị xóa khỏi 1do, nhưng chúng sẽ vẫn tồn tại trên chuỗi khối."
-  },
   "removeNFT": {
     "message": "Xóa NFT"
   },
@@ -6505,22 +6215,6 @@
   },
   "removeNftMessage": {
     "message": "NFT đã được xóa thành công!"
-  },
-  "removeSnap": {
-    "message": "Xóa Snap"
-  },
-  "removeSnapAccountDescription": {
-    "message": "Nếu bạn tiếp tục, tài khoản này sẽ không còn khả dụng trong 1do nữa."
-  },
-  "removeSnapAccountTitle": {
-    "message": "Xóa tài khoản"
-  },
-  "removeSnapConfirmation": {
-    "message": "Bạn có chắc chắn muốn xóa $1 không?",
-    "description": "$1 represents the name of the snap"
-  },
-  "removeSnapDescription": {
-    "message": "Hành động này sẽ xóa Snap, dữ liệu và thu hồi các quyền mà bạn đã cấp."
   },
   "rename": {
     "message": "Đổi tên",
@@ -6540,9 +6234,6 @@
   },
   "requestFromInfo": {
     "message": "Đây là trang web yêu cầu chữ ký của bạn."
-  },
-  "requestFromInfoSnap": {
-    "message": "Đây là Snap yêu cầu chữ ký của bạn."
   },
   "requestFromTransactionDescription": {
     "message": "Đây là trang web yêu cầu xác nhận của bạn."
@@ -7109,9 +6800,6 @@
   "setUp": {
     "message": "Thiết lập",
     "description": "Action label for Smart Accounts. Used on multichain details page."
-  },
-  "settingAddSnapAccount": {
-    "message": "Thêm tài khoản Snap"
   },
   "settings": {
     "message": "Cài đặt"
@@ -8017,168 +7705,6 @@
   "smartTransactionsEnabledTitle": {
     "message": "Giao dịch giờ đây đã thông minh hơn"
   },
-  "snapAccountCreated": {
-    "message": "Tài khoản đã được tạo"
-  },
-  "snapAccountCreatedDescription": {
-    "message": "Tài khoản mới của bạn đã sẵn sàng để sử dụng!"
-  },
-  "snapAccountCreationFailed": {
-    "message": "Tạo tài khoản không thành công"
-  },
-  "snapAccountCreationFailedDescription": {
-    "message": "$1 không thể tạo tài khoản cho bạn.",
-    "description": "$1 is the snap name"
-  },
-  "snapAccountRedirectFinishSigningTitle": {
-    "message": "Hoàn thành ký"
-  },
-  "snapAccountRedirectSiteDescription": {
-    "message": "Làm theo hướng dẫn từ $1"
-  },
-  "snapAccountRemovalFailed": {
-    "message": "Xóa tài khoản không thành công"
-  },
-  "snapAccountRemovalFailedDescription": {
-    "message": "$1 không thể xóa tài khoản này cho bạn.",
-    "description": "$1 is the snap name"
-  },
-  "snapAccountRemoved": {
-    "message": "Đã xóa tài khoản"
-  },
-  "snapAccountRemovedDescription": {
-    "message": "Tài khoản này sẽ không còn khả dụng để sử dụng trong 1do nữa."
-  },
-  "snapConnectTo": {
-    "message": "Kết nối với $1",
-    "description": "$1 is the website URL or a Snap name. Used for Snaps pre-approved connections."
-  },
-  "snapConnectionPermissionDescription": {
-    "message": "Cho phép $1 tự động kết nối với $2 mà không cần bạn chấp thuận.",
-    "description": "Used for Snap pre-approved connections. $1 is the Snap name, $2 is a website URL."
-  },
-  "snapConnectionWarning": {
-    "message": "$1 muốn sử dụng $2",
-    "description": "$2 is the snap and $1 is the dapp requesting connection to the snap."
-  },
-  "snapDetailWebsite": {
-    "message": "Trang web"
-  },
-  "snapHomeMenu": {
-    "message": "Trình đơn Trang chủ Snap"
-  },
-  "snapInstallRequest": {
-    "message": "Cài đặt $1 sẽ cấp cho nó các quyền sau.",
-    "description": "$1 is the snap name."
-  },
-  "snapInstallSuccess": {
-    "message": "Cài đặt hoàn tất"
-  },
-  "snapInstallWarningCheck": {
-    "message": "$1 muốn được cấp quyền để thực hiện những điều sau:",
-    "description": "Warning message used in popup displayed on snap install. $1 is the snap name."
-  },
-  "snapInstallWarningHeading": {
-    "message": "Hãy tiến hành thận trọng"
-  },
-  "snapInstallWarningPermissionDescriptionForBip32View": {
-    "message": "Cho phép $1 xem khóa công khai (và địa chỉ) của bạn. Điều này sẽ không cấp bất kỳ quyền kiểm soát tài khoản hoặc tài sản nào.",
-    "description": "An extended description for the `snap_getBip32PublicKey` permission used for tooltip on Snap Install Warning screen (popup/modal). $1 is the snap name."
-  },
-  "snapInstallWarningPermissionDescriptionForEntropy": {
-    "message": "Cho phép Snap $1 quản lý tài khoản và tài sản trên các mạng được yêu cầu. Các tài khoản này được lấy và sao lưu bằng cụm từ khôi phục bí mật của bạn (mà không để lộ). Với khả năng lấy khóa, $1 có thể hỗ trợ nhiều giao thức chuỗi khối ngoài Ethereum (EVM).",
-    "description": "An extended description for the `snap_getBip44Entropy` and `snap_getBip44Entropy` permissions used for tooltip on Snap Install Warning screen (popup/modal). $1 is the snap name."
-  },
-  "snapInstallWarningPermissionNameForEntropy": {
-    "message": "Quản lý tài khoản $1",
-    "description": "Permission name used for the Permission Cell component displayed on warning popup when installing a Snap. $1 is list of account types."
-  },
-  "snapInstallWarningPermissionNameForViewPublicKey": {
-    "message": "Xem khóa công khai của bạn cho $1",
-    "description": "Permission name used for the Permission Cell component displayed on warning popup when installing a Snap. $1 is list of account types."
-  },
-  "snapInstallationErrorDescription": {
-    "message": "Không thể cài đặt $1.",
-    "description": "Error description used when snap installation fails. $1 is the snap name."
-  },
-  "snapInstallationErrorTitle": {
-    "message": "Cài đặt thất bại",
-    "description": "Error title used when snap installation fails."
-  },
-  "snapResultError": {
-    "message": "Lỗi"
-  },
-  "snapResultSuccess": {
-    "message": "Thành công"
-  },
-  "snapResultSuccessDescription": {
-    "message": "$1 đã sẵn sàng để sử dụng"
-  },
-  "snapUIAccountSelectorTitle": {
-    "message": "Chọn tài khoản"
-  },
-  "snapUIAssetSelectorTitle": {
-    "message": "Chọn tài sản"
-  },
-  "snapUpdateAlertDescription": {
-    "message": "Tải phiên bản mới nhất của $1",
-    "description": "Description used in Snap update alert banner when snap update is available. $1 is the Snap name."
-  },
-  "snapUpdateAvailable": {
-    "message": "Có cập nhật mới"
-  },
-  "snapUpdateErrorDescription": {
-    "message": "Không thể cập nhật $1.",
-    "description": "Error description used when snap update fails. $1 is the snap name."
-  },
-  "snapUpdateErrorTitle": {
-    "message": "Cập nhật thất bại",
-    "description": "Error title used when snap update fails."
-  },
-  "snapUpdateRequest": {
-    "message": "Cập nhật $1 sẽ cấp cho nó các quyền sau.",
-    "description": "$1 is the Snap name."
-  },
-  "snapUpdateSuccess": {
-    "message": "Cập nhật hoàn tất"
-  },
-  "snapUrlIsBlocked": {
-    "message": "Snap này muốn đưa bạn đến một trang web bị chặn. $1."
-  },
-  "snaps": {
-    "message": "Snap"
-  },
-  "snapsConnected": {
-    "message": "Đã kết nối Snap"
-  },
-  "snapsNoInsight": {
-    "message": "Không có thông tin chi tiết để hiển thị"
-  },
-  "snapsPrivacyWarningFirstMessage": {
-    "message": "Bạn thừa nhận rằng mọi Snap mà bạn cài đặt đều là dịch vụ bên thứ ba, trừ khi được xác định khác, như được định nghĩa trong $1 của Consensys. Việc bạn sử dụng dịch vụ bên thứ ba sẽ phải tuân theo các điều khoản và điều kiện riêng do nhà cung cấp dịch vụ bên thứ ba quy định. Consensys không khuyến nghị bất kỳ cá nhân cụ thể nào sử dụng bất kỳ Snap nào vì bất kỳ lý do cụ thể nào. Bạn tự chịu rủi ro khi truy cập, tin tưởng hoặc sử dụng dịch vụ bên thứ ba. Consensys từ chối mọi trách nhiệm và nghĩa vụ pháp lý đối với mọi tổn thất khi bạn sử dụng dịch vụ bên thứ ba.",
-    "description": "First part of a message in popup modal displayed when installing a snap for the first time. $1 is terms of use link."
-  },
-  "snapsPrivacyWarningSecondMessage": {
-    "message": "Mọi thông tin mà bạn chia sẻ với dịch vụ bên thứ ba sẽ được dịch vụ bên thứ ba đó thu thập trực tiếp theo chính sách quyền riêng tư của họ. Vui lòng tham khảo chính sách quyền riêng tư của họ để biết thêm thông tin.",
-    "description": "Second part of a message in popup modal displayed when installing a snap for the first time."
-  },
-  "snapsPrivacyWarningThirdMessage": {
-    "message": "Consensys không có quyền truy cập vào các thông tin mà bạn chia sẻ với dịch vụ bên thứ ba.",
-    "description": "Third part of a message in popup modal displayed when installing a snap for the first time."
-  },
-  "snapsSettings": {
-    "message": "Cài đặt Snap"
-  },
-  "snapsTermsOfUse": {
-    "message": "Điều khoản sử dụng"
-  },
-  "snapsToggle": {
-    "message": "Snap chỉ hoạt động khi đã bật"
-  },
-  "snapsUIError": {
-    "message": "Liên hệ với những người tạo ra $1 để được hỗ trợ thêm.",
-    "description": "This is shown when the insight snap throws an error. $1 is the snap name"
-  },
   "solanaAccountRequested": {
     "message": "Trang web này yêu cầu tài khoản Solana."
   },
@@ -8572,10 +8098,6 @@
   },
   "submitted": {
     "message": "Đã gửi"
-  },
-  "suggestedBySnap": {
-    "message": "Được đề xuất bởi $1",
-    "description": "$1 is the snap name"
   },
   "suggestedCurrencySymbol": {
     "message": "Ký hiệu tiền tệ đề xuất:"
@@ -8979,10 +8501,6 @@
   "thirdPartyApisDescription": {
     "message": "Chọn cách bạn chia sẻ địa chỉ IP hoặc địa chỉ Ethereum của mình với các API bên thứ ba. Những thay đổi này sẽ ảnh hưởng đến trải nghiệm sử dụng 1do của bạn."
   },
-  "thirdPartySoftware": {
-    "message": "Thông báo phần mềm của bên thứ ba",
-    "description": "Title of a popup modal displayed when installing a snap for the first time."
-  },
   "thisContactWillBeDeleted": {
     "message": "Liên hệ này sẽ bị xóa."
   },
@@ -9323,10 +8841,6 @@
     "message": "Mạng chưa xác định",
     "description": "Displayed on places like Gator permissions when regular name is not available."
   },
-  "unknownNetworkForKeyEntropy": {
-    "message": "Mạng chưa xác định",
-    "description": "Displayed on places like Snap install warning when regular name is not available."
-  },
   "unknownQrCode": {
     "message": "Lỗi: Chúng tôi không thể xác định mã QR đó"
   },
@@ -9555,10 +9069,6 @@
   "warning": {
     "message": "Cảnh báo"
   },
-  "warningFromSnap": {
-    "message": "Cảnh báo từ $1",
-    "description": "$1 represents the name of the snap"
-  },
   "watchEthereumAccountsDescription": {
     "message": "Bật tùy chọn này sẽ cho phép bạn theo dõi tài khoản Ethereum thông qua địa chỉ công khai hoặc tên ENS. Để phản hồi về tính năng Beta này, vui lòng hoàn thành $1 này.",
     "description": "$1 is the link to a product feedback form"
@@ -9647,5 +9157,20 @@
   },
   "yourWalletIsReadyFromReminder": {
     "message": "Lưu giữ Cụm từ khôi phục bí mật của bạn ở nơi an toàn!"
+  },
+  "suggestedBySource": {
+    "message": "Được đề xuất bởi $1",
+    "description": "$1 is the source name."
+  },
+  "permissionConnectTo": {
+    "message": "Kết nối với $1",
+    "description": "$1 is the website URL."
+  },
+  "permissionConnectionDescription": {
+    "message": "Cho phép $1 tự động kết nối với $2 mà không cần bạn chấp thuận.",
+    "description": "$1 is the subject name, $2 is a website URL."
+  },
+  "noHardwareWalletSupport": {
+    "message": "Most hardware wallets will not work with your current browser version."
   }
 }

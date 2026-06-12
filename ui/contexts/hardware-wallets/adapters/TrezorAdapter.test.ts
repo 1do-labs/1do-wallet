@@ -53,11 +53,7 @@ const createMockFeaturesResponse = (
     session_id: 'session-id',
     model: 'T',
     initialized: true,
-    capabilities: [
-      'Capability_Bitcoin',
-      'Capability_Solana',
-      'Capability_Ethereum',
-    ],
+    capabilities: ['Capability_Ethereum'],
     unlocked: true,
     ...payload,
   },
@@ -287,7 +283,7 @@ describe('TrezorAdapter', () => {
     it('throws DeviceMissingCapability when required capability is missing', async () => {
       mockGetTrezorFeatures.mockResolvedValue(
         createMockFeaturesResponse({
-          capabilities: ['Capability_Bitcoin', 'Capability_Ethereum'],
+          capabilities: [],
         }),
       );
 
@@ -372,46 +368,31 @@ describe('trezorUtils', () => {
 
   describe('getMissingCapabilities', () => {
     it('returns empty array when all capabilities are present', () => {
-      expect(
-        getMissingCapabilities([
-          'Capability_Bitcoin',
-          'Capability_Solana',
-          'Capability_Ethereum',
-        ]),
-      ).toEqual([]);
+      expect(getMissingCapabilities(['Capability_Ethereum'])).toEqual([]);
     });
 
     it('returns missing capabilities', () => {
-      expect(getMissingCapabilities(['Capability_Bitcoin'])).toEqual([
-        'Capability_Solana',
+      expect(getMissingCapabilities(['Capability_WebUSB'])).toEqual([
         'Capability_Ethereum',
       ]);
     });
 
     it('returns all capabilities when input is empty', () => {
-      expect(getMissingCapabilities([])).toEqual([
-        'Capability_Bitcoin',
-        'Capability_Solana',
-        'Capability_Ethereum',
-      ]);
+      expect(getMissingCapabilities([])).toEqual(['Capability_Ethereum']);
     });
 
     it('handles non-array input', () => {
-      expect(getMissingCapabilities(null)).toEqual([
-        'Capability_Bitcoin',
-        'Capability_Solana',
-        'Capability_Ethereum',
-      ]);
+      expect(getMissingCapabilities(null)).toEqual(['Capability_Ethereum']);
     });
 
     it('filters out non-string entries', () => {
       expect(
         getMissingCapabilities([
-          'Capability_Bitcoin',
+          'Capability_WebUSB',
           123,
           'Capability_Ethereum',
         ]),
-      ).toEqual(['Capability_Solana']);
+      ).toEqual([]);
     });
   });
 

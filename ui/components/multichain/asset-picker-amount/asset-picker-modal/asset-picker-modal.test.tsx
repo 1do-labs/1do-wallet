@@ -17,19 +17,15 @@ import {
   getSelectedAccountCachedBalance,
   getSelectedEvmInternalAccount,
   getShouldHideZeroBalanceTokens,
-  getTokenExchangeRates,
   getTokenList,
 } from '../../../../selectors';
 import {
-  getConversionRate,
   getNativeCurrency,
   getTokens,
 } from '../../../../ducks/metamask/metamask';
-import { getTopAssets } from '../../../../ducks/swaps/swaps';
 import {
   getMultichainNetworkConfigurationsByChainId,
   getMultichainCurrentChainId,
-  getMultichainCurrentCurrency,
   getMultichainIsEvm,
   getMultichainNativeCurrency,
   getMultichainCurrentNetwork,
@@ -40,7 +36,7 @@ import { enLocale as messages } from '../../../../../test/lib/i18n-helpers';
 import { AssetPickerModal } from './asset-picker-modal';
 import { ERC20Asset } from './types';
 
-const SOLANA_CHAIN_ID = 'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp';
+const POLYGON_CHAIN_ID = '0x89';
 
 const mockAssetList = jest.fn();
 jest.mock('./AssetList', () => (props: unknown) => {
@@ -70,11 +66,6 @@ jest.mock('../../../../hooks/useI18nContext', () => ({
 
 jest.mock('../../../../hooks/useTokenTracker', () => ({
   useTokenTracker: jest.fn(),
-}));
-
-const mockGetRenderableTokenData = jest.fn();
-jest.mock('../../../../hooks/useTokensToSearch', () => ({
-  getRenderableTokenData: (data: unknown) => mockGetRenderableTokenData(data),
 }));
 
 const mockUseMultichainBalances = jest.fn();
@@ -129,9 +120,6 @@ describe('AssetPickerModal', () => {
       if (selector === getMultichainCurrentChainId) {
         return '0x1';
       }
-      if (selector === getMultichainCurrentCurrency) {
-        return 'USD';
-      }
       if (selector === getNativeCurrencyImage) {
         return 'native-image.png';
       }
@@ -143,9 +131,6 @@ describe('AssetPickerModal', () => {
       }
       if (selector === getShouldHideZeroBalanceTokens) {
         return false;
-      }
-      if (selector === getTokenExchangeRates) {
-        return {};
       }
       if (selector === getTokenList) {
         return {
@@ -161,16 +146,10 @@ describe('AssetPickerModal', () => {
           },
         };
       }
-      if (selector === getConversionRate) {
-        return 1;
-      }
       if (selector === getNativeCurrency) {
         return 'ETH';
       }
       if (selector === getTokens) {
-        return [];
-      }
-      if (selector === getTopAssets) {
         return [];
       }
       return undefined;
@@ -180,7 +159,6 @@ describe('AssetPickerModal', () => {
     useTokenTrackerMock.mockReturnValue({
       tokensWithBalances: [],
     });
-    mockGetRenderableTokenData.mockReturnValue({});
     mockUseMultichainBalances.mockReturnValue({ assetsWithBalance: [] });
   });
 
@@ -348,7 +326,7 @@ describe('AssetPickerModal token filtering', () => {
       chainId: '0xa',
       name: 'Optimism',
     } as unknown as NetworkConfiguration,
-    selectedChainIds: ['0xa', '0x1', 'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp'],
+    selectedChainIds: ['0xa', '0x1', POLYGON_CHAIN_ID],
     isMultiselectEnabled: true,
     networks: [
       {
@@ -356,8 +334,8 @@ describe('AssetPickerModal token filtering', () => {
         name: 'Ethereum Mainnet',
       },
       {
-        chainId: 'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp',
-        name: 'Solana',
+        chainId: POLYGON_CHAIN_ID,
+        name: 'Polygon',
       },
       {
         chainId: '0xa',
@@ -370,7 +348,6 @@ describe('AssetPickerModal token filtering', () => {
     jest.clearAllMocks();
 
     useI18nContextMock.mockReturnValue((key: string) => key);
-    mockGetRenderableTokenData.mockImplementation((data) => data);
     mockUseMultichainBalances.mockReturnValue({
       assetsWithBalance: [
         {
@@ -402,9 +379,9 @@ describe('AssetPickerModal token filtering', () => {
           type: 'TOKEN',
         },
         {
-          address: 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v',
+          address: '0x2791bca1f2de4661ed88a30c99a7a9449aa84174',
           balance: '50',
-          chainId: 'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp',
+          chainId: POLYGON_CHAIN_ID,
           decimals: 6,
           isNative: false,
           symbol: 'USDC',
@@ -420,8 +397,6 @@ describe('AssetPickerModal token filtering', () => {
           return '0xa';
         case getMultichainIsEvm:
           return true;
-        case getMultichainCurrentCurrency:
-          return 'USD';
         default:
           return {};
       }
@@ -506,16 +481,16 @@ describe('AssetPickerModal token filtering', () => {
       <AssetPickerModal
         {...defaultProps}
         isMultiselectEnabled={false}
-        selectedChainIds={[SOLANA_CHAIN_ID]}
+        selectedChainIds={[POLYGON_CHAIN_ID]}
         network={
           {
-            chainId: SOLANA_CHAIN_ID,
-            name: 'Solana',
+            chainId: POLYGON_CHAIN_ID,
+            name: 'Polygon',
           } as unknown as NetworkConfiguration
         }
         asset={{
           address: 'NEWTOKEN',
-          chainId: SOLANA_CHAIN_ID,
+          chainId: POLYGON_CHAIN_ID,
           symbol: 'USDT',
           image: 'image.png',
           type: AssetType.token,
@@ -523,9 +498,9 @@ describe('AssetPickerModal token filtering', () => {
         customTokenListGenerator={() =>
           [
             {
-              address: 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v',
+              address: '0x2791bca1f2de4661ed88a30c99a7a9449aa84174',
               balance: '50',
-              chainId: 'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp',
+              chainId: POLYGON_CHAIN_ID,
               decimals: 6,
               isNative: false,
               symbol: 'USDC',
@@ -533,7 +508,7 @@ describe('AssetPickerModal token filtering', () => {
             },
             {
               address: 'NEWTOKEN',
-              chainId: SOLANA_CHAIN_ID,
+              chainId: POLYGON_CHAIN_ID,
               symbol: 'USDT',
               image: 'image.png',
               type: AssetType.token,
@@ -567,11 +542,11 @@ describe('AssetPickerModal token filtering', () => {
     renderWithProvider(
       <AssetPickerModal
         {...defaultProps}
-        selectedChainIds={['solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp']}
+        selectedChainIds={[POLYGON_CHAIN_ID]}
         network={
           {
-            chainId: SOLANA_CHAIN_ID,
-            name: 'Solana',
+            chainId: POLYGON_CHAIN_ID,
+            name: 'Polygon',
           } as unknown as NetworkConfiguration
         }
       />,

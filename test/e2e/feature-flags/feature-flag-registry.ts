@@ -69,49 +69,6 @@ export type FeatureFlagRegistryEntry = {
  * Source: https://client-config.api.cx.metamask.io/v1/flags?client=extension&distribution=main&environment=prod
  */
 export const FEATURE_FLAG_REGISTRY: Record<string, FeatureFlagRegistryEntry> = {
-  addBitcoinAccount: {
-    name: 'addBitcoinAccount',
-    type: FeatureFlagType.Remote,
-    inProd: true,
-    productionDefault: false,
-    status: FeatureFlagStatus.Active,
-  },
-
-  addBitcoinAccountDummyFlag: {
-    name: 'addBitcoinAccountDummyFlag',
-    type: FeatureFlagType.Remote,
-    inProd: true,
-    productionDefault: false,
-    status: FeatureFlagStatus.Active,
-  },
-
-  addSolanaAccount: {
-    name: 'addSolanaAccount',
-    type: FeatureFlagType.Remote,
-    inProd: true,
-    productionDefault: true,
-    status: FeatureFlagStatus.Active,
-  },
-
-  bitcoinAccounts: {
-    name: 'bitcoinAccounts',
-    type: FeatureFlagType.Remote,
-    inProd: true,
-    productionDefault: {
-      enabled: true,
-      minimumVersion: '13.9.0',
-    },
-    status: FeatureFlagStatus.Active,
-  },
-
-  bitcoinTestnetsEnabled: {
-    name: 'bitcoinTestnetsEnabled',
-    type: FeatureFlagType.Remote,
-    inProd: true,
-    productionDefault: false,
-    status: FeatureFlagStatus.Active,
-  },
-
   enableMultichainAccounts: {
     name: 'enableMultichainAccounts',
     type: FeatureFlagType.Remote,
@@ -136,40 +93,6 @@ export const FEATURE_FLAG_REGISTRY: Record<string, FeatureFlagRegistryEntry> = {
     status: FeatureFlagStatus.Active,
   },
 
-  isSolanaBuyable: {
-    name: 'isSolanaBuyable',
-    type: FeatureFlagType.Remote,
-    inProd: true,
-    productionDefault: false,
-    status: FeatureFlagStatus.Active,
-  },
-
-  solanaCardEnabled: {
-    name: 'solanaCardEnabled',
-    type: FeatureFlagType.Remote,
-    inProd: true,
-    productionDefault: false,
-    status: FeatureFlagStatus.Active,
-  },
-
-  solanaTestnetsEnabled: {
-    name: 'solanaTestnetsEnabled',
-    type: FeatureFlagType.Remote,
-    inProd: true,
-    productionDefault: false,
-    status: FeatureFlagStatus.Active,
-  },
-
-  tronAccounts: {
-    name: 'tronAccounts',
-    type: FeatureFlagType.Remote,
-    inProd: true,
-    productionDefault: {
-      enabled: true,
-      minimumVersion: '13.13.2',
-    },
-    status: FeatureFlagStatus.Active,
-  },
   additionalNetworksBlacklist: {
     name: 'additionalNetworksBlacklist',
     type: FeatureFlagType.Remote,
@@ -264,25 +187,11 @@ export const FEATURE_FLAG_REGISTRY: Record<string, FeatureFlagRegistryEntry> = {
     inProd: true,
     productionDefault: {
       bip44DefaultPairs: {
-        bip122: {
-          standard: {
-            'bip122:000000000019d6689c085ae165831e93/slip44:0':
-              'eip155:1/slip44:60',
-          },
-          other: {},
-        },
         eip155: {
           other: {},
           standard: {
             'eip155:1/slip44:60':
               'eip155:1/erc20:0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
-          },
-        },
-        solana: {
-          other: {},
-          standard: {
-            'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp/slip44:501':
-              'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp/token:EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v',
           },
         },
       },
@@ -406,35 +315,6 @@ export const FEATURE_FLAG_REGISTRY: Record<string, FeatureFlagRegistryEntry> = {
           isSingleSwapBridgeButtonEnabled: true,
           noFeeAssets: [],
         },
-        '728126428': {
-          isActiveDest: true,
-          isActiveSrc: true,
-          isSingleSwapBridgeButtonEnabled: true,
-        },
-        '1151111081099710': {
-          topAssets: [
-            'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v',
-            '6p6xgHyF7AeE6TZkSmFsko444wqoP15icUSqi2jfGiPN',
-            'JUPyiwrYJFskUPiHa7hkeR8VUtAeFoSYbKedZNsDvCN',
-            '7vfCXTUXx5WJV5JADk17DUJ4ksgau7utNKj4b963voxsDx8F8k8k3uYw1PDC',
-            '3iQL8BFS2vE7mww4ehAqQHAsbmRNCrPxizWAT2Zfyr9y',
-            '9zNQRsGLjNKwCUU5Gq5LR8beUCPzQMVMqKAi3SSZh54u',
-            'DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263',
-            'rndrizKT3MK1iimdxRdWabcF7Zg7AR5T4nud4EkHBof',
-            '21AErpiB8uSb94oQKRcwuHqyHF93njAxBSbdUrpupump',
-            'pumpCmXqMfrsAkQ5r49WcJnRayYRqmXz6ae8H7H9Dfn',
-          ],
-          isActiveDest: true,
-          isActiveSrc: true,
-          isSingleSwapBridgeButtonEnabled: true,
-          isSnapConfirmationEnabled: true,
-          refreshRate: 10000,
-        },
-        '20000000000001': {
-          isActiveSrc: true,
-          isSingleSwapBridgeButtonEnabled: true,
-          isActiveDest: true,
-        },
       },
       sse: {
         enabled: true,
@@ -477,18 +357,6 @@ export const FEATURE_FLAG_REGISTRY: Record<string, FeatureFlagRegistryEntry> = {
         {
           name: 'BNB Chain',
           chainId: 'eip155:56',
-        },
-        {
-          chainId: 'bip122:000000000019d6689c085ae165831e93',
-          name: 'BTC',
-        },
-        {
-          name: 'Solana',
-          chainId: 'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp',
-        },
-        {
-          name: 'Tron',
-          chainId: 'tron:728126428',
         },
         {
           name: 'Base',
@@ -2113,19 +1981,6 @@ export const FEATURE_FLAG_REGISTRY: Record<string, FeatureFlagRegistryEntry> = {
     status: FeatureFlagStatus.Active,
   },
 
-  neNetworkDiscoverButton: {
-    name: 'neNetworkDiscoverButton',
-    type: FeatureFlagType.Remote,
-    inProd: true,
-    productionDefault: {
-      'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp': true,
-      '0x531': true,
-      '0x8f': true,
-      '0xe708': true,
-    },
-    status: FeatureFlagStatus.Active,
-  },
-
   sendRedesign: {
     name: 'sendRedesign',
     type: FeatureFlagType.Remote,
@@ -2144,40 +1999,6 @@ export const FEATURE_FLAG_REGISTRY: Record<string, FeatureFlagRegistryEntry> = {
     },
     status: FeatureFlagStatus.Active,
   },
-  perpsEnabled: {
-    name: 'perpsEnabled',
-    type: FeatureFlagType.Remote,
-    inProd: true,
-    productionDefault: false,
-    status: FeatureFlagStatus.Active,
-  },
-
-  perpsEnabledVersion: {
-    name: 'perpsEnabledVersion',
-    type: FeatureFlagType.Remote,
-    inProd: true,
-    productionDefault: {
-      enabled: false,
-      minimumVersion: '13.15.0',
-    },
-    status: FeatureFlagStatus.Active,
-  },
-
-  perpsHip3AllowlistMarkets: {
-    name: 'perpsHip3AllowlistMarkets',
-    type: FeatureFlagType.Remote,
-    inProd: true,
-    productionDefault: 'xyz:*',
-    status: FeatureFlagStatus.Active,
-  },
-  rewardsBitcoinEnabledExtension: {
-    name: 'rewardsBitcoinEnabledExtension',
-    type: FeatureFlagType.Remote,
-    inProd: true,
-    productionDefault: false,
-    status: FeatureFlagStatus.Active,
-  },
-
   rewardsEnabled: {
     name: 'rewardsEnabled',
     type: FeatureFlagType.Remote,
@@ -2197,14 +2018,6 @@ export const FEATURE_FLAG_REGISTRY: Record<string, FeatureFlagRegistryEntry> = {
       enabled: false,
       minimumVersion: '0.0.0',
     },
-    status: FeatureFlagStatus.Active,
-  },
-
-  rewardsTronEnabledExtension: {
-    name: 'rewardsTronEnabledExtension',
-    type: FeatureFlagType.Remote,
-    inProd: true,
-    productionDefault: false,
     status: FeatureFlagStatus.Active,
   },
 
@@ -2299,16 +2112,6 @@ export const FEATURE_FLAG_REGISTRY: Record<string, FeatureFlagRegistryEntry> = {
     status: FeatureFlagStatus.Active,
   },
 
-  perpsPerpTradingGeoBlockedCountriesV2: {
-    name: 'perpsPerpTradingGeoBlockedCountriesV2',
-    type: FeatureFlagType.Remote,
-    inProd: true,
-    productionDefault: {
-      blockedRegions: ['BE', 'US', 'CA-ON', 'GB'],
-    },
-    status: FeatureFlagStatus.Active,
-  },
-
   settingsRedesign: {
     name: 'settingsRedesign',
     type: FeatureFlagType.Remote,
@@ -2335,13 +2138,6 @@ export const FEATURE_FLAG_REGISTRY: Record<string, FeatureFlagRegistryEntry> = {
       minimumVersion: '0.0.1',
       enabled: false,
     },
-    status: FeatureFlagStatus.Active,
-  },
-  perpsHip3BlocklistMarkets: {
-    name: 'perpsHip3BlocklistMarkets',
-    type: FeatureFlagType.Remote,
-    inProd: true,
-    productionDefault: 'variation 2',
     status: FeatureFlagStatus.Active,
   },
 };

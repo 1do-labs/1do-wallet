@@ -46,7 +46,7 @@ export default {
     header: {
       control: 'array',
       description:
-        'An array of result component configurations to be rendered at the top of the page. For example: ```[{"name": "SnapAuthorshipHeader", "key": "snapHeader", "properties": { "snapId": "npm:@test/test-snap" }}]```',
+        'An array of result component configurations to be rendered at the top of the page. For example: ```[{"name": "Box", "key": "header", "children": "Custom header"}]```',
       table: {
         defaultValue: {
           summary: '[]',
@@ -108,7 +108,7 @@ export const TemplateStory = () => {
                 borderRadius: '10px',
                 boxShadow: 'var(--shadow-size-lg) var(--color-shadow-default)',
               },
-              key: 'snapAccountSuccessMessage',
+              key: 'accountSuccessMessage',
             },
             children: [
               {
@@ -167,9 +167,9 @@ export const TemplateStory = () => {
         ],
         header: [
           {
-            name: 'SnapAuthorshipHeader',
-            key: 'snapAccountSuccessMessage',
-            properties: { snapId: 'npm:@test/test-snap' },
+            name: 'Box',
+            key: 'accountSuccessHeader',
+            children: 'Custom header',
           },
         ],
       }}

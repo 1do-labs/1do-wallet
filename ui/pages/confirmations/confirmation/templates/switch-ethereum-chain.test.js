@@ -41,7 +41,6 @@ const mockBaseStore = {
       chainId: '0x9999',
       nickname: 'Test initial state',
     }),
-    snaps: {},
   },
 };
 

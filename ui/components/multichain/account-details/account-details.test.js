@@ -135,10 +135,10 @@ describe('AccountDetails', () => {
     expect(screen.queryByText('Account 1')).toBeNull();
   });
 
-  it('should show the snap account name', async () => {
-    render({ address: '0xb552685e3d2790efd64a175b00d51f02cdafee5d' });
+  it('should show another account name', async () => {
+    render({ address: '0xeb9e64b93097bc15f01f13eae97015c57ab64823' });
 
-    const accountName = screen.getByText('Snap Account 1');
+    const accountName = screen.getByText('Account 2');
 
     expect(accountName).toBeInTheDocument();
   });

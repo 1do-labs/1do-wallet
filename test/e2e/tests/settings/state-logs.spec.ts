@@ -70,36 +70,9 @@ async function mockStateLogsMocks(server: Mockttp) {
 async function replacePlaceholderInReferenceLogs(
   stateLogs: MinimalStateLogsJson,
 ): Promise<StateLogsTypeDefinition> {
-  // We'll use this mapping to replace placeholders in the reference logs with actual account IDs
-  // from the downloaded logs (e.g "<bitcoin-account-1>" -> "75ad4470-156b-4f7f-b0a5-ffe6cd114ac9").
-  const accountsMapping: Record<'solana' | 'bitcoin' | 'tron', string[]> = {
-    tron: [],
-    solana: [],
-    bitcoin: [],
-  };
-
-  for (const [id, account] of Object.entries(
-    stateLogs.metamask.internalAccounts.accounts,
-  )) {
-    if (account.type.startsWith('bip122')) {
-      accountsMapping.bitcoin.push(id);
-    } else if (account.type.startsWith('solana')) {
-      accountsMapping.solana.push(id);
-    } else if (account.type.startsWith('tron')) {
-      accountsMapping.tron.push(id);
-    }
-  }
-
   let referenceLogsText = JSON.stringify(referenceStateLogsDefinition);
-  for (const [network, ids] of Object.entries(accountsMapping)) {
-    for (const [index, id] of ids.entries()) {
-      const placeholder = `<${network}-account-${index + 1}>`;
-      referenceLogsText = referenceLogsText.replaceAll(
-        // Use regex to replace all occurrences of the placeholder, not only the first one.
-        new RegExp(placeholder, 'gu'),
-        id,
-      );
-    }
+  for (const id of Object.keys(stateLogs.metamask.internalAccounts.accounts)) {
+    referenceLogsText = referenceLogsText.replaceAll('<account-id>', id);
   }
 
   return JSON.parse(referenceLogsText);

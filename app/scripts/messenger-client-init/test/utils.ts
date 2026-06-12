@@ -21,7 +21,6 @@ export function buildControllerInitRequestMock(): jest.Mocked<
     // @ts-expect-error: Partial mock.
     extension: {},
     platform: new ExtensionPlatform(),
-    getCronjobControllerStorageManager: jest.fn(),
     getMessengerClient: jest.fn(),
     getFlatState: jest.fn(),
     getPermittedAccounts: jest.fn(),
@@ -34,6 +33,5 @@ export function buildControllerInitRequestMock(): jest.Mocked<
     setLocked: jest.fn(),
     showNotification: jest.fn(),
     showUserConfirmation: jest.fn(),
-    preinstalledSnaps: [],
   };
 }

@@ -5,7 +5,6 @@ import {
   useSearchParams,
 } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { isSnapId } from '@metamask/snaps-utils';
 import { Content, Footer, Header, Page } from '../page';
 import {
   Box,
@@ -90,10 +89,7 @@ const PermissionsPage = () => {
 
   const handleDisconnectAll = useCallback(() => {
     const errors = [];
-    // Get all non-snap origins from the merged connections list
-    const origins = Object.keys(mergedConnectionsList).filter(
-      (origin) => !isSnapId(origin),
-    );
+    const origins = Object.keys(mergedConnectionsList);
 
     origins.forEach((origin) => {
       try {
@@ -133,17 +129,14 @@ const PermissionsPage = () => {
   };
 
   const renderConnectionsList = (connectionList) =>
-    Object.entries(connectionList).map(([itemKey, connection]) => {
-      const isSnap = isSnapId(connection.origin);
-      return isSnap ? null : (
-        <ConnectionListItem
-          data-testid="connection-list-item"
-          key={itemKey}
-          connection={connection}
-          onClick={() => handleConnectionClick(connection)}
-        />
-      );
-    });
+    Object.entries(connectionList).map(([itemKey, connection]) => (
+      <ConnectionListItem
+        data-testid="connection-list-item"
+        key={itemKey}
+        connection={connection}
+        onClick={() => handleConnectionClick(connection)}
+      />
+    ));
 
   return (
     <Page className="main-container" data-testid="permissions-page">

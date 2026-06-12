@@ -112,10 +112,6 @@ export const MultichainAccountNetworkGroup: React.FC<
       // Linea mainnet
       'eip155:59144': 2,
       '0xe708': 2,
-      // Solana mainnet
-      'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp': 3,
-      // Bitcoin mainnet
-      'bip122:000000000019d6689c085ae165831e93': 4,
     };
 
     // Sort chainIds based on priority

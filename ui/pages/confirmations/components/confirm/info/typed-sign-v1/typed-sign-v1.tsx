@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { isSnapId } from '@metamask/snaps-utils';
 import { ConfirmInfoAlertRow } from '../../../../../../components/app/confirm/info/row/alert-row/alert-row';
 import {
   ConfirmInfoRow,
@@ -25,9 +24,7 @@ const TypedSignV1Info: React.FC = () => {
     return null;
   }
 
-  const toolTipMessage = isSnapId(currentConfirmation.msgParams?.origin)
-    ? t('requestFromInfoSnap')
-    : t('requestFromInfo');
+  const toolTipMessage = t('requestFromInfo');
   const chainId = currentConfirmation.chainId as string;
 
   return (

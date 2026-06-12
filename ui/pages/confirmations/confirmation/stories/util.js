@@ -52,7 +52,7 @@ const STORE_MOCK = {
     pendingApprovals: {
       testId: {
         id: 'testId',
-        origin: 'npm:@test/test-snap',
+        origin: 'https://metamask.github.io',
       },
     },
     enabledNetworkMap: {
@@ -62,8 +62,8 @@ const STORE_MOCK = {
     },
     selectedNetworkClientId: 'testNetworkClientId',
     subjectMetadata: {
-      'npm:@test/test-snap': {
-        name: 'Test Snap',
+      'https://metamask.github.io': {
+        name: 'Test Dapp',
         version: '1.0.0',
       },
     },
@@ -72,14 +72,6 @@ const STORE_MOCK = {
     internalAccounts: testData.metamask.internalAccounts,
     accountsByChainId: getAccountTrackerControllerAccountsByChainId(testData),
     accountTree: testData.metamask.accountTree,
-    snaps: {
-      'npm:@test/test-snap': {
-        id: 'npm:@test/test-snap',
-        manifest: {
-          proposedName: 'Test Snap',
-        },
-      },
-    },
   },
 };
 

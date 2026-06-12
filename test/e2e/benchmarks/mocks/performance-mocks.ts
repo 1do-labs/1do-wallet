@@ -6,14 +6,12 @@
 import { Mockttp, MockedEndpoint, RequestRuleBuilder } from 'mockttp';
 import { AuthenticationController } from '@metamask/profile-sync-controller';
 import { POWER_USER_PRICES } from './price-data';
-import { buildSseResponseBody } from './swap-mocks';
 import bridgeNetworkTokens from './bridge-network-tokens.json';
 import bridgeTokens from './bridge-tokens.json';
 import bridgeTokensPopular from './bridge-tokens-popular.json';
 import bridgeTokensSearch from './bridge-tokens-search.json';
 import chainsList from './chains-list.json';
 import swapQuoteEthUsdc from './swap-quote-eth-usdc.json';
-import swapQuoteSolUsdc from './swap-quote-sol-usdc.json';
 import {
   jsonRpcResponse,
   buildSpotPricesResponse,
@@ -23,8 +21,6 @@ import {
   CRYPTO_EXCHANGE_RATES,
   SUPPORTED_VS_CURRENCIES,
   SUPPORTED_NETWORKS,
-  BITCOIN_SPOT_PRICES,
-  SOLANA_SPOT_PRICES,
   CRYPTOCOMPARE_MULTI_PRICES,
   PHISHING_DETECTION,
   SUBSCRIPTION_ELIGIBILITY,
@@ -37,18 +33,18 @@ import {
   AGGREGATOR_METADATA,
   ACCOUNTS_TRANSACTIONS,
   ACCOUNTS_BALANCES,
-  solanaGetBalanceResponse,
-  solanaGetAccountInfoResponse,
-  SOLANA_GET_LATEST_BLOCKHASH,
-  SOLANA_GET_FEE_FOR_MESSAGE,
-  SOLANA_GET_MIN_BALANCE_RENT_EXEMPTION,
-  SOLANA_GET_TOKEN_ACCOUNTS_BY_OWNER,
-  SOLANA_SIMULATE_TRANSACTION,
-  SOLANA_GET_SIGNATURES_FOR_ADDRESS,
-  solanaCatchAllResponse,
 } from './mock-responses';
 
 const AuthMocks = AuthenticationController.Mocks;
+
+function buildSseResponseBody(events: unknown[]): string {
+  return events
+    .map(
+      (quote, i) =>
+        `event: quote\nid: ${Date.now()}-${i + 1}\ndata: ${JSON.stringify(quote)}\n\n`,
+    )
+    .join('');
+}
 
 /**
  * Mock Priority System for Performance Tests
@@ -541,8 +537,6 @@ export function getCommonMocks(server: Mockttp): Promise<MockedEndpoint>[] {
   ];
 }
 
-const SOLANA_URL_REGEX = /^https:\/\/solana-mainnet\.infura\.io\/v3\/.*/u;
-
 export async function mockBenchmarkEndpoints(
   server: Mockttp,
 ): Promise<MockedEndpoint[]> {
@@ -942,34 +936,6 @@ export async function mockBenchmarkEndpoints(
 
   endpoints.push(
     await server
-      .forGet(/price\.api\.cx\.metamask\.io\/v\d+\/spot-prices\/bitcoin/u)
-      .asPriority(102)
-      .always()
-      .thenCallback(delayedResponse(200, BITCOIN_SPOT_PRICES)),
-  );
-
-  endpoints.push(
-    await server
-      .forGet(/price\.api\.cx\.metamask\.io\/v\d+\/spot-prices\/solana/u)
-      .asPriority(102)
-      .always()
-      .thenCallback(delayedResponse(200, SOLANA_SPOT_PRICES)),
-  );
-
-  endpoints.push(
-    await server
-      .forGet(/price\.api\.cx\.metamask\.io\/v\d+\/spot-prices\?.*solana/u)
-      .asPriority(103)
-      .always()
-      .thenCallback(
-        delayedCallback(200, (req) =>
-          buildSpotPricesResponse(req.url, POWER_USER_PRICES),
-        ),
-      ),
-  );
-
-  endpoints.push(
-    await server
       .forGet(/price\.api\.cx\.metamask\.io\/v\d+\/spot-prices/u)
       .asPriority(101)
       .always()
@@ -1036,151 +1002,17 @@ export async function mockBenchmarkEndpoints(
       .thenCallback(delayedResponse(550, ACCOUNTS_BALANCES)),
   );
 
-  // Solana RPC mock delays calibrated to real-world infura solana-mainnet latency:
-  //   getSlot / getHealth / simple calls : ~50–150 ms  → 100 ms
-  //   getBalance / getAccountInfo        : p50 ~100–250 ms → 150 ms
-  //   getTokenAccountsByOwner            : scan, ~100–300 ms → 200 ms
-  //   simulateTransaction                : heavy, ~200–400 ms → 300 ms
-  //   getSignaturesForAddress            : tx history, ~200–500 ms → 350 ms
-  //   catch-all (any other method)       : real p95 ~300–600 ms → 450 ms
-  //                                        (previously 1500 ms — 2.5–5× too high)
-  endpoints.push(
-    await server
-      .forPost(SOLANA_URL_REGEX)
-      .withJsonBodyIncluding({ method: 'getBalance' })
-      .asPriority(MOCK_PRIORITIES.HIGH_PRIORITY)
-      .always()
-      .thenCallback(async (req) => {
-        const body = (await req.body.getJson()) as { id?: string };
-        await new Promise((resolve) => setTimeout(resolve, 150));
-        return solanaGetBalanceResponse(body.id || '1337');
-      }),
-  );
-
-  endpoints.push(
-    await server
-      .forPost(SOLANA_URL_REGEX)
-      .withJsonBodyIncluding({ method: 'getAccountInfo' })
-      .asPriority(MOCK_PRIORITIES.HIGH_PRIORITY)
-      .always()
-      .thenCallback(async (req) => {
-        const body = (await req.body.getJson()) as { id?: string };
-        await new Promise((resolve) => setTimeout(resolve, 150));
-        return solanaGetAccountInfoResponse(body.id || '1337');
-      }),
-  );
-
-  endpoints.push(
-    await server
-      .forPost(SOLANA_URL_REGEX)
-      .withJsonBodyIncluding({ method: 'getLatestBlockhash' })
-      .asPriority(MOCK_PRIORITIES.HIGH_PRIORITY)
-      .always()
-      .thenCallback(delayedResponse(100, SOLANA_GET_LATEST_BLOCKHASH)),
-  );
-
-  endpoints.push(
-    await server
-      .forPost(SOLANA_URL_REGEX)
-      .withJsonBodyIncluding({ method: 'getFeeForMessage' })
-      .asPriority(MOCK_PRIORITIES.HIGH_PRIORITY)
-      .always()
-      .thenCallback(delayedResponse(100, SOLANA_GET_FEE_FOR_MESSAGE)),
-  );
-
-  endpoints.push(
-    await server
-      .forPost(SOLANA_URL_REGEX)
-      .withJsonBodyIncluding({ method: 'getMinimumBalanceForRentExemption' })
-      .asPriority(MOCK_PRIORITIES.HIGH_PRIORITY)
-      .always()
-      .thenCallback(
-        delayedResponse(100, SOLANA_GET_MIN_BALANCE_RENT_EXEMPTION),
-      ),
-  );
-
-  endpoints.push(
-    await server
-      .forPost(SOLANA_URL_REGEX)
-      .withJsonBodyIncluding({ method: 'getTokenAccountsByOwner' })
-      .asPriority(MOCK_PRIORITIES.HIGH_PRIORITY)
-      .always()
-      .thenCallback(delayedResponse(200, SOLANA_GET_TOKEN_ACCOUNTS_BY_OWNER)),
-  );
-
-  endpoints.push(
-    await server
-      .forPost(SOLANA_URL_REGEX)
-      .withJsonBodyIncluding({ method: 'simulateTransaction' })
-      .asPriority(MOCK_PRIORITIES.HIGH_PRIORITY)
-      .always()
-      .thenCallback(delayedResponse(300, SOLANA_SIMULATE_TRANSACTION)),
-  );
-
-  endpoints.push(
-    await server
-      .forPost(SOLANA_URL_REGEX)
-      .withJsonBodyIncluding({ method: 'getSignaturesForAddress' })
-      .asPriority(MOCK_PRIORITIES.HIGH_PRIORITY)
-      .always()
-      .thenCallback(delayedResponse(350, SOLANA_GET_SIGNATURES_FOR_ADDRESS)),
-  );
-
-  endpoints.push(
-    await server
-      .forPost(SOLANA_URL_REGEX)
-      .asPriority(MOCK_PRIORITIES.TEST_OVERRIDE_CATCHALL)
-      .always()
-      .thenCallback(async (req) => {
-        const body = (await req.body.getJson()) as { id?: string };
-        await new Promise((resolve) => setTimeout(resolve, 450));
-        return solanaCatchAllResponse(body.id || '1337');
-      }),
-  );
-
-  endpoints.push(
-    await server
-      .forPost(/getTokens\/popular/u)
-      .asPriority(MOCK_PRIORITIES.TEST_OVERRIDE)
-      .always()
-      .thenCallback(
-        delayedResponse(300, { statusCode: 200, json: bridgeTokensPopular }),
-      ),
-  );
-
-  endpoints.push(
-    await server
-      .forPost(/getTokens\/search/u)
-      .asPriority(MOCK_PRIORITIES.TEST_OVERRIDE)
-      .always()
-      .thenCallback(
-        delayedResponse(300, { statusCode: 200, json: bridgeTokensSearch }),
-      ),
-  );
-
-  endpoints.push(
-    await server
-      .forGet(/getTokens/u)
-      .asPriority(MOCK_PRIORITIES.TEST_OVERRIDE)
-      .always()
-      .thenCallback(
-        delayedResponse(300, { statusCode: 200, json: bridgeTokens }),
-      ),
-  );
-
   endpoints.push(
     await server
       .forGet(/getQuoteStream/u)
       .asPriority(MOCK_PRIORITIES.TEST_OVERRIDE)
       .always()
       .thenCallback(
-        delayedCallback(2000, (req) => {
-          const isSolana = req.url.includes('srcChainId=1151111081099710');
-          const quote = isSolana ? swapQuoteSolUsdc : swapQuoteEthUsdc;
+        delayedCallback(2000, () => {
           return {
             statusCode: 200,
             headers: { 'Content-Type': 'text/event-stream' },
-            body: buildSseResponseBody([quote]),
+            body: buildSseResponseBody([swapQuoteEthUsdc]),
           };
         }),
       ),
@@ -1192,9 +1024,7 @@ export async function mockBenchmarkEndpoints(
       .asPriority(MOCK_PRIORITIES.TEST_OVERRIDE)
       .always()
       .thenCallback(
-        delayedCallback(2000, (req) => {
-          const isSolana = req.url.includes('srcChainId=1151111081099710');
-          const quote = isSolana ? swapQuoteSolUsdc : swapQuoteEthUsdc;
+        delayedCallback(2000, () => {
           return { statusCode: 200, json: [quote] };
         }),
       ),

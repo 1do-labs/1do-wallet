@@ -195,7 +195,7 @@ describe('transaction-pay utils', () => {
     it('filters out tokens without eip155 account type', () => {
       const tokens = [
         createMockAsset({
-          accountType: 'bip122:p2wpkh' as Asset['accountType'],
+          accountType: 'unknown:account' as Asset['accountType'],
         }),
         createMockAsset({
           accountType: 'eip155:eoa' as Asset['accountType'],

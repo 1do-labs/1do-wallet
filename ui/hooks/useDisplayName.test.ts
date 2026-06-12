@@ -106,7 +106,7 @@ describe('useDisplayName', () => {
         domainName: ensName,
         protocol: 'Ethereum Name Service',
         resolvedAddress: address,
-        resolvingSnap: 'Ethereum Name Service resolver',
+        resolvingSource: 'Ethereum Name Service resolver',
       },
     ]);
   }

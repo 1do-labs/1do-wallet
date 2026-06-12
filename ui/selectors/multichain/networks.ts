@@ -9,9 +9,7 @@ import {
   NetworkStatus,
   type NetworkConfiguration as InternalNetworkConfiguration,
 } from '@metamask/network-controller';
-import {
-  isEvmAccountType,
-} from '@metamask/keyring-api';
+import { isEvmAccountType } from '@metamask/keyring-api';
 import type { InternalAccount } from '@metamask/keyring-internal-api';
 import type { NetworkType } from '@metamask/controller-utils';
 import {
@@ -45,11 +43,6 @@ import {
   getMaybeSelectedInternalAccount,
   type AccountsState,
 } from '../accounts';
-import {
-  getIsBitcoinSupportEnabled,
-  getIsSolanaSupportEnabled,
-  getIsTronSupportEnabled,
-} from './feature-flags';
 
 // Selector types
 
@@ -91,15 +84,9 @@ export type MultichainNetworkConfigState =
 
 // Selectors
 
-const getIsNonEvmNetworksEnabled = createSelector(
-  getIsBitcoinSupportEnabled,
-  getIsSolanaSupportEnabled,
-  getIsTronSupportEnabled,
-  getInternalAccounts,
-  () => {
-    return { bitcoinEnabled: false, solanaEnabled: false, tronEnabled: false };
-  },
-);
+const getIsNonEvmNetworksEnabled = createSelector(getInternalAccounts, () => {
+  return { bitcoinEnabled: false, solanaEnabled: false, tronEnabled: false };
+});
 
 export const getNonEvmMultichainNetworkConfigurationsByChainId =
   createDeepEqualSelector(
@@ -421,7 +408,7 @@ export type MultichainNetwork = {
   chainId: CaipChainId;
   network: // TODO: Maybe updates ProviderConfig to add rpcPrefs.imageUrl field
   ProviderConfigWithImageUrlAndExplorerUrl;
-}
+};
 
 // FIXME: All the following might have side-effect, like if the current account is a bitcoin one and that
 // a popup (for ethereum related stuffs) is being shown (and uses this function), then the native
@@ -493,7 +480,8 @@ export function getMultichainNetwork(
 
   const networkConfigurations = getNetworkConfigurationsByChainId(state);
   return {
-    nickname: networkConfigurations[fallbackChainId]?.name ?? fallbackNetwork.rpcUrl,
+    nickname:
+      networkConfigurations[fallbackChainId]?.name ?? fallbackNetwork.rpcUrl,
     isEvmNetwork: true,
     chainId: `${KnownCaipNamespace.Eip155}:${Number(
       fallbackChainId,

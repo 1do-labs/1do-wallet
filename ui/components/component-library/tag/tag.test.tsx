@@ -18,15 +18,11 @@ describe('Tag', () => {
 
   it('should render a tag with an icon and a label', () => {
     const { getByTestId, container } = render(
-      <Tag
-        data-testid="tag"
-        label="Snap Name"
-        startIconName={IconName.Snaps}
-      />,
+      <Tag data-testid="tag" label="Network" startIconName={IconName.Global} />,
     );
     const tag = getByTestId('tag');
     expect(tag).toBeDefined();
-    expect(tag).toHaveTextContent('Snap Name');
+    expect(tag).toHaveTextContent('Network');
     const icon = tag.querySelector('svg');
     expect(icon).toBeDefined();
     expect(container).toMatchSnapshot();
@@ -36,8 +32,8 @@ describe('Tag', () => {
     const { getByTestId, container } = render(
       <Tag
         data-testid="tag"
-        label="Snap Name"
-        startIconName={IconName.Snaps}
+        label="Network"
+        startIconName={IconName.Global}
         startIconProps={{
           color: IconColor.primaryDefault,
         }}
@@ -45,7 +41,7 @@ describe('Tag', () => {
     );
     const tag = getByTestId('tag');
     expect(tag).toBeDefined();
-    expect(tag).toHaveTextContent('Snap Name');
+    expect(tag).toHaveTextContent('Network');
     const icon = tag.querySelector('.mm-icon');
     expect(icon).toBeDefined();
     expect(icon).toHaveClass('mm-box--color-primary-default');

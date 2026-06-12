@@ -23,14 +23,6 @@ import {
 import { getDefaultPreferencesControllerState } from '../controllers/preferences-controller';
 import { createSegmentMock } from './segment';
 import createRPCMethodTrackingMiddleware from './createRPCMethodTrackingMiddleware';
-import * as snapKeyringMetrics from './snap-keyring/metrics';
-
-jest.mock('./snap-keyring/metrics', () => {
-  return {
-    getSnapAndHardwareInfoForMetrics: jest.fn().mockResolvedValue({}),
-  };
-});
-const MockSnapKeyringMetrics = jest.mocked(snapKeyringMetrics);
 
 const MOCK_ID = '123';
 const expectedUniqueIdentifier = `signature-${MOCK_ID}`;
@@ -127,6 +119,9 @@ const createHandler = (opts) =>
     globalRateLimitMaxAmount: 0,
     appStateController,
     metaMetricsController,
+    getAccountType: jest.fn().mockResolvedValue('MetaMask'),
+    getDeviceModel: jest.fn().mockResolvedValue('N/A'),
+    getHardwareTypeForMetric: jest.fn().mockResolvedValue(undefined),
     getHDEntropyIndex: jest.fn(),
     ...opts,
   });
@@ -267,11 +262,13 @@ describe('createRPCMethodTrackingMiddleware', () => {
       });
     });
 
-    it(`should attempt to resolve snaps and hardware info for the ${MetaMetricsEventName.SignatureRequested} event`, async () => {
+    it(`should attempt to resolve hardware info for the ${MetaMetricsEventName.SignatureRequested} event`, async () => {
+      const getHardwareTypeForMetric = jest.fn().mockResolvedValue('ledger');
       const req = {
         id: MOCK_ID,
         method: MESSAGE_TYPE.PERSONAL_SIGN,
         origin: 'some.dapp',
+        params: ['some-data', '0xb60e8dd61c5d32be8058bb8eb970870f07233155'],
         securityAlertResponse: {
           result_type: BlockaidResultType.Malicious,
           reason: BlockaidReason.maliciousDomain,
@@ -284,12 +281,10 @@ describe('createRPCMethodTrackingMiddleware', () => {
         error: null,
       };
       const { next } = getNext();
-      const handler = createHandler();
+      const handler = createHandler({ getHardwareTypeForMetric });
       await handler(req, res, next);
 
-      expect(
-        MockSnapKeyringMetrics.getSnapAndHardwareInfoForMetrics,
-      ).toHaveBeenCalledTimes(1);
+      expect(getHardwareTypeForMetric).toHaveBeenCalledTimes(1);
     });
 
     it(`should track a ${MetaMetricsEventName.SignatureRequested} event for personal sign`, async () => {
@@ -421,7 +416,7 @@ describe('createRPCMethodTrackingMiddleware', () => {
       const res = {
         error: {
           code: errorCodes.rpc.internal,
-          message: 'Request rejected by user or snap.',
+          message: 'Request rejected by user.',
         },
       };
       const { next, executeMiddlewareStack } = getNext();
@@ -500,7 +495,7 @@ describe('createRPCMethodTrackingMiddleware', () => {
       });
     });
 
-    it(`should attempt to resolve snaps and hardware info for the ${MetaMetricsEventName.SignatureRejected} event`, async () => {
+    it(`should attempt to resolve hardware info for the ${MetaMetricsEventName.SignatureRejected} event`, async () => {
       const req = {
         id: MOCK_ID,
         method: MESSAGE_TYPE.PERSONAL_SIGN,
@@ -518,29 +513,25 @@ describe('createRPCMethodTrackingMiddleware', () => {
       await handler(req, res, next);
       await executeMiddlewareStack();
 
-      // Called once for the initial request and once for the rejected request
-      expect(
-        MockSnapKeyringMetrics.getSnapAndHardwareInfoForMetrics,
-      ).toHaveBeenCalledTimes(2);
+      expect(metaMetricsController.trackEvent).toHaveBeenCalled();
     });
 
-    it(`should attempt to resolve snaps and hardware info for the ${MetaMetricsEventName.SignatureApproved} event`, async () => {
+    it(`should attempt to resolve hardware info for the ${MetaMetricsEventName.SignatureApproved} event`, async () => {
+      const getHardwareTypeForMetric = jest.fn().mockResolvedValue('ledger');
       const req = {
         id: MOCK_ID,
         method: MESSAGE_TYPE.PERSONAL_SIGN,
         origin: 'some.dapp',
+        params: ['some-data', '0xb60e8dd61c5d32be8058bb8eb970870f07233155'],
       };
 
       const res = {};
       const { next, executeMiddlewareStack } = getNext();
-      const handler = createHandler();
+      const handler = createHandler({ getHardwareTypeForMetric });
       await handler(req, res, next);
       await executeMiddlewareStack();
 
-      // Called once for the initial request and once for the approved request
-      expect(
-        MockSnapKeyringMetrics.getSnapAndHardwareInfoForMetrics,
-      ).toHaveBeenCalledTimes(2);
+      expect(getHardwareTypeForMetric).toHaveBeenCalledTimes(2);
     });
 
     it(`should never track blocked methods such as ${MESSAGE_TYPE.GET_PROVIDER_STATE}`, () => {

@@ -52,7 +52,7 @@ export default function ConnectedAccounts({
       footerClassName="connected-accounts__footer"
       ConnectedAccountsPermissions={{}}
       footer={
-        connectedAccounts.length > 0 && ( // show permissions only for connected accounts not snaps
+        connectedAccounts.length > 0 && (
           <ConnectedAccountsPermissions permissions={permissions} />
         )
       }

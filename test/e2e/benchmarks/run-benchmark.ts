@@ -132,7 +132,6 @@ const PRESETS: Record<string, string[]> = {
   // User journey benchmarks - Assets
   [USER_JOURNEY_PRESETS.ASSETS]: [
     `${BENCHMARK_DIR}/user-journey/asset-details.ts`,
-    `${BENCHMARK_DIR}/user-journey/solana-asset-details.ts`,
   ],
   // User journey benchmarks - Accounts
   [USER_JOURNEY_PRESETS.ACCOUNT_MANAGEMENT]: [
@@ -141,7 +140,6 @@ const PRESETS: Record<string, string[]> = {
   // User journey benchmarks - Transactions
   [USER_JOURNEY_PRESETS.TRANSACTIONS]: [
     `${BENCHMARK_DIR}/user-journey/send-transactions.ts`,
-    `${BENCHMARK_DIR}/user-journey/swap.ts`,
   ],
   // Startup benchmarks
   [STARTUP_PRESETS.STANDARD_HOME]: [

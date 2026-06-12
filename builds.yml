@@ -147,10 +147,6 @@ features:
       - ./{app,shared,ui}/**/beta/**
   build-flask:
     assets:
-      - src: ./node_modules/@metamask/account-watcher/dist/preinstalled-snap.json
-        dest: snaps/account-watcher.json
-      - src: ./node_modules/@metamask/preinstalled-example-snap/dist/preinstalled-snap.json
-        dest: snaps/preinstalled-example-snap.json
       - src: ./app/build-types/flask/images/
         dest: images
       - ./{app,shared,ui}/**/flask/**
@@ -160,8 +156,6 @@ features:
       - ./{app,shared,ui}/**/multi-srp/(?!.*srp-list)/**
   build-experimental:
     assets:
-      - src: ./node_modules/@metamask/account-watcher/dist/preinstalled-snap.json
-        dest: snaps/account-watcher.json
 
 # Env variables that are required for all types of builds
 #
@@ -337,8 +331,6 @@ env:
 
   # EIP-7715 Readable Permissions
   - GATOR_ENABLED_PERMISSION_TYPES: 'native-token-stream,native-token-periodic,erc20-token-stream,erc20-token-periodic'
-  - PERMISSIONS_KERNEL_SNAP_ID: 'npm:@metamask/permissions-kernel-snap'
-  - GATOR_PERMISSIONS_PROVIDER_SNAP_ID: 'npm:@metamask/gator-permissions-snap'
   - GATOR_PERMISSIONS_REVOCATION_ENABLED: true
 
   # Perps geoblock fallback (comma-separated region codes when remote flag unavailable)
@@ -411,12 +403,6 @@ env:
 
   # Metamask Shield
   - METAMASK_SHIELD_ENABLED: 'true'
-
-  # Snaps
-  - AUTO_UPDATE_PREINSTALLED_SNAPS: 'true'
-  # This should only be used for local testing, and should not be enabled in any
-  # production builds (including beta and Flask).
-  - FORCE_PREINSTALLED_SNAPS: 'false'
 
   # PNA25 (Privacy Notice)
   - EXTENSION_UX_PNA25: true

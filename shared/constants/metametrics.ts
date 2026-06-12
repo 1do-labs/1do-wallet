@@ -1086,7 +1086,6 @@ export enum MetaMetricsEventAccountType {
   Default = 'metamask',
   Hardware = 'hardware',
   Imported = 'imported',
-  Snap = 'snap',
 }
 
 export enum QueueType {
@@ -1137,7 +1136,6 @@ export enum MetaMetricsEventCategory {
   Send = 'Send',
   Settings = 'Settings',
   Feedback = 'Feedback',
-  Snaps = 'Snaps',
   Swaps = 'Swaps',
   Tokens = 'Tokens',
   Transactions = 'Transactions',

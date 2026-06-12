@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-import { getSnapAndHardwareInfoForMetrics } from '../../snap-keyring/metrics';
 import type { TransactionMetricsBuilder } from './types';
 
 export const getAccountMetricsProperties: TransactionMetricsBuilder = async ({
@@ -14,20 +13,16 @@ export const getAccountMetricsProperties: TransactionMetricsBuilder = async ({
     accountType = 'error';
   }
 
-  const snapAndHardwareInfo = await getSnapAndHardwareInfoForMetrics(
-    transactionMetricsRequest.getAccountType,
-    transactionMetricsRequest.getDeviceModel,
-    transactionMetricsRequest.getHardwareTypeForMetric,
-    transactionMetricsRequest.snapAndHardwareMessenger,
-  );
+  const selectedAddress = transactionMetricsRequest.getSelectedAddress();
+  const hardwareType =
+    await transactionMetricsRequest.getHardwareTypeForMetric(selectedAddress);
 
   return {
     properties: {
       account_type: accountType,
-      device_model: await transactionMetricsRequest.getDeviceModel(
-        transactionMetricsRequest.getSelectedAddress(),
-      ),
-      ...snapAndHardwareInfo,
+      device_model:
+        await transactionMetricsRequest.getDeviceModel(selectedAddress),
+      ...(hardwareType ? { account_hardware_type: hardwareType } : {}),
       hd_entropy_index: transactionMetricsRequest.getHDEntropyIndex(),
     },
     sensitiveProperties: {},

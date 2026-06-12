@@ -6,7 +6,6 @@ import {
   createScaffoldMiddleware,
   JsonRpcEngine,
 } from '@metamask/json-rpc-engine';
-import { asLegacyMiddleware } from '@metamask/json-rpc-engine/v2';
 import { createEngineStream } from '@metamask/json-rpc-middleware-stream';
 import { ObservableStore } from '@metamask/obs-store';
 import { storeAsStream } from '@metamask/obs-store/dist/asStream';
@@ -42,11 +41,6 @@ import {
   createSelectedNetworkMiddleware,
 } from '@metamask/selected-network-controller';
 
-import {
-  createWalletSnapPermissionMiddleware,
-  createPreinstalledSnapsMiddleware,
-  SnapEndowments,
-} from '@metamask/snaps-rpc-methods';
 import { ERC1155, ERC20, ERC721, toHex } from '@metamask/controller-utils';
 
 import { wordlist } from '@metamask/scure-bip39/dist/wordlists/english';
@@ -106,7 +100,6 @@ import {
   requestPermittedChainsPermissionIncremental,
   getCaip25PermissionFromLegacyPermissions,
 } from '@metamask/chain-agnostic-permission';
-import { isSnapId } from '@metamask/snaps-utils';
 import {
   findAtomicBatchSupportForChain,
   checkEip7702Support,
@@ -176,7 +169,6 @@ import { ALLOWED_BRIDGE_CHAIN_IDS } from '../../shared/constants/bridge';
 import { FirstTimeFlowType } from '../../shared/constants/onboarding';
 import { updateCurrentLocale } from '../../shared/lib/translate';
 import { getIsAssetsUnifiedStateIncludedInBuild } from '../../shared/lib/environment';
-import { isSnapPreinstalled } from '../../shared/lib/snaps/snaps';
 import { toChecksumHexAddress } from '../../shared/lib/hexstring-utils';
 import {
   getAccountTrackerControllerAccountsByChainId,
@@ -259,8 +251,6 @@ import {
   updateSecurityAlertResponse,
   validateRequestWithPPOM,
 } from './lib/ppom/ppom-util';
-import createEvmMethodsToNonEvmAccountReqFilterMiddleware from './lib/createEvmMethodsToNonEvmAccountReqFilterMiddleware';
-
 import { decodeTransactionData } from './lib/transaction/decode/util';
 import createTracingMiddleware from './lib/createTracingMiddleware';
 import createOriginThrottlingMiddleware from './lib/createOriginThrottlingMiddleware';
@@ -272,7 +262,6 @@ import {
 } from './lib/approval/utils';
 import {
   MultichainAssetsControllerInit,
-  MultichainTransactionsControllerInit,
   MultichainBalancesControllerInit,
   MultichainAssetsRatesControllerInit,
   MultichainNetworkControllerInit,
@@ -293,13 +282,6 @@ import { GeolocationControllerInit } from './messenger-client-init/geolocation-c
 import { PPOMControllerInit } from './messenger-client-init/confirmations/ppom-controller-init';
 import { SmartTransactionsControllerInit } from './messenger-client-init/smart-transactions/smart-transactions-controller-init';
 import { initMessengerClients } from './messenger-client-init/utils';
-import {
-  CronjobControllerInit,
-  ExecutionServiceInit,
-  RateLimitControllerInit,
-  WebSocketServiceInit,
-} from './messenger-client-init/snaps';
-import { DeFiPositionsControllerInit } from './messenger-client-init/defi-positions/defi-positions-controller-init';
 import { DelegationControllerInit } from './messenger-client-init/delegation/delegation-controller-init';
 import { isRelaySupported } from './lib/transaction/transaction-relay';
 import { openUpdateTabAndReload } from './lib/open-update-tab-and-reload';
@@ -515,11 +497,7 @@ export default class MetamaskController extends EventEmitter {
       MetaMetricsDataDeletionController: MetaMetricsDataDeletionControllerInit,
       GasFeeController: GasFeeControllerInit,
       UserOperationController: UserOperationControllerInit,
-      ExecutionService: ExecutionServiceInit,
-      RateLimitController: RateLimitControllerInit,
-      CronjobController: CronjobControllerInit,
       SelectedNetworkController: SelectedNetworkControllerInit,
-      WebSocketService: WebSocketServiceInit,
       GeolocationApiService: GeolocationApiServiceInit,
       GeolocationController: GeolocationControllerInit,
       PPOMController: PPOMControllerInit,
@@ -551,9 +529,7 @@ export default class MetamaskController extends EventEmitter {
       MultichainAssetsController: MultichainAssetsControllerInit,
       MultichainAssetsRatesController: MultichainAssetsRatesControllerInit,
       MultichainBalancesController: MultichainBalancesControllerInit,
-      MultichainTransactionsController: MultichainTransactionsControllerInit,
       MultichainAccountService: MultichainAccountServiceInit,
-      DeFiPositionsController: DeFiPositionsControllerInit,
       DelegationController: DelegationControllerInit,
       ConnectivityController: ConnectivityControllerInit,
       NetworkOrderController: NetworkOrderControllerInit,
@@ -614,8 +590,6 @@ export default class MetamaskController extends EventEmitter {
     this.gasFeeController = messengerClientsByName.GasFeeController;
     this.userOperationController =
       messengerClientsByName.UserOperationController;
-    this.cronjobController = messengerClientsByName.CronjobController;
-    this.rateLimitController = messengerClientsByName.RateLimitController;
     this.selectedNetworkController =
       messengerClientsByName.SelectedNetworkController;
     this.ppomController = messengerClientsByName.PPOMController;
@@ -635,8 +609,6 @@ export default class MetamaskController extends EventEmitter {
       messengerClientsByName.MultichainAssetsController;
     this.multichainBalancesController =
       messengerClientsByName.MultichainBalancesController;
-    this.multichainTransactionsController =
-      messengerClientsByName.MultichainTransactionsController;
     this.multichainAssetsRatesController =
       messengerClientsByName.MultichainAssetsRatesController;
     this.multichainAccountService =
@@ -654,8 +626,6 @@ export default class MetamaskController extends EventEmitter {
       messengerClientsByName.MultichainNetworkController;
     this.multichainRatesController = messengerClientsByName.RatesController;
     this.delegationController = messengerClientsByName.DelegationController;
-    this.deFiPositionsController =
-      messengerClientsByName.DeFiPositionsController;
     this.accountTreeController = messengerClientsByName.AccountTreeController;
     this.networkOrderController = messengerClientsByName.NetworkOrderController;
     this.networkEnablementController =
@@ -724,7 +694,6 @@ export default class MetamaskController extends EventEmitter {
     });
 
     setSentinelApiAuth(() => undefined);
-    this.cronjobController.init();
 
     this.controllerMessenger.subscribe(
       'TransactionController:transactionStatusUpdated',
@@ -871,10 +840,7 @@ export default class MetamaskController extends EventEmitter {
     const rpcBlockingMiddlewareState = { blockingSymbols: new Set() };
     const eip7715BlockingMiddleware = createRpcBlockingMiddleware({
       state: rpcBlockingMiddlewareState,
-      allowedOrigins: [
-        process.env.GATOR_PERMISSIONS_PROVIDER_SNAP_ID,
-        process.env.PERMISSIONS_KERNEL_SNAP_ID,
-      ],
+      allowedOrigins: [],
       errorMessage:
         'Cannot process requests while a wallet_requestExecutionPermissions request is in process',
     });
@@ -1036,7 +1002,6 @@ export default class MetamaskController extends EventEmitter {
       NameController: this.nameController,
       UserOperationController: this.userOperationController,
       RemoteFeatureFlagController: this.remoteFeatureFlagController,
-      DeFiPositionsController: this.deFiPositionsController,
       ProfileMetricsController: this.profileMetricsController,
       ...resetOnRestartStore,
       ...controllerPersistedState,
@@ -1049,7 +1014,6 @@ export default class MetamaskController extends EventEmitter {
         AppMetadataController: this.appMetadataController,
         MultichainAssetsController: this.multichainAssetsController,
         MultichainBalancesController: this.multichainBalancesController,
-        MultichainTransactionsController: this.multichainTransactionsController,
         MultichainAssetsRatesController: this.multichainAssetsRatesController,
         TokenRatesController: this.tokenRatesController,
         MultichainNetworkController: this.multichainNetworkController,
@@ -1083,11 +1047,9 @@ export default class MetamaskController extends EventEmitter {
         SelectedNetworkController: this.selectedNetworkController,
         LoggingController: this.loggingController,
         MultichainRatesController: this.multichainRatesController,
-        CronjobController: this.cronjobController,
         NameController: this.nameController,
         UserOperationController: this.userOperationController,
         RemoteFeatureFlagController: this.remoteFeatureFlagController,
-        DeFiPositionsController: this.deFiPositionsController,
         PhishingController: this.phishingController,
         ProfileMetricsController: this.profileMetricsController,
         ...resetOnRestartStore,
@@ -1105,7 +1067,6 @@ export default class MetamaskController extends EventEmitter {
         this.encryptionPublicKeyController,
       ),
       this.signatureController.resetState.bind(this.signatureController),
-      this.bridgeController.resetState.bind(this.bridgeController),
       this.ensController.resetState.bind(this.ensController),
       this.approvalController.clearRequests.bind(this.approvalController),
       // WE SHOULD ADD TokenListController.resetState here too. But it's not implemented yet.
@@ -1337,10 +1298,7 @@ export default class MetamaskController extends EventEmitter {
 
         // remove any existing notification subscriptions for removed authorizations
         for (const [origin, authorization] of removedAuthorizations.entries()) {
-          const sessionScopes = getSessionScopes(authorization, {
-            getNonEvmSupportedMethods:
-              this.getNonEvmSupportedMethods.bind(this),
-          });
+          const sessionScopes = getSessionScopes(authorization);
           // if the eth_subscription notification is in the scope and eth_subscribe is in the methods
           // then remove middleware and unsubscribe
           Object.entries(sessionScopes).forEach(([scope, scopeObject]) => {
@@ -1358,10 +1316,7 @@ export default class MetamaskController extends EventEmitter {
 
         // add new notification subscriptions for added/changed authorizations
         for (const [origin, authorization] of changedAuthorizations.entries()) {
-          const sessionScopes = getSessionScopes(authorization, {
-            getNonEvmSupportedMethods:
-              this.getNonEvmSupportedMethods.bind(this),
-          });
+          const sessionScopes = getSessionScopes(authorization);
 
           // if the eth_subscription notification is in the scope and eth_subscribe is in the methods
           // then get the subscriptionManager going for that scope
@@ -1446,9 +1401,7 @@ export default class MetamaskController extends EventEmitter {
             // to ensure that the isConnected value can be accurately inferred from
             // NetworkController.state.networksMetadata in return value of
             // `metamask_getProviderState` requests and `metamask_chainChanged` events.
-            if (!isSnapId(origin)) {
-              this.networkController.setActiveNetwork(networkClientId);
-            }
+            this.networkController.setActiveNetwork(networkClientId);
 
             this.selectedNetworkController.setNetworkClientIdForDomain(
               origin,
@@ -1759,7 +1712,6 @@ export default class MetamaskController extends EventEmitter {
       approvalController,
       phishingController,
       tokenRatesController,
-      deFiPositionsController,
       multichainAssetsRatesController,
       staticAssetsController,
       assetsController,
@@ -2267,28 +2219,6 @@ export default class MetamaskController extends EventEmitter {
         multichainNetworkController,
       }),
 
-      // Snaps
-      disableSnap: () => {
-        throw rpcErrors.methodNotSupported('Snaps are disabled in this build.');
-      },
-      enableSnap: () => {
-        throw rpcErrors.methodNotSupported('Snaps are disabled in this build.');
-      },
-      updateSnap: () => {
-        throw rpcErrors.methodNotSupported('Snaps are disabled in this build.');
-      },
-      removeSnap: () => {
-        throw rpcErrors.methodNotSupported('Snaps are disabled in this build.');
-      },
-      handleSnapRequest: () => {
-        throw rpcErrors.methodNotSupported('Snaps are disabled in this build.');
-      },
-      revokeDynamicSnapPermissions: () => {
-        throw rpcErrors.methodNotSupported('Snaps are disabled in this build.');
-      },
-      disconnectOriginFromSnap: () => {
-        throw rpcErrors.methodNotSupported('Snaps are disabled in this build.');
-      },
       updateNetworksList: this.updateNetworksList.bind(this),
       updateAccountsList: this.updateAccountsList.bind(this),
       setEnabledNetworks: this.setEnabledNetworks.bind(this),
@@ -2441,13 +2371,6 @@ export default class MetamaskController extends EventEmitter {
         tokenBalancesController,
       ),
 
-      deFiStartPolling: deFiPositionsController.startPolling.bind(
-        deFiPositionsController,
-      ),
-      deFiStopPolling: deFiPositionsController.stopPollingByPollingToken.bind(
-        deFiPositionsController,
-      ),
-
       // GasFeeController
       gasFeeStartPolling: gasFeeController.startPolling.bind(gasFeeController),
       gasFeeStopPollingByPollingToken:
@@ -2525,27 +2448,10 @@ export default class MetamaskController extends EventEmitter {
       ),
       setName: this.nameController.setName.bind(this.nameController),
 
-      // SnapKeyring
-      createSnapAccount: async () => {
-        throw rpcErrors.methodNotSupported('Snaps are disabled in this build.');
-      },
-
-      // Multichain Assets Controller
-      multichainAddAssets: (assetIds, accountId) =>
-        this.multichainAssetsController.addAssets(assetIds, accountId),
-
-      multichainIgnoreAssets: (assetIds, accountId) =>
-        this.multichainAssetsController.ignoreAssets(assetIds, accountId),
-
       // MultichainBalancesController
       multichainUpdateBalance: (accountId) =>
         this.multichainBalancesController.updateBalance(accountId),
 
-      // MultichainTransactionsController
-      multichainUpdateTransactions: (accountId) =>
-        this.multichainTransactionsController.updateTransactionsForAccount(
-          accountId,
-        ),
       // Transaction Decode
       decodeTransactionData: (request) =>
         decodeTransactionData({
@@ -3043,11 +2949,7 @@ export default class MetamaskController extends EventEmitter {
    * @param {Array} _accounts - The discovered accounts to count by provider.
    */
   getDiscoveryCountByProvider(_accounts) {
-    return {
-      Bitcoin: 0,
-      Solana: 0,
-      Tron: 0,
-    };
+    return {};
   }
 
   /**
@@ -3057,11 +2959,7 @@ export default class MetamaskController extends EventEmitter {
    * @returns {Promise<Record<string, number>>} Discovered account counts by chain.
    */
   async discoverAndCreateAccounts(_id) {
-    return {
-      Bitcoin: 0,
-      Solana: 0,
-      Tron: 0,
-    };
+    return {};
   }
 
   /**
@@ -3124,7 +3022,7 @@ export default class MetamaskController extends EventEmitter {
         // because `hasAccountTreeSyncingSyncedAtLeastOnce` is already true
         await this.accountTreeController.syncWithUserStorage();
 
-        const discoveredAccounts = await this.discoverAndCreateAccounts(id);
+        await this.discoverAndCreateAccounts(id);
 
         const newHdEntropyIndex = this.getHDEntropyIndex();
 
@@ -3134,10 +3032,6 @@ export default class MetamaskController extends EventEmitter {
             status: 'completed',
             // eslint-disable-next-line @typescript-eslint/naming-convention
             hd_entropy_index: newHdEntropyIndex,
-            // eslint-disable-next-line @typescript-eslint/naming-convention
-            number_of_solana_accounts_discovered: discoveredAccounts?.Solana,
-            // eslint-disable-next-line @typescript-eslint/naming-convention
-            number_of_bitcoin_accounts_discovered: discoveredAccounts?.Bitcoin,
           },
         });
       };
@@ -3258,17 +3152,6 @@ export default class MetamaskController extends EventEmitter {
   }
 
   /**
-   * Adds Snap account to the keyring.
-   *
-   * @param {string} _keyringId - The ID of the keyring to add the account to.
-   * @param {object} _client - The Snap client instance.
-   * @param {object} _options - The options to pass to the createAccount method.
-   */
-  async _addSnapAccount(_keyringId, _client, _options = {}) {
-    throw new Error('Non-EVM Snap accounts are disabled in the 1Do build');
-  }
-
-  /**
    * Encodes a BIP-39 mnemonic as the indices of words in the English BIP-39 wordlist.
    *
    * @param {Buffer} mnemonic - The BIP-39 mnemonic.
@@ -3381,11 +3264,6 @@ export default class MetamaskController extends EventEmitter {
     this.accountTreeController.init();
 
     const resyncAndAlignAccounts = async () => {
-      // READ THIS CAREFULLY:
-      // There is/was a bug with Snap accounts that can be desynchronized (Solana). To
-      // automatically "fix" this corrupted state, we run this method which will re-sync
-      // MetaMask accounts and Snap accounts upon login.
-      // BUG: https://github.com/MetaMask/metamask-extension/issues/37228
       await this.multichainAccountService.resyncAccounts();
 
       // This allows to create missing accounts if new account providers have been added.
@@ -3597,10 +3475,10 @@ export default class MetamaskController extends EventEmitter {
 
   /**
    * Retrieves the keyring for the selected address and using the .type returns
-   * a subtype for the account. Either 'hardware', 'imported', 'snap', or 'MetaMask'.
+   * a subtype for the account. Either 'hardware', 'imported', or 'MetaMask'.
    *
    * @param {string} address - Address to retrieve keyring for
-   * @returns {'hardware' | 'imported' | 'snap' | 'MetaMask'}
+   * @returns {'hardware' | 'imported' | 'MetaMask'}
    */
   async getAccountType(address) {
     const keyringType =
@@ -3614,8 +3492,6 @@ export default class MetamaskController extends EventEmitter {
         return KEYRING_DEVICE_PROPERTY_MAP[keyringType];
       case KeyringType.imported:
         return 'imported';
-      case KeyringType.snap:
-        return 'snap';
       default:
         return 'MetaMask';
     }
@@ -4387,20 +4263,6 @@ export default class MetamaskController extends EventEmitter {
     );
   }
 
-  getNonEvmSupportedMethods(_scope) {
-    return [];
-  }
-
-  /**
-   * For origins with a solana or tron scope permitted, sends a wallet_notify -> metamask_accountChanged
-   * event to fire for the scope with the currently selected account if any are
-   * permitted or empty array otherwise.
-   *
-   * @param {string} origin - The origin to notify with the current account
-   */
-  notifyNonEVMAccountChangedForCurrentAccount(origin) {
-    log.debug('Skipping non-EVM account changed notification', { origin });
-  }
   // Identity Management (signature operations)
 
   getAddTransactionRequest({
@@ -4709,19 +4571,12 @@ export default class MetamaskController extends EventEmitter {
    */
 
   /**
-   * A Snap sender object.
-   *
-   * @typedef {object} SnapSender
-   * @property {string} snapId - The ID of the snap.
-   */
-
-  /**
    * Used to create a multiplexed stream for connecting to an untrusted context
    * like a Dapp or other extension.
    *
    * @param options - Options bag.
    * @param {ReadableStream} options.connectionStream - The Duplex stream to connect to.
-   * @param {MessageSender | SnapSender} options.sender - The sender of the messages on this stream.
+   * @param {MessageSender} options.sender - The sender of the messages on this stream.
    * @param {string} [options.subjectType] - The type of the sender, i.e. subject.
    */
   setupUntrustedCommunicationEip1193({
@@ -4783,7 +4638,7 @@ export default class MetamaskController extends EventEmitter {
    *
    * @param options - Options bag.
    * @param {ReadableStream} options.connectionStream - The Duplex stream to connect to.
-   * @param {MessageSender | SnapSender} options.sender - The sender of the messages on this stream.
+   * @param {MessageSender} options.sender - The sender of the messages on this stream.
    * @param {string} [options.subjectType] - The type of the sender, i.e. subject.
    */
   setupUntrustedCommunicationCaip({ connectionStream, sender, subjectType }) {
@@ -5103,15 +4958,13 @@ export default class MetamaskController extends EventEmitter {
    * A method for serving our ethereum provider over a given stream.
    *
    * @param {*} outStream - The stream to provide over.
-   * @param {MessageSender | SnapSender} sender - The sender of the messages on this stream
+   * @param {MessageSender} sender - The sender of the messages on this stream
    * @param {SubjectType} subjectType - The type of the sender, i.e. subject.
    */
   setupProviderConnectionEip1193(outStream, sender, subjectType) {
     let origin;
     if (subjectType === SubjectType.Internal) {
       origin = ORIGIN_METAMASK;
-    } else if (subjectType === SubjectType.Snap) {
-      origin = sender.snapId;
     } else {
       origin = new URL(sender.url).origin;
     }
@@ -5183,15 +5036,13 @@ export default class MetamaskController extends EventEmitter {
    * A method for serving our CAIP provider over a given stream.
    *
    * @param {*} outStream - The stream to provide over.
-   * @param {MessageSender | SnapSender} sender - The sender of the messages on this stream
+   * @param {MessageSender} sender - The sender of the messages on this stream
    * @param {SubjectType} subjectType - The type of the sender, i.e. subject.
    */
   setupProviderConnectionCaip(outStream, sender, subjectType) {
     let origin;
     if (subjectType === SubjectType.Internal) {
       origin = ORIGIN_METAMASK;
-    } else if (subjectType === SubjectType.Snap) {
-      origin = sender.snapId;
     } else {
       origin = new URL(sender.url).origin;
     }
@@ -5235,16 +5086,6 @@ export default class MetamaskController extends EventEmitter {
       apiType: API_TYPE.CAIP_MULTICHAIN,
       engine,
     });
-
-    // Solana and Tron account changed notifications
-    // This delay is needed because it's possible for a dapp to not have listeners
-    // setup in time right after a connection is established.
-    // This can be resolved if we amend the caip standards to include a liveliness
-    // handshake as part of the initial connection.
-    setTimeout(
-      () => this.notifyNonEVMAccountChangedForCurrentAccount(origin),
-      500,
-    );
 
     pipeline(
       outStream,
@@ -5377,7 +5218,7 @@ export default class MetamaskController extends EventEmitter {
    *
    * @param {object} options - Provider engine options
    * @param {string} options.origin - The origin of the sender
-   * @param {MessageSender | SnapSender} options.sender - The sender object.
+   * @param {MessageSender} options.sender - The sender object.
    * @param {string} options.subjectType - The type of the sender subject.
    * @param {tabId} [options.tabId] - The tab ID of the sender - if the sender is within a tab
    * @param {number} [options.frameId] - The frame ID of the sender (0 = top-level, >0 = iframe)
@@ -5473,54 +5314,18 @@ export default class MetamaskController extends EventEmitter {
       ),
     );
 
-    const snapAndHardwareMessenger = new Messenger({
-      namespace: 'SnapAndHardwareMessenger',
-      parent: this.controllerMessenger,
-    });
-    this.controllerMessenger.delegate({
-      messenger: snapAndHardwareMessenger,
-      actions: [
-        'KeyringController:getKeyringForAccount',
-        'KeyringController:getState',
-        'AccountsController:getSelectedAccount',
-      ],
-    });
-
     engine.push(
       createRPCMethodTrackingMiddleware({
         getAccountType: this.getAccountType.bind(this),
         getDeviceModel: this.getDeviceModel.bind(this),
         getHDEntropyIndex: this.getHDEntropyIndex.bind(this),
         getHardwareTypeForMetric: this.getHardwareTypeForMetric.bind(this),
-        snapAndHardwareMessenger,
         appStateController: this.appStateController,
         metaMetricsController: this.metaMetricsController,
       }),
     );
 
     engine.push(createUnsupportedMethodMiddleware());
-
-    if (subjectType === SubjectType.Snap && isSnapPreinstalled(origin)) {
-      engine.push(
-        createPreinstalledSnapsMiddleware({
-          getPermissions: this.permissionController.getPermissions.bind(
-            this.permissionController,
-            origin,
-          ),
-          getAllEvmAccounts: () =>
-            this.controllerMessenger
-              .call('AccountsController:listAccounts')
-              .map((account) => account.address),
-          grantPermissions: (approvedPermissions) =>
-            this.controllerMessenger.call(
-              'PermissionController:grantPermissions',
-              { approvedPermissions, subject: { origin } },
-            ),
-        }),
-      );
-    }
-
-    engine.push(asLegacyMiddleware(createWalletSnapPermissionMiddleware()));
 
     // Legacy RPC method that needs to be implemented _ahead of_ the permission
     // middleware.
@@ -5555,24 +5360,6 @@ export default class MetamaskController extends EventEmitter {
         }),
       );
     }
-
-    const evmMethodsToNonEvmAccountFilterMessenger = new Messenger({
-      namespace: 'EvmMethodsToNonEvmAccountFilterMessenger',
-      parent: this.controllerMessenger,
-    });
-
-    this.controllerMessenger.delegate({
-      messenger: evmMethodsToNonEvmAccountFilterMessenger,
-      actions: ['AccountsController:getSelectedAccount'],
-    });
-
-    // EVM requests and eth permissions should not be passed to non-EVM accounts
-    // this middleware intercepts these requests and returns an error.
-    engine.push(
-      createEvmMethodsToNonEvmAccountReqFilterMiddleware({
-        messenger: evmMethodsToNonEvmAccountFilterMessenger,
-      }),
-    );
 
     // Unrestricted/permissionless RPC method implementations.
     // They must nevertheless be placed _behind_ the permission middleware.
@@ -5637,10 +5424,6 @@ export default class MetamaskController extends EventEmitter {
 
     engine.push(this.eip5792Middleware);
 
-    if (subjectType === SubjectType.Snap && isSnapPreinstalled(origin)) {
-      engine.push(this.eip7702Middleware);
-    }
-
     engine.push(providerAsMiddleware(proxyClient.provider));
 
     return engine;
@@ -5651,7 +5434,7 @@ export default class MetamaskController extends EventEmitter {
    *
    * @param {object} options - Provider engine options
    * @param {string} options.origin - The origin of the sender
-   * @param {MessageSender | SnapSender} options.sender - The sender object.
+   * @param {MessageSender} options.sender - The sender object.
    * @param {string} options.subjectType - The type of the sender subject.
    * @param {tabId} [options.tabId] - The tab ID of the sender - if the sender is within a tab
    * @param {number} [options.frameId] - The frame ID of the sender (0 = top-level, >0 = iframe)
@@ -5688,16 +5471,7 @@ export default class MetamaskController extends EventEmitter {
     engine.push(createLoggerMiddleware({ origin }));
 
     engine.push((req, _res, next, end) => {
-      const isSnap = isSnapId(origin);
-      const hasPermission =
-        !isSnap ||
-        (isSnap &&
-          this.permissionController.hasPermission(
-            origin,
-            SnapEndowments.MultichainProvider,
-          ));
       if (
-        !hasPermission ||
         ![
           MESSAGE_TYPE.WALLET_CREATE_SESSION,
           MESSAGE_TYPE.WALLET_INVOKE_METHOD,
@@ -5710,26 +5484,12 @@ export default class MetamaskController extends EventEmitter {
       return next();
     });
 
-    const snapAndHardwareMessenger = new Messenger({
-      namespace: 'SnapAndHardwareMessenger',
-      parent: this.controllerMessenger,
-    });
-    this.controllerMessenger.delegate({
-      messenger: snapAndHardwareMessenger,
-      actions: [
-        'KeyringController:getKeyringForAccount',
-        'KeyringController:getState',
-        'AccountsController:getSelectedAccount',
-      ],
-    });
-
     engine.push(
       createRPCMethodTrackingMiddleware({
         getAccountType: this.getAccountType.bind(this),
         getDeviceModel: this.getDeviceModel.bind(this),
         getHDEntropyIndex: this.getHDEntropyIndex.bind(this),
         getHardwareTypeForMetric: this.getHardwareTypeForMetric.bind(this),
-        snapAndHardwareMessenger,
         appStateController: this.appStateController,
         metaMetricsController: this.metaMetricsController,
       }),
@@ -5773,23 +5533,12 @@ export default class MetamaskController extends EventEmitter {
             this.permissionController,
             origin,
           ),
-        getNonEvmSupportedMethods: this.getNonEvmSupportedMethods.bind(this),
-        isNonEvmScopeSupported: this.controllerMessenger.call.bind(
-          this.controllerMessenger,
-          'MultichainRoutingService:isSupportedScope',
-        ),
-        handleNonEvmRequestForOrigin: (params) =>
-          this.controllerMessenger.call(
-            'MultichainRoutingService:handleRequest',
-            {
-              ...params,
-              origin,
-            },
-          ),
-        getNonEvmAccountAddresses: this.controllerMessenger.call.bind(
-          this.controllerMessenger,
-          'MultichainRoutingService:getSupportedAccounts',
-        ),
+        getNonEvmSupportedMethods: () => [],
+        isNonEvmScopeSupported: () => false,
+        handleNonEvmRequestForOrigin: () => {
+          throw new Error('Non-EVM requests are not supported');
+        },
+        getNonEvmAccountAddresses: () => [],
         trackSessionCreatedEvent: (approvedCaip25CaveatValue) =>
           this.metaMetricsController.trackEvent({
             event: MetaMetricsEventName.PermissionsRequested,
@@ -5843,9 +5592,7 @@ export default class MetamaskController extends EventEmitter {
       );
 
       // add new notification subscriptions for changed authorizations
-      const sessionScopes = getSessionScopes(caip25Caveat.value, {
-        getNonEvmSupportedMethods: this.getNonEvmSupportedMethods.bind(this),
-      });
+      const sessionScopes = getSessionScopes(caip25Caveat.value);
 
       // if the eth_subscription notification is in the scope and eth_subscribe is in the methods
       // then get the subscriptionManager going for that scope
@@ -6364,23 +6111,8 @@ export default class MetamaskController extends EventEmitter {
       },
     };
 
-    const snapAndHardwareMessenger = new Messenger({
-      namespace: 'SnapAndHardwareMessenger',
-      parent: this.controllerMessenger,
-    });
-    this.controllerMessenger.delegate({
-      messenger: snapAndHardwareMessenger,
-      actions: [
-        'KeyringController:getKeyringForAccount',
-        'KeyringController:getState',
-        'SnapController:getSnap',
-        'AccountsController:getSelectedAccount',
-      ],
-    });
-
     return {
       ...controllerActions,
-      snapAndHardwareMessenger,
       provider: this.controllerMessenger.call(
         'NetworkController:getSelectedNetworkClient',
       )?.provider,
@@ -6838,7 +6570,6 @@ export default class MetamaskController extends EventEmitter {
 
   async _notifyAuthorizationChange(origin, newAuthorization) {
     const sessionScopes = getSessionScopes(newAuthorization, {
-      getNonEvmSupportedMethods: this.getNonEvmSupportedMethods.bind(this),
       sortAccountIdsByLastSelected:
         this.sortAccountIdsByLastSelected.bind(this),
     });
@@ -7359,8 +7090,6 @@ export default class MetamaskController extends EventEmitter {
       ensureOnboardingComplete: this.#createEnsureOnboardingCompleteCallback(),
       extension: this.extension,
       platform: this.platform,
-      getCronjobControllerStorageManager: () =>
-        this.opts.cronjobControllerStorageManager,
       getFlatState: this.getState.bind(this),
       getPermittedAccounts: this.getPermittedAccounts.bind(this),
       getTransactionMetricsRequest:
@@ -7370,7 +7099,6 @@ export default class MetamaskController extends EventEmitter {
       initLangCode: this.opts.initLangCode,
       keyringOverrides: this.opts.overrides?.keyrings,
       offscreenPromise: this.offscreenPromise,
-      preinstalledSnaps: this.opts.preinstalledSnaps,
       persistedState: initState,
       removeAccount: this.removeAccount.bind(this),
       setupUntrustedCommunicationEip1193:

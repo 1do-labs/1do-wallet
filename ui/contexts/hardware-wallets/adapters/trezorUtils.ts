@@ -4,11 +4,7 @@
 
 const TREZOR_MODELS_USING_TREZOR_SUITE = new Set(['safe 7']);
 
-const REQUIRED_TREZOR_CAPABILITIES = [
-  'Capability_Bitcoin',
-  'Capability_Solana',
-  'Capability_Ethereum',
-] as const;
+const REQUIRED_TREZOR_CAPABILITIES = ['Capability_Ethereum'] as const;
 type RequiredTrezorCapability = (typeof REQUIRED_TREZOR_CAPABILITIES)[number];
 
 /**

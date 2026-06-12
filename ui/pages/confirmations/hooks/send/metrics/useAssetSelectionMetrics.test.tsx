@@ -6,7 +6,6 @@ import {
   EVM_ASSET,
   EVM_NATIVE_ASSET,
   MOCK_NFT1155,
-  SOLANA_NATIVE_ASSET,
 } from '../../../../../../test/data/send/assets';
 import { renderHookWithProvider } from '../../../../../../test/lib/render-helpers-navigate';
 import { MetaMetricsContext } from '../../../../../contexts/metametrics';
@@ -317,36 +316,6 @@ describe('useAssetSelectionMetrics', () => {
             asset_list_size: '5',
             chain_id: 8453,
             chain_id_caip: 'eip155:33875',
-            filter_method: [AssetFilterMethod.None],
-          },
-        },
-        {
-          excludeMetaMetricsId: false,
-        },
-      );
-    });
-
-    it('uses chain_id_caip for non-EVM assets', () => {
-      const { result } = renderHookWithProvider(
-        () => useAssetSelectionMetrics(),
-        mockState,
-        undefined,
-        Container,
-      );
-
-      result.current.captureAssetSelected(SOLANA_NATIVE_ASSET);
-
-      expect(mockTrackEvent).toHaveBeenCalledWith(
-        {
-          event: 'Send Asset Selected',
-          category: 'Send',
-          properties: {
-            account_type: 'MetaMask',
-            asset_type: 'native',
-            asset_list_position: 0,
-            asset_list_size: '5',
-            chain_id: 'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp',
-            chain_id_caip: 'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp',
             filter_method: [AssetFilterMethod.None],
           },
         },

@@ -11,10 +11,8 @@ import type {
   MultichainBalancesControllerState,
   MultichainAssetsRatesControllerState,
   MultichainAssetsControllerState,
-  DeFiPositionsControllerState,
   AccountTrackerControllerState,
 } from '@metamask/assets-controllers';
-import type { MultichainTransactionsControllerState } from '@metamask/multichain-transactions-controller';
 import type { MultichainNetworkControllerState } from '@metamask/multichain-network-controller';
 import type { KeyringControllerState } from '@metamask/keyring-controller';
 import type { AddressBookControllerState } from '@metamask/address-book-controller';
@@ -33,7 +31,6 @@ import type { RemoteFeatureFlagControllerState } from '@metamask/remote-feature-
 import type { SelectedNetworkControllerState } from '@metamask/selected-network-controller';
 import type { LoggingControllerState } from '@metamask/logging-controller';
 import type { PermissionLogControllerState } from '@metamask/permission-log-controller';
-import type { CronjobControllerState } from '@metamask/snaps-controllers';
 import type { AccountsControllerState } from '@metamask/accounts-controller';
 import type { SignatureControllerState } from '@metamask/signature-controller';
 import type { PPOMState } from '@metamask/ppom-validator';
@@ -124,13 +121,10 @@ export type ControllerStatePropertiesEnumerated = {
   networkConnectionBanner: AppStateControllerState['networkConnectionBanner'];
   isWalletResetInProgress: AppStateControllerState['isWalletResetInProgress'];
   sidePanelGasPollTokens: AppStateControllerState['sidePanelGasPollTokens'];
-  events: CronjobControllerState['events'];
   currentCurrency: CurrencyRateState['currentCurrency'];
   currencyRates: CurrencyRateState['currencyRates'];
   unapprovedDecryptMsgs: DecryptMessageControllerState['unapprovedDecryptMsgs'];
   unapprovedDecryptMsgCount: DecryptMessageControllerState['unapprovedDecryptMsgCount'];
-  allDeFiPositions: DeFiPositionsControllerState['allDeFiPositions'];
-  allDeFiPositionsCount: DeFiPositionsControllerState['allDeFiPositionsCount'];
   unapprovedEncryptionPublicKeyMsgs: EncryptionPublicKeyControllerState['unapprovedEncryptionPublicKeyMsgs'];
   unapprovedEncryptionPublicKeyMsgCount: EncryptionPublicKeyControllerState['unapprovedEncryptionPublicKeyMsgCount'];
   ensResolutionsByAddress: EnsControllerState['ensResolutionsByAddress'];
@@ -160,7 +154,6 @@ export type ControllerStatePropertiesEnumerated = {
   metaMetricsDataDeletionStatus?: MetaMetricsDataDeletionState['metaMetricsDataDeletionStatus'];
   metaMetricsDataDeletionTimestamp: MetaMetricsDataDeletionState['metaMetricsDataDeletionTimestamp'];
   balances: MultichainBalancesControllerState['balances'];
-  nonEvmTransactions: MultichainTransactionsControllerState['nonEvmTransactions'];
   conversionRates: MultichainAssetsRatesControllerState['conversionRates'];
   historicalPrices: MultichainAssetsRatesControllerState['historicalPrices'];
   assetsMetadata: MultichainAssetsControllerState['assetsMetadata'];
@@ -215,7 +208,6 @@ export type ControllerStatePropertiesEnumerated = {
   referrals: PreferencesControllerState['referrals'];
   useAddressBarEnsResolution: PreferencesControllerState['useAddressBarEnsResolution'];
   ledgerTransportType: PreferencesControllerState['ledgerTransportType'];
-  snapRegistryList: PreferencesControllerState['snapRegistryList'];
   theme: PreferencesControllerState['theme'];
   useExternalNameSources: PreferencesControllerState['useExternalNameSources'];
   enableMV3TimestampSave: PreferencesControllerState['enableMV3TimestampSave'];
@@ -258,10 +250,8 @@ type ControllerStateTypesMerged = AccountsControllerState &
   AppMetadataControllerState &
   ApprovalControllerState &
   AppStateControllerState &
-  CronjobControllerState &
   CurrencyRateState &
   DecryptMessageControllerState &
-  DeFiPositionsControllerState &
   EncryptionPublicKeyControllerState &
   EnsControllerState & {
     // This is necessary due to the nested unions and intersections in the `GasFeeState` type definition
@@ -271,7 +261,6 @@ type ControllerStateTypesMerged = AccountsControllerState &
   MetaMetricsControllerState &
   MetaMetricsDataDeletionState &
   MultichainBalancesControllerState &
-  MultichainTransactionsControllerState &
   MultichainAssetsRatesControllerState &
   MultichainAssetsControllerState &
   MultichainNetworkControllerState &

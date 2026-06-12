@@ -818,7 +818,6 @@ class AssetListPage {
 
   /**
    * Waits for a token to be displayed in the token list
-   * This is done due to the snap delay.
    *
    * @param tokenName - The name of the token to wait for
    * @param timeout

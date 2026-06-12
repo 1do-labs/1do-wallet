@@ -18,10 +18,6 @@ jest.mock('../pay-with-row/pay-with-row', () => ({
   PayWithRow: () => <div data-testid="pay-with-row">PayWithRow</div>,
 }));
 
-jest.mock('../bridge-fee-row/bridge-fee-row', () => ({
-  BridgeFeeRow: () => <div data-testid="bridge-fee-row">BridgeFeeRow</div>,
-}));
-
 jest.mock('../total-row/total-row', () => ({
   TotalRow: () => <div data-testid="total-row">TotalRow</div>,
 }));
@@ -106,7 +102,7 @@ describe('TransactionPaySection', () => {
     expect(getByTestId('pay-with-row')).toBeInTheDocument();
   });
 
-  it('does not render BridgeFeeRow and TotalRow when no payToken', () => {
+  it('does not render TotalRow when no payToken', () => {
     useTransactionPayRequiredTokensMock.mockReturnValue([
       { chainId: '0x1', address: '0x123' },
     ] as never);
@@ -119,11 +115,10 @@ describe('TransactionPaySection', () => {
     const { getByTestId, queryByTestId } = render();
 
     expect(getByTestId('transaction-pay-section')).toBeInTheDocument();
-    expect(queryByTestId('bridge-fee-row')).not.toBeInTheDocument();
     expect(queryByTestId('total-row')).not.toBeInTheDocument();
   });
 
-  it('renders BridgeFeeRow and TotalRow when payToken exists', () => {
+  it('renders TotalRow when payToken exists', () => {
     useTransactionPayRequiredTokensMock.mockReturnValue([
       { chainId: '0x1', address: '0x123' },
     ] as never);
@@ -141,7 +136,6 @@ describe('TransactionPaySection', () => {
     const { getByTestId } = render();
 
     expect(getByTestId('transaction-pay-section')).toBeInTheDocument();
-    expect(getByTestId('bridge-fee-row')).toBeInTheDocument();
     expect(getByTestId('total-row')).toBeInTheDocument();
   });
 });

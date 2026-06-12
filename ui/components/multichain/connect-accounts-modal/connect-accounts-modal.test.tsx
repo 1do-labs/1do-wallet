@@ -1,5 +1,4 @@
 import React from 'react';
-import { BtcAccountType } from '@metamask/keyring-api';
 import { waitFor } from '@testing-library/react';
 import { enLocale as messages } from '../../../../test/lib/i18n-helpers';
 import configureStore from '../../../store/store';
@@ -13,11 +12,6 @@ import { normalizeSafeAddress } from '../../../../app/scripts/lib/multichain/add
 import { ConnectAccountsModal } from './connect-accounts-modal';
 
 const mockAccount = createMockInternalAccount();
-const mockBtcAccount = createMockInternalAccount({
-  name: 'BTC Account',
-  address: 'bc1qar0srrr7xfkvy5l643lydnw9re59gtzzwf5mdq',
-  type: BtcAccountType.P2wpkh,
-});
 
 const defaultProps = {
   onClose: () => ({}),
@@ -33,7 +27,6 @@ const render = (props = defaultProps) => {
       internalAccounts: {
         accounts: {
           [mockAccount.id]: mockAccount,
-          [mockBtcAccount.id]: mockBtcAccount,
         },
         selectedAccount: mockAccount.id,
       },
@@ -46,14 +39,6 @@ const render = (props = defaultProps) => {
             name: '',
           },
         },
-        {
-          type: 'Snap Keyring',
-          accounts: [mockBtcAccount.address],
-          metadata: {
-            id: 'mock-keyring-id-2',
-            name: '',
-          },
-        },
       ],
       accounts: {
         [mockAccount.address]: {
@@ -61,9 +46,7 @@ const render = (props = defaultProps) => {
           balance: '0x0',
         },
       },
-      balances: {
-        [mockBtcAccount.id]: {},
-      },
+      balances: {},
     },
     activeTab: {
       id: 113,

@@ -145,9 +145,6 @@ export function buildHistoricalPricesResponse(): {
  */
 export function buildCryptocomparePrice(url: string) {
   const lowerUrl = url.toLowerCase();
-  if (lowerUrl.includes('fsym=sol')) {
-    return { statusCode: 200, json: { USD: PRICES.SOL } };
-  }
   if (lowerUrl.includes('fsym=btc')) {
     return { statusCode: 200, json: { USD: PRICES.BTC } };
   }
@@ -191,12 +188,6 @@ export const CRYPTO_EXCHANGE_RATES = {
       value: 1 / PRICES.BTC,
       currencyType: 'crypto',
     },
-    sol: {
-      name: 'Solana',
-      ticker: 'sol',
-      value: 1 / PRICES.SOL,
-      currencyType: 'crypto',
-    },
   },
 };
 
@@ -210,28 +201,10 @@ export const SUPPORTED_NETWORKS = {
   json: [1, 10, 137, 42161, 8453, 59144, 56, 43114, 324],
 };
 
-export const BITCOIN_SPOT_PRICES = {
-  statusCode: 200,
-  json: { bitcoin: { usd: PRICES.BTC } },
-};
-
-export const SOLANA_SPOT_PRICES = {
-  statusCode: 200,
-  json: {
-    'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp/slip44:501': {
-      id: 'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp/slip44:501',
-      price: PRICES.SOL,
-      marketCap: 70_000_000_000,
-      pricePercentChange1d: 2.5,
-    },
-  },
-};
-
 export const CRYPTOCOMPARE_MULTI_PRICES = {
   statusCode: 200,
   json: {
     BTC: { USD: PRICES.BTC },
-    SOL: { USD: PRICES.SOL },
     ETH: { USD: PRICES.ETH },
   },
 };
@@ -265,7 +238,6 @@ const BRIDGE_CHAINS = {
   '42161': { isActiveSrc: true, isActiveDest: true },
   '8453': { isActiveSrc: true, isActiveDest: true },
   '59144': { isActiveSrc: true, isActiveDest: true },
-  '1151111081099710': { isActiveSrc: true, isActiveDest: true },
 };
 
 export const BRIDGE_FEATURE_FLAGS = {
@@ -388,132 +360,3 @@ export const ACCOUNTS_BALANCES = {
     ],
   },
 };
-
-/** 50 SOL in lamports (1 SOL = 1,000,000,000 lamports) */
-const SOL_BALANCE_LAMPORTS = 50_000_000_000;
-
-export function solanaGetBalanceResponse(id: string | number = '1337') {
-  return {
-    statusCode: 200,
-    json: {
-      id,
-      jsonrpc: '2.0',
-      result: {
-        context: { apiVersion: '2.0.18', slot: 308460925 },
-        value: SOL_BALANCE_LAMPORTS,
-      },
-    },
-  };
-}
-
-export function solanaGetAccountInfoResponse(id: string | number = '1337') {
-  return {
-    statusCode: 200,
-    json: {
-      id,
-      jsonrpc: '2.0',
-      result: {
-        context: { apiVersion: '2.0.21', slot: 317161313 },
-        value: {
-          data: ['', 'base58'],
-          executable: false,
-          lamports: SOL_BALANCE_LAMPORTS,
-          owner: '11111111111111111111111111111111',
-          rentEpoch: Number.MAX_SAFE_INTEGER,
-          space: 0,
-        },
-      },
-    },
-  };
-}
-
-export const SOLANA_GET_LATEST_BLOCKHASH = {
-  statusCode: 200,
-  json: {
-    id: '1337',
-    jsonrpc: '2.0',
-    result: {
-      context: { apiVersion: '2.0.18', slot: 308460925 },
-      value: {
-        blockhash: '6E9FiVcuvavWyKTfYC7N9ezJWkNgJVQsroDTHvqApncg',
-        lastValidBlockHeight: 341034515,
-      },
-    },
-  },
-};
-
-export const SOLANA_GET_FEE_FOR_MESSAGE = {
-  statusCode: 200,
-  json: {
-    id: '1337',
-    jsonrpc: '2.0',
-    result: { context: { slot: 5068 }, value: 5000 },
-  },
-};
-
-export const SOLANA_GET_MIN_BALANCE_RENT_EXEMPTION = {
-  statusCode: 200,
-  json: {
-    id: '1337',
-    jsonrpc: '2.0',
-    result: 890880,
-  },
-};
-
-export const SOLANA_GET_TOKEN_ACCOUNTS_BY_OWNER = {
-  statusCode: 200,
-  json: {
-    id: '1337',
-    jsonrpc: '2.0',
-    result: {
-      context: { slot: 137568828 },
-      value: [],
-    },
-  },
-};
-
-export const SOLANA_SIMULATE_TRANSACTION = {
-  statusCode: 200,
-  json: {
-    id: '1337',
-    jsonrpc: '2.0',
-    result: {
-      context: { apiVersion: '2.0.21', slot: 318191894 },
-      value: {
-        accounts: null,
-        err: null,
-        innerInstructions: null,
-        logs: [
-          'Program 11111111111111111111111111111111 invoke [1]',
-          'Program 11111111111111111111111111111111 success',
-        ],
-        replacementBlockhash: {
-          blockhash: '2xWVC3snr4U29m8Rhio9HMmPaYNAQPrRn1bXjB1BJFuM',
-          lastValidBlockHeight: 296475563,
-        },
-        returnData: null,
-        unitsConsumed: 150,
-      },
-    },
-  },
-};
-
-export const SOLANA_GET_SIGNATURES_FOR_ADDRESS = {
-  statusCode: 200,
-  json: {
-    id: '1337',
-    jsonrpc: '2.0',
-    result: [],
-  },
-};
-
-export function solanaCatchAllResponse(id: string | number = '1337') {
-  return {
-    statusCode: 200,
-    json: {
-      id,
-      jsonrpc: '2.0',
-      result: { context: { slot: 250000000 }, value: null },
-    },
-  };
-}

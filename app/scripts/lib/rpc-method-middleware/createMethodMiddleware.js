@@ -1,5 +1,4 @@
 import { rpcErrors } from '@metamask/rpc-errors';
-import { selectHooks } from '@metamask/snaps-rpc-methods';
 import { hasProperty } from '@metamask/utils';
 
 import {
@@ -96,6 +95,13 @@ export function makeMethodMiddlewareMaker(handlers) {
   };
 
   return makeMethodMiddleware;
+}
+
+function selectHooks(hooks, hookNames) {
+  return Object.keys(hookNames).reduce((selectedHooks, hookName) => {
+    selectedHooks[hookName] = hooks[hookName];
+    return selectedHooks;
+  }, {});
 }
 
 /**

@@ -288,12 +288,6 @@
   "addRpcUrl": {
     "message": "Cuir URL RPC leis"
   },
-  "addSnapAccountToggle": {
-    "message": "Cumasaigh \"Cuir cuntas leis Snap (Béite)\""
-  },
-  "addSnapAccountsDescription": {
-    "message": "Trí an ghné seo a chasadh air, beidh an rogha agat na Snaps cuntais Beta nua a chur leis go díreach ó do liosta cuntas. Má shuiteálann tú Snap cuntais, cuimhnigh gur seirbhís tríú páirtí í."
-  },
   "addSuggestedNFTs": {
     "message": "Cuir NFTanna molta leis"
   },
@@ -550,11 +544,11 @@
   },
   "andForListItems": {
     "message": "$1, agus $2",
-    "description": "$1 is the first item, $2 is the last item in a list of items. Used in Snap Install Warning modal."
+    "description": "$1 is the first item, $2 is the last item in a list of items."
   },
   "andForTwoItems": {
     "message": "$1 agus $2",
-    "description": "$1 is the first item, $2 is the second item. Used in Snap Install Warning modal."
+    "description": "$1 is the first item, $2 is the second item."
   },
   "annual": {
     "message": "Bliantúil"
@@ -702,9 +696,6 @@
   },
   "backupApprovalNotice": {
     "message": "Déan cúltaca de do Rúnd-Frása Aisghabhála chun do sparán agus do chistí a choinneáil slán."
-  },
-  "backupKeyringSnapReminder": {
-    "message": "Bí cinnte gur féidir leat rochtain a fháil ar aon chuntais a chruthaigh an Snap seo leat féin sula mbainfidh tú é"
   },
   "backupNow": {
     "message": "Cúltaca anois"
@@ -1135,21 +1126,6 @@
   "concentratedSupplyDistributionTitle": {
     "message": "Dáileadh Soláthair Chomhchruinnithe"
   },
-  "configureSnapPopupDescription": {
-    "message": "Tá tú ag fágáil 1do anois chun an snap seo a chumrú."
-  },
-  "configureSnapPopupInstallDescription": {
-    "message": "Tá tú ag fágáil 1do anois chun an snap seo a shuiteáil."
-  },
-  "configureSnapPopupInstallTitle": {
-    "message": "Suiteáil snap"
-  },
-  "configureSnapPopupLink": {
-    "message": "Cliceáil an nasc seo le leanúint ar aghaidh:"
-  },
-  "configureSnapPopupTitle": {
-    "message": "Cumraigh snap"
-  },
   "confirm": {
     "message": "Deimhnigh"
   },
@@ -1327,10 +1303,6 @@
   "connectMoreAccounts": {
     "message": "Ceangail níos mó cuntas"
   },
-  "connectSnap": {
-    "message": "Ceangail $1",
-    "description": "$1 is the snap for which a connection is being requested."
-  },
   "connectWithMetaMask": {
     "message": "Ceangail le 1do"
   },
@@ -1351,9 +1323,6 @@
   "connectedSites": {
     "message": "Suíomhanna ceangailte"
   },
-  "connectedSitesAndSnaps": {
-    "message": "Suíomhanna ceangailte agus Snaps"
-  },
   "connectedSitesDescription": {
     "message": "Tá $1 ceangailte leis na suíomhanna seo. Is féidir leo seoladh do chuntais a fheiceáil.",
     "description": "$1 is the account name"
@@ -1361,12 +1330,6 @@
   "connectedSitesEmptyDescription": {
     "message": "Níl $1 ceangailte le haon suíomhanna.",
     "description": "$1 is the account name"
-  },
-  "connectedSnapAndNoAccountDescription": {
-    "message": "Tá 1do ceangailte leis an suíomh seo, ach níl aon chuntais ceangailte fós"
-  },
-  "connectedSnaps": {
-    "message": "Snapanna Ceangailte"
   },
   "connectedWithAccount": {
     "message": "Cuntas $1 ceangailte",
@@ -1414,10 +1377,6 @@
   "connectionFailed": {
     "message": "Theip ar an nasc"
   },
-  "connectionFailedDescription": {
-    "message": "Theip ar $1 a fháil, seiceáil do líonra agus déan iarracht arís.",
-    "description": "$1 is the name of the snap being fetched."
-  },
   "connectionPopoverDescription": {
     "message": "Chun ceangal le suíomh, roghnaigh an cnaipe ceangail. Ní féidir le 1do ceangal ach le suíomhanna gréasáin 3."
   },
@@ -1425,7 +1384,7 @@
     "message": "Iarratas ceangail"
   },
   "connectionsRemovedModalDescription": {
-    "message": "Baineadh roinnt naisc (cosúil le sparán crua-earraí agus snapanna) mar gheall ar neamhghníomhaíocht ar an ngléas seo. Is féidir leat iad a chur leis arís am ar bith sna Socruithe."
+    "message": "Some connections (like hardware wallets) were removed due to inactivity on this device. You can re-add them anytime in Settings."
   },
   "connectionsRemovedModalTitle": {
     "message": "Naisc bainte"
@@ -1435,10 +1394,6 @@
   },
   "contacts": {
     "message": "Teagmhálacha"
-  },
-  "contentFromSnap": {
-    "message": "Ábhar ó $1",
-    "description": "$1 represents the name of the snap"
   },
   "continue": {
     "message": "Lean ar aghaidh"
@@ -1517,12 +1472,6 @@
   },
   "createPasswordMarketing": {
     "message": "Faigh nuashonruithe táirgí, leideanna agus nuacht lena n-áirítear trí ríomhphost. Féadfaimid d’idirghníomhaíochtaí a úsáid chun feabhas a chur ar a bhfuil á roinnt againn."
-  },
-  "createSnapAccountDescription": {
-    "message": "Tá $1 ag iarraidh cuntas nua a chur le 1do."
-  },
-  "createSnapAccountTitle": {
-    "message": "Cruthaigh cuntas"
   },
   "createSolanaAccount": {
     "message": "Cruthaigh cuntas Solana"
@@ -1808,10 +1757,6 @@
   "description": {
     "message": "Cur síos"
   },
-  "descriptionFromSnap": {
-    "message": "Cur síos ó $1",
-    "description": "$1 represents the name of the snap"
-  },
   "destinationAccountPickerNoEligible": {
     "message": "Ní bhfuarthas aon chuntais incháilithe"
   },
@@ -1853,9 +1798,6 @@
   "disconnectAllDescriptionText": {
     "message": "Má dhícheanglaíonn tú ón suíomh seo, beidh ort do chuntais agus do líonraí a athcheangal le go mbeidh tú in ann an suíomh seo a úsáid arís."
   },
-  "disconnectAllSnapsText": {
-    "message": "Snapanna"
-  },
   "disconnectMessage": {
     "message": "Déanfaidh sé seo tú a dhícheangal ón suíomh seo"
   },
@@ -1867,10 +1809,6 @@
   },
   "discover": {
     "message": "Faigh amach"
-  },
-  "discoverSnaps": {
-    "message": "Faigh amach Snapanna",
-    "description": "Text that links to the Snaps website. Displayed in a banner on Snaps list page in settings."
   },
   "dismiss": {
     "message": "Díbhe"
@@ -2060,9 +1998,6 @@
   "enableSmartContractAccountDescription": {
     "message": "Is féidir leat gnéithe cuntais chliste a chumasú ar líonraí a dtacaítear leo."
   },
-  "enableSnap": {
-    "message": "Cumasaigh"
-  },
   "enableToken": {
     "message": "cumasaigh $1",
     "description": "$1 is a token symbol, e.g. ETH"
@@ -2215,10 +2150,6 @@
   "errorWhileConnectingToRPC": {
     "message": "Earráid agus ceangal á dhéanamh leis an líonra saincheaptha."
   },
-  "errorWithSnap": {
-    "message": "Earráid le $1",
-    "description": "$1 represents the name of the snap"
-  },
   "estimatedChanges": {
     "message": "Athruithe measta"
   },
@@ -2261,10 +2192,6 @@
   },
   "exportYourDataDescription": {
     "message": "Is féidir leat sonraí cosúil le do theagmhálaithe agus do chuid sainroghanna a onnmhairiú."
-  },
-  "extendWalletWithSnaps": {
-    "message": "Déan iniúchadh ar Snaps atá tógtha ag an bpobal chun do thaithí web3 a shaincheapadh",
-    "description": "Banner description displayed on Snaps list page in Settings when less than 6 Snaps is installed."
   },
   "externalAccount": {
     "message": "Cuntas Seachtrach"
@@ -2319,7 +2246,7 @@
     "description": "This is a warning shown on the Flask Welcome screen, intended to encourage non-developers not to proceed any further. $1 is the bolded message 'flaskWelcomeUninstall'"
   },
   "flaskWelcomeWarning2": {
-    "message": "Ní ráthaímid sábháilteacht ná cobhsaíocht an síneadh seo. Níl na APIanna nua a chuireann Flask ar fáil daingnithe i gcoinne ionsaithe fioscaireachta, rud a chiallaíonn go bhféadfadh aon suíomh nó snap a éilíonn Flask a bheith ina iarracht mailíseach chun do shócmhainní a ghoid.",
+    "message": "We do not guarantee the safety or stability of this extension. The new APIs offered by Flask are not hardened against phishing attacks, meaning that any site that requires Flask might be a malicious attempt to steal your assets.",
     "description": "This explains the risks of using MetaMask Flask"
   },
   "flaskWelcomeWarning3": {
@@ -2682,10 +2609,6 @@
     "message": "Ní féidir le 1do ceangal leis an óstach blockchain. Athbhreithnigh cúiseanna féideartha $1.",
     "description": "$1 is a clickable link with with text defined by the 'here' key"
   },
-  "insightsFromSnap": {
-    "message": "Léargais ó $1",
-    "description": "$1 represents the name of the snap"
-  },
   "install": {
     "message": "Suiteáil"
   },
@@ -2694,10 +2617,6 @@
   },
   "installRequest": {
     "message": "Cuir le 1do"
-  },
-  "installedOn": {
-    "message": "Suiteáilte ar $1",
-    "description": "$1 is the date when the snap has been installed"
   },
   "insufficientBalance": {
     "message": "Cothromaíocht neamhleor."
@@ -2819,18 +2738,6 @@
   },
   "keyringAccountPublicAddress": {
     "message": "Seoladh Poiblí"
-  },
-  "keyringSnapRemovalResult1": {
-    "message": "$1 $2 bainte",
-    "description": "Displays the result after removal of a keyring snap. $1 is the snap name, $2 is whether it is successful or not"
-  },
-  "keyringSnapRemovalResultNotSuccessful": {
-    "message": "ní",
-    "description": "Displays the `not` word in $2."
-  },
-  "keyringSnapRemoveConfirmation": {
-    "message": "Clóscríobh $1 chun a dheimhniú gur mian leat an snap seo a bhaint:",
-    "description": "Asks user to input the name nap prior to deleting the snap. $1 is the snap name"
   },
   "keystone": {
     "message": "Cloch Eochair"
@@ -2975,9 +2882,6 @@
   "loading": {
     "message": "Ag lódáil..."
   },
-  "loadingScreenSnapMessage": {
-    "message": "Comhlánaigh an t-idirbheart ar an Snap le do thoil."
-  },
   "loadingTokenList": {
     "message": "Ag lódáil liosta comharthaí"
   },
@@ -3108,10 +3012,6 @@
   "metaMetricsIdNotAvailableError": {
     "message": "Ós rud é nár roghnaigh tú 1do Metrics a úsáid riamh, níl aon sonraí le scriosadh anseo."
   },
-  "metadataModalSourceTooltip": {
-    "message": "Tá $1 á óstáil ar npm agus is é $2 aitheantóir uathúil an Snap seo.",
-    "description": "$1 is the snap name and $2 is the snap NPM id."
-  },
   "metamaskNotificationsAreOff": {
     "message": "Níl fógraí sparán gníomhach faoi láthair."
   },
@@ -3230,10 +3130,6 @@
   },
   "multichainQuoteCardRateLabel": {
     "message": "Ráta"
-  },
-  "multipleSnapConnectionWarning": {
-    "message": "Tá $1 ag iarraidh $2 Snaps a úsáid",
-    "description": "$1 is the dapp and $2 is the number of snaps it wants to connect to."
   },
   "mustSelectOne": {
     "message": "Ní mór comhartha amháin ar a laghad a roghnú."
@@ -3582,9 +3478,6 @@
   "noDomainResolution": {
     "message": "Níor soláthraíodh aon réiteach don fhearann."
   },
-  "noHardwareWalletOrSnapsSupport": {
-    "message": "Ní oibreoidh Snaps, ná an chuid is mó de sparán crua-earraí, le do leagan brabhsálaí reatha."
-  },
   "noMMFeeSwapping": {
     "message": "Gan aon táille MM ar mhalartú go $1."
   },
@@ -3599,9 +3492,6 @@
   },
   "noOptionsAvailableMessage": {
     "message": "Níl an bealach trádála seo ar fáil faoi láthair. Bain triail as an méid, an líonra, nó an comhartha a athrú agus gheobhaimid an rogha is fearr."
-  },
-  "noSnaps": {
-    "message": "Níl aon snaps suiteáilte agat."
   },
   "noTokensMatchingYourFilters": {
     "message": "Níl aon chomharthaí ag teacht le do scagairí"
@@ -3962,10 +3852,6 @@
   "other": {
     "message": "eile"
   },
-  "otherSnaps": {
-    "message": "snapanna eile",
-    "description": "Used in the 'permission_rpc' message."
-  },
   "others": {
     "message": "daoine eile"
   },
@@ -4060,49 +3946,13 @@
     "message": "Aisghairmthe sa nuashonrú seo ar $1",
     "description": "Permission cell status for revoked permission including accounts, rendered as AvatarGroup which is $1."
   },
-  "permission_accessNamedSnap": {
-    "message": "Ceangail le $1.",
-    "description": "The description for the `wallet_snap` permission. $1 is the human-readable name of the snap."
-  },
   "permission_accessNetwork": {
     "message": "Rochtain a fháil ar an idirlíon.",
     "description": "The description of the `endowment:network-access` permission."
   },
-  "permission_accessNetworkDescription": {
-    "message": "Lig do $1 rochtain a fháil ar an idirlíon. Is féidir é seo a úsáid chun sonraí a sheoladh agus a fháil le freastalaithe tríú páirtí araon.",
-    "description": "An extended description of the `endowment:network-access` permission. $1 is the snap name."
-  },
-  "permission_accessSnap": {
-    "message": "Ceangail leis an snap $1.",
-    "description": "The description for the `wallet_snap` permission. $1 is the name of the snap."
-  },
-  "permission_accessSnapDescription": {
-    "message": "Lig don suíomh gréasáin nó don snap idirghníomhú le $1.",
-    "description": "The description for the `wallet_snap_*` permission. $1 is the name of the Snap."
-  },
   "permission_assets": {
     "message": "Taispeáin sócmhainní cuntais i 1do.",
     "description": "The description for the `endowment:assets` permission."
-  },
-  "permission_assetsDescription": {
-    "message": "Lig do $1 faisnéis sócmhainní a sholáthar don chliant 1do. Is féidir na sócmhainní a bheith ar an slabhra nó lasmuigh den slabhra.",
-    "description": "An extended description for the `endowment:assets` permission. $1 is the name of the Snap."
-  },
-  "permission_cronjob": {
-    "message": "Sceideal agus cuir gníomhartha tréimhsiúla i gcrích.",
-    "description": "The description for the `snap_cronjob` permission"
-  },
-  "permission_cronjobDescription": {
-    "message": "Lig do $1 gníomhartha a dhéanamh a ritheann go tréimhsiúil ag amanna, dátaí nó eatraimh sheasta. Is féidir é seo a úsáid chun idirghníomhaíochtaí nó fógraí íogaire ó thaobh ama de a spreagadh.",
-    "description": "An extended description for the `snap_cronjob` permission. $1 is the snap name."
-  },
-  "permission_dialog": {
-    "message": "Taispeáin fuinneoga dialóige i 1do.",
-    "description": "The description for the `snap_dialog` permission"
-  },
-  "permission_dialogDescription": {
-    "message": "Ceadaigh do $1 fuinneoga aníos 1do a thaispeáint le téacs saincheaptha, réimse ionchuir, agus cnaipí chun gníomh a cheadú nó a dhiúltú.\nIs féidir é a úsáid chun foláirimh, dearbhuithe, agus sreafaí rogha isteach a chruthú ar feadh tamaill thapa.",
-    "description": "An extended description for the `snap_dialog` permission. $1 is the snap name."
   },
   "permission_ethereumAccounts": {
     "message": "Féach ar sheoladh, iarmhéid cuntais, gníomhaíocht agus mol idirbhearta le ceadú",
@@ -4112,117 +3962,25 @@
     "message": "Rochtain a fháil ar sholáthraí Ethereum.",
     "description": "The description for the `endowment:ethereum-provider` permission"
   },
-  "permission_ethereumProviderDescription": {
-    "message": "Lig do $1 cumarsáid a dhéanamh le 1do go díreach, ionas gur féidir leis sonraí ón blockchain a léamh agus teachtaireachtaí agus idirbhearta a mholadh.",
-    "description": "An extended description for the `endowment:ethereum-provider` permission. $1 is the snap name."
-  },
-  "permission_getEntropy": {
-    "message": "Díorthaigh eochracha treallacha atá uathúil do $1.",
-    "description": "The description for the `snap_getEntropy` permission. $1 is the snap name."
-  },
-  "permission_getEntropyDescription": {
-    "message": "Lig do $1 eochracha treallacha atá uathúil do $1 a dhíorthú, gan iad a nochtadh. Tá na heochracha seo ar leithligh ó do chuntas(anna) 1do agus níl siad gaolmhar le d'eochracha príobháideacha ná le d'Frása Aisghabhála Rúnda. Ní féidir le snaps eile rochtain a fháil ar an bhfaisnéis seo.",
-    "description": "An extended description for the `snap_getEntropy` permission. $1 is the snap name."
-  },
-  "permission_getLocale": {
-    "message": "Féach ar do theanga is fearr leat.",
-    "description": "The description for the `snap_getLocale` permission"
-  },
-  "permission_getLocaleDescription": {
-    "message": "Lig do $1 rochtain a fháil ar do theanga is fearr leat ó do shocruithe 1do. Is féidir é seo a úsáid chun ábhar $1 a logánú agus a thaispeáint ag baint úsáide as do theanga féin.",
-    "description": "An extended description for the `snap_getLocale` permission. $1 is the snap name."
-  },
-  "permission_getPreferences": {
-    "message": "Féach faisnéis ar nós do theanga is fearr leat agus airgeadra fiat.",
-    "description": "The description for the `snap_getPreferences` permission"
-  },
-  "permission_getPreferencesDescription": {
-    "message": "Lig do $1 rochtain a fháil ar fhaisnéis ar nós do theanga is fearr leat agus airgeadra fiat i do shocruithe 1do. Cuidíonn sé seo le $1 ábhar a thaispeáint atá saincheaptha do do chuid sainroghanna.",
-    "description": "An extended description for the `snap_getPreferences` permission. $1 is the snap name."
-  },
   "permission_homePage": {
     "message": "Taispeáin scáileán saincheaptha",
     "description": "The description for the `endowment:page-home` permission"
-  },
-  "permission_homePageDescription": {
-    "message": "Lig do $1 scáileán baile saincheaptha a thaispeáint i 1do. Is féidir é seo a úsáid le haghaidh comhéadain úsáideora, cumraíochta, agus painéil rialaithe.",
-    "description": "An extended description for the `endowment:page-home` permission. $1 is the snap name."
   },
   "permission_keyring": {
     "message": "Ceadaigh iarratais chun cuntais Ethereum a chur leis agus a rialú",
     "description": "The description for the `endowment:keyring` permission"
   },
-  "permission_keyringDescription": {
-    "message": "Lig do $1 iarratais a fháil chun cuntais a chur leis nó a bhaint, chomh maith le síniú agus idirbhearta a dhéanamh thar ceann na gcuntas seo.",
-    "description": "An extended description for the `endowment:keyring` permission. $1 is the snap name."
-  },
   "permission_lifecycleHooks": {
     "message": "Bain úsáid as crúcaí saoilré.",
     "description": "The description for the `endowment:lifecycle-hooks` permission"
-  },
-  "permission_lifecycleHooksDescription": {
-    "message": "Lig do $1 crúcaí saoilré a úsáid chun cód a rith ag amanna sonracha le linn a shaolré.",
-    "description": "An extended description for the `endowment:lifecycle-hooks` permission. $1 is the snap name."
-  },
-  "permission_manageAccounts": {
-    "message": "Cuir cuntais Ethereum leis agus rialaigh iad",
-    "description": "The description for `snap_manageAccounts` permission"
-  },
-  "permission_manageAccountsDescription": {
-    "message": "Lig do $1 cuntais Ethereum a chur leis nó a bhaint, ansin déan idirbhearta agus sínigh leis na cuntais seo.",
-    "description": "An extended description for the `snap_manageAccounts` permission. $1 is the snap name."
-  },
-  "permission_manageBip32Keys": {
-    "message": "Bainistigh cuntais $1.",
-    "description": "The description for the `snap_getBip32Entropy` permission. $1 is a derivation path, e.g. 'm/44'/0'/0' (secp256k1)'."
-  },
-  "permission_manageBip44AndBip32KeysDescription": {
-    "message": "Lig do $1 cuntais agus sócmhainní a bhainistiú ar an líonra iarrtha. Déantar na cuntais seo a dhíorthú agus a chúltaca ag baint úsáide as do fhrása rúnda aisghabhála (gan é a nochtadh). Leis an gcumas eochracha a dhíorthú, is féidir le $1 tacú le réimse prótacail blockchain thar Ethereum (EVManna).",
-    "description": "An extended description for the `snap_getBip44Entropy` and `snap_getBip44Entropy` permissions. $1 is the snap name."
-  },
-  "permission_manageBip44Keys": {
-    "message": "Bainistigh cuntais $1.",
-    "description": "The description for the `snap_getBip44Entropy` permission. $1 is the name of a protocol, e.g. 'Filecoin'."
-  },
-  "permission_manageState": {
-    "message": "Stóráil agus bainistigh a shonraí ar do ghléas.",
-    "description": "The description for the `snap_manageState` permission"
-  },
-  "permission_manageStateDescription": {
-    "message": "Lig do $1 sonraí a stóráil, a nuashonrú agus a aisghabháil go slán le criptiú. Ní féidir le snaps eile rochtain a fháil ar an bhfaisnéis seo.",
-    "description": "An extended description for the `snap_manageState` permission. $1 is the snap name."
   },
   "permission_nameLookup": {
     "message": "Cuir cuardaigh fearainn agus seoltaí ar fáil.",
     "description": "The description for the `endowment:name-lookup` permission."
   },
-  "permission_nameLookupDescription": {
-    "message": "Lig don snap cuardaigh seoltaí agus fearainn a fháil agus a thaispeáint i gcodanna éagsúla den Chomhéadan Úsáideora 1do.",
-    "description": "An extended description for the `endowment:name-lookup` permission."
-  },
-  "permission_notifications": {
-    "message": "Taispeáin fógraí.",
-    "description": "The description for the `snap_notify` permission"
-  },
-  "permission_notificationsDescription": {
-    "message": "Ceadaigh do $1 fógraí a thaispeáint laistigh de 1do. Is féidir téacs fógra gearr a spreagadh le snap le haghaidh faisnéise inghníomhaithe nó faisnéise atá íogair ó thaobh ama de.",
-    "description": "An extended description for the `snap_notify` permission. $1 is the snap name."
-  },
   "permission_protocol": {
     "message": "Cuir sonraí prótacail ar fáil do shlabhra amháin nó níos mó.",
     "description": "The description for the `endowment:protocol` permission."
-  },
-  "permission_protocolDescription": {
-    "message": "Lig do $1 sonraí prótacail a sholáthar do 1do amhail meastacháin gháis nó faisnéis chomharthaí.",
-    "description": "An extended description for the `endowment:protocol` permission. $1 is the name of the Snap."
-  },
-  "permission_rpc": {
-    "message": "Lig do $1 cumarsáid dhíreach a dhéanamh le $2.",
-    "description": "The description for the `endowment:rpc` permission. $1 is 'other snaps' or 'websites', $2 is the snap name."
-  },
-  "permission_rpcDescription": {
-    "message": "Lig do $1 teachtaireachtaí a sheoladh chuig $2 agus freagra a fháil ó $2.",
-    "description": "An extended description for the `endowment:rpc` permission. $1 is 'other snaps' or 'websites', $2 is the snap name."
   },
   "permission_rpcDescriptionOriginList": {
     "message": "$1 agus $2",
@@ -4232,49 +3990,21 @@
     "message": "Taispeáin léargais shínithe modúl.",
     "description": "The description for the `endowment:signature-insight` permission"
   },
-  "permission_signatureInsightDescription": {
-    "message": "Lig do $1 modúl a thaispeáint le léargais ar aon iarratas sínithe roimh cheadú. Is féidir é seo a úsáid le haghaidh réitigh frith-fhioscaireachta agus slándála.",
-    "description": "An extended description for the `endowment:signature-insight` permission. $1 is the snap name."
-  },
   "permission_signatureInsightOrigin": {
     "message": "Féach bunús na suíomhanna gréasáin a thionscnaíonn iarratas sínithe",
     "description": "The description for the `signatureOrigin` caveat, to be used with the `endowment:signature-insight` permission"
-  },
-  "permission_signatureInsightOriginDescription": {
-    "message": "Lig do $1 bunús (URI) suíomhanna gréasáin a thionscnaíonn iarratais shínithe a fheiceáil. Is féidir é seo a úsáid le haghaidh réitigh frith-fhioscaireachta agus slándála.",
-    "description": "An extended description for the `signatureOrigin` caveat, to be used with the `endowment:signature-insight` permission. $1 is the snap name."
   },
   "permission_transactionInsight": {
     "message": "Faigh agus taispeáin léargais idirbheart.",
     "description": "The description for the `endowment:transaction-insight` permission"
   },
-  "permission_transactionInsightDescription": {
-    "message": "Lig do $1 idirbhearta a dhíchódú agus léargais a thaispeáint laistigh den Chomhéadan Úsáideora 1do. Is féidir é seo a úsáid le haghaidh réitigh frith-fhioscaireachta agus slándála.",
-    "description": "An extended description for the `endowment:transaction-insight` permission. $1 is the snap name."
-  },
   "permission_transactionInsightOrigin": {
     "message": "Féach bunús suíomhanna gréasáin a thugann le fios idirbhearta",
     "description": "The description for the `transactionOrigin` caveat, to be used with the `endowment:transaction-insight` permission"
   },
-  "permission_transactionInsightOriginDescription": {
-    "message": "Lig do $1 bunús (URI) suíomhanna gréasáin a thugann le fios idirbhearta a fheiceáil. Is féidir é seo a úsáid le haghaidh réitigh frith-fhioscaireachta agus slándála.",
-    "description": "An extended description for the `transactionOrigin` caveat, to be used with the `endowment:transaction-insight` permission. $1 is the snap name."
-  },
   "permission_unknown": {
     "message": "Cead anaithnid: $1",
     "description": "$1 is the name of a requested permission that is not recognized."
-  },
-  "permission_viewBip32PublicKeys": {
-    "message": "Féach ar d'eochair phoiblí ar $1 ($2).",
-    "description": "The description for the `snap_getBip32PublicKey` permission. $1 is a derivation path, e.g. 'm/44'/0'/0''. $2 is the elliptic curve name, e.g. 'secp256k1'."
-  },
-  "permission_viewBip32PublicKeysDescription": {
-    "message": "Lig do $2 d’eochracha poiblí (agus seoltaí) a fheiceáil ar $1. Ní thugann sé seo aon smacht ar chuntais ná ar shócmhainní.",
-    "description": "An extended description for the `snap_getBip32PublicKey` permission. $1 is a derivation path (name). $2 is the snap name."
-  },
-  "permission_viewNamedBip32PublicKeys": {
-    "message": "Féach ar d'eochair phoiblí ar $1.",
-    "description": "The description for the `snap_getBip32PublicKey` permission. $1 is a name for the derivation path, e.g., 'Ethereum accounts'."
   },
   "permission_walletSwitchEthereumChain": {
     "message": "Úsáid do líonraí cumasaithe",
@@ -4284,15 +4014,11 @@
     "message": "Tacaíocht do WebAssembly.",
     "description": "The description of the `endowment:webassembly` permission."
   },
-  "permission_webAssemblyDescription": {
-    "message": "Lig do $1 rochtain a fháil ar thimpeallachtaí forghníomhaithe íseal-leibhéil trí WebAssembly.",
-    "description": "An extended description of the `endowment:webassembly` permission. $1 is the snap name."
-  },
   "permissions": {
     "message": "Ceadanna"
   },
   "permissionsPageEmptyDescription": {
-    "message": "Seo an áit ar féidir leat na ceadanna atá tugtha agat do Snaps suiteáilte nó do shuíomhanna nasctha a fheiceáil."
+    "message": "No permissions detected. Once you grant permissions to a site, the details will appear here."
   },
   "permitSimulationChange_approve": {
     "message": "Uasteorainn caiteachais"
@@ -4607,12 +4333,6 @@
     "message": "Bainfear an cuntas seo as 1do.",
     "description": "Title of a banner alert used on account remove modal."
   },
-  "removeKeyringSnap": {
-    "message": "Baintear na cuntais seo as 1do má bhaintear an Snap seo:"
-  },
-  "removeKeyringSnapToolTip": {
-    "message": "Rialaíonn an snap na cuntais, agus trína bhaint, bainfear na cuntais as 1do freisin, ach fanfaidh siad sa blockchain."
-  },
   "removeNFT": {
     "message": "Bain NFT"
   },
@@ -4621,22 +4341,6 @@
   },
   "removeNftMessage": {
     "message": "Baineadh NFT go rathúil!"
-  },
-  "removeSnap": {
-    "message": "Bain Snap"
-  },
-  "removeSnapAccountDescription": {
-    "message": "Mura leanann tú ar aghaidh, ní bheidh an cuntas seo ar fáil i 1do a thuilleadh."
-  },
-  "removeSnapAccountTitle": {
-    "message": "Bain cuntas"
-  },
-  "removeSnapConfirmation": {
-    "message": "An bhfuil tú cinnte gur mian leat $1 a bhaint?",
-    "description": "$1 represents the name of the snap"
-  },
-  "removeSnapDescription": {
-    "message": "Scriosfaidh an gníomh seo an snap, a shonraí agus cúlghairfidh sé na ceadanna a tugadh duit."
   },
   "rename": {
     "message": "Athainmnigh",
@@ -4656,9 +4360,6 @@
   },
   "requestFromInfo": {
     "message": "Seo é an suíomh atá ag iarraidh do shíniú."
-  },
-  "requestFromInfoSnap": {
-    "message": "Seo é an Snap ag iarraidh do shíniú."
   },
   "requestFromTransactionDescription": {
     "message": "Seo é an suíomh atá ag iarraidh do dheimhniú."
@@ -5026,9 +4727,6 @@
   "setUp": {
     "message": "Socraigh suas",
     "description": "Action label for Smart Accounts. Used on multichain details page."
-  },
-  "settingAddSnapAccount": {
-    "message": "Cuir cuntas Snap leis"
   },
   "settings": {
     "message": "Socruithe"
@@ -5445,168 +5143,6 @@
   "smartTransactionsEnabledTitle": {
     "message": "Tá idirbhearta níos cliste anois"
   },
-  "snapAccountCreated": {
-    "message": "Cuntas cruthaithe"
-  },
-  "snapAccountCreatedDescription": {
-    "message": "Tá do chuntas nua réidh le húsáid!"
-  },
-  "snapAccountCreationFailed": {
-    "message": "Theip ar chruthú cuntais"
-  },
-  "snapAccountCreationFailedDescription": {
-    "message": "Níor éirigh le $1 cuntas a chruthú duit.",
-    "description": "$1 is the snap name"
-  },
-  "snapAccountRedirectFinishSigningTitle": {
-    "message": "Críochnaigh an síniú"
-  },
-  "snapAccountRedirectSiteDescription": {
-    "message": "Lean na treoracha ó $1"
-  },
-  "snapAccountRemovalFailed": {
-    "message": "Theip ar bhaint an chuntais"
-  },
-  "snapAccountRemovalFailedDescription": {
-    "message": "Níor éirigh le $1 an cuntas seo a bhaint duit.",
-    "description": "$1 is the snap name"
-  },
-  "snapAccountRemoved": {
-    "message": "Baineadh an cuntas"
-  },
-  "snapAccountRemovedDescription": {
-    "message": "Ní bheidh an cuntas seo ar fáil lena úsáid i 1do a thuilleadh."
-  },
-  "snapConnectTo": {
-    "message": "Ceangail le $1",
-    "description": "$1 is the website URL or a Snap name. Used for Snaps pre-approved connections."
-  },
-  "snapConnectionPermissionDescription": {
-    "message": "Lig do $1 ceangal go huathoibríoch le $2 gan do cheadú.",
-    "description": "Used for Snap pre-approved connections. $1 is the Snap name, $2 is a website URL."
-  },
-  "snapConnectionWarning": {
-    "message": "Tá $1 ag iarraidh $2 a úsáid",
-    "description": "$2 is the snap and $1 is the dapp requesting connection to the snap."
-  },
-  "snapDetailWebsite": {
-    "message": "Suíomh Gréasáin"
-  },
-  "snapHomeMenu": {
-    "message": "Roghchlár Baile Snap"
-  },
-  "snapInstallRequest": {
-    "message": "Trí $1 a shuiteáil, tugtar na ceadanna seo a leanas dó.",
-    "description": "$1 is the snap name."
-  },
-  "snapInstallSuccess": {
-    "message": "Suiteáil críochnaithe"
-  },
-  "snapInstallWarningCheck": {
-    "message": "Tá cead ag $1 an méid seo a leanas a dhéanamh:",
-    "description": "Warning message used in popup displayed on snap install. $1 is the snap name."
-  },
-  "snapInstallWarningHeading": {
-    "message": "Lean ar aghaidh go cúramach"
-  },
-  "snapInstallWarningPermissionDescriptionForBip32View": {
-    "message": "Lig do $1 do chuid eochracha poiblí (agus seoltaí) a fheiceáil. Ní thugann sé seo aon smacht ar chuntais ná ar shócmhainní.",
-    "description": "An extended description for the `snap_getBip32PublicKey` permission used for tooltip on Snap Install Warning screen (popup/modal). $1 is the snap name."
-  },
-  "snapInstallWarningPermissionDescriptionForEntropy": {
-    "message": "Lig do $1 Snap cuntais agus sócmhainní a bhainistiú ar an líonra/na líonraí iarrtha. Déantar na cuntais seo a dhíorthú agus a chúltaca ag baint úsáide as do fhrása rúnda aisghabhála (gan é a nochtadh). Leis an gcumas eochracha a dhíorthú, is féidir le $1 tacú le réimse prótacail blockchain thar Ethereum (EVManna).",
-    "description": "An extended description for the `snap_getBip44Entropy` and `snap_getBip44Entropy` permissions used for tooltip on Snap Install Warning screen (popup/modal). $1 is the snap name."
-  },
-  "snapInstallWarningPermissionNameForEntropy": {
-    "message": "Bainistigh cuntais $1",
-    "description": "Permission name used for the Permission Cell component displayed on warning popup when installing a Snap. $1 is list of account types."
-  },
-  "snapInstallWarningPermissionNameForViewPublicKey": {
-    "message": "Féach ar d’eochair phoiblí ar $1",
-    "description": "Permission name used for the Permission Cell component displayed on warning popup when installing a Snap. $1 is list of account types."
-  },
-  "snapInstallationErrorDescription": {
-    "message": "Níorbh fhéidir $1 a shuiteáil.",
-    "description": "Error description used when snap installation fails. $1 is the snap name."
-  },
-  "snapInstallationErrorTitle": {
-    "message": "Theip ar an suiteáil",
-    "description": "Error title used when snap installation fails."
-  },
-  "snapResultError": {
-    "message": "Earráid"
-  },
-  "snapResultSuccess": {
-    "message": "Rath"
-  },
-  "snapResultSuccessDescription": {
-    "message": "Tá $1 réidh le húsáid"
-  },
-  "snapUIAccountSelectorTitle": {
-    "message": "Roghnaigh cuntas"
-  },
-  "snapUIAssetSelectorTitle": {
-    "message": "Roghnaigh sócmhainn"
-  },
-  "snapUpdateAlertDescription": {
-    "message": "Faigh an leagan is déanaí de $1",
-    "description": "Description used in Snap update alert banner when snap update is available. $1 is the Snap name."
-  },
-  "snapUpdateAvailable": {
-    "message": "Nuashonrú ar fáil"
-  },
-  "snapUpdateErrorDescription": {
-    "message": "Níorbh fhéidir $1 a nuashonrú.",
-    "description": "Error description used when snap update fails. $1 is the snap name."
-  },
-  "snapUpdateErrorTitle": {
-    "message": "Theip ar an nuashonrú",
-    "description": "Error title used when snap update fails."
-  },
-  "snapUpdateRequest": {
-    "message": "Trí $1 a nuashonrú, tugtar na ceadanna seo a leanas dó.",
-    "description": "$1 is the Snap name."
-  },
-  "snapUpdateSuccess": {
-    "message": "Nuashonrú críochnaithe"
-  },
-  "snapUrlIsBlocked": {
-    "message": "Tá an Snap seo ag iarraidh tú a thabhairt chuig suíomh blocáilte. $1."
-  },
-  "snaps": {
-    "message": "Snapanna"
-  },
-  "snapsConnected": {
-    "message": "Snapanna ceangailte"
-  },
-  "snapsNoInsight": {
-    "message": "Gan aon léargas le taispeáint"
-  },
-  "snapsPrivacyWarningFirstMessage": {
-    "message": "Aithníonn tú gur Seirbhís Tríú Páirtí aon Snap a shuiteálann tú, mura n-aithnítear a mhalairt, mar a shainmhínítear i $1 Consensys. Rialaítear d’úsáid de Sheirbhísí Tríú Páirtí ag téarmaí agus coinníollacha ar leith a leagann an soláthraí Seirbhíse Tríú Páirtí amach. Ní mholann Consensys úsáid aon Snap ag aon duine áirithe ar chúis ar leith. Rochtainíonn tú, braitheann tú uirthi nó úsáideann tú an tSeirbhís Tríú Páirtí ar do phriacal féin. Séanann Consensys gach freagracht agus dliteanas as aon chaillteanais mar gheall ar d’úsáid de Sheirbhísí Tríú Páirtí.",
-    "description": "First part of a message in popup modal displayed when installing a snap for the first time. $1 is terms of use link."
-  },
-  "snapsPrivacyWarningSecondMessage": {
-    "message": "Aon fhaisnéis a roinneann tú le Seirbhísí Tríú Páirtí, bailíonn na Seirbhísí Tríú Páirtí sin í go díreach i gcomhréir lena mbeartais phríobháideachais. Féach ar a mbeartais phríobháideachais le haghaidh tuilleadh eolais.",
-    "description": "Second part of a message in popup modal displayed when installing a snap for the first time."
-  },
-  "snapsPrivacyWarningThirdMessage": {
-    "message": "Níl aon rochtain ag Consensys ar fhaisnéis a roinneann tú le Seirbhísí Tríú Páirtí.",
-    "description": "Third part of a message in popup modal displayed when installing a snap for the first time."
-  },
-  "snapsSettings": {
-    "message": "Socruithe snap"
-  },
-  "snapsTermsOfUse": {
-    "message": "Téarmaí Úsáide"
-  },
-  "snapsToggle": {
-    "message": "Ní rithfidh snap ach amháin má tá sé cumasaithe"
-  },
-  "snapsUIError": {
-    "message": "Téigh i dteagmháil le cruthaitheoirí $1 le haghaidh tuilleadh tacaíochta.",
-    "description": "This is shown when the insight snap throws an error. $1 is the snap name"
-  },
   "solanaAccountRequested": {
     "message": "Tá an suíomh seo ag iarraidh cuntas Solana."
   },
@@ -5961,10 +5497,6 @@
   },
   "submitted": {
     "message": "Cuireadh isteach"
-  },
-  "suggestedBySnap": {
-    "message": "Molta ag $1",
-    "description": "$1 is the snap name"
   },
   "suggestedCurrencySymbol": {
     "message": "Siombail airgeadra molta:"
@@ -6336,10 +5868,6 @@
   "themeDescription": {
     "message": "Roghnaigh do théama 1do is fearr leat."
   },
-  "thirdPartySoftware": {
-    "message": "Fógra bogearraí tríú páirtí",
-    "description": "Title of a popup modal displayed when installing a snap for the first time."
-  },
   "time": {
     "message": "Am"
   },
@@ -6596,10 +6124,6 @@
     "message": "Líonra anaithnid",
     "description": "Displayed on places like Gator permissions when regular name is not available."
   },
-  "unknownNetworkForKeyEntropy": {
-    "message": "Líonra anaithnid",
-    "description": "Displayed on places like Snap install warning when regular name is not available."
-  },
   "unknownQrCode": {
     "message": "Earráid: Níorbh fhéidir linn an cód QR sin a aithint"
   },
@@ -6806,10 +6330,6 @@
   "warning": {
     "message": "Rabhadh"
   },
-  "warningFromSnap": {
-    "message": "Rabhadh ó $1",
-    "description": "$1 represents the name of the snap"
-  },
   "watchEthereumAccountsDescription": {
     "message": "Trí an rogha seo a chasadh air beidh tú in ann cuntais Ethereum a fheiceáil trí sheoladh poiblí nó ainm ENS. Chun aiseolas a fháil ar an ngné Beta seo, comhlánaigh an $1 seo le do thoil.",
     "description": "$1 is the link to a product feedback form"
@@ -6895,5 +6415,20 @@
   },
   "yourWalletIsReadyFromReminder": {
     "message": "Coinnigh do Rúndacht Aisghabhála slán!"
+  },
+  "suggestedBySource": {
+    "message": "Molta ag $1",
+    "description": "$1 is the source name."
+  },
+  "permissionConnectTo": {
+    "message": "Ceangail le $1",
+    "description": "$1 is the website URL."
+  },
+  "permissionConnectionDescription": {
+    "message": "Lig do $1 ceangal go huathoibríoch le $2 gan do cheadú.",
+    "description": "$1 is the subject name, $2 is a website URL."
+  },
+  "noHardwareWalletSupport": {
+    "message": "Most hardware wallets will not work with your current browser version."
   }
 }

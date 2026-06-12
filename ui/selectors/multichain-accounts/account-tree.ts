@@ -904,7 +904,7 @@ export const getWalletIdsByType = createSelector(
 /**
  * Get the account group display name for a given address.
  * Returns the account group name (e.g., "Account 3") rather than
- * the internal account name (e.g., "Snap Account 11").
+ * the internal account name (e.g., "Account 11").
  *
  * @param state - Redux state.
  * @param address - The address to look up.

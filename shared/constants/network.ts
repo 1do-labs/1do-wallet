@@ -518,15 +518,8 @@ export const CURRENCY_SYMBOLS = {
   MANTLE: 'MNT',
 } as const;
 
-// Non-EVM currency symbols
-export const NON_EVM_CURRENCY_SYMBOLS = {
-  BTC: 'BTC',
-  SOL: 'SOL',
-} as const;
-
 const CHAINLIST_CURRENCY_SYMBOLS_MAP = {
   ...CURRENCY_SYMBOLS,
-  ...NON_EVM_CURRENCY_SYMBOLS,
   BASE: 'ETH',
   LINEA_MAINNET: 'ETH',
   OPBNB: 'BNB',
@@ -692,15 +685,6 @@ export const UNICHAIN_IMAGE_URL = './images/unichain.svg';
 export const MEGAETH_TESTNET_IMAGE_URL = './images/MegaETH-logo-testnet.png';
 export const MEGAETH_TESTNET_V2_IMAGE_URL = './images/MegaETH-logo-testnet.png';
 export const MEGAETH_MAINNET_IMAGE_URL = './images/MegaETH-logo-mainnet.png';
-export const SOLANA_IMAGE_URL = './images/solana-logo.svg';
-export const SOLANA_TESTNET_IMAGE_URL = './images/solana-testnet-logo.svg';
-export const SOLANA_DEVNET_IMAGE_URL = './images/solana-devnet-logo.svg';
-export const BITCOIN_IMAGE_URL = './images/bitcoin-logo.svg';
-export const BITCOIN_TESTNET_IMAGE_URL = './images/bitcoin-testnet-logo.svg';
-export const BITCOIN_SIGNET_IMAGE_URL = './images/bitcoin-signet-logo.png';
-export const TRON_IMAGE_URL = './images/tron-logo.svg';
-export const TRON_NILE_IMAGE_URL = './images/tron-logo.svg';
-export const TRON_SHASTA_IMAGE_URL = './images/tron-logo.svg';
 export const XRPLEVM_TESTNET_IMAGE_URL = './images/xrplevm.svg';
 export const XRPLEVM_TESTNET_NATIVE_TOKEN_IMAGE_URL =
   './images/xrplevm-native.svg';

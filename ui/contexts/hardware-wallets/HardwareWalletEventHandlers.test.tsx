@@ -254,7 +254,7 @@ describe('useDeviceEventHandlers', () => {
 
       result.current.handleDeviceEvent({
         event: DeviceEvent.AppChanged,
-        currentAppName: 'Bitcoin',
+        currentAppName: 'Unsupported',
       });
 
       expect(mockSetters.setConnectionState).toHaveBeenCalledWith(
@@ -265,7 +265,7 @@ describe('useDeviceEventHandlers', () => {
       const prevState = ConnectionState.disconnected();
       const resultState = updater(prevState);
 
-      expect(resultState).toEqual(ConnectionState.awaitingApp('Bitcoin'));
+      expect(resultState).toEqual(ConnectionState.awaitingApp('Unsupported'));
     });
 
     it('handles AppChanged event with correct app', () => {

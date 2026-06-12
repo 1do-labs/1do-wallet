@@ -9,20 +9,11 @@ import {
 } from '../../utils/send';
 import { useSendContext } from '../../context/send';
 import { Asset, AssetStandard } from '../../types/send';
-import { useSendType } from './useSendType';
-import { useSnapAmountOnInput } from './useSnapAmountOnInput';
 import { useBalance } from './useBalance';
-
-type SnapOnAmountInputResult = {
-  valid: boolean;
-  errors: { code: string }[];
-};
 
 export const useAmountValidation = () => {
   const t = useI18nContext();
-  const { isNonEvmSendType } = useSendType();
   const { asset, value } = useSendContext();
-  const { validateAmountWithSnap } = useSnapAmountOnInput();
   const { rawBalanceNumeric } = useBalance();
   const [amountError, setAmountError] = useState<string | undefined>(undefined);
 
@@ -30,32 +21,6 @@ export const useAmountValidation = () => {
     setAmountError(errorMessage);
     return errorMessage;
   }, []);
-
-  const validateNonEvmAmount = useCallback(
-    async (amount: string): Promise<string | undefined> => {
-      if (!isNonEvmSendType) {
-        return undefined;
-      }
-
-      if (rawBalanceNumeric.isZero()) {
-        return t('insufficientFundsSend');
-      }
-
-      try {
-        const result = (await validateAmountWithSnap(
-          amount || '0',
-        )) as SnapOnAmountInputResult;
-
-        if (result.errors?.length > 0) {
-          return mapSnapErrorCodeIntoTranslation(result.errors[0].code, t);
-        }
-        return undefined;
-      } catch (error) {
-        return t('invalidValue');
-      }
-    },
-    [t, validateAmountWithSnap, isNonEvmSendType, rawBalanceNumeric],
-  );
 
   const validateAmountAsync = useCallback(async () => {
     if (!value) {
@@ -74,7 +39,6 @@ export const useAmountValidation = () => {
           asset?.decimals,
           t,
         ),
-      () => validateNonEvmAmount(normalizedValue),
     ];
 
     for (const validation of validations) {
@@ -85,26 +49,13 @@ export const useAmountValidation = () => {
     }
 
     return setAndReturnError(undefined);
-  }, [
-    asset,
-    rawBalanceNumeric,
-    t,
-    value,
-    validateNonEvmAmount,
-    setAndReturnError,
-  ]);
-
-  // This callback is needed for non-EVM validation when nothing is typed into amount
-  const validateNonEvmAmountAsync = useCallback(async () => {
-    const error = await validateNonEvmAmount(normalizeAmount(value));
-    return setAndReturnError(error);
-  }, [value, validateNonEvmAmount, setAndReturnError]);
+  }, [asset, rawBalanceNumeric, t, value, setAndReturnError]);
 
   useEffect(() => {
     validateAmountAsync();
   }, [validateAmountAsync]);
 
-  return { amountError, validateNonEvmAmountAsync };
+  return { amountError };
 };
 
 export function validateERC1155Balance(
@@ -148,19 +99,4 @@ export function validatePositiveNumericString(
     return t('invalidValue');
   }
   return undefined;
-}
-
-export function mapSnapErrorCodeIntoTranslation(
-  errorCode: string,
-  t: ReturnType<typeof useI18nContext>,
-): string {
-  switch (errorCode) {
-    case 'InsufficientBalance':
-      return t('insufficientFundsSend');
-    case 'InsufficientBalanceToCoverFee':
-      return t('insufficientBalanceToCoverFees');
-    case 'Invalid':
-    default:
-      return t('invalidValue');
-  }
 }

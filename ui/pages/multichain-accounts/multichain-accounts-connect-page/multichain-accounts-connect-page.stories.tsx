@@ -75,11 +75,6 @@ const mockInternalAccountsState = {
         name: 'Test Account 1',
         importTime: Date.now(),
         keyring: { type: 'HD Key Tree' },
-        snap: {
-          name: 'Test Snap',
-          id: 'test-snap-id',
-          enabled: true,
-        },
       },
       options: {},
       methods: ['eth_sendTransaction', 'eth_sign'],
@@ -93,11 +88,6 @@ const mockInternalAccountsState = {
         name: 'Test Account 2',
         importTime: Date.now(),
         keyring: { type: 'HD Key Tree' },
-        snap: {
-          name: 'Test Snap',
-          id: 'test-snap-id',
-          enabled: true,
-        },
       },
       options: {},
       methods: ['eth_sendTransaction', 'eth_sign'],

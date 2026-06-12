@@ -1,19 +1,39 @@
-import {
-  SecretType,
-  SeedlessOnboardingControllerState,
-} from '@metamask/seedless-onboarding-controller';
 import { AuthenticationControllerState } from '@metamask/profile-sync-controller/auth';
 import { KeyringControllerState } from '@metamask/keyring-controller';
 import { Patch } from 'immer';
 import { sanitizePatches, sanitizeUIState } from './state-utils';
+
+const SecretType = {
+  Mnemonic: 'mnemonic',
+} as const;
+
+type SeedlessOnboardingControllerState = {
+  vault?: string;
+  vaultEncryptionKey?: string;
+  vaultEncryptionSalt?: string;
+  encryptedSeedlessEncryptionKey?: string;
+  encryptedKeyringEncryptionKey?: string;
+  accessToken?: string;
+  metadataAccessToken?: string;
+  refreshToken?: string;
+  revokeToken?: string;
+  nodeAuthTokens?: {
+    authToken: string;
+    nodeIndex: number;
+    nodePubKey: string;
+  }[];
+  socialBackupsMetadata?: {
+    hash: string;
+    type: (typeof SecretType)[keyof typeof SecretType];
+    keyringId: string;
+  }[];
+};
 
 describe('State Utils', () => {
   describe('sanitizeUIState', () => {
     it('removes unsafe properties', () => {
       const state = {
         test1: 'value1',
-        snapStates: true,
-        unencryptedSnapStates: true,
         vault: true,
         test2: false,
       };
@@ -23,42 +43,6 @@ describe('State Utils', () => {
       expect(sanitizedState).toStrictEqual({
         test1: 'value1',
         test2: false,
-      });
-    });
-
-    it('strips large properties from snaps state', () => {
-      const state = {
-        test1: 'value1',
-        test2: true,
-        snaps: {
-          snap1: {
-            id: 'snap1',
-            test3: 123,
-            auxiliaryFiles: 'auxiliaryFiles1',
-          },
-          snap2: {
-            id: 'snap2',
-            test4: 456,
-            auxiliaryFiles: 'auxiliaryFiles2',
-          },
-        },
-      };
-
-      const sanitizedState = sanitizeUIState(state);
-
-      expect(sanitizedState).toStrictEqual({
-        test1: 'value1',
-        test2: true,
-        snaps: {
-          snap1: {
-            id: 'snap1',
-            test3: 123,
-          },
-          snap2: {
-            id: 'snap2',
-            test4: 456,
-          },
-        },
       });
     });
 
@@ -162,7 +146,7 @@ describe('State Utils', () => {
       const patches: Patch[] = [
         {
           op: 'replace',
-          path: ['snapStates'],
+          path: ['vault'],
           value: 'value1',
         },
         {
@@ -184,57 +168,6 @@ describe('State Utils', () => {
           op: 'replace',
           path: ['other'],
           value: 'value3',
-        },
-      ]);
-    });
-
-    it('removes large snap data if in path', () => {
-      const patches: Patch[] = [
-        {
-          op: 'replace',
-          path: ['snaps', 'snap2', 'otherCode'],
-          value: 'value2',
-        },
-        {
-          op: 'replace',
-          path: ['snaps', 'snap3', 'auxiliaryFiles'],
-          value: 'value3',
-        },
-      ];
-
-      const sanitizedPatches = sanitizePatches(patches);
-
-      expect(sanitizedPatches).toStrictEqual([
-        {
-          op: 'replace',
-          path: ['snaps', 'snap2', 'otherCode'],
-          value: 'value2',
-        },
-      ]);
-    });
-
-    it('removes large snap data if in value', () => {
-      const patches: Patch[] = [
-        {
-          op: 'replace',
-          path: ['snaps'],
-          value: {
-            snap1: { otherCode: 'value2' },
-            snap2: { auxiliaryFiles: 'value3', otherCode: 'value5' },
-          },
-        },
-      ];
-
-      const sanitizedPatches = sanitizePatches(patches);
-
-      expect(sanitizedPatches).toStrictEqual([
-        {
-          op: 'replace',
-          path: ['snaps'],
-          value: {
-            snap1: { otherCode: 'value2' },
-            snap2: { otherCode: 'value5' },
-          },
         },
       ]);
     });

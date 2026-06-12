@@ -1,6 +1,3 @@
-import { SnapEndowments } from '@metamask/snaps-rpc-methods';
-
-import { SnapCaveatType } from '@metamask/snaps-utils';
 import { Duration, inMilliseconds } from '@metamask/utils';
 import { migrate, version } from './165';
 
@@ -8,6 +5,9 @@ const oldVersion = 164;
 
 const MOCK_SNAP_ID = 'npm:foo-snap';
 const MOCK_ORIGIN = 'http://example.com';
+const SNAP_ENDOWMENT_CRONJOB = 'endowment:cronjob';
+const SNAP_ENDOWMENT_ETHEREUM_PROVIDER = 'endowment:ethereum-provider';
+const SNAP_CRONJOB_CAVEAT_TYPE = 'snapCronjob';
 
 jest.useFakeTimers();
 jest.setSystemTime(new Date('2023-10-01T00:00:00Z').getTime());
@@ -46,10 +46,10 @@ describe(`migration #${version}`, () => {
               [MOCK_SNAP_ID]: {
                 origin: MOCK_SNAP_ID,
                 permissions: {
-                  [SnapEndowments.Cronjob]: {
+                  [SNAP_ENDOWMENT_CRONJOB]: {
                     caveats: [
                       {
-                        type: SnapCaveatType.SnapCronjob,
+                        type: SNAP_CRONJOB_CAVEAT_TYPE,
                         value: {
                           jobs: [
                             {
@@ -73,7 +73,7 @@ describe(`migration #${version}`, () => {
                     date: 1664187844588,
                     id: 'izn0WGUO8cvq_jqvLQuQP',
                     invoker: MOCK_ORIGIN,
-                    parentCapability: SnapEndowments.EthereumProvider,
+                    parentCapability: SNAP_ENDOWMENT_ETHEREUM_PROVIDER,
                   },
                 },
               },
@@ -133,10 +133,10 @@ describe(`migration #${version}`, () => {
               [MOCK_SNAP_ID]: {
                 origin: MOCK_SNAP_ID,
                 permissions: {
-                  [SnapEndowments.Cronjob]: {
+                  [SNAP_ENDOWMENT_CRONJOB]: {
                     caveats: [
                       {
-                        type: SnapCaveatType.SnapCronjob,
+                        type: SNAP_CRONJOB_CAVEAT_TYPE,
                         value: {
                           jobs: [
                             {
@@ -160,7 +160,7 @@ describe(`migration #${version}`, () => {
                     date: 1664187844588,
                     id: 'izn0WGUO8cvq_jqvLQuQP',
                     invoker: MOCK_ORIGIN,
-                    parentCapability: SnapEndowments.EthereumProvider,
+                    parentCapability: SNAP_ENDOWMENT_ETHEREUM_PROVIDER,
                   },
                 },
               },
@@ -274,10 +274,10 @@ describe(`migration #${version}`, () => {
               [MOCK_SNAP_ID]: {
                 origin: MOCK_SNAP_ID,
                 permissions: {
-                  [SnapEndowments.Cronjob]: {
+                  [SNAP_ENDOWMENT_CRONJOB]: {
                     caveats: [
                       {
-                        type: SnapCaveatType.SnapCronjob,
+                        type: SNAP_CRONJOB_CAVEAT_TYPE,
                         value: {
                           jobs: [
                             {
@@ -294,7 +294,7 @@ describe(`migration #${version}`, () => {
                     date: 1664187844588,
                     id: 'izn0WGUO8cvq_jqvLQuQP',
                     invoker: MOCK_ORIGIN,
-                    parentCapability: SnapEndowments.EthereumProvider,
+                    parentCapability: SNAP_ENDOWMENT_ETHEREUM_PROVIDER,
                   },
                 },
               },

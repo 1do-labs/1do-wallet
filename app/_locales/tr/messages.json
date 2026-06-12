@@ -315,12 +315,6 @@
   "addRpcUrl": {
     "message": "RPC URL adresi ekle"
   },
-  "addSnapAccountToggle": {
-    "message": "\"Snap hesabı ekle (Beta)\" özelliğini etkinleştir"
-  },
-  "addSnapAccountsDescription": {
-    "message": "Bu özelliğin açılması size doğrudan hesap listenizden bir Snap hesabı ekleme seçeneği verir. Bir Snap hesabı yüklüyorsanız bunun üçüncü taraf bir hizmet olduğunu unutmayın."
-  },
   "addSuggestedNFTs": {
     "message": "Önerilen NFT'leri ekleyin"
   },
@@ -651,11 +645,11 @@
   },
   "andForListItems": {
     "message": "$1 ve $2",
-    "description": "$1 is the first item, $2 is the last item in a list of items. Used in Snap Install Warning modal."
+    "description": "$1 is the first item, $2 is the last item in a list of items."
   },
   "andForTwoItems": {
     "message": "$1 ve $2",
-    "description": "$1 is the first item, $2 is the second item. Used in Snap Install Warning modal."
+    "description": "$1 is the first item, $2 is the second item."
   },
   "annual": {
     "message": "Yıllık"
@@ -842,9 +836,6 @@
   "backupApprovalNotice": {
     "message": "Cüzdanınızı ve paranızı güvende tutmak için Gizli Kurtarma İfadenizi yedekleyin."
   },
-  "backupKeyringSnapReminder": {
-    "message": "Bu Snap'i kaldırmadan önce bu Snap tarafından oluşturulan tüm hesaplara kendi başınıza erişim sağlayabildiğinizden emin olun"
-  },
   "backupNow": {
     "message": "Şimdi yedekle"
   },
@@ -895,9 +886,6 @@
   "basicFunctionalityRequired_goToHome": {
     "message": "Ana sayfaya git"
   },
-  "basicFunctionalityRequired_openCreateSnapAccountPage": {
-    "message": "Hesap Oluştur sayfasını açın"
-  },
   "basicFunctionalityRequired_openDefiPage": {
     "message": "DeFi sayfasını açın"
   },
@@ -912,9 +900,6 @@
   },
   "basicFunctionalityRequired_openRewardsPage": {
     "message": "Ödüller sayfasını açın"
-  },
-  "basicFunctionalityRequired_openSnapsPage": {
-    "message": "Snaps sayfasını açın"
   },
   "basicFunctionalityRequired_openSwapsPage": {
     "message": "Takas sayfasını açın"
@@ -1498,21 +1483,6 @@
   "concentratedSupplyDistributionTitle": {
     "message": "Konsantre arz dağılımı"
   },
-  "configureSnapPopupDescription": {
-    "message": "Şu anda bu snapi yapılandırmak için 1do'ten ayrılıyorsunuz."
-  },
-  "configureSnapPopupInstallDescription": {
-    "message": "Şu anda bu snapi yüklemek için 1do'ten ayrılıyorsunuz."
-  },
-  "configureSnapPopupInstallTitle": {
-    "message": "Snap yükle"
-  },
-  "configureSnapPopupLink": {
-    "message": "Devam etmek için bu bağlantıya tıklayın:"
-  },
-  "configureSnapPopupTitle": {
-    "message": "Snapi yapılandır"
-  },
   "confirm": {
     "message": "Onayla"
   },
@@ -1749,10 +1719,6 @@
   "connectMoreAccounts": {
     "message": "Daha fazla hesap bağla"
   },
-  "connectSnap": {
-    "message": "Şuna bağlanın: $1",
-    "description": "$1 is the snap for which a connection is being requested."
-  },
   "connectWithMetaMask": {
     "message": "1do ile Bağlan"
   },
@@ -1773,9 +1739,6 @@
   "connectedSites": {
     "message": "Bağlı siteler"
   },
-  "connectedSitesAndSnaps": {
-    "message": "Bağlı siteler ve Snap'ler"
-  },
   "connectedSitesDescription": {
     "message": "$1 bu sitelere bağlanmış. Bu siteler hesap adresinizi görüntüleyebilir.",
     "description": "$1 is the account name"
@@ -1783,12 +1746,6 @@
   "connectedSitesEmptyDescription": {
     "message": "$1 herhangi bir siteye bağlanmamış.",
     "description": "$1 is the account name"
-  },
-  "connectedSnapAndNoAccountDescription": {
-    "message": "1do bu siteye bağlı ancak henüz bağlı hesap yok"
-  },
-  "connectedSnaps": {
-    "message": "Bağlı Snap'ler"
   },
   "connectedWithAccount": {
     "message": "$1 hesap bağlandı",
@@ -1836,10 +1793,6 @@
   "connectionFailed": {
     "message": "Bağlantı başarısız oldu"
   },
-  "connectionFailedDescription": {
-    "message": "$1 getirme başarısız oldu, ağınızı kontrol edip tekrar deneyin.",
-    "description": "$1 is the name of the snap being fetched."
-  },
   "connectionPopoverDescription": {
     "message": "Bir siteye bağlanmak için bağlan düğmesini seçin. 1do yalnızca web3 sitelerine bağlanabilir."
   },
@@ -1847,7 +1800,7 @@
     "message": "Bağlantı talebi"
   },
   "connectionsRemovedModalDescription": {
-    "message": "Bu cihazdaki işlemsizlikten dolayı bazı bağlantılar (donanım cüzdanları ve snap'ler gibi) kaldırıldı. Dilediğiniz zaman Ayarlar kısmında tekrar ekleyebilirsiniz."
+    "message": "Some connections (like hardware wallets) were removed due to inactivity on this device. You can re-add them anytime in Settings."
   },
   "connectionsRemovedModalTitle": {
     "message": "Bağlantılar kaldırıldı"
@@ -1866,10 +1819,6 @@
   },
   "contacts": {
     "message": "Kişiler"
-  },
-  "contentFromSnap": {
-    "message": "$1 içeriği",
-    "description": "$1 represents the name of the snap"
   },
   "continue": {
     "message": "Devam Et"
@@ -1954,12 +1903,6 @@
   },
   "createPasswordMarketing": {
     "message": "E-posta yoluyla dahil olmak üzere ürün güncellemeleri, ipuçları ve haberleri alın. Etkileşimlerinizi yaptığımız paylaşımları iyileştirmek için kullanabiliriz."
-  },
-  "createSnapAccountDescription": {
-    "message": "$1 1do'e yeni bir hesap eklemek istiyor."
-  },
-  "createSnapAccountTitle": {
-    "message": "Hesap oluştur"
   },
   "createSolanaAccount": {
     "message": "Solana hesabı oluştur"
@@ -2346,10 +2289,6 @@
   "description": {
     "message": "Açıklama"
   },
-  "descriptionFromSnap": {
-    "message": "$1 açıklaması",
-    "description": "$1 represents the name of the snap"
-  },
   "destinationAccountPickerNoEligible": {
     "message": "Uygun hesap bulunamadı"
   },
@@ -2406,9 +2345,6 @@
   "disconnectAllSitesSuccess": {
     "message": "Tüm dapp'lerin bağlantısı başarıyla kesildi."
   },
-  "disconnectAllSnapsText": {
-    "message": "Snap'ler"
-  },
   "disconnectMessage": {
     "message": "Bu işlem bu siteyle bağlantınızı kesecektir"
   },
@@ -2420,10 +2356,6 @@
   },
   "discover": {
     "message": "Keşfet"
-  },
-  "discoverSnaps": {
-    "message": "Snap'leri keşfedin",
-    "description": "Text that links to the Snaps website. Displayed in a banner on Snaps list page in settings."
   },
   "dismiss": {
     "message": "Yok say"
@@ -2619,9 +2551,6 @@
   "enableSmartContractAccountDescription": {
     "message": "Desteklenen ağlarda daha hızlı işlemler, daha düşük ağ ücretleri ve daha fazla güvenlik."
   },
-  "enableSnap": {
-    "message": "Etkinleştir"
-  },
   "enableToken": {
     "message": "şunu etkinleştir: $1",
     "description": "$1 is a token symbol, e.g. ETH"
@@ -2774,10 +2703,6 @@
   "errorWhileConnectingToRPC": {
     "message": "Özel ağa bağlanırken hata oluştu."
   },
-  "errorWithSnap": {
-    "message": "$1 ile hata oluştu",
-    "description": "$1 represents the name of the snap"
-  },
   "estimatedChanges": {
     "message": "Tahmini değişiklikler"
   },
@@ -2829,10 +2754,6 @@
   },
   "exportYourDataDescription": {
     "message": "Kişileriniz ve tercihleriniz gibi verileri dışa aktarabilirsiniz."
-  },
-  "extendWalletWithSnaps": {
-    "message": "web3 deneyiminizi kişiselleştirmek için topluluk tarafından oluşturulmuş Snapleri keşfedin",
-    "description": "Banner description displayed on Snaps list page in Settings when less than 6 Snaps is installed."
   },
   "externalAccount": {
     "message": "Harici hesap"
@@ -2893,7 +2814,7 @@
     "description": "This is a warning shown on the Flask Welcome screen, intended to encourage non-developers not to proceed any further. $1 is the bolded message 'flaskWelcomeUninstall'"
   },
   "flaskWelcomeWarning2": {
-    "message": "Bu uzantının güvenliğini ya da kararlılığını garanti etmiyoruz. Flask tarafından sunulan yeni API'ler kimlik avı saldırılarına karşı güçlendirilmemiştir; bu, Flask gerektiren her türlü site ya da snap, varlıklarınızı çalmak için kötü amaçlı bir saldırı girişimi olabilir.",
+    "message": "We do not guarantee the safety or stability of this extension. The new APIs offered by Flask are not hardened against phishing attacks, meaning that any site that requires Flask might be a malicious attempt to steal your assets.",
     "description": "This explains the risks of using MetaMask Flask"
   },
   "flaskWelcomeWarning3": {
@@ -3450,10 +3371,6 @@
   "insights": {
     "message": "İçgörüler"
   },
-  "insightsFromSnap": {
-    "message": "$1 kaynaklı içgörüler",
-    "description": "$1 represents the name of the snap"
-  },
   "install": {
     "message": "Yükle"
   },
@@ -3462,10 +3379,6 @@
   },
   "installRequest": {
     "message": "1do'e ekle"
-  },
-  "installedOn": {
-    "message": "$1 üzerinde yüklendi",
-    "description": "$1 is the date when the snap has been installed"
   },
   "insufficientBalance": {
     "message": "Bakiye yetersiz."
@@ -3599,18 +3512,6 @@
   },
   "keyringAccountPublicAddress": {
     "message": "Genel adres"
-  },
-  "keyringSnapRemovalResult1": {
-    "message": "$1 $2kaldırıldı",
-    "description": "Displays the result after removal of a keyring snap. $1 is the snap name, $2 is whether it is successful or not"
-  },
-  "keyringSnapRemovalResultNotSuccessful": {
-    "message": "değil ",
-    "description": "Displays the `not` word in $2."
-  },
-  "keyringSnapRemoveConfirmation": {
-    "message": "Bu snap'i kaldırmak istediğinizi onaylamak için $1 yazın:",
-    "description": "Asks user to input the name nap prior to deleting the snap. $1 is the snap name"
   },
   "keystone": {
     "message": "Ana İlke"
@@ -3765,9 +3666,6 @@
   },
   "loading": {
     "message": "Yükleniyor..."
-  },
-  "loadingScreenSnapMessage": {
-    "message": "Lütfen işlemi Snap üzerinde tamamlayın."
   },
   "loadingTokenList": {
     "message": "Token listesi yükleniyor"
@@ -3950,10 +3848,6 @@
   "metaMetricsIdNotAvailableError": {
     "message": "Hiçbir zaman 1do Metrics'e dahil olmadığınız için burada silinecek veri yok."
   },
-  "metadataModalSourceTooltip": {
-    "message": "$1 npm'de barındırılmaktadır ve $2 bu Snap'in eşsiz tanımlayıcısıdır.",
-    "description": "$1 is the snap name and $2 is the snap NPM id."
-  },
   "metamaskFee": {
     "message": "1do ücreti"
   },
@@ -4091,10 +3985,6 @@
   },
   "multichainQuoteCardRateLabel": {
     "message": "Oran"
-  },
-  "multipleSnapConnectionWarning": {
-    "message": "$1 $2 Snap kullanmak istiyor",
-    "description": "$1 is the dapp and $2 is the number of snaps it wants to connect to."
   },
   "musdBonusExplanation": {
     "message": "Stabil kripto paralarınızı mUSD'ye dönüştürün\nve günlük olarak alabileceğiniz %$1 orana kadar\nyıllıklandırılmış bonus kazanın. $2",
@@ -4581,9 +4471,6 @@
   "noDomainResolution": {
     "message": "Alan adı için çözümleme sunulmamış."
   },
-  "noHardwareWalletOrSnapsSupport": {
-    "message": "Geçerli tarayıcı sürümünüzle snap'ler ve çoğu donanım cüzdanı çalışmayacak."
-  },
   "noMMFeeSwapping": {
     "message": "1do ücreti yok"
   },
@@ -4601,9 +4488,6 @@
   },
   "noOptionsAvailableMessage": {
     "message": "Bu işlem yolu şu anda mevcut değil. Miktarı, ağı veya tokeni değiştirmeyi deneyin ve en iyi seçeneği bulalım."
-  },
-  "noSnaps": {
-    "message": "Yüklü snapiniz yok."
   },
   "noTokensMatchingYourFilters": {
     "message": "Filtrelerinizle eşleşen token yok"
@@ -4998,10 +4882,6 @@
   "otherPermissionsOnSiteTitle": {
     "message": "Bu sitedeki diğer izinler"
   },
-  "otherSnaps": {
-    "message": "diğer snapler",
-    "description": "Used in the 'permission_rpc' message."
-  },
   "others": {
     "message": "diğerleri"
   },
@@ -5116,49 +4996,13 @@
     "message": "$1 için bu güncellemede iptal edildi",
     "description": "Permission cell status for revoked permission including accounts, rendered as AvatarGroup which is $1."
   },
-  "permission_accessNamedSnap": {
-    "message": "$1 adresine bağlan.",
-    "description": "The description for the `wallet_snap` permission. $1 is the human-readable name of the snap."
-  },
   "permission_accessNetwork": {
     "message": "İnternet erişimi.",
     "description": "The description of the `endowment:network-access` permission."
   },
-  "permission_accessNetworkDescription": {
-    "message": "$1 adlı snap'in internete erişim sağlamasına izin verin. Üçüncü taraf sunucuları ile hem veri göndermek hem de veri almak için kullanılabilir.",
-    "description": "An extended description of the `endowment:network-access` permission. $1 is the snap name."
-  },
-  "permission_accessSnap": {
-    "message": "$1 snape bağlan.",
-    "description": "The description for the `wallet_snap` permission. $1 is the name of the snap."
-  },
-  "permission_accessSnapDescription": {
-    "message": "Web sitesinin veya snapin $1 ile etkileşimde bulunmasına izin verin.",
-    "description": "The description for the `wallet_snap_*` permission. $1 is the name of the Snap."
-  },
   "permission_assets": {
     "message": "Hesap varlıklarını 1do'te göster.",
     "description": "The description for the `endowment:assets` permission."
-  },
-  "permission_assetsDescription": {
-    "message": "$1 adlı snap'in 1do müşterisine varlık bilgilerini sunmasına izin ver. Varlıklar zincir üstü veya zincir dışı olabilir.",
-    "description": "An extended description for the `endowment:assets` permission. $1 is the name of the Snap."
-  },
-  "permission_cronjob": {
-    "message": "Periyodik eylemleri planla ve gerçekleştir.",
-    "description": "The description for the `snap_cronjob` permission"
-  },
-  "permission_cronjobDescription": {
-    "message": "$1 adlı snap'in sabit saat, tarih veya aralıklarda periyodik olarak çalışan eylemleri gerçekleştirmesine izin verin. Zamana duyarlı etkileşim ya da bildirimleri tetiklemek için kullanılabilir.",
-    "description": "An extended description for the `snap_cronjob` permission. $1 is the snap name."
-  },
-  "permission_dialog": {
-    "message": "1do'te iletişim kutusu pencerelerini göster.",
-    "description": "The description for the `snap_dialog` permission"
-  },
-  "permission_dialogDescription": {
-    "message": "$1 adlı snap'in bir eylemi onaylamak ya da reddetmek için özel metin, giriş alanı ve düğmelerle 1do açılır pencerelerini göstermesine izin verin.\nBir snap için ör. uyarı, onay ve talep edilen akış oluşturmak için kullanılabilir.",
-    "description": "An extended description for the `snap_dialog` permission. $1 is the snap name."
   },
   "permission_ethereumAccounts": {
     "message": "Adrese, hesap bakiyesine, aktiviteye bakın ve işlemleri başlatın",
@@ -5168,125 +5012,29 @@
     "message": "Ethereum sağlayıcısına ulaş.",
     "description": "The description for the `endowment:ethereum-provider` permission"
   },
-  "permission_ethereumProviderDescription": {
-    "message": "Blok zincirinden veri okuyabilmesi ve mesaj ile işlemleri önerebilmesi için $1 adlı snap'in doğrudan 1do ile iletişim kurmasına izin verin.",
-    "description": "An extended description for the `endowment:ethereum-provider` permission. $1 is the snap name."
-  },
-  "permission_getEntropy": {
-    "message": "$1 için eşsiz rastgele anahtarları türetin.",
-    "description": "The description for the `snap_getEntropy` permission. $1 is the snap name."
-  },
-  "permission_getEntropyDescription": {
-    "message": "$1 adlı snap'in, paylaşmadan, $1 adlı snap'e özel rastgele anahtarlar türetmesine izin verin. Bu anahtarlar 1do hesap veya hesaplarınızdan ayrıdır ve özel anahtarlarınızla ya da Gizli Kurtarma İfadenizle bağlantılı değildir. Diğer snap'ler bu bilgilere erişemez.",
-    "description": "An extended description for the `snap_getEntropy` permission. $1 is the snap name."
-  },
-  "permission_getLocale": {
-    "message": "Tercih ettiğiniz dili görüntüleyin.",
-    "description": "The description for the `snap_getLocale` permission"
-  },
-  "permission_getLocaleDescription": {
-    "message": "$1 adlı bu snap'in 1do ayarlarınızdan tercih ettiğiniz dile erişim sağlamasına izin verin. $1 içeriğini dilinizi kullanarak yerelleştirmek ve görüntülemek için bu özellik kullanılabilir.",
-    "description": "An extended description for the `snap_getLocale` permission. $1 is the snap name."
-  },
-  "permission_getPreferences": {
-    "message": "Tercih ettiğiniz dil ve itibari para gibi bilgileri görün.",
-    "description": "The description for the `snap_getPreferences` permission"
-  },
-  "permission_getPreferencesDescription": {
-    "message": "$1 adlı snap'in 1do ayarlarınızda tercih ettiğiniz dil ve fiat para gibi bilgilere erişim sağlamasına izin verin. Bu durum $1 adlı snap'in sizin tercihlerinize uygun içerikler göstermesine yardımcı olur. ",
-    "description": "An extended description for the `snap_getPreferences` permission. $1 is the snap name."
-  },
   "permission_homePage": {
     "message": "Özelleştirilmiş bir ekran görüntüle",
     "description": "The description for the `endowment:page-home` permission"
-  },
-  "permission_homePageDescription": {
-    "message": "$1 snap'inin 1do'te özel bir ana sayfa ekranı göstermesine izin verin. Bu, kullanıcı arayüzleri, yapılandırma ve kontrol panelleri için kullanılabilir.",
-    "description": "An extended description for the `endowment:page-home` permission. $1 is the snap name."
   },
   "permission_keyring": {
     "message": "Ethereum hesaplarını ekleme ve kontrol etme taleplerine izin ver",
     "description": "The description for the `endowment:keyring` permission"
   },
-  "permission_keyringDescription": {
-    "message": "$1 adlı snap'in hesap ekleme ve kaldırma talepleri almasına ve ayrıca bu hesapların adına imza ve işlem gerçekleştirmesine izin verin.",
-    "description": "An extended description for the `endowment:keyring` permission. $1 is the snap name."
-  },
   "permission_lifecycleHooks": {
     "message": "Yaşam döngüsü kancalarını kullan.",
     "description": "The description for the `endowment:lifecycle-hooks` permission"
-  },
-  "permission_lifecycleHooksDescription": {
-    "message": "Bu yaşam döngüsü sırasında belirli zamanlarda kod çalıştırmak için $1 adlı snap'in yaşam döngüsü kancalarını kullanmasına izin verin.",
-    "description": "An extended description for the `endowment:lifecycle-hooks` permission. $1 is the snap name."
-  },
-  "permission_manageAccounts": {
-    "message": "Ethereum hesaplarını ekle ve kontrol et",
-    "description": "The description for `snap_manageAccounts` permission"
-  },
-  "permission_manageAccountsDescription": {
-    "message": "$1 adlı snap'in Ethereum hesabı eklemesine veya kaldırmasına izin verin, ardından bu hesaplarla işlem ve imza gerçekleştirin.",
-    "description": "An extended description for the `snap_manageAccounts` permission. $1 is the snap name."
-  },
-  "permission_manageBip32Keys": {
-    "message": "$1 hesaplarını yönetin.",
-    "description": "The description for the `snap_getBip32Entropy` permission. $1 is a derivation path, e.g. 'm/44'/0'/0' (secp256k1)'."
-  },
-  "permission_manageBip44AndBip32KeysDescription": {
-    "message": "$1 adlı snap'in talep edilen ağ üzerinde hesap ve varlıkları yönetmesine izin verin. Bu hesaplar, gizli kurtarma ifadenizi kullanarak (açığa çıkarmadan) türetilir ve yedeklenir. $1, anahtar türetme gücü ile Ethereum (EVM'ler) ötesinde çeşitli blok zinciri protokollerini destekleyebilir.",
-    "description": "An extended description for the `snap_getBip44Entropy` and `snap_getBip44Entropy` permissions. $1 is the snap name."
-  },
-  "permission_manageBip44Keys": {
-    "message": "$1 hesaplarını yönetin.",
-    "description": "The description for the `snap_getBip44Entropy` permission. $1 is the name of a protocol, e.g. 'Filecoin'."
-  },
-  "permission_manageState": {
-    "message": "Verilerini cihazında sakla ve yönet.",
-    "description": "The description for the `snap_manageState` permission"
-  },
-  "permission_manageStateDescription": {
-    "message": "$1 adlı snap'in şifreleme ile güvenli bir şekilde veri depolamasına, güncellemesine ve almasına izin verin. Diğer snap'ler bu bilgilere erişim sağlayamaz.",
-    "description": "An extended description for the `snap_manageState` permission. $1 is the snap name."
   },
   "permission_multichainProvider": {
     "message": "Çoklu zincir sağlayıcısına erişim sağla.",
     "description": "The description for the `endowment:multichain-provider` permission"
   },
-  "permission_multichainProviderDescription": {
-    "message": "Blok zincirinden veri okuyabilmesi ve mesaj ile işlemleri önerebilmesi için $1 adlı snap'in doğrudan 1do ile iletişim kurmasına izin verin.",
-    "description": "An extended description for the `endowment:multichain-provider` permission. $1 is the snap name."
-  },
   "permission_nameLookup": {
     "message": "Alan adı ve adres sorgulamaları sağla.",
     "description": "The description for the `endowment:name-lookup` permission."
   },
-  "permission_nameLookupDescription": {
-    "message": "Snap'in 1do Arayüzünün farklı kısımlarında adres ve alan aramalarını almasına ve göstermesine izin verin.",
-    "description": "An extended description for the `endowment:name-lookup` permission."
-  },
-  "permission_notifications": {
-    "message": "Bildirimleri göster.",
-    "description": "The description for the `snap_notify` permission"
-  },
-  "permission_notificationsDescription": {
-    "message": "$1 adlı snap'in 1do dahilinde bildirim göstermesine izin verin. Eyleme geçirilebilir ya da zamana duyarlı bilgiler için bir snap tarafından kısa bir bildirim metni tetiklenebilir.",
-    "description": "An extended description for the `snap_notify` permission. $1 is the snap name."
-  },
   "permission_protocol": {
     "message": "Bir veya daha fazla zincir için protokol verileri sağlayın.",
     "description": "The description for the `endowment:protocol` permission."
-  },
-  "permission_protocolDescription": {
-    "message": "$1 adlı snap'in 1do'e gaz tahminleri veya token bilgileri gibi protokol verilerini sağlamasına izin verin.",
-    "description": "An extended description for the `endowment:protocol` permission. $1 is the name of the Snap."
-  },
-  "permission_rpc": {
-    "message": "$1 için $2 ile doğrudan iletişim kurmasına izin verin.",
-    "description": "The description for the `endowment:rpc` permission. $1 is 'other snaps' or 'websites', $2 is the snap name."
-  },
-  "permission_rpcDescription": {
-    "message": "$1 için $2 adlı snap'e mesaj gönderme ve $2 adlı snap'ten yanıt alma izni verin.",
-    "description": "An extended description for the `endowment:rpc` permission. $1 is 'other snaps' or 'websites', $2 is the snap name."
   },
   "permission_rpcDescriptionOriginList": {
     "message": "$1 ve $2",
@@ -5296,49 +5044,21 @@
     "message": "İmza içgörüleri kipini görüntüle.",
     "description": "The description for the `endowment:signature-insight` permission"
   },
-  "permission_signatureInsightDescription": {
-    "message": "$1 adlı snap'in onaydan önce imza taleplerinde içgörüleri içeren bir kipi göstermesine izin verin. Bu, kimlik avını önlemek ve güvenlik çözümleri için kullanılabilir.",
-    "description": "An extended description for the `endowment:signature-insight` permission. $1 is the snap name."
-  },
   "permission_signatureInsightOrigin": {
     "message": "İmza talebi başlatan web sitelerinin kökenlerini gör",
     "description": "The description for the `signatureOrigin` caveat, to be used with the `endowment:signature-insight` permission"
-  },
-  "permission_signatureInsightOriginDescription": {
-    "message": "$1 adlı snap'in imza talepleri başlatan web sitelerinin kökenini (URI) görmesine izin ver. Bu, kimlik avını önlemek ve güvenlik çözümleri için kullanılabilir.",
-    "description": "An extended description for the `signatureOrigin` caveat, to be used with the `endowment:signature-insight` permission. $1 is the snap name."
   },
   "permission_transactionInsight": {
     "message": "İşlem içgörülerini al ve görüntüle.",
     "description": "The description for the `endowment:transaction-insight` permission"
   },
-  "permission_transactionInsightDescription": {
-    "message": "$1 adlı snap'in işlemlerin şifresini çözmesine ve 1do Kullanıcı Arayüzü dahilinde içgörüleri göstermesine izin verin. Kimlik avından korunma ve güvenlik çözümleri için kullanılabilir.",
-    "description": "An extended description for the `endowment:transaction-insight` permission. $1 is the snap name."
-  },
   "permission_transactionInsightOrigin": {
     "message": "İşlem öneren web sitelerinin kökenlerini gör",
     "description": "The description for the `transactionOrigin` caveat, to be used with the `endowment:transaction-insight` permission"
   },
-  "permission_transactionInsightOriginDescription": {
-    "message": "$1 adlı snap'in işlem öneren web sitelerinin asıl adresini (URI) görmesine izin verin. Kimlik avından korunma ve güvenlik çözümleri için kullanılabilir.",
-    "description": "An extended description for the `transactionOrigin` caveat, to be used with the `endowment:transaction-insight` permission. $1 is the snap name."
-  },
   "permission_unknown": {
     "message": "Bilinmeyen izin: $1",
     "description": "$1 is the name of a requested permission that is not recognized."
-  },
-  "permission_viewBip32PublicKeys": {
-    "message": "$1 ($2) için genel anahtarınızı görüntüleyin.",
-    "description": "The description for the `snap_getBip32PublicKey` permission. $1 is a derivation path, e.g. 'm/44'/0'/0''. $2 is the elliptic curve name, e.g. 'secp256k1'."
-  },
-  "permission_viewBip32PublicKeysDescription": {
-    "message": "$2 adlı snap'in $1 için genel anahtarları (ve adresleri) görüntülemesine izin verin. Bu eylem, herhangi bir şekilde hesapların ya da varlıkların kontrolünü vermez.",
-    "description": "An extended description for the `snap_getBip32PublicKey` permission. $1 is a derivation path (name). $2 is the snap name."
-  },
-  "permission_viewNamedBip32PublicKeys": {
-    "message": "$1 için genel anahtarınızı görüntüleyin.",
-    "description": "The description for the `snap_getBip32PublicKey` permission. $1 is a name for the derivation path, e.g., 'Ethereum accounts'."
   },
   "permission_walletSwitchEthereumChain": {
     "message": "Etkin ağlarınızı kullanmak",
@@ -5348,15 +5068,11 @@
     "message": "WebAssembly desteği.",
     "description": "The description of the `endowment:webassembly` permission."
   },
-  "permission_webAssemblyDescription": {
-    "message": "$1 adlı snap'in WebAssembly aracılığıyla düşük seviye yürütme ortamlarına erişim sağlamasına izin verin.",
-    "description": "An extended description of the `endowment:webassembly` permission. $1 is the snap name."
-  },
   "permissions": {
     "message": "İzinler"
   },
   "permissionsPageEmptyDescription": {
-    "message": "İzin algılanmadı. Bir siteye izin verdiğinizde veya bir Snap yüklediğinizde bilgiler burada gösterilir."
+    "message": "No permissions detected. Once you grant permissions to a site, the details will appear here."
   },
   "permitSimulationChange_approve": {
     "message": "Harcama üst limiti"
@@ -6491,12 +6207,6 @@
   "removeAll": {
     "message": "Tümünü kaldır"
   },
-  "removeKeyringSnap": {
-    "message": "Bu Snap kaldırıldığında bu hesaplar 1do'ten kaldırılır:"
-  },
-  "removeKeyringSnapToolTip": {
-    "message": "Hesapları snap kontrol eder ve snap kaldırıldığında hesaplar 1do'ten de kaldılır, ancak blokzincirinde kalır."
-  },
   "removeNFT": {
     "message": "NFT'yi kaldır"
   },
@@ -6505,22 +6215,6 @@
   },
   "removeNftMessage": {
     "message": "NFT başarılı bir şekilde kaldırıldı!"
-  },
-  "removeSnap": {
-    "message": "Snap'i Kaldır"
-  },
-  "removeSnapAccountDescription": {
-    "message": "İlerlerseniz bu hesap artık 1do'te kullanılamayacak."
-  },
-  "removeSnapAccountTitle": {
-    "message": "Hesabı kaldırın"
-  },
-  "removeSnapConfirmation": {
-    "message": "$1 öğesini kaldırmak istediğinden emin misin?",
-    "description": "$1 represents the name of the snap"
-  },
-  "removeSnapDescription": {
-    "message": "Bu eylem, snapi, verilerini siler ve verdiğin izinleri iptal eder."
   },
   "rename": {
     "message": "Yeniden Adlandır",
@@ -6540,9 +6234,6 @@
   },
   "requestFromInfo": {
     "message": "İmzanızı isteyen site budur."
-  },
-  "requestFromInfoSnap": {
-    "message": "İmzanızı isteyen Snap budur."
   },
   "requestFromTransactionDescription": {
     "message": "Bu site tarafından onayınız isteniyor."
@@ -7109,9 +6800,6 @@
   "setUp": {
     "message": "Kur",
     "description": "Action label for Smart Accounts. Used on multichain details page."
-  },
-  "settingAddSnapAccount": {
-    "message": "Snap hesabı ekle"
   },
   "settings": {
     "message": "Ayarlar"
@@ -8017,168 +7705,6 @@
   "smartTransactionsEnabledTitle": {
     "message": "İşlemler artık daha akıllı hale geldi"
   },
-  "snapAccountCreated": {
-    "message": "Hesap oluşturuldu"
-  },
-  "snapAccountCreatedDescription": {
-    "message": "Yeni hesabınız kullanılmaya hazır!"
-  },
-  "snapAccountCreationFailed": {
-    "message": "Hesap oluşturma işlemi başarısız oldu"
-  },
-  "snapAccountCreationFailedDescription": {
-    "message": "$1 sizin için bir hesap oluşturamadı.",
-    "description": "$1 is the snap name"
-  },
-  "snapAccountRedirectFinishSigningTitle": {
-    "message": "İmzalama işlemini bitir"
-  },
-  "snapAccountRedirectSiteDescription": {
-    "message": "$1 talimatlarını izle"
-  },
-  "snapAccountRemovalFailed": {
-    "message": "Hesap kaldırma işlemi başarısız oldu"
-  },
-  "snapAccountRemovalFailedDescription": {
-    "message": "$1 sizin için bu hesabı kaldıramadı.",
-    "description": "$1 is the snap name"
-  },
-  "snapAccountRemoved": {
-    "message": "Hesap kaldırıldı"
-  },
-  "snapAccountRemovedDescription": {
-    "message": "Bu hesap artık 1do'te kullanılamayacak."
-  },
-  "snapConnectTo": {
-    "message": "$1 uygulamasına bağlan",
-    "description": "$1 is the website URL or a Snap name. Used for Snaps pre-approved connections."
-  },
-  "snapConnectionPermissionDescription": {
-    "message": "Onayınız olmadan $1 otomatik olarak $2 adresine bağlansın.",
-    "description": "Used for Snap pre-approved connections. $1 is the Snap name, $2 is a website URL."
-  },
-  "snapConnectionWarning": {
-    "message": "$1 şunu kullanmak istiyor: $2",
-    "description": "$2 is the snap and $1 is the dapp requesting connection to the snap."
-  },
-  "snapDetailWebsite": {
-    "message": "Web Sitesi"
-  },
-  "snapHomeMenu": {
-    "message": "Snap Ana Menüsü"
-  },
-  "snapInstallRequest": {
-    "message": "$1 adlı snap'i yüklemek ona aşağıdaki izinleri verir.",
-    "description": "$1 is the snap name."
-  },
-  "snapInstallSuccess": {
-    "message": "Yükleme tamamlandı"
-  },
-  "snapInstallWarningCheck": {
-    "message": "$1, şunları yapmak için izin istiyor:",
-    "description": "Warning message used in popup displayed on snap install. $1 is the snap name."
-  },
-  "snapInstallWarningHeading": {
-    "message": "Dikkatle ilerleyin"
-  },
-  "snapInstallWarningPermissionDescriptionForBip32View": {
-    "message": "$1 adlı snap'in genel anahtarlarınızı (ve adreslerinizi) görüntülemesine izin verin. Bu eylem, herhangi bir şekilde hesapların ya da varlıkların kontrolünü vermez.",
-    "description": "An extended description for the `snap_getBip32PublicKey` permission used for tooltip on Snap Install Warning screen (popup/modal). $1 is the snap name."
-  },
-  "snapInstallWarningPermissionDescriptionForEntropy": {
-    "message": "$1 adlı Snap'in talep edilen ağlar üzerinde hesap ve varlıkları yönetmesine izin verin. Bu hesaplar, gizli kurtarma ifadenizi kullanarak (açığa çıkarmadan) türetilir ve yedeklenir. $1, anahtar türetme gücü ile Ethereum (EVM'ler) ötesinde çeşitli blok zinciri protokollerini destekleyebilir.",
-    "description": "An extended description for the `snap_getBip44Entropy` and `snap_getBip44Entropy` permissions used for tooltip on Snap Install Warning screen (popup/modal). $1 is the snap name."
-  },
-  "snapInstallWarningPermissionNameForEntropy": {
-    "message": "$1 hesaplarını yönet",
-    "description": "Permission name used for the Permission Cell component displayed on warning popup when installing a Snap. $1 is list of account types."
-  },
-  "snapInstallWarningPermissionNameForViewPublicKey": {
-    "message": "$1 için genel anahtarınızı görüntüleyin",
-    "description": "Permission name used for the Permission Cell component displayed on warning popup when installing a Snap. $1 is list of account types."
-  },
-  "snapInstallationErrorDescription": {
-    "message": "$1 yüklenemedi.",
-    "description": "Error description used when snap installation fails. $1 is the snap name."
-  },
-  "snapInstallationErrorTitle": {
-    "message": "Yükleme başarısız oldu",
-    "description": "Error title used when snap installation fails."
-  },
-  "snapResultError": {
-    "message": "Hata"
-  },
-  "snapResultSuccess": {
-    "message": "Başarılı"
-  },
-  "snapResultSuccessDescription": {
-    "message": "$1 kullanıma hazır"
-  },
-  "snapUIAccountSelectorTitle": {
-    "message": "Hesap seç"
-  },
-  "snapUIAssetSelectorTitle": {
-    "message": "Bir varlık seç"
-  },
-  "snapUpdateAlertDescription": {
-    "message": "En son $1 güncellemesini alın",
-    "description": "Description used in Snap update alert banner when snap update is available. $1 is the Snap name."
-  },
-  "snapUpdateAvailable": {
-    "message": "Güncelleme mevcut"
-  },
-  "snapUpdateErrorDescription": {
-    "message": "$1 güncellenemedi.",
-    "description": "Error description used when snap update fails. $1 is the snap name."
-  },
-  "snapUpdateErrorTitle": {
-    "message": "Güncelleme başarısız oldu",
-    "description": "Error title used when snap update fails."
-  },
-  "snapUpdateRequest": {
-    "message": "$1 adlı snap'i güncellemek ona aşağıdaki izinleri verir.",
-    "description": "$1 is the Snap name."
-  },
-  "snapUpdateSuccess": {
-    "message": "Güncelleme tamamlandı"
-  },
-  "snapUrlIsBlocked": {
-    "message": "Bu Snap sizi bloke edilmiş bir siteye götürmek istiyor. $1."
-  },
-  "snaps": {
-    "message": "Snapler"
-  },
-  "snapsConnected": {
-    "message": "Snap'ler bağlandı"
-  },
-  "snapsNoInsight": {
-    "message": "Gösterilecek içgörü yok"
-  },
-  "snapsPrivacyWarningFirstMessage": {
-    "message": "Yüklediğiniz her Snap'in Consensys $1 içinde tanımlanan şekilde, aksi belirtilmedikçe bir üçüncü taraf hizmeti olduğunu kabul edersiniz. Üçüncü taraf hizmetlerini kullanımınız üçüncü taraf hizmet sağlayıcısı tarafından belirtilen ayrı şart ve koşullar tarafından yönetilir. Consensys herhangi bir Snap'in herhangi belirli bir sebeple herhangi belirli bir şahıs tarafından kullanımını önermez. Üçüncü taraf hizmetine erişiminizin, güvenmenizin veya kullanımınızın riski size aittir. Consensys, üçüncü taraf hizmetlerini kullanımınızdan kaynaklanan zararlar için her türlü sorumluluğu ve yükümlülüğü reddeder.",
-    "description": "First part of a message in popup modal displayed when installing a snap for the first time. $1 is terms of use link."
-  },
-  "snapsPrivacyWarningSecondMessage": {
-    "message": "Üçüncü taraf hizmetleri ile paylaştığınız tüm bilgiler söz konusu üçüncü taraf hizmetlerinin gizlilik politikalarına göre doğrudan üçüncü taraflar tarafından toplanacaktır. Daha fazla bilgi için lütfen üçüncü tarafların gizlilik politikalarına bakın.",
-    "description": "Second part of a message in popup modal displayed when installing a snap for the first time."
-  },
-  "snapsPrivacyWarningThirdMessage": {
-    "message": "Consensys'un bu üçüncü taraf hizmetleri ile paylaştığınız bilgilere erişimi bulunmamaktadır.",
-    "description": "Third part of a message in popup modal displayed when installing a snap for the first time."
-  },
-  "snapsSettings": {
-    "message": "Snap ayarları"
-  },
-  "snapsTermsOfUse": {
-    "message": "Kullanım Şartları"
-  },
-  "snapsToggle": {
-    "message": "Snap, yalnızca etkinleştirilmişse çalışır"
-  },
-  "snapsUIError": {
-    "message": "Daha fazla destek için $1 oluşturucuları ile iletişime geçin.",
-    "description": "This is shown when the insight snap throws an error. $1 is the snap name"
-  },
   "solanaAccountRequested": {
     "message": "Bu site bir Solana hesabı talep ediyor."
   },
@@ -8572,10 +8098,6 @@
   },
   "submitted": {
     "message": "Gönderildi"
-  },
-  "suggestedBySnap": {
-    "message": "$1 tarafından öneriliyor",
-    "description": "$1 is the snap name"
   },
   "suggestedCurrencySymbol": {
     "message": "Önerilen para birimi sembolü:"
@@ -8979,10 +8501,6 @@
   "thirdPartyApisDescription": {
     "message": "IP adresinizi veya Ethereum adresinizi üçüncü taraf API'leriyle nasıl paylaştığınızı seçin. Değişiklikler 1do deneyiminizi etkileyecektir."
   },
-  "thirdPartySoftware": {
-    "message": "Üçüncü taraf yazılım uyarısı",
-    "description": "Title of a popup modal displayed when installing a snap for the first time."
-  },
   "thisContactWillBeDeleted": {
     "message": "Bu kişi silinecektir."
   },
@@ -9323,10 +8841,6 @@
     "message": "Bilinmeyen ağ",
     "description": "Displayed on places like Gator permissions when regular name is not available."
   },
-  "unknownNetworkForKeyEntropy": {
-    "message": "Bilinmeyen ağ",
-    "description": "Displayed on places like Snap install warning when regular name is not available."
-  },
   "unknownQrCode": {
     "message": "Hata: Bu QR kodunu tanımlayamadık"
   },
@@ -9555,10 +9069,6 @@
   "warning": {
     "message": "Uyarı"
   },
-  "warningFromSnap": {
-    "message": "$1 uyarısı",
-    "description": "$1 represents the name of the snap"
-  },
   "watchEthereumAccountsDescription": {
     "message": "Bu seçeneği açtığınızda size genel adres veya ENS adı ile Ethereum hesaplarını izleme yeteneği verilir. Bu Beta özellik hakkında geri bildirim için lütfen bu $1 formunu doldurun.",
     "description": "$1 is the link to a product feedback form"
@@ -9647,5 +9157,20 @@
   },
   "yourWalletIsReadyFromReminder": {
     "message": "Gizli Kurtarma İfadenizi güvenli bir şekilde saklayın!"
+  },
+  "suggestedBySource": {
+    "message": "$1 tarafından öneriliyor",
+    "description": "$1 is the source name."
+  },
+  "permissionConnectTo": {
+    "message": "$1 uygulamasına bağlan",
+    "description": "$1 is the website URL."
+  },
+  "permissionConnectionDescription": {
+    "message": "Onayınız olmadan $1 otomatik olarak $2 adresine bağlansın.",
+    "description": "$1 is the subject name, $2 is a website URL."
+  },
+  "noHardwareWalletSupport": {
+    "message": "Most hardware wallets will not work with your current browser version."
   }
 }

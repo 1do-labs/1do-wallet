@@ -6,7 +6,6 @@ import {
   EVM_ASSET,
   MOCK_NFT1155,
   MOCK_NFT721,
-  SOLANA_ASSET,
 } from '../../../../../../test/data/send/assets';
 import { Numeric } from '../../../../../../shared/lib/Numeric';
 import { renderWithProvider } from '../../../../../../test/lib/render-helpers-navigate';
@@ -16,7 +15,6 @@ import * as AmountSelectionMetrics from '../../../hooks/send/metrics/useAmountSe
 import * as BalanceFunctions from '../../../hooks/send/useBalance';
 import * as CurrencyConversions from '../../../hooks/send/useCurrencyConversions';
 import * as MaxAmount from '../../../hooks/send/useMaxAmount';
-import * as SendType from '../../../hooks/send/useSendType';
 import * as SendContext from '../../../context/send';
 import { Amount } from './amount';
 
@@ -309,30 +307,6 @@ describe('Amount', () => {
 
     const { queryByText } = render();
     expect(queryByText('Fiat Mode')).not.toBeInTheDocument();
-  });
-
-  it('max button is not rendered for solana native asset', () => {
-    jest.spyOn(SendContext, 'useSendContext').mockReturnValue({
-      asset: { ...SOLANA_ASSET, isNative: true },
-    } as unknown as SendContext.SendContextType);
-    jest.spyOn(SendType, 'useSendType').mockReturnValue({
-      isNonEvmNativeSendType: true,
-    } as ReturnType<typeof SendType.useSendType>);
-    jest.spyOn(BalanceFunctions, 'useBalance').mockReturnValue({
-      balance: '1',
-      rawBalanceNumeric: new Numeric('1', 10),
-    } as unknown as ReturnType<typeof BalanceFunctions.useBalance>);
-    jest.spyOn(CurrencyConversions, 'useCurrencyConversions').mockReturnValue({
-      conversionSupportedForAsset: true,
-      fiatCurrencySymbol: '$',
-      fiatCurrencyName: 'usd',
-      getFiatValue: () => '20',
-      getFiatDisplayValue: () => '$ 20.00',
-      getNativeValue: () => '20',
-    });
-
-    const { queryByText } = render();
-    expect(queryByText(messages.max.message)).not.toBeInTheDocument();
   });
 
   describe('numeric input validation', () => {

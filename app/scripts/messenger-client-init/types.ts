@@ -5,14 +5,12 @@ import type {
 } from '@metamask/messenger';
 import { Duplex } from 'readable-stream';
 import { SubjectType } from '@metamask/permission-controller';
-import { PreinstalledSnap } from '@metamask/snaps-controllers';
 import { Browser } from 'webextension-polyfill';
 import { Encryptor } from '@metamask/keyring-controller';
 import { KeyringClass } from '@metamask/keyring-utils';
 import { QrKeyringScannerBridge } from '@metamask/eth-qr-keyring';
 import type { TransactionMetricsRequest } from '../../../shared/types';
 import { MessageSender } from '../../../types/global';
-import type { CronjobControllerStorageManager } from '../lib/CronjobControllerStorageManager';
 import { HardwareTransportBridgeClass } from '../lib/hardware-keyring-builder-factory';
 import ExtensionPlatform from '../platforms/extension';
 // This import is only used for the type.
@@ -54,11 +52,7 @@ export type BaseRestrictedControllerMessenger = Messenger<
   EventConstraint
 >;
 
-type SnapSender = {
-  snapId: string;
-};
-
-type Sender = MessageSender | SnapSender;
+type Sender = MessageSender;
 
 /**
  * Request to initialize and return a messenger client instance.
@@ -177,7 +171,7 @@ export type MessengerClientInitRequest<
 
   /**
    * Create a multiplexed stream for connecting to an untrusted context like a
-   * like a website, Snap, or other extension.
+   * website or other extension.
    *
    * @param options - The options for creating the stream.
    * @param options.connectionStream - The stream to connect to the untrusted
@@ -193,7 +187,7 @@ export type MessengerClientInitRequest<
 
   /**
    * Create a multiplexed CAIP-25 stream for connecting to an untrusted context like a
-   * like a website, Snap, or other extension.
+   * website or other extension.
    *
    * @param options - The options for creating the stream.
    * @param options.connectionStream - The stream to connect to the untrusted
@@ -231,17 +225,10 @@ export type MessengerClientInitRequest<
   showUserConfirmation: () => void | Promise<void>;
 
   /**
-   * A list of preinstalled Snaps loaded from disk during boot.
-   */
-  preinstalledSnaps: PreinstalledSnap[];
-
-  /**
    * Required initialization messenger instance.
    * Generated using the callback specified in `getInitMessengerCallback`.
    */
   initMessenger: InitMessengerType;
-
-  getCronjobControllerStorageManager: () => CronjobControllerStorageManager;
 
   /**
    * The user's preferred language code, if any.

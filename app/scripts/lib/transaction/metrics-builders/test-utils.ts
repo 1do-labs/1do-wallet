@@ -25,7 +25,6 @@ export const createBuilderRequest = (
     getTokenStandardAndDetails: jest.fn(),
     getTransaction: jest.fn(),
     provider: {} as any,
-    snapAndHardwareMessenger: {} as any,
     trackEvent: jest.fn(),
     getIsSmartTransaction: jest.fn().mockReturnValue(false),
     getSmartTransactionsPreferenceEnabled: jest.fn().mockReturnValue(false),

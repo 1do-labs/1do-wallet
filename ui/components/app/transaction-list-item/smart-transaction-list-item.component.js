@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import { useDispatch, useSelector } from 'react-redux';
-import { ButtonSize } from '@metamask/design-system-react';
+import { useSelector } from 'react-redux';
 import TransactionStatusLabel from '../transaction-status-label/transaction-status-label';
 import TransactionIcon from '../transaction-icon';
 import { useTransactionDisplayData } from '../../../hooks/useTransactionDisplayData';
@@ -11,15 +10,12 @@ import {
   SmartTransactionStatus,
 } from '../../../../shared/constants/transaction';
 
-import CancelButton from '../cancel-button';
-import { cancelSwapsSmartTransaction } from '../../../ducks/swaps/swaps';
 import TransactionListItemDetails from '../transaction-list-item-details';
 import { ActivityListItem } from '../../multichain/activity-list-item';
 import {
   AvatarNetwork,
   AvatarNetworkSize,
   BadgeWrapper,
-  Box,
 } from '../../component-library';
 import {
   BackgroundColor,
@@ -34,8 +30,6 @@ export default function SmartTransactionListItem({
   isEarliestNonce = false,
   chainId,
 }) {
-  const dispatch = useDispatch();
-  const [cancelSwapLinkClicked, setCancelSwapLinkClicked] = useState(false);
   const { value: showDetails, toggle: toggleShowDetails } = useBoolean();
   const { title, category, primaryCurrency, recipientAddress, isPending } =
     useTransactionDisplayData(transactionGroup);
@@ -49,8 +43,6 @@ export default function SmartTransactionListItem({
   } else if (status?.startsWith(SmartTransactionStatus.cancelled)) {
     displayedStatusKey = TransactionGroupStatus.cancelled;
   }
-  const showCancelSwapLink =
-    smartTransaction.cancellable && !cancelSwapLinkClicked;
   const className = 'transaction-list-item transaction-list-item--unconfirmed';
   const senderAddress = transactionGroup.initialTransaction.txParams?.from;
 
@@ -86,22 +78,7 @@ export default function SmartTransactionListItem({
             status={displayedStatusKey}
           />
         }
-      >
-        {displayedStatusKey === TransactionGroupStatus.pending &&
-          showCancelSwapLink && (
-            <Box paddingTop={2}>
-              <CancelButton
-                size={ButtonSize.Sm}
-                transaction={smartTransaction.uuid}
-                cancelTransaction={(e) => {
-                  e?.preventDefault();
-                  dispatch(cancelSwapsSmartTransaction(smartTransaction.uuid));
-                  setCancelSwapLinkClicked(true);
-                }}
-              />
-            </Box>
-          )}
-      </ActivityListItem>
+      ></ActivityListItem>
       {showDetails && (
         <TransactionListItemDetails
           title={title}

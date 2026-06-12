@@ -16,7 +16,7 @@ import {
   PREVIOUS_ROUTE,
 } from '../../helpers/constants/routes';
 import { getInternalAccountByAddress } from '../../selectors';
-import { getAddressBookEntryByNetwork } from '../../selectors/snaps/address-book';
+import { getAddressBookEntryByNetwork } from '../../selectors/address-book';
 import { EditContactForm } from './components/edit-contact-form';
 
 export function EditContactPage() {

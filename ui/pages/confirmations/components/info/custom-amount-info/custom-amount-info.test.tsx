@@ -40,9 +40,6 @@ jest.mock('../../rows/pay-with-row/pay-with-row', () => ({
   PayWithRow: () => <div data-testid="pay-with-row" />,
   PayWithRowSkeleton: () => <div data-testid="pay-with-row-skeleton" />,
 }));
-jest.mock('../../rows/bridge-fee-row/bridge-fee-row', () => ({
-  BridgeFeeRow: () => <div data-testid="bridge-fee-row" />,
-}));
 jest.mock('../../rows/bridge-time-row/bridge-time-row', () => ({
   BridgeTimeRow: () => <div data-testid="bridge-time-row" />,
 }));
@@ -294,7 +291,6 @@ describe('CustomAmountInfo', () => {
     it('renders result rows when quotes are loading', () => {
       const { getByTestId } = render({ isQuotesLoading: true });
 
-      expect(getByTestId('bridge-fee-row')).toBeInTheDocument();
       expect(getByTestId('bridge-time-row')).toBeInTheDocument();
       expect(getByTestId('total-row')).toBeInTheDocument();
     });
@@ -302,7 +298,6 @@ describe('CustomAmountInfo', () => {
     it('renders result rows when quotes exist', () => {
       const { getByTestId } = render({ hasQuotes: true });
 
-      expect(getByTestId('bridge-fee-row')).toBeInTheDocument();
       expect(getByTestId('bridge-time-row')).toBeInTheDocument();
       expect(getByTestId('total-row')).toBeInTheDocument();
     });
@@ -313,7 +308,8 @@ describe('CustomAmountInfo', () => {
         isQuotesLoading: false,
       });
 
-      expect(queryByTestId('bridge-fee-row')).not.toBeInTheDocument();
+      expect(queryByTestId('bridge-time-row')).not.toBeInTheDocument();
+      expect(queryByTestId('total-row')).not.toBeInTheDocument();
     });
   });
 

@@ -16,7 +16,6 @@ export const ConnectAccountsModal = ({
 }) => {
   const accounts = useSelector((state) =>
     // We only consider EVM accounts.
-    // Connections with non-EVM accounts (Bitcoin only for now) are used implicitly and handled by the Bitcoin Snap itself.
     getUnconnectedAccounts(state, activeTabOrigin).filter(
       (account: InternalAccount) => isEvmAccountType(account.type),
     ),

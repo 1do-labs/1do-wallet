@@ -100,7 +100,6 @@ describe('Multichain API', function () {
 
           await login(driver, {
             validateBalance: false,
-            waitForNonEvmAccounts: false,
           });
           await new HomePage(driver).checkExpectedBalanceIsDisplayed('0');
 
@@ -435,7 +434,6 @@ describe('Multichain API', function () {
         async ({ driver, extensionId }: FixtureCallbackArgs) => {
           await login(driver, {
             validateBalance: false,
-            waitForNonEvmAccounts: false,
           });
           new HomePage(driver).checkExpectedBalanceIsDisplayed('0');
 

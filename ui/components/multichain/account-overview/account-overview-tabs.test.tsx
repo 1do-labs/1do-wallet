@@ -36,12 +36,6 @@ jest.mock('../../app/assets/nfts/nfts-tab', () => ({
   default: () => null,
 }));
 
-jest.mock('../../app/assets/defi-list/defi-tab', () => ({
-  // eslint-disable-next-line @typescript-eslint/naming-convention
-  __esModule: true,
-  default: () => null,
-}));
-
 jest.mock('./runtime-tab', () => ({
   RuntimeTab: () => <div data-testid="runtime-tab-panel" />,
 }));
@@ -59,7 +53,7 @@ describe('AccountOverviewTabs - event metrics', () => {
     jest.clearAllMocks();
   });
 
-  it('includes network_filter property with both EVM and non-EVM networks in CAIP format', () => {
+  it('includes network_filter property with EVM networks in CAIP format', () => {
     const store = configureStore({
       metamask: {
         ...mockState.metamask,
@@ -67,9 +61,6 @@ describe('AccountOverviewTabs - event metrics', () => {
           eip155: {
             [CHAIN_IDS.MAINNET]: true,
             [CHAIN_IDS.POLYGON]: true,
-          },
-          solana: {
-            'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp': true,
           },
         },
       },
@@ -99,11 +90,7 @@ describe('AccountOverviewTabs - event metrics', () => {
       event: MetaMetricsEventName.TokenScreenOpened,
       properties: {
         // eslint-disable-next-line @typescript-eslint/naming-convention
-        network_filter: [
-          'eip155:1',
-          'eip155:137',
-          'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp',
-        ],
+        network_filter: ['eip155:1', 'eip155:137'],
       },
     });
   });

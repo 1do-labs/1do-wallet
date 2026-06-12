@@ -105,15 +105,13 @@ describe('Profile Metrics', function () {
           await driver.delay(1000);
 
           const [authCall] = mockedEndpoint;
-          // There are 2 PUT requests:
-          // 1. One for default EVM Account 1 alone
-          // 2. One for default Solana Account 1 (which is generated after the EVM Account is added)
-          await waitForEndpointToBeCalled(driver, authCall, 2);
+          // There is 1 PUT request for default EVM Account 1.
+          await waitForEndpointToBeCalled(driver, authCall, 1);
 
           const requests = await authCall.getSeenRequests();
           assert.equal(
             requests.length,
-            2,
+            1,
             'Expected one request to the auth API.',
           );
         },
@@ -155,16 +153,13 @@ describe('Profile Metrics', function () {
           await accountListPage.closeMultichainAccountsPage();
           const [authCall] = mockedEndpoint;
 
-          // There are 3 PUT requests:
-          // 1. One for default EVM Account 1 alone
-          // 2. One for default Solana Account 1 (which is generated after the EVM Account is added)
-          // 3. One for Account 2 (Solana + EVM Accounts in one request)
-          await waitForEndpointToBeCalled(driver, authCall, 3);
+          // There are 2 PUT requests: default EVM Account 1, then Account 2.
+          await waitForEndpointToBeCalled(driver, authCall, 2);
 
           const requests = await authCall.getSeenRequests();
           assert.equal(
             requests.length,
-            3,
+            2,
             'Expected two requests to the auth API.',
           );
         },

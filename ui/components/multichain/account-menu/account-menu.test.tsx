@@ -7,7 +7,6 @@ import configureStore from '../../../store/store';
 import mockState from '../../../../test/data/mock-state.json';
 import { enLocale as messages } from '../../../../test/lib/i18n-helpers';
 import {
-  CONFIRMATION_V_NEXT_ROUTE,
   CONNECT_HARDWARE_ROUTE,
   IMPORT_SRP_ROUTE,
 } from '../../../helpers/constants/routes';
@@ -17,8 +16,6 @@ import { AccountMenu } from '.';
 
 const mockOnClose = jest.fn();
 const mockGetEnvironmentType = jest.fn();
-const mockNextAccountName = jest.fn().mockReturnValue('Test Account 2');
-const mockBitcoinClientCreateAccount = jest.fn();
 const mockGenerateNewHdKeyring = jest.fn();
 const mockDetectNfts = jest.fn();
 
@@ -43,18 +40,6 @@ jest.mock('react-router-dom', () => {
   };
 });
 
-jest.mock('../../../hooks/accounts/useMultichainWalletSnapClient', () => ({
-  ...jest.requireActual(
-    '../../../hooks/accounts/useMultichainWalletSnapClient',
-  ),
-  useMultichainWalletSnapClient: () => ({
-    createAccount: mockBitcoinClientCreateAccount,
-    getNextAvailableAccountName: () => mockNextAccountName(),
-    getSnapId: () => 'bitcoin-snap-id',
-    getSnapName: () => 'bitcoin-snap-name',
-  }),
-}));
-
 const render = (
   state = {},
   props: {
@@ -68,9 +53,7 @@ const render = (
     ...mockState,
     metamask: {
       ...mockState.metamask,
-      remoteFeatureFlags: {
-        bitcoinAccounts: { enabled: true, minimumVersion: '13.6.0' },
-      },
+      remoteFeatureFlags: {},
       permissionHistory: {
         'https://test.dapp': {
           // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
@@ -216,58 +199,6 @@ describe('AccountMenu', () => {
     expect(mockUseNavigate).toHaveBeenCalledWith(CONNECT_HARDWARE_ROUTE);
   });
 
-  describe('BTC account creation', () => {
-    afterEach(() => {
-      jest.resetAllMocks();
-    });
-
-    it('calls the bitcoin client to create an account', async () => {
-      mockNextAccountName.mockReturnValue('Snap Account 1');
-      const { getByText, getByTestId } = render();
-
-      const button = getByTestId(
-        'multichain-account-menu-popover-action-button',
-      );
-      button.click();
-
-      const createBtcAccountButton = getByText(
-        messages.addBitcoinAccountLabel.message,
-      );
-      createBtcAccountButton.click();
-
-      const addBtcAccountButton = getByTestId('submit-add-account-with-name');
-      addBtcAccountButton.click();
-
-      expect(mockBitcoinClientCreateAccount).toHaveBeenCalled();
-    });
-
-    // Skipping this test for now, since the flow has changed a bit when multi-SRP is enabled (and we have no way
-    // to disable it "programmatically" in the test)
-    it.skip('redirects the user to the approval after clicking create account in the settings page', async () => {
-      const { getByText, getByTestId } = render(
-        undefined,
-        undefined,
-        '/settings',
-      );
-
-      const button = getByTestId(
-        'multichain-account-menu-popover-action-button',
-      );
-      button.click();
-
-      const createBtcAccountButton = getByText(
-        messages.addBitcoinAccountLabel.message,
-      );
-      createBtcAccountButton.click();
-
-      const addBtcAccountButton = getByTestId('submit-add-account-with-name');
-      addBtcAccountButton.click();
-
-      expect(mockUseNavigate).toHaveBeenCalledWith(CONFIRMATION_V_NEXT_ROUTE);
-      expect(mockBitcoinClientCreateAccount).toHaveBeenCalled();
-    });
-  });
-
   describe('Multi Srp', () => {
     it('redirects to import srp component', () => {
       const { getByTestId } = render();
@@ -286,8 +217,6 @@ describe('AccountMenu', () => {
     });
 
     it('shows srp list if there are multiple srps when adding a new account', async () => {
-      mockNextAccountName.mockReturnValue('Next HD Account');
-
       const accountInSecondSrp = createMockInternalAccount({
         address: '0xb1baf6a2f4a808937bb97a2f12ccf08f1233e3d9',
         name: 'Account in second Srp',

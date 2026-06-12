@@ -31,8 +31,6 @@ import {
 } from '../../constants';
 import { veryLargeDelayMs, withFixtures } from '../../helpers';
 import { login } from '../../page-objects/flows/login.flow';
-import { mockLookupSnap } from '../../mock-response-data/snaps/snap-binary-mocks';
-import { openTestSnapClickButtonAndInstall } from '../../page-objects/flows/install-test-snap.flow';
 import { createInternalTransaction } from '../../page-objects/flows/transaction';
 import { withTransactionEnvelopeTypeFixtures } from '../confirmations/helpers';
 
@@ -160,46 +158,6 @@ describe('Send ETH', function () {
           await activityListPage.checkTransactionActivityByText('Sent');
           await activityListPage.checkCompletedTxNumberDisplayedInActivity(1);
           await activityListPage.checkTxAmountInActivity('-1 ETH');
-        },
-      );
-    });
-  });
-
-  describe('ENS resolution', function () {
-    it('resolves ENS/name lookup address', async function () {
-      await withFixtures(
-        {
-          dappOptions: {
-            customDappPaths: [DAPP_PATH.TEST_SNAPS],
-          },
-          fixtures: new FixtureBuilderV2()
-            .withSelectedNetwork(NETWORK_CLIENT_ID.MAINNET)
-            .withSnapsPrivacyWarningAlreadyShown()
-            .build(),
-          title: this.test?.fullTitle(),
-          testSpecificMock: (mockServer: Mockttp) => {
-            mockLookupSnap(mockServer);
-          },
-        },
-        async ({ driver }) => {
-          await login(driver);
-
-          await openTestSnapClickButtonAndInstall(
-            driver,
-            'connectNameLookUpButton',
-          );
-          await driver.switchToWindowWithTitle(
-            WINDOW_TITLES.ExtensionInFullScreenView,
-          );
-
-          const homePage = new HomePage(driver);
-          const sendPage = new SendPage(driver);
-
-          await homePage.startSendFlow();
-          await sendPage.selectToken('0x1', 'ETH');
-          await sendPage.fillRecipient('test.eth');
-
-          await driver.findElement({ text: '0xc0ffe...54979' });
         },
       );
     });

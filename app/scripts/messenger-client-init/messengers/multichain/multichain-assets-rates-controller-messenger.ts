@@ -14,11 +14,9 @@ import {
   KeyringControllerLockEvent,
   KeyringControllerUnlockEvent,
 } from '@metamask/keyring-controller';
-import { SnapControllerHandleRequestAction } from '@metamask/snaps-controllers';
 import { RootMessenger } from '../../../lib/messenger';
 
 type Actions =
-  | SnapControllerHandleRequestAction
   | AccountsControllerListMultichainAccountsAction
   | GetCurrencyRateState
   | MultichainAssetsControllerGetStateAction
@@ -65,7 +63,6 @@ export function getMultichainAssetsRatesControllerMessenger(
     ],
     actions: [
       'AccountsController:listMultichainAccounts',
-      'SnapController:handleRequest',
       'CurrencyRateController:getState',
       'MultichainAssetsController:getState',
       'AccountsController:getSelectedMultichainAccount',

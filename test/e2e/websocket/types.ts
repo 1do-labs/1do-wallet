@@ -1,6 +1,6 @@
 /**
  * Generic WebSocket message mock type used by the registry and all service mocks.
- * Each service (Solana, Perps, Account Activity) defines its own default mocks;
+ * Each service (Perps, Account Activity) defines its own default mocks;
  * this type describes the shape required by the setup functions.
  */
 export type WebSocketMessageMock = {
@@ -12,7 +12,7 @@ export type WebSocketMessageMock = {
   delay?: number;
   /** Custom log message for this mock */
   logMessage?: string;
-  /** Optional follow-up response sent after the initial response (e.g. Solana signatureNotification) */
+  /** Optional follow-up response sent after the initial response  */
   followUpResponse?: object;
   /** Delay before sending the follow-up response (in milliseconds) */
   followUpDelay?: number;

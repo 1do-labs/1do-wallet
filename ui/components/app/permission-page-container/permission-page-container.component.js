@@ -6,7 +6,6 @@ import {
   getCaipAccountIdsFromCaip25CaveatValue,
   getAllScopesFromCaip25CaveatValue,
 } from '@metamask/chain-agnostic-permission';
-import { SubjectType } from '@metamask/permission-controller';
 import { MetaMetricsEventCategory } from '../../../../shared/constants/metametrics';
 import PermissionsConnectFooter from '../permissions-connect-footer';
 
@@ -20,7 +19,6 @@ import {
   getCaip25PermissionsResponse,
 } from '../../../pages/permissions-connect/connect-page/utils';
 import { TemplateAlertContextProvider } from '../../../pages/confirmations/confirmation/alerts/TemplateAlertContext';
-import { containsEthPermissionsAndNonEvmAccount } from '../../../helpers/utils/permissions';
 import { PermissionPageContainerFooter } from './permission-page-container-footer.component';
 import PermissionPageContainerContent from './permission-page-container-content';
 
@@ -42,7 +40,6 @@ export default class PermissionPageContainer extends Component {
      */
     selectedCaipChainIds: PropTypes.arrayOf(PropTypes.string),
     allAccountsSelected: PropTypes.bool,
-    currentPermissions: PropTypes.object,
     request: PropTypes.object,
     requestMetadata: PropTypes.object,
     targetSubjectMetadata: PropTypes.shape({
@@ -63,7 +60,6 @@ export default class PermissionPageContainer extends Component {
     selectedCaipAccountIds: null,
     selectedCaipChainIds: null,
     allAccountsSelected: false,
-    currentPermissions: {},
   };
 
   static contextTypes = {
@@ -130,7 +126,7 @@ export default class PermissionPageContainer extends Component {
         selectedCaipChainIds,
       );
     } else if (selectedAccounts?.length > 0) {
-      // Fallback to EVM-only approach when accounts are selected (e.g., snaps flow)
+      // Fallback to EVM-only approach when only account addresses are selected.
       permissionsResponse = getCaip25PermissionsResponse(
         requestedCaip25CaveatValue,
         selectedAccounts.map((account) => account.address),
@@ -218,17 +214,11 @@ export default class PermissionPageContainer extends Component {
           allAccountsSelected={allAccountsSelected}
         />
         <Box display={Display.Flex} flexDirection={FlexDirection.Column}>
-          {targetSubjectMetadata?.subjectType !== SubjectType.Snap && (
-            <PermissionsConnectFooter />
-          )}
+          <PermissionsConnectFooter />
           <PermissionPageContainerFooter
             onCancel={() => this.onLeftFooterClick()}
             cancelText={footerLeftActionText}
             onSubmit={() => this.onSubmit()}
-            disabled={containsEthPermissionsAndNonEvmAccount(
-              selectedAccounts,
-              requestedPermissions,
-            )}
           />
         </Box>
       </TemplateAlertContextProvider>

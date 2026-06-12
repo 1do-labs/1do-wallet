@@ -6,9 +6,9 @@ import { compareProductionFlagsToRegistry } from './sync-production-flags';
 
 describe('compareProductionFlagsToRegistry', () => {
   it('detects new flags in production not in registry', () => {
-    const registryMap = { addSolanaAccount: true };
+    const registryMap = { enableMultichainAccounts: true };
     const prodResponse = [
-      { addSolanaAccount: true },
+      { enableMultichainAccounts: true },
       { brandNewFlag: { enabled: true } },
     ];
     const result = compareProductionFlagsToRegistry(prodResponse, registryMap);
@@ -21,19 +21,19 @@ describe('compareProductionFlagsToRegistry', () => {
   });
 
   it('detects value mismatches between registry and production', () => {
-    const registryMap = { addSolanaAccount: true, addBitcoinAccount: false };
+    const registryMap = { enableMultichainAccounts: true, sendRedesign: false };
     const prodResponse = [
-      { addSolanaAccount: false },
-      { addBitcoinAccount: false },
+      { enableMultichainAccounts: false },
+      { sendRedesign: false },
     ];
     const result = compareProductionFlagsToRegistry(prodResponse, registryMap);
 
-    const addSolanaMismatch = result.valueMismatches.find(
-      (m) => m.name === 'addSolanaAccount',
+    const multichainMismatch = result.valueMismatches.find(
+      (m) => m.name === 'enableMultichainAccounts',
     );
-    expect(addSolanaMismatch).toBeDefined();
-    expect(addSolanaMismatch?.productionValue).toBe(false);
-    expect(addSolanaMismatch?.registryValue).toBe(true);
+    expect(multichainMismatch).toBeDefined();
+    expect(multichainMismatch?.productionValue).toBe(false);
+    expect(multichainMismatch?.registryValue).toBe(true);
     expect(result.hasDrift).toBe(true);
   });
 

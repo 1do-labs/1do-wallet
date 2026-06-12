@@ -4,10 +4,10 @@ import { stripWalletTypePrefixFromWalletId } from './utils';
 describe('Multichain accounts hook utils', () => {
   describe('stripWalletTypePrefixFromWalletId', () => {
     it('should handle wallet IDs with multiple colons', () => {
-      const walletId: AccountWalletId = 'snap:npm:@scope/package:1.0.0';
+      const walletId: AccountWalletId = 'keyring:Ledger Hardware:Main';
       const result = stripWalletTypePrefixFromWalletId(walletId);
 
-      expect(result).toBe('npm:@scope/package:1.0.0');
+      expect(result).toBe('Ledger Hardware:Main');
     });
 
     it('should return the original string if no type prefix is present', () => {
@@ -34,16 +34,12 @@ describe('Multichain accounts hook utils', () => {
     it('should work with all known AccountWalletType values', () => {
       const entropyWalletId: AccountWalletId = `${AccountWalletType.Entropy}:01K1FTF5X0KT76Q2XCPVZ75QE3`;
       const keyringWalletId: AccountWalletId = `${AccountWalletType.Keyring}:Ledger Hardware`;
-      const snapWalletId: AccountWalletId = `${AccountWalletType.Snap}:npm:@metamask/bitcoin-wallet-snap`;
 
       expect(stripWalletTypePrefixFromWalletId(entropyWalletId)).toBe(
         '01K1FTF5X0KT76Q2XCPVZ75QE3',
       );
       expect(stripWalletTypePrefixFromWalletId(keyringWalletId)).toBe(
         'Ledger Hardware',
-      );
-      expect(stripWalletTypePrefixFromWalletId(snapWalletId)).toBe(
-        'npm:@metamask/bitcoin-wallet-snap',
       );
     });
   });

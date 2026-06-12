@@ -308,12 +308,9 @@ export function shouldCreateSpanForRequest(url) {
   if (/^https?:\/\/(?:[\w\d.@-]+\.)?sentry\.io(?:\/|$)/u.test(url)) {
     return false;
   }
-  // Block span creation on fetches for preinstalled snap manifest and locale files.
-  // Snap manifests are fetched on every MV3 SW restart,
-  // and locale files are fetched on every popup open.
+  // Block span creation on locale file fetches. Locale files are fetched on every popup open.
   // These are high volume, local file reads with no diagnostic value.
-  // TODO: Consider blocking all local extension file fetches.
-  if (/^(?:chrome|moz)-extension:\/\/[^/]+\/(?:snaps|_locales)\//u.test(url)) {
+  if (/^(?:chrome|moz)-extension:\/\/[^/]+\/_locales\//u.test(url)) {
     return false;
   }
   // Create spans for all other requests.

@@ -449,15 +449,6 @@ describe('MultichainAddressRowsList', () => {
       const ethereumIndex = networkNamesText.findIndex((name) =>
         name?.includes('Ethereum'),
       );
-      const bitcoinIndex = networkNamesText.findIndex((name) =>
-        name?.includes('Bitcoin'),
-      );
-      const solanaIndex = networkNamesText.findIndex((name) =>
-        name?.includes('Solana'),
-      );
-      const tronIndex = networkNamesText.findIndex((name) =>
-        name?.includes('Tron'),
-      );
       const lineaIndex = networkNamesText.findIndex((name) =>
         name?.includes('Linea'),
       );
@@ -604,30 +595,6 @@ describe('MultichainAddressRowsList', () => {
 
       const addressRows = screen.queryAllByTestId('multichain-address-row');
       expect(addressRows.length).toBeGreaterThan(0);
-    });
-
-    it('preserves non-EVM addresses as-is', () => {
-      renderComponent();
-
-      // Find Bitcoin and Solana addresses
-      const addressElements = screen.getAllByTestId(
-        'multichain-address-row-address',
-      );
-      const networkNames = screen.getAllByTestId(
-        'multichain-address-row-network-name',
-      );
-
-      // Find the Bitcoin row
-      const bitcoinIndex = Array.from(networkNames).findIndex(
-        (el) => el.textContent === 'Bitcoin',
-      );
-
-      if (bitcoinIndex !== -1) {
-        // Bitcoin address should be preserved as-is (not checksummed)
-        const bitcoinAddressElement = addressElements[bitcoinIndex];
-        // The element should contain part of the Bitcoin address (shortened)
-        expect(bitcoinAddressElement.textContent).toMatch(/bc1q/u);
-      }
     });
   });
 });

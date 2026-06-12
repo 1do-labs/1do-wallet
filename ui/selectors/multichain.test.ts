@@ -1,5 +1,8 @@
 import { Hex } from '@metamask/utils';
-import { getCurrentCurrency, getNativeCurrency } from '../ducks/metamask/metamask';
+import {
+  getCurrentCurrency,
+  getNativeCurrency,
+} from '../ducks/metamask/metamask';
 import {
   CHAIN_IDS,
   ETH_TOKEN_IMAGE_URL,
@@ -8,7 +11,11 @@ import {
 import { mockNetworkState } from '../../test/stub/networks';
 import { getProviderConfig } from '../../shared/lib/selectors/networks';
 import type { MetaMaskReduxState } from '../store/store';
-import { MOCK_ACCOUNTS, MOCK_ACCOUNT_EOA, MOCK_ACCOUNT_ID_BY_ADDRESS } from '../../test/data/mock-accounts';
+import {
+  MOCK_ACCOUNTS,
+  MOCK_ACCOUNT_EOA,
+  MOCK_ACCOUNT_ID_BY_ADDRESS,
+} from '../../test/data/mock-accounts';
 import { AccountsState } from './accounts';
 import {
   MultichainState,
@@ -22,13 +29,8 @@ import {
   getMultichainProviderConfig,
   getMultichainSelectedAccountCachedBalance,
   getMultichainShouldShowFiat,
-  getMultichainIsBitcoin,
-  getMultichainIsTron,
   getMultichainSelectedAccountCachedBalanceIsZero,
   getMultichainIsTestnet,
-  getMultichainIsSolana,
-  getLastSelectedNonEvmAccount,
-  getLastSelectedSolanaAccount,
 } from './multichain';
 import { getSelectedAccountCachedBalance, getShouldShowFiat } from '.';
 
@@ -268,23 +270,6 @@ describe('Multichain Selectors', () => {
       expect(getMultichainSelectedAccountCachedBalanceIsZero(state)).toBe(
         false,
       );
-    });
-  });
-
-  describe('non-EVM markers', () => {
-    it('returns false for Bitcoin, Solana, and Tron selectors', () => {
-      const state = getEvmState();
-
-      expect(getMultichainIsBitcoin(state)).toBe(false);
-      expect(getMultichainIsSolana(state)).toBe(false);
-      expect(getMultichainIsTron(state)).toBe(false);
-    });
-
-    it('returns undefined for last selected non-EVM accounts', () => {
-      const state = getEvmState();
-
-      expect(getLastSelectedNonEvmAccount(state)).toBeUndefined();
-      expect(getLastSelectedSolanaAccount(state)).toBeUndefined();
     });
   });
 });

@@ -1,4 +1,3 @@
-import { DIALOG_APPROVAL_TYPES } from '@metamask/snaps-rpc-methods';
 import { RestrictedMethods } from './permissions';
 
 /**
@@ -160,10 +159,6 @@ export const MESSAGE_TYPE = {
     'wallet_getGrantedExecutionPermissions',
   WATCH_ASSET: 'wallet_watchAsset',
   WATCH_ASSET_LEGACY: 'metamask_watchAsset',
-  SNAP_DIALOG_ALERT: DIALOG_APPROVAL_TYPES.alert,
-  SNAP_DIALOG_CONFIRMATION: DIALOG_APPROVAL_TYPES.confirmation,
-  SNAP_DIALOG_PROMPT: DIALOG_APPROVAL_TYPES.prompt,
-  SNAP_DIALOG_DEFAULT: DIALOG_APPROVAL_TYPES.default,
   HYPERLIQUID_REFERRAL_CONSENT: 'hyperliquid_referral_consent',
   ASTERDEX_REFERRAL_CONSENT: 'asterdex_referral_consent',
   GMX_REFERRAL_CONSENT: 'gmx_referral_consent',
@@ -176,12 +171,6 @@ export const HYPERLIQUID_APPROVAL_TYPE =
   MESSAGE_TYPE.HYPERLIQUID_REFERRAL_CONSENT;
 export const ASTERDEX_APPROVAL_TYPE = MESSAGE_TYPE.ASTERDEX_REFERRAL_CONSENT;
 export const GMX_APPROVAL_TYPE = MESSAGE_TYPE.GMX_REFERRAL_CONSENT;
-
-export const SNAP_MANAGE_ACCOUNTS_CONFIRMATION_TYPES = {
-  confirmAccountCreation: 'snap_manageAccounts:confirmAccountCreation',
-  confirmAccountRemoval: 'snap_manageAccounts:confirmAccountRemoval',
-  showSnapAccountRedirect: 'snap_manageAccounts:showSnapAccountRedirect',
-};
 
 export const SMART_TRANSACTION_CONFIRMATION_TYPES = {
   showSmartTransactionStatusPage:

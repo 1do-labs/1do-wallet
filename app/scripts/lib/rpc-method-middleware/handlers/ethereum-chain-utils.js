@@ -6,7 +6,6 @@ import {
   getPermittedEthChainIds,
 } from '@metamask/chain-agnostic-permission';
 import { KnownCaipNamespace, parseCaipChainId } from '@metamask/utils';
-import { isSnapId } from '@metamask/snaps-utils';
 import {
   isPrefixedFormattedHexString,
   isSafeChainId,
@@ -250,36 +249,28 @@ export async function switchChain(
       });
     }
 
-    if (!isSnapId(origin)) {
-      rejectApprovalRequestsForOrigin?.();
-    }
+    rejectApprovalRequestsForOrigin?.();
 
     await setActiveNetwork(networkClientId);
 
-    // FIXME: `setTokenNetworkFilter` and `getEnabledNetworks` is currently breaking Snaps flow when ENS Snap
-    // calls `wallet_switchEthereumChain` to auto-adjusts its network if necessary. For now we add this guard
-    // but we want to come back and add remove the bandaid in favour of a more future proof solution for
-    // this edge case. issue: https://github.com/MetaMask/metamask-extension/issues/35409
-    if (!isSnapId(origin)) {
-      // keeping this for backward compatibility in case we need to rollback REMOVE_GNS feature flag
-      // this will keep tokenNetworkFilter in sync with enabledNetworkMap while we roll this feature out
-      setTokenNetworkFilter(chainId);
+    // keeping this for backward compatibility in case we need to rollback REMOVE_GNS feature flag
+    // this will keep tokenNetworkFilter in sync with enabledNetworkMap while we roll this feature out
+    setTokenNetworkFilter(chainId);
 
-      if (isPrefixedFormattedHexString(chainId)) {
-        const existingEnabledNetworks = getEnabledNetworks(
-          KnownCaipNamespace.Eip155,
-        );
-        const existingChainIds = Object.keys(existingEnabledNetworks);
-        if (!existingChainIds.includes(chainId)) {
-          setEnabledNetworks(chainId);
-        }
-      } else {
-        const { namespace } = parseCaipChainId(chainId);
-        const existingEnabledNetworks = getEnabledNetworks(namespace);
-        const existingChainIds = Object.keys(existingEnabledNetworks);
-        if (!existingChainIds.includes(chainId)) {
-          setEnabledNetworks(chainId);
-        }
+    if (isPrefixedFormattedHexString(chainId)) {
+      const existingEnabledNetworks = getEnabledNetworks(
+        KnownCaipNamespace.Eip155,
+      );
+      const existingChainIds = Object.keys(existingEnabledNetworks);
+      if (!existingChainIds.includes(chainId)) {
+        setEnabledNetworks(chainId);
+      }
+    } else {
+      const { namespace } = parseCaipChainId(chainId);
+      const existingEnabledNetworks = getEnabledNetworks(namespace);
+      const existingChainIds = Object.keys(existingEnabledNetworks);
+      if (!existingChainIds.includes(chainId)) {
+        setEnabledNetworks(chainId);
       }
     }
 

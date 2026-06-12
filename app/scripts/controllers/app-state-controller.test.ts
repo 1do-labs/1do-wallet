@@ -398,18 +398,6 @@ describe('AppStateController', () => {
     });
   });
 
-  describe('setSnapsInstallPrivacyWarningShownStatus', () => {
-    it('updates the status of snaps install privacy warning', async () => {
-      await withController(({ controller }) => {
-        controller.setSnapsInstallPrivacyWarningShownStatus(true);
-
-        expect(controller.state.snapsInstallPrivacyWarningShown).toStrictEqual(
-          true,
-        );
-      });
-    });
-  });
-
   describe('setSurveyLinkLastClickedOrClosed', () => {
     it('set the surveyLinkLastClickedOrClosed time', async () => {
       await withController(({ controller }) => {
@@ -698,7 +686,6 @@ describe('AppStateController', () => {
               timestamp: 1_000,
               origin: 'https://example.com',
             },
-            snapsInstallPrivacyWarningShown: false,
             termsOfUseLastAgreed: 1_000,
             // Set to an arbitrary number for consistency between test runs
             recoveryPhraseReminderLastShown: 1_000,
@@ -759,7 +746,6 @@ describe('AppStateController', () => {
               "sidePanelGasPollTokens": [],
               "signatureSecurityAlertResponses": {},
               "slides": [],
-              "snapsInstallPrivacyWarningShown": false,
               "storageWriteErrorType": null,
               "surveyLinkLastClickedOrClosed": null,
               "termsOfUseLastAgreed": 1000,
@@ -785,7 +771,6 @@ describe('AppStateController', () => {
               timestamp: 1_000,
               origin: 'https://example.com',
             },
-            snapsInstallPrivacyWarningShown: false,
             termsOfUseLastAgreed: 1_000,
             // Set to an arbitrary number for consistency between test runs
             recoveryPhraseReminderLastShown: 1_000,
@@ -845,7 +830,6 @@ describe('AppStateController', () => {
               "sidePanelGasPollTokens": [],
               "signatureSecurityAlertResponses": {},
               "slides": [],
-              "snapsInstallPrivacyWarningShown": false,
               "storageWriteErrorType": null,
               "surveyLinkLastClickedOrClosed": null,
               "termsOfUseLastAgreed": 1000,
@@ -871,7 +855,6 @@ describe('AppStateController', () => {
               timestamp: 1_000,
               origin: 'https://example.com',
             },
-            snapsInstallPrivacyWarningShown: false,
             termsOfUseLastAgreed: 1_000,
             // Set to an arbitrary number for consistency between test runs
             recoveryPhraseReminderLastShown: 1_000,
@@ -919,7 +902,6 @@ describe('AppStateController', () => {
               "showPermissionsTour": true,
               "showTestnetMessageInDropdown": true,
               "slides": [],
-              "snapsInstallPrivacyWarningShown": false,
               "surveyLinkLastClickedOrClosed": null,
               "termsOfUseLastAgreed": 1000,
               "timeoutMinutes": 0,
@@ -943,7 +925,6 @@ describe('AppStateController', () => {
               timestamp: 1_000,
               origin: 'https://example.com',
             },
-            snapsInstallPrivacyWarningShown: false,
             termsOfUseLastAgreed: 1_000,
             // Set to an arbitrary number for consistency between test runs
             recoveryPhraseReminderLastShown: 1_000,
@@ -1003,7 +984,6 @@ describe('AppStateController', () => {
               "sidePanelGasPollTokens": [],
               "signatureSecurityAlertResponses": {},
               "slides": [],
-              "snapsInstallPrivacyWarningShown": false,
               "storageWriteErrorType": null,
               "surveyLinkLastClickedOrClosed": null,
               "termsOfUseLastAgreed": 1000,

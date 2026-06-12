@@ -142,13 +142,6 @@ describe('TransactionDetails', () => {
       ).not.toBeInTheDocument();
     });
 
-    it('does not render bridge fee row', () => {
-      const { queryByTestId } = render();
-      expect(
-        queryByTestId('transaction-details-bridge-fee-row'),
-      ).not.toBeInTheDocument();
-    });
-
     it('does not render network fee row', () => {
       const { queryByTestId } = render();
       expect(
@@ -181,13 +174,6 @@ describe('TransactionDetails', () => {
       const { getByTestId } = render(TransactionType.perpsDeposit, true);
       expect(
         getByTestId('transaction-details-paid-with-row'),
-      ).toBeInTheDocument();
-    });
-
-    it('renders bridge fee row', () => {
-      const { getByTestId } = render(TransactionType.perpsDeposit, true);
-      expect(
-        getByTestId('transaction-details-bridge-fee-row'),
       ).toBeInTheDocument();
     });
 

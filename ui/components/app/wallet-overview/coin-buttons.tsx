@@ -1,10 +1,8 @@
 import React, { useCallback, useContext, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { toHex } from '@metamask/controller-utils';
-import { isCaipChainId, CaipChainId } from '@metamask/utils';
+import { CaipChainId } from '@metamask/utils';
 
-import { InternalAccount } from '@metamask/keyring-internal-api';
 import { transitionForward } from '../../ui/transition';
 
 import { I18nContext } from '../../../contexts/i18n';
@@ -14,10 +12,7 @@ import {
   AddressListQueryParams,
   AddressListSource,
 } from '../../../pages/multichain-accounts/multichain-account-address-list-page';
-import {
-  getUseExternalServices,
-  getNetworkConfigurationIdByChainId,
-} from '../../../selectors';
+import { getNetworkConfigurationIdByChainId } from '../../../selectors';
 import { getSelectedAccountGroup } from '../../../selectors/multichain-accounts/account-tree';
 import Tooltip from '../../ui/tooltip';
 import {
@@ -41,7 +36,6 @@ import {
 } from '../../../selectors/multichain';
 import { useMultichainSelector } from '../../../hooks/useMultichainSelector';
 import { getCurrentChainId } from '../../../../shared/lib/selectors/networks';
-import { isEvmChainId } from '../../../../shared/lib/asset-utils';
 import { trace, TraceName } from '../../../../shared/lib/trace';
 import { navigateToSendRoute } from '../../../pages/confirmations/utils/send';
 
@@ -51,8 +45,6 @@ type CoinButtonsProps = {
   trackingLocation: string;
   isSigningEnabled: boolean;
   classPrefix?: string;
-  /** When true, disables the send button for non-EVM chains (used on asset page) */
-  disableSendForNonEvm?: boolean;
 };
 
 const CoinButtons = ({
@@ -61,7 +53,6 @@ const CoinButtons = ({
   trackingLocation,
   isSigningEnabled,
   classPrefix = 'coin',
-  disableSendForNonEvm = false,
 }: CoinButtonsProps) => {
   const t = useContext(I18nContext);
   const dispatch = useDispatch();
@@ -91,18 +82,9 @@ const CoinButtons = ({
   );
   const nativeToken = isEvmNetwork ? 'ETH' : multichainNativeToken;
 
-  const isExternalServicesEnabled = useSelector(getUseExternalServices);
-  const normalizedChainId = isCaipChainId(chainId) ? chainId : toHex(chainId);
-  const isEvmAsset = isEvmChainId(normalizedChainId);
-
   const buttonTooltips = {
     sendButton: [
       { condition: !isSigningEnabled, message: 'methodNotSupported' },
-      {
-        condition:
-          disableSendForNonEvm && !isEvmAsset && !isExternalServicesEnabled,
-        message: 'currentlyUnavailable',
-      },
     ],
   };
 
@@ -124,27 +106,6 @@ const CoinButtons = ({
       );
     }
     return contents;
-  };
-
-  const getSnapAccountMetaMetricsPropertiesIfAny = (
-    internalAccount: InternalAccount,
-    // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-    // eslint-disable-next-line @typescript-eslint/naming-convention
-  ): { snap_id?: string } => {
-    // Some accounts might be Snap accounts, in this case we add some extra properties
-    // to the metrics:
-    const snapId = internalAccount.metadata.snap?.id;
-    if (snapId) {
-      return {
-        // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        snap_id: snapId,
-      };
-    }
-
-    // If the account is not a Snap account or that we could not get the Snap ID for
-    // some reason, we don't add any extra property.
-    return {};
   };
 
   const setCorrectChain = useCallback(async () => {
@@ -182,7 +143,6 @@ const CoinButtons = ({
           // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
           // eslint-disable-next-line @typescript-eslint/naming-convention
           chain_id: chainId,
-          ...getSnapAccountMetaMetricsPropertiesIfAny(account),
         },
       },
       { excludeMetaMetricsId: false },
@@ -193,7 +153,15 @@ const CoinButtons = ({
     const params =
       trackingLocation === 'home' ? undefined : { chainId: chainId.toString() };
     transitionForward(() => navigateToSendRoute(navigate, params));
-  }, [chainId, account, setCorrectChain, trackingLocation]);
+  }, [
+    account,
+    chainId,
+    nativeToken,
+    navigate,
+    setCorrectChain,
+    trackEvent,
+    trackingLocation,
+  ]);
 
   const handleReceiveOnClick = useCallback(() => {
     trace({ name: TraceName.ReceiveModal });
@@ -239,10 +207,7 @@ const CoinButtons = ({
             size={IconSize.Md}
           />
         }
-        disabled={
-          !isSigningEnabled ||
-          (disableSendForNonEvm && !isEvmAsset && !isExternalServicesEnabled)
-        }
+        disabled={!isSigningEnabled}
         label={t('send')}
         onClick={handleSendOnClick}
         width={BlockSize.Full}

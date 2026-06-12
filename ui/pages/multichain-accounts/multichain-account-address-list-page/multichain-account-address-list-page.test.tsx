@@ -213,7 +213,7 @@ describe('MultichainAccountAddressListPage', () => {
     ).toBeInTheDocument();
     expect(
       screen.queryByText(
-        messages.destinationAccountPickerSearchPlaceholderToSolana.message,
+        messages.destinationAccountPickerSearchPlaceholder.message,
       ),
     ).not.toBeInTheDocument();
   });

@@ -1,17 +1,6 @@
 import { KeyringTypes } from '@metamask/keyring-controller';
 import type { InternalAccount } from '@metamask/keyring-internal-api';
-import {
-  EthAccountType,
-  BtcMethod,
-  BtcAccountType,
-  SolAccountType,
-  TrxAccountType,
-  EthScope,
-  BtcScope,
-  SolMethod,
-  SolScope,
-  TrxScope,
-} from '@metamask/keyring-api';
+import { EthAccountType, EthScope } from '@metamask/keyring-api';
 import {
   ETH_EOA_METHODS,
   ETH_4337_METHODS,
@@ -100,12 +89,7 @@ export const MOCK_ACCOUNT_INSTITUTIONAL: InternalAccount = {
   metadata: {
     name: 'Custody Account A',
     importTime: 1751048625733,
-    keyring: { type: KeyringTypes.snap },
-    snap: {
-      id: 'npm:@metamask/institutional-wallet-snap',
-      name: 'Institutional Wallet',
-      enabled: true,
-    },
+    keyring: { type: 'Custody Keyring' },
     lastSelected: 1751048625755,
   },
 };
@@ -120,111 +104,15 @@ export const MOCK_ACCOUNT_ERC4337: InternalAccount = {
   type: EthAccountType.Erc4337,
   metadata: {
     name: 'Account 2',
-    keyring: { type: KeyringTypes.snap },
+    keyring: { type: KeyringTypes.hd },
     importTime: 1691565967600,
     lastSelected: 1691565967656,
-  },
-};
-
-export const MOCK_ACCOUNT_BIP122_P2WPKH: InternalAccount = {
-  id: 'ae247df6-3911-47f7-9e36-28e6a7d96078',
-  address: 'bc1qwl8399fz829uqvqly9tcatgrgtwp3udnhxfq4k',
-  options: {},
-  methods: Object.values(BtcMethod),
-  scopes: [BtcScope.Mainnet],
-  type: BtcAccountType.P2wpkh,
-  metadata: {
-    name: 'Bitcoin Account',
-    keyring: { type: KeyringTypes.snap },
-    importTime: 1691565967600,
-    lastSelected: 1955565967656,
-  },
-};
-
-export const MOCK_ACCOUNT_BIP122_P2WPKH_TESTNET: InternalAccount = {
-  id: 'fcdafe8b-4bdf-4e25-9051-e255b2a0af5f',
-  address: 'tb1q6rmsq3vlfdhjdhtkxlqtuhhlr6pmj09y6w43g8',
-  options: {},
-  methods: Object.values(BtcMethod),
-  scopes: [BtcScope.Testnet],
-  type: BtcAccountType.P2wpkh,
-  metadata: {
-    name: 'Bitcoin Testnet Account',
-    keyring: { type: KeyringTypes.snap },
-    importTime: 1691565967600,
-    lastSelected: 1955565967656,
-  },
-};
-
-export const MOCK_ACCOUNT_SOLANA_MAINNET: InternalAccount = {
-  id: 'a3f9c2d4-6b8e-4d3a-9b2e-7f4b8e1a9c3d',
-  address: '8A4AptCThfbuknsbteHgGKXczfJpfjuVA9SLTSGaaLGC',
-  options: {},
-  methods: [SolMethod.SendAndConfirmTransaction],
-  scopes: [SolScope.Mainnet],
-  type: SolAccountType.DataAccount,
-  metadata: {
-    name: 'Solana Account',
-    keyring: { type: KeyringTypes.snap },
-    importTime: 1691592567600,
-    lastSelected: 1955565999999,
-  },
-};
-
-export const MOCK_ACCOUNT_TRON_MAINNET: InternalAccount = {
-  id: 'tron-mainnet-account-id',
-  address: 'TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t',
-  options: {},
-  methods: ['tron_signTransaction'],
-  scopes: [TrxScope.Mainnet],
-  type: TrxAccountType.Eoa,
-  metadata: {
-    name: 'Tron Account',
-    keyring: { type: KeyringTypes.snap },
-    importTime: 1691565967600,
-    lastSelected: 1955565967656,
-  },
-};
-
-export const MOCK_ACCOUNT_TRON_NILE: InternalAccount = {
-  id: 'tron-nile-account-id',
-  address: 'TXYZaUPwfHwgrmWK1aAXHFy2pUPiB7cZSr',
-  options: {},
-  methods: ['tron_signTransaction'],
-  scopes: [TrxScope.Nile],
-  type: TrxAccountType.Eoa,
-  metadata: {
-    name: 'Tron Nile Account',
-    keyring: { type: KeyringTypes.snap },
-    importTime: 1691565967600,
-    lastSelected: 1955565967656,
-  },
-};
-
-export const MOCK_ACCOUNT_TRON_SHASTA: InternalAccount = {
-  id: 'tron-shasta-account-id',
-  address: 'TXYZaUPwfHwgrmWK1aAXHFy2pUPiB7cZSr',
-  options: {},
-  methods: ['tron_signTransaction'],
-  scopes: [TrxScope.Shasta],
-  type: TrxAccountType.Eoa,
-  metadata: {
-    name: 'Tron Shasta Account',
-    keyring: { type: KeyringTypes.snap },
-    importTime: 1691565967600,
-    lastSelected: 1955565967656,
   },
 };
 
 export const MOCK_ACCOUNTS = {
   [MOCK_ACCOUNT_EOA.id]: MOCK_ACCOUNT_EOA,
   [MOCK_ACCOUNT_ERC4337.id]: MOCK_ACCOUNT_ERC4337,
-  [MOCK_ACCOUNT_BIP122_P2WPKH.id]: MOCK_ACCOUNT_BIP122_P2WPKH,
-  [MOCK_ACCOUNT_BIP122_P2WPKH_TESTNET.id]: MOCK_ACCOUNT_BIP122_P2WPKH_TESTNET,
-  [MOCK_ACCOUNT_SOLANA_MAINNET.id]: MOCK_ACCOUNT_SOLANA_MAINNET,
-  [MOCK_ACCOUNT_TRON_MAINNET.id]: MOCK_ACCOUNT_TRON_MAINNET,
-  [MOCK_ACCOUNT_TRON_NILE.id]: MOCK_ACCOUNT_TRON_NILE,
-  [MOCK_ACCOUNT_TRON_SHASTA.id]: MOCK_ACCOUNT_TRON_SHASTA,
   [MOCK_ACCOUNT_HARDWARE.id]: MOCK_ACCOUNT_HARDWARE,
   [MOCK_ACCOUNT_PRIVATE_KEY.id]: MOCK_ACCOUNT_PRIVATE_KEY,
 };
@@ -232,13 +120,6 @@ export const MOCK_ACCOUNTS = {
 export const MOCK_ACCOUNT_ID_BY_ADDRESS = {
   [MOCK_ACCOUNT_EOA.address]: MOCK_ACCOUNT_EOA.id,
   [MOCK_ACCOUNT_ERC4337.address]: MOCK_ACCOUNT_ERC4337.id,
-  [MOCK_ACCOUNT_BIP122_P2WPKH.address]: MOCK_ACCOUNT_BIP122_P2WPKH.id,
-  [MOCK_ACCOUNT_BIP122_P2WPKH_TESTNET.address]:
-    MOCK_ACCOUNT_BIP122_P2WPKH_TESTNET.id,
-  [MOCK_ACCOUNT_SOLANA_MAINNET.address]: MOCK_ACCOUNT_SOLANA_MAINNET.id,
-  [MOCK_ACCOUNT_TRON_MAINNET.address]: MOCK_ACCOUNT_TRON_MAINNET.id,
-  [MOCK_ACCOUNT_TRON_NILE.address]: MOCK_ACCOUNT_TRON_NILE.id,
-  [MOCK_ACCOUNT_TRON_SHASTA.address]: MOCK_ACCOUNT_TRON_SHASTA.id,
   [MOCK_ACCOUNT_HARDWARE.address]: MOCK_ACCOUNT_HARDWARE.id,
   [MOCK_ACCOUNT_PRIVATE_KEY.address]: MOCK_ACCOUNT_PRIVATE_KEY.id,
 };

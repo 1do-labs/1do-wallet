@@ -4,13 +4,6 @@ import {
   getPPOMControllerInitMessenger,
 } from './ppom-controller-messenger';
 import {
-  getCronjobControllerMessenger,
-  getExecutionServiceMessenger,
-  getRateLimitControllerInitMessenger,
-  getRateLimitControllerMessenger,
-  getWebSocketServiceMessenger,
-} from './snaps';
-import {
   getTransactionControllerMessenger,
   getTransactionControllerInitMessenger,
 } from './transaction-controller-messenger';
@@ -20,7 +13,6 @@ import {
 } from './transaction-pay-controller-messenger';
 import {
   getMultichainBalancesControllerMessenger,
-  getMultichainTransactionsControllerMessenger,
   getMultichainAssetsControllerMessenger,
   getMultichainNetworkControllerMessenger,
   getMultichainAssetsRatesControllerMessenger,
@@ -40,8 +32,6 @@ import {
   getAssetsControllerInitMessenger,
   getClientControllerMessenger,
 } from './assets';
-import { getDeFiPositionsControllerMessenger } from './defi-positions';
-import { getDeFiPositionsControllerInitMessenger } from './defi-positions/defi-positions-controller-messenger';
 import {
   getDelegationControllerInitMessenger,
   getDelegationControllerMessenger,
@@ -382,10 +372,6 @@ export const MESSENGER_FACTORIES = {
     getMessenger: getClientControllerMessenger,
     getInitMessenger: noop,
   },
-  CronjobController: {
-    getMessenger: getCronjobControllerMessenger,
-    getInitMessenger: noop,
-  },
   CurrencyRateController: {
     getMessenger: getCurrencyRateControllerMessenger,
     getInitMessenger: getCurrencyRateControllerInitMessenger,
@@ -401,10 +387,6 @@ export const MESSENGER_FACTORIES = {
   DecryptMessageManager: {
     getMessenger: getDecryptMessageManagerMessenger,
     getInitMessenger: noop,
-  },
-  DeFiPositionsController: {
-    getMessenger: getDeFiPositionsControllerMessenger,
-    getInitMessenger: getDeFiPositionsControllerInitMessenger,
   },
   DelegationController: {
     getMessenger: getDelegationControllerMessenger,
@@ -424,10 +406,6 @@ export const MESSENGER_FACTORIES = {
   },
   StorageService: {
     getMessenger: getStorageServiceMessenger,
-    getInitMessenger: noop,
-  },
-  ExecutionService: {
-    getMessenger: getExecutionServiceMessenger,
     getInitMessenger: noop,
   },
   GasFeeController: {
@@ -474,10 +452,6 @@ export const MESSENGER_FACTORIES = {
     getMessenger: getMultichainBalancesControllerMessenger,
     getInitMessenger: noop,
   },
-  MultichainTransactionsController: {
-    getMessenger: getMultichainTransactionsControllerMessenger,
-    getInitMessenger: noop,
-  },
   MultichainNetworkController: {
     getMessenger: getMultichainNetworkControllerMessenger,
     getInitMessenger: noop,
@@ -505,10 +479,6 @@ export const MESSENGER_FACTORIES = {
   PhishingController: {
     getMessenger: getPhishingControllerMessenger,
     getInitMessenger: noop,
-  },
-  RateLimitController: {
-    getMessenger: getRateLimitControllerMessenger,
-    getInitMessenger: getRateLimitControllerInitMessenger,
   },
   RatesController: {
     getMessenger: getRatesControllerMessenger,
@@ -589,10 +559,6 @@ export const MESSENGER_FACTORIES = {
   AccountTreeController: {
     getMessenger: getAccountTreeControllerMessenger,
     getInitMessenger: getAccountTreeControllerInitMessenger,
-  },
-  WebSocketService: {
-    getMessenger: getWebSocketServiceMessenger,
-    getInitMessenger: noop,
   },
   SmartTransactionsController: {
     getMessenger: getSmartTransactionsControllerMessenger,

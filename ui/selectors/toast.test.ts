@@ -4,7 +4,6 @@ import {
   selectBridgeApprovalTxIds,
   selectCrossChainBridgeSourceTxIds,
   selectEvmTransactionsForToast,
-  selectNonEvmTransactionsForToast,
   selectSmartTransactions,
 } from './toast';
 
@@ -216,85 +215,6 @@ describe('toast selectors', () => {
       const results = selectEvmTransactionsForToast(state);
 
       expect(results).toStrictEqual([primary]);
-    });
-  });
-
-  describe('selectNonEvmTransactionsForToast', () => {
-    it('returns all non-EVM transactions except excluded types', () => {
-      const tx1 = {
-        id: 'tx-1',
-        type: 'send',
-        status: 'submitted',
-        chain: 'solana:mainnet',
-      };
-      const tx2 = {
-        id: 'tx-2',
-        type: 'swap',
-        status: 'confirmed',
-        chain: 'solana:mainnet',
-      };
-      const tx3 = {
-        id: 'tx-3',
-        type: 'send',
-        status: 'failed',
-        chain: 'solana:devnet',
-      };
-      const filteredOutType = {
-        id: 'tx-4',
-        type: 'approve',
-        status: 'submitted',
-        chain: 'solana:mainnet',
-      };
-      const includedBtcTx = {
-        id: 'tx-5',
-        type: 'send',
-        status: 'submitted',
-        chain: 'bip122:000000000019d6689c085ae165831e93',
-      };
-
-      const state = {
-        metamask: {
-          nonEvmTransactions: {
-            'account-1': {
-              'solana:mainnet': {
-                transactions: [tx1, tx2, filteredOutType],
-              },
-            },
-            'account-2': {
-              'solana:mainnet': { transactions: [tx3] },
-              'bip122:1': { transactions: [includedBtcTx] },
-            },
-          },
-        },
-      } as unknown as SelectorState;
-
-      const results = selectNonEvmTransactionsForToast(state);
-
-      expect(results).toStrictEqual([tx1, tx2, tx3, includedBtcTx]);
-    });
-
-    it('excludes cross-chain bridge source transactions', () => {
-      const tx1 = { id: 'bridge-src', type: 'send' };
-      const tx2 = { id: 'normal', type: 'send' };
-      const state = {
-        metamask: {
-          nonEvmTransactions: {
-            acct: { chain: { transactions: [tx1, tx2] } },
-          },
-          txHistory: {
-            'bridge-src': { quote: { srcChainId: 1, destChainId: 10 } },
-          },
-        },
-      } as unknown as SelectorState;
-      const results = selectNonEvmTransactionsForToast(state);
-      expect(results).toStrictEqual([tx2]);
-    });
-
-    it('returns an empty array if non-EVM transactions do not exist', () => {
-      const results = selectNonEvmTransactionsForToast(
-        {} as unknown as SelectorState,
-      );
-      expect(results).toStrictEqual([]);
     });
   });
 

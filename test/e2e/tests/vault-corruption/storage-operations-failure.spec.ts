@@ -12,7 +12,7 @@ import {
 } from '../../page-objects/flows/vault-corruption.flow';
 import HomePage from '../../page-objects/pages/home/homepage';
 import VaultRecoveryPage from '../../page-objects/pages/vault-recovery-page';
-import { getConfig, mockFeatureFlagsWithoutNonEvmAccounts } from './helpers';
+import { getConfig } from './helpers';
 
 /**
  * Simple script that reloads the extension.
@@ -54,7 +54,6 @@ describe('Storage Operations Failure Recovery', function () {
       await withFixtures(
         {
           ...config,
-          testSpecificMock: mockFeatureFlagsWithoutNonEvmAccounts,
         },
         async ({ driver }: { driver: Driver }) => {
           // Phase 1: Onboard, get address, lock, reload, and wait for vault recovery

@@ -2,7 +2,6 @@ import React from 'react';
 import configureMockStore from 'redux-mock-store';
 import { TransactionType } from '@metamask/transaction-controller';
 
-import { isSnapId } from '@metamask/snaps-utils';
 import { renderWithConfirmContextProvider } from '../../../../../../../test/lib/confirmations/render-helpers';
 import { enLocale as messages } from '../../../../../../../test/lib/i18n-helpers';
 import { getMockTypedSignConfirmStateForRequest } from '../../../../../../../test/data/confirmations/helper';
@@ -19,18 +18,6 @@ jest.mock(
     })),
   }),
 );
-
-jest.mock('../../../../../../../node_modules/@metamask/snaps-utils', () => {
-  const originalUtils = jest.requireActual(
-    '../../../../../../../node_modules/@metamask/snaps-utils',
-  );
-  return {
-    ...originalUtils,
-    stripSnapPrefix: jest.fn().mockReturnValue('@metamask/examplesnap'),
-    getSnapPrefix: jest.fn().mockReturnValue('npm:'),
-    isSnapId: jest.fn(),
-  };
-});
 
 describe('TypedSignInfo', () => {
   it('correctly renders typed sign data request', () => {
@@ -59,34 +46,12 @@ describe('TypedSignInfo', () => {
     expect(container).toMatchInlineSnapshot(`<div />`);
   });
 
-  it('displays "requestFromInfoSnap" tooltip when origin is a snap', async () => {
+  it('displays "requestFromInfo" tooltip for typed sign v1 requests', async () => {
     const mockState = getMockTypedSignConfirmStateForRequest({
       id: '123',
       type: TransactionType.signTypedData,
       chainId: '0x5',
     });
-    (isSnapId as unknown as jest.Mock).mockReturnValue(true);
-    const mockStore = configureMockStore([])(mockState);
-    const { queryByText } = renderWithConfirmContextProvider(
-      <TypedSignInfoV1 />,
-      mockStore,
-    );
-
-    const requestFromLabel = queryByText(messages.requestFrom.message);
-
-    await requestFromLabel?.dispatchEvent(
-      new MouseEvent('mouseenter', { bubbles: true }),
-    );
-    expect(queryByText(messages.requestFromInfoSnap.message)).toBeDefined();
-  });
-
-  it('displays "requestFromInfo" tooltip when origin is not a snap', async () => {
-    const mockState = getMockTypedSignConfirmStateForRequest({
-      id: '123',
-      type: TransactionType.signTypedData,
-      chainId: '0x5',
-    });
-    (isSnapId as unknown as jest.Mock).mockReturnValue(false);
     const mockStore = configureMockStore([])(mockState);
     const { queryByText } = renderWithConfirmContextProvider(
       <TypedSignInfoV1 />,

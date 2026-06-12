@@ -16,7 +16,7 @@ DefaultStory.storyName = 'Default';
 DefaultStory.args = {
   title: 'Access the Ethereum provider.',
   description:
-    'Allow the snap to communicate with MetaMask direct…blockchain and suggest messages and transactions.',
+    'Allow the site to communicate with MetaMask and suggest messages and transactions.',
   weight: 1,
   avatarIcon: 'ethereum',
   dateApproved: 1680185432326,
@@ -50,7 +50,7 @@ export const RequestedPermission = (args) => <PermissionCell {...args} />;
 
 RequestedPermission.args = {
   title: 'Fetch and display transaction insights.',
-  description: `Allow Transaction Insight Snap
+  description: `Allow transaction insight provider
       to decode transactions and show insights within the MetaMask UI. This can
       be used for anti-phishing and security solutions.`,
   weight: 3,
@@ -61,7 +61,7 @@ export const RevokedPermission = (args) => <PermissionCell {...args} />;
 
 RevokedPermission.args = {
   title: 'Fetch and display transaction insights.',
-  description: `Allow Transaction Insight Snap
+  description: `Allow transaction insight provider
       to decode transactions and show insights within the MetaMask UI. This can
       be used for anti-phishing and security solutions.`,
   weight: 3,

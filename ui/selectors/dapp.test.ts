@@ -9,7 +9,6 @@ import {
   getOriginOfCurrentTab,
   getAllDomains,
 } from './selectors';
-import { getMultichainNetworkConfigurationsByChainId } from './multichain';
 
 // Mocked value for testing purposes only
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -26,10 +25,6 @@ jest.mock('../../shared/lib/selectors/networks', () => ({
   getNetworkConfigurationsByChainId: jest.fn(),
 }));
 
-jest.mock('./multichain', () => ({
-  getMultichainNetworkConfigurationsByChainId: jest.fn(),
-}));
-
 const mockGetOrderedConnectedAccountsForActiveTab = jest.mocked(
   getOrderedConnectedAccountsForActiveTab,
 );
@@ -37,9 +32,6 @@ const mockGetOriginOfCurrentTab = jest.mocked(getOriginOfCurrentTab);
 const mockGetAllDomains = jest.mocked(getAllDomains);
 const mockGetNetworkConfigurationsByChainId = jest.mocked(
   getNetworkConfigurationsByChainId,
-);
-const mockGetMultichainNetworkConfigurationsByChainId = jest.mocked(
-  getMultichainNetworkConfigurationsByChainId,
 );
 
 describe('getDappActiveNetwork selector', () => {
@@ -77,32 +69,17 @@ describe('getDappActiveNetwork selector', () => {
     options: {},
   };
 
-  const mockSolanaAccount = {
-    id: 'solana:mainnet:0x1234567890123456789012345678901234567890',
+  const mockUnsupportedAccount = {
+    id: 'unknown:mainnet:0x1234567890123456789012345678901234567890',
     address: '0x1234567890123456789012345678901234567890',
-    type: 'solana:data-account',
+    type: 'unknown:data-account',
     metadata: {
-      name: 'Test Solana Account',
+      name: 'Test Unsupported Account',
       lastSelected: Date.now(),
     },
-    scopes: ['solana:mainnet'],
+    scopes: ['unknown:mainnet'],
     methods: [],
     options: {},
-  };
-
-  const mockMultichainNetworkConfig: NetworkConfiguration = {
-    chainId: '0x1' as `0x${string}`,
-    name: 'Solana Mainnet',
-    nativeCurrency: 'SOL',
-    blockExplorerUrls: [],
-    defaultRpcEndpointIndex: 0,
-    rpcEndpoints: [
-      {
-        networkClientId: 'solana-mainnet',
-        type: RpcEndpointType.Custom,
-        url: '',
-      },
-    ],
   };
 
   const arrangeMocks = () => {
@@ -116,7 +93,6 @@ describe('getDappActiveNetwork selector', () => {
     mockGetNetworkConfigurationsByChainId.mockReturnValue({
       '0x1': mockNetworkConfig,
     });
-    mockGetMultichainNetworkConfigurationsByChainId.mockReturnValue({});
 
     return {
       mockOrigin,
@@ -125,7 +101,6 @@ describe('getDappActiveNetwork selector', () => {
       mockGetOriginOfCurrentTab,
       mockGetAllDomains,
       mockGetNetworkConfigurationsByChainId,
-      mockGetMultichainNetworkConfigurationsByChainId,
       mockState: {},
     };
   };
@@ -136,17 +111,14 @@ describe('getDappActiveNetwork selector', () => {
     expect(result).toEqual({ ...mockNetworkConfig, isEvm: true });
   });
 
-  it('returns correct non-EVM network configuration for Solana account', () => {
+  it('returns null for unsupported accounts', () => {
     const mocks = arrangeMocks();
     mocks.mockGetOrderedConnectedAccountsForActiveTab.mockReturnValue([
-      mockSolanaAccount as MockedValue,
+      mockUnsupportedAccount as MockedValue,
     ]);
-    mocks.mockGetMultichainNetworkConfigurationsByChainId.mockReturnValue({
-      'solana:mainnet': mockMultichainNetworkConfig,
-    });
 
     const result = getDappActiveNetwork(mocks.mockState);
-    expect(result).toEqual({ ...mockMultichainNetworkConfig, isEvm: false });
+    expect(result).toBeNull();
   });
 
   it('returns null when no connected accounts', () => {
@@ -172,12 +144,9 @@ describe('getDappActiveNetwork selector', () => {
     expect(result).toBeNull();
   });
 
-  it('returns null when no matching non-EVM network configuration exists', () => {
+  it('returns null when no active tab origin exists', () => {
     const mocks = arrangeMocks();
-    mocks.mockGetOrderedConnectedAccountsForActiveTab.mockReturnValue([
-      mockSolanaAccount as MockedValue,
-    ]);
-    mocks.mockGetMultichainNetworkConfigurationsByChainId.mockReturnValue({});
+    mocks.mockGetOriginOfCurrentTab.mockReturnValue(undefined as MockedValue);
 
     const result = getDappActiveNetwork(mocks.mockState);
     expect(result).toBeNull();

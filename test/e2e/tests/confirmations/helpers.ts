@@ -6,7 +6,6 @@ import { SMART_CONTRACTS } from '../../seeder/smart-contracts';
 import { Driver } from '../../webdriver/driver';
 import Confirmation from '../../page-objects/pages/confirmations/confirmation';
 import { MOCK_META_METRICS_ID } from '../../constants';
-import { mockDialogSnap } from '../../mock-response-data/snaps/snap-binary-mocks';
 
 export const DECODING_E2E_API_URL =
   'https://signature-insights.api.cx.metamask.io/v1';
@@ -28,13 +27,6 @@ export function withTransactionEnvelopeTypeFixtures(
   mocks?: (mockServer: Mockttp) => Promise<MockedEndpoint[]>, // Add mocks as an optional parameter
   smartContract?: (typeof SMART_CONTRACTS)[keyof typeof SMART_CONTRACTS],
 ) {
-  const combinedMocks = async (
-    mockServer: Mockttp,
-  ): Promise<MockedEndpoint[]> => {
-    const baseMocks = mocks ? await mocks(mockServer) : [];
-    const dialogSnapMocks = await mockDialogSnap(mockServer);
-    return [...baseMocks, ...[dialogSnapMocks]];
-  };
   return withFixtures(
     {
       dappOptions: { numberOfTestDapps: 1 },
@@ -51,7 +43,7 @@ export function withTransactionEnvelopeTypeFixtures(
           ? { hardfork: 'muirGlacier' }
           : {},
       ...(smartContract && { smartContract }),
-      testSpecificMock: combinedMocks,
+      testSpecificMock: mocks,
       title,
     },
     testFunction,

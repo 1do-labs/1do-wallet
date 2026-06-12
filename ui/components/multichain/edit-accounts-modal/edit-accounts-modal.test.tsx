@@ -1,7 +1,6 @@
 import React from 'react';
 import { CaipAccountId } from '@metamask/utils';
 import { fireEvent, waitFor } from '@testing-library/react';
-import { SolAccountType, SolScope } from '@metamask/keyring-api';
 import { KeyringTypes } from '@metamask/keyring-controller';
 import { InternalAccount } from '@metamask/keyring-internal-api';
 import { renderWithProvider } from '../../../../test/lib/render-helpers-navigate';
@@ -16,56 +15,28 @@ const mockKeyringId = '01JKAF3DSGM3AB87EM9N0K41AJ';
 
 const goToAddNewAccount = (
   getByTestId: (testId: string) => HTMLElement,
-  accountType: 'bitcoin' | 'solana' | 'evm',
+  accountType: 'evm',
 ) => {
   const addNewAccountButton = getByTestId('add-new-account-button');
   fireEvent.click(addNewAccountButton);
 
-  if (accountType === 'evm') {
-    const addEvmAccountButton = getByTestId(
-      'multichain-account-menu-popover-add-account',
-    );
-    fireEvent.click(addEvmAccountButton);
-  } else if (accountType === 'solana') {
-    const addSolanaAccountButton = getByTestId(
-      'multichain-account-menu-popover-add-solana-account',
-    );
-    fireEvent.click(addSolanaAccountButton);
-  } else {
-    const addBitcoinAccountButton = getByTestId(
-      'multichain-account-menu-popover-add-bitcoin-account',
-    );
-    fireEvent.click(addBitcoinAccountButton);
-  }
+  const addEvmAccountButton = getByTestId(
+    'multichain-account-menu-popover-add-account',
+  );
+  fireEvent.click(addEvmAccountButton);
 };
 
 const mockNewAccount = createMockInternalAccount({
-  name: 'Solana Account 1',
-  address: '3wqBoWo34h34tovyEwy5WLmELH88spdMThjGtevnmKu1',
-  keyringType: KeyringTypes.snap,
-  type: SolAccountType.DataAccount,
+  name: 'Account 2',
 });
-
-const mockCreateAccount = jest.fn().mockResolvedValue(mockNewAccount);
-
-jest.mock('../../../hooks/accounts/useMultichainWalletSnapClient', () => ({
-  ...jest.requireActual(
-    '../../../hooks/accounts/useMultichainWalletSnapClient',
-  ),
-  useMultichainWalletSnapClient: jest.fn().mockImplementation(() => {
-    return {
-      getNextAvailableAccountName: jest
-        .fn()
-        .mockResolvedValue('Solana Account 1'),
-      createAccount: mockCreateAccount,
-    };
-  }),
-}));
 
 const mockAddNewAccount = jest.fn();
 jest.mock('../../../store/actions.ts', () => ({
   ...jest.requireActual('../../../store/actions.ts'),
-  addNewAccount: (keyringId: string) => mockAddNewAccount(keyringId),
+  addNewAccount: (keyringId: string) => {
+    mockAddNewAccount(keyringId);
+    return Promise.resolve(mockNewAccount);
+  },
   setAccountLabel: jest.fn(),
 }));
 
@@ -171,7 +142,7 @@ describe('EditAccountsModal', () => {
   });
 
   describe('adding accounts', () => {
-    it('shows evm and solana account options', () => {
+    it('shows the evm account option', () => {
       const { getByTestId } = render();
 
       const addNewAccountButton = getByTestId('add-new-account-button');
@@ -179,9 +150,6 @@ describe('EditAccountsModal', () => {
 
       expect(
         getByTestId('multichain-account-menu-popover-add-account'),
-      ).toBeInTheDocument();
-      expect(
-        getByTestId('multichain-account-menu-popover-add-solana-account'),
       ).toBeInTheDocument();
     });
 
@@ -200,33 +168,6 @@ describe('EditAccountsModal', () => {
         expect(mockAddNewAccount).toHaveBeenCalledWith(mockKeyringId),
       );
     });
-    it('adds a new solana account', async () => {
-      const { getByTestId } = render();
-      goToAddNewAccount(getByTestId, 'solana');
-
-      await waitFor(() =>
-        expect(getByTestId('account-name-input')).toBeInTheDocument(),
-      );
-
-      const addAccountButton = getByTestId('submit-add-account-with-name');
-      fireEvent.click(addAccountButton);
-
-      const expectedArgs = {
-        scope: SolScope.Mainnet,
-        entropySource: mockKeyringId,
-        accountNameSuggestion: 'Solana Account 1',
-      };
-
-      const expectedInternalArgs = {
-        setSelectedAccount: true,
-      };
-
-      expect(mockCreateAccount).toHaveBeenCalledWith(
-        expectedArgs,
-        expectedInternalArgs,
-      );
-    });
-
     it('shows the srp list when the srp button is clicked', async () => {
       const hdAccount = createMockInternalAccount({
         address: '0x0dcd5d886577d5081b0c52e242ef29e70be3e7bc',
@@ -262,7 +203,7 @@ describe('EditAccountsModal', () => {
         },
         keyrings: [hdKeyring, hdKeyring2],
       });
-      goToAddNewAccount(getByTestId, 'solana');
+      goToAddNewAccount(getByTestId, 'evm');
 
       const srpButton = getByTestId('select-srp-Secret Recovery Phrase 1');
       fireEvent.click(srpButton);
@@ -283,7 +224,7 @@ describe('EditAccountsModal', () => {
       onSubmit: mockOnSubmit,
       onClose: jest.fn(),
     });
-    goToAddNewAccount(getByTestId, 'solana');
+    goToAddNewAccount(getByTestId, 'evm');
 
     await waitFor(() =>
       expect(getByTestId('account-name-input')).toBeInTheDocument(),

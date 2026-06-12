@@ -37,7 +37,6 @@ import { MINUTE } from '../../../../shared/constants/time';
 
 /**
  * Check if the account has the private key available according to its keyring type.
- * TODO: Add support for KeyringTypes.snap
  *
  * @param account - The internal account to check.
  * @returns True if the private key is available, false otherwise.

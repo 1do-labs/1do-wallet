@@ -1,10 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import {
-  formatChainIdToCaip,
-  isNonEvmChainId,
-} from '@metamask/bridge-controller';
+import { formatChainIdToCaip } from '@metamask/bridge-controller';
 import { AvatarToken, AvatarTokenSize } from '@metamask/design-system-react';
 import * as actions from '../../../../store/actions';
 import { Button, ButtonVariant, Box } from '../../../component-library';
@@ -51,13 +48,9 @@ function mapDispatchToProps(dispatch) {
       assetsUnifyStateFeatureEnabled,
       customAssets,
     ) => {
-      const isNonEvm = isNonEvmChainId(chainId);
-
       if (assetsUnifyStateFeatureEnabled) {
         const assetId = toAssetId(address, chainId);
-        const caipChainId = isNonEvmChainId(chainId)
-          ? chainId
-          : formatChainIdToCaip(chainId);
+        const caipChainId = formatChainIdToCaip(chainId);
         const accountForChain = getAccountForChain(caipChainId);
         const isInCustomAssets =
           accountForChain &&
@@ -81,27 +74,13 @@ function mapDispatchToProps(dispatch) {
         }
       }
 
-      if (isNonEvm) {
-        // Handle non-EVM tokens
-        const accountForChain = getAccountForChain(chainId);
-
-        if (!accountForChain) {
-          console.warn(`No account found for chain ${chainId}`);
-          return;
-        }
-
-        await dispatch(
-          actions.multichainIgnoreAssets([address], accountForChain.id),
-        );
-      } else {
-        await dispatch(
-          actions.ignoreTokens({
-            tokensToIgnore: address,
-            networkClientId,
-            chainId,
-          }),
-        );
-      }
+      await dispatch(
+        actions.ignoreTokens({
+          tokensToIgnore: address,
+          networkClientId,
+          chainId,
+        }),
+      );
 
       dispatch(actions.hideModal());
     },
@@ -184,30 +163,18 @@ class HideTokenConfirmationModal extends Component {
             block
             data-testid="hide-token-confirmation__hide"
             onClick={() => {
-              if (isNonEvmChainId(chainIdToUse)) {
-                hideToken(
-                  address,
-                  undefined,
-                  chainIdToUse,
-                  getAccountForChain,
-                  assetsUnifyStateFeatureEnabled,
-                  customAssets,
-                );
-              } else {
-                const chainConfig =
-                  networkConfigurationsByChainId[chainIdToUse];
-                const { defaultRpcEndpointIndex } = chainConfig;
-                const { networkClientId: networkInstanceId } =
-                  chainConfig.rpcEndpoints[defaultRpcEndpointIndex];
-                hideToken(
-                  address,
-                  networkInstanceId,
-                  chainIdToUse,
-                  getAccountForChain,
-                  assetsUnifyStateFeatureEnabled,
-                  customAssets,
-                );
-              }
+              const chainConfig = networkConfigurationsByChainId[chainIdToUse];
+              const { defaultRpcEndpointIndex } = chainConfig;
+              const { networkClientId: networkInstanceId } =
+                chainConfig.rpcEndpoints[defaultRpcEndpointIndex];
+              hideToken(
+                address,
+                networkInstanceId,
+                chainIdToUse,
+                getAccountForChain,
+                assetsUnifyStateFeatureEnabled,
+                customAssets,
+              );
               navigate(DEFAULT_ROUTE);
             }}
           >

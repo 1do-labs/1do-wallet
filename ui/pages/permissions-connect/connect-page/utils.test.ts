@@ -161,7 +161,7 @@ describe('getCaip25PermissionsResponse', () => {
     });
   });
 
-  describe('Request approval including non-evm scopes', () => {
+  describe('Request approval including unsupported scopes', () => {
     it('only modifies evm related scopes', () => {
       const addresses: Hex[] = ['0x4c286da233db3d63d44dc2ec8adc8b6dfb595cb4'];
       const hexChainIds: Hex[] = ['0x1'];
@@ -170,7 +170,7 @@ describe('getCaip25PermissionsResponse', () => {
         {
           ...baseCaip25CaveatValue,
           requiredScopes: {
-            'bip122:000000000019d6689c085ae165831e93': {
+            'unknown:scope': {
               accounts: [],
             },
           },
@@ -186,7 +186,7 @@ describe('getCaip25PermissionsResponse', () => {
               type: Caip25CaveatType,
               value: {
                 requiredScopes: {
-                  'bip122:000000000019d6689c085ae165831e93': {
+                  'unknown:scope': {
                     accounts: [],
                   },
                 },

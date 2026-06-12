@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import classnames from 'clsx';
-import { SubjectType } from '@metamask/permission-controller';
 import SiteOrigin from '../../ui/site-origin';
 import Box from '../../ui/box';
 import {
@@ -31,12 +30,7 @@ export default class PermissionsConnectHeader extends Component {
   };
 
   renderHeaderIcon() {
-    const { iconUrl, iconName, siteOrigin, leftIcon, rightIcon, subjectType } =
-      this.props;
-
-    if (subjectType === SubjectType.Snap) {
-      return null;
-    }
+    const { iconUrl, iconName, siteOrigin, leftIcon, rightIcon } = this.props;
 
     return (
       <div className="permissions-connect-header__icon">

@@ -117,8 +117,6 @@ export const DEEP_LINK_ROUTE = '/link';
 /** Shown when Basic Functionality is off and user opens a route that requires it. */
 export const BASIC_FUNCTIONALITY_OFF_ROUTE = '/basic-functionality-off';
 
-export const DEFI_ROUTE = '/defi';
-
 export const ROUTES = [
   { path: DEFAULT_ROUTE, label: 'Home', trackInAnalytics: true },
   { path: '', label: 'Home', trackInAnalytics: true }, // "" is an alias for the Home route
@@ -467,8 +465,6 @@ export const ROUTES = [
     label: 'Onboarding Account Not Found',
     trackInAnalytics: false,
   },
-  // Additional routes
-  { path: DEFI_ROUTE, label: 'DeFi', trackInAnalytics: false },
   {
     path: REVIEW_PERMISSIONS,
     label: 'Review Permissions',

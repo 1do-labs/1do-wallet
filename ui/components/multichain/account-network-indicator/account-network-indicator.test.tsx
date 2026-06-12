@@ -9,7 +9,7 @@ import {
 } from '../../../../shared/constants/network';
 import { AccountNetworkIndicator } from '.';
 
-const MOCK_SCOPES = ['eip155:0', 'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp'];
+const MOCK_SCOPES = ['eip155:0', 'eip155:137', 'eip155:56'];
 
 const render = (scopes = MOCK_SCOPES) => {
   return renderWithProvider(

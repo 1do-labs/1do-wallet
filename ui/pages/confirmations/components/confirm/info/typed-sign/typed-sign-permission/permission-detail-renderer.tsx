@@ -1,7 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import type { Hex } from '@metamask/utils';
-import { isSnapId } from '@metamask/snaps-utils';
 import { Text, TextVariant } from '@metamask/design-system-react';
 
 import {
@@ -216,9 +215,6 @@ function renderElement(
 
     case 'origin': {
       const origin = ctx.origin ?? '';
-      const tooltipMessage = isSnapId(origin)
-        ? t('requestFromInfoSnap')
-        : t('requestFromInfo');
 
       return (
         <ConfirmInfoAlertRow
@@ -226,7 +222,7 @@ function renderElement(
           alertKey={RowAlertKey.RequestFrom}
           ownerId={ownerId}
           label={t('requestFrom')}
-          tooltip={tooltipMessage}
+          tooltip={t('requestFromInfo')}
         >
           <ConfirmInfoRowUrl url={origin} />
         </ConfirmInfoAlertRow>

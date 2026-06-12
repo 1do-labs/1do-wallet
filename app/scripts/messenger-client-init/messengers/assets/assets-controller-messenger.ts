@@ -27,10 +27,6 @@ import type {
   GetPermissions,
   PermissionControllerStateChange,
 } from '@metamask/permission-controller';
-import type {
-  SnapControllerGetRunnableSnapsAction,
-  SnapControllerHandleRequestAction,
-} from '@metamask/snaps-controllers';
 import {
   OnboardingControllerGetStateAction,
   OnboardingControllerStateChangeEvent,
@@ -98,8 +94,7 @@ type RpcDataSourceEvents =
   | TransactionControllerUnapprovedTransactionAddedEvent;
 
 /**
- * AccountsController:accountBalancesUpdated event for SnapDataSource.
- * Re-published from SnapKeyring:accountBalancesUpdated.
+ * AccountsController:accountBalancesUpdated event.
  */
 type AccountsControllerAccountBalancesUpdatedEvent = {
   type: 'AccountsController:accountBalancesUpdated';
@@ -118,21 +113,18 @@ type AccountsControllerAccountBalancesUpdatedEvent = {
 };
 
 /**
- * Actions required by SnapDataSource.
+ * Actions required by internal account data sources.
  *
- * @see SnapDataSource in @metamask/assets-controller
+ * @see data sources in @metamask/assets-controller
  */
-type SnapDataSourceActions =
-  | SnapControllerGetRunnableSnapsAction
-  | SnapControllerHandleRequestAction
-  | GetPermissions;
+type AccountDataSourceActions = GetPermissions;
 
 /**
- * Events required by SnapDataSource.
+ * Events required by internal account data sources.
  *
- * @see SnapDataSource in @metamask/assets-controller
+ * @see data sources in @metamask/assets-controller
  */
-type SnapDataSourceEvents =
+type AccountDataSourceEvents =
   | AccountsControllerAccountBalancesUpdatedEvent
   | PermissionControllerStateChange;
 
@@ -147,7 +139,7 @@ type SnapDataSourceEvents =
 type AllowedActions =
   | CoreAssetsControllerActions
   | RpcDataSourceActions
-  | SnapDataSourceActions
+  | AccountDataSourceActions
   | PhishingControllerBulkScanTokensAction
   | AccountsControllerGetSelectedAccountAction;
 /**
@@ -161,7 +153,7 @@ type AllowedActions =
 type AllowedEvents =
   | CoreAssetsControllerEvents
   | RpcDataSourceEvents
-  | SnapDataSourceEvents
+  | AccountDataSourceEvents
   | PreferencesControllerStateChangeEvent
   | AccountTreeControllerStateChangeEvent;
 /**
@@ -204,8 +196,6 @@ export function getAssetsControllerMessenger(
       'NetworkEnablementController:getState',
       'NetworkController:getState',
       'NetworkController:getNetworkClientById',
-      'SnapController:handleRequest',
-      'SnapController:getRunnableSnaps',
       'PermissionController:getPermissions',
       'PhishingController:bulkScanTokens',
       'AccountsController:getSelectedAccount',
@@ -242,7 +232,6 @@ type PreferencesControllerGetStateAction = {
  * Actions needed during AssetsController initialization.
  */
 type AllowedInitializationActions =
-  | SnapControllerHandleRequestAction
   | PreferencesControllerGetStateAction
   | OnboardingControllerGetStateAction;
 
@@ -277,7 +266,6 @@ export function getAssetsControllerInitMessenger(
   messenger.delegate({
     messenger: initMessenger,
     actions: [
-      'SnapController:handleRequest',
       'PreferencesController:getState',
       'OnboardingController:getState',
     ],

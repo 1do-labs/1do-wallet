@@ -94,10 +94,7 @@ const AccountListItem = ({
     [account, keyrings],
   );
 
-  const { isEvmNetwork, chainId: multichainChainId } = useMultichainSelector(
-    getMultichainNetwork,
-    account,
-  );
+  const { isEvmNetwork } = useMultichainSelector(getMultichainNetwork, account);
   const setAccountListItemMenuRef = (ref) => {
     setAccountListItemMenuElement(ref);
   };
@@ -352,7 +349,9 @@ const AccountListItem = ({
             account={account}
             onClose={() => setAccountOptionsMenuOpen(false)}
             isOpen={accountOptionsMenuOpen}
-            isRemovable={account.metadata.keyring.type !== KeyringType.hdKeyTree}
+            isRemovable={
+              account.metadata.keyring.type !== KeyringType.hdKeyTree
+            }
             closeMenu={closeMenu}
             isPinned={isPinned}
             isHidden={isHidden}
@@ -374,11 +373,6 @@ AccountListItem.propTypes = {
     balance: PropTypes.string.isRequired,
     metadata: PropTypes.shape({
       name: PropTypes.string.isRequired,
-      snap: PropTypes.shape({
-        id: PropTypes.string.isRequired,
-        name: PropTypes.string,
-        enabled: PropTypes.bool,
-      }),
       keyring: PropTypes.shape({
         type: PropTypes.string.isRequired,
       }).isRequired,

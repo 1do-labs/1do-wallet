@@ -19,8 +19,8 @@ describe('ReceiveModal', () => {
     expect(screen.queryByText('Test Account')).toBeInTheDocument();
   });
 
-  it('should show the correct snap account name', () => {
-    render('0xb552685e3d2790efd64a175b00d51f02cdafee5d');
-    expect(screen.queryByText('Snap Account 1')).toBeInTheDocument();
+  it('should show the correct account name for another address', () => {
+    render('0xeb9e64b93097bc15f01f13eae97015c57ab64823');
+    expect(screen.queryByText('Account 2')).toBeInTheDocument();
   });
 });

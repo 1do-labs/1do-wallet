@@ -1,6 +1,5 @@
 import {
   AssetListState,
-  DeFiPositionsControllerState,
   MultichainAssetsControllerState,
   MultichainAssetsRatesControllerState,
   calculateBalanceChangeForAllWallets,
@@ -13,12 +12,10 @@ import {
   getAggregatedBalanceForAccount,
 } from '@metamask/assets-controller';
 import { CaipAssetId, isEvmAccountType } from '@metamask/keyring-api';
-import { toHex } from '@metamask/controller-utils';
 import {
   CaipAssetType,
   CaipChainId,
   Hex,
-  KnownCaipNamespace,
   parseCaipAssetType,
   parseCaipChainId,
   hasProperty,
@@ -53,7 +50,6 @@ import {
 import { findAssetByAddress } from '../pages/asset/util';
 import { isEvmChainId } from '../../shared/lib/asset-utils';
 import { isEmptyHexString } from '../../shared/lib/hexstring-utils';
-import { isZeroAmount } from '../helpers/utils/number-utils';
 import {
   getNetworkConfigurationsByChainId,
   getNonTestNetworks,
@@ -105,10 +101,6 @@ export type AssetsState = {
 
 export type AssetsRatesState = {
   metamask: MultichainAssetsRatesControllerState;
-};
-
-export type DefiState = {
-  metamask: DeFiPositionsControllerState;
 };
 
 // Type for the main Redux state that includes all controller states needed for balance calculations
@@ -302,18 +294,6 @@ export { getMultiChainAssetsControllerAllIgnoredAssets as getAllIgnoredAssets };
  * @returns An object containing non-EVM assets per accounts.
  */
 export { getMultichainAssetsRatesControllerConversionRates as getAssetsRates };
-
-/**
- * Gets DeFi positions
- *
- * @param state - Redux state object.
- * @returns An object containing defi positions for all accounts
- */
-export function getDefiPositions(
-  state: DefiState,
-): DeFiPositionsControllerState['allDeFiPositions'] {
-  return state?.metamask?.allDeFiPositions;
-}
 
 /**
  * @deprecated use selectBalanceByAccountGroup instead
@@ -1121,38 +1101,26 @@ export const selectBalanceChangeBySelectedAccountGroup = (
   );
 
 /**
- * Creates an enabledNetworkMap from all non-test networks for balance calculations.
- * This selector combines EVM and non-EVM mainnet networks (excluding testnets and custom testnets)
- * and formats them into the enabledNetworkMap structure expected by calculateBalanceForAllWallets.
+ * Creates an enabledNetworkMap from all non-test EVM networks for balance calculations.
  *
  * @param state - Redux state containing network configurations.
- * @returns EnabledNetworkMap with all non-test networks enabled across all namespaces.
+ * @returns EnabledNetworkMap with all non-test EVM networks enabled.
  */
 const selectAllMainnetNetworksEnabledMap = createSelector(
   [getNonTestNetworks],
   (nonTestNetworks) => {
-    const enabledNetworkMap: Record<string, Record<string, boolean>> = {};
-
-    nonTestNetworks.forEach((network) => {
-      const { caipChainId } = network;
-      const { namespace, reference } = parseCaipChainId(caipChainId);
-
-      if (!enabledNetworkMap[namespace]) {
-        enabledNetworkMap[namespace] = {};
-      }
-
-      // Fix: Convert reference to proper format for calculateBalanceForAllWallets
-      if (namespace === KnownCaipNamespace.Eip155) {
-        // For EVM chains, use hex format (e.g., "1" → "0x1")
-        const chainIdHex = toHex(reference);
-        enabledNetworkMap[namespace][chainIdHex] = true;
-      } else {
-        // For non-EVM chains, use full CAIP chainId as key
-        enabledNetworkMap[namespace][caipChainId] = true;
-      }
-    });
-
-    return enabledNetworkMap;
+    return nonTestNetworks.reduce<Record<string, Record<string, boolean>>>(
+      (enabledNetworkMap, network) => {
+        const { namespace, reference } = parseCaipChainId(network.caipChainId);
+        if (namespace === 'eip155') {
+          enabledNetworkMap.eip155 ??= {};
+          enabledNetworkMap.eip155[`0x${Number(reference).toString(16)}`] =
+            true;
+        }
+        return enabledNetworkMap;
+      },
+      {},
+    );
   },
 );
 
@@ -1178,12 +1146,12 @@ function getBalanceOrDefault(
 }
 
 /**
- * Determines whether the selected account group has any tokens (native or non-native).
+ * Determines whether the selected account group has any EVM tokens.
  * This determines whether to show the balance UI or the "Fund Your Wallet" empty state.
  *
  * Checks for:
- * - Native token balances (ETH, MATIC, SOL, BTC, etc.)
- * - Non-native token balances (ERC-20, SPL tokens, etc.)
+ * - Native token balances (ETH, MATIC, etc.)
+ * - Non-native token balances (ERC-20)
  *
  * Without tokens, users cannot transact, so we show the empty state to prompt funding.
  *
@@ -1195,7 +1163,6 @@ export const selectAccountGroupBalanceForEmptyState = createSelector(
     selectAccountTreeStateForBalances,
     selectAccountsStateForBalances,
     selectTokenBalancesStateForBalances,
-    selectMultichainBalancesStateForBalances,
     selectAllMainnetNetworksEnabledMap,
     getAccountTrackerControllerAccountsByChainId,
   ],
@@ -1203,7 +1170,6 @@ export const selectAccountGroupBalanceForEmptyState = createSelector(
     accountTreeState,
     accountsState,
     tokenBalancesState,
-    multichainBalancesState,
     allMainnetNetworksMap,
     accountsByChainId,
   ): boolean => {
@@ -1244,14 +1210,8 @@ export const selectAccountGroupBalanceForEmptyState = createSelector(
       },
     );
 
-    // Get mainnet EVM and non-EVM chain IDs for filtering
     const mainnetEvmChainIds = new Set(
       Object.keys(allMainnetNetworksMap?.eip155 || {}),
-    );
-    const mainnetNonEvmChainIds = new Set(
-      Object.keys(allMainnetNetworksMap?.solana || {}).concat(
-        Object.keys(allMainnetNetworksMap?.bip122 || {}),
-      ),
     );
 
     // Check EVM native token balances from accountsByChainId (only for accounts in this group and mainnet chains)
@@ -1278,33 +1238,6 @@ export const selectAccountGroupBalanceForEmptyState = createSelector(
         });
       },
     );
-
-    // Check multichain balances for any non-zero non-EVM native token balances (only for accounts in this group and mainnet chains)
-    const hasNonEvmBalance = Object.entries(
-      multichainBalancesState?.balances || {},
-    ).some(([accountId, accountBalances]) => {
-      // Only check accounts that belong to the selected group
-      if (!groupAccountIdsSet.has(accountId)) {
-        return false;
-      }
-      if (!isObject(accountBalances)) {
-        return false;
-      }
-      return Object.entries(accountBalances).some(([assetId, balanceData]) => {
-        // Extract chainId from the asset ID (format: "chainId/assetType")
-        const chainId = assetId.split('/')[0];
-        // Only check mainnet chains
-        if (!mainnetNonEvmChainIds.has(chainId)) {
-          return false;
-        }
-        if (!isObject(balanceData)) {
-          return false;
-        }
-        const balanceValue = getBalanceOrDefault(balanceData, 'amount', '0');
-        // Use isZeroAmount to properly handle decimal zeros like "0.0", "0.00", etc.
-        return !isZeroAmount(balanceValue);
-      });
-    });
 
     // Check ERC-20 token balances (only for accounts in this group and mainnet chains)
     const hasErc20Tokens = Object.entries(
@@ -1339,7 +1272,7 @@ export const selectAccountGroupBalanceForEmptyState = createSelector(
       );
     });
 
-    return hasEvmBalance || hasNonEvmBalance || hasErc20Tokens;
+    return hasEvmBalance || hasErc20Tokens;
   },
 );
 
@@ -1476,15 +1409,6 @@ export const selectAccountSupportsEnabledNetworks = createSelector(
     );
   },
 );
-
-export const getAssetsBySelectedAccountGroupWithTronSpecialAssets =
-  createDeepEqualSelector(
-    getStateForAssetSelector,
-    (assetListState: AssetListState) =>
-      selectAssetsBySelectedAccountGroup(assetListState, {
-        filterTronStakedTokens: false,
-      }),
-  );
 
 export const getAsset = createSelector(
   [

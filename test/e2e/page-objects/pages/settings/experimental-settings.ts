@@ -3,15 +3,6 @@ import { Driver } from '../../../webdriver/driver';
 class ExperimentalSettings {
   private readonly driver: Driver;
 
-  // Locators
-  private readonly addAccountSnapToggle =
-    '[data-testid="add-account-snap-toggle-div"]';
-
-  private readonly experimentalPageTitle = {
-    text: 'Enable "Add account Snap (Beta)"',
-    tag: 'p',
-  };
-
   private readonly watchAccountToggleState =
     '[data-testid="watch-account-toggle"]';
 
@@ -24,7 +15,7 @@ class ExperimentalSettings {
 
   async checkPageIsLoaded(): Promise<void> {
     try {
-      await this.driver.waitForSelector(this.experimentalPageTitle);
+      await this.driver.waitForSelector(this.watchAccountToggleState);
     } catch (e) {
       console.log(
         'Timeout while waiting for Experimental Settings page to be loaded',
@@ -42,11 +33,6 @@ class ExperimentalSettings {
       this.watchAccountToggleState,
     );
     return toggleInput.isSelected();
-  }
-
-  async toggleAddAccountSnap(): Promise<void> {
-    console.log('Toggle Add Account Snap on experimental setting page');
-    await this.driver.clickElement(this.addAccountSnapToggle);
   }
 
   async toggleWatchAccount(): Promise<void> {

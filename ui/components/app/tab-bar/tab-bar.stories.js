@@ -29,9 +29,9 @@ export default {
         key: 'contacts',
       },
       {
-        icon: <Icon name={IconName.Snaps} />,
-        content: 'Snaps',
-        key: 'snaps',
+        icon: <Icon name={IconName.Global} />,
+        content: 'Networks',
+        key: 'networks',
       },
       {
         icon: <i className="fa fa-lock" />,

@@ -332,7 +332,7 @@ describe('NetworkListMenu', () => {
     const networkItems = document.querySelectorAll(
       '.multichain-network-list-item',
     );
-    expect(networkItems).toHaveLength(5); // 5 EVM networks (Bitcoin/Solana disabled in test environment)
+    expect(networkItems).toHaveLength(5); // 5 EVM networks
 
     const selectedNodes = document.querySelectorAll(
       '.multichain-network-list-item--selected',

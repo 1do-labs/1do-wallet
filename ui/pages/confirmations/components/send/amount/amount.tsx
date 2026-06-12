@@ -24,7 +24,6 @@ import { useBalance } from '../../../hooks/send/useBalance';
 import { useCurrencyConversions } from '../../../hooks/send/useCurrencyConversions';
 import { useMaxAmount } from '../../../hooks/send/useMaxAmount';
 import { useSendContext } from '../../../context/send';
-import { useSendType } from '../../../hooks/send/useSendType';
 import {
   formatToFixedDecimals,
   getFractionLength,
@@ -49,7 +48,6 @@ export const Amount = ({
     getNativeValue,
   } = useCurrencyConversions();
   const { getMaxAmount } = useMaxAmount();
-  const { isNonEvmNativeSendType } = useSendType();
   const {
     setAmountInputMethodManual,
     setAmountInputMethodPasted,
@@ -62,7 +60,7 @@ export const Amount = ({
       fiatMode
         ? `${formatToFixedDecimals(value, 5)} ${asset?.symbol}`
         : getFiatDisplayValue(amount),
-    [amount, fiatMode, getFiatDisplayValue, value],
+    [amount, asset?.symbol, fiatMode, getFiatDisplayValue, value],
   );
 
   const onChange = useCallback(
@@ -204,15 +202,13 @@ export const Amount = ({
           <Text color={TextColor.textAlternative} variant={TextVariant.bodySm}>
             {balanceDisplayValue}
           </Text>
-          {!isNonEvmNativeSendType && (
-            <ButtonLink
-              marginLeft={2}
-              onClick={updateToMax}
-              variant={TextVariant.bodySm}
-            >
-              {t('max')}
-            </ButtonLink>
-          )}
+          <ButtonLink
+            marginLeft={2}
+            onClick={updateToMax}
+            variant={TextVariant.bodySm}
+          >
+            {t('max')}
+          </ButtonLink>
         </Box>
       </Box>
     </Box>

@@ -1,13 +1,8 @@
 import { ApprovalType } from '@metamask/controller-utils';
 import { KnownCaipNamespace } from '@metamask/utils';
-import {
-  BtcAccountType,
-  EthAccountType,
-  EthMethod,
-  SolAccountType,
-} from '@metamask/keyring-api';
+import { EthAccountType, EthMethod } from '@metamask/keyring-api';
 import { AVAILABLE_MULTICHAIN_NETWORK_CONFIGURATIONS } from '@metamask/multichain-network-controller';
-import { deepClone } from '@metamask/snaps-utils';
+import cloneDeep from 'lodash/cloneDeep';
 import { TransactionStatus } from '@metamask/transaction-controller';
 import { KeyringTypes } from '@metamask/keyring-controller';
 import { KeyringType } from '../../shared/constants/keyring';
@@ -17,15 +12,6 @@ import { createMockInternalAccount } from '../../test/jest/mocks';
 import { mockNetworkState } from '../../test/stub/networks';
 import { DeleteRegulationStatus } from '../../shared/constants/metametrics';
 import * as networkSelectors from '../../shared/lib/selectors/networks';
-import {
-  DEFAULT_FEATURE_FLAG_VALUES,
-  FeatureFlagNames,
-} from '../../shared/lib/feature-flags';
-
-import {
-  SOLANA_WALLET_NAME,
-  SOLANA_WALLET_SNAP_ID,
-} from '../../shared/lib/accounts';
 import * as selectors from './selectors';
 
 jest.mock('../../shared/lib/selectors/networks', () => ({
@@ -62,7 +48,7 @@ jest.mock('./multichain/networks', () => ({
 }));
 
 const modifyStateWithHWKeyring = (keyring) => {
-  const modifiedState = deepClone(mockState);
+  const modifiedState = cloneDeep(mockState);
   modifiedState.metamask.internalAccounts.accounts[
     modifiedState.metamask.internalAccounts.selectedAccount
   ].metadata.keyring.type = keyring;
@@ -898,29 +884,7 @@ describe('Selectors', () => {
   });
 
   describe('#accountSupportsSmartTx', () => {
-    it('returns false if the account type is "snap"', () => {
-      const state = {
-        metamask: {
-          internalAccounts: {
-            accounts: {
-              'mock-id-1': {
-                address: '0x987654321',
-                metadata: {
-                  name: 'Account 1',
-                  keyring: {
-                    type: 'Snap Keyring',
-                  },
-                },
-              },
-            },
-            selectedAccount: 'mock-id-1',
-          },
-        },
-      };
-      expect(selectors.accountSupportsSmartTx(state)).toBe(false);
-    });
-
-    it('returns true if the account type is not "snap"', () => {
+    it('returns true if the account type is available', () => {
       expect(selectors.accountSupportsSmartTx(mockState)).toBe(true);
     });
   });
@@ -1175,40 +1139,63 @@ describe('Selectors', () => {
   });
 
   it('#getTargetSubjectMetadata', () => {
+    const state = {
+      ...mockState,
+      metamask: {
+        ...mockState.metamask,
+        subjectMetadata: {
+          'https://example.com': {
+            extensionId: null,
+            iconUrl: null,
+            name: 'example.com',
+            origin: 'https://example.com',
+            subjectType: 'website',
+          },
+        },
+      },
+    };
     const targetSubjectsMetadata = selectors.getTargetSubjectMetadata(
-      mockState,
-      'npm:@metamask/test-snap-bip44',
+      state,
+      'https://example.com',
     );
     expect(targetSubjectsMetadata).toStrictEqual({
+      extensionId: null,
       iconUrl: null,
-      name: '@metamask/test-snap-bip44',
-      subjectType: 'snap',
-      version: '1.2.3',
+      name: 'example.com',
+      origin: 'https://example.com',
+      subjectType: 'website',
     });
   });
 
   it('#getMultipleTargetsSubjectMetadata', () => {
+    const state = {
+      ...mockState,
+      metamask: {
+        ...mockState.metamask,
+        subjectMetadata: {
+          'https://example.com': {
+            extensionId: null,
+            iconUrl: null,
+            name: 'example.com',
+            origin: 'https://example.com',
+            subjectType: 'website',
+          },
+        },
+      },
+    };
     const targetSubjectsMetadata = selectors.getMultipleTargetsSubjectMetadata(
-      mockState,
+      state,
       {
-        'npm:@metamask/test-snap-bip44': {},
-        'https://snaps.metamask.io': {},
+        'https://example.com': {},
       },
     );
     expect(targetSubjectsMetadata).toStrictEqual({
-      'https://snaps.metamask.io': {
+      'https://example.com': {
         extensionId: null,
-        iconUrl:
-          'https://snaps.metamask.io/favicon-32x32.png?v=96e4834dade94988977ec34e50a62b84',
-        name: 'MetaMask Snaps Directory',
-        origin: 'https://snaps.metamask.io',
-        subjectType: 'website',
-      },
-      'npm:@metamask/test-snap-bip44': {
         iconUrl: null,
-        name: '@metamask/test-snap-bip44',
-        subjectType: 'snap',
-        version: '1.2.3',
+        name: 'example.com',
+        origin: 'https://example.com',
+        subjectType: 'website',
       },
     });
   });
@@ -1222,6 +1209,10 @@ describe('Selectors', () => {
           '0xec1adf982415d2ef5ec55899b9bfb8bc0f29251b',
           '0xeb9e64b93097bc15f01f13eae97015c57ab64823',
         ],
+        internalAccounts: {
+          ...mockState.metamask.internalAccounts,
+          accounts: {},
+        },
         accounts: {
           '0x0dcd5d886577d5081b0c52e242ef29e70be3e7bc': {
             address: '0x0dcd5d886577d5081b0c52e242ef29e70be3e7bc',
@@ -1428,15 +1419,10 @@ describe('Selectors', () => {
         id: 'c3deeb99-ba0d-4a4e-a0aa-033fc1f79ae3',
         metadata: {
           keyring: {
-            type: 'Snap Keyring',
+            type: 'HD Key Tree',
           },
           importTime: 0,
-          name: 'Snap Account 1',
-          snap: {
-            enabled: true,
-            id: 'local:snap-id',
-            name: 'snap-name',
-          },
+          name: 'Account 2',
         },
         methods: [
           'personal_sign',
@@ -1478,6 +1464,13 @@ describe('Selectors', () => {
         active: false,
       },
     ];
+
+    pinnedAccountState.metamask.internalAccounts.accounts =
+      expectedResult.reduce((accounts, account) => {
+        accounts[account.id] = account;
+        return accounts;
+      }, {});
+
     expect(
       selectors.getUpdatedAndSortedAccounts(pinnedAccountState),
     ).toStrictEqual(expectedResult);
@@ -1687,7 +1680,7 @@ describe('#getConnectedSitesList', () => {
     });
     const account2 = createMockInternalAccount({
       type: EthAccountType.Erc4337,
-      keyringType: KeyringType.snap,
+      keyringType: KeyringType.hd,
     });
     const account3 = createMockInternalAccount({
       keyringType: KeyringType.imported,
@@ -1698,15 +1691,6 @@ describe('#getConnectedSitesList', () => {
     const account5 = createMockInternalAccount({
       keyringType: KeyringType.trezor,
     });
-    const nonEvmAccount1 = createMockInternalAccount({
-      type: BtcAccountType.P2wpkh,
-      keyringType: KeyringType.snap,
-    });
-    const nonEvmAccount2 = createMockInternalAccount({
-      type: BtcAccountType.P2wpkh,
-      keyringType: KeyringType.snap,
-    });
-
     const evmAccounts = [account1, account2, account3, account4, account5];
 
     it('returns all EVM accounts when only EVM accounts are present', () => {
@@ -1716,19 +1700,8 @@ describe('#getConnectedSitesList', () => {
       );
     });
 
-    it('only returns EVM accounts when there are non-EVM accounts', () => {
-      const state = mockAccountsState([
-        ...evmAccounts,
-        nonEvmAccount1,
-        nonEvmAccount2,
-      ]);
-      expect(selectors.getEvmInternalAccounts(state)).toStrictEqual(
-        evmAccounts,
-      );
-    });
-
-    it('returns an empty array when there are no EVM accounts', () => {
-      const state = mockAccountsState([nonEvmAccount1, nonEvmAccount2]);
+    it('returns an empty array when there are no accounts', () => {
+      const state = mockAccountsState([]);
       expect(selectors.getEvmInternalAccounts(state)).toStrictEqual([]);
     });
   });
@@ -1743,35 +1716,13 @@ describe('#getConnectedSitesList', () => {
     const account3 = createMockInternalAccount({
       lastSelected: 3,
     });
-    const nonEvmAccount1 = createMockInternalAccount({
-      type: BtcAccountType.P2wpkh,
-      keyringType: KeyringType.snap,
-      lastSelected: 4,
-    });
-    const nonEvmAccount2 = createMockInternalAccount({
-      type: BtcAccountType.P2wpkh,
-      keyringType: KeyringType.snap,
-      lastSelected: 5,
-    });
-
     it('returns the last selected EVM account', () => {
       const state = mockAccountsState([account1, account2, account3]);
       expect(selectors.getSelectedEvmInternalAccount(state)).toBe(account3);
     });
 
-    it('returns the last selected EVM account when there are non-EVM accounts', () => {
-      const state = mockAccountsState([
-        account1,
-        account2,
-        account3,
-        nonEvmAccount1,
-        nonEvmAccount2,
-      ]);
-      expect(selectors.getSelectedEvmInternalAccount(state)).toBe(account3);
-    });
-
-    it('returns `undefined` if there are no EVM accounts', () => {
-      const state = mockAccountsState([nonEvmAccount1, nonEvmAccount2]);
+    it('returns `undefined` if there are no accounts', () => {
+      const state = mockAccountsState([]);
       expect(selectors.getSelectedEvmInternalAccount(state)).toBe(undefined);
     });
   });
@@ -3557,35 +3508,17 @@ describe('getInternalAccountsSortedByKeyring', () => {
     }),
     balance: '0x0',
   };
-  const solanaAccount1 = {
+  const hardwareAccount1 = {
     ...createMockInternalAccount({
-      address: 'eVFCkMPMevHrWfkvAixLcjsJnpGTkuU4HAP3S3RXU3b',
-      type: SolAccountType.DataAccount,
-      keyringType: KeyringTypes.snap,
-      snapOptions: {
-        id: SOLANA_WALLET_SNAP_ID,
-        name: SOLANA_WALLET_NAME,
-        enabled: true,
-      },
-      options: {
-        entropySource: 'mockHdKeyring1',
-      },
+      address: '0xe000000000000000000000000000000000000001',
+      keyringType: KeyringTypes.ledger,
     }),
     balance: '0',
   };
-  const solanaAccount2 = {
+  const hardwareAccount2 = {
     ...createMockInternalAccount({
-      address: 'DdHGa63k3vcH6kqDbX834GpeRUUef81Q8bUrBPdF937k',
-      type: SolAccountType.DataAccount,
-      keyringType: KeyringTypes.snap,
-      snapOptions: {
-        id: SOLANA_WALLET_SNAP_ID,
-        name: SOLANA_WALLET_NAME,
-        enabled: true,
-      },
-      options: {
-        entropySource: 'mockHdKeyring2',
-      },
+      address: '0xd000000000000000000000000000000000000002',
+      keyringType: KeyringTypes.ledger,
     }),
     balance: '0',
   };
@@ -3607,28 +3540,28 @@ describe('getInternalAccountsSortedByKeyring', () => {
       name: '',
     },
   };
-  const mockSnapKeyring = {
-    type: KeyringTypes.snap,
-    accounts: [solanaAccount1.address, solanaAccount2.address],
+  const mockLedgerKeyring = {
+    type: KeyringTypes.ledger,
+    accounts: [hardwareAccount1.address, hardwareAccount2.address],
     metadata: {
-      id: 'mockSnapKeyring',
+      id: 'mockLedgerKeyring',
       name: '',
     },
   };
 
   it('returns internal accounts sorted by keyring', () => {
-    const mockStateWithSnapAccounts = {
+    const mockStateWithHardwareAccounts = {
       metamask: {
         internalAccounts: {
           accounts: {
             [hdAccountFromHdKeyring1.id]: hdAccountFromHdKeyring1,
             [hdAccountFromHdKeyring2.id]: hdAccountFromHdKeyring2,
-            [solanaAccount1.id]: solanaAccount1,
-            [solanaAccount2.id]: solanaAccount2,
+            [hardwareAccount1.id]: hardwareAccount1,
+            [hardwareAccount2.id]: hardwareAccount2,
           },
-          selectedAccount: solanaAccount1.id,
+          selectedAccount: hardwareAccount1.id,
         },
-        keyrings: [mockHdKeyring1, mockHdKeyring2, mockSnapKeyring],
+        keyrings: [mockHdKeyring1, mockHdKeyring2, mockLedgerKeyring],
         networkConfigurationsByChainId:
           mockState.metamask.networkConfigurationsByChainId,
         selectedNetworkClientId: mockState.metamask.selectedNetworkClientId,
@@ -3636,13 +3569,13 @@ describe('getInternalAccountsSortedByKeyring', () => {
     };
 
     const result = selectors.getInternalAccountsSortedByKeyring(
-      mockStateWithSnapAccounts,
+      mockStateWithHardwareAccounts,
     );
     expect(result).toStrictEqual([
       hdAccountFromHdKeyring1,
       hdAccountFromHdKeyring2,
-      solanaAccount1,
-      solanaAccount2,
+      hardwareAccount1,
+      hardwareAccount2,
     ]);
   });
 });
@@ -3749,8 +3682,8 @@ describe('getHasAnyEvmNetworkEnabled', () => {
     const state = {
       metamask: {
         enabledNetworkMap: {
-          [KnownCaipNamespace.Solana]: {
-            'solana:mainnet': true,
+          unknown: {
+            'unknown:mainnet': true,
           },
         },
       },
@@ -3782,8 +3715,8 @@ describe('getHasAnyEvmNetworkEnabled', () => {
             '0x89': true,
             '0xa': false,
           },
-          [KnownCaipNamespace.Solana]: {
-            'solana:mainnet': true,
+          unknown: {
+            'unknown:mainnet': true,
           },
         },
       },
@@ -3906,47 +3839,6 @@ describe('getPermissionsForActiveTab', () => {
     );
 
     expect(result).toStrictEqual([]);
-  });
-});
-
-describe('getIsDefiPositionsEnabled', () => {
-  it('returns true when assetsDefiPositionsEnabled flag is true', () => {
-    const state = {
-      ...mockState,
-      metamask: {
-        ...mockState.metamask,
-        remoteFeatureFlags: {
-          assetsDefiPositionsEnabled: true,
-        },
-      },
-    };
-    expect(selectors.getIsDefiPositionsEnabled(state)).toBe(true);
-  });
-
-  it('returns false when assetsDefiPositionsEnabled flag is false', () => {
-    const state = {
-      ...mockState,
-      metamask: {
-        ...mockState.metamask,
-        remoteFeatureFlags: {
-          assetsDefiPositionsEnabled: false,
-        },
-      },
-    };
-    expect(selectors.getIsDefiPositionsEnabled(state)).toBe(false);
-  });
-
-  it('returns true (default) when assetsDefiPositionsEnabled flag is undefined', () => {
-    const state = {
-      ...mockState,
-      metamask: {
-        ...mockState.metamask,
-        remoteFeatureFlags: {},
-      },
-    };
-    expect(selectors.getIsDefiPositionsEnabled(state)).toBe(
-      DEFAULT_FEATURE_FLAG_VALUES[FeatureFlagNames.AssetsDefiPositionsEnabled],
-    );
   });
 });
 

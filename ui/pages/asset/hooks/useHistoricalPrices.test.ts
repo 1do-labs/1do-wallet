@@ -1,4 +1,3 @@
-import { SolScope } from '@metamask/keyring-api';
 import { waitFor } from '@testing-library/react';
 import { renderHookWithProvider } from '../../../../test/lib/render-helpers-navigate';
 import { apiClient } from '../../../helpers/api-client';
@@ -67,14 +66,6 @@ const mockBaseState = {
         defaultRpcEndpointIndex: 0,
         rpcEndpoints: [{ networkClientId: 'selectedNetworkClientId' }],
       },
-      [SolScope.Mainnet]: {
-        chainId: SolScope.Mainnet,
-        name: 'Solana',
-        nativeCurrency: `${SolScope.Mainnet}/slip44:501`,
-        isEvm: false,
-        defaultRpcEndpointIndex: 0,
-        rpcEndpoints: [{ networkClientId: 'selectedNetworkClientId2' }],
-      },
     },
     currencyRates: { ETH: { conversionRate: 1 } },
     remoteFeatureFlags: {},
@@ -86,12 +77,6 @@ const mockBaseState = {
           address: '0x458036e7bc0612e9b207640dc07ca7711346aae5',
           type: 'eip155:eoa',
           scopes: ['eip155'],
-        },
-        '5132883f-598e-482c-a02b-84eeaa352f5b': {
-          id: '5132883f-598e-482c-a02b-84eeaa352f5b',
-          address: '8A4AptCThfbuknsbteHgGKXczfJpfjuVA9SLTSGaaLGC',
-          type: 'solana:data-account',
-          scopes: [SolScope.Mainnet],
         },
       },
       selectedAccount: '',
@@ -107,10 +92,7 @@ const mockBaseState = {
             'entropy:wallet1/0': {
               id: 'entropy:wallet1/0',
               type: 'multichainAccount',
-              accounts: [
-                '81b1ead4-334c-4921-9adf-282fde539752',
-                '5132883f-598e-482c-a02b-84eeaa352f5b',
-              ],
+              accounts: ['81b1ead4-334c-4921-9adf-282fde539752'],
               metadata: {
                 name: 'Wallet 1',
                 entropy: { groupIndex: 0 },
@@ -238,105 +220,6 @@ describe('useHistoricalPrices', () => {
       });
 
       consoleSpy.mockRestore();
-    });
-  });
-
-  describe('non-EVM chain (Solana)', () => {
-    const chainId = SolScope.Mainnet;
-    const address = '8A4AptCThfbuknsbteHgGKXczfJpfjuVA9SLTSGaaLGC';
-    const currency = 'usd';
-    const timeRange = 'P7D';
-    const state = {
-      ...mockBaseState,
-      metamask: {
-        ...mockBaseState.metamask,
-        internalAccounts: {
-          ...mockBaseState.metamask.internalAccounts,
-          selectedAccount: '5132883f-598e-482c-a02b-84eeaa352f5b',
-        },
-      },
-    };
-
-    it('returns loading true and default data initially', () => {
-      const { result, unmount } = renderHookWithProvider(
-        () => useHistoricalPrices({ chainId, address, currency, timeRange }),
-        state,
-      );
-
-      expect(result.current).toEqual({
-        loading: true,
-        data: {
-          prices: [],
-          metadata: DEFAULT_USE_HISTORICAL_PRICES_METADATA,
-        },
-      });
-
-      unmount();
-    });
-
-    it('returns historical prices on successful fetch', async () => {
-      mockPricesFetch.mockResolvedValue({ prices: SEVEN_DAY_PRICES });
-
-      const { result } = renderHookWithProvider(
-        () => useHistoricalPrices({ chainId, address, currency, timeRange }),
-        state,
-      );
-
-      await waitFor(() => {
-        expect(result.current.loading).toBe(false);
-      });
-
-      expect(result.current).toEqual({
-        loading: false,
-        data: { prices: SEVEN_DAY_POINTS, metadata: SEVEN_DAY_METADATA },
-      });
-    });
-
-    it('calls v3 endpoint with correct Solana CAIP params', async () => {
-      mockPricesFetch.mockResolvedValue({ prices: SEVEN_DAY_PRICES });
-
-      const { result } = renderHookWithProvider(
-        () => useHistoricalPrices({ chainId, address, currency, timeRange }),
-        state,
-      );
-
-      await waitFor(() => {
-        expect(result.current.loading).toBe(false);
-      });
-
-      expect(mockPricesFetch).toHaveBeenCalledWith(
-        'https://price.api.cx.metamask.io',
-        expect.stringContaining(
-          `/v3/historical-prices/${SolScope.Mainnet}/token:`,
-        ),
-        expect.objectContaining({
-          params: expect.objectContaining({
-            vsCurrency: 'usd',
-            timePeriod: '7D',
-          }),
-        }),
-      );
-    });
-
-    it('returns default data when fetch returns empty', async () => {
-      mockPricesFetch.mockResolvedValue({ prices: [] });
-
-      const { result } = renderHookWithProvider(
-        () => useHistoricalPrices({ chainId, address, currency, timeRange }),
-        state,
-      );
-
-      await waitFor(() => {
-        expect(result.current.loading).toBe(false);
-      });
-
-      expect(result.current).toEqual({
-        loading: false,
-        data: {
-          prices: [],
-          metadata: DEFAULT_USE_HISTORICAL_PRICES_METADATA,
-        },
-      });
     });
   });
 });

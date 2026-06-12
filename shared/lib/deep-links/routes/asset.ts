@@ -41,8 +41,8 @@ export const asset = new Route({
         return `${ASSET_ROUTE}/${decimalToPrefixedHex(chain.reference)}/${assetReference}`;
       }
 
-      // Non-EVM Asset Asset Path Format: /asset/{caip-chainId}/{caip-asset-type}
-      // Example: /asset/solana:XXX/encoded(solana:XXX/token:XXX)
+      // Unsupported CAIP asset path format:
+      // /asset/{caip-chainId}/{caip-asset-type}
       return `${ASSET_ROUTE}/${caipChainId}/${encodeURIComponent(assetId)}`;
     };
 

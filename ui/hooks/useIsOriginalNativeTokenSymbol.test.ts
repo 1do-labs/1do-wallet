@@ -99,14 +99,14 @@ describe('useIsOriginalNativeTokenSymbol', () => {
     });
   });
 
-  it('should return true if non-evm symbol matches', async () => {
+  it('should return true if selected network symbol matches', async () => {
     const { hook, mocks } = arrangeActHook((m, params) => {
       m.mockGetMultichainCurrentNetwork.mockReturnValue({
         ...m.createMockProviderConfig(),
-        ticker: 'SOL',
+        ticker: 'ETH',
       });
-      params.ticker = 'SOL';
-      params.chainId = 'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp';
+      params.ticker = 'ETH';
+      params.chainId = 'eip155:1';
     });
 
     await waitFor(() => {

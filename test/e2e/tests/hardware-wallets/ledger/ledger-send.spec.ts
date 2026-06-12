@@ -27,7 +27,6 @@ describe('Ledger Hardware', function (this: Suite) {
         )) ?? console.error('localNodes is undefined or empty');
         await login(driver, {
           validateBalance: false,
-          waitForNonEvmAccounts: false,
         });
         const homePage = new HomePage(driver);
         await homePage.checkExpectedBalanceIsDisplayed('1.21M');
@@ -61,7 +60,6 @@ describe('Ledger Hardware', function (this: Suite) {
         )) ?? console.error('localNodes is undefined or empty');
         await login(driver, {
           validateBalance: false,
-          waitForNonEvmAccounts: false,
         });
         const homePage = new HomePage(driver);
         await homePage.checkExpectedBalanceIsDisplayed('1.21M');

@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react';
 import { useSelector } from 'react-redux';
-import { CaipAssetType, Hex } from '@metamask/utils';
+import { Hex } from '@metamask/utils';
 import { BigNumber } from 'bignumber.js';
 import { formatCurrency } from '../../../helpers/utils/confirm-tx.util';
 
@@ -22,13 +22,9 @@ import {
   getMultichainConversionRate,
   getMultichainNativeCurrency,
 } from '../../../selectors/multichain';
-import { getAssetsRates } from '../../../selectors/assets';
 import { getCurrencyRates, getMarketData } from '../../../selectors/selectors';
 import { AssetType } from '../../../../shared/constants/transaction';
 import { Asset } from '../types/asset';
-// eslint-disable-next-line import-x/no-restricted-paths
-import { getConversionRatesForNativeAsset } from '../../../../app/scripts/lib/util';
-import { isEvmChainId } from '../../../../shared/lib/asset-utils';
 import { useFormatters } from '../../../hooks/useFormatters';
 
 export const AssetMarketDetails = ({
@@ -43,10 +39,8 @@ export const AssetMarketDetails = ({
   const conversionRate = useMultichainSelector(getMultichainConversionRate);
   const evmMarketData = useSelector(getMarketData);
   const currencyRates = useSelector(getCurrencyRates);
-  const nonEvmConversionRates = useSelector(getAssetsRates);
   const { formatCurrencyCompact, formatCompact } = useFormatters();
 
-  const isEvm = isEvmChainId(asset.chainId);
   const nativeCurrency = useMultichainSelector(getMultichainNativeCurrency);
 
   const { type, symbol, chainId } = asset;
@@ -56,26 +50,8 @@ export const AssetMarketDetails = ({
       ? currencyRates[symbol]?.conversionRate
       : currencyRates[nativeCurrency]?.conversionRate || 0;
 
-  const nonEvmExchangeRate =
-    nonEvmConversionRates?.[address as CaipAssetType]?.rate || 0;
-
-  const tokenExchangeRate = Number(
-    isEvm ? evmTokenExchangeRate : nonEvmExchangeRate,
-  );
-
-  const conversionRateForNativeToken = getConversionRatesForNativeAsset({
-    conversionRates: nonEvmConversionRates,
-    chainId,
-  });
-
-  const nonEvmMarketData =
-    type === AssetType.native
-      ? conversionRateForNativeToken?.marketData
-      : nonEvmConversionRates?.[address as CaipAssetType]?.marketData;
-
-  const tokenMarketDetails = isEvm
-    ? evmMarketData[chainId]?.[address as Hex]
-    : nonEvmMarketData;
+  const tokenExchangeRate = Number(evmTokenExchangeRate);
+  const tokenMarketDetails = evmMarketData[chainId]?.[address as Hex];
 
   const shouldDisplayMarketData =
     Number(conversionRate) > 0 &&
@@ -103,12 +79,10 @@ export const AssetMarketDetails = ({
   let allTimeHigh = toNumber(tokenMarketDetails.allTimeHigh);
   let allTimeLow = toNumber(tokenMarketDetails.allTimeLow);
 
-  if (isEvm) {
-    marketCap *= tokenExchangeRate;
-    totalVolume *= tokenExchangeRate;
-    allTimeHigh *= tokenExchangeRate;
-    allTimeLow *= tokenExchangeRate;
-  }
+  marketCap *= tokenExchangeRate;
+  totalVolume *= tokenExchangeRate;
+  allTimeHigh *= tokenExchangeRate;
+  allTimeLow *= tokenExchangeRate;
 
   return (
     <Box>

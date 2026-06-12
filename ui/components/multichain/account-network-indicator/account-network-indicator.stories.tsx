@@ -15,7 +15,7 @@ const defaultStory = {
     },
   },
   args: {
-    scopes: ['eip155:0', 'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp'],
+    scopes: ['eip155:0', 'eip155:137', 'eip155:56'],
   },
 };
 

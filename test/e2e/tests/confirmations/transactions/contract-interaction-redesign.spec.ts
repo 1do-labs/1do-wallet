@@ -130,7 +130,6 @@ describe('Confirmation Redesign Contract Interaction Component', function () {
 
           await login(driver, {
             expectedBalance: '1.21M',
-            waitForNonEvmAccounts: false,
           });
           const testDapp = new TestDapp(driver);
           await testDapp.openTestDappPage({ contractAddress });

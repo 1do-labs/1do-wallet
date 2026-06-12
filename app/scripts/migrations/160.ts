@@ -5,7 +5,6 @@ import type {
   PermissionConstraint,
   PermissionControllerSubjects,
 } from '@metamask/permission-controller';
-import { SnapEndowments } from '@metamask/snaps-rpc-methods';
 import {
   Caip25CaveatType,
   Caip25EndowmentPermissionName,
@@ -17,6 +16,8 @@ type GenericPermissionControllerSubject =
   PermissionControllerSubjects<PermissionConstraint>[string];
 
 export const version = 160;
+
+const SNAP_ENDOWMENT_ETHEREUM_PROVIDER = 'endowment:ethereum-provider';
 
 /**
  * A map of the networks built into the extension at the time of this migration
@@ -189,7 +190,7 @@ function transformState(state: Record<string, unknown>) {
   >((accumulator, [key, subject]) => {
     const permissionKeys = Object.keys(subject.permissions);
     const needsMigration = permissionKeys.includes(
-      SnapEndowments.EthereumProvider,
+      SNAP_ENDOWMENT_ETHEREUM_PROVIDER,
     );
 
     if (!needsMigration) {

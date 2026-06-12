@@ -40,12 +40,6 @@ export const TOAST_EXCLUDED_TRANSACTION_TYPES = new Set([
   TransactionType.perpsDepositAndOrder,
 ]);
 
-// Non-EVM transaction types excluded from toast notifications.
-export const TOAST_EXCLUDED_NON_EVM_TRANSACTION_TYPES = new Set([
-  'approve',
-  'receive',
-]);
-
 export const TRANSACTION_PENDING_STATUSES = new Set([
   TransactionStatus.submitted,
   SmartTransactionStatus.pending,

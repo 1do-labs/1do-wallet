@@ -134,16 +134,12 @@ const t = (key) => {
       return 'Visit our web site';
     case 'contactUs':
       return 'Contact us';
-    case 'snaps':
-      return 'Snaps';
     case 'currencyRateCheckToggle':
       return 'Show balance and token price checker';
     case 'currencyRateCheckToggleDescription':
       return 'We use Coingecko and CryptoCompare APIs to display your balance and token price. Privacy Policy';
     case 'watch-only':
       return 'Watch Ethereum Accounts (Beta)';
-    case 'bitcoin-support':
-      return 'Enable "Add a new Bitcoin account (Beta)"';
     case 'backupAndSync':
       return 'Backup and Sync';
     default:

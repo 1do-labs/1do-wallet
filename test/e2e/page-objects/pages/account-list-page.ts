@@ -1,7 +1,6 @@
 import { Driver } from '../../webdriver/driver';
 import { largeDelayMs } from '../../helpers';
 import { quoteXPathText } from '../../../helpers/quoteXPathText';
-import messages from '../../../../app/_locales/en/messages.json';
 import { ACCOUNT_TYPE } from '../../constants';
 import PrivacySettings from './settings/privacy-settings';
 import HeaderNavbar from './header-navbar';
@@ -48,16 +47,6 @@ class AccountListPage {
   private readonly addAccountConfirmButton =
     '[data-testid="submit-add-account-with-name"]';
 
-  private readonly addBtcAccountButton = {
-    text: messages.addBitcoinAccountLabel.message,
-    tag: 'button',
-  };
-
-  private readonly addSolanaAccountButton = {
-    text: messages.addNewSolanaAccountLabel.message,
-    tag: 'button',
-  };
-
   private readonly addEthereumAccountButton =
     '[data-testid="multichain-account-menu-popover-add-account"]';
 
@@ -74,9 +63,6 @@ class AccountListPage {
     text: 'Adding account...',
     tag: 'p',
   };
-
-  private readonly addSnapAccountButton =
-    '[data-testid="add-wallet-modal-snap-account"]';
 
   private readonly walletDetailsButton = {
     text: 'Details',
@@ -294,7 +280,7 @@ class AccountListPage {
         `Check if error message is displayed: ${expectedErrorMessage}`,
       );
       await this.driver.waitForSelector({
-        css: '.snap-ui-renderer__text',
+        css: '.mm-help-text',
         text: expectedErrorMessage,
       });
     } else {
@@ -351,45 +337,6 @@ class AccountListPage {
       await this.driver.clickElementAndWaitToDisappear(
         this.importAccountConfirmButton,
       );
-    }
-  }
-
-  /**
-   * Adds a new Solana account with optional custom name.
-   *
-   * @param options - Options for creating the Solana account
-   * @param [options.solanaAccountCreationEnabled] - Whether Solana account creation is enabled. If false, verifies the create button is disabled.
-   * @param [options.accountName] - Optional custom name for the new account
-   * @returns Promise that resolves when account creation is complete
-   */
-  async addNewSolanaAccount({
-    solanaAccountCreationEnabled = true,
-    accountName = '',
-  }: {
-    solanaAccountCreationEnabled?: boolean;
-    accountName?: string;
-  } = {}): Promise<void> {
-    console.log(
-      `Adding new Solana account${
-        accountName ? ` with custom name: ${accountName}` : ' with default name'
-      }`,
-    );
-    if (solanaAccountCreationEnabled) {
-      await this.driver.clickElement(this.addSolanaAccountButton);
-      // needed to mitigate a race condition with the state update
-      // there is no condition we can wait for in the UI
-      if (accountName) {
-        await this.driver.fill(this.accountNameInput, accountName);
-      }
-      await this.driver.clickElementAndWaitToDisappear(
-        this.addAccountConfirmButton,
-      );
-    } else {
-      const createButton = await this.driver.findElement(
-        this.addSolanaAccountButton,
-      );
-      assert.equal(await createButton.isEnabled(), false);
-      await this.driver.clickElement(this.closeAccountModalButton);
     }
   }
 
@@ -458,7 +405,7 @@ class AccountListPage {
    * Adds a new account of the specified type with an optional custom name.
    *
    * @param options - Options for adding a new account
-   * @param options.accountType - The type of account to add (Ethereum, Bitcoin, or Solana)
+   * @param options.accountType - The type of account to add
    * @param [options.accountName] - Optional custom name for the new account
    * @param [options.srpIndex] - Optional SRP index for the new account
    * @param options.fromModal
@@ -467,8 +414,6 @@ class AccountListPage {
    * // Add a new Ethereum account with default name
    * await accountListPage.addAccount({ accountType: ACCOUNT_TYPE.Ethereum });
    *
-   * // Add a new Bitcoin account with custom name
-   * await accountListPage.addAccount({ accountType: ACCOUNT_TYPE.Bitcoin, accountName: 'My BTC Wallet' });
    */
   async addAccount({
     accountType,
@@ -487,12 +432,6 @@ class AccountListPage {
       switch (accountType) {
         case ACCOUNT_TYPE.Ethereum:
           addAccountButton = this.addEthereumAccountButton;
-          break;
-        case ACCOUNT_TYPE.Bitcoin:
-          addAccountButton = this.addBtcAccountButton;
-          break;
-        case ACCOUNT_TYPE.Solana:
-          addAccountButton = this.addSolanaAccountButton;
           break;
         default:
           throw new Error('Account type not supported');
@@ -577,13 +516,6 @@ class AccountListPage {
     await this.driver.clickElementAndWaitToDisappear(
       this.importAccountConfirmButton,
     );
-  }
-
-  async isBtcAccountCreationButtonEnabled(): Promise<boolean> {
-    const createButton = await this.driver.findElement(
-      this.addBtcAccountButton,
-    );
-    return await createButton.isEnabled();
   }
 
   /**
@@ -704,22 +636,6 @@ class AccountListPage {
         timeout: 20000,
       },
     );
-  }
-
-  async checkAddBitcoinAccountAvailable(
-    expectedAvailability: boolean,
-  ): Promise<void> {
-    console.log(
-      `Check add bitcoin account button is ${
-        expectedAvailability ? 'displayed ' : 'not displayed'
-      }`,
-    );
-    await this.openAddAccountModal();
-    if (expectedAvailability) {
-      await this.driver.waitForSelector(this.addBtcAccountButton);
-    } else {
-      await this.driver.assertElementNotPresent(this.addBtcAccountButton);
-    }
   }
 
   async openAccountOptionsMenu(): Promise<void> {
@@ -963,16 +879,6 @@ class AccountListPage {
     await this.driver.assertElementNotPresent(this.pinnedIcon);
   }
 
-  async checkAddAccountSnapButtonIsDisplayed(): Promise<void> {
-    console.log('Check add account snap button is displayed');
-    await this.driver.waitForSelector(this.addSnapAccountButton);
-  }
-
-  async checkAddAccountSnapButtonNotPresent(): Promise<void> {
-    console.log('Check add account snap button is not present');
-    await this.driver.assertElementNotPresent(this.addSnapAccountButton);
-  }
-
   /**
    * Checks that the add watch account button is displayed in the create account modal.
    *
@@ -1060,14 +966,7 @@ class AccountListPage {
             const accountText = await account.getText();
             switch (accountType) {
               case ACCOUNT_TYPE.Ethereum:
-                return (
-                  !accountText.includes('Bitcoin') &&
-                  !accountText.includes('Solana')
-                );
-              case ACCOUNT_TYPE.Bitcoin:
-                return accountText.includes('Bitcoin');
-              case ACCOUNT_TYPE.Solana:
-                return accountText.includes('Solana');
+                return true;
               default:
                 return true;
             }

@@ -5,7 +5,6 @@ import {
   GatorPermissionsControllerState,
 } from '@metamask/gator-permissions-controller';
 import { Hex } from '@metamask/utils';
-import { isSnapId } from '@metamask/snaps-utils';
 import { SubjectType } from '@metamask/permission-controller';
 import { isEqualCaseInsensitive } from '../../../shared/lib/string-utils';
 import { safeDecodeURIComponent } from '../../components/multichain/pages/gator-permissions/helper';
@@ -490,7 +489,7 @@ export const getGatorPermissionCountsBySiteOrigin = createSelector(
  * @example
  * const totalSites = getTotalUniqueSitesCount(state);
  *
- * // 5 (sites with connections or gator permissions, excluding snaps)
+ * // 5 (sites with connections or gator permissions)
  */
 export const getTotalUniqueSitesCount = createSelector(
   [
@@ -498,10 +497,7 @@ export const getTotalUniqueSitesCount = createSelector(
     getUniqueSiteOriginsFromTokenTransferPermissions,
   ],
   (sitesConnectionsList, gatorPermissionSiteOrigins): number => {
-    // Get unique site origins from site connections (excluding snaps)
-    const connectedSiteOrigins = Object.keys(sitesConnectionsList).filter(
-      (site) => !isSnapId(site),
-    );
+    const connectedSiteOrigins = Object.keys(sitesConnectionsList);
 
     // Combine both lists and get unique sites
     const allUniqueSites = new Set([

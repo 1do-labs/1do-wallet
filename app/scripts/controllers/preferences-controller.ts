@@ -2,7 +2,7 @@ import {
   AccountsControllerGetAccountByAddressAction,
   AccountsControllerSetAccountNameAction,
 } from '@metamask/accounts-controller';
-import { Json, Hex } from '@metamask/utils';
+import { Hex } from '@metamask/utils';
 import {
   BaseController,
   ControllerGetStateAction,
@@ -132,8 +132,6 @@ export type PreferencesControllerState = Omit<
   openSeaEnabled: boolean;
   overrideContentSecurityPolicyHeader: boolean;
   preferences: Preferences;
-  // TODO: Replace `Json` with correct type
-  snapRegistryList: Record<string, Json>;
   textDirection?: string;
   theme: ThemeType;
   use4ByteResolution: boolean;
@@ -199,7 +197,6 @@ export const getDefaultPreferencesControllerState =
     },
     securityAlertsEnabled: true,
     showSidePanelMigrationToast: false,
-    snapRegistryList: {},
     theme: ThemeType.os,
     use4ByteResolution: true,
     useAddressBarEnsResolution: true,
@@ -319,12 +316,6 @@ const controllerMetadata: StateMetadata<PreferencesControllerState> = {
   },
   showSidePanelMigrationToast: {
     includeInStateLogs: false,
-    persist: true,
-    includeInDebugSnapshot: false,
-    usedInUi: true,
-  },
-  snapRegistryList: {
-    includeInStateLogs: true,
     persist: true,
     includeInDebugSnapshot: false,
     usedInUi: true,

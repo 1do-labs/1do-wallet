@@ -1855,19 +1855,17 @@ describe('MetaMetricsController', function () {
             selectedAccount: 'mock1',
           },
           multichainNetworkConfigurationsByChainId: {
-            'bip122:000000000019d6689c085ae165831e93': {
-              chainId: 'bip122:000000000019d6689c085ae165831e93',
-              isEvm: false,
-              name: 'Bitcoin Mainnet',
-              nativeCurrency:
-                'bip122:000000000019d6689c085ae165831e93/slip44:0',
+            'eip155:10': {
+              chainId: 'eip155:10',
+              isEvm: true,
+              name: 'Optimism',
+              nativeCurrency: 'eip155:10/slip44:60',
             },
-            'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp': {
-              chainId: 'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp',
-              isEvm: false,
-              name: 'Solana Mainnet',
-              nativeCurrency:
-                'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp/token:EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v',
+            'eip155:137': {
+              chainId: 'eip155:137',
+              isEvm: true,
+              name: 'Polygon',
+              nativeCurrency: 'eip155:137/slip44:60',
             },
           },
           ledgerTransportType: LedgerTransportTypes.webhid,
@@ -1924,8 +1922,8 @@ describe('MetaMetricsController', function () {
             'eip155:1',
             'eip155:5',
             'eip155:175',
-            'bip122:000000000019d6689c085ae165831e93',
-            'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp',
+            'eip155:10',
+            'eip155:137',
           ],
           [MetaMetricsUserTrait.InstallDateExt]: '',
           [MetaMetricsUserTrait.StorageKind]: 'split',

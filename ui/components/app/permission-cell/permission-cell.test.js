@@ -11,7 +11,7 @@ describe('Permission Cell', () => {
   const mockPermissionData = {
     label: messages.permission_ethereumProvider.message,
     description:
-      'Allow the snap to communicate with MetaMask direct…blockchain and suggest messages and transactions.',
+      'Allow the site to communicate with MetaMask and suggest messages and transactions.',
     weight: 1,
     leftIcon: 'ethereum',
     permissionValue: {

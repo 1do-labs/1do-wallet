@@ -6,7 +6,6 @@ import {
   TransactionType,
 } from '@metamask/transaction-controller';
 
-import { isSnapId } from '@metamask/snaps-utils';
 import {
   getMockConfirmStateForTransaction,
   getMockTypedSignConfirmState,
@@ -62,18 +61,6 @@ jest.mock('../../../../hooks/useGetTokenStandardAndDetails', () => ({
     symbol: undefined,
   })),
 }));
-
-jest.mock('../../../../../../../node_modules/@metamask/snaps-utils', () => {
-  const originalUtils = jest.requireActual(
-    '../../../../../../../node_modules/@metamask/snaps-utils',
-  );
-  return {
-    ...originalUtils,
-    stripSnapPrefix: jest.fn().mockReturnValue('@metamask/examplesnap'),
-    getSnapPrefix: jest.fn().mockReturnValue('npm:'),
-    isSnapId: jest.fn(),
-  };
-});
 
 describe('TypedSignInfo', () => {
   it('renders origin for typed sign data request', () => {
@@ -330,36 +317,13 @@ describe('TypedSignInfo', () => {
     expect(queryByText('200000000000000 raw units')).not.toBeInTheDocument();
   });
 
-  it('displays "requestFromInfoSnap" tooltip when origin is a snap', async () => {
+  it('displays "requestFromInfo" tooltip for typed sign requests', async () => {
     const mockState = getMockTypedSignConfirmStateForRequest({
       ...unapprovedTypedSignMsgV4,
       id: '123',
       type: TransactionType.signTypedData,
       chainId: '0x5',
     });
-    (isSnapId as unknown as jest.Mock).mockReturnValue(true);
-    const mockStore = createMockStore(mockState);
-    const { queryByText } = renderWithConfirmContextProvider(
-      <TypedSignInfo />,
-      mockStore,
-    );
-
-    const requestFromLabel = queryByText(messages.requestFrom.message);
-
-    await requestFromLabel?.dispatchEvent(
-      new MouseEvent('mouseenter', { bubbles: true }),
-    );
-    expect(queryByText(messages.requestFromInfoSnap.message)).toBeDefined();
-  });
-
-  it('displays "requestFromInfo" tooltip when origin is not a snap', async () => {
-    const mockState = getMockTypedSignConfirmStateForRequest({
-      ...unapprovedTypedSignMsgV4,
-      id: '123',
-      type: TransactionType.signTypedData,
-      chainId: '0x5',
-    });
-    (isSnapId as unknown as jest.Mock).mockReturnValue(false);
     const mockStore = createMockStore(mockState);
     const { queryByText } = renderWithConfirmContextProvider(
       <TypedSignInfo />,

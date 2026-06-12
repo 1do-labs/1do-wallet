@@ -31,10 +31,6 @@ jest.mock('../../../../shared/lib/transaction.utils', () => ({
   }),
 }));
 
-jest.mock('../snap-keyring/metrics', () => ({
-  getSnapAndHardwareInfoForMetrics: jest.fn().mockResolvedValue({}),
-}));
-
 const createRequest = () => {
   return {
     getTransactionUIMetricsFragment: jest.fn(),
@@ -53,7 +49,6 @@ const createRequest = () => {
     getTokenStandardAndDetails: jest.fn(),
     getTransaction: jest.fn(),
     provider: {} as any,
-    snapAndHardwareMessenger: {} as any,
     trackEvent: jest.fn(),
     getIsSmartTransaction: jest.fn().mockReturnValue(false),
     getSmartTransactionByMinedTxHash: jest.fn(),

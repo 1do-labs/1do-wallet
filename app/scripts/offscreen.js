@@ -78,7 +78,7 @@ export async function createOffscreen() {
       url: './offscreen.html',
       reasons: ['IFRAME_SCRIPTING'],
       justification:
-        'Used for Hardware Wallet and Snaps scripts to communicate with the extension.',
+        'Used for hardware wallet scripts to communicate with the extension.',
     });
   } catch (error) {
     if (offscreenDocumentLoadedListener) {

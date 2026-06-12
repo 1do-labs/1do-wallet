@@ -1,7 +1,4 @@
-import {
-  CURRENCY_SYMBOLS,
-  NON_EVM_CURRENCY_SYMBOLS,
-} from '../../../../../shared/constants/network';
+import { CURRENCY_SYMBOLS } from '../../../../../shared/constants/network';
 import { TokenFiatDisplayInfo } from '../types';
 
 export type TranslateFunction = (arg: string) => string;
@@ -15,10 +12,6 @@ export const networkTitleOverrides = (
   switch (token.title) {
     case CURRENCY_SYMBOLS.ETH:
       return t('networkNameEthereum');
-    case NON_EVM_CURRENCY_SYMBOLS.BTC:
-      return t('networkNameBitcoin');
-    case NON_EVM_CURRENCY_SYMBOLS.SOL:
-      return t('networkNameSolana');
     default:
       return token.title;
   }

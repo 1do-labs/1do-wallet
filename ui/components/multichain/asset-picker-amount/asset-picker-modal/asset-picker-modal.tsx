@@ -11,7 +11,12 @@ import type {
   TokenListMap,
   TokenListToken,
 } from '@metamask/assets-controllers';
-import { isCaipChainId, isStrictHexString, type Hex } from '@metamask/utils';
+import {
+  isCaipChainId,
+  isStrictHexString,
+  type CaipChainId,
+  type Hex,
+} from '@metamask/utils';
 import { zeroAddress } from 'ethereumjs-util';
 import { debounce } from 'lodash';
 import {
@@ -39,11 +44,8 @@ import { AssetType } from '../../../../../shared/constants/transaction';
 import {
   getAllTokens,
   getSelectedEvmInternalAccount,
-  getTokenExchangeRates,
   getTokenList,
-  getUseExternalServices,
 } from '../../../../selectors';
-import { getRenderableTokenData } from '../../../../hooks/useTokensToSearch';
 import {
   CHAIN_ID_TOKEN_IMAGE_MAP,
   NETWORK_TO_NAME_MAP,
@@ -51,25 +53,18 @@ import {
 import { useMultichainBalances } from '../../../../hooks/useMultichainBalances';
 import { AvatarType } from '../../avatar-group/avatar-group.types';
 import { NETWORK_TO_SHORT_NETWORK_NAME_MAP } from '../../../../../shared/constants/bridge';
-import { useAsyncResult } from '../../../../hooks/useAsync';
-import { fetchTopAssetsList } from '../../../../pages/swaps/swaps.util';
 import { useMultichainSelector } from '../../../../hooks/useMultichainSelector';
-import { getNativeTokenName } from '../../../../ducks/bridge/utils';
 import {
-  getMultichainConversionRate,
   getMultichainCurrencyImage,
   getImageForChainId,
   getMultichainCurrentChainId,
-  getMultichainCurrentCurrency,
   getMultichainNativeCurrency,
   getMultichainNetworkConfigurationsByChainId,
   getMultichainSelectedAccountCachedBalance,
   getMultichainIsEvm,
 } from '../../../../selectors/multichain';
 import { Numeric } from '../../../../../shared/lib/Numeric';
-import {
-  isEvmChainId,
-} from '../../../../../shared/lib/asset-utils';
+import { isEvmChainId } from '../../../../../shared/lib/asset-utils';
 
 import { useAssetMetadata } from './hooks/useAssetMetadata';
 import type { ERC20Asset, NativeAsset, AssetWithDisplayData } from './types';
@@ -142,10 +137,11 @@ export function AssetPickerModal({
 
   const [searchQuery, setSearchQuery] = useState('');
   const [debouncedSearchQuery, setDebouncedSearchQuery] = useState(searchQuery);
-  const debouncedSetSearchQuery = useCallback(
-    debounce((value) => {
-      setDebouncedSearchQuery(value);
-    }, 200),
+  const debouncedSetSearchQuery = useMemo(
+    () =>
+      debounce((value) => {
+        setDebouncedSearchQuery(value);
+      }, 200),
     [],
   );
 
@@ -158,7 +154,7 @@ export function AssetPickerModal({
       abortControllerRef.current = null;
       debouncedSetSearchQuery.cancel();
     };
-  }, []);
+  }, [debouncedSetSearchQuery]);
 
   useEffect(() => {
     debouncedSetSearchQuery(searchQuery);
@@ -190,10 +186,6 @@ export function AssetPickerModal({
     getMultichainSelectedAccountCachedBalance,
   );
 
-  const tokenConversionRates = useMultichainSelector(getTokenExchangeRates);
-  const conversionRate = useMultichainSelector(getMultichainConversionRate);
-  const currentCurrency = useSelector(getMultichainCurrentCurrency);
-
   const { address: selectedEvmAddress } = useSelector(
     getSelectedEvmInternalAccount,
   );
@@ -215,17 +207,6 @@ export function AssetPickerModal({
     useMultichainBalances();
 
   const evmTokenMetadataByAddress = useSelector(getTokenList) as TokenListMap;
-
-  const allowExternalServices = useSelector(getUseExternalServices);
-  // Swaps top tokens
-  const { value: topTokens } = useAsyncResult<
-    { address: Hex }[] | undefined
-  >(async () => {
-    if (allowExternalServices && selectedNetwork?.chainId) {
-      return await fetchTopAssetsList(selectedNetwork.chainId);
-    }
-    return undefined;
-  }, [selectedNetwork?.chainId, allowExternalServices]);
 
   /**
    * Generates a list of tokens sorted in this order
@@ -253,9 +234,12 @@ export function AssetPickerModal({
           string?: string;
         })
     > {
-      // Yield multichain tokens with balances
+      // Yield EVM tokens with balances
       for (const token of multichainTokensWithBalance) {
-        if (shouldAddToken(token.symbol, token.address, token.chainId)) {
+        if (
+          isEvmChainId(token.chainId as CaipChainId | Hex) &&
+          shouldAddToken(token.symbol, token.address, token.chainId)
+        ) {
           yield token.isNative
             ? {
                 ...token,
@@ -264,8 +248,7 @@ export function AssetPickerModal({
                     token.chainId as keyof typeof CHAIN_ID_TOKEN_IMAGE_MAP
                   ],
                 type: AssetType.native,
-                // Add human-readable name for native tokens (e.g., Ether, Binance Coin)
-                name: getNativeTokenName(token.chainId),
+                name: token.name ?? token.symbol,
               }
             : {
                 ...token,
@@ -287,8 +270,7 @@ export function AssetPickerModal({
         string: undefined,
         chainId: selectedNetwork.chainId,
         type: AssetType.native,
-        // Add human-readable name for native token
-        name: getNativeTokenName(selectedNetwork.chainId),
+        name: nativeCurrency,
       };
 
       if (
@@ -308,23 +290,8 @@ export function AssetPickerModal({
         }
       }
 
-      // Return early when SOLANA is selected since blocked and top tokens are not available
-      // All available solana tokens are in the multichainTokensWithBalance results
       if (!isEvmChainId(selectedNetwork?.chainId)) {
         return;
-      }
-
-      // For EVM tokens only
-      // topTokens are sorted by popularity
-      for (const topToken of topTokens ?? []) {
-        const token: TokenListToken =
-          evmTokenMetadataByAddress?.[topToken.address];
-        if (
-          token &&
-          shouldAddToken(token.symbol, token.address, currentChainId)
-        ) {
-          yield { ...token, chainId: currentChainId };
-        }
       }
 
       for (const token of Object.values(evmTokenMetadataByAddress)) {
@@ -342,7 +309,6 @@ export function AssetPickerModal({
       selectedNetwork?.chainId,
       multichainTokensWithBalance,
       allDetectedTokens,
-      topTokens,
       evmTokenMetadataByAddress,
     ],
   );
@@ -381,7 +347,9 @@ export function AssetPickerModal({
         : selectedNetwork?.chainId === tokenChainId;
 
       return Boolean(
-        isTokenInSelectedChain &&
+        tokenChainId &&
+          isEvmChainId(tokenChainId as CaipChainId | Hex) &&
+          isTokenInSelectedChain &&
           isMatchedBySearchQuery &&
           !filteredTokensAddresses.has(getTokenKey(address, tokenChainId)),
       );
@@ -402,20 +370,15 @@ export function AssetPickerModal({
 
       const tokenWithBalanceData =
         !customTokenListGenerator && isStrictHexString(token.address)
-          ? getRenderableTokenData(
-              token.address
-                ? ({
-                    ...token,
-                    ...evmTokenMetadataByAddress[token.address.toLowerCase()],
-                    type: AssetType.token,
-                  } as AssetWithDisplayData<ERC20Asset>)
-                : token,
-              tokenConversionRates,
-              conversionRate,
-              currentCurrency,
-              token.chainId,
-              evmTokenMetadataByAddress,
-            )
+          ? ({
+              ...evmTokenMetadataByAddress[token.address.toLowerCase()],
+              ...token,
+              type: AssetType.token,
+              name:
+                token.name ??
+                evmTokenMetadataByAddress[token.address.toLowerCase()]?.name,
+              image: token.image ?? token.iconUrl,
+            } as AssetWithDisplayData<ERC20Asset>)
           : (token as unknown as AssetWithDisplayData<ERC20Asset>);
 
       // Add selected asset to the top of the list if it is the selected asset
@@ -444,9 +407,6 @@ export function AssetPickerModal({
     tokenListGenerator,
     action,
     evmTokenMetadataByAddress,
-    tokenConversionRates,
-    conversionRate,
-    currentCurrency,
     asset,
   ]);
 

@@ -1,4 +1,4 @@
-import { SolScope, BtcScope, EthScope } from '@metamask/keyring-api';
+import { EthScope } from '@metamask/keyring-api';
 import {
   toEvmCaipChainId,
   type MultichainNetworkConfiguration,
@@ -167,23 +167,14 @@ describe('network utils', () => {
     });
 
     it('throws an error given a CAIP chain ID with an unsupported namespace', () => {
-      expect(() => convertCaipToHexChainId(BtcScope.Mainnet)).toThrow(
-        'Unsupported CAIP chain ID namespace: bip122. Only eip155 is supported.',
-      );
-      expect(() => convertCaipToHexChainId(SolScope.Mainnet)).toThrow(
-        'Unsupported CAIP chain ID namespace: solana. Only eip155 is supported.',
+      expect(() => convertCaipToHexChainId('unsupported:1')).toThrow(
+        'Unsupported CAIP chain ID namespace: unsupported. Only eip155 is supported.',
       );
     });
   });
 
   describe('sortNetworks', () => {
     const networks: Record<CaipChainId, MultichainNetworkConfiguration> = {
-      [SolScope.Mainnet]: {
-        chainId: SolScope.Mainnet,
-        name: 'Solana',
-        nativeCurrency: `${SolScope.Mainnet}/slip44:501`,
-        isEvm: false,
-      },
       [EthScope.Mainnet]: {
         chainId: EthScope.Mainnet,
         name: MAINNET_DISPLAY_NAME,
@@ -200,35 +191,15 @@ describe('network utils', () => {
         defaultBlockExplorerUrlIndex: 0,
         isEvm: true,
       },
-      [BtcScope.Mainnet]: {
-        chainId: BtcScope.Mainnet,
-        name: 'Bitcoin',
-        nativeCurrency: `${BtcScope.Mainnet}/slip44:0`,
-        isEvm: false,
-      },
     };
 
     it('sorts a list of networks based on the order of their chain IDs', () => {
       expect(
         sortNetworks(networks, [
-          { networkId: SolScope.Mainnet },
-          { networkId: BtcScope.Mainnet },
           { networkId: EthScope.Mainnet },
           { networkId: EthScope.Testnet },
         ]),
       ).toStrictEqual([
-        {
-          chainId: SolScope.Mainnet,
-          name: 'Solana',
-          nativeCurrency: `${SolScope.Mainnet}/slip44:501`,
-          isEvm: false,
-        },
-        {
-          chainId: BtcScope.Mainnet,
-          name: 'Bitcoin',
-          nativeCurrency: `${BtcScope.Mainnet}/slip44:0`,
-          isEvm: false,
-        },
         {
           chainId: EthScope.Mainnet,
           name: MAINNET_DISPLAY_NAME,
@@ -270,18 +241,6 @@ describe('network utils', () => {
           blockExplorerUrls: ['https://sepolia.etherscan.io'],
           defaultBlockExplorerUrlIndex: 0,
           isEvm: true,
-        },
-        {
-          chainId: SolScope.Mainnet,
-          name: 'Solana',
-          nativeCurrency: `${SolScope.Mainnet}/slip44:501`,
-          isEvm: false,
-        },
-        {
-          chainId: BtcScope.Mainnet,
-          name: 'Bitcoin',
-          nativeCurrency: `${BtcScope.Mainnet}/slip44:0`,
-          isEvm: false,
         },
       ]);
     });

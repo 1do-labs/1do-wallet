@@ -12,13 +12,7 @@ import {
   METAMASK_STALELIST_FILE,
   METAMASK_HOTLIST_DIFF_FILE,
 } from '@metamask/phishing-controller';
-import {
-  BtcAccountType,
-  BtcMethod,
-  BtcScope,
-  EthAccountType,
-  SolAccountType,
-} from '@metamask/keyring-api';
+import { EthAccountType } from '@metamask/keyring-api';
 import { MOCK_ANY_NAMESPACE, Messenger } from '@metamask/messenger';
 import { LoggingController, LogType } from '@metamask/logging-controller';
 import {
@@ -38,7 +32,6 @@ import {
   getEthAccounts,
 } from '@metamask/chain-agnostic-permission';
 import { PermissionDoesNotExistError } from '@metamask/permission-controller';
-import log from 'loglevel';
 import browser from 'webextension-polyfill';
 import { JsonRpcEngine } from '@metamask/json-rpc-engine';
 import { errorCodes } from '@metamask/rpc-errors';
@@ -79,7 +72,6 @@ import {
   PHISHING_SAFELIST,
 } from './constants/stream';
 import { getAuthorizedScopesByOrigin } from './controllers/permissions';
-import { forwardRequestToSnap } from './lib/forwardRequestToSnap';
 import MetaMaskController from './metamask-controller';
 
 // Opt out of the global `isAssetsUnifyStateFeatureEnabled` mock (see test/jest/setup.js)
@@ -342,10 +334,6 @@ jest.mock('../../shared/lib/selectors/smart-transactions', () => {
   };
 });
 
-jest.mock('./lib/forwardRequestToSnap', () => ({
-  forwardRequestToSnap: jest.fn().mockResolvedValue({}),
-}));
-
 const TEST_SEED =
   'debris dizzy just program just float decrease vacant alarm reduce speak stadium';
 const TEST_ADDRESS = '0x0dcd5d886577d5081b0c52e242ef29e70be3e7bc';
@@ -601,11 +589,6 @@ describe('MetaMaskController', () => {
         metamaskController.multichainAccountService,
         'createMultichainAccountWallet',
       );
-
-      jest.spyOn(
-        metamaskController.seedlessOnboardingController,
-        'authenticate',
-      );
     });
 
     describe('should reset states on first time profile load', () => {
@@ -696,11 +679,6 @@ describe('MetaMaskController', () => {
             unifyMetamaskController.multichainAccountService,
             'createMultichainAccountWallet',
           );
-          jest.spyOn(
-            unifyMetamaskController.seedlessOnboardingController,
-            'authenticate',
-          );
-
           jest
             .spyOn(
               unifyMetamaskController.accountsController,
@@ -1635,7 +1613,6 @@ describe('MetaMaskController', () => {
         jest
           .mocked(environment.getEnabledAdvancedPermissions)
           .mockReturnValue(['erc20-token-revocation']);
-        jest.mocked(forwardRequestToSnap).mockResolvedValue({});
       });
 
       /**
@@ -1656,37 +1633,20 @@ describe('MetaMaskController', () => {
         return await engine.handle(request);
       }
 
-      const createWalletRequestExecutionPermissionsParamsForChains = (
-        chainIds,
-      ) => {
-        return chainIds.map((chainId) => ({
-          chainId,
-          to: '0x0000000000000000000000000000000000000000',
-          permission: {
-            type: 'erc20-token-revocation',
-            data: {
-              justification: 'A test permission request',
+      it('rejects because execution permissions are disabled in this build', async () => {
+        const params = [
+          {
+            chainId: '0x1',
+            to: '0x0000000000000000000000000000000000000000',
+            permission: {
+              type: 'erc20-token-revocation',
+              data: {
+                justification: 'A test permission request',
+              },
+              isAdjustmentAllowed: true,
             },
-            isAdjustmentAllowed: true,
           },
-        }));
-      };
-
-      it('rejects when a requested chain is not in EIP-7702 supportedChains', async () => {
-        jest
-          .spyOn(metamaskController.remoteFeatureFlagController, 'state', 'get')
-          .mockReturnValue({
-            remoteFeatureFlags: {
-              confirmations_eip_7702: {
-                supportedChains: ['0x1', '0x5'],
-              },
-            },
-            cacheTimestamp: 0,
-          });
-
-        const params = createWalletRequestExecutionPermissionsParamsForChains([
-          '0x99',
-        ]);
+        ];
         const response = await requestExecutionPermissions(params);
 
         expect(response.error).toBeDefined();
@@ -1694,76 +1654,8 @@ describe('MetaMaskController', () => {
           errorCodes.rpc.methodNotSupported,
         );
         expect(response.error.message).toMatch(
-          /wallet_requestExecutionPermissions is not supported on chains '0x99'/u,
+          /wallet_requestExecutionPermissions is not supported/u,
         );
-      });
-
-      it('rejects when any of multiple requested chains are unsupported', async () => {
-        jest
-          .spyOn(metamaskController.remoteFeatureFlagController, 'state', 'get')
-          .mockReturnValue({
-            remoteFeatureFlags: {
-              confirmations_eip_7702: {
-                supportedChains: ['0x1'],
-              },
-            },
-            cacheTimestamp: 0,
-          });
-
-        const params = createWalletRequestExecutionPermissionsParamsForChains([
-          '0x1',
-          '0x5',
-        ]);
-        const response = await requestExecutionPermissions(params);
-
-        expect(response.error).toBeDefined();
-        expect(response.error.code).toStrictEqual(
-          errorCodes.rpc.methodNotSupported,
-        );
-        expect(response.error.message).toMatch(
-          /wallet_requestExecutionPermissions is not supported on chains .*0x5/u,
-        );
-      });
-
-      it('does not reject when all requested chains are supported', async () => {
-        jest
-          .spyOn(metamaskController.remoteFeatureFlagController, 'state', 'get')
-          .mockReturnValue({
-            remoteFeatureFlags: {
-              confirmations_eip_7702: {
-                supportedChains: ['0x1', '0x5', '0x539'],
-              },
-            },
-            cacheTimestamp: 0,
-          });
-
-        const params = createWalletRequestExecutionPermissionsParamsForChains([
-          '0x1',
-          '0x539',
-        ]);
-        const response = await requestExecutionPermissions(params);
-
-        expect(response.error).toBeUndefined();
-      });
-
-      it('does not reject when chainId matches supported chain (case-insensitive)', async () => {
-        jest
-          .spyOn(metamaskController.remoteFeatureFlagController, 'state', 'get')
-          .mockReturnValue({
-            remoteFeatureFlags: {
-              confirmations_eip_7702: {
-                supportedChains: ['0xaa'],
-              },
-            },
-            cacheTimestamp: 0,
-          });
-
-        const params = createWalletRequestExecutionPermissionsParamsForChains([
-          '0xAA',
-        ]);
-        const response = await requestExecutionPermissions(params);
-
-        expect(response.error).toBeUndefined();
       });
     });
 
@@ -1801,113 +1693,16 @@ describe('MetaMaskController', () => {
         return await engine.handle(request);
       }
 
-      it('returns an empty object when the permissions kernel returns null', async () => {
-        jest.mocked(forwardRequestToSnap).mockResolvedValue(null);
-
+      it('rejects because execution permissions are disabled in this build', async () => {
         const response = await getSupportedExecutionPermissions();
 
-        expect(response.error).toBeUndefined();
-        expect(response.result).toStrictEqual({});
-      });
-
-      it('returns an empty object when the permissions kernel returns undefined', async () => {
-        jest.mocked(forwardRequestToSnap).mockResolvedValue(undefined);
-
-        const response = await getSupportedExecutionPermissions();
-
-        expect(response.error).toBeUndefined();
-        expect(response.result).toStrictEqual({});
-      });
-
-      it('omits permission types that are not enabled in the environment', async () => {
-        jest.mocked(forwardRequestToSnap).mockResolvedValue({
-          'erc20-token-revocation': {
-            ruleTypes: ['a'],
-          },
-          'some-other-permission': {
-            ruleTypes: ['b'],
-          },
-        });
-
-        const response = await getSupportedExecutionPermissions();
-
-        expect(response.result).toStrictEqual({
-          'erc20-token-revocation': {
-            ruleTypes: ['a'],
-            chainIds: ['0x1', '0x5'],
-          },
-        });
-      });
-
-      it('fills chainIds from EIP-7702 supported chains when the kernel omits chainIds', async () => {
-        jest.mocked(forwardRequestToSnap).mockResolvedValue({
-          'erc20-token-revocation': {
-            ruleTypes: ['revoke'],
-          },
-        });
-
-        const response = await getSupportedExecutionPermissions();
-
-        expect(response.result).toStrictEqual({
-          'erc20-token-revocation': {
-            ruleTypes: ['revoke'],
-            chainIds: ['0x1', '0x5'],
-          },
-        });
-      });
-
-      it('lowercases and filters kernel chainIds to EIP-7702 supported chains', async () => {
-        jest.mocked(forwardRequestToSnap).mockResolvedValue({
-          'erc20-token-revocation': {
-            ruleTypes: ['revoke'],
-            chainIds: ['0x1', '0X5', '0x99', '0xAA'],
-          },
-        });
-
-        const response = await getSupportedExecutionPermissions();
-
-        expect(response.result).toStrictEqual({
-          'erc20-token-revocation': {
-            ruleTypes: ['revoke'],
-            chainIds: ['0x1', '0x5'],
-          },
-        });
-      });
-
-      it('keeps chainIds empty when the kernel sends an empty chainIds array', async () => {
-        jest.mocked(forwardRequestToSnap).mockResolvedValue({
-          'erc20-token-revocation': {
-            ruleTypes: ['revoke'],
-            chainIds: [],
-          },
-        });
-
-        const response = await getSupportedExecutionPermissions();
-
-        expect(response.result).toStrictEqual({
-          'erc20-token-revocation': {
-            ruleTypes: ['revoke'],
-            chainIds: [],
-          },
-        });
-      });
-
-      it('uses EIP-7702 supported chains when kernel chainIds is null', async () => {
-        jest.mocked(forwardRequestToSnap).mockResolvedValue({
-          'erc20-token-revocation': {
-            ruleTypes: ['revoke'],
-            chainIds: null,
-          },
-        });
-
-        const response = await getSupportedExecutionPermissions();
-
-        expect(response.result).toStrictEqual({
-          'erc20-token-revocation': {
-            ruleTypes: ['revoke'],
-            chainIds: ['0x1', '0x5'],
-          },
-        });
+        expect(response.error).toBeDefined();
+        expect(response.error.code).toStrictEqual(
+          errorCodes.rpc.methodNotSupported,
+        );
+        expect(response.error.message).toMatch(
+          /wallet_getSupportedExecutionPermissions is not supported/u,
+        );
       });
     });
 
@@ -2220,22 +2015,22 @@ describe('MetaMaskController', () => {
             'group-4': { accounts: ['id-4', 'id-4-evm'] },
           },
           accountIdToAccount: {
-            'id-1': { type: 'solana:data-account' },
+            'id-1': { type: 'unknown:data-account' },
             'id-1-evm': {
               type: EVM_EOA_TYPE,
               metadata: { lastSelected: 1 },
             },
-            'id-2': { type: 'solana:data-account' },
+            'id-2': { type: 'unknown:data-account' },
             'id-2-evm': {
               type: EVM_EOA_TYPE,
               metadata: { lastSelected: undefined },
             },
-            'id-3': { type: 'solana:data-account' },
+            'id-3': { type: 'unknown:data-account' },
             'id-3-evm': {
               type: EVM_EOA_TYPE,
               metadata: { lastSelected: 3 },
             },
-            'id-4': { type: 'solana:data-account' },
+            'id-4': { type: 'unknown:data-account' },
             'id-4-evm': {
               type: EVM_EOA_TYPE,
               metadata: { lastSelected: 3 },
@@ -2266,7 +2061,7 @@ describe('MetaMaskController', () => {
             'group-1': { accounts: ['id-1', 'id-1-evm'] },
           },
           accountIdToAccount: {
-            'id-1': { type: 'solana:data-account' },
+            'id-1': { type: 'unknown:data-account' },
             'id-1-evm': {
               type: EVM_EOA_TYPE,
               metadata: { lastSelected: 5 },
@@ -2296,7 +2091,7 @@ describe('MetaMaskController', () => {
             'group-1': { accounts: ['id-1', 'id-1-evm'] },
           },
           accountIdToAccount: {
-            'id-1': { type: 'solana:data-account' },
+            'id-1': { type: 'unknown:data-account' },
             'id-1-evm': {
               type: EVM_EOA_TYPE,
               metadata: { lastSelected: 10 },
@@ -2489,8 +2284,8 @@ describe('MetaMaskController', () => {
           );
 
           expect(
-            // 0: HD keyring, 1: Snap keyring, 2: Trezor keyring
-            metamaskController.keyringController.state.keyrings[2].type,
+            // 0: HD keyring, 1: Trezor keyring
+            metamaskController.keyringController.state.keyrings[1].type,
           ).toBe(TrezorKeyring.type);
           expect(firstPage).toStrictEqual(KNOWN_PUBLIC_KEY_ADDRESSES);
         });
@@ -2502,8 +2297,8 @@ describe('MetaMaskController', () => {
           );
 
           expect(
-            // 0: HD keyring, 1: Snap keyring, 2: Ledger keyring
-            metamaskController.keyringController.state.keyrings[2].type,
+            // 0: HD keyring, 1: Ledger keyring
+            metamaskController.keyringController.state.keyrings[1].type,
           ).toBe(LedgerKeyring.type);
           expect(firstPage).toStrictEqual(KNOWN_PUBLIC_KEY_ADDRESSES);
         });
@@ -2670,8 +2465,8 @@ describe('MetaMaskController', () => {
                 );
 
                 expect(
-                  // 0: HD keyring, 1: Snap keyring, 2: Ledger/Trezor keyring
-                  metamaskController.keyringController.state.keyrings[2]
+                  // 0: HD keyring, 1: Ledger/Trezor keyring
+                  metamaskController.keyringController.state.keyrings[1]
                     .accounts,
                 ).toStrictEqual([
                   KNOWN_PUBLIC_KEY_ADDRESSES[
@@ -4348,11 +4143,11 @@ describe('MetaMaskController', () => {
       const mockEvmAccount = createMockInternalAccount();
       const mockNonEvmAccount = {
         ...mockEvmAccount,
-        scopes: [BtcScope.Mainnet],
+        scopes: ['unsupported:chain'],
         id: '21690786-6abd-45d8-a9f0-9ff1d8ca76a1',
-        type: BtcAccountType.P2wpkh,
-        methods: [BtcMethod.SendBitcoin],
-        address: 'bc1qar0srrr7xfkvy5l643lydnw9re59gtzzwf5mdq',
+        type: 'unsupported:account',
+        methods: [],
+        address: 'unsupported-account-address',
       };
       const mockCurrency = 'CAD';
 
@@ -4684,12 +4479,12 @@ describe('MetaMaskController', () => {
         const currentKeyrings =
           metamaskController.keyringController.state.keyrings;
 
-        // 0: Primary HD keyring, 1: Snap keyring, 2: Newly imported HD keyring
+        // 0: Primary HD keyring, 1: Newly imported HD keyring
         expect(
           metamaskController.keyringController.state.keyrings,
-        ).toHaveLength(3);
+        ).toHaveLength(2);
         const newlyAddedKeyringId =
-          metamaskController.keyringController.state.keyrings[2].metadata.id;
+          metamaskController.keyringController.state.keyrings[1].metadata.id;
         const newSRP = Buffer.from(
           await metamaskController.getSeedPhrase(password, newlyAddedKeyringId),
         ).toString('utf8');
@@ -4697,9 +4492,6 @@ describe('MetaMaskController', () => {
         expect(
           currentKeyrings.filter((kr) => kr.type === 'HD Key Tree'),
         ).toHaveLength(2);
-        expect(
-          currentKeyrings.filter((kr) => kr.type === 'Snap Keyring'),
-        ).toHaveLength(1);
         expect(currentKeyrings).toHaveLength(previousKeyrings.length + 1);
         expect(newSRP).toStrictEqual(TEST_SEED_ALT);
       });
@@ -5922,90 +5714,36 @@ describe('MetaMaskController', () => {
         }),
       });
 
-      // Avoid KC.addNewKeyring side-effects and AccountTracker sync touching NetworkController
-      jest.spyOn(metamaskController, 'getSnapKeyring').mockResolvedValue({
-        // Now required, since it's invoked automatically when new account groups get added.
-        setSelectedAccounts: jest.fn(),
-      });
-
       await metamaskController.createNewVaultAndRestore(password, TEST_SEED);
     });
 
-    it('uses first HD keyring id when none provided and returns counts', async () => {
-      const primaryId =
-        metamaskController.keyringController.state.keyrings[0].metadata.id;
-
-      const wallet = {
-        discoverAccounts: jest
-          .fn()
-          .mockResolvedValue([
-            { type: SolAccountType.DataAccount },
-            { type: EthAccountType.Eoa },
-          ]),
-      };
-
-      const getMultichainAccountWalletSpy = jest.spyOn(
-        metamaskController.multichainAccountService,
-        'getMultichainAccountWallet',
-      );
-      getMultichainAccountWalletSpy.mockReturnValue(wallet);
-
+    it('returns no discovered non-EVM accounts', async () => {
       const result = await metamaskController.discoverAndCreateAccounts();
 
-      expect(getMultichainAccountWalletSpy).toHaveBeenCalledWith({
-        entropySource: primaryId,
-      });
-      expect(wallet.discoverAccounts).toHaveBeenCalledTimes(1);
-      expect(result).toStrictEqual({ Bitcoin: 0, Solana: 1, Tron: 0 });
+      expect(result).toStrictEqual({});
     });
 
-    it('passes provided keyring id to wallet getter', async () => {
+    it('ignores a provided keyring id', async () => {
       const providedId = 'test-keyring-id';
-
-      const wallet = {
-        discoverAccounts: jest
-          .fn()
-          .mockResolvedValue([
-            { type: SolAccountType.DataAccount },
-            { type: EthAccountType.Eoa },
-          ]),
-      };
-
-      const getMultichainAccountWalletSpy = jest.spyOn(
-        metamaskController.multichainAccountService,
-        'getMultichainAccountWallet',
-      );
-      getMultichainAccountWalletSpy.mockReturnValue(wallet);
 
       const result =
         await metamaskController.discoverAndCreateAccounts(providedId);
 
-      expect(getMultichainAccountWalletSpy).toHaveBeenCalledWith({
-        entropySource: providedId,
-      });
-
-      expect(result).toStrictEqual({ Bitcoin: 0, Solana: 1, Tron: 0 });
+      expect(result).toStrictEqual({});
     });
 
-    it('returns zero counts and warns when no HD keyring can be derived (no keyring id provided or HD keyring found)', async () => {
+    it('returns no discovered accounts when no HD keyring can be derived', async () => {
       const originalState = metamaskController.keyringController.state;
       jest
         .spyOn(metamaskController.keyringController, 'state', 'get')
         .mockReturnValue({ ...originalState, keyrings: [] });
 
-      const warnSpy = jest.spyOn(log, 'warn');
-
       const result = await metamaskController.discoverAndCreateAccounts();
 
-      expect(result).toStrictEqual({ Bitcoin: 0, Solana: 0, Tron: 0 });
-      expect(warnSpy).toHaveBeenCalledWith(
-        'Failed to add accounts with balance. Error: No keyring id to discover accounts for',
-      );
-
-      warnSpy.mockRestore();
+      expect(result).toStrictEqual({});
     });
 
-    it('returns zero counts on discovery error', async () => {
+    it('returns no discovered accounts on discovery error', async () => {
       const wallet = {
         discoverAccounts: jest.fn().mockRejectedValue(new Error('boom')),
       };
@@ -6020,15 +5758,8 @@ describe('MetaMaskController', () => {
       );
       getMultichainAccountWalletSpy.mockReturnValue(wallet);
 
-      const warnSpy = jest.spyOn(log, 'warn');
-
       const result = await metamaskController.discoverAndCreateAccounts();
-      expect(result).toStrictEqual({ Bitcoin: 0, Solana: 0, Tron: 0 });
-      expect(warnSpy).toHaveBeenCalledWith(
-        'Failed to add accounts with balance. Error: boom',
-      );
-
-      warnSpy.mockRestore();
+      expect(result).toStrictEqual({});
     });
   });
 
@@ -6081,6 +5812,9 @@ describe('MetaMaskController', () => {
       jest
         .spyOn(metamaskController.tokenDetectionController, 'detectTokens')
         .mockResolvedValue(undefined);
+      jest
+        .spyOn(metamaskController.accountTreeController, 'reinit')
+        .mockImplementation(noop);
 
       await metamaskController.createNewVaultAndRestore(password, TEST_SEED);
     });
@@ -6169,16 +5903,10 @@ describe('MetaMaskController', () => {
         }),
       });
 
-      // Avoid KC.addNewKeyring side-effects and AccountTracker sync touching NetworkController
-      jest.spyOn(metamaskController, 'getSnapKeyring').mockResolvedValue({
-        // Now required, since it's invoked automatically when new account groups get added.
-        setSelectedAccounts: jest.fn(),
-      });
-
       await metamaskController.createNewVaultAndRestore('foo', TEST_SEED);
     });
 
-    it('calls getSnapKeyring, syncWithUserStorageAtLeastOnce, and discoverAndCreateAccounts for each HD keyring', async () => {
+    it('calls syncWithUserStorageAtLeastOnce and discoverAndCreateAccounts for each HD keyring', async () => {
       jest
         .spyOn(
           metamaskController.accountTreeController,

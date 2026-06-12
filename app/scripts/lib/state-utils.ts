@@ -1,5 +1,4 @@
-import { SnapControllerState } from '@metamask/snaps-controllers';
-import { Snap } from '@metamask/snaps-utils';
+import type { AuthenticationControllerState } from '@metamask/profile-sync-controller/auth';
 import { Patch } from 'immer';
 import { cloneDeep } from 'lodash';
 import { Json } from '@metamask/utils';
@@ -7,6 +6,18 @@ import { Json } from '@metamask/utils';
 // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31973
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type FlattenedUIState = Record<string, any>;
+
+type SeedlessNodeAuthToken = {
+  authToken?: string;
+  nodeIndex: number;
+  nodePubKey: string;
+};
+
+type SeedlessSocialBackupMetadata = {
+  hash?: string;
+  type: string;
+  keyringId: string;
+};
 
 /*
  * Top-level state keys to not send to UI.
@@ -36,10 +47,6 @@ const REMOVE_KEYS = [
   'vaultEncryptionKey',
   'vaultEncryptionSalt',
   'pendingToBeRevokedTokens',
-
-  // SnapController
-  'snapStates',
-  'unencryptedSnapStates',
 ];
 
 /*
@@ -50,7 +57,6 @@ const REMOVE_KEYS = [
  */
 const REMOVE_PATHS: (string | true)[][] = [
   ['nodeAuthTokens', true, 'authToken'],
-  ['snaps', true, 'auxiliaryFiles'],
   ['socialBackupsMetadata', true, 'hash'],
   ['srpSessionData', true, 'token', 'accessToken'],
 ];
@@ -78,35 +84,10 @@ export function sanitizeUIState(state: FlattenedUIState): FlattenedUIState {
     delete newState[key];
   }
 
-  sanitizeSnapData(newState);
+  sanitizeAuthenticationControllerState(newState);
+  sanitizeSeedlessOnboardingControllerState(newState);
 
   return newState;
-}
-
-function sanitizeSnapData(state: FlattenedUIState) {
-  const snapsData = state.snaps as SnapControllerState['snaps'] | undefined;
-
-  if (!snapsData) {
-    return;
-  }
-
-  state.snaps = Object.values(snapsData).reduce(
-    (acc, snap) => {
-      acc[snap.id] = stripLargeSnapData(snap) as Snap;
-      return acc;
-    },
-    {} as SnapControllerState['snaps'],
-  );
-}
-
-function stripLargeSnapData(snapData: Snap): Partial<Snap> {
-  const newData: Partial<Snap> = {
-    ...snapData,
-  };
-
-  delete newData.auxiliaryFiles;
-
-  return newData;
 }
 
 function sanitizeAuthenticationControllerState(state: FlattenedUIState) {
@@ -137,8 +118,9 @@ function sanitizeAuthenticationControllerState(state: FlattenedUIState) {
 
 function sanitizeSeedlessOnboardingControllerState(state: FlattenedUIState) {
   // Manually sanitize the nodeAuthTokens.
-  const nodeAuthTokens =
-    state.nodeAuthTokens as SeedlessOnboardingControllerState['nodeAuthTokens'];
+  const nodeAuthTokens = state.nodeAuthTokens as
+    | SeedlessNodeAuthToken[]
+    | undefined;
 
   if (nodeAuthTokens) {
     state.nodeAuthTokens = nodeAuthTokens.map((token) => {
@@ -152,8 +134,9 @@ function sanitizeSeedlessOnboardingControllerState(state: FlattenedUIState) {
   }
 
   // Manually sanitize the socialBackupsMetadata.
-  const socialBackupsMetadata =
-    state.socialBackupsMetadata as SeedlessOnboardingControllerState['socialBackupsMetadata'];
+  const socialBackupsMetadata = state.socialBackupsMetadata as
+    | SeedlessSocialBackupMetadata[]
+    | undefined;
 
   if (socialBackupsMetadata) {
     state.socialBackupsMetadata = socialBackupsMetadata.map((backup) => {

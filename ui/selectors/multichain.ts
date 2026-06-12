@@ -5,7 +5,6 @@ import type {
   RatesControllerState,
 } from '@metamask/assets-controllers';
 import { InternalAccount } from '@metamask/keyring-internal-api';
-import { MultichainTransactionsControllerState } from '@metamask/multichain-transactions-controller';
 import { NetworkConfiguration } from '@metamask/network-controller';
 import { CaipChainId, Hex } from '@metamask/utils';
 import PropTypes from 'prop-types';
@@ -63,14 +62,9 @@ type BalancesState = {
   metamask: MultichainBalancesControllerState;
 };
 
-type TransactionsState = {
-  metamask: MultichainTransactionsControllerState;
-};
-
 export type MultichainState = AccountsState &
   RatesState &
   BalancesState &
-  TransactionsState &
   NetworkState &
   AssetsRatesState &
   AssetsState &
@@ -109,38 +103,12 @@ export const InternalAccountPropType = PropTypes.shape({
   address: PropTypes.string.isRequired,
   metadata: PropTypes.shape({
     name: PropTypes.string.isRequired,
-    snap: PropTypes.shape({
-      id: PropTypes.string.isRequired,
-      name: PropTypes.string,
-      enabled: PropTypes.bool,
-    }),
     keyring: PropTypes.shape({
       type: PropTypes.string.isRequired,
     }).isRequired,
   }).isRequired,
   type: PropTypes.string.isRequired,
 });
-
-export function getMultichainIsBitcoin(
-  _state: MultichainState,
-  _account?: InternalAccount,
-) {
-  return false;
-}
-
-export function getMultichainIsSolana(
-  _state: MultichainState,
-  _account?: InternalAccount,
-) {
-  return false;
-}
-
-export function getMultichainIsTron(
-  _state: MultichainState,
-  _account?: InternalAccount,
-) {
-  return false;
-}
 
 /**
  * Retrieves the provider configuration for a multichain network.
@@ -280,7 +248,3 @@ export const getMemoizedMultichainNetworkConfigurationsByChainId =
     [getMultichainNetworkConfigurationsByChainId],
     (networkConfigurations) => networkConfigurations,
   );
-
-export const getLastSelectedNonEvmAccount = () => undefined;
-
-export const getLastSelectedSolanaAccount = () => undefined;

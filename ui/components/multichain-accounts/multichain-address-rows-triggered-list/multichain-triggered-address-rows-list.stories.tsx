@@ -67,7 +67,6 @@ const createMockState = () => ({
     remoteFeatureFlags: {
       ...mockState.metamask.remoteFeatureFlags,
       solanaAccounts: { enabled: false, minimumVersion: '13.6.0' },
-      bitcoinAccounts: { enabled: false, minimumVersion: '13.6.0' },
     },
     accountTree: {
       wallets: {
@@ -348,34 +347,6 @@ export const MultiChainSingleAccount: Story = {
       const state = createMockState();
       state.metamask.accountTree.wallets[WALLET_ID].groups[GROUP_ID].accounts =
         [accounts.multiChainAccount.id];
-      return (
-        <Provider store={mockStore(state)}>
-          <div style={{ width: '400px', padding: '16px' }}>
-            <Story />
-          </div>
-        </Provider>
-      );
-    },
-  ],
-};
-
-export const NonEvmOnly: Story = {
-  args: {
-    groupId: GROUP_ID,
-    children: <button>Hover to see non-EVM networks</button>,
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: 'Shows only non-EVM networks (Bitcoin and Solana)',
-      },
-    },
-  },
-  decorators: [
-    (Story) => {
-      const state = createMockState();
-      state.metamask.accountTree.wallets[WALLET_ID].groups[GROUP_ID].accounts =
-        [accounts.bitcoin.id, accounts.solana.id];
       return (
         <Provider store={mockStore(state)}>
           <div style={{ width: '400px', padding: '16px' }}>

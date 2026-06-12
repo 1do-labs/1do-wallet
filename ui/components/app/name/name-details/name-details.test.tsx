@@ -45,7 +45,7 @@ const CHAIN_ID_MOCK = '0x1';
 const SAVED_NAME_MOCK = 'TestName';
 const SAVED_NAME_2_MOCK = 'TestName2';
 const SOURCE_ID_MOCK = 'ens';
-const SOURCE_ID_2_MOCK = 'some_snap';
+const SOURCE_ID_2_MOCK = 'custom_source';
 const PROPOSED_NAME_MOCK = 'TestProposedName';
 const PROPOSED_NAME_2_MOCK = 'TestProposedName2';
 const VARIATION_MOCK = CHAIN_ID_MOCK;
@@ -54,7 +54,7 @@ const STATE_MOCK = {
   metamask: {
     ...mockNetworkState({ chainId: CHAIN_IDS.MAINNET }),
     nameSources: {
-      [SOURCE_ID_2_MOCK]: { label: 'Super Name Resolution Snap' },
+      [SOURCE_ID_2_MOCK]: { label: 'Custom Name Resolution Source' },
     },
     names: {
       [NameType.ETHEREUM_ADDRESS]: {
@@ -234,7 +234,7 @@ describe('NameDetails', () => {
         ];
       } else if (selector === getNameSources) {
         return {
-          [SOURCE_ID_2_MOCK]: { label: 'Super Name Resolution Snap' },
+          [SOURCE_ID_2_MOCK]: { label: 'Custom Name Resolution Source' },
         };
       }
       return undefined;
@@ -277,7 +277,7 @@ describe('NameDetails', () => {
         ];
       } else if (selector === getNameSources) {
         return {
-          [SOURCE_ID_2_MOCK]: { label: 'Super Name Resolution Snap' },
+          [SOURCE_ID_2_MOCK]: { label: 'Custom Name Resolution Source' },
         };
       }
       return undefined;
@@ -682,7 +682,7 @@ describe('NameDetails', () => {
           ];
         } else if (selector === getNameSources) {
           return {
-            [SOURCE_ID_2_MOCK]: { label: 'Super Name Resolution Snap' },
+            [SOURCE_ID_2_MOCK]: { label: 'Custom Name Resolution Source' },
           };
         }
         return undefined;
@@ -792,7 +792,7 @@ describe('NameDetails', () => {
           ];
         } else if (selector === getNameSources) {
           return {
-            [SOURCE_ID_2_MOCK]: { label: 'Super Name Resolution Snap' },
+            [SOURCE_ID_2_MOCK]: { label: 'Custom Name Resolution Source' },
           };
         }
         return undefined;
@@ -909,7 +909,7 @@ describe('NameDetails', () => {
           ];
         } else if (selector === getNameSources) {
           return {
-            [SOURCE_ID_2_MOCK]: { label: 'Super Name Resolution Snap' },
+            [SOURCE_ID_2_MOCK]: { label: 'Custom Name Resolution Source' },
           };
         }
         return undefined;

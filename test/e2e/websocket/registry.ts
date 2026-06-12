@@ -67,7 +67,7 @@ class WebSocketRegistry {
    * Start all registered servers and run their setup functions.
    *
    * @param overrides - Per-service mock overrides and options, keyed by service name.
-   * Example: `{ solana: { mocks: [...] }, accountActivity: { mocks: [...], options: { chainsUp: [...] } } }`
+   * Example: `{ accountActivity: { mocks: [...], options: { chainsUp: [...] } } }`
    */
   static async startAll(
     overrides: Record<

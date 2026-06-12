@@ -1,21 +1,13 @@
 import type { JsonRpcRequest } from '@metamask/utils';
-import { isSnapPreinstalled } from '../../../shared/lib/snaps/snaps';
 import createRpcBlockingMiddleware, {
   createRpcBlockingCallbacks,
 } from './rpcBlockingMiddleware';
 
-jest.mock('../../../shared/lib/snaps/snaps', () => ({
-  isSnapPreinstalled: jest.fn(),
-}));
-
 describe('createRpcBlockingMiddleware', () => {
-  const isSnapPreinstalledMock = jest.mocked(isSnapPreinstalled);
   const res = { id: 1, jsonrpc: '2.0' } as const;
 
   beforeEach(() => {
     jest.resetAllMocks();
-
-    isSnapPreinstalledMock.mockReturnValue(false);
   });
 
   const createRequest = (origin = 'https://example.com') =>
@@ -36,7 +28,7 @@ describe('createRpcBlockingMiddleware', () => {
     expect(end).not.toHaveBeenCalled();
   });
 
-  it('ends with an error when blocked and origin is not a preinstalled snap', () => {
+  it('ends with an error when blocked and origin is not allowed', () => {
     const customMessage = 'Requests are temporarily blocked';
     const middleware = createRpcBlockingMiddleware({
       allowedOrigins: [],
@@ -55,23 +47,6 @@ describe('createRpcBlockingMiddleware', () => {
       customMessage,
     );
     expect(next).not.toHaveBeenCalled();
-  });
-
-  it('calls next when blocked but origin is a preinstalled snap', () => {
-    isSnapPreinstalledMock.mockReturnValue(true);
-
-    const middleware = createRpcBlockingMiddleware({
-      allowedOrigins: [],
-      state: { blockingSymbols: new Set([Symbol('rpc blocker')]) },
-    });
-
-    const req = createRequest('npm:example-snap');
-    const next = jest.fn();
-    const end = jest.fn();
-    middleware(req, res, next, end);
-
-    expect(next).toHaveBeenCalledTimes(1);
-    expect(end).not.toHaveBeenCalled();
   });
 
   it('calls next when blocked but origin is in allowedOrigins', () => {

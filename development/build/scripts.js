@@ -952,11 +952,7 @@ function setupBundlerDefaults(
             './**/node_modules/ox',
             './**/node_modules/uuid',
             './**/node_modules/isows',
-            // Snaps
-            './**/node_modules/@metamask/snaps-controllers',
-            './**/node_modules/@metamask/snaps-execution-environments',
-            './**/node_modules/@metamask/snaps-rpc-methods',
-            './**/node_modules/@metamask/snaps-sdk',
+            // Transitive controller dependency that still ships modern syntax.
             './**/node_modules/@metamask/snaps-utils',
             // Charting library (ESM-only)
             './**/node_modules/lightweight-charts',

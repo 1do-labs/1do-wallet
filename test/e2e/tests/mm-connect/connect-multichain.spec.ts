@@ -1,10 +1,8 @@
 import { Suite } from 'mocha';
 
 import {
-  DAPP_HOST_ADDRESS,
   DAPP_PATH,
   MM_CONNECT_EVM_CHAINS,
-  SOLANA_MAINNET_SCOPE,
   WINDOW_TITLES,
 } from '../../constants';
 import { withFixtures } from '../../helpers';
@@ -14,7 +12,6 @@ import { getPermissionsPageForHost } from '../../page-objects/flows/permissions.
 import { Driver } from '../../webdriver/driver';
 import ConnectAccountConfirmation from '../../page-objects/pages/confirmations/connect-account-confirmation';
 import Confirmation from '../../page-objects/pages/confirmations/confirmation';
-import SnapSignMessageConfirmation from '../../page-objects/pages/confirmations/snap-sign-message-confirmation';
 import { TestDappMmConnect as TestDapp } from '../../page-objects/pages/test-dapp-mm-connect';
 
 const MM_CONNECT_TEST_DAPP_OPTIONS = {
@@ -22,7 +19,7 @@ const MM_CONNECT_TEST_DAPP_OPTIONS = {
 };
 
 describe('MM Connect — Multichain E2E', function (this: Suite) {
-  it('connects to 3 EVM chains and Solana simultaneously and verifies all ScopeCards are active', async function () {
+  it('connects to 3 EVM chains and verifies all ScopeCards are active', async function () {
     await withFixtures(
       {
         fixtures: new FixtureBuilderV2().build(),
@@ -35,13 +32,10 @@ describe('MM Connect — Multichain E2E', function (this: Suite) {
         const testDapp = new TestDapp(driver);
         await testDapp.openPage();
 
-        // Include Solana in the multichain session request (not the
-        // wallet-standard adapter — just the Connect (Multichain) button).
         await testDapp.selectNetworks([
           MM_CONNECT_EVM_CHAINS.LOCALHOST,
           MM_CONNECT_EVM_CHAINS.POLYGON,
           MM_CONNECT_EVM_CHAINS.LINEA,
-          SOLANA_MAINNET_SCOPE,
         ]);
         await testDapp.clickConnect();
 
@@ -51,18 +45,17 @@ describe('MM Connect — Multichain E2E', function (this: Suite) {
         await confirmation.checkPageIsLoaded();
         await confirmation.confirmConnect();
 
-        // All 4 ScopeCards should now be visible (3 EVM + Solana Mainnet)
+        // All 3 EVM ScopeCards should now be visible
         await testDapp.switchTo();
         await testDapp.checkScopeCardVisible(MM_CONNECT_EVM_CHAINS.LOCALHOST);
         await testDapp.checkScopeCardVisible(MM_CONNECT_EVM_CHAINS.POLYGON);
         await testDapp.checkScopeCardVisible(MM_CONNECT_EVM_CHAINS.LINEA);
-        await testDapp.checkScopeCardVisible(SOLANA_MAINNET_SCOPE);
         await testDapp.checkConnectionStatus('connected');
       },
     );
   });
 
-  it('routes personal_sign requests to the correct chain and handles Solana signMessage', async function () {
+  it('routes personal_sign requests to the correct EVM chain', async function () {
     await withFixtures(
       {
         fixtures: new FixtureBuilderV2().build(),
@@ -75,12 +68,10 @@ describe('MM Connect — Multichain E2E', function (this: Suite) {
         const testDapp = new TestDapp(driver);
         await testDapp.openPage();
 
-        // Connect to 3 EVM chains + Solana
         await testDapp.selectNetworks([
           MM_CONNECT_EVM_CHAINS.LOCALHOST,
           MM_CONNECT_EVM_CHAINS.POLYGON,
           MM_CONNECT_EVM_CHAINS.LINEA,
-          SOLANA_MAINNET_SCOPE,
         ]);
         await testDapp.clickConnect();
 
@@ -104,19 +95,6 @@ describe('MM Connect — Multichain E2E', function (this: Suite) {
           await testDapp.switchTo();
           await testDapp.checkMethodResult(chainId, 'personal_sign', '"0x');
         }
-
-        // Trigger signMessage for Solana
-        await testDapp.triggerMethod(SOLANA_MAINNET_SCOPE, 'signMessage');
-
-        await driver.switchToWindowWithTitle(WINDOW_TITLES.Dialog);
-        const solanaSigningConfirmation = new SnapSignMessageConfirmation(
-          driver,
-        );
-        await solanaSigningConfirmation.checkPageIsLoaded();
-        await solanaSigningConfirmation.clickFooterConfirmButton();
-
-        await testDapp.switchTo();
-        await testDapp.checkSolanaSignMessageResult(SOLANA_MAINNET_SCOPE);
       },
     );
   });

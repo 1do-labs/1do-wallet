@@ -73,10 +73,6 @@ const setupController = ({
     messenger: accountsControllerMessenger,
     events: [
       'KeyringController:stateChange',
-      'SnapController:stateChange',
-      'SnapKeyring:accountAssetListUpdated',
-      'SnapKeyring:accountBalancesUpdated',
-      'SnapKeyring:accountTransactionsUpdated',
       'MultichainNetworkController:networkDidChange',
     ],
   });
@@ -358,10 +354,9 @@ describe('preferences controller', () => {
   });
 
   describe('useExternalServices', () => {
-    it('defaults useExternalServices to true', () => {
+    it('defaults useExternalServices to false', () => {
       const { controller } = setupController({});
-      expect(controller.state.useExternalServices).toStrictEqual(true);
-      expect(controller.state.useExternalServices).toStrictEqual(true);
+      expect(controller.state.useExternalServices).toStrictEqual(false);
       expect(controller.state.useTokenDetection).toStrictEqual(true);
       expect(controller.state.useCurrencyRateCheck).toStrictEqual(true);
       expect(controller.state.usePhishDetect).toStrictEqual(true);
@@ -589,23 +584,6 @@ describe('preferences controller', () => {
     });
   });
 
-  describe('snapsAddSnapAccountModalDismissed', () => {
-    it('defaults snapsAddSnapAccountModalDismissed to false', () => {
-      const { controller } = setupController({});
-      expect(controller.state.snapsAddSnapAccountModalDismissed).toStrictEqual(
-        false,
-      );
-    });
-
-    it('set snapsAddSnapAccountModalDismissed to true', () => {
-      const { controller } = setupController({});
-      controller.setSnapsAddSnapAccountModalDismissed(true);
-      expect(controller.state.snapsAddSnapAccountModalDismissed).toStrictEqual(
-        true,
-      );
-    });
-  });
-
   describe('metadata', () => {
     it('includes expected state in debug snapshots', () => {
       const { controller } = setupController({
@@ -731,15 +709,13 @@ describe('preferences controller', () => {
             "hyperliquid": {},
           },
           "securityAlertsEnabled": true,
-          "snapRegistryList": {},
-          "snapsAddSnapAccountModalDismissed": false,
           "textDirection": "auto",
           "theme": "os",
           "use4ByteResolution": true,
           "useAddressBarEnsResolution": true,
           "useCurrencyRateCheck": true,
           "useExternalNameSources": true,
-          "useExternalServices": true,
+          "useExternalServices": false,
           "useMultiAccountBalanceChecker": true,
           "useNftDetection": true,
           "usePhishDetect": true,
@@ -811,15 +787,13 @@ describe('preferences controller', () => {
           },
           "securityAlertsEnabled": true,
           "showSidePanelMigrationToast": false,
-          "snapRegistryList": {},
-          "snapsAddSnapAccountModalDismissed": false,
           "textDirection": "auto",
           "theme": "os",
           "use4ByteResolution": true,
           "useAddressBarEnsResolution": true,
           "useCurrencyRateCheck": true,
           "useExternalNameSources": true,
-          "useExternalServices": true,
+          "useExternalServices": false,
           "useMultiAccountBalanceChecker": true,
           "useNftDetection": true,
           "usePhishDetect": true,
@@ -891,15 +865,13 @@ describe('preferences controller', () => {
           },
           "securityAlertsEnabled": true,
           "showSidePanelMigrationToast": false,
-          "snapRegistryList": {},
-          "snapsAddSnapAccountModalDismissed": false,
           "textDirection": "auto",
           "theme": "os",
           "use4ByteResolution": true,
           "useAddressBarEnsResolution": true,
           "useCurrencyRateCheck": true,
           "useExternalNameSources": true,
-          "useExternalServices": true,
+          "useExternalServices": false,
           "useMultiAccountBalanceChecker": true,
           "useNftDetection": true,
           "usePhishDetect": true,

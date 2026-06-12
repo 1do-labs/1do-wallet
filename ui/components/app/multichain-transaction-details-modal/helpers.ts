@@ -58,8 +58,7 @@ export const formatTimestamp = (timestamp: number | null) => {
     return '';
   }
 
-  // It's typical for Solana timestamps to use seconds, while JS Dates and most EVM chains use milliseconds.
-  // Hence we needed to use the conversion `timestamp < 1e12 ? timestamp * 1000 : timestamp` for it to work.
+  // Some sources use second-based timestamps while JS Dates use milliseconds.
   const timestampMs = timestamp < 1e12 ? timestamp * 1000 : timestamp;
 
   const dateTime = DateTime.fromMillis(timestampMs);

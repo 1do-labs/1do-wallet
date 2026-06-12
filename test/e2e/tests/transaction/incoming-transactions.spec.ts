@@ -227,7 +227,6 @@ describe('Incoming Transactions', function () {
 async function changeNetworkAndGoToActivity(driver: Driver) {
   await login(driver, {
     validateBalance: false,
-    waitForNonEvmAccounts: false,
   });
 
   const homepage = new HomePage(driver);

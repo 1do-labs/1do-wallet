@@ -16,7 +16,7 @@ describe('Delineator Component', () => {
 
   it('renders correctly with minimal props', () => {
     const { getByText } = render(
-      <Delineator headerComponent={headerComponent} iconName={IconName.Snaps}>
+      <Delineator headerComponent={headerComponent} iconName={IconName.Global}>
         {exampleContent}
       </Delineator>,
     );
@@ -29,7 +29,7 @@ describe('Delineator Component', () => {
     const { getByText } = render(
       <Delineator
         headerComponent={headerComponent}
-        iconName={IconName.Snaps}
+        iconName={IconName.Global}
         isCollapsible
       >
         {exampleContent}
@@ -48,7 +48,7 @@ describe('Delineator Component', () => {
     render(
       <Delineator
         headerComponent={headerComponent}
-        iconName={IconName.Snaps}
+        iconName={IconName.Global}
         isLoading
       >
         {exampleContent}
@@ -63,7 +63,7 @@ describe('Delineator Component', () => {
     const { getByText } = render(
       <Delineator
         headerComponent={headerComponent}
-        iconName={IconName.Snaps}
+        iconName={IconName.Global}
         isCollapsible={false}
       >
         {exampleContent}
@@ -78,7 +78,7 @@ describe('Delineator Component', () => {
     const { getByText } = render(
       <Delineator
         headerComponent={headerComponent}
-        iconName={IconName.Snaps}
+        iconName={IconName.Global}
         type={DelineatorType.Error}
       >
         {exampleContent}
@@ -95,7 +95,7 @@ describe('Delineator Component', () => {
     const { getByText } = render(
       <Delineator
         headerComponent={headerComponent}
-        iconName={IconName.Snaps}
+        iconName={IconName.Global}
         isCollapsible
         onExpandChange={onExpandChangeMock}
       >

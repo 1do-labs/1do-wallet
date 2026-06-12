@@ -43,10 +43,6 @@ class SendPage {
     testId: 'open-recipient-modal-btn',
   };
 
-  private readonly solanaNetwork = {
-    text: 'Solana',
-  };
-
   private readonly tokenAsset = (chainId: string, symbol: string) => {
     return {
       testId: `token-asset-${chainId}-${symbol}`,
@@ -107,11 +103,6 @@ class SendPage {
     console.log(`Selecting network ${networkName}`);
     await this.driver.clickElement(this.networkPicker);
     await this.driver.clickElement(this.networkName(networkName));
-  }
-
-  async checkSolanaNetworkIsPresent(): Promise<void> {
-    console.log('Checking if Solana network is present');
-    await this.driver.findElement(this.solanaNetwork);
   }
 
   async clickMaxButton(): Promise<void> {

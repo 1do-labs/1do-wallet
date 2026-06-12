@@ -55,7 +55,7 @@ describe('approval selectors', () => {
 
     it('should return false if there is no pending approval request', () => {
       const result = hasPendingApprovals(mockedState, [
-        ApprovalType.SnapDialogPrompt,
+        ApprovalType.PersonalSign,
       ]);
 
       expect(result).toBe(false);

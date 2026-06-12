@@ -3,11 +3,7 @@ import { login } from '../../page-objects/flows/login.flow';
 import { withSignatureFixtures } from '../confirmations/helpers';
 import { TestSuiteArguments } from '../confirmations/transactions/shared';
 import TestDapp from '../../page-objects/pages/test-dapp';
-import { openTestSnapClickButtonAndInstall } from '../../page-objects/flows/install-test-snap.flow';
-import { DAPP_ONE_URL, DAPP_PATH, WINDOW_TITLES } from '../../constants';
-import { withFixtures } from '../../helpers';
-import FixtureBuilderV2 from '../../fixtures/fixture-builder-v2';
-import { mockLookupSnap } from '../../mock-response-data/snaps/snap-binary-mocks';
+import { WINDOW_TITLES } from '../../constants';
 import Confirmation from '../../page-objects/pages/confirmations/confirmation';
 
 describe('Petnames - Signatures', function (this: Suite) {
@@ -84,43 +80,6 @@ describe('Petnames - Signatures', function (this: Suite) {
         await confirmation.checkNameIsDisplayed('test.lens', true);
         await confirmation.checkNameIsDisplayed('Test Toke...', true);
         await confirmation.checkNameIsDisplayed('Custom Name', true);
-      },
-    );
-  });
-
-  it('can propose names using installed snaps', async function () {
-    await withFixtures(
-      {
-        dappOptions: {
-          customDappPaths: [DAPP_PATH.TEST_SNAPS],
-          numberOfTestDapps: 1,
-        },
-        fixtures: new FixtureBuilderV2()
-          .withPermissionControllerConnectedToTestDapp({ chainIds: [1] })
-          .withSnapsPrivacyWarningAlreadyShown()
-          .withNoNames()
-          .withEnabledNetworks({ eip155: { '0x1': true } })
-          .build(),
-        testSpecificMock: mockLookupSnap,
-        title: this.test?.fullTitle(),
-      },
-      async ({ driver }) => {
-        const testDapp = new TestDapp(driver);
-        const confirmation = new Confirmation(driver);
-        await login(driver);
-        await testDapp.openTestDappPage();
-        await openTestSnapClickButtonAndInstall(
-          driver,
-          'connectNameLookUpButton',
-          { url: DAPP_ONE_URL },
-        );
-        await driver.switchToWindowWithTitle(WINDOW_TITLES.TestDApp);
-        await testDapp.clickSignTypedDatav4();
-        await driver.switchToWindowWithTitle(WINDOW_TITLES.Dialog);
-        await confirmation.checkProposedNames('0xCD2a3...DD826', [
-          ['test.lens', 'Lens Protocol'],
-          ['cd2.1.test.domain', 'Name Lookup Example Snap'],
-        ]);
       },
     );
   });

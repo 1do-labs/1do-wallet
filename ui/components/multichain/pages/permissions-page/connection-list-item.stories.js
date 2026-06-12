@@ -106,29 +106,6 @@ Chaos.args = {
   },
 };
 
-export const Snap = Template.bind({});
-Snap.args = {
-  connection: {
-    extensionId: null,
-    iconUrl: 'https://app.metamask.io/favicon.png',
-    name: 'Connect'.repeat(100),
-    packageName: '@metamask/storybooksnap',
-    subjectType: 'snap',
-    addresses: [
-      '0xaaaF07C80ce267F3132cE7e6048B66E6E669365B',
-      '0xbbbD671F1Fcc94bCF0ebC6Ec4790Da35E8d5e1E1',
-    ],
-    addressToNameMap: {
-      '0xaaaF07C80ce267F3132cE7e6048B66E6E669365B': 'TestAddress1',
-      '0xbbbD671F1Fcc94bCF0ebC6Ec4790Da35E8d5e1E1': 'TestAddress2',
-    },
-  },
-  onClick: () =>
-    console.log(
-      `${PERMISSIONS}/${encodeURIComponent(Snap.args?.connection.origin || '')}`,
-    ),
-};
-
 export const MultipleConnections = () => (
   <div style={{ width: '350px', margin: '0 auto' }}>
     <div
@@ -192,15 +169,15 @@ export const MultipleConnections = () => (
         connection={{
           extensionId: null,
           iconUrl: 'https://app.metamask.io/favicon.png',
-          name: 'Test Snap',
-          packageName: '@metamask/test-snap',
-          subjectType: 'snap',
+          name: 'Test Dapp',
+          packageName: null,
+          subjectType: 'website',
           addresses: ['0xfffF07C80ce267F3132cE7e6048B66E6E669365B'],
           addressToNameMap: {
-            '0xfffF07C80ce267F3132cE7e6048B66E6E669365B': 'Snap Account',
+            '0xfffF07C80ce267F3132cE7e6048B66E6E669365B': 'Account 4',
           },
         }}
-        onClick={() => console.log('Snap clicked')}
+        onClick={() => console.log('Dapp clicked')}
       />
     </div>
   </div>

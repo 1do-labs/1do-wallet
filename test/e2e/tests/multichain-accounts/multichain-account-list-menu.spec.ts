@@ -19,7 +19,6 @@ describe('Multichain Accounts - Account tree', function (this: Suite) {
           .withShowNativeTokenAsMainBalanceDisabled()
           .withKeyringControllerMultiSRP()
           .withEnabledNetworks({ eip155: { '0x1': true } })
-          .withSnapsPrivacyWarningAlreadyShown()
           .withCurrencyController({
             currencyRates: {
               ETH: {
@@ -101,7 +100,7 @@ describe('Multichain Accounts - Account tree', function (this: Suite) {
           KNOWN_PUBLIC_KEY_ADDRESSES[0].address,
           '0x15af1d78b58c40000',
         )) ?? console.error('localNodes is undefined or empty');
-        await login(driver, { waitForNonEvmAccounts: false });
+        await login(driver);
         const homePage = new HomePage(driver);
         await homePage.checkPageIsLoaded();
         const headerNavbar = new HeaderNavbar(driver);

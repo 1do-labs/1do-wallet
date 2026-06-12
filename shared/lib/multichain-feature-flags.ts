@@ -3,7 +3,7 @@ import semver from 'semver';
 import packageJson from '../../package.json';
 
 /**
- * Generic feature flag type for multichain features (Bitcoin, Tron, etc.)
+ * Generic feature flag type for multichain features
  * Follows the same pattern as MultichainAccountsFeatureFlag
  */
 export type MultichainFeatureFlag = {
@@ -16,7 +16,7 @@ const APP_VERSION = packageJson.version;
 /**
  * Generic helper to check if a multichain feature flag is enabled with version gating.
  * Follows the same pattern as multichain-accounts feature flag.
- * Can be used for Bitcoin, Tron, or any future blockchain integrations.
+ * Can be used for future EVM blockchain integrations.
  *
  * @param flagValue - The feature flag value (boolean or object with enabled/minVersion)
  * @returns True if the feature is enabled and meets version requirements

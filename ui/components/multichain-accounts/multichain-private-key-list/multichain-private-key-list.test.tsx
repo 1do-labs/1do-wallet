@@ -33,10 +33,8 @@ const WALLET_ID_MOCK = 'entropy:01K437Z7EJ0VCMFDE9TQKRV60A';
 const GROUP_ID_MOCK = `${WALLET_ID_MOCK}/0`;
 
 const ACCOUNT_ONE_ID_MOCK = 'account-one-id';
-const ACCOUNT_TWO_ID_MOCK = 'account-two-id';
 
 const ACCOUNT_ONE_ADDRESS_MOCK = '0x1234567890abcdef1234567890abcdef12345678';
-const ACCOUNT_TWO_ADDRESS_MOCK = 'DRpbCBMxVnDK7maPM5tGv6MvB3v1sRMC86PZ8okm21hy';
 
 const ACCOUNT_ONE_PRIVATE_KEY_MOCK = 'private-key-mock';
 
@@ -54,19 +52,6 @@ const INTERNAL_ACCOUNTS_MOCK: Record<string, InternalAccount> = {
     type: 'eip155:eoa',
     scopes: ['eip155:0'],
   },
-  [ACCOUNT_TWO_ID_MOCK]: {
-    id: ACCOUNT_TWO_ID_MOCK,
-    address: ACCOUNT_TWO_ADDRESS_MOCK,
-    metadata: {
-      name: 'Solana Account',
-      importTime: Date.now(),
-      keyring: { type: 'Snap Keyring' },
-    },
-    options: {},
-    methods: [],
-    type: 'solana:data-account',
-    scopes: ['solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp'],
-  },
 };
 
 const ACCOUNT_TREE_MOCK = {
@@ -80,7 +65,7 @@ const ACCOUNT_TREE_MOCK = {
           type: 'multichain-account',
           id: GROUP_ID_MOCK,
           metadata: {},
-          accounts: [ACCOUNT_ONE_ID_MOCK, ACCOUNT_TWO_ID_MOCK],
+          accounts: [ACCOUNT_ONE_ID_MOCK],
         },
       },
     },
@@ -154,15 +139,7 @@ const createMockState = () => ({
         blockExplorerUrls: ['https://sepolia.etherscan.io'],
       },
     },
-    // Multichain network configurations (includes non-EVM)
-    multichainNetworkConfigurationsByChainId: {
-      'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp': {
-        chainId: 'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp',
-        name: 'Solana',
-        isEvm: false,
-        nativeCurrency: 'SOL',
-      },
-    },
+    multichainNetworkConfigurationsByChainId: {},
     // Current provider config for EVM
     providerConfig: {
       chainId: '0x1',
@@ -176,8 +153,6 @@ const createMockState = () => ({
     // Feature flags for multichain support
     featureFlags: {
       bitcoinSupportEnabled: false,
-      solanaSupportEnabled: true,
-      solanaTestnetSupportEnabled: false,
     },
     enabledNetworks: {
       eip155: {
@@ -185,9 +160,6 @@ const createMockState = () => ({
         '0x89': true,
         '0xa4b1': true,
         '0xaa36a7': true,
-      },
-      solana: {
-        'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp': true,
       },
     },
   },

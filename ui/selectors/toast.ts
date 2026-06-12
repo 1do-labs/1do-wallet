@@ -2,10 +2,7 @@ import { createSelector } from 'reselect';
 import { createDeepEqualSelector } from '../../shared/lib/selectors/selector-creators';
 import { SMART_TRANSACTION_CONFIRMATION_TYPES } from '../../shared/constants/app';
 import type { MetaMaskReduxState } from '../store/store';
-import {
-  TOAST_EXCLUDED_TRANSACTION_TYPES,
-  TOAST_EXCLUDED_NON_EVM_TRANSACTION_TYPES,
-} from '../helpers/constants/transactions';
+import { TOAST_EXCLUDED_TRANSACTION_TYPES } from '../helpers/constants/transactions';
 import { getPendingApprovals } from './approvals';
 import { EMPTY_ARRAY, EMPTY_OBJECT } from './shared';
 import {
@@ -15,9 +12,6 @@ import {
 
 const selectTransactions = (state: MetaMaskReduxState) =>
   state.metamask?.transactions ?? EMPTY_ARRAY;
-
-const selectNonEvmTransactions = (state: MetaMaskReduxState) =>
-  state.metamask?.nonEvmTransactions ?? EMPTY_OBJECT;
 
 const selectTxHistory = (state: MetaMaskReduxState) =>
   state.metamask?.txHistory ?? EMPTY_OBJECT;
@@ -101,37 +95,6 @@ export const selectEvmTransactionsForToast = createSelector(
         )
       );
     });
-  },
-);
-
-/**
- * Returns non-EVM transactions for toast notifications
- *
- * @param {object} state - Root state
- * @returns {object[]} Filtered array of non-EVM transaction objects
- */
-export const selectNonEvmTransactionsForToast = createDeepEqualSelector(
-  selectNonEvmTransactions,
-  selectCrossChainBridgeSourceTxIds,
-  (nonEvmTransactionsMap, crossChainBridgeIds) => {
-    if (!nonEvmTransactionsMap) {
-      return EMPTY_ARRAY;
-    }
-
-    return Object.values(nonEvmTransactionsMap)
-      .flatMap((byChainMap) =>
-        Object.values(byChainMap ?? {}).flatMap(
-          (entry) => entry?.transactions ?? EMPTY_ARRAY,
-        ),
-      )
-      .filter((transaction) => {
-        const type = transaction?.type;
-        return (
-          Boolean(type) &&
-          !TOAST_EXCLUDED_NON_EVM_TRANSACTION_TYPES.has(type) &&
-          !crossChainBridgeIds.has(transaction.id)
-        );
-      });
   },
 );
 

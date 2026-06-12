@@ -37,7 +37,6 @@ const LOGO_STYLE = { width: '160px', height: '160px' } as const;
 const SEGMENT_CTA_MAPPING: Record<string, string> = {
   'cross-chain': 'basicFunctionalityRequired_openSwapsPage',
   notifications: 'basicFunctionalityRequired_openNotificationsPage',
-  snaps: 'basicFunctionalityRequired_openSnapsPage',
   swaps: 'basicFunctionalityRequired_openSwapsPage',
   defi: 'basicFunctionalityRequired_openDefiPage',
   perps: 'basicFunctionalityRequired_openPerpsPage',

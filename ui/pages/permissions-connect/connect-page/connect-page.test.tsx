@@ -263,7 +263,7 @@ describe('ConnectPage', () => {
     expect(container).toMatchSnapshot();
   });
 
-  it('should ignore the legacy promptToCreateSolanaAccount metadata flag', () => {
+  it('ignores unsupported legacy metadata flags', () => {
     const { queryByText } = render({
       props: {
         request: {
@@ -289,7 +289,7 @@ describe('ConnectPage', () => {
           metadata: {
             id: '1',
             origin: mockTargetSubjectMetadata.origin,
-            promptToCreateSolanaAccount: true,
+            promptToCreateUnsupportedAccount: true,
           },
         },
         permissionsRequestId: '1',
@@ -298,8 +298,6 @@ describe('ConnectPage', () => {
         targetSubjectMetadata: mockTargetSubjectMetadata,
       },
     });
-
-    expect(queryByText(messages.solanaAccountRequested.message)).toBeNull();
-    expect(queryByText(messages.createSolanaAccount.message)).toBeNull();
+    expect(queryByText(messages.connectAccounts.message)).toBeInTheDocument();
   });
 });

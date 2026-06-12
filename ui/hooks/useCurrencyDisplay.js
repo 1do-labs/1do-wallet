@@ -1,10 +1,8 @@
 import { useMemo } from 'react';
 import BigNumber from 'bignumber.js';
 import { MULTICHAIN_NETWORK_TICKER } from '@metamask/multichain-network-controller';
-import { formatCurrency as deprecatedFormatCurrency } from '../helpers/utils/confirm-tx.util';
 import {
   getMultichainCurrentCurrency,
-  getMultichainIsEvm,
   getMultichainNativeCurrency,
   getMultichainConversionRate,
 } from '../selectors/multichain';
@@ -16,8 +14,6 @@ import {
 } from '../../shared/constants/network';
 import { Numeric } from '../../shared/lib/Numeric';
 import { EtherDenomination } from '../../shared/constants/common';
-import { isEvmChainId } from '../../shared/lib/asset-utils';
-import { getTokenFiatAmount } from '../helpers/utils/token-util';
 import { getCurrencyRates } from '../ducks/metamask/metamask';
 import { useFormatters } from './useFormatters';
 import { useMultichainSelector } from './useMultichainSelector';
@@ -51,39 +47,6 @@ function formatEthCurrencyDisplay({
     return ethDisplayValue === '0' && inputValue && Number(inputValue) !== 0
       ? MIN_AMOUNT_DISPLAY
       : ethDisplayValue;
-  }
-  return null;
-}
-
-function formatNonEvmAssetCurrencyDisplay({
-  tokenSymbol,
-  isNativeCurrency,
-  isUserPreferredCurrency,
-  currency,
-  currentCurrency,
-  nativeCurrency,
-  inputValue,
-  conversionRate,
-}) {
-  if (isNativeCurrency || (!isUserPreferredCurrency && !nativeCurrency)) {
-    // NOTE: We use the value coming from the MultichainBalancesController here (and thus, the non-EVM
-    // account Snap).
-    // We use `Numeric` here, so we handle those amount the same way than for EVMs (it's worth
-    // noting that if `inputValue` is not properly defined, the amount will be set to '0', see
-    // `Numeric` constructor for that)
-    return new Numeric(inputValue, 10).toString();
-  } else if (isUserPreferredCurrency && conversionRate) {
-    const amount =
-      getTokenFiatAmount(
-        1, // coin to native conversion rate is 1:1
-        Number(conversionRate), // native to fiat conversion rate
-        currentCurrency,
-        inputValue,
-        tokenSymbol,
-        false,
-        false,
-      ) ?? '0'; // if the conversion fails, return 0
-    return deprecatedFormatCurrency(amount, currency);
   }
   return null;
 }
@@ -137,7 +100,6 @@ export function useCurrencyDisplay(
   chainId = null,
 ) {
   const { formatCurrency } = useFormatters();
-  const isEvm = useMultichainSelector(getMultichainIsEvm, account);
   const currentCurrency = useMultichainSelector(
     getMultichainCurrentCurrency,
     account,
@@ -157,9 +119,6 @@ export function useCurrencyDisplay(
     currency === nativeCurrency ||
     currency === CHAIN_ID_TO_CURRENCY_SYMBOL_MAP[chainId];
 
-  // Check if the transaction's chain is EVM, not just the account
-  const isTransactionOnEvmChain = chainId ? isEvmChainId(chainId) : isEvm;
-
   // When chainId is provided, use the chain-specific native currency and conversion rate
   // Fall back to account defaults if the chain is not in the predefined map (custom networks)
   const chainNativeCurrency =
@@ -170,19 +129,6 @@ export function useCurrencyDisplay(
   const value = useMemo(() => {
     if (displayValue) {
       return displayValue;
-    }
-
-    if (!isTransactionOnEvmChain && !isAggregatedFiatOverviewBalance) {
-      return formatNonEvmAssetCurrencyDisplay({
-        tokenSymbol: chainNativeCurrency,
-        isNativeCurrency,
-        isUserPreferredCurrency,
-        currency,
-        currentCurrency,
-        nativeCurrency: chainNativeCurrency,
-        inputValue,
-        conversionRate: chainConversionRate,
-      });
     }
 
     if (isAggregatedFiatOverviewBalance) {
@@ -211,7 +157,6 @@ export function useCurrencyDisplay(
     });
   }, [
     displayValue,
-    isTransactionOnEvmChain,
     isNativeCurrency,
     isUserPreferredCurrency,
     currency,
@@ -220,7 +165,6 @@ export function useCurrencyDisplay(
     chainConversionRate,
     denomination,
     numberOfDecimals,
-    currentCurrency,
     isAggregatedFiatOverviewBalance,
     formatCurrency,
   ]);

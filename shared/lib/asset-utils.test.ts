@@ -29,7 +29,15 @@ jest.mock('./fetch-with-timeout', () => ({
 
 describe('asset-utils', () => {
   const STATIC_METAMASK_BASE_URL = 'https://static.cx.metamask.io';
-  const TOKEN_API_V3_BASE_URL = 'https://tokens.api.cx.metamask.io/v3';
+
+  beforeEach(() => {
+    (toEvmCaipChainId as jest.Mock).mockImplementation((chainId: string) => {
+      const chainIdDecimal = chainId.startsWith('0x')
+        ? parseInt(chainId, 16)
+        : Number(chainId);
+      return `eip155:${chainIdDecimal}`;
+    });
+  });
 
   describe('toAssetId', () => {
     beforeEach(() => {
@@ -79,9 +87,9 @@ describe('asset-utils', () => {
       expect(result).toBeUndefined();
     });
 
-    it('should return undefined for non-EVM chain IDs', () => {
-      const address = 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v';
-      const chainId = 'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp' as CaipChainId;
+    it('should return undefined for unsupported non-EVM chain IDs', () => {
+      const address = 'unsupported-address';
+      const chainId = 'unknown:1' as CaipChainId;
 
       const result = toAssetId(address, chainId);
       expect(result).toBeUndefined();
@@ -140,9 +148,8 @@ describe('asset-utils', () => {
       expect(getAssetImageUrl(assetId, 'eip155:1')).toBe(expectedUrl);
     });
 
-    it('should return undefined for non-EVM asset IDs', () => {
-      const assetId =
-        'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp/token:aBCD' as CaipAssetType;
+    it('should return undefined for unsupported asset IDs', () => {
+      const assetId = 'unknown:1/token:aBCD' as CaipAssetType;
 
       expect(getAssetImageUrl(assetId, 'eip155:1')).toBe(undefined);
     });
@@ -155,222 +162,22 @@ describe('asset-utils', () => {
   });
 
   describe('fetchAssetMetadata', () => {
-    const mockAddress = '0x123' as Hex;
-    const mockChainId = 'eip155:1' as CaipChainId;
-    const mockHexChainId = '0x1' as Hex;
-    const mockAssetId = 'eip155:1/erc20:0x123' as CaipAssetType;
-
-    beforeEach(() => {
-      mockFetchWithTimeout.mockReset();
-      jest.clearAllMocks();
-      (toEvmCaipChainId as jest.Mock).mockReturnValue(mockChainId);
-    });
-
-    it('should fetch EVM token metadata successfully', async () => {
-      const mockMetadata = {
-        assetId: mockAssetId + 'ABcDe',
-        symbol: 'TEST',
-        name: 'Test Token',
-        decimals: 18,
-      };
-
-      mockFetchWithTimeout.mockResolvedValueOnce({
-        json: async () => await Promise.resolve([mockMetadata]),
-      });
-
-      const result = await fetchAssetMetadata(
-        mockAddress + 'ABcDe',
-        mockHexChainId,
-      );
-
-      expect(mockFetchWithTimeout).toHaveBeenCalledWith(
-        `${TOKEN_API_V3_BASE_URL}/assets?assetIds=${mockAssetId + 'ABcDe'}`,
-        {
-          method: 'GET',
-          headers: { 'X-Client-Id': 'extension' },
-        },
-      );
-
-      expect(result).toStrictEqual({
-        symbol: 'TEST',
-        decimals: 18,
-        image:
-          'https://static.cx.metamask.io/api/v2/tokenIcons/assets/eip155/1/erc20/0x123abcde.png',
-        assetId: 'eip155:1/erc20:0x123ABcDe',
-        address: '0x123abcde',
-        chainId: mockHexChainId,
-      });
-    });
-
-    it('should return undefined for non-EVM chain IDs', async () => {
-      const result = await fetchAssetMetadata(
-        'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v',
-        'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp' as CaipChainId,
-      );
+    it('returns undefined without calling the remote token metadata API', async () => {
+      const result = await fetchAssetMetadata('0x123' as Hex, '0x1' as Hex);
 
       expect(mockFetchWithTimeout).not.toHaveBeenCalled();
       expect(result).toBeUndefined();
-    });
-
-    it('should handle CAIP chain IDs', async () => {
-      const mockMetadata = {
-        assetId: mockAssetId,
-        symbol: 'TEST',
-        name: 'Test Token',
-        decimals: 18,
-      };
-
-      mockFetchWithTimeout.mockResolvedValueOnce({
-        json: async () => await Promise.resolve([mockMetadata]),
-      });
-
-      const result = await fetchAssetMetadata(mockAddress, mockChainId);
-
-      expect(toEvmCaipChainId).not.toHaveBeenCalled();
-
-      expect(mockFetchWithTimeout).toHaveBeenCalledWith(
-        'https://tokens.api.cx.metamask.io/v3/assets?assetIds=eip155:1/erc20:0x123',
-        {
-          headers: { 'X-Client-Id': 'extension' },
-          method: 'GET',
-          signal: undefined,
-        },
-      );
-
-      expect(result).toStrictEqual({
-        symbol: 'TEST',
-        decimals: 18,
-        image:
-          'https://static.cx.metamask.io/api/v2/tokenIcons/assets/eip155/1/erc20/0x123.png',
-        assetId: mockAssetId,
-        address: mockAddress,
-        chainId: mockHexChainId,
-      });
-    });
-
-    it('should handle hex chain IDs', async () => {
-      const mockMetadata = {
-        assetId: mockAssetId,
-        symbol: 'TEST',
-        name: 'Test Token',
-        decimals: 18,
-      };
-
-      mockFetchWithTimeout.mockResolvedValueOnce({
-        json: async () => await Promise.resolve([mockMetadata]),
-      });
-
-      const result = await fetchAssetMetadata(mockAddress, mockHexChainId);
-
-      expect(toEvmCaipChainId).toHaveBeenCalledWith(mockHexChainId);
-      expect(mockFetchWithTimeout).toHaveBeenCalledWith(
-        'https://tokens.api.cx.metamask.io/v3/assets?assetIds=eip155:1/erc20:0x123',
-        {
-          headers: { 'X-Client-Id': 'extension' },
-          method: 'GET',
-          signal: undefined,
-        },
-      );
-
-      expect(result).toStrictEqual({
-        symbol: 'TEST',
-        decimals: 18,
-        image:
-          'https://static.cx.metamask.io/api/v2/tokenIcons/assets/eip155/1/erc20/0x123.png',
-        assetId: mockAssetId,
-        address: mockAddress,
-        chainId: mockHexChainId,
-      });
-    });
-
-    it('should return undefined when API call fails', async () => {
-      mockFetchWithTimeout.mockRejectedValueOnce(new Error('API Error'));
-      const result = await fetchAssetMetadata(mockAddress, mockHexChainId);
-      expect(result).toBeUndefined();
-    });
-
-    it('should return undefined when metadata processing fails', async () => {
-      mockFetchWithTimeout.mockResolvedValueOnce([null]);
-      const result = await fetchAssetMetadata(mockAddress, mockHexChainId);
-      expect(result).toBeUndefined();
-    });
-
-    it('should return undefined when EVM address is not valid', async () => {
-      const result = await fetchAssetMetadata('abc', mockHexChainId);
-      expect(mockFetchWithTimeout).not.toHaveBeenCalled();
-      expect(result).toStrictEqual(undefined);
     });
   });
 
   describe('fetchAssetMetadataForAssetIds', () => {
-    const mockChainId = 'eip155:1' as CaipChainId;
-    const mockAssetId = 'eip155:1/erc20:0x123' as CaipAssetType;
-
-    beforeEach(() => {
-      mockFetchWithTimeout.mockReset();
-      jest.clearAllMocks();
-      (toEvmCaipChainId as jest.Mock).mockReturnValue(mockChainId);
-    });
-
-    it('should fetch EVM token metadata successfully', async () => {
-      const mockMetadata = {
-        assetId: (mockAssetId + 'ABcDe').toLowerCase(),
-        symbol: 'TEST',
-        name: 'Test Token',
-        decimals: 18,
-      };
-
-      mockFetchWithTimeout.mockResolvedValueOnce({
-        json: async () => await Promise.resolve([mockMetadata]),
-      });
-
+    it('returns null without calling the remote token metadata API', async () => {
       const result = await fetchAssetMetadataForAssetIds([
-        (mockAssetId + 'ABcDe') as never,
-      ]);
-
-      expect(mockFetchWithTimeout).toHaveBeenCalledWith(
-        `${TOKEN_API_V3_BASE_URL}/assets?assetIds=${mockAssetId + 'ABcDe'.toLowerCase()}`,
-        {
-          method: 'GET',
-          headers: { 'X-Client-Id': 'extension' },
-        },
-      );
-
-      expect(result).toStrictEqual({
-        [(mockAssetId + 'ABcDe').toLowerCase()]: {
-          symbol: 'TEST',
-          decimals: 18,
-          assetId: 'eip155:1/erc20:0x123abcde',
-          name: 'Test Token',
-        },
-      });
-    });
-
-    it('should return null when asset IDs are not valid EVM assets', async () => {
-      const result = await fetchAssetMetadataForAssetIds([
-        'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp/token:EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v' as never,
+        'eip155:1/erc20:0x123' as CaipAssetType,
       ]);
 
       expect(mockFetchWithTimeout).not.toHaveBeenCalled();
       expect(result).toBeNull();
-    });
-
-    it('should return null when API call fails', async () => {
-      mockFetchWithTimeout.mockRejectedValueOnce(new Error('API Error'));
-      const result = await fetchAssetMetadataForAssetIds([mockAssetId]);
-      expect(result).toBeNull();
-    });
-
-    it('should return null when metadata processing fails', async () => {
-      mockFetchWithTimeout.mockResolvedValueOnce([null]);
-      const result = await fetchAssetMetadataForAssetIds([mockAssetId]);
-      expect(result).toBeNull();
-    });
-
-    it('should return null when EVM address is not valid', async () => {
-      const result = await fetchAssetMetadataForAssetIds(['abc' as never]);
-      expect(mockFetchWithTimeout).not.toHaveBeenCalled();
-      expect(result).toStrictEqual(null);
     });
   });
 
@@ -383,8 +190,8 @@ describe('asset-utils', () => {
       expect(isEvmChainId('0x1')).toBe(true);
     });
 
-    it('should return false for non-EVM chain ids', () => {
-      expect(isEvmChainId('solana:1')).toBe(false);
+    it('should return false for unsupported chain ids', () => {
+      expect(isEvmChainId('unknown:1')).toBe(false);
     });
 
     it('should return true for EVM chain ids passed as decimal strings', () => {
@@ -396,12 +203,9 @@ describe('asset-utils', () => {
       expect(isEvmChainId('1776' as Hex)).toBe(true); // Injective mainnet
     });
 
-    it('should return false for non-EVM chain ids passed as decimal strings', () => {
-      // Test Solana (1151111081099710)
+    it('should return false for unsupported chain ids passed as decimal strings', () => {
       expect(isEvmChainId('1151111081099710' as Hex)).toBe(false);
-      // Test Bitcoin (20000000000001)
       expect(isEvmChainId('20000000000001' as Hex)).toBe(false);
-      // Test Tron (728126428)
       expect(isEvmChainId('728126428' as Hex)).toBe(false);
     });
 

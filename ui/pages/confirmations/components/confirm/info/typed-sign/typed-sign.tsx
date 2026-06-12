@@ -1,7 +1,6 @@
 import React from 'react';
 import { isValidAddress } from 'ethereumjs-util';
 
-import { isSnapId } from '@metamask/snaps-utils';
 import { ConfirmInfoAlertRow } from '../../../../../../components/app/confirm/info/row/alert-row/alert-row';
 import { parseTypedDataMessage } from '../../../../../../../shared/lib/transaction.utils';
 import { RowAlertKey } from '../../../../../../components/app/confirm/info/row/constants';
@@ -64,9 +63,7 @@ const TypedSignInfo: React.FC = () => {
     return null;
   }
 
-  const toolTipMessage = isSnapId(currentConfirmation.msgParams.origin)
-    ? t('requestFromInfoSnap')
-    : t('requestFromInfo');
+  const toolTipMessage = t('requestFromInfo');
   const msgData = currentConfirmation.msgParams?.data as string;
   const oneDoClearSigningInfo =
     getOneDoTypedDataClearSigning(currentConfirmation) ??

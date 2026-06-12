@@ -178,9 +178,9 @@ describe('permission background API methods', () => {
               },
             },
             optionalScopes: {
-              'bip122:000000000019d6689c085ae165831e93': {
+              'eip155:137': {
                 accounts: [
-                  'bip122:000000000019d6689c085ae165831e93:128Lkh3S7CkDTBZ8W7BbpsN3YYizJMp8p6',
+                  'eip155:137:0x1280000000000000000000000000000000000000',
                 ],
               },
             },
@@ -193,7 +193,7 @@ describe('permission background API methods', () => {
       const accountsController = {
         getAccountByAddress: jest.fn().mockReturnValue({
           address: '0x4',
-          scopes: ['solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp'],
+          scopes: ['eip155:137'],
         }),
         state: {
           internalAccounts: MOCK_EMPTY_INTERNAL_ACCOUNTS,
@@ -202,9 +202,9 @@ describe('permission background API methods', () => {
 
       MockNetworkSelectors.getNetworkConfigurationsByCaipChainId.mockReturnValue(
         {
-          'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp': MOCK_NETWORK_CONFIG,
-          'solana:foo': MOCK_NETWORK_CONFIG,
-          'solana:bar': MOCK_NETWORK_CONFIG,
+          'eip155:137': MOCK_NETWORK_CONFIG,
+          'eip155:10': MOCK_NETWORK_CONFIG,
+          'eip155:56': MOCK_NETWORK_CONFIG,
         },
       );
 
@@ -225,19 +225,19 @@ describe('permission background API methods', () => {
             },
           },
           optionalScopes: {
-            'bip122:000000000019d6689c085ae165831e93': {
+            'eip155:137': {
               accounts: [
-                'bip122:000000000019d6689c085ae165831e93:128Lkh3S7CkDTBZ8W7BbpsN3YYizJMp8p6',
+                'eip155:137:0x1280000000000000000000000000000000000000',
               ],
             },
-            'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp': {
-              accounts: ['solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp:0x4'],
+            'eip155:137': {
+              accounts: ['eip155:137:0x4'],
             },
-            'solana:foo': {
-              accounts: ['solana:foo:0x4'],
+            'eip155:10': {
+              accounts: ['eip155:10:0x4'],
             },
-            'solana:bar': {
-              accounts: ['solana:bar:0x4'],
+            'eip155:56': {
+              accounts: ['eip155:56:0x4'],
             },
           },
           isMultichainOrigin: true,
@@ -258,9 +258,9 @@ describe('permission background API methods', () => {
               },
             },
             optionalScopes: {
-              'bip122:000000000019d6689c085ae165831e93': {
+              'eip155:137': {
                 accounts: [
-                  'bip122:000000000019d6689c085ae165831e93:128Lkh3S7CkDTBZ8W7BbpsN3YYizJMp8p6',
+                  'eip155:137:0x1280000000000000000000000000000000000000',
                 ],
               },
               'eip155:1': {
@@ -313,9 +313,9 @@ describe('permission background API methods', () => {
             },
           },
           optionalScopes: {
-            'bip122:000000000019d6689c085ae165831e93': {
+            'eip155:137': {
               accounts: [
-                'bip122:000000000019d6689c085ae165831e93:128Lkh3S7CkDTBZ8W7BbpsN3YYizJMp8p6',
+                'eip155:137:0x1280000000000000000000000000000000000000',
               ],
             },
             'eip155:1': {
@@ -439,9 +439,9 @@ describe('permission background API methods', () => {
               },
             },
             optionalScopes: {
-              'bip122:000000000019d6689c085ae165831e93': {
+              'eip155:137': {
                 accounts: [
-                  'bip122:000000000019d6689c085ae165831e93:128Lkh3S7CkDTBZ8W7BbpsN3YYizJMp8p6',
+                  'eip155:137:0x1280000000000000000000000000000000000000',
                 ],
               },
               'eip155:1': {
@@ -502,9 +502,9 @@ describe('permission background API methods', () => {
             },
           },
           optionalScopes: {
-            'bip122:000000000019d6689c085ae165831e93': {
+            'eip155:137': {
               accounts: [
-                'bip122:000000000019d6689c085ae165831e93:128Lkh3S7CkDTBZ8W7BbpsN3YYizJMp8p6',
+                'eip155:137:0x1280000000000000000000000000000000000000',
               ],
             },
             'eip155:1': {
@@ -532,9 +532,9 @@ describe('permission background API methods', () => {
               },
             },
             optionalScopes: {
-              'bip122:000000000019d6689c085ae165831e93': {
+              'eip155:137': {
                 accounts: [
-                  'bip122:000000000019d6689c085ae165831e93:128Lkh3S7CkDTBZ8W7BbpsN3YYizJMp8p6',
+                  'eip155:137:0x1280000000000000000000000000000000000000',
                 ],
               },
             },
@@ -549,11 +549,11 @@ describe('permission background API methods', () => {
           .fn()
           .mockReturnValueOnce({
             address: '0x4',
-            scopes: ['solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp'],
+            scopes: ['eip155:137'],
           })
           .mockReturnValueOnce({
             address: '0x5',
-            scopes: ['solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp'],
+            scopes: ['eip155:137'],
           }),
         state: {
           internalAccounts: MOCK_EMPTY_INTERNAL_ACCOUNTS,
@@ -562,9 +562,9 @@ describe('permission background API methods', () => {
 
       MockNetworkSelectors.getNetworkConfigurationsByCaipChainId.mockReturnValue(
         {
-          'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp': MOCK_NETWORK_CONFIG,
-          'solana:foo': MOCK_NETWORK_CONFIG,
-          'solana:bar': MOCK_NETWORK_CONFIG,
+          'eip155:137': MOCK_NETWORK_CONFIG,
+          'eip155:10': MOCK_NETWORK_CONFIG,
+          'eip155:56': MOCK_NETWORK_CONFIG,
         },
       );
 
@@ -585,22 +585,19 @@ describe('permission background API methods', () => {
             },
           },
           optionalScopes: {
-            'bip122:000000000019d6689c085ae165831e93': {
+            'eip155:137': {
               accounts: [
-                'bip122:000000000019d6689c085ae165831e93:128Lkh3S7CkDTBZ8W7BbpsN3YYizJMp8p6',
+                'eip155:137:0x1280000000000000000000000000000000000000',
               ],
             },
-            'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp': {
-              accounts: [
-                'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp:0x4',
-                'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp:0x5',
-              ],
+            'eip155:137': {
+              accounts: ['eip155:137:0x4', 'eip155:137:0x5'],
             },
-            'solana:foo': {
-              accounts: ['solana:foo:0x4', 'solana:foo:0x5'],
+            'eip155:10': {
+              accounts: ['eip155:10:0x4', 'eip155:10:0x5'],
             },
-            'solana:bar': {
-              accounts: ['solana:bar:0x4', 'solana:bar:0x5'],
+            'eip155:56': {
+              accounts: ['eip155:56:0x4', 'eip155:56:0x5'],
             },
           },
           isMultichainOrigin: true,
@@ -712,9 +709,9 @@ describe('permission background API methods', () => {
               },
             },
             optionalScopes: {
-              'bip122:000000000019d6689c085ae165831e93': {
+              'eip155:137': {
                 accounts: [
-                  'bip122:000000000019d6689c085ae165831e93:128Lkh3S7CkDTBZ8W7BbpsN3YYizJMp8p6',
+                  'eip155:137:0x1280000000000000000000000000000000000000',
                 ],
               },
               'eip155:1': {
@@ -760,7 +757,7 @@ describe('permission background API methods', () => {
               },
             },
             optionalScopes: {
-              'bip122:000000000019d6689c085ae165831e93': {
+              'eip155:137': {
                 accounts: [],
               },
             },
@@ -804,9 +801,9 @@ describe('permission background API methods', () => {
               },
             },
             optionalScopes: {
-              'bip122:000000000019d6689c085ae165831e93': {
+              'eip155:137': {
                 accounts: [
-                  'bip122:000000000019d6689c085ae165831e93:128Lkh3S7CkDTBZ8W7BbpsN3YYizJMp8p6',
+                  'eip155:137:0x1280000000000000000000000000000000000000',
                 ],
               },
               'eip155:1': {
@@ -848,9 +845,9 @@ describe('permission background API methods', () => {
             },
           },
           optionalScopes: {
-            'bip122:000000000019d6689c085ae165831e93': {
+            'eip155:137': {
               accounts: [
-                'bip122:000000000019d6689c085ae165831e93:128Lkh3S7CkDTBZ8W7BbpsN3YYizJMp8p6',
+                'eip155:137:0x1280000000000000000000000000000000000000',
               ],
             },
             'eip155:1': {
@@ -932,7 +929,7 @@ describe('permission background API methods', () => {
               },
             },
             optionalScopes: {
-              'bip122:000000000019d6689c085ae165831e93': {
+              'eip155:137': {
                 accounts: [],
               },
             },
@@ -964,9 +961,9 @@ describe('permission background API methods', () => {
               },
             },
             optionalScopes: {
-              'bip122:000000000019d6689c085ae165831e93': {
+              'eip155:137': {
                 accounts: [
-                  'bip122:000000000019d6689c085ae165831e93:128Lkh3S7CkDTBZ8W7BbpsN3YYizJMp8p6',
+                  'eip155:137:0x1280000000000000000000000000000000000000',
                 ],
               },
               'eip155:1': {
@@ -982,7 +979,7 @@ describe('permission background API methods', () => {
       setupPermissionBackgroundApiMethods({
         permissionController,
       }).setPermittedAccounts('foo.com', [
-        'bip122:000000000019d6689c085ae165831e93:128Lkh3S7CkDTBZ8W7BbpsN3YYizJMp8p6',
+        'eip155:137:0x1280000000000000000000000000000000000000',
         'eip155:0:0x1',
         'eip155:0:0x4',
       ]);
@@ -1001,9 +998,9 @@ describe('permission background API methods', () => {
             },
           },
           optionalScopes: {
-            'bip122:000000000019d6689c085ae165831e93': {
+            'eip155:137': {
               accounts: [
-                'bip122:000000000019d6689c085ae165831e93:128Lkh3S7CkDTBZ8W7BbpsN3YYizJMp8p6',
+                'eip155:137:0x1280000000000000000000000000000000000000',
               ],
             },
             'eip155:1': {
@@ -1184,9 +1181,9 @@ describe('permission background API methods', () => {
               },
             },
             optionalScopes: {
-              'bip122:000000000019d6689c085ae165831e93': {
+              'eip155:137': {
                 accounts: [
-                  'bip122:000000000019d6689c085ae165831e93:128Lkh3S7CkDTBZ8W7BbpsN3YYizJMp8p6',
+                  'eip155:137:0x1280000000000000000000000000000000000000',
                 ],
               },
               'eip155:1': {
@@ -1218,9 +1215,9 @@ describe('permission background API methods', () => {
             },
           },
           optionalScopes: {
-            'bip122:000000000019d6689c085ae165831e93': {
+            'eip155:137': {
               accounts: [
-                'bip122:000000000019d6689c085ae165831e93:128Lkh3S7CkDTBZ8W7BbpsN3YYizJMp8p6',
+                'eip155:137:0x1280000000000000000000000000000000000000',
               ],
             },
             'eip155:1': {
@@ -1305,9 +1302,9 @@ describe('permission background API methods', () => {
               },
             },
             optionalScopes: {
-              'bip122:000000000019d6689c085ae165831e93': {
+              'eip155:137': {
                 accounts: [
-                  'bip122:000000000019d6689c085ae165831e93:128Lkh3S7CkDTBZ8W7BbpsN3YYizJMp8p6',
+                  'eip155:137:0x1280000000000000000000000000000000000000',
                 ],
               },
               'eip155:1': {
@@ -1339,9 +1336,9 @@ describe('permission background API methods', () => {
             },
           },
           optionalScopes: {
-            'bip122:000000000019d6689c085ae165831e93': {
+            'eip155:137': {
               accounts: [
-                'bip122:000000000019d6689c085ae165831e93:128Lkh3S7CkDTBZ8W7BbpsN3YYizJMp8p6',
+                'eip155:137:0x1280000000000000000000000000000000000000',
               ],
             },
             'eip155:1': {
@@ -1429,9 +1426,9 @@ describe('permission background API methods', () => {
               },
             },
             optionalScopes: {
-              'bip122:000000000019d6689c085ae165831e93': {
+              'eip155:137': {
                 accounts: [
-                  'bip122:000000000019d6689c085ae165831e93:128Lkh3S7CkDTBZ8W7BbpsN3YYizJMp8p6',
+                  'eip155:137:0x1280000000000000000000000000000000000000',
                 ],
               },
             },
@@ -1488,9 +1485,9 @@ describe('permission background API methods', () => {
               },
             },
             optionalScopes: {
-              'bip122:000000000019d6689c085ae165831e93': {
+              'eip155:137': {
                 accounts: [
-                  'bip122:000000000019d6689c085ae165831e93:128Lkh3S7CkDTBZ8W7BbpsN3YYizJMp8p6',
+                  'eip155:137:0x1280000000000000000000000000000000000000',
                 ],
               },
             },
@@ -1515,9 +1512,9 @@ describe('permission background API methods', () => {
             },
           },
           optionalScopes: {
-            'bip122:000000000019d6689c085ae165831e93': {
+            'eip155:137': {
               accounts: [
-                'bip122:000000000019d6689c085ae165831e93:128Lkh3S7CkDTBZ8W7BbpsN3YYizJMp8p6',
+                'eip155:137:0x1280000000000000000000000000000000000000',
               ],
             },
           },
@@ -1621,9 +1618,9 @@ describe('permission background API methods', () => {
               },
             },
             optionalScopes: {
-              'bip122:000000000019d6689c085ae165831e93': {
+              'eip155:137': {
                 accounts: [
-                  'bip122:000000000019d6689c085ae165831e93:128Lkh3S7CkDTBZ8W7BbpsN3YYizJMp8p6',
+                  'eip155:137:0x1280000000000000000000000000000000000000',
                 ],
               },
             },
@@ -1635,10 +1632,7 @@ describe('permission background API methods', () => {
 
       setupPermissionBackgroundApiMethods({
         permissionController,
-      }).setPermittedChains('foo.com', [
-        'eip155:1',
-        'bip122:000000000019d6689c085ae165831e93',
-      ]);
+      }).setPermittedChains('foo.com', ['eip155:1', 'eip155:137']);
 
       expect(permissionController.updateCaveat).toHaveBeenCalledWith(
         'foo.com',
@@ -1651,9 +1645,9 @@ describe('permission background API methods', () => {
             },
           },
           optionalScopes: {
-            'bip122:000000000019d6689c085ae165831e93': {
+            'eip155:137': {
               accounts: [
-                'bip122:000000000019d6689c085ae165831e93:128Lkh3S7CkDTBZ8W7BbpsN3YYizJMp8p6',
+                'eip155:137:0x1280000000000000000000000000000000000000',
               ],
             },
           },

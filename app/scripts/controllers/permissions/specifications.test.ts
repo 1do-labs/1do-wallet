@@ -1,4 +1,3 @@
-import { SnapCaveatType } from '@metamask/snaps-rpc-methods';
 import {
   Caip25CaveatType,
   Caip25EndowmentPermissionName,
@@ -19,49 +18,9 @@ describe('PermissionController specifications', () => {
       const caveatSpecifications = getCaveatSpecifications(
         {} as Parameters<typeof caip25CaveatBuilder>[0],
       );
-      expect(Object.keys(caveatSpecifications)).toHaveLength(14);
+      expect(Object.keys(caveatSpecifications)).toHaveLength(1);
       expect(caveatSpecifications[Caip25CaveatType].type).toStrictEqual(
         Caip25CaveatType,
-      );
-
-      expect(caveatSpecifications.permittedDerivationPaths.type).toStrictEqual(
-        SnapCaveatType.PermittedDerivationPaths,
-      );
-      expect(caveatSpecifications.permittedCoinTypes.type).toStrictEqual(
-        SnapCaveatType.PermittedCoinTypes,
-      );
-      expect(caveatSpecifications.chainIds.type).toStrictEqual(
-        SnapCaveatType.ChainIds,
-      );
-      expect(caveatSpecifications.snapCronjob.type).toStrictEqual(
-        SnapCaveatType.SnapCronjob,
-      );
-      expect(caveatSpecifications.transactionOrigin.type).toStrictEqual(
-        SnapCaveatType.TransactionOrigin,
-      );
-      expect(caveatSpecifications.signatureOrigin.type).toStrictEqual(
-        SnapCaveatType.SignatureOrigin,
-      );
-      expect(caveatSpecifications.rpcOrigin.type).toStrictEqual(
-        SnapCaveatType.RpcOrigin,
-      );
-      expect(caveatSpecifications.snapIds.type).toStrictEqual(
-        SnapCaveatType.SnapIds,
-      );
-      expect(caveatSpecifications.keyringOrigin.type).toStrictEqual(
-        SnapCaveatType.KeyringOrigin,
-      );
-      expect(caveatSpecifications.maxRequestTime.type).toStrictEqual(
-        SnapCaveatType.MaxRequestTime,
-      );
-      expect(caveatSpecifications.lookupMatchers.type).toStrictEqual(
-        SnapCaveatType.LookupMatchers,
-      );
-      expect(caveatSpecifications.protocolSnapScopes.type).toStrictEqual(
-        SnapCaveatType.ProtocolSnapScopes,
-      );
-      expect(caveatSpecifications.keyringCapabilities.type).toStrictEqual(
-        SnapCaveatType.KeyringCapabilities,
       );
     });
   });

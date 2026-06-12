@@ -1,8 +1,7 @@
 import React, { useCallback, useContext, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { I18nContext } from '../../../contexts/i18n';
-import { getUseExternalServices } from '../../../selectors';
 
 import { INVALID_ASSET_TYPE } from '../../../helpers/constants/error-keys';
 import { showModal } from '../../../store/actions';
@@ -27,25 +26,16 @@ import {
 
 import { Asset } from '../types/asset';
 import { navigateToSendRoute } from '../../confirmations/utils/send';
-import { isEvmChainId } from '../../../../shared/lib/asset-utils';
 
 const TokenButtons = ({
   token,
-  disableSendForNonEvm = false,
-  isMarketClosed = false,
 }: {
   token: Asset & { type: AssetType.token };
-  /** When true, disables the send button for non-EVM chains (used on asset page) */
-  disableSendForNonEvm?: boolean;
-  /** When true, disables the swap button because the stock market is closed */
-  isMarketClosed?: boolean;
 }) => {
   const dispatch = useDispatch();
   const t = useContext(I18nContext);
   const { trackEvent } = useContext(MetaMetricsContext);
   const navigate = useNavigate();
-  const isExternalServicesEnabled = useSelector(getUseExternalServices);
-  const isEvm = isEvmChainId(token.chainId);
 
   useEffect(() => {
     if (token.isERC721) {
@@ -67,7 +57,7 @@ const TokenButtons = ({
           // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
           // eslint-disable-next-line @typescript-eslint/naming-convention
           token_symbol: token.symbol,
-          location: MetaMetricsSwapsEventSource.TokenView,
+          location: 'Token View',
           text: 'Send',
           // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
           // eslint-disable-next-line @typescript-eslint/naming-convention
@@ -110,10 +100,7 @@ const TokenButtons = ({
         }
         label={t('send')}
         data-testid="eth-overview-send"
-        disabled={
-          token.isERC721 ||
-          (disableSendForNonEvm && !isEvm && !isExternalServicesEnabled)
-        }
+        disabled={token.isERC721}
       />
     </Box>
   );

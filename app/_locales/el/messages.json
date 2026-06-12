@@ -315,12 +315,6 @@
   "addRpcUrl": {
     "message": "Προσθήκη διεύθυνσης URL του RPC"
   },
-  "addSnapAccountToggle": {
-    "message": "Ενεργοποίηση της λειτουργίας \"Προσθήκη λογαριασμού Snap (Beta)\""
-  },
-  "addSnapAccountsDescription": {
-    "message": "Η ενεργοποίηση αυτής της λειτουργίας θα σας δώσει τη δυνατότητα να προσθέσετε νέο λογαριασμό Snaps Beta απευθείας από τη λίστα λογαριασμών σας. Εάν εγκαταστήσετε έναν λογαριασμό Snap, να θυμάστε ότι πρόκειται για μια υπηρεσία τρίτων."
-  },
   "addSuggestedNFTs": {
     "message": "Προσθήκη προτεινόμενων NFT"
   },
@@ -651,11 +645,11 @@
   },
   "andForListItems": {
     "message": "$1 και $2",
-    "description": "$1 is the first item, $2 is the last item in a list of items. Used in Snap Install Warning modal."
+    "description": "$1 is the first item, $2 is the last item in a list of items."
   },
   "andForTwoItems": {
     "message": "$1 και $2",
-    "description": "$1 is the first item, $2 is the second item. Used in Snap Install Warning modal."
+    "description": "$1 is the first item, $2 is the second item."
   },
   "annual": {
     "message": "Ετησίως"
@@ -842,9 +836,6 @@
   "backupApprovalNotice": {
     "message": "Δημιουργήστε αντίγραφο ασφαλείας της Μυστικής σας Φράσης Ανάκτησης για να διατηρήσετε το πορτοφόλι και τα χρήματά σας ασφαλή."
   },
-  "backupKeyringSnapReminder": {
-    "message": "Βεβαιωθείτε ότι μπορείτε να έχετε πρόσβαση σε όλους τους λογαριασμούς που έχουν δημιουργηθεί από αυτό το Snap πριν το αφαιρέσετε"
-  },
   "backupNow": {
     "message": "Δημιουργήστε αντίγραφο ασφαλείας τώρα"
   },
@@ -895,9 +886,6 @@
   "basicFunctionalityRequired_goToHome": {
     "message": "Μετάβαση στην αρχική σελίδα"
   },
-  "basicFunctionalityRequired_openCreateSnapAccountPage": {
-    "message": "Ανοίξτε τη σελίδα Δημιουργία Λογαριασμού"
-  },
   "basicFunctionalityRequired_openDefiPage": {
     "message": "Ανοίξτε τη σελίδα DeFi"
   },
@@ -912,9 +900,6 @@
   },
   "basicFunctionalityRequired_openRewardsPage": {
     "message": "Ανοίξτε τη σελίδα Ανταμοιβές"
-  },
-  "basicFunctionalityRequired_openSnapsPage": {
-    "message": "Ανοίξτε τη σελίδα Snaps"
   },
   "basicFunctionalityRequired_openSwapsPage": {
     "message": "Ανοίξτε τη σελίδα Ανταλλαγές"
@@ -1498,21 +1483,6 @@
   "concentratedSupplyDistributionTitle": {
     "message": "Συγκεντρωμένη κατανομή προσφοράς"
   },
-  "configureSnapPopupDescription": {
-    "message": "Τώρα αποχωρείτε από το 1do για να ρυθμίσετε αυτό το snap."
-  },
-  "configureSnapPopupInstallDescription": {
-    "message": "Τώρα αποχωρείτε από το 1do για να εγκαταστήσετε αυτό το snap."
-  },
-  "configureSnapPopupInstallTitle": {
-    "message": "Εγκατάσταση του snap"
-  },
-  "configureSnapPopupLink": {
-    "message": "Κάντε κλικ σε αυτόν τον σύνδεσμο για να συνεχίσετε:"
-  },
-  "configureSnapPopupTitle": {
-    "message": "Διαμόρφωση του snap"
-  },
   "confirm": {
     "message": "Επιβεβαίωση"
   },
@@ -1749,10 +1719,6 @@
   "connectMoreAccounts": {
     "message": "Σύνδεση περισσότερων λογαριασμών"
   },
-  "connectSnap": {
-    "message": "Σύνδεση $1",
-    "description": "$1 is the snap for which a connection is being requested."
-  },
   "connectWithMetaMask": {
     "message": "Σύνδεση με το 1do"
   },
@@ -1773,9 +1739,6 @@
   "connectedSites": {
     "message": "Συνδεδεμένοι ιστότοποι"
   },
-  "connectedSitesAndSnaps": {
-    "message": "Συνδεδεμένοι ιστότοποι και Snaps"
-  },
   "connectedSitesDescription": {
     "message": "Το $1 είναι συνδεδεμένο σε αυτές τις ιστοσελίδες. Μπορούν να δουν τη διεύθυνση του λογαριασμού σας.",
     "description": "$1 is the account name"
@@ -1783,12 +1746,6 @@
   "connectedSitesEmptyDescription": {
     "message": "Το $1 δεν είναι συνδεδεμένο με καμία τοποθεσία.",
     "description": "$1 is the account name"
-  },
-  "connectedSnapAndNoAccountDescription": {
-    "message": "Το 1do είναι συνδεδεμένο σε αυτόν τον ιστότοπο, αλλά δεν έχουν συνδεθεί ακόμα λογαριασμοί"
-  },
-  "connectedSnaps": {
-    "message": "Συνδεδεμένα Snaps"
   },
   "connectedWithAccount": {
     "message": "$1 λογαριασμοί συνδεδεμένοι",
@@ -1836,10 +1793,6 @@
   "connectionFailed": {
     "message": "Η σύνδεση απέτυχε"
   },
-  "connectionFailedDescription": {
-    "message": "Η λήψη του $1 απέτυχε, ελέγξτε το δίκτυό σας και προσπαθήστε ξανά.",
-    "description": "$1 is the name of the snap being fetched."
-  },
   "connectionPopoverDescription": {
     "message": "Για να συνδεθείτε σε έναν ιστότοπο, επιλέξτε το κουμπί σύνδεσης. Το 1do μπορεί να συνδεθεί μόνο με ιστότοπους web3."
   },
@@ -1847,7 +1800,7 @@
     "message": "Αίτημα σύνδεσης"
   },
   "connectionsRemovedModalDescription": {
-    "message": "Ορισμένες συνδέσεις (όπως τα πορτοφόλια υλικού και τα snap) αφαιρέθηκαν λόγω αδράνειας σε αυτήν τη συσκευή. Μπορείτε να τα προσθέσετε ξανά οποιαδήποτε στιγμή από τις Ρυθμίσεις."
+    "message": "Some connections (like hardware wallets) were removed due to inactivity on this device. You can re-add them anytime in Settings."
   },
   "connectionsRemovedModalTitle": {
     "message": "Οι συνδέσεις αφαιρέθηκαν"
@@ -1866,10 +1819,6 @@
   },
   "contacts": {
     "message": "Επαφές"
-  },
-  "contentFromSnap": {
-    "message": "Περιεχόμενο από το $1",
-    "description": "$1 represents the name of the snap"
   },
   "continue": {
     "message": "Συνεχίστε"
@@ -1954,12 +1903,6 @@
   },
   "createPasswordMarketing": {
     "message": "Λάβετε ενημερώσεις προϊόντος, συμβουλές και νέα, συμπεριλαμβανομένων μέσω email. Ενδέχεται να χρησιμοποιήσουμε τις αλληλεπιδράσεις σας για να βελτιώσουμε το περιεχόμενο που παρέχουμε."
-  },
-  "createSnapAccountDescription": {
-    "message": "Το $1 θέλει να προσθέσει έναν νέο λογαριασμό στο 1do."
-  },
-  "createSnapAccountTitle": {
-    "message": "Δημιουργία λογαριασμού"
   },
   "createSolanaAccount": {
     "message": "Δημιουργία λογαριασμού στο Solana"
@@ -2346,10 +2289,6 @@
   "description": {
     "message": "Περιγραφή"
   },
-  "descriptionFromSnap": {
-    "message": "Περιγραφή από $1",
-    "description": "$1 represents the name of the snap"
-  },
   "destinationAccountPickerNoEligible": {
     "message": "Δεν βρέθηκαν επιλέξιμοι λογαριασμοί"
   },
@@ -2406,9 +2345,6 @@
   "disconnectAllSitesSuccess": {
     "message": "Όλες οι αποκεντρωμένες εφαρμογές (dapps) αποσυνδέθηκαν με επιτυχία."
   },
-  "disconnectAllSnapsText": {
-    "message": "Snaps"
-  },
   "disconnectMessage": {
     "message": "Αυτό θα σας αποσυνδέσει από αυτόν το ιστότοπο"
   },
@@ -2420,10 +2356,6 @@
   },
   "discover": {
     "message": "Ανακαλύψτε"
-  },
-  "discoverSnaps": {
-    "message": "Ανακαλύψτε τα Snaps",
-    "description": "Text that links to the Snaps website. Displayed in a banner on Snaps list page in settings."
   },
   "dismiss": {
     "message": "Απόρριψη"
@@ -2619,9 +2551,6 @@
   "enableSmartContractAccountDescription": {
     "message": "Επωφεληθείτε από ταχύτερες συναλλαγές, χαμηλότερα τέλη δικτύου και περισσότερη ασφάλεια στα υποστηριζόμενα δίκτυα."
   },
-  "enableSnap": {
-    "message": "Ενεργοποίηση"
-  },
   "enableToken": {
     "message": "ενεργοποίηση $1",
     "description": "$1 is a token symbol, e.g. ETH"
@@ -2774,10 +2703,6 @@
   "errorWhileConnectingToRPC": {
     "message": "Σφάλμα κατά τη σύνδεση στο προσαρμοσμένο δίκτυο."
   },
-  "errorWithSnap": {
-    "message": "Σφάλμα με $1",
-    "description": "$1 represents the name of the snap"
-  },
   "estimatedChanges": {
     "message": "Εκτιμώμενες αλλαγές"
   },
@@ -2829,10 +2754,6 @@
   },
   "exportYourDataDescription": {
     "message": "Μπορείτε να εξάγετε δεδομένα όπως οι επαφές και οι προτιμήσεις σας."
-  },
-  "extendWalletWithSnaps": {
-    "message": "Προσαρμόστε την εμπειρία του πορτοφολιού σας.",
-    "description": "Banner description displayed on Snaps list page in Settings when less than 6 Snaps is installed."
   },
   "externalAccount": {
     "message": "Εξωτερικός λογαριασμός"
@@ -2893,7 +2814,7 @@
     "description": "This is a warning shown on the Flask Welcome screen, intended to encourage non-developers not to proceed any further. $1 is the bolded message 'flaskWelcomeUninstall'"
   },
   "flaskWelcomeWarning2": {
-    "message": "Δεν εγγυόμαστε την ασφάλεια ή τη σταθερότητα αυτής της επέκτασης. Τα νέα APIs που προσφέρονται από το Flask δεν έχουν βελτιστοποιηθεί κατά των επιθέσεων phishing, που σημαίνει ότι οποιαδήποτε ιστοσελίδα ή snap απαιτεί το Flask μπορεί να είναι μια κακόβουλη προσπάθεια να κλέψει τα περιουσιακά στοιχεία σας.",
+    "message": "We do not guarantee the safety or stability of this extension. The new APIs offered by Flask are not hardened against phishing attacks, meaning that any site that requires Flask might be a malicious attempt to steal your assets.",
     "description": "This explains the risks of using MetaMask Flask"
   },
   "flaskWelcomeWarning3": {
@@ -3450,10 +3371,6 @@
   "insights": {
     "message": "Αναλύσεις"
   },
-  "insightsFromSnap": {
-    "message": "Απόψεις για το $1",
-    "description": "$1 represents the name of the snap"
-  },
   "install": {
     "message": "Εγκατάσταση"
   },
@@ -3462,10 +3379,6 @@
   },
   "installRequest": {
     "message": "Προσθήκη στο 1do"
-  },
-  "installedOn": {
-    "message": "Εγκαταστάθηκε στο $1",
-    "description": "$1 is the date when the snap has been installed"
   },
   "insufficientBalance": {
     "message": "Ανεπαρκές υπόλοιπο."
@@ -3599,18 +3512,6 @@
   },
   "keyringAccountPublicAddress": {
     "message": "Δημόσια διεύθυνση"
-  },
-  "keyringSnapRemovalResult1": {
-    "message": "$1 $2αφαιρέθηκαν",
-    "description": "Displays the result after removal of a keyring snap. $1 is the snap name, $2 is whether it is successful or not"
-  },
-  "keyringSnapRemovalResultNotSuccessful": {
-    "message": "όχι ",
-    "description": "Displays the `not` word in $2."
-  },
-  "keyringSnapRemoveConfirmation": {
-    "message": "Πληκτρολογήστε $1 για να επιβεβαιώσετε ότι θέλετε να καταργήσετε αυτό το snap:",
-    "description": "Asks user to input the name nap prior to deleting the snap. $1 is the snap name"
   },
   "keystone": {
     "message": "Βασικά στοιχεία"
@@ -3765,9 +3666,6 @@
   },
   "loading": {
     "message": "Φόρτωση..."
-  },
-  "loadingScreenSnapMessage": {
-    "message": "Ολοκληρώστε τη συναλλαγή στο Snap."
   },
   "loadingTokenList": {
     "message": "Φόρτωση της λίστας των tokens"
@@ -3950,10 +3848,6 @@
   "metaMetricsIdNotAvailableError": {
     "message": "Εφόσον δεν έχετε επιλέξει ποτέ το 1do Metrics, δεν υπάρχουν δεδομένα προς διαγραφή εδώ."
   },
-  "metadataModalSourceTooltip": {
-    "message": "Το $1 φιλοξενείται στο npm και το $2 είναι το μοναδικό αναγνωριστικό αυτού του Snap.",
-    "description": "$1 is the snap name and $2 is the snap NPM id."
-  },
   "metamaskFee": {
     "message": "Χρεώσεις στο 1do"
   },
@@ -4091,10 +3985,6 @@
   },
   "multichainQuoteCardRateLabel": {
     "message": "Τιμή"
-  },
-  "multipleSnapConnectionWarning": {
-    "message": "Το $1 θέλει να χρησιμοποιήσει $2 Snaps",
-    "description": "$1 is the dapp and $2 is the number of snaps it wants to connect to."
   },
   "musdBonusExplanation": {
     "message": "Μετατρέψτε τα stablecoins σας σε mUSD και κερδίστε \nέως και $1% μπόνους ετησίως, το οποίο μπορείτε \nνα εξαργυρώσετε καθημερινά. $2",
@@ -4581,9 +4471,6 @@
   "noDomainResolution": {
     "message": "Δεν παρέχεται ανάλυση για τον τομέα."
   },
-  "noHardwareWalletOrSnapsSupport": {
-    "message": "Τα Snaps και τα περισσότερα πορτοφόλια υλικού δεν θα λειτουργούν με την τρέχουσα έκδοση του προγράμματος περιήγησής σας."
-  },
   "noMMFeeSwapping": {
     "message": "Χωρίς τέλη στο 1do"
   },
@@ -4601,9 +4488,6 @@
   },
   "noOptionsAvailableMessage": {
     "message": "Αυτή η διαδρομή της συναλλαγής δεν είναι διαθέσιμη προς το παρόν. Δοκιμάστε να αλλάξετε το ποσό, το δίκτυο ή το token και θα βρούμε την καλύτερη επιλογή."
-  },
-  "noSnaps": {
-    "message": "Δεν έχετε εγκαταστήσει κανένα snap."
   },
   "noTokensMatchingYourFilters": {
     "message": "Δεν υπάρχουν token που να ταιριάζουν με τα φίλτρα σας"
@@ -4998,10 +4882,6 @@
   "otherPermissionsOnSiteTitle": {
     "message": "Άλλες άδειες σε αυτόν τον ιστότοπο"
   },
-  "otherSnaps": {
-    "message": "άλλα snaps",
-    "description": "Used in the 'permission_rpc' message."
-  },
   "others": {
     "message": "άλλα"
   },
@@ -5116,49 +4996,13 @@
     "message": "Ανακλήθηκε σε αυτή την ενημέρωση για $1",
     "description": "Permission cell status for revoked permission including accounts, rendered as AvatarGroup which is $1."
   },
-  "permission_accessNamedSnap": {
-    "message": "Σύνδεση με $1.",
-    "description": "The description for the `wallet_snap` permission. $1 is the human-readable name of the snap."
-  },
   "permission_accessNetwork": {
     "message": "Πρόσβαση στο διαδίκτυο.",
     "description": "The description of the `endowment:network-access` permission."
   },
-  "permission_accessNetworkDescription": {
-    "message": "Επιτρέψτε στο $1 να έχει πρόσβαση στο διαδίκτυο. Αυτό μπορεί να χρησιμοποιηθεί για αποστολή και λήψη δεδομένων με διακομιστές τρίτων.",
-    "description": "An extended description of the `endowment:network-access` permission. $1 is the snap name."
-  },
-  "permission_accessSnap": {
-    "message": "Συνδεθείτε στο snap $1.",
-    "description": "The description for the `wallet_snap` permission. $1 is the name of the snap."
-  },
-  "permission_accessSnapDescription": {
-    "message": "Επιτρέψτε στον ιστότοπο ή στο snap να αλληλεπιδράσει με το $1.",
-    "description": "The description for the `wallet_snap_*` permission. $1 is the name of the Snap."
-  },
   "permission_assets": {
     "message": "Εμφάνιση των περιουσιακών στοιχείων του λογαριασμού στο 1do.",
     "description": "The description for the `endowment:assets` permission."
-  },
-  "permission_assetsDescription": {
-    "message": "Επιτρέπει στο $1 να παρέχει πληροφορίες για περιουσιακά στοιχεία στο πρόγραμμα του 1do. Τα περιουσιακά στοιχεία μπορούν να είναι εντός ή εκτός αλυσίδας.",
-    "description": "An extended description for the `endowment:assets` permission. $1 is the name of the Snap."
-  },
-  "permission_cronjob": {
-    "message": "Προγραμματισμός και εκτέλεση περιοδικών ενεργειών.",
-    "description": "The description for the `snap_cronjob` permission"
-  },
-  "permission_cronjobDescription": {
-    "message": "Επιτρέψτε στο $1 να εκτελεί ενέργειες που εκτελούνται περιοδικά σε σταθερές ώρες, ημερομηνίες ή διαστήματα. Αυτό μπορεί να χρησιμοποιηθεί για την ενεργοποίηση αλληλεπιδράσεων ή ειδοποιήσεων ευαίσθητων στο χρόνο.",
-    "description": "An extended description for the `snap_cronjob` permission. $1 is the snap name."
-  },
-  "permission_dialog": {
-    "message": "Εμφάνιση παραθύρων διαλόγου στο 1do.",
-    "description": "The description for the `snap_dialog` permission"
-  },
-  "permission_dialogDescription": {
-    "message": "Επιτρέψτε στο $1 να εμφανίζει αναδυόμενα παράθυρα του 1do με προσαρμοσμένο κείμενο, πεδίο εισαγωγής και κουμπιά για την έγκριση ή την απόρριψη μιας ενέργειας.\nΜπορεί να χρησιμοποιηθεί για τη δημιουργία π.χ. ειδοποιήσεων, επιβεβαιώσεων και ροών επιλογής για το snap.",
-    "description": "An extended description for the `snap_dialog` permission. $1 is the snap name."
   },
   "permission_ethereumAccounts": {
     "message": "Δείτε τη διεύθυνση, το υπόλοιπο του λογαριασμού, τη δραστηριότητα και προτείνετε συναλλαγές προς έγκριση.",
@@ -5168,125 +5012,29 @@
     "message": "Πρόσβαση στον πάροχο Ethereum.",
     "description": "The description for the `endowment:ethereum-provider` permission"
   },
-  "permission_ethereumProviderDescription": {
-    "message": "Επιτρέψτε στο $1 να επικοινωνεί απευθείας με το 1do, προκειμένου να διαβάζει δεδομένα από το blockchain και να προτείνει μηνύματα και συναλλαγές.",
-    "description": "An extended description for the `endowment:ethereum-provider` permission. $1 is the snap name."
-  },
-  "permission_getEntropy": {
-    "message": "Δημιουργία τυχαίων κλειδιών μοναδικών σε αυτό το $1.",
-    "description": "The description for the `snap_getEntropy` permission. $1 is the snap name."
-  },
-  "permission_getEntropyDescription": {
-    "message": "Επιτρέψτε στο $1 να παράγει τυχαία κλειδιά μοναδικά για αυτό το $1, χωρίς να τα εκθέτει. Αυτά τα κλειδιά είναι ξεχωριστά από τον λογαριασμό (-ους) σας στο 1do και δεν σχετίζονται με τα ιδιωτικά σας κλειδιά ή τη Μυστική Φράση Ανάκτησης. Άλλα snaps δεν μπορούν να έχουν πρόσβαση σε αυτές τις πληροφορίες.",
-    "description": "An extended description for the `snap_getEntropy` permission. $1 is the snap name."
-  },
-  "permission_getLocale": {
-    "message": "Προβολή της γλώσσας προτίμησής σας.",
-    "description": "The description for the `snap_getLocale` permission"
-  },
-  "permission_getLocaleDescription": {
-    "message": "Επιτρέψτε στο $1 να έχει πρόσβαση στη γλώσσα προτίμησής σας από τις ρυθμίσεις του 1do. Αυτό μπορεί να χρησιμεύει για την τοπική προσαρμογή και την εμφάνιση του περιεχομένου του $1 στη γλώσσα σας.",
-    "description": "An extended description for the `snap_getLocale` permission. $1 is the snap name."
-  },
-  "permission_getPreferences": {
-    "message": "Δείτε πληροφορίες όπως η γλώσσα προτίμησής σας και τα παραστατικά νομίσματα.",
-    "description": "The description for the `snap_getPreferences` permission"
-  },
-  "permission_getPreferencesDescription": {
-    "message": "Επιτρέψτε στο $1 να έχει πρόσβαση σε πληροφορίες όπως η προτιμώμενη γλώσσα και το νόμισμα στις ρυθμίσεις του 1do. Αυτό βοηθά το $1 να εμφανίζει περιεχόμενο προσαρμοσμένο στις προτιμήσεις σας. ",
-    "description": "An extended description for the `snap_getPreferences` permission. $1 is the snap name."
-  },
   "permission_homePage": {
     "message": "Εμφάνιση μιας προσαρμοσμένης οθόνης",
     "description": "The description for the `endowment:page-home` permission"
-  },
-  "permission_homePageDescription": {
-    "message": "Επιτρέψτε στο $1 να εμφανίσει μια προσαρμοσμένη αρχική οθόνη στο 1do. Αυτή μπορεί να χρησιμοποιηθεί για διεπαφές χρήστη, διαμόρφωση και πίνακες οργάνων.",
-    "description": "An extended description for the `endowment:page-home` permission. $1 is the snap name."
   },
   "permission_keyring": {
     "message": "Να επιτρέπονται τα αιτήματα για την προσθήκη και τον έλεγχο λογαριασμών του Ethereum",
     "description": "The description for the `endowment:keyring` permission"
   },
-  "permission_keyringDescription": {
-    "message": "Επιτρέψτε σε αυτό το $1 να λαμβάνει αιτήματα προσθήκης ή αφαίρεσης λογαριασμών, καθώς και να υπογράφει και να πραγματοποιεί συναλλαγές εκ μέρους αυτών των λογαριασμών.",
-    "description": "An extended description for the `endowment:keyring` permission. $1 is the snap name."
-  },
   "permission_lifecycleHooks": {
     "message": "Χρησιμοποιήστε επιχειρηματικά μοντέλα.",
     "description": "The description for the `endowment:lifecycle-hooks` permission"
-  },
-  "permission_lifecycleHooksDescription": {
-    "message": "Επιτρέψτε στο $1 να χρησιμοποιεί επιχειρηματικά μοντέλα για την εκτέλεση κώδικα σε συγκεκριμένες χρονικές στιγμές κατά τη διάρκεια του κύκλου ζωής του.",
-    "description": "An extended description for the `endowment:lifecycle-hooks` permission. $1 is the snap name."
-  },
-  "permission_manageAccounts": {
-    "message": "Προσθήκη και έλεγχος λογαριασμών του Ethereum",
-    "description": "The description for `snap_manageAccounts` permission"
-  },
-  "permission_manageAccountsDescription": {
-    "message": "Επιτρέψτε σε αυτό το $1 να προσθέτει ή να αφαιρεί λογαριασμούς Ethereum και, στη συνέχεια, να πραγματοποιεί συναλλαγές και να υπογράφει με αυτούς τους λογαριασμούς.",
-    "description": "An extended description for the `snap_manageAccounts` permission. $1 is the snap name."
-  },
-  "permission_manageBip32Keys": {
-    "message": "Διαχειριστείτε λογαριασμούς $1.",
-    "description": "The description for the `snap_getBip32Entropy` permission. $1 is a derivation path, e.g. 'm/44'/0'/0' (secp256k1)'."
-  },
-  "permission_manageBip44AndBip32KeysDescription": {
-    "message": "Επιτρέψτε στο $1 να διαχειρίζεται λογαριασμούς και στοιχεία στο ζητούμενο δίκτυο. Αυτοί οι λογαριασμοί προέρχονται από τη μυστική φράση ανάκτησης και δημιουργούν αντίγραφα ασφαλείας από αυτήν (χωρίς να την αποκαλύπτουν). Με τη δυνατότητα εξαγωγής κλειδιών, το $1 μπορεί να υποστηρίξει μια ποικιλία πρωτοκόλλων blockchain πέρα από το Ethereum (EVM).",
-    "description": "An extended description for the `snap_getBip44Entropy` and `snap_getBip44Entropy` permissions. $1 is the snap name."
-  },
-  "permission_manageBip44Keys": {
-    "message": "Διαχειριστείτε λογαριασμούς $1.",
-    "description": "The description for the `snap_getBip44Entropy` permission. $1 is the name of a protocol, e.g. 'Filecoin'."
-  },
-  "permission_manageState": {
-    "message": "Αποθηκεύστε και διαχειριστείτε τα δεδομένα στη συσκευή σας.",
-    "description": "The description for the `snap_manageState` permission"
-  },
-  "permission_manageStateDescription": {
-    "message": "Επιτρέψτε στο $1 να αποθηκεύει, να ενημερώνει και να ανακτά δεδομένα με ασφάλεια και με κρυπτογράφηση. Άλλα snaps δεν μπορούν να έχουν πρόσβαση σε αυτές τις πληροφορίες.",
-    "description": "An extended description for the `snap_manageState` permission. $1 is the snap name."
   },
   "permission_multichainProvider": {
     "message": "Αποκτήστε πρόσβαση στον πάροχο Multichain.",
     "description": "The description for the `endowment:multichain-provider` permission"
   },
-  "permission_multichainProviderDescription": {
-    "message": "Επιτρέψτε στο $1 να επικοινωνεί απευθείας με το 1do, προκειμένου να διαβάζει δεδομένα από το blockchain και να προτείνει μηνύματα και συναλλαγές.",
-    "description": "An extended description for the `endowment:multichain-provider` permission. $1 is the snap name."
-  },
   "permission_nameLookup": {
     "message": "Παροχή αναζήτησης τομέων και διευθύνσεων.",
     "description": "The description for the `endowment:name-lookup` permission."
   },
-  "permission_nameLookupDescription": {
-    "message": "Επιτρέψτε στο snap να αντλεί και να εμφανίζει αναζητήσεις διευθύνσεων και τομέων σε διαφορετικά μέρη του 1do UI.",
-    "description": "An extended description for the `endowment:name-lookup` permission."
-  },
-  "permission_notifications": {
-    "message": "Προβολή ειδοποιήσεων.",
-    "description": "The description for the `snap_notify` permission"
-  },
-  "permission_notificationsDescription": {
-    "message": "Επιτρέψτε στο $1 να εμφανίζει ειδοποιήσεις εντός του 1do. Ένα σύντομο κείμενο ειδοποίησης μπορεί να ενεργοποιηθεί από το snap για πληροφορίες που μπορούν να ληφθούν υπόψη ή σχετίζονται με το χρόνο.",
-    "description": "An extended description for the `snap_notify` permission. $1 is the snap name."
-  },
   "permission_protocol": {
     "message": "Παρέχετε δεδομένα πρωτοκόλλου για μία ή περισσότερες αλυσίδες.",
     "description": "The description for the `endowment:protocol` permission."
-  },
-  "permission_protocolDescription": {
-    "message": "Επιτρέψτε στο $1 να παρέχει στο 1do δεδομένα πρωτοκόλλου, όπως εκτιμήσεις τελών συναλλαγών ή πληροφορίες για tokens.",
-    "description": "An extended description for the `endowment:protocol` permission. $1 is the name of the Snap."
-  },
-  "permission_rpc": {
-    "message": "Επιτρέψτε στο $1 να επικοινωνήσει απευθείας με αυτό το $2.",
-    "description": "The description for the `endowment:rpc` permission. $1 is 'other snaps' or 'websites', $2 is the snap name."
-  },
-  "permission_rpcDescription": {
-    "message": "Επιτρέψτε στο $1 να στέλνει μηνύματα στο $2 και να λαμβάνει απάντηση από το $2.",
-    "description": "An extended description for the `endowment:rpc` permission. $1 is 'other snaps' or 'websites', $2 is the snap name."
   },
   "permission_rpcDescriptionOriginList": {
     "message": "$1 και $2",
@@ -5296,49 +5044,21 @@
     "message": "Εμφάνιση πληροφοριών υπογραφής συσκευής.",
     "description": "The description for the `endowment:signature-insight` permission"
   },
-  "permission_signatureInsightDescription": {
-    "message": "Επιτρέψτε στο $1 να εμφανίζει ένα πλαίσιο με στοιχεία για κάθε αίτημα υπογραφής πριν από την έγκριση. Αυτό μπορεί να χρησιμοποιηθεί ως λύση κατά του phishing και της ασφάλειας.",
-    "description": "An extended description for the `endowment:signature-insight` permission. $1 is the snap name."
-  },
   "permission_signatureInsightOrigin": {
     "message": "Δείτε την προέλευση των ιστότοπων που δρομολογούν ένα αίτημα υπογραφής",
     "description": "The description for the `signatureOrigin` caveat, to be used with the `endowment:signature-insight` permission"
-  },
-  "permission_signatureInsightOriginDescription": {
-    "message": "Επιτρέψτε στο $1 να βλέπει την προέλευση (URI) των ιστότοπων που δρομολογούν αιτήματα υπογραφής. Αυτό μπορεί να χρησιμοποιηθεί ως λύση κατά του phishing και της ασφάλειας.",
-    "description": "An extended description for the `signatureOrigin` caveat, to be used with the `endowment:signature-insight` permission. $1 is the snap name."
   },
   "permission_transactionInsight": {
     "message": "Λήψη και εμφάνιση πληροφοριών σχετικά με τις συναλλαγές.",
     "description": "The description for the `endowment:transaction-insight` permission"
   },
-  "permission_transactionInsightDescription": {
-    "message": "Επιτρέψτε στο $1 να αποκωδικοποιεί τις συναλλαγές και να εμφανίζει πληροφορίες εντός του 1do UI. Αυτό μπορεί να χρησιμοποιηθεί για λύσεις προστασίας κατά της εξαπάτησης και της ασφάλειας.",
-    "description": "An extended description for the `endowment:transaction-insight` permission. $1 is the snap name."
-  },
   "permission_transactionInsightOrigin": {
     "message": "Δείτε την προέλευση των ιστότοπων που προτείνουν συναλλαγές",
     "description": "The description for the `transactionOrigin` caveat, to be used with the `endowment:transaction-insight` permission"
   },
-  "permission_transactionInsightOriginDescription": {
-    "message": "Επιτρέψτε στο $1 να βλέπει την προέλευση (URI) των ιστότοπων που προτείνουν συναλλαγές. Αυτό μπορεί να χρησιμοποιηθεί για λύσεις προστασίας κατά της εξαπάτησης και της ασφάλειας.",
-    "description": "An extended description for the `transactionOrigin` caveat, to be used with the `endowment:transaction-insight` permission. $1 is the snap name."
-  },
   "permission_unknown": {
     "message": "Άγνωστη άδεια: $1",
     "description": "$1 is the name of a requested permission that is not recognized."
-  },
-  "permission_viewBip32PublicKeys": {
-    "message": "Δείτε το δημόσιο κλειδί σας για το $1 ($2).",
-    "description": "The description for the `snap_getBip32PublicKey` permission. $1 is a derivation path, e.g. 'm/44'/0'/0''. $2 is the elliptic curve name, e.g. 'secp256k1'."
-  },
-  "permission_viewBip32PublicKeysDescription": {
-    "message": "Επιτρέψτε στο $2 να δει τα δημόσια κλειδιά (και τις διευθύνσεις) σας για το $1. Αυτό δεν παραχωρεί κανέναν έλεγχο λογαριασμών ή περιουσιακών στοιχείων.",
-    "description": "An extended description for the `snap_getBip32PublicKey` permission. $1 is a derivation path (name). $2 is the snap name."
-  },
-  "permission_viewNamedBip32PublicKeys": {
-    "message": "Δείτε το δημόσιο κλειδί σας για το $1.",
-    "description": "The description for the `snap_getBip32PublicKey` permission. $1 is a name for the derivation path, e.g., 'Ethereum accounts'."
   },
   "permission_walletSwitchEthereumChain": {
     "message": "Χρησιμοποιήστε τα ενεργοποιημένα δίκτυά σας",
@@ -5348,15 +5068,11 @@
     "message": "Υποστήριξη για WebAssembly.",
     "description": "The description of the `endowment:webassembly` permission."
   },
-  "permission_webAssemblyDescription": {
-    "message": "Επιτρέψτε στο $1 να έχει πρόσβαση σε περιβάλλοντα εκτέλεσης χαμηλού επιπέδου μέσω του WebAssembly.",
-    "description": "An extended description of the `endowment:webassembly` permission. $1 is the snap name."
-  },
   "permissions": {
     "message": "Άδειες"
   },
   "permissionsPageEmptyDescription": {
-    "message": "Δεν εντοπίστηκαν άδειες. Μόλις παραχωρήσετε άδειες σε έναν ιστότοπο ή εγκαταστήσετε ένα Snap, οι λεπτομέρειες θα εμφανιστούν εδώ."
+    "message": "No permissions detected. Once you grant permissions to a site, the details will appear here."
   },
   "permitSimulationChange_approve": {
     "message": "Ανώτατο όριο δαπανών"
@@ -6487,12 +6203,6 @@
   "removeAll": {
     "message": "Αφαίρεση όλων"
   },
-  "removeKeyringSnap": {
-    "message": "Η αφαίρεση αυτού του Snap αφαιρεί αυτούς τους λογαριασμούς από το 1do:"
-  },
-  "removeKeyringSnapToolTip": {
-    "message": "Το snap ελέγχει τους λογαριασμούς και με την αφαίρεσή του, οι λογαριασμοί θα αφαιρεθούν και από το 1do, αλλά θα παραμείνουν στην αλυσίδα συστοιχιών (blockchain)."
-  },
   "removeNFT": {
     "message": "Αφαίρεση του NFT"
   },
@@ -6501,22 +6211,6 @@
   },
   "removeNftMessage": {
     "message": "Το NFT αφαιρέθηκε με επιτυχία!"
-  },
-  "removeSnap": {
-    "message": "Αφαίρεση Snap"
-  },
-  "removeSnapAccountDescription": {
-    "message": "Εάν προχωρήσετε, αυτός ο λογαριασμός δεν θα είναι πλέον διαθέσιμος στο 1do."
-  },
-  "removeSnapAccountTitle": {
-    "message": "Διαγραφή λογαριασμού"
-  },
-  "removeSnapConfirmation": {
-    "message": "Είστε σίγουροι ότι θέλετε να αφαιρέσετε το $1;",
-    "description": "$1 represents the name of the snap"
-  },
-  "removeSnapDescription": {
-    "message": "Αυτή η ενέργεια θα διαγράψει το snap, τα δεδομένα του και θα ανακαλέσει τις άδειες που δόθηκαν."
   },
   "rename": {
     "message": "Μετονομασία",
@@ -6536,9 +6230,6 @@
   },
   "requestFromInfo": {
     "message": "Αυτός είναι ο ιστότοπος που ζητά την υπογραφή σας."
-  },
-  "requestFromInfoSnap": {
-    "message": "Αυτό είναι το Snap που ζητάει την υπογραφή σας."
   },
   "requestFromTransactionDescription": {
     "message": "Αυτός είναι ο ιστότοπος που ζητά την επιβεβαίωσή σας."
@@ -7105,9 +6796,6 @@
   "setUp": {
     "message": "Διαμόρφωση",
     "description": "Action label for Smart Accounts. Used on multichain details page."
-  },
-  "settingAddSnapAccount": {
-    "message": "Προσθήκη λογαριασμού στο snap"
   },
   "settings": {
     "message": "Ρυθμίσεις"
@@ -8013,168 +7701,6 @@
   "smartTransactionsEnabledTitle": {
     "message": "Οι συναλλαγές μόλις έγιναν πιο έξυπνες"
   },
-  "snapAccountCreated": {
-    "message": "Ο λογαριασμός δημιουργήθηκε"
-  },
-  "snapAccountCreatedDescription": {
-    "message": "Ο νέος σας λογαριασμός είναι έτοιμος για χρήση!"
-  },
-  "snapAccountCreationFailed": {
-    "message": "Αποτυχία δημιουργίας λογαριασμού"
-  },
-  "snapAccountCreationFailedDescription": {
-    "message": "Το $1 δεν κατάφερε να δημιουργήσει έναν λογαριασμό για εσάς.",
-    "description": "$1 is the snap name"
-  },
-  "snapAccountRedirectFinishSigningTitle": {
-    "message": "Ολοκλήρωση υπογραφής"
-  },
-  "snapAccountRedirectSiteDescription": {
-    "message": "Ακολουθήστε τις οδηγίες από το $1"
-  },
-  "snapAccountRemovalFailed": {
-    "message": "Αποτυχία διαγραφής λογαριασμού"
-  },
-  "snapAccountRemovalFailedDescription": {
-    "message": "Το $1 δεν κατάφερε να διαγράψει αυτόν τον λογαριασμό για εσάς.",
-    "description": "$1 is the snap name"
-  },
-  "snapAccountRemoved": {
-    "message": "Ο λογαριασμός αφαιρέθηκε"
-  },
-  "snapAccountRemovedDescription": {
-    "message": "Αυτός ο λογαριασμός δεν θα είναι πλέον διαθέσιμος για χρήση στο 1do."
-  },
-  "snapConnectTo": {
-    "message": "Σύνδεση με $1",
-    "description": "$1 is the website URL or a Snap name. Used for Snaps pre-approved connections."
-  },
-  "snapConnectionPermissionDescription": {
-    "message": "Επιτρέψτε στο $1 να συνδεθεί αυτόματα με το $2 χωρίς την έγκρισή σας.",
-    "description": "Used for Snap pre-approved connections. $1 is the Snap name, $2 is a website URL."
-  },
-  "snapConnectionWarning": {
-    "message": "Το $1 θέλει να χρησιμοποιήσει $2",
-    "description": "$2 is the snap and $1 is the dapp requesting connection to the snap."
-  },
-  "snapDetailWebsite": {
-    "message": "Ιστότοπος"
-  },
-  "snapHomeMenu": {
-    "message": "Αρχικό Μενού του Snap"
-  },
-  "snapInstallRequest": {
-    "message": "Η εγκατάσταση του $1 του δίνει τις ακόλουθες άδειες.",
-    "description": "$1 is the snap name."
-  },
-  "snapInstallSuccess": {
-    "message": "Η εγκατάσταση ολοκληρώθηκε"
-  },
-  "snapInstallWarningCheck": {
-    "message": "Το $1 θέλει άδεια για να κάνει τα εξής:",
-    "description": "Warning message used in popup displayed on snap install. $1 is the snap name."
-  },
-  "snapInstallWarningHeading": {
-    "message": "Συνεχίστε με προσοχή"
-  },
-  "snapInstallWarningPermissionDescriptionForBip32View": {
-    "message": "Επιτρέψτε στο $1 να δει τα δημόσια κλειδιά (και τις διευθύνσεις) σας. Αυτό δεν παραχωρεί κανέναν έλεγχο λογαριασμών ή περιουσιακών στοιχείων.",
-    "description": "An extended description for the `snap_getBip32PublicKey` permission used for tooltip on Snap Install Warning screen (popup/modal). $1 is the snap name."
-  },
-  "snapInstallWarningPermissionDescriptionForEntropy": {
-    "message": "Επιτρέψτε στο Snap $1 να διαχειρίζεται λογαριασμούς και στοιχεία στο ζητούμενο δίκτυο(-α). Αυτοί οι λογαριασμοί προέρχονται από τη μυστική φράση ανάκτησης και δημιουργούν αντίγραφα ασφαλείας από αυτήν (χωρίς να την αποκαλύπτουν). Με τη δυνατότητα εξαγωγής κλειδιών, το $1 μπορεί να υποστηρίξει μια ποικιλία πρωτοκόλλων blockchain πέρα από το Ethereum (EVM).",
-    "description": "An extended description for the `snap_getBip44Entropy` and `snap_getBip44Entropy` permissions used for tooltip on Snap Install Warning screen (popup/modal). $1 is the snap name."
-  },
-  "snapInstallWarningPermissionNameForEntropy": {
-    "message": "Διαχειριστείτε λογαριασμούς $1",
-    "description": "Permission name used for the Permission Cell component displayed on warning popup when installing a Snap. $1 is list of account types."
-  },
-  "snapInstallWarningPermissionNameForViewPublicKey": {
-    "message": "Δείτε το δημόσιο κλειδί σας για το $1",
-    "description": "Permission name used for the Permission Cell component displayed on warning popup when installing a Snap. $1 is list of account types."
-  },
-  "snapInstallationErrorDescription": {
-    "message": "Το $1 δεν μπόρεσε να εγκατασταθεί.",
-    "description": "Error description used when snap installation fails. $1 is the snap name."
-  },
-  "snapInstallationErrorTitle": {
-    "message": "Η εγκατάσταση απέτυχε",
-    "description": "Error title used when snap installation fails."
-  },
-  "snapResultError": {
-    "message": "Σφάλμα"
-  },
-  "snapResultSuccess": {
-    "message": "Επιτυχία"
-  },
-  "snapResultSuccessDescription": {
-    "message": "Το $1 είναι έτοιμο για χρήση"
-  },
-  "snapUIAccountSelectorTitle": {
-    "message": "Επιλέξτε λογαριασμό"
-  },
-  "snapUIAssetSelectorTitle": {
-    "message": "Επιλέξτε ένα περιουσιακό στοιχείο"
-  },
-  "snapUpdateAlertDescription": {
-    "message": "Αποκτήστε την τελευταία έκδοση του $1",
-    "description": "Description used in Snap update alert banner when snap update is available. $1 is the Snap name."
-  },
-  "snapUpdateAvailable": {
-    "message": "Διαθέσιμη ενημέρωση"
-  },
-  "snapUpdateErrorDescription": {
-    "message": "Το $1 δεν μπόρεσε να ενημερωθεί.",
-    "description": "Error description used when snap update fails. $1 is the snap name."
-  },
-  "snapUpdateErrorTitle": {
-    "message": "Η ενημέρωση απέτυχε",
-    "description": "Error title used when snap update fails."
-  },
-  "snapUpdateRequest": {
-    "message": "Η ενημέρωση του $1 του δίνει τις ακόλουθες άδειες.",
-    "description": "$1 is the Snap name."
-  },
-  "snapUpdateSuccess": {
-    "message": "Η ενημέρωση ολοκληρώθηκε"
-  },
-  "snapUrlIsBlocked": {
-    "message": "Αυτό το Snap θέλει να σας μεταφέρει σε μια μπλοκαρισμένη ιστοσελίδα. $1."
-  },
-  "snaps": {
-    "message": "Snaps"
-  },
-  "snapsConnected": {
-    "message": "Συνδεδεμένα Snaps"
-  },
-  "snapsNoInsight": {
-    "message": "Δεν υπάρχουν πληροφορίες για προβολή"
-  },
-  "snapsPrivacyWarningFirstMessage": {
-    "message": "Αναγνωρίζετε ότι κάθε Snap που εγκαθιστάτε αποτελεί υπηρεσία τρίτου μέρους, εκτός αν αναφέρεται διαφορετικά, όπως ορίζεται από την Consensys$1. Η χρήση υπηρεσιών τρίτων διέπεται από ξεχωριστούς όρους και προϋποθέσεις που ορίζει ο εκάστοτε πάροχος. Η Consensys δεν συνιστά τη χρήση οποιουδήποτε Snap από οποιοδήποτε άτομο για οποιονδήποτε λόγο. Η πρόσβαση, η χρήση ή η εξάρτησή σας από υπηρεσίες τρίτων γίνεται με δική σας ευθύνη. Η Consensys αποποιείται κάθε ευθύνη και υποχρέωση για οποιεσδήποτε απώλειες προκύψουν από τη χρήση υπηρεσιών τρίτων.",
-    "description": "First part of a message in popup modal displayed when installing a snap for the first time. $1 is terms of use link."
-  },
-  "snapsPrivacyWarningSecondMessage": {
-    "message": "Οποιεσδήποτε πληροφορίες κοινοποιείτε σε υπηρεσίες τρίτων θα συλλέγονται απευθείας από αυτές, σύμφωνα με τις πολιτικές απορρήτου τους. Παρακαλούμε ανατρέξτε στις πολιτικές απορρήτου τους για περισσότερες πληροφορίες.",
-    "description": "Second part of a message in popup modal displayed when installing a snap for the first time."
-  },
-  "snapsPrivacyWarningThirdMessage": {
-    "message": "Η Consensys δεν έχει πρόσβαση στις πληροφορίες που κοινοποιείτε σε υπηρεσίες τρίτων.",
-    "description": "Third part of a message in popup modal displayed when installing a snap for the first time."
-  },
-  "snapsSettings": {
-    "message": "Ρυθμίσεις για τα Snaps"
-  },
-  "snapsTermsOfUse": {
-    "message": "Όρους Χρήσης"
-  },
-  "snapsToggle": {
-    "message": "Ένα snap θα τρέξει μόνο εάν είναι ενεργοποιημένο"
-  },
-  "snapsUIError": {
-    "message": "Επικοινωνήστε με τους διαχειριστές του $1 για περαιτέρω υποστήριξη.",
-    "description": "This is shown when the insight snap throws an error. $1 is the snap name"
-  },
   "solanaAccountRequested": {
     "message": "Αυτός ο ιστότοπος απαιτεί λογαριασμό στο Solana."
   },
@@ -8568,10 +8094,6 @@
   },
   "submitted": {
     "message": "Σε υποβολή"
-  },
-  "suggestedBySnap": {
-    "message": "Προτείνεται από $1",
-    "description": "$1 is the snap name"
   },
   "suggestedCurrencySymbol": {
     "message": "Προτεινόμενο σύμβολο νομίσματος:"
@@ -8975,10 +8497,6 @@
   "thirdPartyApisDescription": {
     "message": "Επιλέξτε πώς θα κοινοποιείτε τη διεύθυνση IP ή τη διεύθυνση Ethereum σας σε API τρίτων. Οι αλλαγές θα επηρεάσουν την εμπειρία σας στο 1do."
   },
-  "thirdPartySoftware": {
-    "message": "Ειδοποίηση για λογισμικό τρίτων",
-    "description": "Title of a popup modal displayed when installing a snap for the first time."
-  },
   "thisContactWillBeDeleted": {
     "message": "Αυτή η επαφή θα διαγραφεί."
   },
@@ -9319,10 +8837,6 @@
     "message": "Άγνωστο δίκτυο",
     "description": "Displayed on places like Gator permissions when regular name is not available."
   },
-  "unknownNetworkForKeyEntropy": {
-    "message": "Άγνωστο δίκτυο",
-    "description": "Displayed on places like Snap install warning when regular name is not available."
-  },
   "unknownQrCode": {
     "message": "Σφάλμα: Δεν μπορέσαμε να αναγνωρίσουμε αυτόν τον κωδικό QR"
   },
@@ -9551,10 +9065,6 @@
   "warning": {
     "message": "Προειδοποίηση"
   },
-  "warningFromSnap": {
-    "message": "Προειδοποίηση από $1",
-    "description": "$1 represents the name of the snap"
-  },
   "watchEthereumAccountsDescription": {
     "message": "Η ενεργοποίηση αυτής της επιλογής θα σας δώσει τη δυνατότητα να παρακολουθείτε λογαριασμούς Ethereum μέσω μιας δημόσιας διεύθυνσης ή ενός ονόματος ENS. Για σχόλια σχετικά με αυτή τη λειτουργία Beta συμπληρώστε αυτή την $1.",
     "description": "$1 is the link to a product feedback form"
@@ -9643,5 +9153,20 @@
   },
   "yourWalletIsReadyFromReminder": {
     "message": "Φυλάξτε τη Μυστική Φράση Ανάκτησης σε ασφαλές μέρος!"
+  },
+  "suggestedBySource": {
+    "message": "Προτείνεται από $1",
+    "description": "$1 is the source name."
+  },
+  "permissionConnectTo": {
+    "message": "Σύνδεση με $1",
+    "description": "$1 is the website URL."
+  },
+  "permissionConnectionDescription": {
+    "message": "Επιτρέψτε στο $1 να συνδεθεί αυτόματα με το $2 χωρίς την έγκρισή σας.",
+    "description": "$1 is the subject name, $2 is a website URL."
+  },
+  "noHardwareWalletSupport": {
+    "message": "Most hardware wallets will not work with your current browser version."
   }
 }

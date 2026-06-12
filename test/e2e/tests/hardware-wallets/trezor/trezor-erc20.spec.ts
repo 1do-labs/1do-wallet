@@ -34,7 +34,6 @@ describe('Trezor Hardware', function (this: Suite) {
         )) ?? console.error('localNodes is undefined or empty');
         await login(driver, {
           expectedBalance: '1.21M',
-          waitForNonEvmAccounts: false,
         });
         const testDappPage = new TestDappPage(driver);
         await testDappPage.openTestDappPage();
@@ -93,7 +92,6 @@ describe('Trezor Hardware', function (this: Suite) {
         )) ?? console.error('localNodes is undefined or empty');
         await login(driver, {
           expectedBalance: '1.21M',
-          waitForNonEvmAccounts: false,
         });
         const contractAddress = contractRegistry.getContractAddress(erc20);
         const testDappPage = new TestDappPage(driver);
@@ -156,7 +154,6 @@ describe('Trezor Hardware', function (this: Suite) {
         )) ?? console.error('localNodes is undefined or empty');
         await login(driver, {
           expectedBalance: '1.21M',
-          waitForNonEvmAccounts: false,
         });
         const contractAddress = contractRegistry.getContractAddress(erc20);
         const testDappPage = new TestDappPage(driver);
@@ -213,7 +210,6 @@ describe('Trezor Hardware', function (this: Suite) {
         )) ?? console.error('localNodes is undefined or empty');
         await login(driver, {
           expectedBalance: '1.21M',
-          waitForNonEvmAccounts: false,
         });
         const contractAddress = contractRegistry.getContractAddress(erc20);
         const testDappPage = new TestDappPage(driver);

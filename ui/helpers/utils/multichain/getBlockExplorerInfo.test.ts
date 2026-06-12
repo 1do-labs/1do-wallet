@@ -119,10 +119,10 @@ describe('getBlockExplorerInfo utility functions', () => {
       expect(result).toBeNull();
     });
 
-    it('handles non-EVM network without explorer support', () => {
+    it('handles unsupported network without explorer support', () => {
       const result = getBlockExplorerInfo(mockT, testAddress, {
-        networkName: 'Bitcoin',
-        chainId: 'bitcoin:999999', // Unknown Bitcoin chain ID
+        networkName: 'Unsupported Network',
+        chainId: 'unknown:999999',
       });
       expect(result).toBeNull();
     });

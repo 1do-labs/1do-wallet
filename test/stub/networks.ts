@@ -7,10 +7,10 @@ import {
 import { type MultichainNetworkControllerState } from '@metamask/multichain-network-controller';
 import { v4 as uuidv4 } from 'uuid';
 import { Hex } from '@metamask/utils';
-import { BtcScope, SolScope, TrxScope } from '@metamask/keyring-api';
 import {
   NETWORK_TO_NAME_MAP,
   CHAIN_ID_TO_CURRENCY_SYMBOL_MAP,
+  CHAIN_IDS,
 } from '../../shared/constants/network';
 
 /**
@@ -81,27 +81,8 @@ export const mockNetworkStateOld = (
 export const mockMultichainNetworkState =
   (): MultichainNetworkControllerState => {
     return {
-      multichainNetworkConfigurationsByChainId: {
-        [BtcScope.Mainnet]: {
-          chainId: BtcScope.Mainnet,
-          name: 'Bitcoin',
-          nativeCurrency: `${BtcScope.Mainnet}/slip44:0`,
-          isEvm: false,
-        },
-        [SolScope.Mainnet]: {
-          chainId: SolScope.Mainnet,
-          name: 'Solana',
-          nativeCurrency: `${SolScope.Mainnet}/slip44:501`,
-          isEvm: false,
-        },
-        [TrxScope.Mainnet]: {
-          chainId: TrxScope.Mainnet,
-          name: 'Tron',
-          nativeCurrency: `${TrxScope.Mainnet}/slip44:195`,
-          isEvm: false,
-        },
-      },
-      selectedMultichainNetworkChainId: BtcScope.Mainnet,
+      multichainNetworkConfigurationsByChainId: {},
+      selectedMultichainNetworkChainId: CHAIN_IDS.MAINNET,
       isEvmSelected: true,
       networksWithTransactionActivity: {
         '0x0dcd5d886577d5081b0c52e242ef29e70be3e7bc': {

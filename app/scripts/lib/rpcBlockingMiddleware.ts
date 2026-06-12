@@ -1,8 +1,6 @@
 import type { JsonRpcMiddleware } from '@metamask/json-rpc-engine';
 import type { Json, JsonRpcParams } from '@metamask/utils';
 import { rpcErrors } from '@metamask/rpc-errors';
-import { type SnapId } from '@metamask/snaps-sdk';
-import { isSnapPreinstalled } from '../../../shared/lib/snaps/snaps';
 
 /**
  * State of the RPC blocking middleware.
@@ -52,13 +50,13 @@ export function createRpcBlockingCallbacks(state: RpcBlockingMiddlewareState): {
 }
 
 /**
- * Creates a JsonRpcMiddleware function that blocks requests to snaps when blockingSymbols is non-empty.
+ * Creates a JsonRpcMiddleware function that blocks requests when blockingSymbols is non-empty.
  *
  * @param options - The options for the middleware.
  * @param options.allowedOrigins - The list of origins that are allowed to bypass the blocking middleware.
  * @param options.errorMessage - The error message to return when requests are blocked.
  * @param options.state - The state of the middleware. Use createRpcBlockingCallbacks to obtain per-request callbacks.
- * @returns A JsonRpcMiddleware function that blocks requests to snaps when blockingSymbols is non-empty.
+ * @returns A JsonRpcMiddleware function that blocks requests when blockingSymbols is non-empty.
  */
 export default function createRpcBlockingMiddleware({
   allowedOrigins,
@@ -82,7 +80,7 @@ export default function createRpcBlockingMiddleware({
 
     const isAllowedOrigin = allowedOrigins.includes(origin);
 
-    if (!(isAllowedOrigin || isSnapPreinstalled(origin as SnapId))) {
+    if (!isAllowedOrigin) {
       return end(rpcErrors.resourceUnavailable(errorMessage));
     }
 

@@ -38,10 +38,6 @@ const getFixtureIgnoredKeys = (): string[] => [
   // Permissions
   'data.PermissionController.subjectMetadata',
   'data.PermissionController.subjects',
-  // Snap-related keys (source code)
-  'data.SnapController.snaps',
-  'data.SnapController.snapStates',
-  'data.SnapController.unencryptedSnapStates',
   // Subject Metadata
   'data.SubjectMetadataController.subjectMetadata',
   // Locale-related keys
@@ -84,7 +80,6 @@ const getFixtureIgnoredKeys = (): string[] => [
   'data.AppMetadataController.currentAppVersion',
   // Random ids
   'data.MultichainBalancesController.balances',
-  'data.MultichainTransactionsController.nonEvmTransactions',
   'data.NetworkController.networkConfigurationsByChainId.0x539.rpcEndpoints[0].networkClientId',
   'data.NetworkController.networksMetadata',
   'data.NetworkController.selectedNetworkClientId',

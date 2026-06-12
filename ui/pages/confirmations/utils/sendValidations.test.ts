@@ -3,23 +3,18 @@
 // @ts-ignore
 import { confusables } from 'unicode-confusables';
 
-import { isSolanaAddress } from '../../../../shared/lib/multichain/accounts';
 import { getTokenStandardAndDetailsByChain } from '../../../store/actions';
 
 import {
   findConfusablesInRecipient,
-  validateBtcAddress,
   validateEvmHexAddress,
-  validateSolanaAddress,
 } from './sendValidations';
 
 jest.mock('unicode-confusables');
-jest.mock('../../../../shared/lib/multichain/accounts');
 jest.mock('../../../store/actions', () => ({
   getTokenStandardAndDetailsByChain: jest.fn(),
 }));
 
-const mockIsSolanaAddress = jest.mocked(isSolanaAddress);
 const mockGetTokenStandardAndDetailsByChain = jest.mocked(
   getTokenStandardAndDetailsByChain,
 );
@@ -155,49 +150,6 @@ describe('SendValidations', () => {
       ).toEqual({
         error: 'tokenContractError',
         allowAcknowledge: true,
-      });
-    });
-  });
-
-  describe('validateSolanaRecipient', () => {
-    beforeEach(() => {
-      mockIsSolanaAddress.mockReturnValue(true);
-    });
-
-    it('returns error for burn addresses', async () => {
-      const burnAddress = '1nc1nerator11111111111111111111111111111111';
-      expect(validateSolanaAddress(burnAddress)).toEqual({
-        error: 'invalidAddress',
-      });
-    });
-
-    it('returns error for another burn address', async () => {
-      const burnAddress = 'So11111111111111111111111111111111111111112';
-      expect(validateSolanaAddress(burnAddress)).toEqual({
-        error: 'invalidAddress',
-      });
-    });
-
-    it('returns success for valid Solana address', async () => {
-      const validAddress = 'H8UekPGwePSmQ3ttuYGPU1sxKnk7K3SR4VBGp5dAEwQs';
-      expect(validateSolanaAddress(validAddress)).toEqual({});
-    });
-
-    it('returns error for invalid Solana address', async () => {
-      mockIsSolanaAddress.mockReturnValue(false);
-
-      const invalidAddress = 'invalid-address';
-      expect(validateSolanaAddress(invalidAddress)).toEqual({
-        error: 'invalidAddress',
-      });
-    });
-  });
-
-  describe('validateBtcAddress', () => {
-    it('returns error for invalid Bitcoin address', async () => {
-      const invalidAddress = 'invalid-address';
-      expect(validateBtcAddress(invalidAddress)).toEqual({
-        error: 'invalidAddress',
       });
     });
   });

@@ -49,7 +49,7 @@ export default {
     header: {
       control: 'array',
       description:
-        'An array of result component configurations to be rendered at the top of the page. For example: ```[{"name": "SnapAuthorshipHeader", "key": "snapHeader", "properties": { "snapId": "npm:@test/test-snap" }}]```',
+        'An array of result component configurations to be rendered at the top of the page. For example: ```[{"name": "Box", "key": "header", "children": "Custom header"}]```',
       table: {
         defaultValue: {
           summary: '[]',
@@ -170,9 +170,9 @@ export const TemplateStory = () => {
         ],
         header: [
           {
-            name: 'SnapAuthorshipHeader',
-            key: 'snapHeader',
-            properties: { snapId: 'npm:@test/test-snap' },
+            name: 'Box',
+            key: 'header',
+            children: 'Custom header',
           },
         ],
       }}

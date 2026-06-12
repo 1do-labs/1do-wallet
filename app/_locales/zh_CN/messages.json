@@ -315,12 +315,6 @@
   "addRpcUrl": {
     "message": "添加 RPC（远程过程调用）URL"
   },
-  "addSnapAccountToggle": {
-    "message": "启用“添加账户Snap（测试版）”"
-  },
-  "addSnapAccountsDescription": {
-    "message": "启用此功能后，您可以直接使用账户列表来添加新的测试版账户Snap。如果您要安装账户Snap，请紧记，此为第三方服务。"
-  },
   "addSuggestedNFTs": {
     "message": "添加推荐的 NFT"
   },
@@ -651,11 +645,11 @@
   },
   "andForListItems": {
     "message": "$1，和 $2",
-    "description": "$1 is the first item, $2 is the last item in a list of items. Used in Snap Install Warning modal."
+    "description": "$1 is the first item, $2 is the last item in a list of items."
   },
   "andForTwoItems": {
     "message": "$1 和 $2",
-    "description": "$1 is the first item, $2 is the second item. Used in Snap Install Warning modal."
+    "description": "$1 is the first item, $2 is the second item."
   },
   "annual": {
     "message": "年度"
@@ -842,9 +836,6 @@
   "backupApprovalNotice": {
     "message": "请备份您的私钥助记词，确保您的钱包和资金安全。"
   },
-  "backupKeyringSnapReminder": {
-    "message": "在去除此 Snap 之前，请确保您可以访问由其创建的任意账户"
-  },
   "backupNow": {
     "message": "立即备份"
   },
@@ -895,9 +886,6 @@
   "basicFunctionalityRequired_goToHome": {
     "message": "前往主页"
   },
-  "basicFunctionalityRequired_openCreateSnapAccountPage": {
-    "message": "打开创建账户页面"
-  },
   "basicFunctionalityRequired_openDefiPage": {
     "message": "打开去中心化金融页面"
   },
@@ -912,9 +900,6 @@
   },
   "basicFunctionalityRequired_openRewardsPage": {
     "message": "打开奖励页面"
-  },
-  "basicFunctionalityRequired_openSnapsPage": {
-    "message": "打开 Snaps 页面"
   },
   "basicFunctionalityRequired_openSwapsPage": {
     "message": "打开兑换页面"
@@ -1498,21 +1483,6 @@
   "concentratedSupplyDistributionTitle": {
     "message": "供应分布集中化"
   },
-  "configureSnapPopupDescription": {
-    "message": "您现在要离开1do来配置此snap。"
-  },
-  "configureSnapPopupInstallDescription": {
-    "message": "您现在要离开1do来安装此snap。"
-  },
-  "configureSnapPopupInstallTitle": {
-    "message": "安装Snap"
-  },
-  "configureSnapPopupLink": {
-    "message": "请点击此链接以继续："
-  },
-  "configureSnapPopupTitle": {
-    "message": "配置snap"
-  },
   "confirm": {
     "message": "确认"
   },
@@ -1752,10 +1722,6 @@
   "connectMoreAccounts": {
     "message": "连接更多账户"
   },
-  "connectSnap": {
-    "message": "连接$1",
-    "description": "$1 is the snap for which a connection is being requested."
-  },
   "connectWithMetaMask": {
     "message": "与 1do 连接"
   },
@@ -1776,9 +1742,6 @@
   "connectedSites": {
     "message": "已连接的网站"
   },
-  "connectedSitesAndSnaps": {
-    "message": "连接的网站和 Snap"
-  },
   "connectedSitesDescription": {
     "message": "$1 已连接到这些网站。他们可以查看您的账户地址。",
     "description": "$1 is the account name"
@@ -1786,12 +1749,6 @@
   "connectedSitesEmptyDescription": {
     "message": "$1 还没连接到任何网站。",
     "description": "$1 is the account name"
-  },
-  "connectedSnapAndNoAccountDescription": {
-    "message": "1do 已连接到此网站，但尚未连接任何账户"
-  },
-  "connectedSnaps": {
-    "message": "连接的 Snap"
   },
   "connectedWithAccount": {
     "message": "已连接 $1 账户",
@@ -1839,10 +1796,6 @@
   "connectionFailed": {
     "message": "连接失败"
   },
-  "connectionFailedDescription": {
-    "message": "获取$1失败，请检查您的网络，然后重试。",
-    "description": "$1 is the name of the snap being fetched."
-  },
   "connectionPopoverDescription": {
     "message": "如要连接网站，请选择“连接”按钮。1do 仅支持连接 Web3 网站。"
   },
@@ -1850,7 +1803,7 @@
     "message": "连接请求"
   },
   "connectionsRemovedModalDescription": {
-    "message": "由于此设备长期未使用，部分连接项（如硬件钱包和 Snap）已被移除。您可随时在“设置”中重新添加这些连接项。"
+    "message": "Some connections (like hardware wallets) were removed due to inactivity on this device. You can re-add them anytime in Settings."
   },
   "connectionsRemovedModalTitle": {
     "message": "连接项已移除"
@@ -1869,10 +1822,6 @@
   },
   "contacts": {
     "message": "联系方式"
-  },
-  "contentFromSnap": {
-    "message": "来自$1的内容",
-    "description": "$1 represents the name of the snap"
   },
   "continue": {
     "message": "继续"
@@ -1957,12 +1906,6 @@
   },
   "createPasswordMarketing": {
     "message": "获取产品更新、提示和新闻（包括电子邮件推送）。我们可能会利用您的互动信息来优化我们分享的内容。"
-  },
-  "createSnapAccountDescription": {
-    "message": "$1 想在 1do 添加一个新账户。"
-  },
-  "createSnapAccountTitle": {
-    "message": "创建账户"
   },
   "createSolanaAccount": {
     "message": "创建 Solana 账户"
@@ -2349,10 +2292,6 @@
   "description": {
     "message": "描述"
   },
-  "descriptionFromSnap": {
-    "message": "来自 $1 的描述",
-    "description": "$1 represents the name of the snap"
-  },
   "destinationAccountPickerNoEligible": {
     "message": "未找到符合条件的账户"
   },
@@ -2409,9 +2348,6 @@
   "disconnectAllSitesSuccess": {
     "message": "所有去中心化应用均已成功断开连接。"
   },
-  "disconnectAllSnapsText": {
-    "message": "Snap"
-  },
   "disconnectMessage": {
     "message": "这将断开您与此站点的连接"
   },
@@ -2423,10 +2359,6 @@
   },
   "discover": {
     "message": "发现"
-  },
-  "discoverSnaps": {
-    "message": "探索 Snap",
-    "description": "Text that links to the Snaps website. Displayed in a banner on Snaps list page in settings."
   },
   "dismiss": {
     "message": "关闭"
@@ -2622,9 +2554,6 @@
   "enableSmartContractAccountDescription": {
     "message": "在支持的网络上，解锁更快的交易速度、更低的网络费用及增强的安全性。"
   },
-  "enableSnap": {
-    "message": "启用"
-  },
   "enableToken": {
     "message": "启用 $1",
     "description": "$1 is a token symbol, e.g. ETH"
@@ -2777,10 +2706,6 @@
   "errorWhileConnectingToRPC": {
     "message": "连接到自定义网络时出错。"
   },
-  "errorWithSnap": {
-    "message": "$1出错",
-    "description": "$1 represents the name of the snap"
-  },
   "estimatedChanges": {
     "message": "预计变化"
   },
@@ -2832,10 +2757,6 @@
   },
   "exportYourDataDescription": {
     "message": "您可以导出联系人和偏好等数据。"
-  },
-  "extendWalletWithSnaps": {
-    "message": "探索社区构建的 Snap，定制您的 Web3 体验",
-    "description": "Banner description displayed on Snaps list page in Settings when less than 6 Snaps is installed."
   },
   "externalAccount": {
     "message": "外部账户"
@@ -2896,7 +2817,7 @@
     "description": "This is a warning shown on the Flask Welcome screen, intended to encourage non-developers not to proceed any further. $1 is the bolded message 'flaskWelcomeUninstall'"
   },
   "flaskWelcomeWarning2": {
-    "message": "我们不保证此扩展程序的安全性或稳定性。Flask 提供的新API并未针对网络钓鱼攻击进行强化，这意味着任何需要 Flask 的站点或快取都可能是窃取您资产的恶意企图。",
+    "message": "We do not guarantee the safety or stability of this extension. The new APIs offered by Flask are not hardened against phishing attacks, meaning that any site that requires Flask might be a malicious attempt to steal your assets.",
     "description": "This explains the risks of using MetaMask Flask"
   },
   "flaskWelcomeWarning3": {
@@ -3453,10 +3374,6 @@
   "insights": {
     "message": "洞察"
   },
-  "insightsFromSnap": {
-    "message": "来自$1的见解",
-    "description": "$1 represents the name of the snap"
-  },
   "install": {
     "message": "安装"
   },
@@ -3465,10 +3382,6 @@
   },
   "installRequest": {
     "message": "添加到 1do"
-  },
-  "installedOn": {
-    "message": "已在 $1 上安装",
-    "description": "$1 is the date when the snap has been installed"
   },
   "insufficientBalance": {
     "message": "余额不足。"
@@ -3602,18 +3515,6 @@
   },
   "keyringAccountPublicAddress": {
     "message": "公钥"
-  },
-  "keyringSnapRemovalResult1": {
-    "message": "$1 $2去除",
-    "description": "Displays the result after removal of a keyring snap. $1 is the snap name, $2 is whether it is successful or not"
-  },
-  "keyringSnapRemovalResultNotSuccessful": {
-    "message": "未能 ",
-    "description": "Displays the `not` word in $2."
-  },
-  "keyringSnapRemoveConfirmation": {
-    "message": "键入$1以确认您要去除此Snap：",
-    "description": "Asks user to input the name nap prior to deleting the snap. $1 is the snap name"
   },
   "keystone": {
     "message": "Keystone"
@@ -3768,9 +3669,6 @@
   },
   "loading": {
     "message": "正在加载..."
-  },
-  "loadingScreenSnapMessage": {
-    "message": "请在Snap上完成交易。"
   },
   "loadingTokenList": {
     "message": "正在加载代币列表"
@@ -3953,10 +3851,6 @@
   "metaMetricsIdNotAvailableError": {
     "message": "由于您从未选择过 1do Metrics，因此此处没有要删除的数据。"
   },
-  "metadataModalSourceTooltip": {
-    "message": "$1 托管于 npm 上，$2 是此 Snap 的唯一标识符。",
-    "description": "$1 is the snap name and $2 is the snap NPM id."
-  },
   "metamaskFee": {
     "message": "1do 费用"
   },
@@ -4094,10 +3988,6 @@
   },
   "multichainQuoteCardRateLabel": {
     "message": "价格"
-  },
-  "multipleSnapConnectionWarning": {
-    "message": "$1 想连接 $2 个 snap。",
-    "description": "$1 is the dapp and $2 is the number of snaps it wants to connect to."
   },
   "musdBonusExplanation": {
     "message": "将您的稳定币兑换为 mUSD，即可赚取高达 $1% 的年化奖励，该奖励每日可领取。$2",
@@ -4584,9 +4474,6 @@
   "noDomainResolution": {
     "message": "没有提供域名解析。"
   },
-  "noHardwareWalletOrSnapsSupport": {
-    "message": "Snaps 和大多数硬件钱包与您的当前浏览器版本不兼容。"
-  },
   "noMMFeeSwapping": {
     "message": "无 1do 费用"
   },
@@ -4604,9 +4491,6 @@
   },
   "noOptionsAvailableMessage": {
     "message": "此交易路径目前不可用。请尝试更改金额、网络或者代币，我们会找到最佳选项。"
-  },
-  "noSnaps": {
-    "message": "您没有安装 snap。"
   },
   "noTokensMatchingYourFilters": {
     "message": "未找到符合筛选条件的代币"
@@ -5001,10 +4885,6 @@
   "otherPermissionsOnSiteTitle": {
     "message": "该网站上的其他许可"
   },
-  "otherSnaps": {
-    "message": "其他 snap",
-    "description": "Used in the 'permission_rpc' message."
-  },
   "others": {
     "message": "其他"
   },
@@ -5119,49 +4999,13 @@
     "message": "此更新中已为 $1 撤销",
     "description": "Permission cell status for revoked permission including accounts, rendered as AvatarGroup which is $1."
   },
-  "permission_accessNamedSnap": {
-    "message": "连接到 $1.",
-    "description": "The description for the `wallet_snap` permission. $1 is the human-readable name of the snap."
-  },
   "permission_accessNetwork": {
     "message": "访问互联网.",
     "description": "The description of the `endowment:network-access` permission."
   },
-  "permission_accessNetworkDescription": {
-    "message": "允许 $1 访问互联网。这可用于通过第三方服务器发送和接收数据。",
-    "description": "An extended description of the `endowment:network-access` permission. $1 is the snap name."
-  },
-  "permission_accessSnap": {
-    "message": "连接到$1 Snap。",
-    "description": "The description for the `wallet_snap` permission. $1 is the name of the snap."
-  },
-  "permission_accessSnapDescription": {
-    "message": "允许网站或snap与$1交互。",
-    "description": "The description for the `wallet_snap_*` permission. $1 is the name of the Snap."
-  },
   "permission_assets": {
     "message": "在 1do 中显示账户资产。",
     "description": "The description for the `endowment:assets` permission."
-  },
-  "permission_assetsDescription": {
-    "message": "允许 $1 向 1do 客户端提供资产信息。资产可以是链上的，也可以是链下的。",
-    "description": "An extended description for the `endowment:assets` permission. $1 is the name of the Snap."
-  },
-  "permission_cronjob": {
-    "message": "规划并执行定期操作。",
-    "description": "The description for the `snap_cronjob` permission"
-  },
-  "permission_cronjobDescription": {
-    "message": "允许 $1 执行按固定时间、日期或间隔定期运行的操作。这可用于触发对时间敏感的交互或通知。",
-    "description": "An extended description for the `snap_cronjob` permission. $1 is the snap name."
-  },
-  "permission_dialog": {
-    "message": "在 1do 中显示对话框窗口。",
-    "description": "The description for the `snap_dialog` permission"
-  },
-  "permission_dialogDescription": {
-    "message": "允许 $1 显示带有以下内容的 1do 弹出窗口：自定义文本、输入字段以及用于批准或拒绝操作的按钮。\n这适用于创建 snap 的提醒、确认和流程加入选项等。",
-    "description": "An extended description for the `snap_dialog` permission. $1 is the snap name."
   },
   "permission_ethereumAccounts": {
     "message": "查看您允许的账户的地址（必填）",
@@ -5171,125 +5015,29 @@
     "message": "访问以太坊提供商.",
     "description": "The description for the `endowment:ethereum-provider` permission"
   },
-  "permission_ethereumProviderDescription": {
-    "message": "允许 $1 直接与 1do 通信，使其可以从区块链中读取数据，并提供消息和交易建议。",
-    "description": "An extended description for the `endowment:ethereum-provider` permission. $1 is the snap name."
-  },
-  "permission_getEntropy": {
-    "message": "派生 $1 独有的任意私钥。",
-    "description": "The description for the `snap_getEntropy` permission. $1 is the snap name."
-  },
-  "permission_getEntropyDescription": {
-    "message": "允许 $1 派生 $1 独有的任意私钥，但不公开私钥。这些私钥与您的 1do 账户是分开的，与您的私钥或私钥助记词无关。其他 snap 无法访问此信息。",
-    "description": "An extended description for the `snap_getEntropy` permission. $1 is the snap name."
-  },
-  "permission_getLocale": {
-    "message": "查看您的首选语言。",
-    "description": "The description for the `snap_getLocale` permission"
-  },
-  "permission_getLocaleDescription": {
-    "message": "允许 $1 访问您的 1do 首选语言设置。这可用于进行本地化，以及使用您的语言显示$1的内容。",
-    "description": "An extended description for the `snap_getLocale` permission. $1 is the snap name."
-  },
-  "permission_getPreferences": {
-    "message": "查看您的首选语言和法币等信息.",
-    "description": "The description for the `snap_getPreferences` permission"
-  },
-  "permission_getPreferencesDescription": {
-    "message": "让 $1 访问 1do 设置中的首选语言和法币等信息。这有助于 $1 显示符合您偏好的内容。 ",
-    "description": "An extended description for the `snap_getPreferences` permission. $1 is the snap name."
-  },
   "permission_homePage": {
     "message": "显示自定义屏幕",
     "description": "The description for the `endowment:page-home` permission"
-  },
-  "permission_homePageDescription": {
-    "message": "让 $1 在 1do 中显示自定义主屏幕。这可以用于用户界面、配置和控制面板。",
-    "description": "An extended description for the `endowment:page-home` permission. $1 is the snap name."
   },
   "permission_keyring": {
     "message": "允许添加和控制以太坊账户的请求",
     "description": "The description for the `endowment:keyring` permission"
   },
-  "permission_keyringDescription": {
-    "message": "允许 $1 接收添加或删除账户的请求，并代表这些账户进行签名和交易。",
-    "description": "An extended description for the `endowment:keyring` permission. $1 is the snap name."
-  },
   "permission_lifecycleHooks": {
     "message": "使用生命周期钩子.",
     "description": "The description for the `endowment:lifecycle-hooks` permission"
-  },
-  "permission_lifecycleHooksDescription": {
-    "message": "允许 $1 使用生命周期挂钩，在其生命周期的特定时间运行代码。",
-    "description": "An extended description for the `endowment:lifecycle-hooks` permission. $1 is the snap name."
-  },
-  "permission_manageAccounts": {
-    "message": "添加并控制以太坊账户",
-    "description": "The description for `snap_manageAccounts` permission"
-  },
-  "permission_manageAccountsDescription": {
-    "message": "允许 $1 添加或删除以太坊账户，然后使用添加的账户来进行交易和签名。",
-    "description": "An extended description for the `snap_manageAccounts` permission. $1 is the snap name."
-  },
-  "permission_manageBip32Keys": {
-    "message": "管理 $1 账户。",
-    "description": "The description for the `snap_getBip32Entropy` permission. $1 is a derivation path, e.g. 'm/44'/0'/0' (secp256k1)'."
-  },
-  "permission_manageBip44AndBip32KeysDescription": {
-    "message": "允许 $1 在所请求的网络上管理账户和资产。这些账户使用您的私钥助记词（不会披露）进行派生和备份。$1 具有派生私钥的能力，因此可以支持以太坊（EVM）以外的多种区块链协议。",
-    "description": "An extended description for the `snap_getBip44Entropy` and `snap_getBip44Entropy` permissions. $1 is the snap name."
-  },
-  "permission_manageBip44Keys": {
-    "message": "管理 $1 账户。",
-    "description": "The description for the `snap_getBip44Entropy` permission. $1 is the name of a protocol, e.g. 'Filecoin'."
-  },
-  "permission_manageState": {
-    "message": "在您的设备上存储和管理其数据。",
-    "description": "The description for the `snap_manageState` permission"
-  },
-  "permission_manageStateDescription": {
-    "message": "允许 $1 通过加密安全地存储、更新和检索数据。其他 snap 无法访问此信息。",
-    "description": "An extended description for the `snap_manageState` permission. $1 is the snap name."
   },
   "permission_multichainProvider": {
     "message": "访问 Multichain 提供商。",
     "description": "The description for the `endowment:multichain-provider` permission"
   },
-  "permission_multichainProviderDescription": {
-    "message": "允许 $1 直接与 1do 通信，使其可以从区块链中读取数据，并提供消息和交易建议。",
-    "description": "An extended description for the `endowment:multichain-provider` permission. $1 is the snap name."
-  },
   "permission_nameLookup": {
     "message": "提供域名和地址查询.",
     "description": "The description for the `endowment:name-lookup` permission."
   },
-  "permission_nameLookupDescription": {
-    "message": "允许 Snap 在 1do UI 的不同部分中获取和显示地址并进行域查找。",
-    "description": "An extended description for the `endowment:name-lookup` permission."
-  },
-  "permission_notifications": {
-    "message": "显示通知。",
-    "description": "The description for the `snap_notify` permission"
-  },
-  "permission_notificationsDescription": {
-    "message": "允许 $1 在 1do 中显示通知。snap 可以触发简短的通知文本，以提供可操作或对时间敏感的信息。",
-    "description": "An extended description for the `snap_notify` permission. $1 is the snap name."
-  },
   "permission_protocol": {
     "message": "为一个或多个链提供协议数据。",
     "description": "The description for the `endowment:protocol` permission."
-  },
-  "permission_protocolDescription": {
-    "message": "允许 $1 向 1do 提供协议数据，例如燃料估算或代币信息。",
-    "description": "An extended description for the `endowment:protocol` permission. $1 is the name of the Snap."
-  },
-  "permission_rpc": {
-    "message": "允许 $1 直接与 $2 通信。",
-    "description": "The description for the `endowment:rpc` permission. $1 is 'other snaps' or 'websites', $2 is the snap name."
-  },
-  "permission_rpcDescription": {
-    "message": "允许 $1 向 $2 发送消息，以及接收来自$2的响应。",
-    "description": "An extended description for the `endowment:rpc` permission. $1 is 'other snaps' or 'websites', $2 is the snap name."
   },
   "permission_rpcDescriptionOriginList": {
     "message": "$1 和 $2",
@@ -5299,49 +5047,21 @@
     "message": "显示签名洞察模态框.",
     "description": "The description for the `endowment:signature-insight` permission"
   },
-  "permission_signatureInsightDescription": {
-    "message": "在批准之前，允许 $1 显示一个模式，其中包含对任何签名请求的见解。这可用于反网络钓鱼和采取安全措施。",
-    "description": "An extended description for the `endowment:signature-insight` permission. $1 is the snap name."
-  },
   "permission_signatureInsightOrigin": {
     "message": "查看发起签名请求的网站来源",
     "description": "The description for the `signatureOrigin` caveat, to be used with the `endowment:signature-insight` permission"
-  },
-  "permission_signatureInsightOriginDescription": {
-    "message": "允许 $1 查看发起签名请求的网站来源（URI）。这可用于防止网络钓鱼和采取安全措施。",
-    "description": "An extended description for the `signatureOrigin` caveat, to be used with the `endowment:signature-insight` permission. $1 is the snap name."
   },
   "permission_transactionInsight": {
     "message": "获取并显示交易洞察.",
     "description": "The description for the `endowment:transaction-insight` permission"
   },
-  "permission_transactionInsightDescription": {
-    "message": "允许 $1 在 1do UI 中对交易进行解码，并显示见解。这可用于防止网络钓鱼和采取安全措施。",
-    "description": "An extended description for the `endowment:transaction-insight` permission. $1 is the snap name."
-  },
   "permission_transactionInsightOrigin": {
     "message": "查看建议交易的网站来源",
     "description": "The description for the `transactionOrigin` caveat, to be used with the `endowment:transaction-insight` permission"
   },
-  "permission_transactionInsightOriginDescription": {
-    "message": "允许 $1 查看建议交易的网站的来源（URI）。这可用于防止网络钓鱼和采取安全措施。",
-    "description": "An extended description for the `transactionOrigin` caveat, to be used with the `endowment:transaction-insight` permission. $1 is the snap name."
-  },
   "permission_unknown": {
     "message": "未知权限：$1",
     "description": "$1 is the name of a requested permission that is not recognized."
-  },
-  "permission_viewBip32PublicKeys": {
-    "message": "查看您的$1 ($2)公钥。",
-    "description": "The description for the `snap_getBip32PublicKey` permission. $1 is a derivation path, e.g. 'm/44'/0'/0''. $2 is the elliptic curve name, e.g. 'secp256k1'."
-  },
-  "permission_viewBip32PublicKeysDescription": {
-    "message": "允许 $2 查看您的 $1 公钥（和地址）。这并不会授予对账户或资产的任何控制权。",
-    "description": "An extended description for the `snap_getBip32PublicKey` permission. $1 is a derivation path (name). $2 is the snap name."
-  },
-  "permission_viewNamedBip32PublicKeys": {
-    "message": "查看您的 $1 公钥.",
-    "description": "The description for the `snap_getBip32PublicKey` permission. $1 is a name for the derivation path, e.g., 'Ethereum accounts'."
   },
   "permission_walletSwitchEthereumChain": {
     "message": "使用您启用的网络",
@@ -5351,15 +5071,11 @@
     "message": "支持 WebAssembly.",
     "description": "The description of the `endowment:webassembly` permission."
   },
-  "permission_webAssemblyDescription": {
-    "message": "允许 $1 通过 WebAssembly 访问低级执行环境。",
-    "description": "An extended description of the `endowment:webassembly` permission. $1 is the snap name."
-  },
   "permissions": {
     "message": "权限"
   },
   "permissionsPageEmptyDescription": {
-    "message": "未检测到许可。一旦您授予网站许可或安装了 1do Snap，详细信息将显示在这里。"
+    "message": "No permissions detected. Once you grant permissions to a site, the details will appear here."
   },
   "permitSimulationChange_approve": {
     "message": "支出上限"
@@ -6490,12 +6206,6 @@
   "removeAll": {
     "message": "移除全部"
   },
-  "removeKeyringSnap": {
-    "message": "去除此 Snap 会从 1do 中去除以下账户："
-  },
-  "removeKeyringSnapToolTip": {
-    "message": "Snap控制这些账户，去除此Snap，会同时将这些账户从1do中去除，但账户将保留在区块链中。"
-  },
   "removeNFT": {
     "message": "删除 NFT"
   },
@@ -6504,22 +6214,6 @@
   },
   "removeNftMessage": {
     "message": "NFT已成功移除！"
-  },
-  "removeSnap": {
-    "message": "移除 Snap"
-  },
-  "removeSnapAccountDescription": {
-    "message": "如果您继续，此账户将不可在 1do 中使用。"
-  },
-  "removeSnapAccountTitle": {
-    "message": "去除账户"
-  },
-  "removeSnapConfirmation": {
-    "message": "您确定要移除$1吗？",
-    "description": "$1 represents the name of the snap"
-  },
-  "removeSnapDescription": {
-    "message": "此操作将会删除snap及其数据，并撤销您获授予的权限。"
   },
   "rename": {
     "message": "重命名",
@@ -6539,9 +6233,6 @@
   },
   "requestFromInfo": {
     "message": "这是要求您签名的站点。"
-  },
-  "requestFromInfoSnap": {
-    "message": "这是要求您签名的 Snap。"
   },
   "requestFromTransactionDescription": {
     "message": "这是要求您确认的网站。"
@@ -7112,9 +6803,6 @@
   "upgradeSmartAccount": {
     "message": "升级智能账户",
     "description": "Primary action label for upgrading an account to a Smart Account."
-  },
-  "settingAddSnapAccount": {
-    "message": "添加账户 Snap"
   },
   "settings": {
     "message": "设置"
@@ -8023,168 +7711,6 @@
   "smartTransactionsEnabledTitle": {
     "message": "交易变得更加智能"
   },
-  "snapAccountCreated": {
-    "message": "账户已创建"
-  },
-  "snapAccountCreatedDescription": {
-    "message": "您的新账户已经可以使用了！"
-  },
-  "snapAccountCreationFailed": {
-    "message": "账户创建失败"
-  },
-  "snapAccountCreationFailedDescription": {
-    "message": "$1 未能为您创建账户。",
-    "description": "$1 is the snap name"
-  },
-  "snapAccountRedirectFinishSigningTitle": {
-    "message": "完成签名"
-  },
-  "snapAccountRedirectSiteDescription": {
-    "message": "按照$1的说明操作"
-  },
-  "snapAccountRemovalFailed": {
-    "message": "去除账户失败"
-  },
-  "snapAccountRemovalFailedDescription": {
-    "message": "$1 未能为您去除此账户。",
-    "description": "$1 is the snap name"
-  },
-  "snapAccountRemoved": {
-    "message": "账户已去除"
-  },
-  "snapAccountRemovedDescription": {
-    "message": "此账户将在 1do 中不再可用。"
-  },
-  "snapConnectTo": {
-    "message": "连接到 $1",
-    "description": "$1 is the website URL or a Snap name. Used for Snaps pre-approved connections."
-  },
-  "snapConnectionPermissionDescription": {
-    "message": "让 $1 自动连接到 $2，无需您的批准。",
-    "description": "Used for Snap pre-approved connections. $1 is the Snap name, $2 is a website URL."
-  },
-  "snapConnectionWarning": {
-    "message": "$1想连接$2。",
-    "description": "$2 is the snap and $1 is the dapp requesting connection to the snap."
-  },
-  "snapDetailWebsite": {
-    "message": "网站"
-  },
-  "snapHomeMenu": {
-    "message": "Snap 主菜单"
-  },
-  "snapInstallRequest": {
-    "message": "安装 $1 即赋予其以下许可。",
-    "description": "$1 is the snap name."
-  },
-  "snapInstallSuccess": {
-    "message": "安装完成"
-  },
-  "snapInstallWarningCheck": {
-    "message": "$1 需要以下权限：",
-    "description": "Warning message used in popup displayed on snap install. $1 is the snap name."
-  },
-  "snapInstallWarningHeading": {
-    "message": "请谨慎行事"
-  },
-  "snapInstallWarningPermissionDescriptionForBip32View": {
-    "message": "允许 $1 查看您的公钥（和地址）。这并不会授予对账户或资产的任何控制权。",
-    "description": "An extended description for the `snap_getBip32PublicKey` permission used for tooltip on Snap Install Warning screen (popup/modal). $1 is the snap name."
-  },
-  "snapInstallWarningPermissionDescriptionForEntropy": {
-    "message": "允许 $1 Snap 在所请求的网络上管理账户和资产。这些账户使用您的私钥助记词（不会披露）进行派生和备份。$1 具有派生私钥的能力，因此可以支持以太坊（EVM）以外的多种区块链协议。",
-    "description": "An extended description for the `snap_getBip44Entropy` and `snap_getBip44Entropy` permissions used for tooltip on Snap Install Warning screen (popup/modal). $1 is the snap name."
-  },
-  "snapInstallWarningPermissionNameForEntropy": {
-    "message": "管理 $1 账户",
-    "description": "Permission name used for the Permission Cell component displayed on warning popup when installing a Snap. $1 is list of account types."
-  },
-  "snapInstallWarningPermissionNameForViewPublicKey": {
-    "message": "查看您的 $1 公钥",
-    "description": "Permission name used for the Permission Cell component displayed on warning popup when installing a Snap. $1 is list of account types."
-  },
-  "snapInstallationErrorDescription": {
-    "message": "无法安装$1。",
-    "description": "Error description used when snap installation fails. $1 is the snap name."
-  },
-  "snapInstallationErrorTitle": {
-    "message": "安装失败",
-    "description": "Error title used when snap installation fails."
-  },
-  "snapResultError": {
-    "message": "错误"
-  },
-  "snapResultSuccess": {
-    "message": "成功"
-  },
-  "snapResultSuccessDescription": {
-    "message": "$1已可以使用"
-  },
-  "snapUIAccountSelectorTitle": {
-    "message": "选择账户"
-  },
-  "snapUIAssetSelectorTitle": {
-    "message": "选择一种资产"
-  },
-  "snapUpdateAlertDescription": {
-    "message": "获取 $1 的最新版本",
-    "description": "Description used in Snap update alert banner when snap update is available. $1 is the Snap name."
-  },
-  "snapUpdateAvailable": {
-    "message": "有更新"
-  },
-  "snapUpdateErrorDescription": {
-    "message": "无法更新$1。",
-    "description": "Error description used when snap update fails. $1 is the snap name."
-  },
-  "snapUpdateErrorTitle": {
-    "message": "更新失败",
-    "description": "Error title used when snap update fails."
-  },
-  "snapUpdateRequest": {
-    "message": "更新 $1 即赋予其以下许可。",
-    "description": "$1 is the Snap name."
-  },
-  "snapUpdateSuccess": {
-    "message": "更新完成"
-  },
-  "snapUrlIsBlocked": {
-    "message": "此Snap想将您带到一个被封锁的网站。$1"
-  },
-  "snaps": {
-    "message": "Snaps"
-  },
-  "snapsConnected": {
-    "message": "Snap 已连接"
-  },
-  "snapsNoInsight": {
-    "message": "无可显示的洞察"
-  },
-  "snapsPrivacyWarningFirstMessage": {
-    "message": "您确认，除非另有说明，否则您安装的任何 Snap 均是第三方服务（如 Consensys $1 中所定义）。您对第三方服务的使用，受第三方服务提供商规定的单独条款与条件约束。Consensys 不建议任何特定人员出于任何特定原因使用任何 Snap。您访问、依赖或使用第三方服务的风险由您自行承担。对于您因使用第三方服务而造成的任何损失，Consensys 概不承担任何责任。",
-    "description": "First part of a message in popup modal displayed when installing a snap for the first time. $1 is terms of use link."
-  },
-  "snapsPrivacyWarningSecondMessage": {
-    "message": "您与第三方服务分享的任何信息，将由这些第三方服务根据其隐私政策直接收集。请参阅其隐私政策以了解更多信息。",
-    "description": "Second part of a message in popup modal displayed when installing a snap for the first time."
-  },
-  "snapsPrivacyWarningThirdMessage": {
-    "message": "Consensys 无权访问您与第三方服务共享的信息。",
-    "description": "Third part of a message in popup modal displayed when installing a snap for the first time."
-  },
-  "snapsSettings": {
-    "message": "Snap 设置"
-  },
-  "snapsTermsOfUse": {
-    "message": "使用条款"
-  },
-  "snapsToggle": {
-    "message": "Snap 仅在启用后才会运行"
-  },
-  "snapsUIError": {
-    "message": "联系 $1 的创建者以获得进一步支持。",
-    "description": "This is shown when the insight snap throws an error. $1 is the snap name"
-  },
   "solanaAccountRequested": {
     "message": "此网站正在请求 Solana 账户。"
   },
@@ -8578,10 +8104,6 @@
   },
   "submitted": {
     "message": "已提交"
-  },
-  "suggestedBySnap": {
-    "message": "由 $1 建议",
-    "description": "$1 is the snap name"
   },
   "suggestedCurrencySymbol": {
     "message": "建议的货币符号："
@@ -8985,10 +8507,6 @@
   "thirdPartyApisDescription": {
     "message": "选择如何向第三方 API 共享您的 IP 地址或以太坊地址。相关更改将影响您的 1do 体验。"
   },
-  "thirdPartySoftware": {
-    "message": "第三方软件通告",
-    "description": "Title of a popup modal displayed when installing a snap for the first time."
-  },
   "thisContactWillBeDeleted": {
     "message": "此联系人将被删除。"
   },
@@ -9329,10 +8847,6 @@
     "message": "未知网络",
     "description": "Displayed on places like Gator permissions when regular name is not available."
   },
-  "unknownNetworkForKeyEntropy": {
-    "message": "未知网络",
-    "description": "Displayed on places like Snap install warning when regular name is not available."
-  },
   "unknownQrCode": {
     "message": "错误：我们无法识别该二维码"
   },
@@ -9561,10 +9075,6 @@
   "warning": {
     "message": "警告"
   },
-  "warningFromSnap": {
-    "message": "来自$1的警告",
-    "description": "$1 represents the name of the snap"
-  },
   "watchEthereumAccountsDescription": {
     "message": "启用此选项后，您将能够通过公共地址或 ENS（Ethereum 域名服务）名称查看以太坊账户。如需有关此测试功能的反馈，请完成此 $1。",
     "description": "$1 is the link to a product feedback form"
@@ -9653,5 +9163,20 @@
   },
   "yourWalletIsReadyFromReminder": {
     "message": "请妥善保管您的私钥助记词！"
+  },
+  "suggestedBySource": {
+    "message": "由 $1 建议",
+    "description": "$1 is the source name."
+  },
+  "permissionConnectTo": {
+    "message": "连接到 $1",
+    "description": "$1 is the website URL."
+  },
+  "permissionConnectionDescription": {
+    "message": "让 $1 自动连接到 $2，无需您的批准。",
+    "description": "$1 is the subject name, $2 is a website URL."
+  },
+  "noHardwareWalletSupport": {
+    "message": "Most hardware wallets will not work with your current browser version."
   }
 }

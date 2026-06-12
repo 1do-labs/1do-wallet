@@ -78,7 +78,7 @@ export const selectEvmAddress = createSelector(
 
 /**
  * Returns all internal accounts that declare support for the provided CAIP scope.
- * The scope should be a CAIP-2 scope string (e.g., 'eip155:0', 'bip122:...').
+ * The scope should be an EVM CAIP-2 scope string (e.g., 'eip155:0').
  *
  * @param _state - Redux state (unused; required for selector signature)
  * @param scope - The CAIP scope string to filter accounts by
@@ -100,31 +100,27 @@ export const getInternalAccountsByScope = createSelector(
       return [];
     }
 
-    if (namespace === KnownCaipNamespace.Eip155) {
-      // If requesting eip155:0 (wildcard), include any account that has any EVM scope
-      if (reference === '0') {
-        return accounts.filter(
-          (account) =>
-            Array.isArray(account.scopes) &&
-            account.scopes.some((s) =>
-              s.startsWith(`${KnownCaipNamespace.Eip155}:`),
-            ),
-        );
-      }
+    if (namespace !== KnownCaipNamespace.Eip155) {
+      return [];
+    }
 
-      // For a specific EVM chain, include accounts that either have the exact scope or the wildcard
+    // If requesting eip155:0 (wildcard), include any account that has any EVM scope
+    if (reference === '0') {
       return accounts.filter(
         (account) =>
           Array.isArray(account.scopes) &&
-          (account.scopes.includes(scope) ||
-            account.scopes.includes(EthScope.Eoa)),
+          account.scopes.some((s) =>
+            s.startsWith(`${KnownCaipNamespace.Eip155}:`),
+          ),
       );
     }
 
-    // Non-EVM: exact scope match only
+    // For a specific EVM chain, include accounts that either have the exact scope or the wildcard
     return accounts.filter(
       (account) =>
-        Array.isArray(account.scopes) && account.scopes.includes(scope),
+        Array.isArray(account.scopes) &&
+        (account.scopes.includes(scope) ||
+          account.scopes.includes(EthScope.Eoa)),
     );
   },
 );

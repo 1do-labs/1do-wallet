@@ -10,8 +10,7 @@ import { login } from '../../page-objects/flows/login.flow';
 import { connectAccountToTestDapp } from '../../page-objects/flows/test-dapp.flow';
 import HomePage from '../../page-objects/pages/home/homepage';
 
-// E2E Fixtures setup has 4 identities (1 EVM, 1 Solana, 1 Bitcoin, 1 Tron)
-const METAMASK_IDENTITIES = 4;
+const METAMASK_IDENTITIES = 1;
 
 async function mockedDappViewedEndpointFirstVisit(mockServer: Mockttp) {
   return await mockServer

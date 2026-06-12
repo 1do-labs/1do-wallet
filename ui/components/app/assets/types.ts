@@ -1,5 +1,5 @@
 import { KeyringAccountType } from '@metamask/keyring-api';
-import { CaipAssetType, CaipChainId, Hex } from '@metamask/utils';
+import { CaipAssetType, Hex } from '@metamask/utils';
 import { type TokenListToken } from '@metamask/assets-controllers';
 
 // Common mixin for primary and secondary display values
@@ -24,19 +24,8 @@ export type BaseToken = {
   assetId?: CaipAssetType | Hex;
 };
 
-// type created for non-evm tokens
-export type NonEvmBaseToken = {
-  address: CaipAssetType;
-  symbol: string;
-  image: string;
-  decimals: number;
-  chainId: CaipChainId;
-  isNative?: boolean;
-  assetId?: CaipAssetType;
-};
-
 // Token type with optional aggregators
-export type Token = (BaseToken | NonEvmBaseToken) & {
+export type Token = BaseToken & {
   aggregators?: string[];
   name?: string;
 };

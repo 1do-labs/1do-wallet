@@ -315,12 +315,6 @@
   "addRpcUrl": {
     "message": "Magdagdag ng RPC URL"
   },
-  "addSnapAccountToggle": {
-    "message": "Paganahin ang \"Idagdag ang account Snap (Beta)\""
-  },
-  "addSnapAccountsDescription": {
-    "message": "Ang pag-on sa feature na ito ay magbibigay sa iyo ng opsyong idagdag ang bagong Beta account Snaps mula mismo sa listahan ng iyong account. Kung nag-install ka ng account Snap, tandaan na ito ay isang serbisyo ng third-party."
-  },
   "addSuggestedNFTs": {
     "message": "Magdagdag ng mga iminumungkahing NFT"
   },
@@ -651,11 +645,11 @@
   },
   "andForListItems": {
     "message": "$1, at $2",
-    "description": "$1 is the first item, $2 is the last item in a list of items. Used in Snap Install Warning modal."
+    "description": "$1 is the first item, $2 is the last item in a list of items."
   },
   "andForTwoItems": {
     "message": "$1 at $2",
-    "description": "$1 is the first item, $2 is the second item. Used in Snap Install Warning modal."
+    "description": "$1 is the first item, $2 is the second item."
   },
   "annual": {
     "message": "Taunan"
@@ -842,9 +836,6 @@
   "backupApprovalNotice": {
     "message": "I-back up ang iyong Lihim na Parirala sa Pagbawi para mapanatiling secure ang iyong wallet at mga pondo."
   },
-  "backupKeyringSnapReminder": {
-    "message": "Tiyakin na magagawa mong i-access ang anumang account na ginawa ng Snap na ito nang mag-isa bago ito alisin."
-  },
   "backupNow": {
     "message": "I-back up na"
   },
@@ -895,9 +886,6 @@
   "basicFunctionalityRequired_goToHome": {
     "message": "Pumunta sa home page"
   },
-  "basicFunctionalityRequired_openCreateSnapAccountPage": {
-    "message": "Buksan ang page ng Gumawa ng Account"
-  },
   "basicFunctionalityRequired_openDefiPage": {
     "message": "Buksan ang page ng DeFi"
   },
@@ -912,9 +900,6 @@
   },
   "basicFunctionalityRequired_openRewardsPage": {
     "message": "Buksan ang page ng Mga reward"
-  },
-  "basicFunctionalityRequired_openSnapsPage": {
-    "message": "Buksan ang page ng Snaps"
   },
   "basicFunctionalityRequired_openSwapsPage": {
     "message": "Buksan ang page ng Swap"
@@ -1498,21 +1483,6 @@
   "concentratedSupplyDistributionTitle": {
     "message": "Nakatuong pamamahagi ng supply"
   },
-  "configureSnapPopupDescription": {
-    "message": "Papaalis ka na ngayon sa 1do para ma-configure ang snap na ito."
-  },
-  "configureSnapPopupInstallDescription": {
-    "message": "Papaalis ka na ngayon sa 1do para ma-install ang snap na ito."
-  },
-  "configureSnapPopupInstallTitle": {
-    "message": "I-install ang snap"
-  },
-  "configureSnapPopupLink": {
-    "message": "I-click ang link na ito para magpatuloy:"
-  },
-  "configureSnapPopupTitle": {
-    "message": "I-configure ang snap"
-  },
   "confirm": {
     "message": "Kumpirmahin"
   },
@@ -1749,10 +1719,6 @@
   "connectMoreAccounts": {
     "message": "Ikonekta ang higit pang mga account"
   },
-  "connectSnap": {
-    "message": "Ikonekta ang $1",
-    "description": "$1 is the snap for which a connection is being requested."
-  },
   "connectWithMetaMask": {
     "message": "Kumonekta sa 1do"
   },
@@ -1773,9 +1739,6 @@
   "connectedSites": {
     "message": "Mga konektadong site"
   },
-  "connectedSitesAndSnaps": {
-    "message": "Mga konektadong site at Snap"
-  },
   "connectedSitesDescription": {
     "message": "Ang $1 ay nakakonekta sa mga site na ito. Matitingnan nila ang address ng iyong account.",
     "description": "$1 is the account name"
@@ -1783,12 +1746,6 @@
   "connectedSitesEmptyDescription": {
     "message": "Ang $1 ay hindi nakakonekta sa anumang site.",
     "description": "$1 is the account name"
-  },
-  "connectedSnapAndNoAccountDescription": {
-    "message": "Konektado ang 1do sa site na ito, ngunit wala pang mga account ang konektado"
-  },
-  "connectedSnaps": {
-    "message": "Mga konektadong Snap"
   },
   "connectedWithAccount": {
     "message": "$1 (na) account ang nakakonekta",
@@ -1836,10 +1793,6 @@
   "connectionFailed": {
     "message": "Nabigo ang koneksyon"
   },
-  "connectionFailedDescription": {
-    "message": "Nabigo ang pagkuha ng $1, suriin ang iyong network at subukan ulit.",
-    "description": "$1 is the name of the snap being fetched."
-  },
   "connectionPopoverDescription": {
     "message": "Upang kumonekta sa isang site, piliin ang button para sa pagkonekta. Sa mga web3 site lang puwedeng kumonekta ang 1do."
   },
@@ -1847,7 +1800,7 @@
     "message": "Kahilingan sa koneksyon"
   },
   "connectionsRemovedModalDescription": {
-    "message": "Inalis ang ilang koneksyon (gaya ng mga hardware wallet at snap) dahil sa kawalan ng aktibidad sa device na ito. Maaari mong muling idagdag ang mga iyon anumang oras sa Mga Setting."
+    "message": "Some connections (like hardware wallets) were removed due to inactivity on this device. You can re-add them anytime in Settings."
   },
   "connectionsRemovedModalTitle": {
     "message": "Inalis ang mga koneksyon"
@@ -1866,10 +1819,6 @@
   },
   "contacts": {
     "message": "Mga Kontak"
-  },
-  "contentFromSnap": {
-    "message": "Nilalaman mula sa $1",
-    "description": "$1 represents the name of the snap"
   },
   "continue": {
     "message": "Magpatuloy"
@@ -1954,12 +1903,6 @@
   },
   "createPasswordMarketing": {
     "message": "Kumuha ng mga update ng produkto, tip at kabilang ang balita sa pamamagitan ng email. Maaari naming gamitin ang mga interaksyon mo upang mapahusay ang ibinabahagi namin."
-  },
-  "createSnapAccountDescription": {
-    "message": "Ang $1 ay nais na magdagdag ng bagong account sa 1do."
-  },
-  "createSnapAccountTitle": {
-    "message": "Gumawa ng account"
   },
   "createSolanaAccount": {
     "message": "Gumawa ng Solana account"
@@ -2346,10 +2289,6 @@
   "description": {
     "message": "Deskripsyon"
   },
-  "descriptionFromSnap": {
-    "message": "Deskripsyon mula sa $1",
-    "description": "$1 represents the name of the snap"
-  },
   "destinationAccountPickerNoEligible": {
     "message": "Walang nahanap na kwalipikadong account"
   },
@@ -2406,9 +2345,6 @@
   "disconnectAllSitesSuccess": {
     "message": "Matagumpay na naidiskonekta ang lahat ng dapp."
   },
-  "disconnectAllSnapsText": {
-    "message": "Mga Snap"
-  },
   "disconnectMessage": {
     "message": "Ididiskonekta ka nito mula sa site na ito"
   },
@@ -2420,10 +2356,6 @@
   },
   "discover": {
     "message": "Tuklasin"
-  },
-  "discoverSnaps": {
-    "message": "Diskubrehin ang mga Snap",
-    "description": "Text that links to the Snaps website. Displayed in a banner on Snaps list page in settings."
   },
   "dismiss": {
     "message": "I-dismiss"
@@ -2619,9 +2551,6 @@
   "enableSmartContractAccountDescription": {
     "message": "I-unlock ang mas mabilis na transaksyon, mas mababang bayad sa network, at dagdag na seguridad sa mga suportadong network."
   },
-  "enableSnap": {
-    "message": "I-enable"
-  },
   "enableToken": {
     "message": "paganahin ang $1",
     "description": "$1 is a token symbol, e.g. ETH"
@@ -2774,10 +2703,6 @@
   "errorWhileConnectingToRPC": {
     "message": "Error habang kumokonekta sa custom na network."
   },
-  "errorWithSnap": {
-    "message": "Error sa $1",
-    "description": "$1 represents the name of the snap"
-  },
   "estimatedChanges": {
     "message": "Tinantyang mga pagbabago"
   },
@@ -2829,10 +2754,6 @@
   },
   "exportYourDataDescription": {
     "message": "Maaari mong i-export ang mga data mo gaya ng mga kontak at kagustuhan."
-  },
-  "extendWalletWithSnaps": {
-    "message": "Tuklasin ang mga Snap na binuo ng komunidad para i-customize ang iyong karanasan sa web3",
-    "description": "Banner description displayed on Snaps list page in Settings when less than 6 Snaps is installed."
   },
   "externalAccount": {
     "message": "External account"
@@ -2893,7 +2814,7 @@
     "description": "This is a warning shown on the Flask Welcome screen, intended to encourage non-developers not to proceed any further. $1 is the bolded message 'flaskWelcomeUninstall'"
   },
   "flaskWelcomeWarning2": {
-    "message": "Hindi namin ginagarantiya ang kaligtasan o katatagan ng extension na ito. Ang mga bagong API na inaalok ng Flask ay hindi pinatigtibay laban sa mga pag-atake ng phishing, ibig sabihin, ang anumang site o snap na nangangailangan ng Flask ay maaaring isang masamang pagtatangka na nakawin ang iyong mga asset.",
+    "message": "We do not guarantee the safety or stability of this extension. The new APIs offered by Flask are not hardened against phishing attacks, meaning that any site that requires Flask might be a malicious attempt to steal your assets.",
     "description": "This explains the risks of using MetaMask Flask"
   },
   "flaskWelcomeWarning3": {
@@ -3450,10 +3371,6 @@
   "insights": {
     "message": "Mga pananaw"
   },
-  "insightsFromSnap": {
-    "message": "Mga kaalaman mula sa $1",
-    "description": "$1 represents the name of the snap"
-  },
   "install": {
     "message": "I-install"
   },
@@ -3462,10 +3379,6 @@
   },
   "installRequest": {
     "message": "Idagdag sa 1do"
-  },
-  "installedOn": {
-    "message": "Na-install sa $1",
-    "description": "$1 is the date when the snap has been installed"
   },
   "insufficientBalance": {
     "message": "Hindi sapat ang balanse."
@@ -3599,18 +3512,6 @@
   },
   "keyringAccountPublicAddress": {
     "message": "Pampublikong Address"
-  },
-  "keyringSnapRemovalResult1": {
-    "message": "Inalis ang $1 $2",
-    "description": "Displays the result after removal of a keyring snap. $1 is the snap name, $2 is whether it is successful or not"
-  },
-  "keyringSnapRemovalResultNotSuccessful": {
-    "message": "hindi ",
-    "description": "Displays the `not` word in $2."
-  },
-  "keyringSnapRemoveConfirmation": {
-    "message": "I-type ang $1 para kumpirmahin na nais mong alisin ang snap na ito:",
-    "description": "Asks user to input the name nap prior to deleting the snap. $1 is the snap name"
   },
   "keystone": {
     "message": "Keystone"
@@ -3765,9 +3666,6 @@
   },
   "loading": {
     "message": "Nilo-load..."
-  },
-  "loadingScreenSnapMessage": {
-    "message": "Mangyaring kumpletuhin ang transaksyon sa Snap."
   },
   "loadingTokenList": {
     "message": "Nilo-load ang listahan ng token"
@@ -3950,10 +3848,6 @@
   "metaMetricsIdNotAvailableError": {
     "message": "Dahil hindi mo kailanman sinubukan ang 1do Metrics, walang data na tatanggalin dito."
   },
-  "metadataModalSourceTooltip": {
-    "message": "Ang $1 ay naka-host sa npm at $2 ang natatanging pagkakailanlan ng Snap.",
-    "description": "$1 is the snap name and $2 is the snap NPM id."
-  },
   "metamaskFee": {
     "message": "Bayad sa 1do"
   },
@@ -4091,10 +3985,6 @@
   },
   "multichainQuoteCardRateLabel": {
     "message": "Rate"
-  },
-  "multipleSnapConnectionWarning": {
-    "message": "Si $1 ay gustong gumamit ng $2 Snaps",
-    "description": "$1 is the dapp and $2 is the number of snaps it wants to connect to."
   },
   "musdBonusExplanation": {
     "message": "I-convert ang mga stablecoin mo sa mUSD at kumita\nng hanggang $1% taunang bonus na puwede mong\nma-claim araw-araw. $2",
@@ -4581,9 +4471,6 @@
   "noDomainResolution": {
     "message": "Walang resolusyon para sa ibinigay na domain."
   },
-  "noHardwareWalletOrSnapsSupport": {
-    "message": "Ang mga Snap, at karamihan sa mga hardware wallet, ay hindi gagana sa iyong kasalukuyang bersyon ng browser."
-  },
   "noMMFeeSwapping": {
     "message": "Walang bayad sa 1do"
   },
@@ -4601,9 +4488,6 @@
   },
   "noOptionsAvailableMessage": {
     "message": "Hindi available sa ngayon ang ruta ng trade na ito. Subukang baguhin ang halaga, network, o token at hahanapin namin ang pinakamainam na opsyon."
-  },
-  "noSnaps": {
-    "message": "Wala kang naka-install na snaps."
   },
   "noTokensMatchingYourFilters": {
     "message": "Walang token na tumutugma sa mga filter mo"
@@ -4998,10 +4882,6 @@
   "otherPermissionsOnSiteTitle": {
     "message": "Iba pang mga pahintulot sa site na ito"
   },
-  "otherSnaps": {
-    "message": "iba pang mga snap",
-    "description": "Used in the 'permission_rpc' message."
-  },
   "others": {
     "message": "mga iba pa"
   },
@@ -5116,49 +4996,13 @@
     "message": "Pinawalang-bisa sa update na ito para sa $1",
     "description": "Permission cell status for revoked permission including accounts, rendered as AvatarGroup which is $1."
   },
-  "permission_accessNamedSnap": {
-    "message": "Kumonekta sa $1.",
-    "description": "The description for the `wallet_snap` permission. $1 is the human-readable name of the snap."
-  },
   "permission_accessNetwork": {
     "message": "I-access ang internet.",
     "description": "The description of the `endowment:network-access` permission."
   },
-  "permission_accessNetworkDescription": {
-    "message": "Payagan ang $1 na i-access ang internet. Maaari itong magamit kapwa sa pagpapadala at pagtanggap ng datos sa mga third-party server.",
-    "description": "An extended description of the `endowment:network-access` permission. $1 is the snap name."
-  },
-  "permission_accessSnap": {
-    "message": "Kumonekta sa $1 snap.",
-    "description": "The description for the `wallet_snap` permission. $1 is the name of the snap."
-  },
-  "permission_accessSnapDescription": {
-    "message": "Payagan ang website o snap na makipag-ugnayan sa $1.",
-    "description": "The description for the `wallet_snap_*` permission. $1 is the name of the Snap."
-  },
   "permission_assets": {
     "message": "Ipakita ang mga asset ng account sa 1do.",
     "description": "The description for the `endowment:assets` permission."
-  },
-  "permission_assetsDescription": {
-    "message": "Pahintulutan ang $1 na ibigay ang impormasyon ng asset sa kliyente ng 1do. Ang mga asset ay maaaring onchain o offchain.",
-    "description": "An extended description for the `endowment:assets` permission. $1 is the name of the Snap."
-  },
-  "permission_cronjob": {
-    "message": "Mag-iskedyul at magsagawa ng mga pana-panahong mga aksyon.",
-    "description": "The description for the `snap_cronjob` permission"
-  },
-  "permission_cronjobDescription": {
-    "message": "Payagan ang $1 na magsagawa ng mga aksyon na tumatakbo nang pana-panahon sa mga takdang oras, petsa, at agwat. Maaari itong gamitin para magpaumpisa ng sensitibo sa oras na mga interaksyon o notipikasyon.",
-    "description": "An extended description for the `snap_cronjob` permission. $1 is the snap name."
-  },
-  "permission_dialog": {
-    "message": "Ipakita ang mga dialog window sa 1do.",
-    "description": "The description for the `snap_dialog` permission"
-  },
-  "permission_dialogDescription": {
-    "message": "Payagan ang $1 na magpakita ng mga popup ng 1do na may custom na teksto, input field, at mga button para aprubahan o tanggihan ang isang aksyon. \nMaaaring gamitin para gumawa ng hal. mga alerto, kumpirmasyon, at opt-in flow para sa isang snap.",
-    "description": "An extended description for the `snap_dialog` permission. $1 is the snap name."
   },
   "permission_ethereumAccounts": {
     "message": "Tingnan ang mga address, balanse ng account, aktibidad at simulan ang iyong mga transaksyon",
@@ -5168,125 +5012,29 @@
     "message": "I-access ang Ethereum provider.",
     "description": "The description for the `endowment:ethereum-provider` permission"
   },
-  "permission_ethereumProviderDescription": {
-    "message": "Payagan ang $1 na makipag-ugnayan sa 1do nang direkta, para mabasa nito ang datos mula sa blockchain at makapagmungkahi ng mga mensahe at transaksyon.",
-    "description": "An extended description for the `endowment:ethereum-provider` permission. $1 is the snap name."
-  },
-  "permission_getEntropy": {
-    "message": "Humango ng mga arbitrary key na natatangi sa $1.",
-    "description": "The description for the `snap_getEntropy` permission. $1 is the snap name."
-  },
-  "permission_getEntropyDescription": {
-    "message": "Payagan ang $1 na humango ng mga arbitrary key na natatangi sa $1, nang hindi inilalantad ang mga ito. Ang mga key na ito ay hiwalay sa iyong (mga) 1do account at hindi nauugnay sa iyong mga pribadong key o Lihim na Parirala sa Pagbawi. Hindi maa-access ng ibang mga snap ang impormasyong ito.",
-    "description": "An extended description for the `snap_getEntropy` permission. $1 is the snap name."
-  },
-  "permission_getLocale": {
-    "message": "Tingnan ang napili mong wika.",
-    "description": "The description for the `snap_getLocale` permission"
-  },
-  "permission_getLocaleDescription": {
-    "message": "Payagan ang $1 na i-access ang iyong mas gustong wika mula sa iyong mga setting sa 1do. Maaari itong gamitin para i-localize at ipakita ang content ng $1 gamit ang iyong wika.",
-    "description": "An extended description for the `snap_getLocale` permission. $1 is the snap name."
-  },
-  "permission_getPreferences": {
-    "message": "Tingnan ang impormasyon gaya ng gusto mong wika at fiat currency.",
-    "description": "The description for the `snap_getPreferences` permission"
-  },
-  "permission_getPreferencesDescription": {
-    "message": "Pahintulutan ang $1 na ma-access ang impormasyon tulad ng gusto mong wika at fiat na salapi sa iyong mga setting ng 1do. Tumutulong ito sa $1 na magpakita ng content na nakaayon sa iyong mga kagustuhan. ",
-    "description": "An extended description for the `snap_getPreferences` permission. $1 is the snap name."
-  },
   "permission_homePage": {
     "message": "Ipakita ang custom screen",
     "description": "The description for the `endowment:page-home` permission"
-  },
-  "permission_homePageDescription": {
-    "message": "Hayaan ang $1 na magpakita ng custom na home screen sa 1do. Maaari itong gamitin para sa mga user interface, configuration, at mga dashboard.",
-    "description": "An extended description for the `endowment:page-home` permission. $1 is the snap name."
   },
   "permission_keyring": {
     "message": "Payagan ang mga kahilingan para sa pagdaragdag at pagkontrol ng mga Ethereum account",
     "description": "The description for the `endowment:keyring` permission"
   },
-  "permission_keyringDescription": {
-    "message": "Hayaan ang $1 na makatanggap ng mga kahilingan na magdagdag o mag-alis ng mga account, at pumirma at makipagtransaksyon sa ngalan ng mga account na ito.",
-    "description": "An extended description for the `endowment:keyring` permission. $1 is the snap name."
-  },
   "permission_lifecycleHooks": {
     "message": "Gamitin ang mga lifecycle hook.",
     "description": "The description for the `endowment:lifecycle-hooks` permission"
-  },
-  "permission_lifecycleHooksDescription": {
-    "message": "Payagan ang $1 na gumamit ng mga lifecycle hook para magpatakbo ng code sa mga partikular na oras sa panahon ng lifecycle nito.",
-    "description": "An extended description for the `endowment:lifecycle-hooks` permission. $1 is the snap name."
-  },
-  "permission_manageAccounts": {
-    "message": "Magdagdag at kontrolin ang mga Ethereum account",
-    "description": "The description for `snap_manageAccounts` permission"
-  },
-  "permission_manageAccountsDescription": {
-    "message": "Payagan ang $1 na magdagdag o mag-alis ng mga Ethereum account, at saka makipagtransaksyon at pumirma gamit ang mga account na ito.",
-    "description": "An extended description for the `snap_manageAccounts` permission. $1 is the snap name."
-  },
-  "permission_manageBip32Keys": {
-    "message": "Pamahalaan ang mga $1 account.",
-    "description": "The description for the `snap_getBip32Entropy` permission. $1 is a derivation path, e.g. 'm/44'/0'/0' (secp256k1)'."
-  },
-  "permission_manageBip44AndBip32KeysDescription": {
-    "message": "Payagan ang $1 na mamahala ng mga account at asset sa hiniling na network. Ang mga account na ito ay hinango at naka-back up gamit ang iyong lihim na parirala sa pagbawi (nang hindi ibinubunyag ito). Gamit ang kapangyarihan na maghango ng mga key, masusuportahan ng $1 ang iba't ibang blockchain protocol bukod sa Etheruem (mga EVM).",
-    "description": "An extended description for the `snap_getBip44Entropy` and `snap_getBip44Entropy` permissions. $1 is the snap name."
-  },
-  "permission_manageBip44Keys": {
-    "message": "Pamahalaan ang mga $1 account.",
-    "description": "The description for the `snap_getBip44Entropy` permission. $1 is the name of a protocol, e.g. 'Filecoin'."
-  },
-  "permission_manageState": {
-    "message": "Iimbak at pamahalaan ang datos nito sa iyong device.",
-    "description": "The description for the `snap_manageState` permission"
-  },
-  "permission_manageStateDescription": {
-    "message": "Payagan ang $1 na mag-imbak, mag-update, at mag-retrieve ng datos sa secure na paraan gamit ang pag-encrypt. Hindi maa-access ng ibang mga snap ang impormasyong ito.",
-    "description": "An extended description for the `snap_manageState` permission. $1 is the snap name."
   },
   "permission_multichainProvider": {
     "message": "I-access ang Multichain provider.",
     "description": "The description for the `endowment:multichain-provider` permission"
   },
-  "permission_multichainProviderDescription": {
-    "message": "Payagan ang $1 na makipag-ugnayan sa 1do nang direkta, para mabasa nito ang datos mula sa blockchain at makapagmungkahi ng mga mensahe at transaksyon.",
-    "description": "An extended description for the `endowment:multichain-provider` permission. $1 is the snap name."
-  },
   "permission_nameLookup": {
     "message": "Magbigay ng domain at mga address lookup.",
     "description": "The description for the `endowment:name-lookup` permission."
   },
-  "permission_nameLookupDescription": {
-    "message": "Payagan ang snap na kumuha at magpakita ng mga address at domain lookup sa iba't ibang bahagi ng 1do UI.",
-    "description": "An extended description for the `endowment:name-lookup` permission."
-  },
-  "permission_notifications": {
-    "message": "Ipakita ang mga notipikasyon.",
-    "description": "The description for the `snap_notify` permission"
-  },
-  "permission_notificationsDescription": {
-    "message": "Payagan ang $1 na magpakita ng mga notipikasyon sa loob ng 1do. Isang maikling tekstong notipikasyon ang maaaring mapaumpisa ng isang snap para sa naaaksyunan o sensitibo sa oras na impormasyon.",
-    "description": "An extended description for the `snap_notify` permission. $1 is the snap name."
-  },
   "permission_protocol": {
     "message": "Magbigay ng protocol data para sa isa o higit pang mga chain.",
     "description": "The description for the `endowment:protocol` permission."
-  },
-  "permission_protocolDescription": {
-    "message": "Pahintulutan ang $1 na bigyan ang 1do ng protocol data gaya ng mga pagtatantya sa gas o impormasyon ng token.",
-    "description": "An extended description for the `endowment:protocol` permission. $1 is the name of the Snap."
-  },
-  "permission_rpc": {
-    "message": "Payagan ang $1 na makipag-ugnayan nang direkta sa $2.",
-    "description": "The description for the `endowment:rpc` permission. $1 is 'other snaps' or 'websites', $2 is the snap name."
-  },
-  "permission_rpcDescription": {
-    "message": "Payagan ang $1 na magpadala ng mga mensahe sa $2 at makatanggap ng sagot mula sa $2.",
-    "description": "An extended description for the `endowment:rpc` permission. $1 is 'other snaps' or 'websites', $2 is the snap name."
   },
   "permission_rpcDescriptionOriginList": {
     "message": "$1 at $2",
@@ -5296,49 +5044,21 @@
     "message": "Ipakita ang lagda ng insights modal.",
     "description": "The description for the `endowment:signature-insight` permission"
   },
-  "permission_signatureInsightDescription": {
-    "message": "Pahintulutan ang $1 na mag-display ng modal na may insight sa anumng hiling sa pirma bago aprubahan. Maaari itong gamitin para sa anti-phishing at solusyon sa seguridad.",
-    "description": "An extended description for the `endowment:signature-insight` permission. $1 is the snap name."
-  },
   "permission_signatureInsightOrigin": {
     "message": "Tingnan ang pinagmulan ng mga website ng nagsimula ng hiling na pirma",
     "description": "The description for the `signatureOrigin` caveat, to be used with the `endowment:signature-insight` permission"
-  },
-  "permission_signatureInsightOriginDescription": {
-    "message": "Pahintulutan ang $1 na makita ang pinagmulan (URI) ng mga website na nagmumungkahi ng mga transaksyon. Maaari itong gamitin para sa anti-phishing at mga solusyon sa seguridad.",
-    "description": "An extended description for the `signatureOrigin` caveat, to be used with the `endowment:signature-insight` permission. $1 is the snap name."
   },
   "permission_transactionInsight": {
     "message": "Kunin at ipakita ang mga insight sa transaksyon.",
     "description": "The description for the `endowment:transaction-insight` permission"
   },
-  "permission_transactionInsightDescription": {
-    "message": "Payagan ang $1 na mag-decode ng mga transaksyon at magpakita ng mga insight sa loob ng 1do UI. Maaari itong gamitin para sa anti-phishing at mga solusyon sa seguridad.",
-    "description": "An extended description for the `endowment:transaction-insight` permission. $1 is the snap name."
-  },
   "permission_transactionInsightOrigin": {
     "message": "Tingnan ang mga pinagmulan ng mga website na nagmumungkahi ng mga transaksyon",
     "description": "The description for the `transactionOrigin` caveat, to be used with the `endowment:transaction-insight` permission"
   },
-  "permission_transactionInsightOriginDescription": {
-    "message": "Payagan ang $1 na makita ang pinagmulan (URI) ng mga website na nagmumungkahi ng mga transaksyon. Maaari itong gamitin para sa anti-phishing at mga solusyon sa seguridad.",
-    "description": "An extended description for the `transactionOrigin` caveat, to be used with the `endowment:transaction-insight` permission. $1 is the snap name."
-  },
   "permission_unknown": {
     "message": "Hindi kilalang pahintulot: $1",
     "description": "$1 is the name of a requested permission that is not recognized."
-  },
-  "permission_viewBip32PublicKeys": {
-    "message": "Tingnan ang iyong pampublikong key para sa $1 ($2).",
-    "description": "The description for the `snap_getBip32PublicKey` permission. $1 is a derivation path, e.g. 'm/44'/0'/0''. $2 is the elliptic curve name, e.g. 'secp256k1'."
-  },
-  "permission_viewBip32PublicKeysDescription": {
-    "message": "Payagan ang $2 na tingnan ang iyong mga pampublikong key (at mga address) para sa $1. Hindi ito nagkakaloob ng anumang kontrol ng mga account o asset.",
-    "description": "An extended description for the `snap_getBip32PublicKey` permission. $1 is a derivation path (name). $2 is the snap name."
-  },
-  "permission_viewNamedBip32PublicKeys": {
-    "message": "Tingnan ang pampublikong key para sa $1.",
-    "description": "The description for the `snap_getBip32PublicKey` permission. $1 is a name for the derivation path, e.g., 'Ethereum accounts'."
   },
   "permission_walletSwitchEthereumChain": {
     "message": "Gamitin ang iyong mga naka-enable na network",
@@ -5348,15 +5068,11 @@
     "message": "Suporta para sa WebAssembly.",
     "description": "The description of the `endowment:webassembly` permission."
   },
-  "permission_webAssemblyDescription": {
-    "message": "Payagan ang $1 na ma-access ang mga low-level execution environment sa pamamagitan ng WebAssembly.",
-    "description": "An extended description of the `endowment:webassembly` permission. $1 is the snap name."
-  },
   "permissions": {
     "message": "Mga Pahintulot"
   },
   "permissionsPageEmptyDescription": {
-    "message": "Walang natukoy na pahintulot. Kapag nagbigay ka ng mga pahintulot sa site o nag-install ng Snap, lalabas ang mga detalye rito."
+    "message": "No permissions detected. Once you grant permissions to a site, the details will appear here."
   },
   "permitSimulationChange_approve": {
     "message": "Limitasyon sa paggastos"
@@ -6487,12 +6203,6 @@
   "removeAll": {
     "message": "Alisin lahat"
   },
-  "removeKeyringSnap": {
-    "message": "Ang pag-aalis sa Snap na ito ay nag-aalis ng mga account na ito sa 1do:"
-  },
-  "removeKeyringSnapToolTip": {
-    "message": "Kinokontrol ng snap ang mga account, at sa pag-alis nito, ang mga account ay aalisin din sa 1do, ngunit mananatili ang mga ito sa blockchain."
-  },
   "removeNFT": {
     "message": "Alisin ang NFT"
   },
@@ -6501,22 +6211,6 @@
   },
   "removeNftMessage": {
     "message": "Matagumpay na naalis ang NFT!"
-  },
-  "removeSnap": {
-    "message": "Alisin ang Snap"
-  },
-  "removeSnapAccountDescription": {
-    "message": "Kung magpatuloy ka, ang account na ito ay hindi na available sa 1do."
-  },
-  "removeSnapAccountTitle": {
-    "message": "Tanggalin ang account"
-  },
-  "removeSnapConfirmation": {
-    "message": "Sigurado ka bang gusto mong alisin ang $1?",
-    "description": "$1 represents the name of the snap"
-  },
-  "removeSnapDescription": {
-    "message": "Tatanggalin ng aksyon na ito ang snap, ang data nito at babawiin ang ibinigay mong mga pahintulot."
   },
   "rename": {
     "message": "Palitan ang pangalan",
@@ -6536,9 +6230,6 @@
   },
   "requestFromInfo": {
     "message": "Ito ang site na humihiling ng iyong pirma."
-  },
-  "requestFromInfoSnap": {
-    "message": "Ito ang Snap na humihiling ng iyong pirma."
   },
   "requestFromTransactionDescription": {
     "message": "Ito ang site na humihiling ng iyong kumpirmasyon."
@@ -7105,9 +6796,6 @@
   "setUp": {
     "message": "I-set up",
     "description": "Action label for Smart Accounts. Used on multichain details page."
-  },
-  "settingAddSnapAccount": {
-    "message": "Magdagdag ng snap account"
   },
   "settings": {
     "message": "Mga Setting"
@@ -8013,168 +7701,6 @@
   "smartTransactionsEnabledTitle": {
     "message": "Naging mas mahusay na ang mga transaksyon"
   },
-  "snapAccountCreated": {
-    "message": "Nagawa ang account"
-  },
-  "snapAccountCreatedDescription": {
-    "message": "Handa ng gamitin ang iyong bagong account!"
-  },
-  "snapAccountCreationFailed": {
-    "message": "Nabigo ang paglikha ng account"
-  },
-  "snapAccountCreationFailedDescription": {
-    "message": "Ang $1 ay hindi nagawang lumikha ng account para sa iyo.",
-    "description": "$1 is the snap name"
-  },
-  "snapAccountRedirectFinishSigningTitle": {
-    "message": "Tapusin ang pagpirma"
-  },
-  "snapAccountRedirectSiteDescription": {
-    "message": "Sundin ang mga tagubilin mula sa $1"
-  },
-  "snapAccountRemovalFailed": {
-    "message": "Nabigo ang pag-alis ng account"
-  },
-  "snapAccountRemovalFailedDescription": {
-    "message": "Ang $1 ay hindi nagawang alisin ng account para sa iyo.",
-    "description": "$1 is the snap name"
-  },
-  "snapAccountRemoved": {
-    "message": "Naalis ang account"
-  },
-  "snapAccountRemovedDescription": {
-    "message": "Ang account na ito ay hindi na magiging available para gamitin sa 1do."
-  },
-  "snapConnectTo": {
-    "message": "Kumonekta sa $1",
-    "description": "$1 is the website URL or a Snap name. Used for Snaps pre-approved connections."
-  },
-  "snapConnectionPermissionDescription": {
-    "message": "Hayaan ang $1 na awtomatikong kumonekta sa $2 nang wala ang iyong pag-apruba.",
-    "description": "Used for Snap pre-approved connections. $1 is the Snap name, $2 is a website URL."
-  },
-  "snapConnectionWarning": {
-    "message": "Si $1 ay gustong gumamit ng $2",
-    "description": "$2 is the snap and $1 is the dapp requesting connection to the snap."
-  },
-  "snapDetailWebsite": {
-    "message": "Website"
-  },
-  "snapHomeMenu": {
-    "message": "Snap Home Menu"
-  },
-  "snapInstallRequest": {
-    "message": "Ang pag-install ng $1 ay nagbibigay ng mga sumusunod na pahintulot.",
-    "description": "$1 is the snap name."
-  },
-  "snapInstallSuccess": {
-    "message": "Tapos na ang pag-install"
-  },
-  "snapInstallWarningCheck": {
-    "message": "Gusto ng $1 ng pahintulot na gawin ang mga sumusunod:",
-    "description": "Warning message used in popup displayed on snap install. $1 is the snap name."
-  },
-  "snapInstallWarningHeading": {
-    "message": "Magpatuloy nang may pag-iingat"
-  },
-  "snapInstallWarningPermissionDescriptionForBip32View": {
-    "message": "Payagan ang $1 na tingnan ang iyong mga pambublikong key (at mga address). Hindi ito nagkakaloob ng anumang kontrol ng mga account o asset.",
-    "description": "An extended description for the `snap_getBip32PublicKey` permission used for tooltip on Snap Install Warning screen (popup/modal). $1 is the snap name."
-  },
-  "snapInstallWarningPermissionDescriptionForEntropy": {
-    "message": "Payagan ang $1 Snap na mamahala ng mga account at asset sa (mga) hiniling na network. Ang mga account na ito ay hinango at naka-back up gamit ang iyong lihim na parirala sa pagbawi (nang hindi ibinubunyag ito). Gamit ang kapangyarihan na maghango ng mga key, masusuportahan ng $1 ang iba't ibang blockchain protocol bukod sa Ethereum (mga EVM).",
-    "description": "An extended description for the `snap_getBip44Entropy` and `snap_getBip44Entropy` permissions used for tooltip on Snap Install Warning screen (popup/modal). $1 is the snap name."
-  },
-  "snapInstallWarningPermissionNameForEntropy": {
-    "message": "Pamahalaan ang mga $1 account",
-    "description": "Permission name used for the Permission Cell component displayed on warning popup when installing a Snap. $1 is list of account types."
-  },
-  "snapInstallWarningPermissionNameForViewPublicKey": {
-    "message": "Tingnan ang pampublikong key para sa $1",
-    "description": "Permission name used for the Permission Cell component displayed on warning popup when installing a Snap. $1 is list of account types."
-  },
-  "snapInstallationErrorDescription": {
-    "message": "Hindi ma-install ang $1.",
-    "description": "Error description used when snap installation fails. $1 is the snap name."
-  },
-  "snapInstallationErrorTitle": {
-    "message": "Nabigo ang pag-install",
-    "description": "Error title used when snap installation fails."
-  },
-  "snapResultError": {
-    "message": "Error"
-  },
-  "snapResultSuccess": {
-    "message": "Tagumpay"
-  },
-  "snapResultSuccessDescription": {
-    "message": "Handa nang gamitin ang $1"
-  },
-  "snapUIAccountSelectorTitle": {
-    "message": "Pumili ng account"
-  },
-  "snapUIAssetSelectorTitle": {
-    "message": "Pumili ng asset"
-  },
-  "snapUpdateAlertDescription": {
-    "message": "Kunin ang pinakabagong bersyon ng $1",
-    "description": "Description used in Snap update alert banner when snap update is available. $1 is the Snap name."
-  },
-  "snapUpdateAvailable": {
-    "message": "Available ang update"
-  },
-  "snapUpdateErrorDescription": {
-    "message": "Hindi ma-update ang $1.",
-    "description": "Error description used when snap update fails. $1 is the snap name."
-  },
-  "snapUpdateErrorTitle": {
-    "message": "Nabigo ang pag-update",
-    "description": "Error title used when snap update fails."
-  },
-  "snapUpdateRequest": {
-    "message": "Ang pag-update ng $1 ay nagbibigay ng mga sumusunod na pahintulot.",
-    "description": "$1 is the Snap name."
-  },
-  "snapUpdateSuccess": {
-    "message": "Tapos na ang pag-update"
-  },
-  "snapUrlIsBlocked": {
-    "message": "Gusto kang dalhin ng Snap na ito sa isang naka-block na site. $1."
-  },
-  "snaps": {
-    "message": "Mga Snap"
-  },
-  "snapsConnected": {
-    "message": "Nakonekta ang Snaps"
-  },
-  "snapsNoInsight": {
-    "message": "Walang insight na ipapakita"
-  },
-  "snapsPrivacyWarningFirstMessage": {
-    "message": "Kinikilala mo na anumang snap na i-install mo ay isang Serbisyong Third Party, maliban kung tinukoy, ayon sa depenisyon sa $1 ng Consensys. Ang iyong paggamit ng mga Serbisyong Third Party ay pinapamahalaan ng hiwalay na mga tuntunin at kundisyon na itinakda ng tagapagbigay ng Serbisyong Third Party. Iyong ina-access, pinagbabatayan, o ginagamit mo ang Serbisyong Third Party sa sarili mong panganib. Itinatanggi ng Consensys ang lahat ng responsibilidad at pananagutan para sa anumang pagkalugi sa account dahil sa iyong paggamit ng mga Serbisyo ng Third Party.",
-    "description": "First part of a message in popup modal displayed when installing a snap for the first time. $1 is terms of use link."
-  },
-  "snapsPrivacyWarningSecondMessage": {
-    "message": "Ang anumang impormasyong ibinabahagi mo sa mga Serbisyo ng Third Party ay direktang kokolektahin ng mga Serbisyo ng Third Party na iyon alinsunod sa kanilang mga patakaran sa pagkapribado. Pakitingnan ang kanilang mga patakaran sa pagkapribado para sa higit pang impormasyon.",
-    "description": "Second part of a message in popup modal displayed when installing a snap for the first time."
-  },
-  "snapsPrivacyWarningThirdMessage": {
-    "message": "Walang access ang Consensys sa impormasyong ibinabahagi mo sa mga third party na ito.",
-    "description": "Third part of a message in popup modal displayed when installing a snap for the first time."
-  },
-  "snapsSettings": {
-    "message": "Mga settings sa Snap"
-  },
-  "snapsTermsOfUse": {
-    "message": "Mga Tuntunin ng Paggamit"
-  },
-  "snapsToggle": {
-    "message": "Tatakbo lamang ang snap kapag pinagana ito"
-  },
-  "snapsUIError": {
-    "message": "Makipag-ugnayan sa mga tagalikha ng $1 para sa karagdagang suporta.",
-    "description": "This is shown when the insight snap throws an error. $1 is the snap name"
-  },
   "solanaAccountRequested": {
     "message": "Humihiling ng Solana account ang site na ito."
   },
@@ -8568,10 +8094,6 @@
   },
   "submitted": {
     "message": "Naisumite"
-  },
-  "suggestedBySnap": {
-    "message": "Iminumungkahi ng $1",
-    "description": "$1 is the snap name"
   },
   "suggestedCurrencySymbol": {
     "message": "Iminumungkahing simbolo ng salapi:"
@@ -8975,10 +8497,6 @@
   "thirdPartyApisDescription": {
     "message": "Piliin kung paano mo ibabahagi ang iyong IP address o Ethereum address sa mga third-party API. Maaapektuhan ng mga pagbabago ang iyong karanasan sa 1do."
   },
-  "thirdPartySoftware": {
-    "message": "Paunawa ng third-party na software",
-    "description": "Title of a popup modal displayed when installing a snap for the first time."
-  },
   "thisContactWillBeDeleted": {
     "message": "Tatanggalin ang contact na ito."
   },
@@ -9319,10 +8837,6 @@
     "message": "Hindi kilalang network",
     "description": "Displayed on places like Gator permissions when regular name is not available."
   },
-  "unknownNetworkForKeyEntropy": {
-    "message": "Hindi kilalang network",
-    "description": "Displayed on places like Snap install warning when regular name is not available."
-  },
   "unknownQrCode": {
     "message": "Error: Hindi namin matukoy ang QR code na iyon"
   },
@@ -9551,10 +9065,6 @@
   "warning": {
     "message": "Babala"
   },
-  "warningFromSnap": {
-    "message": "Babala mula sa $1",
-    "description": "$1 represents the name of the snap"
-  },
   "watchEthereumAccountsDescription": {
     "message": "Ang pag-on sa opsyon na ito ay magbibigay sa iyo ng kakayahan na panoorin ang mga account ng Ethereum sa pamamagitan ng isang pampublikong address o pangalan ng ENS. Para sa feedback sa Beta feature na ito, mangyaring sagutan ito $1.",
     "description": "$1 is the link to a product feedback form"
@@ -9643,5 +9153,20 @@
   },
   "yourWalletIsReadyFromReminder": {
     "message": "Panatilihing ligtas ang iyong Lihim na Parirala sa Pagbawi!"
+  },
+  "suggestedBySource": {
+    "message": "Iminumungkahi ng $1",
+    "description": "$1 is the source name."
+  },
+  "permissionConnectTo": {
+    "message": "Kumonekta sa $1",
+    "description": "$1 is the website URL."
+  },
+  "permissionConnectionDescription": {
+    "message": "Hayaan ang $1 na awtomatikong kumonekta sa $2 nang wala ang iyong pag-apruba.",
+    "description": "$1 is the subject name, $2 is a website URL."
+  },
+  "noHardwareWalletSupport": {
+    "message": "Most hardware wallets will not work with your current browser version."
   }
 }

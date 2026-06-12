@@ -312,8 +312,6 @@ const transformOpenRPCDocument = (
     .filter((_m: unknown) => {
       const m = _m as MethodObject;
       return (
-        m.name.includes('snap') ||
-        m.name.includes('Snap') ||
         m.name.toLowerCase().includes('account') ||
         m.name.includes('crypt') ||
         m.name.includes('blob') ||

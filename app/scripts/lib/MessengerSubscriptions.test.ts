@@ -92,7 +92,7 @@ describe('MessengerSubscriptions', () => {
     subscriptions.subscribe(event);
     subscriptions.subscribe(event);
     subscriptions.subscribe('AccountsController:stateChange');
-    subscriptions.subscribe('SnapController:stateChange');
+    subscriptions.subscribe('NetworkController:stateChange');
 
     subscriptions.clear();
 

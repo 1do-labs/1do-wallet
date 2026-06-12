@@ -576,7 +576,7 @@ describe('LedgerAdapter', () => {
       await adapter.connect();
 
       mockGetAppNameAndVersion.mockResolvedValue({
-        appName: 'Bitcoin',
+        appName: 'Unsupported',
         version: '1.0.0',
       });
 

@@ -315,12 +315,6 @@
   "addRpcUrl": {
     "message": "RPC URLを追加"
   },
-  "addSnapAccountToggle": {
-    "message": "「アカウントSnapの追加 (ベータ版)」を有効にする"
-  },
-  "addSnapAccountsDescription": {
-    "message": "この機能をオンにすると、アカウントリストから直接新しいベータ版のアカウントSnapを追加できるようになります。アカウントSnapをインストールする際は、サードパーティサービスである点にご注意ください。"
-  },
   "addSuggestedNFTs": {
     "message": "推奨されたNFTを追加"
   },
@@ -651,11 +645,11 @@
   },
   "andForListItems": {
     "message": "$1、および$2",
-    "description": "$1 is the first item, $2 is the last item in a list of items. Used in Snap Install Warning modal."
+    "description": "$1 is the first item, $2 is the last item in a list of items."
   },
   "andForTwoItems": {
     "message": "$1および$2",
-    "description": "$1 is the first item, $2 is the second item. Used in Snap Install Warning modal."
+    "description": "$1 is the first item, $2 is the second item."
   },
   "annual": {
     "message": "年間"
@@ -842,9 +836,6 @@
   "backupApprovalNotice": {
     "message": "シークレットリカバリーフレーズをバックアップして、ウォレットと資金の安全を確保してください。"
   },
-  "backupKeyringSnapReminder": {
-    "message": "削除する前に、このSnapが作成したアカウントに自分でアクセスできることを確認してください"
-  },
   "backupNow": {
     "message": "今すぐバックアップ"
   },
@@ -895,9 +886,6 @@
   "basicFunctionalityRequired_goToHome": {
     "message": "ホームページに移動"
   },
-  "basicFunctionalityRequired_openCreateSnapAccountPage": {
-    "message": "アカウントの作成ページを開く"
-  },
   "basicFunctionalityRequired_openDefiPage": {
     "message": "DeFiページを開く"
   },
@@ -912,9 +900,6 @@
   },
   "basicFunctionalityRequired_openRewardsPage": {
     "message": "リワードページを開く"
-  },
-  "basicFunctionalityRequired_openSnapsPage": {
-    "message": "Snapsページを開く"
   },
   "basicFunctionalityRequired_openSwapsPage": {
     "message": "スワップページを開く"
@@ -1498,21 +1483,6 @@
   "concentratedSupplyDistributionTitle": {
     "message": "供給量の集中分布"
   },
-  "configureSnapPopupDescription": {
-    "message": "1doから移動してこのsnapを構成します。"
-  },
-  "configureSnapPopupInstallDescription": {
-    "message": "1doから移動してこのsnapをインストールします。"
-  },
-  "configureSnapPopupInstallTitle": {
-    "message": "snapをインストール"
-  },
-  "configureSnapPopupLink": {
-    "message": "続けるにはこのリンクをクリックしてください:"
-  },
-  "configureSnapPopupTitle": {
-    "message": "snapを構成"
-  },
   "confirm": {
     "message": "確認"
   },
@@ -1749,10 +1719,6 @@
   "connectMoreAccounts": {
     "message": "他のアカウントを接続"
   },
-  "connectSnap": {
-    "message": "$1を接続",
-    "description": "$1 is the snap for which a connection is being requested."
-  },
   "connectWithMetaMask": {
     "message": "1doを使用して接続"
   },
@@ -1773,9 +1739,6 @@
   "connectedSites": {
     "message": "接続済みのサイト"
   },
-  "connectedSitesAndSnaps": {
-    "message": "接続されているサイトとSnap"
-  },
   "connectedSitesDescription": {
     "message": "$1はこれらのサイトに接続されています。これらのサイトは、アカウントアドレスを把握できます。",
     "description": "$1 is the account name"
@@ -1783,12 +1746,6 @@
   "connectedSitesEmptyDescription": {
     "message": "$1はどのサイトとも接続されていません。",
     "description": "$1 is the account name"
-  },
-  "connectedSnapAndNoAccountDescription": {
-    "message": "1doはこのサイトに接続されていますが、まだアカウントは接続されていません"
-  },
-  "connectedSnaps": {
-    "message": "接続されているSnap"
   },
   "connectedWithAccount": {
     "message": "$1個のアカウントが接続されました",
@@ -1836,10 +1793,6 @@
   "connectionFailed": {
     "message": "接続できませんでした"
   },
-  "connectionFailedDescription": {
-    "message": "$1を取得できませんでした。ネットワークを確認してもう一度お試しください。",
-    "description": "$1 is the name of the snap being fetched."
-  },
   "connectionPopoverDescription": {
     "message": "サイトに接続するには、「接続」ボタンを選択します。1doはWeb3のサイトにしか接続できません。"
   },
@@ -1847,7 +1800,7 @@
     "message": "接続の要求"
   },
   "connectionsRemovedModalDescription": {
-    "message": "このデバイス上で一定期間ご利用がなかったため、一部の接続 (ハードウェアウォレットやSnapなど) が解除されました。これらはいつでも「設定」から再追加できます。"
+    "message": "Some connections (like hardware wallets) were removed due to inactivity on this device. You can re-add them anytime in Settings."
   },
   "connectionsRemovedModalTitle": {
     "message": "接続が解除されました"
@@ -1866,10 +1819,6 @@
   },
   "contacts": {
     "message": "連絡先"
-  },
-  "contentFromSnap": {
-    "message": "$1のコンテンツ",
-    "description": "$1 represents the name of the snap"
   },
   "continue": {
     "message": "続行"
@@ -1954,12 +1903,6 @@
   },
   "createPasswordMarketing": {
     "message": "製品の最新情報やヒント、ニュースをメールで受け取りましょう。当社はより適切な情報をお届けするため、お客様のメールへの反応に関するデータを利用する場合があります。"
-  },
-  "createSnapAccountDescription": {
-    "message": "$1が1doへの新しいアカウントの追加を要求しています。"
-  },
-  "createSnapAccountTitle": {
-    "message": "アカウントを作成"
   },
   "createSolanaAccount": {
     "message": "Solanaアカウントを作成"
@@ -2346,10 +2289,6 @@
   "description": {
     "message": "説明"
   },
-  "descriptionFromSnap": {
-    "message": "$1からの説明",
-    "description": "$1 represents the name of the snap"
-  },
   "destinationAccountPickerNoEligible": {
     "message": "対象のアカウントが見つかりませんでした"
   },
@@ -2406,9 +2345,6 @@
   "disconnectAllSitesSuccess": {
     "message": "すべてのDAppの接続が解除されました。"
   },
-  "disconnectAllSnapsText": {
-    "message": "Snap"
-  },
   "disconnectMessage": {
     "message": "これにより、このサイトへの接続が解除されます"
   },
@@ -2420,10 +2356,6 @@
   },
   "discover": {
     "message": "ディスカバリ"
-  },
-  "discoverSnaps": {
-    "message": "Snapのご紹介",
-    "description": "Text that links to the Snaps website. Displayed in a banner on Snaps list page in settings."
   },
   "dismiss": {
     "message": "閉じる"
@@ -2619,9 +2551,6 @@
   "enableSmartContractAccountDescription": {
     "message": "対応ネットワーク上で、より高速なトランザクション、お得なネットワーク手数料、強化されたセキュリティをご利用いただけます。"
   },
-  "enableSnap": {
-    "message": "有効にする"
-  },
   "enableToken": {
     "message": "$1を有効にする",
     "description": "$1 is a token symbol, e.g. ETH"
@@ -2774,10 +2703,6 @@
   "errorWhileConnectingToRPC": {
     "message": "カスタムネットワークへの接続中にエラーが発生しました。"
   },
-  "errorWithSnap": {
-    "message": "$1でエラーが発生しました",
-    "description": "$1 represents the name of the snap"
-  },
   "estimatedChanges": {
     "message": "予測される増減額"
   },
@@ -2829,10 +2754,6 @@
   },
   "exportYourDataDescription": {
     "message": "連絡先やユーザー設定などのデータをエクスポートできます。"
-  },
-  "extendWalletWithSnaps": {
-    "message": "Web3のエクスペリエンスをカスタマイズする、コミュニティが開発したSnapをご覧ください",
-    "description": "Banner description displayed on Snaps list page in Settings when less than 6 Snaps is installed."
   },
   "externalAccount": {
     "message": "外部アカウント"
@@ -2893,7 +2814,7 @@
     "description": "This is a warning shown on the Flask Welcome screen, intended to encourage non-developers not to proceed any further. $1 is the bolded message 'flaskWelcomeUninstall'"
   },
   "flaskWelcomeWarning2": {
-    "message": "この拡張機能の安全性や安定性は保証されていません。Flaskが提供する新しいAPIは、フィッシング攻撃への対策が施されていないため、Flaskを必要とするサイトやスナップは、資産の窃取を試みる悪質なものである場合があります。",
+    "message": "We do not guarantee the safety or stability of this extension. The new APIs offered by Flask are not hardened against phishing attacks, meaning that any site that requires Flask might be a malicious attempt to steal your assets.",
     "description": "This explains the risks of using MetaMask Flask"
   },
   "flaskWelcomeWarning3": {
@@ -3450,10 +3371,6 @@
   "insights": {
     "message": "インサイト"
   },
-  "insightsFromSnap": {
-    "message": "$1からのインサイト",
-    "description": "$1 represents the name of the snap"
-  },
   "install": {
     "message": "インストール"
   },
@@ -3462,10 +3379,6 @@
   },
   "installRequest": {
     "message": "1doに追加"
-  },
-  "installedOn": {
-    "message": "$1にインストール",
-    "description": "$1 is the date when the snap has been installed"
   },
   "insufficientBalance": {
     "message": "残高が不十分です."
@@ -3599,18 +3512,6 @@
   },
   "keyringAccountPublicAddress": {
     "message": "パブリックアドレス"
-  },
-  "keyringSnapRemovalResult1": {
-    "message": "$1の削除を完了$2",
-    "description": "Displays the result after removal of a keyring snap. $1 is the snap name, $2 is whether it is successful or not"
-  },
-  "keyringSnapRemovalResultNotSuccessful": {
-    "message": "できませんでした",
-    "description": "Displays the `not` word in $2."
-  },
-  "keyringSnapRemoveConfirmation": {
-    "message": "「$1」と入力して、このSnapを削除することを確定してください:",
-    "description": "Asks user to input the name nap prior to deleting the snap. $1 is the snap name"
   },
   "keystone": {
     "message": "Keystone"
@@ -3765,9 +3666,6 @@
   },
   "loading": {
     "message": "読み込み中..."
-  },
-  "loadingScreenSnapMessage": {
-    "message": "Snapでトランザクションを完了させてください。"
   },
   "loadingTokenList": {
     "message": "トークンリストをロードしています"
@@ -3950,10 +3848,6 @@
   "metaMetricsIdNotAvailableError": {
     "message": "1do Metricsにオプトインしていないため、ここで削除するデータはありません。"
   },
-  "metadataModalSourceTooltip": {
-    "message": "$1はnpmでホストされていて、$2はこのSnapの一意のIDです。",
-    "description": "$1 is the snap name and $2 is the snap NPM id."
-  },
   "metamaskFee": {
     "message": "1doの手数料"
   },
@@ -4091,10 +3985,6 @@
   },
   "multichainQuoteCardRateLabel": {
     "message": "レート"
-  },
-  "multipleSnapConnectionWarning": {
-    "message": "$1が$2 Snapの使用を求めています",
-    "description": "$1 is the dapp and $2 is the number of snaps it wants to connect to."
   },
   "musdBonusExplanation": {
     "message": "お持ちのステーブルコインをmUSDに換えて、\n年換算で最大$1%のボーナスを獲得しましょう。\nこのボーナスは毎日請求できます。$2",
@@ -4581,9 +4471,6 @@
   "noDomainResolution": {
     "message": "指定されたドメインの名前解決ができません。"
   },
-  "noHardwareWalletOrSnapsSupport": {
-    "message": "Snap、およびほとんどのハードウェアウォレットは、現在お使いのブラウザのバージョンで使用できません。"
-  },
   "noMMFeeSwapping": {
     "message": "1doの手数料なし"
   },
@@ -4601,9 +4488,6 @@
   },
   "noOptionsAvailableMessage": {
     "message": "この取引ルートは現在使用できません。金額、ネットワーク、またはトークンを変更すれば、最適なオプションをお探しします。"
-  },
-  "noSnaps": {
-    "message": "snapがインストールされていません"
   },
   "noTokensMatchingYourFilters": {
     "message": "フィルターに一致するトークンがありません"
@@ -4998,10 +4882,6 @@
   "otherPermissionsOnSiteTitle": {
     "message": "このサイトのその他のアクセス許可"
   },
-  "otherSnaps": {
-    "message": "他のsnap",
-    "description": "Used in the 'permission_rpc' message."
-  },
   "others": {
     "message": "その他"
   },
@@ -5116,49 +4996,13 @@
     "message": "この更新で$1に対して取り消し済み",
     "description": "Permission cell status for revoked permission including accounts, rendered as AvatarGroup which is $1."
   },
-  "permission_accessNamedSnap": {
-    "message": "$1に接続.",
-    "description": "The description for the `wallet_snap` permission. $1 is the human-readable name of the snap."
-  },
   "permission_accessNetwork": {
     "message": "インターネットへのアクセス.",
     "description": "The description of the `endowment:network-access` permission."
   },
-  "permission_accessNetworkDescription": {
-    "message": "$1によるインターネットへのアクセスを許可します。これは、サードパーティサーバーとのデータの送受信に使用されます。",
-    "description": "An extended description of the `endowment:network-access` permission. $1 is the snap name."
-  },
-  "permission_accessSnap": {
-    "message": "$1 snapに接続します。",
-    "description": "The description for the `wallet_snap` permission. $1 is the name of the snap."
-  },
-  "permission_accessSnapDescription": {
-    "message": "Webサイトまたはsnapによる$1とのやり取りを許可します。",
-    "description": "The description for the `wallet_snap_*` permission. $1 is the name of the Snap."
-  },
   "permission_assets": {
     "message": "1doにアカウントの資産を表示します。",
     "description": "The description for the `endowment:assets` permission."
-  },
-  "permission_assetsDescription": {
-    "message": "$1による1doクライアントへの資産情報の提供を許可します。資産にはオンチェーンとオフチェーンの両方のものが含まれます。",
-    "description": "An extended description for the `endowment:assets` permission. $1 is the name of the Snap."
-  },
-  "permission_cronjob": {
-    "message": "定期的なアクションのスケジュール設定と実行。",
-    "description": "The description for the `snap_cronjob` permission"
-  },
-  "permission_cronjobDescription": {
-    "message": "$1が一定の時刻、日付、または間隔で定期的に実行されるアクションを実行することを許可します。これは、時間依存のやり取りや通知のトリガーに使用されます。",
-    "description": "An extended description for the `snap_cronjob` permission. $1 is the snap name."
-  },
-  "permission_dialog": {
-    "message": "1doにダイアログウィンドウを表示します。",
-    "description": "The description for the `snap_dialog` permission"
-  },
-  "permission_dialogDescription": {
-    "message": "$1がカスタムテキスト、入力フィールド、アクションの承認・拒否ボタンを備えた1doポップアップを表示することを許可します。\nこれは、Snapのアラート、承認、オプトインフローなどの作成に使用されます。",
-    "description": "An extended description for the `snap_dialog` permission. $1 is the snap name."
   },
   "permission_ethereumAccounts": {
     "message": "アドレス、アカウント残高、アクティビティを表示して、承認するトランザクションを提案",
@@ -5168,125 +5012,29 @@
     "message": "イーサリアムプロバイダーへのアクセス.",
     "description": "The description for the `endowment:ethereum-provider` permission"
   },
-  "permission_ethereumProviderDescription": {
-    "message": "$1がブロックチェーンのデータを読み込みメッセージやトランザクションを提案するために、1doと直接通信することを許可します。",
-    "description": "An extended description for the `endowment:ethereum-provider` permission. $1 is the snap name."
-  },
-  "permission_getEntropy": {
-    "message": "$1に固有の任意のキーを導出します。",
-    "description": "The description for the `snap_getEntropy` permission. $1 is the snap name."
-  },
-  "permission_getEntropyDescription": {
-    "message": "$1が、$1固有の任意のキーを公開せずに導出することを許可します。これらのキーは1doアカウントとは切り離されており、秘密鍵やシークレットリカバリーフレーズとは関連性がありません。他のSnapはこの情報にアクセスできません。",
-    "description": "An extended description for the `snap_getEntropy` permission. $1 is the snap name."
-  },
-  "permission_getLocale": {
-    "message": "言語設定の表示",
-    "description": "The description for the `snap_getLocale` permission"
-  },
-  "permission_getLocaleDescription": {
-    "message": "$1が1doの言語設定にアクセスできるようにします。これは、$1のコンテンツをユーザーの言語にローカライズして表示するために使用されます。",
-    "description": "An extended description for the `snap_getLocale` permission. $1 is the snap name."
-  },
-  "permission_getPreferences": {
-    "message": "優先言語や法定通貨などの情報を表示.",
-    "description": "The description for the `snap_getPreferences` permission"
-  },
-  "permission_getPreferencesDescription": {
-    "message": "$1による1do設定の優先言語や法定通貨などの情報へのアクセスを許可します。これにより、$1がユーザーの設定に合わせたコンテンツを表示できるようになります。",
-    "description": "An extended description for the `snap_getPreferences` permission. $1 is the snap name."
-  },
   "permission_homePage": {
     "message": "カスタム画面を表示",
     "description": "The description for the `endowment:page-home` permission"
-  },
-  "permission_homePageDescription": {
-    "message": "$1が1doでカスタムホーム画面を表示することを許可します。これは、ユーザーインターフェース、構成、ダッシュボードに使用されます。",
-    "description": "An extended description for the `endowment:page-home` permission. $1 is the snap name."
   },
   "permission_keyring": {
     "message": "イーサリアムアカウントの追加と制御の要求を許可する",
     "description": "The description for the `endowment:keyring` permission"
   },
-  "permission_keyringDescription": {
-    "message": "$1がアカウントの追加または削除のリクエストを受け取ることや、これらのアカウントの代理で署名やトランザクションを行うことを許可します。",
-    "description": "An extended description for the `endowment:keyring` permission. $1 is the snap name."
-  },
   "permission_lifecycleHooks": {
     "message": "ライフサイクルフックを使用.",
     "description": "The description for the `endowment:lifecycle-hooks` permission"
-  },
-  "permission_lifecycleHooksDescription": {
-    "message": "$1がライフサイクルフックを使用して、ライフサイクルの特定のタイミングでコードを実行することを許可します。",
-    "description": "An extended description for the `endowment:lifecycle-hooks` permission. $1 is the snap name."
-  },
-  "permission_manageAccounts": {
-    "message": "イーサリアムアカウントの追加と制御",
-    "description": "The description for `snap_manageAccounts` permission"
-  },
-  "permission_manageAccountsDescription": {
-    "message": "$1がイーサリアムアカウントを追加または削除し、これらのアカウントでトランザクションや署名を行うことを許可します。",
-    "description": "An extended description for the `snap_manageAccounts` permission. $1 is the snap name."
-  },
-  "permission_manageBip32Keys": {
-    "message": "$1アカウントの管理",
-    "description": "The description for the `snap_getBip32Entropy` permission. $1 is a derivation path, e.g. 'm/44'/0'/0' (secp256k1)'."
-  },
-  "permission_manageBip44AndBip32KeysDescription": {
-    "message": "$1による要求されたネットワークでのアカウントおよび資産の管理を許可します。これらのアカウントはシークレットリカバリーフレーズを (公開せずに) 使用して導出およびバックアップされます。キーを導出できることで、$1はイーサリアム (EVM) だけでなく、様々なブロックチェーンプロトコルをサポートできるようになります。",
-    "description": "An extended description for the `snap_getBip44Entropy` and `snap_getBip44Entropy` permissions. $1 is the snap name."
-  },
-  "permission_manageBip44Keys": {
-    "message": "$1アカウントの管理",
-    "description": "The description for the `snap_getBip44Entropy` permission. $1 is the name of a protocol, e.g. 'Filecoin'."
-  },
-  "permission_manageState": {
-    "message": "そのデータをデバイスに保存・管理します。",
-    "description": "The description for the `snap_manageState` permission"
-  },
-  "permission_manageStateDescription": {
-    "message": "$1が暗号化を使用して安全にデータを保管、更新、取得することを許可します。他のSnapはこの情報にアクセスできません。",
-    "description": "An extended description for the `snap_manageState` permission. $1 is the snap name."
   },
   "permission_multichainProvider": {
     "message": "マルチチェーンプロバイダーにアクセスします。",
     "description": "The description for the `endowment:multichain-provider` permission"
   },
-  "permission_multichainProviderDescription": {
-    "message": "$1がブロックチェーンのデータを読み込みメッセージやトランザクションを提案するために、1doと直接通信することを許可します。",
-    "description": "An extended description for the `endowment:multichain-provider` permission. $1 is the snap name."
-  },
   "permission_nameLookup": {
     "message": "ドメインとアドレスの検索を提供.",
     "description": "The description for the `endowment:name-lookup` permission."
   },
-  "permission_nameLookupDescription": {
-    "message": "Snapが1do UIのさまざまな部分でアドレスとドメイン検索の取得と表示を行うことを許可します。",
-    "description": "An extended description for the `endowment:name-lookup` permission."
-  },
-  "permission_notifications": {
-    "message": "通知の表示.",
-    "description": "The description for the `snap_notify` permission"
-  },
-  "permission_notificationsDescription": {
-    "message": "$1が1do内に通知を表示することを許可します。Snapは、行動を促す情報や緊急性の高い情報に関する短い通知テキストをトリガーできます。",
-    "description": "An extended description for the `snap_notify` permission. $1 is the snap name."
-  },
   "permission_protocol": {
     "message": "1つまたは複数のチェーンにプロトコルデータを提供します。",
     "description": "The description for the `endowment:protocol` permission."
-  },
-  "permission_protocolDescription": {
-    "message": "ガス代の見積もりやトークン情報など、$1による1doへのプロトコルデータの提供を許可します。",
-    "description": "An extended description for the `endowment:protocol` permission. $1 is the name of the Snap."
-  },
-  "permission_rpc": {
-    "message": "$1が$2と直接やり取りすることを許可します。",
-    "description": "The description for the `endowment:rpc` permission. $1 is 'other snaps' or 'websites', $2 is the snap name."
-  },
-  "permission_rpcDescription": {
-    "message": "$1による$2へのメッセージの送信と$2からの応答の受信を許可します。",
-    "description": "An extended description for the `endowment:rpc` permission. $1 is 'other snaps' or 'websites', $2 is the snap name."
   },
   "permission_rpcDescriptionOriginList": {
     "message": "$1および$2",
@@ -5296,49 +5044,21 @@
     "message": "署名情報モーダルを表示.",
     "description": "The description for the `endowment:signature-insight` permission"
   },
-  "permission_signatureInsightDescription": {
-    "message": "署名要求の承認前に、$1がモーダルを表示して署名要求に関する分析情報を提供することを許可します。これはフィッシング対策やセキュリティソリューションに使用されます。",
-    "description": "An extended description for the `endowment:signature-insight` permission. $1 is the snap name."
-  },
   "permission_signatureInsightOrigin": {
     "message": "署名要求を開始したWebサイトの出所を表示する",
     "description": "The description for the `signatureOrigin` caveat, to be used with the `endowment:signature-insight` permission"
-  },
-  "permission_signatureInsightOriginDescription": {
-    "message": "$1による署名要求を開始したWebサイトの出所 (URI) の確認を許可します。これは、フィッシング対策やセキュリティソリューションに使用されます。",
-    "description": "An extended description for the `signatureOrigin` caveat, to be used with the `endowment:signature-insight` permission. $1 is the snap name."
   },
   "permission_transactionInsight": {
     "message": "トランザクションインサイトの取得と表示.",
     "description": "The description for the `endowment:transaction-insight` permission"
   },
-  "permission_transactionInsightDescription": {
-    "message": "$1によるトランザクションのデコードと、1do UI内でのインサイトの表示を許可します。これは、フィッシング対策やセキュリティソリューションに使用されます。",
-    "description": "An extended description for the `endowment:transaction-insight` permission. $1 is the snap name."
-  },
   "permission_transactionInsightOrigin": {
     "message": "トランザクションを提案しているWebサイトの提供元の確認",
     "description": "The description for the `transactionOrigin` caveat, to be used with the `endowment:transaction-insight` permission"
   },
-  "permission_transactionInsightOriginDescription": {
-    "message": "$1が、トランザクションを提案するWebサイトの出所 (URI) を確認することを許可します。これは、フィッシング対策やセキュリティソリューションに使用されます。",
-    "description": "An extended description for the `transactionOrigin` caveat, to be used with the `endowment:transaction-insight` permission. $1 is the snap name."
-  },
   "permission_unknown": {
     "message": "不明な許可: $1",
     "description": "$1 is the name of a requested permission that is not recognized."
-  },
-  "permission_viewBip32PublicKeys": {
-    "message": "$1 ($2) の公開鍵を表示します。",
-    "description": "The description for the `snap_getBip32PublicKey` permission. $1 is a derivation path, e.g. 'm/44'/0'/0''. $2 is the elliptic curve name, e.g. 'secp256k1'."
-  },
-  "permission_viewBip32PublicKeysDescription": {
-    "message": "$2が、$1の公開鍵 (およびアドレス) を表示することを許可します。これは、アカウントや資産のコントロールを許可するものでは一切ありません。",
-    "description": "An extended description for the `snap_getBip32PublicKey` permission. $1 is a derivation path (name). $2 is the snap name."
-  },
-  "permission_viewNamedBip32PublicKeys": {
-    "message": "$1の公開鍵の表示.",
-    "description": "The description for the `snap_getBip32PublicKey` permission. $1 is a name for the derivation path, e.g., 'Ethereum accounts'."
   },
   "permission_walletSwitchEthereumChain": {
     "message": "有効なネットワークを使用する",
@@ -5348,15 +5068,11 @@
     "message": "WebAssemblyのサポート.",
     "description": "The description of the `endowment:webassembly` permission."
   },
-  "permission_webAssemblyDescription": {
-    "message": "$1がWebAssemblyを介して低レベルの実行環境にアクセスすることを許可します。",
-    "description": "An extended description of the `endowment:webassembly` permission. $1 is the snap name."
-  },
   "permissions": {
     "message": "アクセス許可"
   },
   "permissionsPageEmptyDescription": {
-    "message": "権限が検出されませんでした。サイトに権限を付与したり、Snapをインストールしたりした場合、その詳細がここに表示されます。"
+    "message": "No permissions detected. Once you grant permissions to a site, the details will appear here."
   },
   "permitSimulationChange_approve": {
     "message": "使用上限"
@@ -6487,12 +6203,6 @@
   "removeAll": {
     "message": "すべて削除"
   },
-  "removeKeyringSnap": {
-    "message": "このSnapを削除すると、これらのアカウントが1doから削除されます:"
-  },
-  "removeKeyringSnapToolTip": {
-    "message": "Snapはアカウントをコントロールするため、Snapを削除するとアカウントも1doから削除されますが、ブロックチェーン上から削除されることはありません。"
-  },
   "removeNFT": {
     "message": "NFTを削除"
   },
@@ -6501,22 +6211,6 @@
   },
   "removeNftMessage": {
     "message": "NFTが削除されました！"
-  },
-  "removeSnap": {
-    "message": "Snapを削除"
-  },
-  "removeSnapAccountDescription": {
-    "message": "続行すると、このアカウントは1doで使用できなくなります。"
-  },
-  "removeSnapAccountTitle": {
-    "message": "アカウントを削除"
-  },
-  "removeSnapConfirmation": {
-    "message": "$1を削除してもよろしいですか？",
-    "description": "$1 represents the name of the snap"
-  },
-  "removeSnapDescription": {
-    "message": "この操作により、Snapとそのデータが削除され、与えられた許可が取り消されます。"
   },
   "rename": {
     "message": "名前の変更",
@@ -6536,9 +6230,6 @@
   },
   "requestFromInfo": {
     "message": "これは署名を求めているサイトです。"
-  },
-  "requestFromInfoSnap": {
-    "message": "これは署名を求めているSnapです。"
   },
   "requestFromTransactionDescription": {
     "message": "これが承認を要求しているサイトです。"
@@ -7105,9 +6796,6 @@
   "setUp": {
     "message": "設定",
     "description": "Action label for Smart Accounts. Used on multichain details page."
-  },
-  "settingAddSnapAccount": {
-    "message": "snapアカウントを追加"
   },
   "settings": {
     "message": "設定"
@@ -8013,168 +7701,6 @@
   "smartTransactionsEnabledTitle": {
     "message": "トランザクションがさらにスマートに"
   },
-  "snapAccountCreated": {
-    "message": "アカウントが作成されました"
-  },
-  "snapAccountCreatedDescription": {
-    "message": "新しいアカウントの使用準備ができました！"
-  },
-  "snapAccountCreationFailed": {
-    "message": "アカウントの作成に失敗しました"
-  },
-  "snapAccountCreationFailedDescription": {
-    "message": "$1はアカウントを作成できませんでした。",
-    "description": "$1 is the snap name"
-  },
-  "snapAccountRedirectFinishSigningTitle": {
-    "message": "署名を完了させる"
-  },
-  "snapAccountRedirectSiteDescription": {
-    "message": "$1の指示に従ってください"
-  },
-  "snapAccountRemovalFailed": {
-    "message": "アカウントの削除に失敗しました"
-  },
-  "snapAccountRemovalFailedDescription": {
-    "message": "$1がこのアカウントを削除できませんでした。",
-    "description": "$1 is the snap name"
-  },
-  "snapAccountRemoved": {
-    "message": "アカウントが削除されました"
-  },
-  "snapAccountRemovedDescription": {
-    "message": "このアカウントは1doで使用できなくなります。"
-  },
-  "snapConnectTo": {
-    "message": "$1に接続",
-    "description": "$1 is the website URL or a Snap name. Used for Snaps pre-approved connections."
-  },
-  "snapConnectionPermissionDescription": {
-    "message": "$1によるユーザーの承認なしでの$2への自動接続を許可してください。",
-    "description": "Used for Snap pre-approved connections. $1 is the Snap name, $2 is a website URL."
-  },
-  "snapConnectionWarning": {
-    "message": "$1が$2の使用を求めています",
-    "description": "$2 is the snap and $1 is the dapp requesting connection to the snap."
-  },
-  "snapDetailWebsite": {
-    "message": "Webサイト"
-  },
-  "snapHomeMenu": {
-    "message": "Snapホームメニュー"
-  },
-  "snapInstallRequest": {
-    "message": "$1をインストールすると、次のアクセス許可が付与されます。",
-    "description": "$1 is the snap name."
-  },
-  "snapInstallSuccess": {
-    "message": "インストール完了"
-  },
-  "snapInstallWarningCheck": {
-    "message": "$1が次の許可を求めています:",
-    "description": "Warning message used in popup displayed on snap install. $1 is the snap name."
-  },
-  "snapInstallWarningHeading": {
-    "message": "慎重に進めてください"
-  },
-  "snapInstallWarningPermissionDescriptionForBip32View": {
-    "message": "$1が公開鍵 (およびアドレス) を表示することを許可します。これは、アカウントや資産のコントロールを許可するものでは一切ありません。",
-    "description": "An extended description for the `snap_getBip32PublicKey` permission used for tooltip on Snap Install Warning screen (popup/modal). $1 is the snap name."
-  },
-  "snapInstallWarningPermissionDescriptionForEntropy": {
-    "message": "$1 Snapによる要求されたネットワークでのアカウントおよび資産の管理を許可します。これらのアカウントはシークレットリカバリーフレーズを (公開せずに) 使用して導出およびバックアップされます。キーを導出できることで、$1はイーサリアム (EVM) だけでなく、様々なブロックチェーンプロトコルをサポートできるようになります。",
-    "description": "An extended description for the `snap_getBip44Entropy` and `snap_getBip44Entropy` permissions used for tooltip on Snap Install Warning screen (popup/modal). $1 is the snap name."
-  },
-  "snapInstallWarningPermissionNameForEntropy": {
-    "message": "$1アカウントの管理",
-    "description": "Permission name used for the Permission Cell component displayed on warning popup when installing a Snap. $1 is list of account types."
-  },
-  "snapInstallWarningPermissionNameForViewPublicKey": {
-    "message": "$1の公開鍵の表示",
-    "description": "Permission name used for the Permission Cell component displayed on warning popup when installing a Snap. $1 is list of account types."
-  },
-  "snapInstallationErrorDescription": {
-    "message": "$1をインストールできませんでした。",
-    "description": "Error description used when snap installation fails. $1 is the snap name."
-  },
-  "snapInstallationErrorTitle": {
-    "message": "インストールに失敗しました",
-    "description": "Error title used when snap installation fails."
-  },
-  "snapResultError": {
-    "message": "エラー"
-  },
-  "snapResultSuccess": {
-    "message": "成功"
-  },
-  "snapResultSuccessDescription": {
-    "message": "$1を使用する準備が整いました"
-  },
-  "snapUIAccountSelectorTitle": {
-    "message": "アカウントを選択"
-  },
-  "snapUIAssetSelectorTitle": {
-    "message": "資産の選択"
-  },
-  "snapUpdateAlertDescription": {
-    "message": "$1の最新バージョンを入手",
-    "description": "Description used in Snap update alert banner when snap update is available. $1 is the Snap name."
-  },
-  "snapUpdateAvailable": {
-    "message": "アップデートが利用できます"
-  },
-  "snapUpdateErrorDescription": {
-    "message": "$1を更新できませんでした。",
-    "description": "Error description used when snap update fails. $1 is the snap name."
-  },
-  "snapUpdateErrorTitle": {
-    "message": "更新失敗",
-    "description": "Error title used when snap update fails."
-  },
-  "snapUpdateRequest": {
-    "message": "$1をアップデートすると、次のアクセス許可が付与されます。",
-    "description": "$1 is the Snap name."
-  },
-  "snapUpdateSuccess": {
-    "message": "更新完了"
-  },
-  "snapUrlIsBlocked": {
-    "message": "このSnapがブロックされたサイトに移動しようとしています。$1。"
-  },
-  "snaps": {
-    "message": "Snap"
-  },
-  "snapsConnected": {
-    "message": "Snapが接続されました"
-  },
-  "snapsNoInsight": {
-    "message": "表示するインサイトはありません"
-  },
-  "snapsPrivacyWarningFirstMessage": {
-    "message": "ユーザーは、別途特定されていない限り、インストールするSnapがConsensys$1で定義されているサードパーティサービスであることを認めたものとみなされます。サードパーティサービスの使用には、当該サードパーティサービスプロバイダーにより定められた、別の諸条件が適用されます。Consensysは、いかなる理由であっても、特定の人物によるSnapの使用を一切推奨しません。サードパーティサービスへのアクセス、依存、使用は、ユーザーの自己責任で行うものとします。Consensysは、サードパーティサービスの使用によりアカウントで発生する損失について、一切責任および賠償責任を負いません。",
-    "description": "First part of a message in popup modal displayed when installing a snap for the first time. $1 is terms of use link."
-  },
-  "snapsPrivacyWarningSecondMessage": {
-    "message": "サードパーティサービスと共有する情報は、当該サードパーティサービスにより、それぞれのプライバシーポリシーに従い直接収集されます。詳細は、各サードパーティサービスのプライバシーポリシーをご覧ください。",
-    "description": "Second part of a message in popup modal displayed when installing a snap for the first time."
-  },
-  "snapsPrivacyWarningThirdMessage": {
-    "message": "Consensysは、ユーザーがサードパーティと共有した情報に一切アクセスできません。",
-    "description": "Third part of a message in popup modal displayed when installing a snap for the first time."
-  },
-  "snapsSettings": {
-    "message": "Snapの設定"
-  },
-  "snapsTermsOfUse": {
-    "message": "利用規約"
-  },
-  "snapsToggle": {
-    "message": "Snapは、有効になっている場合のみ動作します"
-  },
-  "snapsUIError": {
-    "message": "今後のサポートは、$1の作成者にお問い合わせください。",
-    "description": "This is shown when the insight snap throws an error. $1 is the snap name"
-  },
   "solanaAccountRequested": {
     "message": "このサイトがSolanaアカウントを求めています。"
   },
@@ -8568,10 +8094,6 @@
   },
   "submitted": {
     "message": "送信済み"
-  },
-  "suggestedBySnap": {
-    "message": "$1による提案",
-    "description": "$1 is the snap name"
   },
   "suggestedCurrencySymbol": {
     "message": "推奨通貨シンボル。"
@@ -8975,10 +8497,6 @@
   "thirdPartyApisDescription": {
     "message": "IPアドレスやイーサリアムアドレスのサードパーティAPIとの共有方法を選択します。変更は1doエクスペリエンスに影響を与えます。"
   },
-  "thirdPartySoftware": {
-    "message": "サードパーティソフトウェアに関する通知",
-    "description": "Title of a popup modal displayed when installing a snap for the first time."
-  },
   "thisContactWillBeDeleted": {
     "message": "この連絡先は削除されます。"
   },
@@ -9319,10 +8837,6 @@
     "message": "不明なネットワーク",
     "description": "Displayed on places like Gator permissions when regular name is not available."
   },
-  "unknownNetworkForKeyEntropy": {
-    "message": "不明なネットワーク",
-    "description": "Displayed on places like Snap install warning when regular name is not available."
-  },
   "unknownQrCode": {
     "message": "エラー: QRコードを識別できませんでした"
   },
@@ -9551,10 +9065,6 @@
   "warning": {
     "message": "警告"
   },
-  "warningFromSnap": {
-    "message": "$1からの警告",
-    "description": "$1 represents the name of the snap"
-  },
   "watchEthereumAccountsDescription": {
     "message": "このオプションをオンにすると、パブリックアドレスまたはENS名でイーサリアムアカウントを監視できるようになります。ベータ機能に関するフィードバックは、こちらの$1に入力してください。",
     "description": "$1 is the link to a product feedback form"
@@ -9643,5 +9153,20 @@
   },
   "yourWalletIsReadyFromReminder": {
     "message": "シークレットリカバリーフレーズは安全に保管してください。"
+  },
+  "suggestedBySource": {
+    "message": "$1による提案",
+    "description": "$1 is the source name."
+  },
+  "permissionConnectTo": {
+    "message": "$1に接続",
+    "description": "$1 is the website URL."
+  },
+  "permissionConnectionDescription": {
+    "message": "$1によるユーザーの承認なしでの$2への自動接続を許可してください。",
+    "description": "$1 is the subject name, $2 is a website URL."
+  },
+  "noHardwareWalletSupport": {
+    "message": "Most hardware wallets will not work with your current browser version."
   }
 }

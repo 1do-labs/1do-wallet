@@ -41,9 +41,7 @@ async function mockFeatureFlagsForPrivacyTest(server: Mockttp) {
       statusCode: 200,
       json: [
         ...prodFlags,
-        { bitcoinAccounts: { enabled: false, minimumVersion: '0.0.0' } },
         { solanaAccounts: { enabled: false, minimumVersion: '0.0.0' } },
-        { tronAccounts: { enabled: false, minimumVersion: '0.0.0' } },
         {
           enableMultichainAccounts: {
             enabled: false,

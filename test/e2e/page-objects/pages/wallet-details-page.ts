@@ -15,11 +15,6 @@ class WalletDetailsPage {
     tag: 'button',
   };
 
-  private readonly solanaAccountOption = {
-    text: 'Solana account',
-    tag: 'button',
-  };
-
   private readonly accountItems =
     '[data-testid^="wallet-details-account-item-"]';
 
@@ -74,11 +69,6 @@ class WalletDetailsPage {
   async checkEthereumAccountOptionIsDisplayed(): Promise<void> {
     console.log('Check Ethereum account option is displayed');
     await this.driver.waitForSelector(this.ethereumAccountOption);
-  }
-
-  async checkSolanaAccountOptionIsDisplayed(): Promise<void> {
-    console.log('Check Solana account option is displayed');
-    await this.driver.waitForSelector(this.solanaAccountOption);
   }
 
   async clickEthereumAccountOption(): Promise<void> {

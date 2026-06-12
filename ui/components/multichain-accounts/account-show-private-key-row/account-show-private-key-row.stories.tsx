@@ -76,14 +76,14 @@ HardwareAccount.args = {
 };
 HardwareAccount.storyName = 'Hardware Account (Not Exportable)';
 
-export const SnapAccount = Template.bind({});
-SnapAccount.args = {
+export const HardwareAccountWithoutExport = Template.bind({});
+HardwareAccountWithoutExport.args = {
   account: {
     ...MOCK_ACCOUNT_EOA,
     metadata: {
       ...MOCK_ACCOUNT_EOA.metadata,
-      keyring: { type: 'Snap' },
+      keyring: { type: 'Hardware' },
     },
   },
 };
-SnapAccount.storyName = 'Snap Account (Not Exportable)';
+HardwareAccountWithoutExport.storyName = 'Hardware Account (Not Exportable)';

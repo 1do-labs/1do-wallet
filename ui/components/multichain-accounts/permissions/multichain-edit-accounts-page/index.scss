@@ -1,12 +1,3 @@
-// Target the outer Page wrapper for snap flows
-.multichain-page:has(.multichain-edit-accounts-page--snap) {
-  flex: 1 !important;
-  display: flex !important;
-  flex-direction: column !important;
-  min-height: 0 !important;
-  overflow: hidden !important;
-}
-
 .multichain-edit-accounts-page {
   &.multichain-page__inner-container {
     position: relative;
@@ -14,15 +5,6 @@
     overflow: hidden !important;
     display: flex !important;
     flex-direction: column !important;
-  }
-
-  // For snap flows - use flex to fit within parent flex container
-  &.multichain-edit-accounts-page--snap.multichain-page__inner-container {
-    height: 100% !important;
-    flex: 1 !important;
-    overflow: hidden !important;
-    min-height: 0 !important;
-    max-height: 100% !important;
   }
 
   // Constrain header
@@ -38,12 +20,6 @@
     overflow-x: hidden !important;
   }
 
-  // For snap flows - ensure no double scrollbar
-  &.multichain-edit-accounts-page--snap .multichain-page-content {
-    overflow-y: auto !important;
-    -webkit-overflow-scrolling: touch;
-  }
-
   .multichain-page-footer {
     flex-shrink: 0;
     flex-grow: 0;
@@ -53,4 +29,3 @@
     z-index: 1;
   }
 }
-

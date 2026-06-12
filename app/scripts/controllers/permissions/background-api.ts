@@ -13,7 +13,6 @@ import {
   getAllScopesFromCaip25CaveatValue,
   setChainIdsInCaip25CaveatValue,
 } from '@metamask/chain-agnostic-permission';
-import { isSnapId } from '@metamask/snaps-utils';
 import {
   type CaipAccountId,
   type CaipChainId,
@@ -207,33 +206,35 @@ export function getPermissionBackgroundApiMethods({
       );
     }
 
-    if (chainIds.length === 0 && !isSnapId(origin)) {
+    if (chainIds.length === 0) {
       permissionController.revokePermission(
         origin,
         Caip25EndowmentPermissionName,
       );
-    } else {
-      const updatedCaveatValueWithChainIds = setChainIdsInCaip25CaveatValue(
-        caip25Caveat.value,
-        chainIds as CaipChainId[],
-      );
-
-      const existingPermittedAccountIds =
-        getCaipAccountIdsFromCaip25CaveatValue(caip25Caveat.value);
-
-      const updatedCaveatValueWithAccountIds =
-        setNonSCACaipAccountIdsInCaip25CaveatValue(
-          updatedCaveatValueWithChainIds,
-          existingPermittedAccountIds,
-        );
-
-      permissionController.updateCaveat(
-        origin,
-        Caip25EndowmentPermissionName,
-        Caip25CaveatType,
-        updatedCaveatValueWithAccountIds,
-      );
+      return;
     }
+
+    const updatedCaveatValueWithChainIds = setChainIdsInCaip25CaveatValue(
+      caip25Caveat.value,
+      chainIds as CaipChainId[],
+    );
+
+    const existingPermittedAccountIds = getCaipAccountIdsFromCaip25CaveatValue(
+      caip25Caveat.value,
+    );
+
+    const updatedCaveatValueWithAccountIds =
+      setNonSCACaipAccountIdsInCaip25CaveatValue(
+        updatedCaveatValueWithChainIds,
+        existingPermittedAccountIds,
+      );
+
+    permissionController.updateCaveat(
+      origin,
+      Caip25EndowmentPermissionName,
+      Caip25CaveatType,
+      updatedCaveatValueWithAccountIds,
+    );
   };
 
   const addMoreAccounts = (origin: string, addresses: string[]): void => {

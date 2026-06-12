@@ -174,7 +174,7 @@ function useDomainResolutions(nameRequests: UseDisplayNameRequest[]) {
         domainName: string;
         protocol: string;
         resolvedAddress: string;
-        resolvingSnap: string;
+        resolvingSource?: string;
       }) =>
         toChecksumHexAddress(resolution.resolvedAddress) ===
         toChecksumHexAddress(value),

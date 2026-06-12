@@ -22,33 +22,3 @@ export const isEVMAccountForSend = (account: InternalAccount): boolean => {
 
   return false;
 };
-
-/**
- * Checks if an account is Solana-compatible for send operations.
- *
- * @param account - The internal account object to check
- * @returns true if the account can be used for Solana transactions
- */
-export const isSolanaAccountForSend = (account: InternalAccount): boolean => {
-  return false;
-};
-
-/**
- * Checks if an account is Bitcoin-compatible for send operations.
- *
- * @param account - The internal account object to check
- * @returns true if the account can be used for Bitcoin transactions
- */
-export const isBitcoinAccountForSend = (account: InternalAccount): boolean => {
-  return false;
-};
-
-/**
- * Checks if an account is Tron-compatible for send operations.
- *
- * @param account - The internal account object to check
- * @returns true if the account can be used for Solana transactions
- */
-export const isTronAccountForSend = (account: InternalAccount): boolean => {
-  return false;
-};

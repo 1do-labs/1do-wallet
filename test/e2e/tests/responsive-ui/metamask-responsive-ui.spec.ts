@@ -1,5 +1,4 @@
 import { Suite } from 'mocha';
-import { Mockttp } from 'mockttp';
 import { E2E_SRP, WALLET_PASSWORD } from '../../constants';
 import { withFixtures } from '../../helpers';
 import FixtureBuilderV2 from '../../fixtures/fixture-builder-v2';
@@ -12,46 +11,6 @@ import { login } from '../../page-objects/flows/login.flow';
 import { sendRedesignedTransactionToAddress } from '../../page-objects/flows/send-transaction.flow';
 import { CHAIN_IDS } from '../../../../shared/constants/network';
 import { PAGES } from '../../webdriver/driver';
-import { getProductionRemoteFlagApiResponse } from '../../feature-flags';
-
-const FEATURE_FLAGS_URL = 'https://client-config.api.cx.metamask.io/v1/flags';
-
-const NON_EVM_ACCOUNT_FLAG_OVERRIDES = [
-  { bitcoinAccounts: { enabled: false, minimumVersion: '0.0.0' } },
-  { solanaAccounts: { enabled: false, minimumVersion: '0.0.0' } },
-  { tronAccounts: { enabled: false, minimumVersion: '0.0.0' } },
-  {
-    enableMultichainAccounts: {
-      enabled: false,
-      featureVersion: null,
-      minimumVersion: null,
-    },
-  },
-  {
-    enableMultichainAccountsState2: {
-      enabled: false,
-      featureVersion: null,
-      minimumVersion: null,
-    },
-  },
-];
-
-async function mockFeatureFlagsWithoutNonEvmAccounts(mockServer: Mockttp) {
-  const prodFlags = getProductionRemoteFlagApiResponse();
-  return [
-    await mockServer
-      .forGet(FEATURE_FLAGS_URL)
-      .withQuery({
-        client: 'extension',
-        distribution: 'main',
-        environment: 'dev',
-      })
-      .thenCallback(() => ({
-        statusCode: 200,
-        json: [...prodFlags, ...NON_EVM_ACCOUNT_FLAG_OVERRIDES],
-      })),
-  ];
-}
 
 describe('MetaMask Responsive UI', function (this: Suite) {
   const driverOptions = { constrainWindowSize: true };
@@ -78,14 +37,8 @@ describe('MetaMask Responsive UI', function (this: Suite) {
       {
         fixtures: new FixtureBuilderV2().build(),
         driverOptions,
-        testSpecificMock: mockFeatureFlagsWithoutNonEvmAccounts,
-        // The password reset flow calls createNewVaultAndRestore which
-        // clears snap state while preinstalled snaps (e.g. message-signing-snap)
-        // may still have in-flight requests, causing them to be terminated.
-        // See issues #37342 and #37498.
         ignoredConsoleErrors: [
           'unable to proceed, wallet is locked',
-          'npm:@metamask/message-signing-snap was stopped and the request was cancelled. This is likely because the Snap crashed.',
           'Unable to enable notifications',
         ],
         title: this.test?.fullTitle(),

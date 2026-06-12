@@ -12,10 +12,6 @@ import {
 import { ApprovalRequestNotFoundError } from '@metamask/approval-controller';
 import { PermissionsRequestNotFoundError } from '@metamask/permission-controller';
 import nock from 'nock';
-import {
-  RecoveryError,
-  SeedlessOnboardingControllerErrorMessage,
-} from '@metamask/seedless-onboarding-controller';
 import { MOCK_ANY_NAMESPACE, Messenger } from '@metamask/messenger';
 import { Category, ErrorCode, Severity } from '@metamask/hw-wallet-sdk';
 import browser from 'webextension-polyfill';
@@ -58,6 +54,19 @@ jest.mock('webextension-polyfill', () => ({
 const browserPolyfillMock = jest.mocked(browser);
 
 const { Ganache } = require('../../test/e2e/seeder/ganache');
+
+const SeedlessOnboardingControllerErrorMessage = {
+  IncorrectPassword: 'Incorrect password',
+  OutdatedPassword: 'Outdated password',
+  TooManyLoginAttempts: 'Too many login attempts',
+};
+
+class RecoveryError extends Error {
+  constructor(message) {
+    super(message);
+    this.name = 'RecoveryError';
+  }
+}
 
 const ganacheServer = new Ganache();
 
@@ -243,12 +252,11 @@ describe('MetaMaskController', function () {
       await metamaskController.createNewVaultAndRestore('test@123', TEST_SEED);
       const result2 = metamaskController.keyringController.state;
 
-      expect(result1.keyrings).toHaveLength(2);
+      expect(result1.keyrings).toHaveLength(1);
       expect(result1.keyrings[0].metadata.id).toBe(mockULIDs[0]); // 0: Primary HD keyring
-      expect(result1.keyrings[1].metadata.id).toBe(mockULIDs[1]); // 1: Snap keyring
 
       // On restore, a new keyring metadata is generated.
-      const ulidNewIndex = 2;
+      const ulidNewIndex = 1;
       expect(result2).toStrictEqual({
         ...result1,
         keyrings: [
@@ -257,13 +265,6 @@ describe('MetaMaskController', function () {
             metadata: {
               ...result1.keyrings[0].metadata,
               id: mockULIDs[ulidNewIndex + 0], // 0: New primary HD keyring
-            },
-          },
-          {
-            ...result1.keyrings[1],
-            metadata: {
-              ...result1.keyrings[1].metadata,
-              id: mockULIDs[ulidNewIndex + 1], // 1: New Snap keyring
             },
           },
         ],
@@ -650,8 +651,6 @@ describe('MetaMaskController', function () {
     });
 
     it('should return false if firstTimeFlowType is seedless and password is not outdated', async function () {
-      // We now need the Snap keyring after onboarding the wallet.
-      jest.spyOn(metamaskController, 'getSnapKeyring').mockReturnValue({});
       metamaskController.onboardingController.setFirstTimeFlowType(
         FirstTimeFlowType.socialCreate,
       );
@@ -670,8 +669,6 @@ describe('MetaMaskController', function () {
     });
 
     it('should return true if firstTimeFlowType is seedless and password is outdated', async function () {
-      // We now need the Snap keyring after onboarding the wallet.
-      jest.spyOn(metamaskController, 'getSnapKeyring').mockReturnValue({});
       metamaskController.onboardingController.setFirstTimeFlowType(
         FirstTimeFlowType.socialCreate,
       );
@@ -1067,9 +1064,6 @@ describe('MetaMaskController', function () {
           )
           .mockRejectedValue('Unexpected error');
 
-        // We now need the Snap keyring after unlocking the wallet.
-        jest.spyOn(metamaskController, 'getSnapKeyring').mockReturnValue({});
-
         await metamaskController.syncPasswordAndUnlockWallet(password);
         expect(keyringSubmitPwdSpy).toHaveBeenCalled();
         expect(seedlessSubmitPwdSpy).toHaveBeenCalled();
@@ -1151,9 +1145,6 @@ describe('MetaMaskController', function () {
             'submitPassword',
           )
           .mockResolvedValue();
-
-        // We now need the Snap keyring after unlocking the wallet.
-        jest.spyOn(metamaskController, 'getSnapKeyring').mockReturnValue({});
 
         await metamaskController.syncPasswordAndUnlockWallet(password);
         expect(keyringSubmitPwdSpy).toHaveBeenCalled();

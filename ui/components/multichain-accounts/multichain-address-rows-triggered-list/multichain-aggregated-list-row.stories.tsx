@@ -34,7 +34,6 @@ const createMockState = () => ({
     remoteFeatureFlags: {
       ...mockState.metamask.remoteFeatureFlags,
       solanaAccounts: { enabled: false, minimumVersion: '13.6.0' },
-      bitcoinAccounts: { enabled: false, minimumVersion: '13.6.0' },
     },
     // Override the EVM network configurations to have proper names
     networkConfigurationsByChainId: {

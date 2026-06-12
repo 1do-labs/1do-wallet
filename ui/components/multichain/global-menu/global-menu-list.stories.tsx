@@ -61,12 +61,12 @@ const defaultSections: GlobalMenuSection[] = [
         },
       },
       {
-        id: 'snaps',
-        iconName: IconName.Snaps,
-        label: 'Snaps',
-        to: '/snaps',
+        id: 'contacts',
+        iconName: IconName.User,
+        label: 'Contacts',
+        to: '/contacts',
         onClick: () => {
-          console.log('Snaps clicked');
+          console.log('Contacts clicked');
         },
       },
     ],

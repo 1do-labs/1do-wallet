@@ -1,16 +1,9 @@
-import {
-  EthAccountType,
-  EthScope,
-  BtcScope,
-  SolScope,
-  CaipChainId,
-} from '@metamask/keyring-api';
+import { EthAccountType, EthScope, CaipChainId } from '@metamask/keyring-api';
 import { ETH_EOA_METHODS } from '../../shared/constants/eth-methods';
 import {
   MOCK_ACCOUNTS,
   MOCK_ACCOUNT_EOA,
   MOCK_ACCOUNT_ERC4337,
-  MOCK_ACCOUNT_BIP122_P2WPKH,
   MOCK_ACCOUNT_ID_BY_ADDRESS,
 } from '../../test/data/mock-accounts';
 import mockState from '../../test/data/mock-state.json';
@@ -220,8 +213,8 @@ describe('Accounts Selectors', () => {
         isEth: true,
       },
       {
-        type: MOCK_ACCOUNT_BIP122_P2WPKH.type,
-        id: MOCK_ACCOUNT_BIP122_P2WPKH.id,
+        type: 'unsupported:account',
+        id: 'unsupported-account-id',
         isEth: false,
       },
     ])(
@@ -263,11 +256,6 @@ describe('Accounts Selectors', () => {
         id: `${MOCK_ACCOUNT_ERC4337.id}-evm137`,
         scopes: ['eip155:137'],
       };
-      const nonEvmAccount = {
-        ...MOCK_ACCOUNT_BIP122_P2WPKH,
-        id: `${MOCK_ACCOUNT_BIP122_P2WPKH.id}-btc`,
-      };
-
       const state: AccountsState = {
         metamask: {
           internalAccounts: {
@@ -275,7 +263,6 @@ describe('Accounts Selectors', () => {
             accounts: {
               [accountWithEthScope.id]: accountWithEthScope,
               [accountWithPolygonScope.id]: accountWithPolygonScope,
-              [nonEvmAccount.id]: nonEvmAccount,
             },
           },
         },
@@ -302,10 +289,10 @@ describe('Accounts Selectors', () => {
         id: `${MOCK_ACCOUNT_ERC4337.id}-sca`,
         scopes: ['eip155:137'],
       };
-      const solAccount = {
+      const unsupportedAccount = {
         ...MOCK_ACCOUNT_EOA,
-        id: `${MOCK_ACCOUNT_EOA.id}-sol`,
-        scopes: [SolScope.Mainnet],
+        id: `${MOCK_ACCOUNT_EOA.id}-unsupported`,
+        scopes: ['unsupported:mainnet'],
       };
 
       const state: AccountsState = {
@@ -315,7 +302,7 @@ describe('Accounts Selectors', () => {
             accounts: {
               [eoaAccount.id]: eoaAccount,
               [scaAccount.id]: scaAccount,
-              [solAccount.id]: solAccount,
+              [unsupportedAccount.id]: unsupportedAccount,
             },
           },
         },
@@ -394,52 +381,14 @@ describe('Accounts Selectors', () => {
       expect(result).toEqual([eoaAccount]);
     });
 
-    it('returns only accounts with the exact non-EVM scope', () => {
-      const solanaAccount = {
-        ...MOCK_ACCOUNT_EOA,
-        id: `${MOCK_ACCOUNT_EOA.id}-sol1`,
-        scopes: [SolScope.Mainnet],
-      };
-      const anotherSolanaAccount = {
-        ...MOCK_ACCOUNT_ERC4337,
-        id: `${MOCK_ACCOUNT_ERC4337.id}-sol2`,
-        scopes: [SolScope.Mainnet],
-      };
-      const btcAccount = {
-        ...MOCK_ACCOUNT_BIP122_P2WPKH,
-      };
-
-      const state: AccountsState = {
-        metamask: {
-          internalAccounts: {
-            selectedAccount: solanaAccount.id,
-            accounts: {
-              [solanaAccount.id]: solanaAccount,
-              [anotherSolanaAccount.id]: anotherSolanaAccount,
-              [btcAccount.id]: btcAccount,
-            },
-          },
-        },
-      } as unknown as AccountsState;
-
-      const result = getInternalAccountsByScope(
-        state,
-        SolScope.Mainnet as CaipChainId,
-      );
-      expect(result).toEqual(
-        expect.arrayContaining([solanaAccount, anotherSolanaAccount]),
-      );
-      expect(result).toHaveLength(2);
-    });
-
-    it('returns an empty array when no accounts match the requested scope', () => {
+    it('returns an empty array for non-EVM scopes', () => {
       const emptyState = {
         metamask: { internalAccounts: { selectedAccount: '', accounts: {} } },
       } as unknown as AccountsState;
 
       const result = getInternalAccountsByScope(
         emptyState,
-        BtcScope.Mainnet as CaipChainId,
+        'unsupported:mainnet' as CaipChainId,
       );
       expect(result).toEqual([]);
     });

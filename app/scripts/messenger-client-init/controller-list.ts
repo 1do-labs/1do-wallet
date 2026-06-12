@@ -17,7 +17,6 @@ import {
   AccountTrackerController,
   AssetsContractController,
   CurrencyRateController,
-  DeFiPositionsController,
   MultichainAssetsController,
   MultichainAssetsRatesController,
   MultichainBalancesController,
@@ -32,16 +31,6 @@ import {
 } from '@metamask/assets-controllers';
 import { AssetsController } from '@metamask/assets-controller';
 import { MultichainNetworkController } from '@metamask/multichain-network-controller';
-import { MultichainTransactionsController } from '@metamask/multichain-transactions-controller';
-import {
-  CronjobController,
-  ExecutionService,
-  WebSocketService,
-} from '@metamask/snaps-controllers';
-import {
-  RateLimitController,
-  RateLimitedApiMap,
-} from '@metamask/rate-limit-controller';
 import { DelegationController } from '@metamask/delegation-controller';
 
 import { RemoteFeatureFlagController } from '@metamask/remote-feature-flag-controller';
@@ -99,18 +88,15 @@ export type MessengerClient =
   | ApprovalController
   | AppStateController
   | AssetsController
-  | CronjobController
   | CurrencyRateController
   | DataDeletionService
   | DecryptMessageController
   | DecryptMessageManager
   | DelegationController
-  | DeFiPositionsController
   | EncryptionPublicKeyController
   | EncryptionPublicKeyManager
   | EnsController
   | StorageService
-  | ExecutionService
   | GasFeeController
   | GeolocationApiService
   | GeolocationController
@@ -122,7 +108,6 @@ export type MessengerClient =
   | MultichainAssetsController
   | MultichainAssetsRatesController
   | MultichainBalancesController
-  | MultichainTransactionsController
   | MultichainNetworkController
   | NameController
   | NetworkController
@@ -136,7 +121,6 @@ export type MessengerClient =
   | PhishingController
   | PPOMController
   | PreferencesController
-  | RateLimitController<RateLimitedApiMap>
   | RatesController
   | RemoteFeatureFlagController
   | SelectedNetworkController
@@ -155,7 +139,6 @@ export type MessengerClient =
   | NftDetectionController
   | AssetsContractController
   | AccountTreeController
-  | WebSocketService
   | MultichainAccountService
   | NetworkEnablementController
   | ClientController
@@ -178,9 +161,7 @@ export type MessengerClientFlatState = AccountOrderController['state'] &
   AppStateController['state'] &
   AssetsController['state'] &
   ClientController['state'] &
-  CronjobController['state'] &
   CurrencyRateController['state'] &
-  DeFiPositionsController['state'] &
   DelegationController['state'] &
   EnsController['state'] &
   GasFeeController['state'] &
@@ -192,7 +173,6 @@ export type MessengerClientFlatState = AccountOrderController['state'] &
   MultichainAssetsController['state'] &
   MultichainAssetsRatesController['state'] &
   MultichainBalancesController['state'] &
-  MultichainTransactionsController['state'] &
   MultichainNetworkController['state'] &
   NameController['state'] &
   NetworkController['state'] &

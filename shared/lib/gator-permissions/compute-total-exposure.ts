@@ -31,7 +31,7 @@ export type TotalExposureParams = {
 /**
  * Computes total exposure for a stream permission.
  *
- * Formula (aligned with gator-permissions-snap deriveExposureForStreamingPermission):
+ * Formula:
  * - When expiry is set: exposureAtExpiry = (initialAmount ?? 0) + amountPerSecond * max(0, expiry - startTime)
  * - When both maxAmount and exposureAtExpiry exist: total = min(maxAmount, exposureAtExpiry)
  * - Otherwise: total = maxAmount ?? exposureAtExpiry ?? null

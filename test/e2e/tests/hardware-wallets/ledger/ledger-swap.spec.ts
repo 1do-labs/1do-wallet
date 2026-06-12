@@ -35,7 +35,6 @@ describe.skip('Ledger Swap', function () {
 
         await login(driver, {
           expectedBalance: '20',
-          waitForNonEvmAccounts: false,
         });
 
         const homePage = new HomePage(driver);

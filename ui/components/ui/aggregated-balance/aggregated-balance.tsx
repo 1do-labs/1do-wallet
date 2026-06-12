@@ -15,7 +15,6 @@ import {
 } from '../../../ducks/metamask/metamask';
 import {
   getAccountAssets,
-  getAssetsRates,
   getMultichainAggregatedBalance,
   getMultichainNativeTokenBalance,
 } from '../../../selectors/assets';
@@ -71,9 +70,6 @@ export const AggregatedBalance = ({
     selectedAccount,
   );
 
-  const multichainAssetsRates = useSelector(getAssetsRates);
-  const isNonEvmRatesAvailable = Object.keys(multichainAssetsRates).length > 0;
-
   const formattedFiatDisplay = formatWithThreshold(
     multichainAggregatedBalance,
     0.0,
@@ -123,7 +119,7 @@ export const AggregatedBalance = ({
           onClick={handleSensitiveToggle}
           className="cursor-pointer transition-colors duration-200 hover:text-text-alternative"
         >
-          {showNativeTokenAsMain || !isNonEvmRatesAvailable || !shouldShowFiat
+          {showNativeTokenAsMain || !shouldShowFiat
             ? formattedTokenDisplay
             : formattedFiatDisplay}
         </SensitiveText>
@@ -134,7 +130,7 @@ export const AggregatedBalance = ({
           onClick={handleSensitiveToggle}
           className="cursor-pointer transition-colors duration-200 hover:text-text-alternative"
         >
-          {showNativeTokenAsMain || !isNonEvmRatesAvailable || !shouldShowFiat
+          {showNativeTokenAsMain || !shouldShowFiat
             ? currentNetwork.network.ticker
             : currentCurrency.toUpperCase()}
         </SensitiveText>

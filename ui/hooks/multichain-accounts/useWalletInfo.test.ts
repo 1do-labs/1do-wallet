@@ -1,16 +1,12 @@
 import { renderHook } from '@testing-library/react-hooks';
 import { useSelector } from 'react-redux';
 import { AccountWalletId } from '@metamask/account-api';
-import { useHdKeyringsWithSnapAccounts } from '../multi-srp/useHdKeyringsWithSnapAccounts';
 import { getIsPrimarySeedPhraseBackedUp } from '../../ducks/metamask/metamask';
+import { getMetaMaskHdKeyrings } from '../../selectors';
 import { useWalletInfo } from './useWalletInfo';
 
 jest.mock('react-redux', () => ({
   useSelector: jest.fn(),
-}));
-
-jest.mock('../multi-srp/useHdKeyringsWithSnapAccounts', () => ({
-  useHdKeyringsWithSnapAccounts: jest.fn(),
 }));
 
 describe('useWalletInfo', () => {
@@ -50,7 +46,6 @@ describe('useWalletInfo', () => {
   it('should return multichainAccounts and undefined keyringId when no accounts found', () => {
     // Setup mocks for the empty accounts case
     (useSelector as jest.Mock).mockImplementation(() => ({}));
-    (useHdKeyringsWithSnapAccounts as jest.Mock).mockReturnValue([]);
 
     const { result } = renderHook(() => useWalletInfo(mockWalletId));
 
@@ -62,6 +57,10 @@ describe('useWalletInfo', () => {
 
   it('should return multichainAccounts and keyringId when accounts found and keyring matched', () => {
     (useSelector as jest.Mock).mockImplementation((selector) => {
+      if (selector === getMetaMaskHdKeyrings) {
+        return mockHdKeyrings;
+      }
+
       if (selector === getIsPrimarySeedPhraseBackedUp) {
         return true;
       }
@@ -72,10 +71,6 @@ describe('useWalletInfo', () => {
 
       return null;
     });
-
-    (useHdKeyringsWithSnapAccounts as jest.Mock).mockReturnValue(
-      mockHdKeyrings,
-    );
 
     const { result } = renderHook(() => useWalletInfo(mockWalletId));
 
@@ -90,17 +85,15 @@ describe('useWalletInfo', () => {
 
   it('should return multichainAccounts and keyringId with undefined isSRPBackedUp for non-primary SRP', () => {
     (useSelector as jest.Mock).mockImplementation((selector) => {
+      if (selector === getMetaMaskHdKeyrings) {
+        return [...mockHdKeyrings].reverse();
+      }
+
       if (typeof selector === 'function') {
         return mockRawMultichainAccounts;
       }
       return true;
     });
-
-    // Set up keyring data so that the matching keyring is not at index 0
-    const reversedKeyrings = [...mockHdKeyrings].reverse();
-    (useHdKeyringsWithSnapAccounts as jest.Mock).mockReturnValue(
-      reversedKeyrings,
-    );
 
     const { result } = renderHook(() => useWalletInfo(mockWalletId));
 
@@ -117,22 +110,23 @@ describe('useWalletInfo', () => {
   it('should return multichainAccounts and undefined keyringId when keyring not found', () => {
     // Setup mocks for the keyring not found case
     (useSelector as jest.Mock).mockImplementation((selector) => {
+      if (selector === getMetaMaskHdKeyrings) {
+        return [
+          {
+            metadata: {
+              id: 'different-id',
+              name: 'Different Wallet',
+            },
+            accounts: [],
+          },
+        ];
+      }
+
       if (typeof selector === 'function') {
         return mockRawMultichainAccounts;
       }
       return true; // For backup status
     });
-
-    // Create a scenario where no keyring matches
-    (useHdKeyringsWithSnapAccounts as jest.Mock).mockReturnValue([
-      {
-        metadata: {
-          id: 'different-id',
-          name: 'Different Wallet',
-        },
-        accounts: [],
-      },
-    ]);
 
     const { result } = renderHook(() => useWalletInfo(mockWalletId));
 

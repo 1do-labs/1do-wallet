@@ -52,29 +52,6 @@ const CHAOS_ACCOUNT = {
   balance: '0x152387ad22c3f0',
 };
 
-const SNAP_ACCOUNT = {
-  ...testData.metamask.internalAccounts.accounts[
-    '784225f4-d30b-4e77-a900-c8bbce735b88'
-  ],
-  metadata: {
-    name: 'Snap Account 1',
-    keyring: {
-      type: 'Snap Keyring',
-      name: 'snap-name',
-    },
-    snap: {
-      name: 'Test Snap Name',
-      id: 'npm:snap-id',
-      enabled: true,
-    },
-  },
-  label: 'Snap Account 1',
-  keyring: {
-    type: 'Snap Keyring',
-  },
-  balance: '0x152387ad22c3f0',
-};
-
 const CONTAINER_STYLES = {
   style: {
     width: '328px',
@@ -188,13 +165,5 @@ ChaosStartAccessoryDataItem.args = {
   account: CHAOS_ACCOUNT,
   startAccessory: <Checkbox />,
 };
-
-export const SnapItem = (args) => (
-  <div {...CONTAINER_STYLES}>
-    <AccountListItem {...args} />
-  </div>
-);
-SnapItem.args = { account: SNAP_ACCOUNT };
-SnapItem.decorators = [(story) => <Provider store={store}>{story()}</Provider>];
 
 DefaultStory.storyName = 'Default';

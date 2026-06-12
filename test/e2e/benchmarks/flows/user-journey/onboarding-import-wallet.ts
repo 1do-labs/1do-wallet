@@ -173,7 +173,6 @@ export async function runOnboardingImportWalletBenchmark(): Promise<BenchmarkRun
               const assetListPage = new AssetListPage(driver);
               await assetListPage.checkTokenListIsDisplayed();
               await assetListPage.checkTokenExistsInList('Ethereum');
-              await assetListPage.waitForTokenToBeDisplayed('Solana', 120000);
             },
           ),
         );

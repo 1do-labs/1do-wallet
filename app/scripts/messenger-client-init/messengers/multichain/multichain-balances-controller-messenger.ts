@@ -5,7 +5,6 @@ import {
   AccountsControllerListMultichainAccountsAction,
   AccountsControllerAccountBalancesUpdatesEvent,
 } from '@metamask/accounts-controller';
-import { SnapControllerHandleRequestAction } from '@metamask/snaps-controllers';
 import {
   MultichainAssetsControllerAccountAssetListUpdatedEvent,
   MultichainAssetsControllerGetStateAction,
@@ -15,7 +14,6 @@ import { RootMessenger } from '../../../lib/messenger';
 
 type Actions =
   | AccountsControllerListMultichainAccountsAction
-  | SnapControllerHandleRequestAction
   | MultichainAssetsControllerGetStateAction
   | KeyringControllerGetStateAction;
 
@@ -58,7 +56,6 @@ export function getMultichainBalancesControllerMessenger(
     ],
     actions: [
       'AccountsController:listMultichainAccounts',
-      'SnapController:handleRequest',
       'MultichainAssetsController:getState',
       'KeyringController:getState',
     ],

@@ -87,27 +87,6 @@ describe('MultichainAccountServiceInit', () => {
       });
     });
 
-    it('passes Solana provider config with maxConcurrency 1, discovery/createAccounts timeouts, and batched true', () => {
-      const requestMock = buildInitRequestMock();
-      MultichainAccountServiceInit(requestMock);
-
-      const callArg = multichainAccountServiceClassMock.mock.calls[0][0];
-      expect(callArg.providerConfigs).toMatchObject({
-        Solana: {
-          maxConcurrency: 1,
-          discovery: {
-            timeoutMs: 2000,
-            maxAttempts: 3,
-            backOffMs: 1000,
-          },
-          createAccounts: {
-            timeoutMs: 3000,
-            batched: true,
-          },
-        },
-      });
-    });
-
     it('passes config with trace function', () => {
       const requestMock = buildInitRequestMock();
       MultichainAccountServiceInit(requestMock);

@@ -14,24 +14,17 @@ export enum InternalKeyringType {
   imported = 'Simple Key Pair',
 }
 
-export enum SnapKeyringType {
-  // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-  // eslint-disable-next-line @typescript-eslint/naming-convention
-  snap = 'Snap Keyring',
-}
-
 /**
  * All keyrings supported by MetaMask.
  */
 export const KeyringType = {
   ...HardwareKeyringType,
   ...InternalKeyringType,
-  ...SnapKeyringType,
 };
 
 /**
  * Keyring types that support EIP-7702 (Setup Smart Account).
- * Only HD (entropy) and simple (private key) accounts support this; hardware and snap do not.
+ * Only HD (entropy) and simple (private key) accounts support this.
  */
 export const KEYRING_TYPES_SUPPORTING_7702 = [
   KeyringTypes.hd,

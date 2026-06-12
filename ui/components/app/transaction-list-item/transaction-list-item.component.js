@@ -3,7 +3,7 @@ import React, { useMemo, useState, useCallback, useContext } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'clsx';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 import {
   TransactionStatus,
@@ -46,21 +46,9 @@ import CancelButton from '../cancel-button';
 import { MetaMetricsContext } from '../../../contexts/metametrics';
 import { ActivityListItem } from '../../multichain/activity-list-item';
 import { abortTransactionSigning } from '../../../store/actions';
-import {
-  selectBridgeHistoryForOriginalTxMetaId,
-  selectBridgeHistoryItemByHash,
-} from '../../../ducks/bridge-status/selectors';
-import {
-  useBridgeTxHistoryData,
-  FINAL_NON_CONFIRMED_STATUSES,
-} from '../../../hooks/bridge/useBridgeTxHistoryData';
-import BridgeActivityItemTxSegments from '../../../pages/bridge/transaction-details/bridge-activity-item-tx-segments';
 import { PAY_TRANSACTION_TYPES } from '../../../pages/confirmations/constants/pay';
 import { ChainBadge } from '../chain-badge/chain-badge';
-import {
-  mapTransactionTypeToCategory,
-  resolveTransactionType,
-} from './helpers';
+import { mapTransactionTypeToCategory } from './helpers';
 
 function TransactionListItemInner({
   transactionGroup,
@@ -74,33 +62,6 @@ function TransactionListItemInner({
   const [showDetails, setShowDetails] = useState(false);
   const { openModal } = useTransactionModalContext();
   const dispatch = useDispatch();
-
-  // Bridge transactions
-  const isBridgeTx =
-    transactionGroup.initialTransaction.type === TransactionType.bridge;
-  const { isBridgeComplete, showBridgeTxDetails, isBridgeFailed } =
-    useBridgeTxHistoryData({
-      transactionGroup,
-    });
-  const bridgeTxHistoryItemByHash = useSelector((state) =>
-    selectBridgeHistoryItemByHash(
-      state,
-      transactionGroup.initialTransaction.hash,
-    ),
-  );
-  const bridgeTxHistoryItemByOriginalTxMetaId = useSelector((state) =>
-    selectBridgeHistoryForOriginalTxMetaId(
-      state,
-      transactionGroup.initialTransaction.id,
-    ),
-  );
-  const bridgeTxHistoryItem =
-    bridgeTxHistoryItemByHash ?? bridgeTxHistoryItemByOriginalTxMetaId;
-  const isIntentBridgeActivity = Boolean(bridgeTxHistoryItem?.quote?.intent);
-  const isUnifiedSwapTx =
-    (isBridgeTx ||
-      transactionGroup.initialTransaction.type === TransactionType.swap) &&
-    bridgeTxHistoryItem;
 
   const {
     initialTransaction: { id, txParams, type, metamaskPay },
@@ -161,13 +122,7 @@ function TransactionListItemInner({
     isEarliestNonce,
   );
 
-  const resolvedType = resolveTransactionType(
-    transactionGroup.initialTransaction.type,
-    transactionGroup.initialTransaction.txParams?.to,
-    transactionGroup.initialTransaction.txParams?.data,
-  );
-
-  const category = mapTransactionTypeToCategory(resolvedType);
+  const category = mapTransactionTypeToCategory(type);
 
   const {
     title,
@@ -176,15 +131,7 @@ function TransactionListItemInner({
     secondaryCurrency,
     isPending,
   } = useTransactionDisplayData(transactionGroup);
-  const displayedStatusKey =
-    isBridgeTx && isBridgeFailed
-      ? TransactionStatus.failed
-      : getStatusKey(transactionGroup.primaryTransaction);
-  const shouldShowPendingBridgeStatus =
-    Boolean(isUnifiedSwapTx) &&
-    displayedStatusKey === TransactionStatus.submitted &&
-    !isBridgeFailed &&
-    !isBridgeComplete;
+  const displayedStatusKey = getStatusKey(transactionGroup.primaryTransaction);
   const date = formatDateWithYearContext(
     transactionGroup.primaryTransaction.time,
     'MMM d, y',
@@ -286,19 +233,13 @@ function TransactionListItemInner({
     isPending &&
     !isUnapproved &&
     !isSubmitting &&
-    !isBridgeTx &&
-    !isIntentBridgeActivity &&
     !hasGasFeeTokenSelected;
 
   return (
     <>
       <ActivityListItem
         data-testid="activity-list-item"
-        onClick={
-          isUnifiedSwapTx && showBridgeTxDetails
-            ? showBridgeTxDetails
-            : toggleShowDetails
-        }
+        onClick={toggleShowDetails}
         className={className}
         title={title}
         icon={
@@ -307,24 +248,14 @@ function TransactionListItemInner({
           </ChainBadge>
         }
         subtitle={
-          !FINAL_NON_CONFIRMED_STATUSES.includes(status) &&
-          isBridgeTx &&
-          !(isBridgeComplete || isBridgeFailed) &&
-          bridgeTxHistoryItem ? (
-            <BridgeActivityItemTxSegments
-              bridgeTxHistoryItem={bridgeTxHistoryItem}
-              transactionGroup={transactionGroup}
-            />
-          ) : (
-            <TransactionStatusLabel
-              statusOnly
-              isPending={isPending}
-              isEarliestNonce={isEarliestNonce || shouldShowPendingBridgeStatus}
-              error={error}
-              date={date}
-              status={displayedStatusKey}
-            />
-          )
+          <TransactionStatusLabel
+            statusOnly
+            isPending={isPending}
+            isEarliestNonce={isEarliestNonce}
+            error={error}
+            date={date}
+            status={displayedStatusKey}
+          />
         }
         rightContent={
           !isSignatureReq &&
@@ -375,7 +306,7 @@ function TransactionListItemInner({
         )}
       </ActivityListItem>
       {showDetails &&
-        (PAY_TRANSACTION_TYPES.includes(resolvedType) ? (
+        (PAY_TRANSACTION_TYPES.includes(type) ? (
           <TransactionDetailsModal
             transactionMeta={transactionGroup.initialTransaction}
             onClose={toggleShowDetails}
@@ -395,9 +326,7 @@ function TransactionListItemInner({
             transactionStatus={() => (
               <TransactionStatusLabel
                 isPending={isPending}
-                isEarliestNonce={
-                  isEarliestNonce || shouldShowPendingBridgeStatus
-                }
+                isEarliestNonce={isEarliestNonce}
                 error={error}
                 date={date}
                 status={displayedStatusKey}

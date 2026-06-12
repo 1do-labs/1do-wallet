@@ -35,7 +35,7 @@ export default class PermissionPageContainerContent extends PureComponent {
     selectedPermissions: PropTypes.object.isRequired,
     selectedAccounts: PropTypes.array,
     requestedChainIds: PropTypes.array,
-    /** CAIP chain IDs for multichain permission display (e.g., 'solana:...') */
+    /** CAIP chain IDs for multichain permission display (e.g., 'eip155:1') */
     selectedCaipChainIds: PropTypes.array,
   };
 

@@ -3,8 +3,6 @@ import { Driver } from '../../../webdriver/driver';
 class TransactionDetailsPage {
   private readonly driver: Driver;
 
-  private readonly solanaExplorerUrl = 'https://solscan.io';
-
   constructor(driver: Driver) {
     this.driver = driver;
   }
@@ -23,12 +21,6 @@ class TransactionDetailsPage {
     testId: 'transaction-base-fee',
     text: fee,
   });
-
-  private readonly fromToLink = (fromToAddress: string) =>
-    `a[href='${this.solanaExplorerUrl}/account/${fromToAddress}']`;
-
-  private readonly hashLink = (txHash: string) =>
-    `a[href='${this.solanaExplorerUrl}/tx/${txHash}']`;
 
   private readonly status = (status: string) => ({
     tag: 'p',
@@ -50,14 +42,6 @@ class TransactionDetailsPage {
 
   async checkTransactionBaseFee(networkFee: string): Promise<void> {
     await this.driver.waitForSelector(this.baseFee(networkFee));
-  }
-
-  async checkTransactionFromToLink(fromToAddress: string): Promise<void> {
-    await this.driver.waitForSelector(this.fromToLink(fromToAddress));
-  }
-
-  async checkTransactionHashLink(txHash: string): Promise<void> {
-    await this.driver.waitForSelector(this.hashLink(txHash));
   }
 
   async checkTransactionViewDetailsLink(): Promise<void> {

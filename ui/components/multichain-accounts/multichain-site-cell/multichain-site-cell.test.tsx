@@ -2,7 +2,7 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import { render, fireEvent, screen } from '@testing-library/react';
 import { CaipChainId, Hex } from '@metamask/utils';
-import { EthAccountType, SolAccountType } from '@metamask/keyring-api';
+import { EthAccountType } from '@metamask/keyring-api';
 import { AccountGroupType, AccountWalletType } from '@metamask/account-api';
 import { AccountGroupObject } from '@metamask/account-tree-controller';
 import { RpcEndpointType } from '@metamask/network-controller';
@@ -28,8 +28,6 @@ jest.mock('../../../contexts/metametrics', () => {
 const MOCK_WALLET_ID = 'entropy:01JKAF3DSGM3AB87EM9N0K41AJ';
 const MOCK_GROUP_ID_1 = 'entropy:01JKAF3DSGM3AB87EM9N0K41AJ/0';
 const MOCK_GROUP_ID_2 = 'entropy:01JKAF3DSGM3AB87EM9N0K41AJ/1';
-const MOCK_SOLANA_CHAIN_ID = 'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp';
-
 const mockEvmAccount1 = createMockInternalAccount({
   id: 'cf8dace4-9439-4bd4-b3a8-88c821c8fcb3',
   name: 'EVM Account 1',
@@ -44,18 +42,18 @@ const mockEvmAccount2 = createMockInternalAccount({
   type: EthAccountType.Eoa,
 });
 
-const mockSolAccount1 = createMockInternalAccount({
+const mockEvmAccount3 = createMockInternalAccount({
   id: '784225f4-d30b-4e77-a900-c8bbce735b88',
-  name: 'Solana Account 1',
-  address: 'So1anaAddr1111111111111111111111111111111111',
-  type: SolAccountType.DataAccount,
+  name: 'EVM Account 3',
+  address: '0x3333333333333333333333333333333333333333',
+  type: EthAccountType.Eoa,
 });
 
-const mockSolAccount2 = createMockInternalAccount({
+const mockEvmAccount4 = createMockInternalAccount({
   id: '9b6b30a0-3c87-4a33-9d10-a27a2aba2ba2',
-  name: 'Solana Account 2',
-  address: 'So1anaAddr2222222222222222222222222222222222',
-  type: SolAccountType.DataAccount,
+  name: 'EVM Account 4',
+  address: '0x4444444444444444444444444444444444444444',
+  type: EthAccountType.Eoa,
 });
 
 const mockAccountGroups: AccountGroupWithInternalAccounts[] = [
@@ -71,7 +69,7 @@ const mockAccountGroups: AccountGroupWithInternalAccounts[] = [
       },
       lastSelected: 0,
     },
-    accounts: [mockEvmAccount1, mockSolAccount1],
+    accounts: [mockEvmAccount1, mockEvmAccount3],
     walletName: 'Test Wallet',
     walletId: MOCK_WALLET_ID,
   },
@@ -87,7 +85,7 @@ const mockAccountGroups: AccountGroupWithInternalAccounts[] = [
       },
       lastSelected: 0,
     },
-    accounts: [mockEvmAccount2, mockSolAccount2],
+    accounts: [mockEvmAccount2, mockEvmAccount4],
     walletName: 'Test Wallet',
     walletId: MOCK_WALLET_ID,
   },
@@ -128,25 +126,24 @@ const mockNetworks: EvmNetworkConfigurationWithCaipChainId[] = [
   },
 ];
 
-const mockTestNetworks: EvmNetworkConfigurationWithCaipChainId[] =
-  [
-    {
-      name: 'Sepolia',
-      chainId: '0xaa36a7' as Hex,
-      caipChainId: 'eip155:11155111' as CaipChainId,
-      blockExplorerUrls: ['https://sepolia.etherscan.io'],
-      defaultBlockExplorerUrlIndex: 0,
-      defaultRpcEndpointIndex: 0,
-      nativeCurrency: 'ETH',
-      rpcEndpoints: [
-        {
-          networkClientId: 'sepolia',
-          type: RpcEndpointType.Custom,
-          url: 'https://sepolia.infura.io/v3/',
-        },
-      ],
-    },
-  ];
+const mockTestNetworks: EvmNetworkConfigurationWithCaipChainId[] = [
+  {
+    name: 'Sepolia',
+    chainId: '0xaa36a7' as Hex,
+    caipChainId: 'eip155:11155111' as CaipChainId,
+    blockExplorerUrls: ['https://sepolia.etherscan.io'],
+    defaultBlockExplorerUrlIndex: 0,
+    defaultRpcEndpointIndex: 0,
+    nativeCurrency: 'ETH',
+    rpcEndpoints: [
+      {
+        networkClientId: 'sepolia',
+        type: RpcEndpointType.Custom,
+        url: 'https://sepolia.infura.io/v3/',
+      },
+    ],
+  },
+];
 
 const createMockState = (overrides = {}) => ({
   metamask: {
@@ -157,7 +154,7 @@ const createMockState = (overrides = {}) => ({
       },
       {
         type: 'Simple Key Pair',
-        accounts: [mockSolAccount1.address, mockSolAccount2.address],
+        accounts: [mockEvmAccount3.address, mockEvmAccount4.address],
       },
     ],
     selectedAccountGroup: MOCK_GROUP_ID_1,
@@ -185,7 +182,7 @@ const createMockState = (overrides = {}) => ({
                 },
                 lastSelected: 0,
               },
-              accounts: [mockEvmAccount1.id, mockSolAccount1.id],
+              accounts: [mockEvmAccount1.id, mockEvmAccount3.id],
             },
             [MOCK_GROUP_ID_2]: {
               id: MOCK_GROUP_ID_2,
@@ -199,7 +196,7 @@ const createMockState = (overrides = {}) => ({
                 },
                 lastSelected: 0,
               },
-              accounts: [mockEvmAccount2.id, mockSolAccount2.id],
+              accounts: [mockEvmAccount2.id, mockEvmAccount4.id],
             },
           },
         },
@@ -215,13 +212,13 @@ const createMockState = (overrides = {}) => ({
           ...mockEvmAccount2,
           scopes: ['eip155:0'],
         },
-        [mockSolAccount1.id]: {
-          ...mockSolAccount1,
-          scopes: [MOCK_SOLANA_CHAIN_ID],
+        [mockEvmAccount3.id]: {
+          ...mockEvmAccount3,
+          scopes: ['eip155:137'],
         },
-        [mockSolAccount2.id]: {
-          ...mockSolAccount2,
-          scopes: [MOCK_SOLANA_CHAIN_ID],
+        [mockEvmAccount4.id]: {
+          ...mockEvmAccount4,
+          scopes: ['eip155:137'],
         },
       },
       selectedAccount: mockEvmAccount1.id,

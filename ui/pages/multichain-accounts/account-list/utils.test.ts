@@ -1,5 +1,4 @@
 import { AccountGroupId } from '@metamask/account-api';
-import mockState from '../../../../test/data/mock-state.json';
 import {
   AccountTreeWallets,
   NormalizedGroupMetadata,
@@ -7,8 +6,59 @@ import {
 import { filterWalletsByGroupNameOrAddress } from './utils';
 
 describe('filterWalletsByGroupNameOrAddress', () => {
-  const mockWallets: AccountTreeWallets = mockState.metamask.accountTree
-    .wallets as unknown as AccountTreeWallets;
+  const mockWallets: AccountTreeWallets = {
+    'entropy:01JKAF3DSGM3AB87EM9N0K41AJ': {
+      type: 'entropy',
+      id: 'entropy:01JKAF3DSGM3AB87EM9N0K41AJ',
+      metadata: {},
+      groups: {
+        'entropy:01JKAF3DSGM3AB87EM9N0K41AJ/0': {
+          type: 'multichain-account',
+          id: 'entropy:01JKAF3DSGM3AB87EM9N0K41AJ/0',
+          metadata: {},
+          accounts: [],
+        },
+      },
+    },
+    'entropy:01JKAF3PJ247KAM6C03G5Q0NP8': {
+      type: 'entropy',
+      id: 'entropy:01JKAF3PJ247KAM6C03G5Q0NP8',
+      metadata: {},
+      groups: {
+        'entropy:01JKAF3PJ247KAM6C03G5Q0NP8/0': {
+          type: 'multichain-account',
+          id: 'entropy:01JKAF3PJ247KAM6C03G5Q0NP8/0',
+          metadata: {},
+          accounts: [],
+        },
+      },
+    },
+    'keyring:Ledger Hardware': {
+      type: 'keyring',
+      id: 'keyring:Ledger Hardware',
+      metadata: {},
+      groups: {
+        'keyring:Ledger Hardware/0xc42edfcc21ed14dda456aa0756c153f7985d8813': {
+          type: 'multichain-account',
+          id: 'keyring:Ledger Hardware/0xc42edfcc21ed14dda456aa0756c153f7985d8813',
+          metadata: {},
+          accounts: [],
+        },
+        'keyring:Ledger Hardware/0xca8f1F0245530118D0cf14a06b01Daf8f76Cf281': {
+          type: 'multichain-account',
+          id: 'keyring:Ledger Hardware/0xca8f1F0245530118D0cf14a06b01Daf8f76Cf281',
+          metadata: {},
+          accounts: [],
+        },
+        'keyring:Ledger Hardware/0xb552685e3d2790efd64a175b00d51f02cdafee5d': {
+          type: 'multichain-account',
+          id: 'keyring:Ledger Hardware/0xb552685e3d2790efd64a175b00d51f02cdafee5d',
+          metadata: {},
+          accounts: [],
+        },
+      },
+    },
+  } as unknown as AccountTreeWallets;
   const mockGroupsMetadata: Record<AccountGroupId, NormalizedGroupMetadata> = {
     'entropy:01JKAF3DSGM3AB87EM9N0K41AJ/0': {
       name: 'account 1',
@@ -25,12 +75,12 @@ describe('filterWalletsByGroupNameOrAddress', () => {
       name: 'ledger account 1',
       accounts: ['0xc42edfcc21ed14dda456aa0756c153f7985d8813'],
     },
-    'snap:local:custody:test/0xca8f1F0245530118D0cf14a06b01Daf8f76Cf281': {
-      name: 'another snap account 1',
+    'keyring:Ledger Hardware/0xca8f1F0245530118D0cf14a06b01Daf8f76Cf281': {
+      name: 'ledger wallet',
       accounts: ['0xca8f1f0245530118d0cf14a06b01daf8f76cf281'],
     },
-    'snap:local:snap-id/0xb552685e3d2790efd64a175b00d51f02cdafee5d': {
-      name: 'snap account 1',
+    'keyring:Ledger Hardware/0xb552685e3d2790efd64a175b00d51f02cdafee5d': {
+      name: 'hardware wallet',
       accounts: ['0xb552685e3d2790efd64a175b00d51f02cdafee5d'],
     },
   };
@@ -83,7 +133,7 @@ describe('filterWalletsByGroupNameOrAddress', () => {
       mockGroupsMetadata,
     );
 
-    expect(Object.keys(result)).toHaveLength(5);
+    expect(Object.keys(result)).toHaveLength(3);
   });
 
   it('handles case-insensitive search', () => {

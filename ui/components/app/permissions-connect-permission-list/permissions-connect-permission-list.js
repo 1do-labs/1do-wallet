@@ -13,7 +13,7 @@ import { Box } from '../../component-library';
  * @param options.index - The index of the permission.
  * @param options.accounts - An array representing list of accounts for which permission is used.
  * @param options.requestedChainIds - An array representing list of EVM chain ids for which permission is used.
- * @param options.caipChainIds - An array of CAIP chain IDs for multichain display (e.g., 'solana:...').
+ * @param options.caipChainIds - An array of CAIP chain IDs for multichain display (e.g., 'eip155:1').
  * @returns {JSX.Element} A permission description node.
  */
 function getDescriptionNode({
@@ -74,6 +74,6 @@ PermissionsConnectPermissionList.propTypes = {
   requestedChainIds: PropTypes.array,
   accounts: PropTypes.arrayOf(PropTypes.object),
   isRequestApprovalPermittedChains: PropTypes.boolean,
-  /** CAIP chain IDs for multichain display (e.g., 'solana:...') */
+  /** CAIP chain IDs for multichain display (e.g., 'eip155:1') */
   caipChainIds: PropTypes.array,
 };

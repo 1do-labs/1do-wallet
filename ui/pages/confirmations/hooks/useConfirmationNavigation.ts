@@ -30,11 +30,7 @@ export enum ConfirmationLoader {
   Send = 'send',
 }
 
-const CONNECT_APPROVAL_TYPES = [
-  ApprovalType.WalletRequestPermissions,
-  'wallet_installSnap',
-  'wallet_updateSnap',
-];
+const CONNECT_APPROVAL_TYPES = [ApprovalType.WalletRequestPermissions];
 
 export type ConfirmationNavigationOptions = {
   loader?: ConfirmationLoader;

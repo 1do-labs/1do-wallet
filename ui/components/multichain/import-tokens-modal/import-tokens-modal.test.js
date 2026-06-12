@@ -29,13 +29,8 @@ jest.mock('../../../../shared/lib/assets-unify-state/remote-feature-flag', () =>
   ),
 );
 
-jest.mock('../../../hooks/bridge/useTokensWithFiltering');
 jest.mock('@metamask/bridge-controller');
 jest.mock('../../../../shared/lib/asset-utils');
-
-const {
-  useTokensWithFiltering,
-} = require('../../../hooks/bridge/useTokensWithFiltering');
 
 jest.mock('../../../store/actions', () => ({
   // Actions used in tests
@@ -108,19 +103,6 @@ describe('ImportTokensModal', () => {
     getTokenStandardAndDetailsByChain.mockImplementation(() =>
       Promise.resolve({ standard: 'ERC20' }),
     );
-
-    useTokensWithFiltering.mockReturnValue({
-      *filteredTokenListGenerator() {
-        yield {
-          address: '0x6b175474e89094c44da98b954eedeac495271d0f',
-          symbol: 'DAI',
-          name: 'Dai Stablecoin',
-          decimals: 18,
-          image: 'http://example.com/dai.png',
-        };
-      },
-      isLoading: false,
-    });
 
     jest
       .spyOn(assetUtilsModule, 'isEvmChainId')
@@ -419,35 +401,9 @@ describe('ImportTokensModal', () => {
   });
 
   describe('Conditional UI states based on network and loading', () => {
-    it('should show loading indicator when tokens are being fetched', () => {
-      useTokensWithFiltering.mockReturnValue({
-        filteredTokenListGenerator: null,
-        isLoading: true,
-      });
-
-      const { getByTestId, queryByPlaceholderText } = render();
-
-      expect(getByTestId('import-tokens-loading')).toBeInTheDocument();
-      expect(getByTestId('import-tokens-loading').textContent).toContain(
-        messages.loading.message.replace('...', ''),
-      );
-
-      // Should not show search or tabs while loading
-      expect(
-        queryByPlaceholderText(messages.searchTokens.message),
-      ).not.toBeInTheDocument();
-    });
-
     it('should show "unavailable" message when no tokens and not EVM chain', () => {
       // Mock as non-EVM chain with no token support
       jest.spyOn(assetUtilsModule, 'isEvmChainId').mockReturnValue(false);
-
-      useTokensWithFiltering.mockReturnValue({
-        *filteredTokenListGenerator() {
-          // No tokens
-        },
-        isLoading: false,
-      });
 
       const { getByTestId, queryByText } = render();
 
@@ -464,39 +420,17 @@ describe('ImportTokensModal', () => {
     it('should show Search tab when tokens are available on EVM chain', () => {
       jest.spyOn(assetUtilsModule, 'isEvmChainId').mockReturnValue(true);
 
-      useTokensWithFiltering.mockReturnValue({
-        *filteredTokenListGenerator() {
-          yield {
-            address: '0x6b175474e89094c44da98b954eedeac495271d0f',
-            symbol: 'DAI',
-            name: 'Dai Stablecoin',
-            decimals: 18,
-            image: 'http://example.com/dai.png',
-          };
-        },
-        isLoading: false,
-      });
-
       const { getByText, queryByTestId } = render();
 
       // Should show tabs
       expect(getByText(messages.search.message)).toBeInTheDocument();
       expect(getByText(messages.customToken.message)).toBeInTheDocument();
 
-      // Should not show loading or no-support
-      expect(queryByTestId('import-tokens-loading')).not.toBeInTheDocument();
       expect(queryByTestId('import-tokens-no-support')).not.toBeInTheDocument();
     });
 
     it('should show Custom token tab on EVM chain even without token data', () => {
       jest.spyOn(assetUtilsModule, 'isEvmChainId').mockReturnValue(true);
-
-      useTokensWithFiltering.mockReturnValue({
-        *filteredTokenListGenerator() {
-          // No tokens from search
-        },
-        isLoading: false,
-      });
 
       const { getByText, queryByText } = render();
 
@@ -507,26 +441,8 @@ describe('ImportTokensModal', () => {
       expect(queryByText(messages.search.message)).not.toBeInTheDocument();
     });
 
-    it('should disable Next button when loading', () => {
-      useTokensWithFiltering.mockReturnValue({
-        filteredTokenListGenerator: null,
-        isLoading: true,
-      });
-
-      const { getByTestId } = render();
-
-      expect(getByTestId('import-tokens-button-next')).toBeDisabled();
-    });
-
     it('should disable Next button when showing no support placeholder', () => {
       jest.spyOn(assetUtilsModule, 'isEvmChainId').mockReturnValue(false);
-
-      useTokensWithFiltering.mockReturnValue({
-        *filteredTokenListGenerator() {
-          // No tokens
-        },
-        isLoading: false,
-      });
 
       const { getByTestId } = render();
 

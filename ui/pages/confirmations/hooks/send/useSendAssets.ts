@@ -3,7 +3,6 @@ import { useSelector } from 'react-redux';
 import { toEvmCaipChainId } from '@metamask/multichain-network-controller';
 import type { CaipChainId, Hex } from '@metamask/utils';
 import { type Asset } from '../../types/send';
-import { getUseExternalServices } from '../../../../selectors';
 import { getAllMultichainNetworkConfigurations } from '../../../../selectors/multichain/networks';
 import { isEvmChainId } from '../../../../../shared/lib/asset-utils';
 import { useSendTokens } from './useSendTokens';
@@ -18,13 +17,20 @@ type UseSendAssetsOptions = {
   includeNoBalance?: boolean;
 };
 
+const isEvmChainIdSafe = (chainId: string): chainId is Hex => {
+  try {
+    return isEvmChainId(chainId as CaipChainId | Hex);
+  } catch {
+    return false;
+  }
+};
+
 export const useSendAssets = (
   options: UseSendAssetsOptions = {},
 ): SendAssets => {
   const { includeNoBalance = false } = options;
   const tokens = useSendTokens({ includeNoBalance });
   const nfts = useSendNfts();
-  const useExternalServices = useSelector(getUseExternalServices);
   const allMultichainNetworkConfigurations = useSelector(
     getAllMultichainNetworkConfigurations,
   );
@@ -35,17 +41,13 @@ export const useSendAssets = (
       if (!chainId) {
         return false;
       }
+      if (!isEvmChainIdSafe(chainId)) {
+        return false;
+      }
+
       const availableChainIds = Object.keys(allMultichainNetworkConfigurations);
-      // Check direct match (for CAIP chain IDs like solana:..., bip122:..., etc.)
-      if (availableChainIds.includes(chainId)) {
-        return true;
-      }
-      // For EVM chains, convert Hex to CAIP format and check
-      if (isEvmChainId(chainId as CaipChainId | Hex)) {
-        const caipChainId = toEvmCaipChainId(chainId as Hex);
-        return availableChainIds.includes(caipChainId);
-      }
-      return false;
+      const caipChainId = toEvmCaipChainId(chainId);
+      return availableChainIds.includes(caipChainId);
     },
     [allMultichainNetworkConfigurations],
   );
@@ -64,26 +66,9 @@ export const useSendAssets = (
       return isChainIdAvailable(chainId);
     });
 
-    // When BFT is OFF, filter out non-EVM tokens and NFTs
-    if (!useExternalServices) {
-      const filteredTokens = networkFilteredTokens.filter((token) => {
-        // chainId is Hex for EVM chains or CaipChainId for non-EVM chains
-        return isEvmChainId(token.chainId as CaipChainId | Hex);
-      });
-      const filteredNfts = networkFilteredNfts.filter((nft) => {
-        // Filter out non-EVM NFTs to prevent their chain IDs from appearing
-        // in the network filter dropdown
-        return isEvmChainId(nft.chainId as CaipChainId | Hex);
-      });
-      return {
-        tokens: filteredTokens,
-        nfts: filteredNfts,
-      };
-    }
-
     return {
       tokens: networkFilteredTokens,
       nfts: networkFilteredNfts,
     };
-  }, [tokens, nfts, useExternalServices, isChainIdAvailable]);
+  }, [tokens, nfts, isChainIdAvailable]);
 };

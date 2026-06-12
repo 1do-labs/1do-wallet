@@ -1,4 +1,3 @@
-import { SnapEndowments } from '@metamask/snaps-rpc-methods';
 import { METAMASK_DOMAIN } from '@metamask/selected-network-controller';
 import {
   Caip25CaveatType,
@@ -10,6 +9,7 @@ const oldVersion = 159;
 
 const MOCK_ORIGIN = 'http://example.com';
 const MOCK_SNAP_ID = 'npm:foo-snap';
+const SNAP_ENDOWMENT_ETHEREUM_PROVIDER = 'endowment:ethereum-provider';
 
 jest.useFakeTimers();
 jest.setSystemTime(1723635247705);
@@ -56,12 +56,12 @@ describe(`migration #${version}`, () => {
           subjects: {
             [MOCK_SNAP_ID]: {
               permissions: {
-                [SnapEndowments.EthereumProvider]: {
+                [SNAP_ENDOWMENT_ETHEREUM_PROVIDER]: {
                   caveats: [],
                   date: 1664187844588,
                   id: 'izn0WGUO8cvq_jqvLQuQP',
                   invoker: MOCK_ORIGIN,
-                  parentCapability: SnapEndowments.EthereumProvider,
+                  parentCapability: SNAP_ENDOWMENT_ETHEREUM_PROVIDER,
                 },
               },
             },
@@ -81,12 +81,12 @@ describe(`migration #${version}`, () => {
       subjects: {
         [MOCK_SNAP_ID]: {
           permissions: {
-            [SnapEndowments.EthereumProvider]: {
+            [SNAP_ENDOWMENT_ETHEREUM_PROVIDER]: {
               caveats: [],
               date: 1664187844588,
               id: 'izn0WGUO8cvq_jqvLQuQP',
               invoker: MOCK_ORIGIN,
-              parentCapability: SnapEndowments.EthereumProvider,
+              parentCapability: SNAP_ENDOWMENT_ETHEREUM_PROVIDER,
             },
             [Caip25EndowmentPermissionName]: {
               caveats: [

@@ -23,17 +23,6 @@ describe('assetRoute', () => {
       assetIdParam: 'eip155:59144/slip44:60',
       expectedPath: '/asset/0xe708',
     },
-    {
-      assetIdParam:
-        'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp/token:3iQL8BFS2vE7mww4ehAqQHAsbmRNCrPxizWAT2Zfyr9y',
-      expectedPath:
-        '/asset/solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp/solana%3A5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp%2Ftoken%3A3iQL8BFS2vE7mww4ehAqQHAsbmRNCrPxizWAT2Zfyr9y',
-    },
-    {
-      assetIdParam: 'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp/slip44:501',
-      expectedPath:
-        '/asset/solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp/solana%3A5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp%2Fslip44%3A501',
-    },
   ];
 
   // @ts-expect-error This function is missing from the Mocha type definitions

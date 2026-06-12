@@ -29,29 +29,6 @@ const mockMultichainNetworkConfigurations = {
     name: 'Sepolia',
     isEvm: true,
   },
-  'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp': {
-    chainId: 'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp',
-    name: 'Solana',
-    isEvm: false,
-  },
-};
-
-// State with external services enabled (BFT ON)
-const mockStateWithExternalServices = {
-  ...mockState,
-  metamask: {
-    ...mockState.metamask,
-    useExternalServices: true,
-  },
-};
-
-// State with external services disabled (BFT OFF)
-const mockStateWithoutExternalServices = {
-  ...mockState,
-  metamask: {
-    ...mockState.metamask,
-    useExternalServices: false,
-  },
 };
 
 describe('useSendAssets', () => {
@@ -79,10 +56,7 @@ describe('useSendAssets', () => {
     mockUseSendTokens.mockReturnValue(mockTokens);
     mockUseSendNfts.mockReturnValue(mockNfts);
 
-    const { result } = renderHookWithProvider(
-      () => useSendAssets(),
-      mockStateWithExternalServices,
-    );
+    const { result } = renderHookWithProvider(() => useSendAssets(), mockState);
 
     expect(result.current).toEqual({
       tokens: mockTokens,
@@ -94,10 +68,7 @@ describe('useSendAssets', () => {
     mockUseSendTokens.mockReturnValue([]);
     mockUseSendNfts.mockReturnValue([]);
 
-    const { result } = renderHookWithProvider(
-      () => useSendAssets(),
-      mockStateWithExternalServices,
-    );
+    const { result } = renderHookWithProvider(() => useSendAssets(), mockState);
 
     expect(result.current).toEqual({
       tokens: [],
@@ -109,22 +80,19 @@ describe('useSendAssets', () => {
     mockUseSendTokens.mockReturnValue([]);
     mockUseSendNfts.mockReturnValue([]);
 
-    renderHookWithProvider(
-      () => useSendAssets(),
-      mockStateWithExternalServices,
-    );
+    renderHookWithProvider(() => useSendAssets(), mockState);
 
     expect(mockUseSendTokens).toHaveBeenCalledTimes(1);
     expect(mockUseSendNfts).toHaveBeenCalledTimes(1);
   });
 
-  it('filters out non-EVM tokens and NFTs when BFT is OFF', () => {
+  it('filters out non-EVM tokens and NFTs', () => {
     const mockTokens: Asset[] = [
       { id: 'token1', name: 'EVM Token', chainId: '0x1' } as Asset,
       {
         id: 'token2',
-        name: 'Solana Token',
-        chainId: 'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp',
+        name: 'Unsupported Token',
+        chainId: 'unsupported:chain',
       } as Asset,
       { id: 'token3', name: 'Another EVM Token', chainId: '0x89' } as Asset,
     ];
@@ -133,8 +101,8 @@ describe('useSendAssets', () => {
       { id: 'nft1', name: 'EVM NFT', chainId: '0x1' } as Asset,
       {
         id: 'nft2',
-        name: 'Solana NFT',
-        chainId: 'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp',
+        name: 'Unsupported NFT',
+        chainId: 'unsupported:chain',
       } as Asset,
       { id: 'nft3', name: 'Another EVM NFT', chainId: '0x89' } as Asset,
     ];
@@ -142,10 +110,7 @@ describe('useSendAssets', () => {
     mockUseSendTokens.mockReturnValue(mockTokens);
     mockUseSendNfts.mockReturnValue(mockNfts);
 
-    const { result } = renderHookWithProvider(
-      () => useSendAssets(),
-      mockStateWithoutExternalServices,
-    );
+    const { result } = renderHookWithProvider(() => useSendAssets(), mockState);
 
     // Only EVM tokens should be returned
     expect(result.current.tokens).toHaveLength(2);
@@ -174,10 +139,7 @@ describe('useSendAssets', () => {
     mockUseSendTokens.mockReturnValue(mockTokens);
     mockUseSendNfts.mockReturnValue(mockNfts);
 
-    const { result } = renderHookWithProvider(
-      () => useSendAssets(),
-      mockStateWithExternalServices,
-    );
+    const { result } = renderHookWithProvider(() => useSendAssets(), mockState);
 
     // Only tokens from enabled networks should be returned
     expect(result.current.tokens).toHaveLength(2);
@@ -202,24 +164,21 @@ describe('useSendAssets', () => {
     mockUseSendTokens.mockReturnValue(mockTokens);
     mockUseSendNfts.mockReturnValue(mockNfts);
 
-    const { result } = renderHookWithProvider(
-      () => useSendAssets(),
-      mockStateWithExternalServices,
-    );
+    const { result } = renderHookWithProvider(() => useSendAssets(), mockState);
 
     // NFT with undefined chainId should be filtered out
     expect(result.current.nfts).toHaveLength(1);
     expect(result.current.nfts[0].chainId).toBe('0x1');
   });
 
-  it('applies both enabledNetworks and EVM filtering when BFT is OFF', () => {
+  it('applies both Network Manager and EVM filtering', () => {
     const mockTokens: Asset[] = [
       { id: 'token1', name: 'EVM Token', chainId: '0x1' } as Asset,
       { id: 'token2', name: 'EVM Token 2', chainId: '0x89' } as Asset,
       {
         id: 'token3',
-        name: 'Solana Token',
-        chainId: 'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp',
+        name: 'Unsupported Token',
+        chainId: 'unsupported:chain',
       } as Asset,
       {
         id: 'token4',
@@ -232,8 +191,8 @@ describe('useSendAssets', () => {
       { id: 'nft1', name: 'EVM NFT', chainId: '0x1' } as Asset,
       {
         id: 'nft2',
-        name: 'Solana NFT',
-        chainId: 'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp',
+        name: 'Unsupported NFT',
+        chainId: 'unsupported:chain',
       } as Asset,
       { id: 'nft3', name: 'Disabled Network NFT', chainId: '0x999' } as Asset, // Not enabled
     ];
@@ -241,10 +200,7 @@ describe('useSendAssets', () => {
     mockUseSendTokens.mockReturnValue(mockTokens);
     mockUseSendNfts.mockReturnValue(mockNfts);
 
-    const { result } = renderHookWithProvider(
-      () => useSendAssets(),
-      mockStateWithoutExternalServices,
-    );
+    const { result } = renderHookWithProvider(() => useSendAssets(), mockState);
 
     // Should filter out both non-EVM and non-enabled networks
     expect(result.current.tokens).toHaveLength(2);

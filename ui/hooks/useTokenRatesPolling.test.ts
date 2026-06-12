@@ -1,5 +1,4 @@
 import { AVAILABLE_MULTICHAIN_NETWORK_CONFIGURATIONS } from '@metamask/multichain-network-controller';
-import { BtcScope } from '@metamask/keyring-api';
 import { renderHookWithProvider } from '../../test/lib/render-helpers-navigate';
 import {
   tokenRatesStartPolling,
@@ -67,7 +66,7 @@ describe('useTokenRatesPolling', () => {
         },
         multichainNetworkConfigurationsByChainId:
           AVAILABLE_MULTICHAIN_NETWORK_CONFIGURATIONS,
-        selectedMultichainNetworkChainId: BtcScope.Mainnet,
+        selectedMultichainNetworkChainId: '0x1',
         isEvmSelected: true,
       },
     };
@@ -101,7 +100,7 @@ describe('useTokenRatesPolling', () => {
         },
         multichainNetworkConfigurationsByChainId:
           AVAILABLE_MULTICHAIN_NETWORK_CONFIGURATIONS,
-        selectedMultichainNetworkChainId: BtcScope.Mainnet,
+        selectedMultichainNetworkChainId: '0x1',
         isEvmSelected: true,
       },
     };
@@ -125,7 +124,7 @@ describe('useTokenRatesPolling', () => {
         },
         multichainNetworkConfigurationsByChainId:
           AVAILABLE_MULTICHAIN_NETWORK_CONFIGURATIONS,
-        selectedMultichainNetworkChainId: BtcScope.Mainnet,
+        selectedMultichainNetworkChainId: '0x1',
         isEvmSelected: true,
       },
     };
@@ -149,7 +148,7 @@ describe('useTokenRatesPolling', () => {
         },
         multichainNetworkConfigurationsByChainId:
           AVAILABLE_MULTICHAIN_NETWORK_CONFIGURATIONS,
-        selectedMultichainNetworkChainId: BtcScope.Mainnet,
+        selectedMultichainNetworkChainId: '0x1',
         isEvmSelected: true,
       },
     };
@@ -170,7 +169,7 @@ describe('useTokenRatesPolling', () => {
         networkConfigurationsByChainId: {},
         multichainNetworkConfigurationsByChainId:
           AVAILABLE_MULTICHAIN_NETWORK_CONFIGURATIONS,
-        selectedMultichainNetworkChainId: BtcScope.Mainnet,
+        selectedMultichainNetworkChainId: '0x1',
         isEvmSelected: true,
       },
     };

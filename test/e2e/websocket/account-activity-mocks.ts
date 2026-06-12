@@ -91,7 +91,7 @@ export const DEFAULT_ACCOUNT_ACTIVITY_WS_MOCKS: WebSocketMessageMock[] = [
 /**
  * Sets up AccountActivity WebSocket mocks on a dedicated server.
  *
- * Unlike Solana mocks, this handler dynamically echoes back the client's
+ * this handler dynamically echoes back the client's
  * `requestId` in subscribe/unsubscribe responses (required by BackendWebSocketService
  * for request-response correlation). After each subscribe, a system-notification
  * with chain status "up" is also sent.

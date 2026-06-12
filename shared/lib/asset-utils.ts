@@ -19,11 +19,7 @@ import {
   isNativeAddress,
   isNonEvmChainId,
 } from '@metamask/bridge-controller';
-import getFetchWithTimeout from './fetch-with-timeout';
-import { decimalToPrefixedHex } from './conversion.utils';
-import { TEN_SECONDS_IN_MILLISECONDS } from './transactions-controller-utils';
 
-const TOKEN_API_V3_BASE_URL = 'https://tokens.api.cx.metamask.io/v3';
 const STATIC_METAMASK_BASE_URL = 'https://static.cx.metamask.io';
 
 export const toAssetId = (
@@ -112,118 +108,27 @@ export type AssetMetadata = {
 /**
  * Fetches the metadata for a token
  *
- * @param address - The address of the token
- * @param chainId - The chainId of the token
- * @param abortSignal - The abort signal for the fetch request
+ * @param _address - The address of the token
+ * @param _chainId - The chainId of the token
  * @returns The metadata for the token
  */
 export const fetchAssetMetadata = async (
-  address: string | CaipAssetType | Hex,
-  chainId: Hex | CaipChainId,
-  abortSignal?: AbortSignal,
+  _address: string | CaipAssetType | Hex,
+  _chainId: Hex | CaipChainId,
 ) => {
-  try {
-    const assetId = toAssetId(address, chainId);
-
-    if (!assetId) {
-      return undefined;
-    }
-    const fetchWithTimeout = getFetchWithTimeout(TEN_SECONDS_IN_MILLISECONDS);
-
-    const [assetMetadata]: AssetMetadata[] = await (
-      await fetchWithTimeout(
-        `${TOKEN_API_V3_BASE_URL}/assets?assetIds=${assetId}`,
-        {
-          method: 'GET',
-          headers: { 'X-Client-Id': 'extension' },
-          signal: abortSignal,
-        },
-      )
-    ).json();
-
-    const commonFields = {
-      symbol: assetMetadata.symbol,
-      decimals: assetMetadata.decimals,
-      image: getAssetImageUrl(assetId, chainId),
-      assetId,
-    };
-
-    if (isNonEvmChainId(chainId) && assetId) {
-      const { assetReference } = parseCaipAssetType(assetId);
-      return {
-        ...commonFields,
-        address: assetReference,
-        assetId,
-        chainId,
-      };
-    }
-
-    const hexChainId = isStrictHexString(chainId)
-      ? chainId
-      : decimalToPrefixedHex(parseCaipChainId(chainId).reference);
-    return {
-      ...commonFields,
-      address: address.toLowerCase(),
-      chainId: hexChainId,
-    };
-  } catch (error) {
-    return undefined;
-  }
+  return undefined;
 };
 
 /**
  * Fetches the metadata for a list of token assetIds
  *
- * @param assetIds - The assetIds of the tokens
- * @param abortSignal - The abort signal for the fetch request
+ * @param _assetIds - The assetIds of the tokens
  * @returns The metadata for the tokens by assetId
  */
 export const fetchAssetMetadataForAssetIds = async (
-  assetIds: (CaipAssetType | null)[],
-  abortSignal?: AbortSignal,
+  _assetIds: (CaipAssetType | null)[],
 ) => {
-  try {
-    const fetchWithTimeout = getFetchWithTimeout(TEN_SECONDS_IN_MILLISECONDS);
-    const assetIdsString = assetIds
-      .map((assetId) => {
-        if (!assetId) {
-          return null;
-        }
-        const { assetReference, chainId } = parseCaipAssetType(assetId);
-        if (isNonEvmChainId(chainId)) {
-          return null;
-        }
-        if (isStrictHexString(assetReference)) {
-          return assetId.toLowerCase();
-        }
-        return assetId;
-      })
-      .filter(Boolean)
-      .join(',');
-    if (!assetIdsString) {
-      return null;
-    }
-    const assetMetadata: AssetMetadata[] = await (
-      await fetchWithTimeout(
-        `${TOKEN_API_V3_BASE_URL}/assets?assetIds=${assetIdsString}`,
-        {
-          method: 'GET',
-          headers: { 'X-Client-Id': 'extension' },
-          signal: abortSignal,
-        },
-      )
-    ).json();
-
-    return assetMetadata.reduce(
-      (acc, asset) => {
-        acc[asset.assetId] = asset;
-        return acc;
-      },
-      {} as Record<CaipAssetType, AssetMetadata>,
-    );
-  } catch (error) {
-    return null;
-  }
+  return null;
 };
 
 /**
@@ -241,7 +146,7 @@ export const isEvmChainId = (chainId: CaipChainId | Hex) => {
     chainIdInCaip = toEvmCaipChainId(chainId);
   } else {
     // Before converting decimal strings to hex, check if it's a non-EVM chainId
-    // This prevents misidentifying non-EVM chains (e.g., Solana, Bitcoin, Tron) as EVM
+    // This prevents misidentifying unsupported non-EVM chains as EVM
     if (isNonEvmChainId(chainId)) {
       return false;
     }

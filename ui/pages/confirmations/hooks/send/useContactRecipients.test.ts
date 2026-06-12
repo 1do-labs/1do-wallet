@@ -15,7 +15,6 @@ jest.mock('./useAccountAddressSeedIconMap', () => ({
   }),
 }));
 jest.mock('ethers/lib/utils');
-jest.mock('@metamask/bridge-controller');
 
 const mockUseSendType = jest.spyOn(useSendTypeModule, 'useSendType');
 const mockGetCompleteAddressBook = jest.spyOn(
@@ -54,7 +53,6 @@ describe('useContactRecipients', () => {
     } as unknown as SendContext.SendContextType);
     mockUseSendType.mockReturnValue({
       isEvmSendType: true,
-      isSolanaSendType: false,
     } as unknown as ReturnType<typeof useSendType>);
     mockIsEvmAddress.mockImplementation((address) => address.startsWith('0x'));
 
@@ -76,8 +74,6 @@ describe('useContactRecipients', () => {
   it('returns empty array when isEvmSendType is false', () => {
     mockUseSendType.mockReturnValue({
       isEvmSendType: false,
-      isSolanaSendType: false,
-      isBitcoinSendType: false,
     } as unknown as ReturnType<typeof useSendType>);
 
     const { result } = renderHookWithProvider(
@@ -91,7 +87,6 @@ describe('useContactRecipients', () => {
   it('returns empty array when address book is empty', () => {
     mockUseSendType.mockReturnValue({
       isEvmSendType: true,
-      isSolanaSendType: false,
     } as unknown as ReturnType<typeof useSendType>);
     mockGetCompleteAddressBook.mockReturnValue([]);
 
@@ -109,7 +104,6 @@ describe('useContactRecipients', () => {
     } as unknown as SendContext.SendContextType);
     mockUseSendType.mockReturnValue({
       isEvmSendType: true,
-      isSolanaSendType: false,
     } as unknown as ReturnType<typeof useSendType>);
     mockIsEvmAddress.mockImplementation(
       (address) => address === '0x1234567890abcdef1234567890abcdef12345678',
@@ -132,7 +126,6 @@ describe('useContactRecipients', () => {
   it('calls useSendType hook', () => {
     mockUseSendType.mockReturnValue({
       isEvmSendType: false,
-      isSolanaSendType: false,
     } as unknown as ReturnType<typeof useSendType>);
 
     renderHookWithProvider(() => useContactRecipients(), mockState);
@@ -143,7 +136,6 @@ describe('useContactRecipients', () => {
   it('calls getCompleteAddressBook selector', () => {
     mockUseSendType.mockReturnValue({
       isEvmSendType: true,
-      isSolanaSendType: false,
     } as unknown as ReturnType<typeof useSendType>);
 
     renderHookWithProvider(() => useContactRecipients(), mockState);

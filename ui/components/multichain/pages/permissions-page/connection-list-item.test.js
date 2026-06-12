@@ -23,39 +23,7 @@ describe('ConnectionListItem', () => {
     mockUseSelector.mockReturnValue([]);
   });
 
-  it('renders correctly for Snap connection', () => {
-    // Mock SnapIcon selector
-    mockUseSelector.mockImplementation((selector) => {
-      if (
-        typeof selector === 'function' &&
-        selector.toString().includes('getSnapMetadata')
-      ) {
-        return { name: 'Test Snap 1' };
-      }
-      return [];
-    });
-
-    const mockConnection = {
-      id: 'npm:@metamask/testSnap1',
-      origin: 'npm:@metamask/testSnap1',
-      packageName: 'Test Snap 1',
-      subjectType: 'snap',
-      iconUrl: null,
-      addresses: [], // Add empty addresses array for Snap
-    };
-    const { getByText, getByTestId } = renderWithProvider(
-      <ConnectionListItem connection={mockConnection} onClick={jest.fn()} />,
-      store,
-    );
-
-    expect(getByTestId('connection-list-item')).toBeInTheDocument();
-    expect(getByText('Test Snap 1')).toBeInTheDocument();
-    expect(
-      document.querySelector('.connection-list-item__snap-avatar'),
-    ).toBeInTheDocument();
-  });
-
-  it('renders correctly for non-Snap connection', () => {
+  it('renders correctly for website connection', () => {
     mockUseSelector.mockImplementation((selector) => {
       if (
         typeof selector === 'function' &&
@@ -204,25 +172,13 @@ describe('ConnectionListItem', () => {
   });
 
   it('calls onClick when clicked', () => {
-    // Mock SnapIcon selector
-    mockUseSelector.mockImplementation((selector) => {
-      if (
-        typeof selector === 'function' &&
-        selector.toString().includes('getSnapMetadata')
-      ) {
-        return { name: 'Test Snap 1' };
-      }
-      return [];
-    });
-
     const onClickMock = jest.fn();
     const mockConnection = {
-      id: 'npm:@metamask/testSnap1',
-      origin: 'npm:@metamask/testSnap1',
-      packageName: 'Test Snap 1',
-      subjectType: 'snap',
-      iconUrl: null,
-      addresses: [], // Add empty addresses array for Snap
+      id: 'https://metamask.github.io',
+      origin: 'https://metamask.github.io',
+      subjectType: 'website',
+      iconUrl: 'https://metamask.github.io/test-dapp/metamask-fox.svg',
+      addresses: [],
     };
     const { getByTestId } = renderWithProvider(
       <ConnectionListItem connection={mockConnection} onClick={onClickMock} />,

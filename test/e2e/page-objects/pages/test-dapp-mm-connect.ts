@@ -1,4 +1,3 @@
-import assert from 'assert';
 import { DAPP_URL, MM_CONNECT_FEATURED_CHAIN_IDS } from '../../constants';
 import { Driver } from '../../webdriver/driver';
 
@@ -16,8 +15,6 @@ import { Driver } from '../../webdriver/driver';
  * confirm a multichain session is active.
  * - On localhost/127.0.0.1, eip155:1337 is pre-checked on page load (≥0.6.1).
  * - The method selector in each ScopeCard is a native HTML <select>.
- * - Solana is included in the multichain session via selectNetworks() and
- * appears as a ScopeCard (not a separate wallet-standard flow).
  */
 export class TestDappMmConnect {
   private readonly driver: Driver;
@@ -421,72 +418,6 @@ export class TestDappMmConnect {
       css: this.resultCodeSelector(scope, method),
       text: expectedText,
     });
-  }
-
-  /**
-   * Assert the Solana signMessage result contains the expected JSON fields.
-   * Expands the result <details> element before reading.
-   *
-   * @param scope - CAIP-2 scope for Solana, e.g. 'solana:5eykt4...'
-   */
-  async checkSolanaSignMessageResult(scope: string): Promise<void> {
-    // Expand the result <details> so the text content is readable
-    await this.driver.waitForSelector(
-      this.resultCodeSelector(scope, 'signMessage'),
-    );
-    await this.driver.clickElement(
-      this.resultDetailsSelector(scope, 'signMessage'),
-    );
-
-    const cssSelector = this.resultCodeSelector(scope, 'signMessage');
-    let resultText = '';
-    let parsed: Record<string, unknown> = {};
-    // Both the emptiness check and JSON.parse are kept inside the polling
-    // callback so transient states are retried rather than surfaced as errors:
-    //  - Empty text: the <details> element may briefly have no text content
-    //    immediately after the <summary> is clicked to expand it.
-    //  - SyntaxError: the renderer may flush partial/incomplete JSON before
-    //    the full result string is available.
-    // Only when getText() returns a non-empty, fully parseable JSON string do
-    // we capture both `parsed` and `resultText` and exit the loop, ensuring
-    // the assert.ok calls below always operate on valid data.
-    await this.driver.waitUntil(
-      async () => {
-        try {
-          const element = await this.driver.findElement(cssSelector);
-          const text = await element.getText();
-          if (!text) {
-            return false;
-          }
-          parsed = JSON.parse(text) as Record<string, unknown>;
-          resultText = text;
-          return true;
-        } catch (error) {
-          const err = error as { name?: string };
-          if (
-            err.name === 'StaleElementReferenceError' ||
-            err.name === 'SyntaxError'
-          ) {
-            return false;
-          }
-          throw error;
-        }
-      },
-      { interval: 500, timeout: this.driver.timeout },
-    );
-
-    assert.ok(
-      typeof parsed.signature === 'string',
-      `Expected signMessage result for ${scope} to include string "signature", got: "${resultText}"`,
-    );
-    assert.ok(
-      typeof parsed.signedMessage === 'string',
-      `Expected signMessage result for ${scope} to include string "signedMessage", got: "${resultText}"`,
-    );
-    assert.ok(
-      typeof parsed.signatureType === 'string',
-      `Expected signMessage result for ${scope} to include string "signatureType", got: "${resultText}"`,
-    );
   }
 
   // ──────────────────────────────────────────────────────────────────────────

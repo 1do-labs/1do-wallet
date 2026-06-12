@@ -20,39 +20,6 @@ export const EVM_NATIVE_ASSET = {
   rawBalanceHex: '0x5',
 };
 
-export const SOLANA_NATIVE_ASSET = {
-  assetId: 'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp/slip44:501',
-  aggregators: [],
-  balance: '400',
-  balanceFiat: '1500',
-  chainId: 'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp',
-  decimals: 18,
-  hasBalanceError: false,
-  image: '',
-  isETH: undefined,
-  isNative: true,
-  logo: 'https://upload.wikimedia.org/wikipedia/commons/0/05/Ethereum_logo_2014.svg',
-  name: 'Ethereum',
-  symbol: 'SOL',
-};
-
-export const SOLANA_ASSET = {
-  address:
-    'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp/token:9BB6NFEcjBCtnNLFko2FqVQBq8HHM13kCyYcdQbgpump',
-  chainId: 'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp',
-  decimals: 6,
-  image:
-    'https://static.cx.metamask.io/api/v2/tokenIcons/assets/solana/5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp/token/9BB6NFEcjBCtnNLFko2FqVQBq8HHM13kCyYcdQbgpump.png',
-  isNative: false,
-  isStakeable: false,
-  primary: '1.007248',
-  secondary: '$1.05',
-  string: '',
-  symbol: 'FARTCOIN',
-  title: 'Fartcoin',
-  tokenFiatAmount: 1.045523424,
-};
-
 export const MOCK_NFT1155 = {
   address: '0x4B3E2eD66631FE2dE488CB0c23eF3A91A41601f7',
   chainId: 8453,
@@ -84,27 +51,4 @@ export const MOCK_NFT721 = {
   tokenId: '17',
   tokenURI:
     'https://dweb.link/ipfs/QmQD4h1Dkkn75ZKSFXDtmW6kehpCkckStRazCdUgp7m9g1',
-};
-
-export const BITCOIN_ASSET = {
-  type: 'bip122:p2wpkh',
-  assetId: 'bip122:000000000019d6689c085ae165831e93/slip44:0',
-  isNative: true,
-  image: './images/bitcoin-logo.svg',
-  name: 'Bitcoin',
-  symbol: 'BTC',
-  accountId: '80c14733-13cc-4966-bf1a-6212a6409c22',
-  decimals: 8,
-  rawBalance: '0x5dc0',
-  balance: '0.00024',
-  fiat: {
-    balance: 29.33352,
-    currency: 'usd',
-    conversionRate: 122223,
-  },
-  chainId: 'bip122:000000000019d6689c085ae165831e93',
-  networkImage: './images/bitcoin-logo.svg',
-  networkName: 'Bitcoin',
-  shortenedBalance: '0.00024',
-  standard: 'native',
 };

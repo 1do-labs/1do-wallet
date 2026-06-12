@@ -10,7 +10,6 @@ export type PriceData = { price: number; marketCap: number };
 export const PRICES = {
   ETH: 3401.36,
   BTC: 95000,
-  SOL: 150,
   BNB: 605,
   MATIC: 0.52,
   AVAX: 35.5,
@@ -34,16 +33,6 @@ export const POWER_USER_PRICES: Record<string, PriceData> = {
   'eip155:43114/slip44:60': { price: PRICES.AVAX, marketCap: 14_000_000_000 }, // Avalanche
   'eip155:100/slip44:60': { price: PRICES.STABLECOIN, marketCap: 100_000_000 }, // Gnosis
   'eip155:1329/slip44:60': { price: PRICES.SEI, marketCap: 2_000_000_000 }, // Sei
-  'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp/slip44:501': {
-    price: PRICES.SOL,
-    marketCap: 70_000_000_000,
-  },
-  'solana/slip44:501': { price: PRICES.SOL, marketCap: 70_000_000_000 },
-  solana: { price: PRICES.SOL, marketCap: 70_000_000_000 },
-  'bip122:000000000019d6689c085ae165831e93/slip44:0': {
-    price: PRICES.BTC,
-    marketCap: 1_800_000_000_000,
-  },
 
   'eip155:1/erc20:0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48': {
     price: 1.0,

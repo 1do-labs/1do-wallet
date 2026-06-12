@@ -44,7 +44,7 @@ const exampleContent = (
 );
 
 export const DefaultStory = () => (
-  <Delineator headerComponent={headerComponent} iconName={IconName.Snaps}>
+  <Delineator headerComponent={headerComponent} iconName={IconName.Global}>
     {exampleContent}
   </Delineator>
 );
@@ -52,7 +52,7 @@ export const DefaultStory = () => (
 export const InitiallyExpanded = () => (
   <Delineator
     headerComponent={headerComponent}
-    iconName={IconName.Snaps}
+    iconName={IconName.Global}
     isExpanded
   >
     {exampleContent}
@@ -83,7 +83,7 @@ export const LoadingStory = () => (
 export const ErrorStory = () => (
   <Delineator
     headerComponent={headerComponent}
-    iconName={IconName.Snaps}
+    iconName={IconName.Global}
     type={DelineatorType.Error}
   >
     {exampleContent}
@@ -103,7 +103,7 @@ export const OnExpandChangeStory = () => {
     <>
       <Delineator
         headerComponent={headerComponent}
-        iconName={IconName.Snaps}
+        iconName={IconName.Global}
         type={DelineatorType.Error}
         onExpandChange={handleOnExpandChange}
       >

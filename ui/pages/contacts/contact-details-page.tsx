@@ -15,7 +15,7 @@ import {
   DEFAULT_ROUTE,
 } from '../../helpers/constants/routes';
 import { getInternalAccountByAddress } from '../../selectors';
-import { getAddressBookEntryByNetwork } from '../../selectors/snaps/address-book';
+import { getAddressBookEntryByNetwork } from '../../selectors/address-book';
 import { toChecksumHexAddress } from '../../../shared/lib/hexstring-utils';
 import { removeFromAddressBook } from '../../store/actions';
 import { MetaMetricsContext } from '../../contexts/metametrics';

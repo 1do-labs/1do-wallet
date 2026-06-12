@@ -315,12 +315,6 @@
   "addRpcUrl": {
     "message": "RPC URL जोड़ें"
   },
-  "addSnapAccountToggle": {
-    "message": "\"अकाउंट Snap जोड़ें (बीटा)\" को चालू करें"
-  },
-  "addSnapAccountsDescription": {
-    "message": "इस फीचर को चालू करने से आपको सीधे अपनी अकाउंट लिस्ट से नया बीटा अकाउंट Snap जोड़ने का विकल्प मिलेगा। अगर आप Snap अकाउंट इनस्टॉल करते हैं, तो याद रखें कि यह एक थर्ड-पार्टी सर्विस है।"
-  },
   "addSuggestedNFTs": {
     "message": "सुझाए गए NFTs जोड़ें"
   },
@@ -651,11 +645,11 @@
   },
   "andForListItems": {
     "message": "$1, और $2",
-    "description": "$1 is the first item, $2 is the last item in a list of items. Used in Snap Install Warning modal."
+    "description": "$1 is the first item, $2 is the last item in a list of items."
   },
   "andForTwoItems": {
     "message": "$1 और $2",
-    "description": "$1 is the first item, $2 is the second item. Used in Snap Install Warning modal."
+    "description": "$1 is the first item, $2 is the second item."
   },
   "annual": {
     "message": "वार्षिक"
@@ -842,9 +836,6 @@
   "backupApprovalNotice": {
     "message": "अपने वॉलेट और फंड्स को सुरक्षित रखने के लिए अपने सीक्रेट रिकवरी फ्रेज़ का बैकअप लें।"
   },
-  "backupKeyringSnapReminder": {
-    "message": "इसे हटाने से पहले सुनिश्चित करें कि आप इस Snap द्वारा बनाए गए किसी भी अकाउंट तक स्वयं पहुंच सकते हैं"
-  },
   "backupNow": {
     "message": "अभी बैकअप लें"
   },
@@ -895,9 +886,6 @@
   "basicFunctionalityRequired_goToHome": {
     "message": "होम पेज पर जाएं"
   },
-  "basicFunctionalityRequired_openCreateSnapAccountPage": {
-    "message": "अकाउंट बनाएं पेज खोलें"
-  },
   "basicFunctionalityRequired_openDefiPage": {
     "message": "DeFi पेज खोलें"
   },
@@ -912,9 +900,6 @@
   },
   "basicFunctionalityRequired_openRewardsPage": {
     "message": "रिवॉर्ड्स पेज खोलें"
-  },
-  "basicFunctionalityRequired_openSnapsPage": {
-    "message": "स्नैप्स पेज खोलें"
   },
   "basicFunctionalityRequired_openSwapsPage": {
     "message": "स्वैप पेज खोलें"
@@ -1498,21 +1483,6 @@
   "concentratedSupplyDistributionTitle": {
     "message": "कंसेंट्रेटेड सप्लाई डिस्ट्रीब्यूशन"
   },
-  "configureSnapPopupDescription": {
-    "message": "अब आप इस Snap को कॉन्फिगर करने के लिए 1do से बाहर जा रहे हैं।"
-  },
-  "configureSnapPopupInstallDescription": {
-    "message": "अब आप इस Snap को इंस्टॉल करने के लिए 1do से बाहर जा रहे हैं।"
-  },
-  "configureSnapPopupInstallTitle": {
-    "message": "Snap इंस्टाल करें"
-  },
-  "configureSnapPopupLink": {
-    "message": "जारी रखने के लिए इस लिंक पर क्लिक करें:"
-  },
-  "configureSnapPopupTitle": {
-    "message": "Snap को कॉन्फिगर करें"
-  },
   "confirm": {
     "message": "कन्फर्म करें"
   },
@@ -1749,10 +1719,6 @@
   "connectMoreAccounts": {
     "message": "अधिक खाते को कनेक्ट करें"
   },
-  "connectSnap": {
-    "message": "$1 को कनेक्ट करें",
-    "description": "$1 is the snap for which a connection is being requested."
-  },
   "connectWithMetaMask": {
     "message": "1do के साथ कनेक्ट करें"
   },
@@ -1773,9 +1739,6 @@
   "connectedSites": {
     "message": "कनेक्ट की गई साइटें"
   },
-  "connectedSitesAndSnaps": {
-    "message": "कनेक्टेड साइटें और Snaps"
-  },
   "connectedSitesDescription": {
     "message": "$1 इन साइटों से कनेक्ट है। वे आपके अकाउंट का एड्रेस देख सकते हैं।",
     "description": "$1 is the account name"
@@ -1783,12 +1746,6 @@
   "connectedSitesEmptyDescription": {
     "message": "$1 किसी भी साइट से कनेक्ट नहीं है।",
     "description": "$1 is the account name"
-  },
-  "connectedSnapAndNoAccountDescription": {
-    "message": "1do इस साइट से कनेक्टेड है, लेकिन अभी तक कोई अकाउंट कनेक्ट नहीं किया गया है"
-  },
-  "connectedSnaps": {
-    "message": "कनेक्टेड Snaps"
   },
   "connectedWithAccount": {
     "message": "$1 अकाउंट्स कनेक्ट किए गए",
@@ -1836,10 +1793,6 @@
   "connectionFailed": {
     "message": "कनेक्शन नहीं हो पाया"
   },
-  "connectionFailedDescription": {
-    "message": "$1 को लाना नहीं हो पाया, अपना नेटवर्क जांचें और दोबारा कोशिश करें।",
-    "description": "$1 is the name of the snap being fetched."
-  },
   "connectionPopoverDescription": {
     "message": "किसी साइट से कनेक्ट करने के लिए, कनेक्ट बटन का चयन करें। 1do केवल Web3 साइटों से कनेक्ट हो सकता है।"
   },
@@ -1847,7 +1800,7 @@
     "message": "कनेक्शन के लिए अनुरोध"
   },
   "connectionsRemovedModalDescription": {
-    "message": "कुछ कनेक्शन्स (जैसे हार्डवेयर वॉलेट्स और Snaps) इस डिवाइस पर निष्क्रियता के कारण हटा दिए गए। आप उन्हें कभी भी सेटिंग्स में जाकर दोबारा जोड़ सकते हैं।"
+    "message": "Some connections (like hardware wallets) were removed due to inactivity on this device. You can re-add them anytime in Settings."
   },
   "connectionsRemovedModalTitle": {
     "message": "कनेक्शन्स हटा दिए गए"
@@ -1866,10 +1819,6 @@
   },
   "contacts": {
     "message": "कॉन्टेक्ट्स"
-  },
-  "contentFromSnap": {
-    "message": "$1 से कंटेंट",
-    "description": "$1 represents the name of the snap"
   },
   "continue": {
     "message": "जारी रखें"
@@ -1954,12 +1903,6 @@
   },
   "createPasswordMarketing": {
     "message": "प्रॉडक्ट अपडेट, सुझाव और समाचार प्राप्त करें, जिसमें ईमेल भी शामिल है। हम आपके इंटरैक्शन का उपयोग, साझा की जाने वाली जानकारी को बेहतर बनाने के लिए कर सकते हैं।"
-  },
-  "createSnapAccountDescription": {
-    "message": "$1 1do में एक नया अकाउंट जोड़ना चाहता है।"
-  },
-  "createSnapAccountTitle": {
-    "message": "अकाउंट बनाएं"
   },
   "createSolanaAccount": {
     "message": "Solana अकाउंट बनाएं"
@@ -2346,10 +2289,6 @@
   "description": {
     "message": "जानकारी"
   },
-  "descriptionFromSnap": {
-    "message": "$1 से जानकारी",
-    "description": "$1 represents the name of the snap"
-  },
   "destinationAccountPickerNoEligible": {
     "message": "कोई योग्य अकाउंट नहीं मिला"
   },
@@ -2406,9 +2345,6 @@
   "disconnectAllSitesSuccess": {
     "message": "सभी dapps सही से डिसकनेक्ट किए गए।"
   },
-  "disconnectAllSnapsText": {
-    "message": "Snaps"
-  },
   "disconnectMessage": {
     "message": "यह आपको इस साइट से डिस्कनेक्ट कर देगा"
   },
@@ -2420,10 +2356,6 @@
   },
   "discover": {
     "message": "खोजें"
-  },
-  "discoverSnaps": {
-    "message": "Snaps के बारे में और जानें",
-    "description": "Text that links to the Snaps website. Displayed in a banner on Snaps list page in settings."
   },
   "dismiss": {
     "message": "खारिज करें"
@@ -2619,9 +2551,6 @@
   "enableSmartContractAccountDescription": {
     "message": "तेज़ ट्रांसेक्शन, कम नेटवर्क फीस, और सपोर्टेड नेटवर्क पर अतिरिक्त सुरक्षा अनलॉक करें।"
   },
-  "enableSnap": {
-    "message": "चालू करें"
-  },
   "enableToken": {
     "message": "$1 इनेबल करें",
     "description": "$1 is a token symbol, e.g. ETH"
@@ -2774,10 +2703,6 @@
   "errorWhileConnectingToRPC": {
     "message": "कस्टम नेटवर्क से कनेक्ट करने में गड़बड़ी"
   },
-  "errorWithSnap": {
-    "message": "$1 के साथ गड़बड़ी",
-    "description": "$1 represents the name of the snap"
-  },
   "estimatedChanges": {
     "message": "अनुमानित बदलाव"
   },
@@ -2829,10 +2754,6 @@
   },
   "exportYourDataDescription": {
     "message": "आप अपने डेटा, जैसे कि अपने कॉन्टेक्ट्स और अपनी प्रेफेरेंस को एक्सपोर्ट कर सकते हैं।"
-  },
-  "extendWalletWithSnaps": {
-    "message": "अपने Web3 एक्सपीरियंस को कस्टमाइज़ करने के लिए कम्युनिटी-बिल्ट Snaps को एक्सप्लोर करें।",
-    "description": "Banner description displayed on Snaps list page in Settings when less than 6 Snaps is installed."
   },
   "externalAccount": {
     "message": "बाहरी अकाउंट"
@@ -2893,7 +2814,7 @@
     "description": "This is a warning shown on the Flask Welcome screen, intended to encourage non-developers not to proceed any further. $1 is the bolded message 'flaskWelcomeUninstall'"
   },
   "flaskWelcomeWarning2": {
-    "message": "हम इस एक्टेंशन की सुरक्षा और स्थिरता की गांरटी नहीं देते हैं। फ्लास्क द्वारा पेश किए गए नए API फिशिंग हमलों के खिलाफ सख्त नहीं हैं, जिसका मतलब है कि कोई भी साइट या स्नैप जिसके लिए फ्लास्क की आवश्यकता होती है, आपकी संपत्ति को चुराने का एक दुर्भावनापूर्ण प्रयास हो सकता है।",
+    "message": "We do not guarantee the safety or stability of this extension. The new APIs offered by Flask are not hardened against phishing attacks, meaning that any site that requires Flask might be a malicious attempt to steal your assets.",
     "description": "This explains the risks of using MetaMask Flask"
   },
   "flaskWelcomeWarning3": {
@@ -3450,10 +3371,6 @@
   "insights": {
     "message": "इनसाइट्स"
   },
-  "insightsFromSnap": {
-    "message": "$1 से इनसाइट्स",
-    "description": "$1 represents the name of the snap"
-  },
   "install": {
     "message": "इंस्टॉल करें"
   },
@@ -3462,10 +3379,6 @@
   },
   "installRequest": {
     "message": "1do में जोड़ें"
-  },
-  "installedOn": {
-    "message": "$1 पर इंस्टॉल किया गया",
-    "description": "$1 is the date when the snap has been installed"
   },
   "insufficientBalance": {
     "message": "कम बैलेंस."
@@ -3599,18 +3512,6 @@
   },
   "keyringAccountPublicAddress": {
     "message": "सार्वजनिक एड्रेस"
-  },
-  "keyringSnapRemovalResult1": {
-    "message": "$1 $2हटाया गया",
-    "description": "Displays the result after removal of a keyring snap. $1 is the snap name, $2 is whether it is successful or not"
-  },
-  "keyringSnapRemovalResultNotSuccessful": {
-    "message": "नहीं ",
-    "description": "Displays the `not` word in $2."
-  },
-  "keyringSnapRemoveConfirmation": {
-    "message": "अगर आप इस Snap को हटाना चाहते हैं तो इस बात को कन्फर्म करने के लिए $1 टाइप करें:",
-    "description": "Asks user to input the name nap prior to deleting the snap. $1 is the snap name"
   },
   "keystone": {
     "message": "Keystone"
@@ -3765,9 +3666,6 @@
   },
   "loading": {
     "message": "लोड हो रहा है..."
-  },
-  "loadingScreenSnapMessage": {
-    "message": "कृपया Snap पर ट्रांजेक्शन पूरा करें।"
   },
   "loadingTokenList": {
     "message": "टोकन लिस्ट लोड हो रहा है"
@@ -3950,10 +3848,6 @@
   "metaMetricsIdNotAvailableError": {
     "message": "चूंकि आपने कभी भी 1do Metrics का विकल्प नहीं चुना है, इसलिए यहां डिलीट करने के लिए कोई डेटा नहीं है।"
   },
-  "metadataModalSourceTooltip": {
-    "message": "$1 को npm पर होस्ट किया गया है और $2 इस Snap का यूनीक आइडेंटिफायर है।",
-    "description": "$1 is the snap name and $2 is the snap NPM id."
-  },
   "metamaskFee": {
     "message": "1do फीस"
   },
@@ -4091,10 +3985,6 @@
   },
   "multichainQuoteCardRateLabel": {
     "message": "रेट"
-  },
-  "multipleSnapConnectionWarning": {
-    "message": "$1 $2 Snaps का उपयोग करना चाहता है",
-    "description": "$1 is the dapp and $2 is the number of snaps it wants to connect to."
   },
   "musdBonusExplanation": {
     "message": "अपने स्टेबलकॉइन्स को mUSD में बदलें और $1% तक वार्षिक बोनस कमाएं, जिसे आप रोज़ाना क्लेम कर सकते हैं।$2",
@@ -4581,9 +4471,6 @@
   "noDomainResolution": {
     "message": "डोमेन के लिए कोई रिज़ॉल्यूशन प्रदान नहीं किया गया।"
   },
-  "noHardwareWalletOrSnapsSupport": {
-    "message": "Snap और अधिकांश हार्डवेयर वॉलेट, आपके वर्तमान ब्राउज़र वर्जन के साथ काम नहीं करेंगे।"
-  },
   "noMMFeeSwapping": {
     "message": "कोई 1do शुल्क नहीं"
   },
@@ -4601,9 +4488,6 @@
   },
   "noOptionsAvailableMessage": {
     "message": "यह ट्रेड रूट अभी उपलब्ध नहीं है। राशि, नेटवर्क या टोकन बदलने का प्रयास करें और हम सबसे अच्छा विकल्प ढूंढ लेंगे।"
-  },
-  "noSnaps": {
-    "message": "आपके पास इंस्टाल किए गए Snap नहीं हैं।"
   },
   "noTokensMatchingYourFilters": {
     "message": "कोई भी टोकन आपके फ़िल्टर से मैच नहीं कर रहा"
@@ -4998,10 +4882,6 @@
   "otherPermissionsOnSiteTitle": {
     "message": "इस साइट पर अन्य अनुमतियाँ"
   },
-  "otherSnaps": {
-    "message": "अन्य Snap",
-    "description": "Used in the 'permission_rpc' message."
-  },
   "others": {
     "message": "अन्य"
   },
@@ -5116,49 +4996,13 @@
     "message": "$1 के लिए इस अपडेट में हटाया गया",
     "description": "Permission cell status for revoked permission including accounts, rendered as AvatarGroup which is $1."
   },
-  "permission_accessNamedSnap": {
-    "message": "$1 से कनेक्ट करें।",
-    "description": "The description for the `wallet_snap` permission. $1 is the human-readable name of the snap."
-  },
   "permission_accessNetwork": {
     "message": "इंटरनेट एक्सेस करें।",
     "description": "The description of the `endowment:network-access` permission."
   },
-  "permission_accessNetworkDescription": {
-    "message": "$1 को इंटरनेट एक्सेस करने दें। इसका इस्तेमाल थर्ड-पार्टी सर्वर के साथ डेटा भेजने और प्राप्त करने दोनों के लिए किया जा सकता है।",
-    "description": "An extended description of the `endowment:network-access` permission. $1 is the snap name."
-  },
-  "permission_accessSnap": {
-    "message": "$1 Snap से कनेक्ट करें।",
-    "description": "The description for the `wallet_snap` permission. $1 is the name of the snap."
-  },
-  "permission_accessSnapDescription": {
-    "message": "$1 के साथ इंटरैक्ट करने के लिए वेबसाइट या Snap को अनुमति दें।",
-    "description": "The description for the `wallet_snap_*` permission. $1 is the name of the Snap."
-  },
   "permission_assets": {
     "message": "1do में अकाउंट एसेट्स दिखाएं।",
     "description": "The description for the `endowment:assets` permission."
-  },
-  "permission_assetsDescription": {
-    "message": "1do क्लाइंट को एसेट की जानकारी प्रदान करने के लिए $1 को अनुमति दें। एसेट्स ऑनचेन या ऑफचेन हो सकती हैं।",
-    "description": "An extended description for the `endowment:assets` permission. $1 is the name of the Snap."
-  },
-  "permission_cronjob": {
-    "message": "समय-समय पर आने वाले क्रियाओं को शेड्यूल और निष्पादित करें।",
-    "description": "The description for the `snap_cronjob` permission"
-  },
-  "permission_cronjobDescription": {
-    "message": "$1 को अनुमति दें ताकि वह तय समय, तारीख या इंटरवल पर किए जाने वाले एक्शन कर सके। इसका इस्तेमाल टाइम-सेंसिटिव इंटरैक्शन या नोटिफिकेशन्स को ट्रिगर करने के लिए किया जा सकता है।",
-    "description": "An extended description for the `snap_cronjob` permission. $1 is the snap name."
-  },
-  "permission_dialog": {
-    "message": "1do में डायलॉग विंडो प्रदर्शित करें।",
-    "description": "The description for the `snap_dialog` permission"
-  },
-  "permission_dialogDescription": {
-    "message": "$1 को 1do पॉपअप को कस्टम टेक्स्ट, इनपुट फील्ड और किसी एक्शन को एप्रूव या रिजेक्ट करने के बटन दिखाने की अनुमति दें।\nउदाहरण के लिए, Snap के लिए एलर्ट, कन्फर्मेशन और ऑप्ट-इन फ्लो क्रिएट करने के लिए इसका इस्तेमाल किया जा सकता है।",
-    "description": "An extended description for the `snap_dialog` permission. $1 is the snap name."
   },
   "permission_ethereumAccounts": {
     "message": "एड्रेस, अकाउंट का बैलेंस, एक्टिविटी देखें और ट्रांसेक्शन शुरू करें",
@@ -5168,125 +5012,29 @@
     "message": "Ethereum प्रोवाइडर को ऐक्सेस करें।",
     "description": "The description for the `endowment:ethereum-provider` permission"
   },
-  "permission_ethereumProviderDescription": {
-    "message": "$1 को 1do के साथ सीधे कम्यूनिकेट करने की अनुमति दें, ताकि वह ब्लॉकचेन से डेटा पढ़ सके और मैसेज और ट्रांसेक्शन का सुझाव दे सके।",
-    "description": "An extended description for the `endowment:ethereum-provider` permission. $1 is the snap name."
-  },
-  "permission_getEntropy": {
-    "message": "$1 के लिए unique arbitrary कीज़ डिराइव करें।",
-    "description": "The description for the `snap_getEntropy` permission. $1 is the snap name."
-  },
-  "permission_getEntropyDescription": {
-    "message": "सबके सामने लाए बिना, $1 को $1 के लिए unique arbitrary कीज़ डिराइव करने की अनुमति दें। ये कीज़ आपके 1do अकाउंट (एकाउंट्स) से अलग हैं और आपकी प्राइवेट कीज़ (keys) या सीक्रेट रिकवरी फ्रेज़ से संबंधित नहीं हैं। अन्य Snaps इस जानकारी को एक्सेस नहीं कर सकते।",
-    "description": "An extended description for the `snap_getEntropy` permission. $1 is the snap name."
-  },
-  "permission_getLocale": {
-    "message": "अपनी पसंदीदा भाषा देखें।",
-    "description": "The description for the `snap_getLocale` permission"
-  },
-  "permission_getLocaleDescription": {
-    "message": "$1 को आपकी 1do सेटिंग्स से आपकी पसंदीदा भाषा ऐक्सेस करने दें। इसे आपकी भाषा का उपयोग करके $1 के कंटेंट का स्थानीय भाषा में अनुवाद करने और उसे दिखाने के लिए इस्तेमाल किया जा सकता है।",
-    "description": "An extended description for the `snap_getLocale` permission. $1 is the snap name."
-  },
-  "permission_getPreferences": {
-    "message": "अपनी पसंदीदा भाषा और फिएट करेंसी जैसी जानकारी देखें।",
-    "description": "The description for the `snap_getPreferences` permission"
-  },
-  "permission_getPreferencesDescription": {
-    "message": "$1 को अपनी 1do सेटिंग्स में अपनी पसंदीदा भाषा और फिएट करेंसी जैसी जानकारी तक पहुंचने दें। यह $1 को आपकी प्राथमिकताओं के अनुरूप सामग्री प्रदर्शित करने में मदद करता है। ",
-    "description": "An extended description for the `snap_getPreferences` permission. $1 is the snap name."
-  },
   "permission_homePage": {
     "message": "एक कस्टम स्क्रीन प्रदर्शित करें",
     "description": "The description for the `endowment:page-home` permission"
-  },
-  "permission_homePageDescription": {
-    "message": "$1 को 1do में एक कस्टम होम स्क्रीन प्रदर्शित करने दें। इसका उपयोग यूजर इंटरफेस, कॉन्फ़िगरेशन और डैशबोर्ड के लिए किया जा सकता है।",
-    "description": "An extended description for the `endowment:page-home` permission. $1 is the snap name."
   },
   "permission_keyring": {
     "message": "Ethereum एकाउंट्स को जोड़ने और नियंत्रित करने की अनुरोध को अनुमति दें",
     "description": "The description for the `endowment:keyring` permission"
   },
-  "permission_keyringDescription": {
-    "message": "$1 को एकाउंट्स जोड़ने या हटाने की रिक्वेस्ट रिसीव करने दें। साथ ही, इन एकाउंट्स की ओर से साइन करने और ट्रांसेक्शन करने दें।",
-    "description": "An extended description for the `endowment:keyring` permission. $1 is the snap name."
-  },
   "permission_lifecycleHooks": {
     "message": "लाइफसाइकल हुक्स का इस्तेमाल करें।",
     "description": "The description for the `endowment:lifecycle-hooks` permission"
-  },
-  "permission_lifecycleHooksDescription": {
-    "message": "$1 को उसके लाइफसाइकल के दौरान खास समयों पर कोड चलाने के लिए लाइफसाइकल हुक का इस्तेमाल करने की अनुमति दें।",
-    "description": "An extended description for the `endowment:lifecycle-hooks` permission. $1 is the snap name."
-  },
-  "permission_manageAccounts": {
-    "message": "Ethereum अकाउंट जोड़ें और नियंत्रित करें",
-    "description": "The description for `snap_manageAccounts` permission"
-  },
-  "permission_manageAccountsDescription": {
-    "message": "$1 को Ethereum अकाउंट जोड़ने या हटाने, फिर इन एकाउंट्स से ट्रांसेक्ट करने और साइन करने की अनुमति दें।",
-    "description": "An extended description for the `snap_manageAccounts` permission. $1 is the snap name."
-  },
-  "permission_manageBip32Keys": {
-    "message": "$1 एकाउंट्स को मैनेज करें।",
-    "description": "The description for the `snap_getBip32Entropy` permission. $1 is a derivation path, e.g. 'm/44'/0'/0' (secp256k1)'."
-  },
-  "permission_manageBip44AndBip32KeysDescription": {
-    "message": "$1 को, रिक्वेस्ट किए गए नेटवर्क पर एकाउंट्स और एसेट्स को मैनेज करने की अनुमति दें। ये एकाउंट्स, आपके सीक्रेट रिकवरी फ्रेज़ (इसे सामने लाए बिना) का उपयोग करके डिराइव और बैकअप किए जाते हैं। $1 में Keys डिराइव करने की पावर होती है जिसके माध्यम से वह Ethereum (EVMs) के अलावा भी कई प्रकार के ब्लॉकचेन प्रोटोकॉल को सपोर्ट कर सकता है।",
-    "description": "An extended description for the `snap_getBip44Entropy` and `snap_getBip44Entropy` permissions. $1 is the snap name."
-  },
-  "permission_manageBip44Keys": {
-    "message": "$1 एकाउंट्स को मैनेज करें।",
-    "description": "The description for the `snap_getBip44Entropy` permission. $1 is the name of a protocol, e.g. 'Filecoin'."
-  },
-  "permission_manageState": {
-    "message": "अपने डिवाइस पर इसका डेटा स्टोर और प्रबंधित करें।",
-    "description": "The description for the `snap_manageState` permission"
-  },
-  "permission_manageStateDescription": {
-    "message": "$1 को एन्क्रिप्शन के साथ सुरक्षित रूप से डेटा को स्टोर करने, अपडेट करने और फिर से पाने की अनुमति दें। अन्य Snaps इस जानकारी को एक्सेस नहीं कर सकते।",
-    "description": "An extended description for the `snap_manageState` permission. $1 is the snap name."
   },
   "permission_multichainProvider": {
     "message": "मल्टीचेन प्रोवाइडर एक्सेस करें।",
     "description": "The description for the `endowment:multichain-provider` permission"
   },
-  "permission_multichainProviderDescription": {
-    "message": "$1 को 1do के साथ सीधे कम्यूनिकेट करने की अनुमति दें, ताकि वह ब्लॉकचेन से डेटा पढ़ सके और मैसेज और ट्रांसेक्शन का सुझाव दे सके।",
-    "description": "An extended description for the `endowment:multichain-provider` permission. $1 is the snap name."
-  },
   "permission_nameLookup": {
     "message": "डोमेन और एड्रेस लुकअप उपलब्ध कराएं।",
     "description": "The description for the `endowment:name-lookup` permission."
   },
-  "permission_nameLookupDescription": {
-    "message": "Snap को 1do यूआई के विभिन्न हिस्सों में एड्रेस और डोमेन लुकअप को पाने और दिखाने की अनुमति दें।",
-    "description": "An extended description for the `endowment:name-lookup` permission."
-  },
-  "permission_notifications": {
-    "message": "सूचनाएं दिखाएं।",
-    "description": "The description for the `snap_notify` permission"
-  },
-  "permission_notificationsDescription": {
-    "message": "$1 को 1do के भीतर नोटिफिकेशन दिखाने की अनुमति दें। Snap के माध्यम से एक्शनेबल या टाइम-सेंसिटिव जानकारी के लिए एक शॉर्ट नोटिफिकेशन टेक्स्ट को ट्रिगर किया जा सकता है।",
-    "description": "An extended description for the `snap_notify` permission. $1 is the snap name."
-  },
   "permission_protocol": {
     "message": "एक या अधिक चेन के लिए प्रोटोकॉल डेटा प्रदान करें।",
     "description": "The description for the `endowment:protocol` permission."
-  },
-  "permission_protocolDescription": {
-    "message": "$1 को 1do को गैस अनुमान या टोकन जानकारी जैसे प्रोटोकॉल डेटा प्रदान करने की अनुमति दें।",
-    "description": "An extended description for the `endowment:protocol` permission. $1 is the name of the Snap."
-  },
-  "permission_rpc": {
-    "message": "$1 को $2 से सीधे कम्यूनिकेट करने की अनुमति दें।",
-    "description": "The description for the `endowment:rpc` permission. $1 is 'other snaps' or 'websites', $2 is the snap name."
-  },
-  "permission_rpcDescription": {
-    "message": "$1 को अनुमति दें कि वह $2 को मैसेज भेज सके और $2 से जवाब पा सके।",
-    "description": "An extended description for the `endowment:rpc` permission. $1 is 'other snaps' or 'websites', $2 is the snap name."
   },
   "permission_rpcDescriptionOriginList": {
     "message": "$1 और $2",
@@ -5296,49 +5044,21 @@
     "message": "सिग्नेचर इनसाइट्स मोडल दिखाएं।",
     "description": "The description for the `endowment:signature-insight` permission"
   },
-  "permission_signatureInsightDescription": {
-    "message": "एप्रूव करने से पहले $1 को किसी भी सिग्नेचर रिक्वेस्ट पर इनसाइट्स के साथ एक मोडल दिखाने की अनुमति दें। इसका उपयोग एंटी-फ़िशिंग और सिक्योरटी सॉल्यूशंस के लिए किया जा सकता है।",
-    "description": "An extended description for the `endowment:signature-insight` permission. $1 is the snap name."
-  },
   "permission_signatureInsightOrigin": {
     "message": "उन वेबसाइटों के ओरिजिन देखें जो सिग्नेचर रिक्वेस्ट शुरू करती हैं",
     "description": "The description for the `signatureOrigin` caveat, to be used with the `endowment:signature-insight` permission"
-  },
-  "permission_signatureInsightOriginDescription": {
-    "message": "सिग्नेचर रिक्वेस्ट शुरू करने वाली वेबसाइटों का ओरिजिन (URI) देखने के लिए $1 को अनुमति दें। इसका उपयोग एंटी-फ़िशिंग और सिक्योरटी सॉल्यूशंस के लिए किया जा सकता है।",
-    "description": "An extended description for the `signatureOrigin` caveat, to be used with the `endowment:signature-insight` permission. $1 is the snap name."
   },
   "permission_transactionInsight": {
     "message": "ट्रांजैक्शन इनसाइट्स प्राप्त करें और प्रदर्शित करें।",
     "description": "The description for the `endowment:transaction-insight` permission"
   },
-  "permission_transactionInsightDescription": {
-    "message": "$1 को ट्रांसेक्शन को डिकोड करने और 1do UI के भीतर इनसाइट्स दिखाने की अनुमति दें। इसका इस्तेमाल एंटी-फिशिंग और सिक्यूरिटी सॉल्युशन्स के लिए किया जा सकता है।",
-    "description": "An extended description for the `endowment:transaction-insight` permission. $1 is the snap name."
-  },
   "permission_transactionInsightOrigin": {
     "message": "ट्रांसेक्शन का सुझाव देने वाली वेबसाइटों के सोर्स देखें",
     "description": "The description for the `transactionOrigin` caveat, to be used with the `endowment:transaction-insight` permission"
   },
-  "permission_transactionInsightOriginDescription": {
-    "message": "$1 को ट्रांसेक्शन का सुझाव देने वाली वेबसाइटों के ओरिजिन (URI) को देखने की अनुमति दें। इसका इस्तेमाल एंटी-फिशिंग और सिक्यूरिटी सॉल्युशन्स के लिए किया जा सकता है।",
-    "description": "An extended description for the `transactionOrigin` caveat, to be used with the `endowment:transaction-insight` permission. $1 is the snap name."
-  },
   "permission_unknown": {
     "message": "अज्ञात अनुमति: $1",
     "description": "$1 is the name of a requested permission that is not recognized."
-  },
-  "permission_viewBip32PublicKeys": {
-    "message": "$1 ($2) के लिए अपनी पब्लिक की को देखें।",
-    "description": "The description for the `snap_getBip32PublicKey` permission. $1 is a derivation path, e.g. 'm/44'/0'/0''. $2 is the elliptic curve name, e.g. 'secp256k1'."
-  },
-  "permission_viewBip32PublicKeysDescription": {
-    "message": "$2 को यह अनुमति दें कि वह $1 के लिए आपकी पब्लिक कीज़ (keys) (और एड्रेसों) को देख सके। इस अनुमति से आपके एकाउंट्स या एसेट्स पर कोई कंट्रोल नहीं मिलता है।",
-    "description": "An extended description for the `snap_getBip32PublicKey` permission. $1 is a derivation path (name). $2 is the snap name."
-  },
-  "permission_viewNamedBip32PublicKeys": {
-    "message": "$1 के लिए अपनी पब्लिक की को देखें",
-    "description": "The description for the `snap_getBip32PublicKey` permission. $1 is a name for the derivation path, e.g., 'Ethereum accounts'."
   },
   "permission_walletSwitchEthereumChain": {
     "message": "आपके चालू नेटवर्क का उपयोग करना",
@@ -5348,15 +5068,11 @@
     "message": "WebAssembly के लिए सपोर्ट.",
     "description": "The description of the `endowment:webassembly` permission."
   },
-  "permission_webAssemblyDescription": {
-    "message": "$1 को यह अनुमति दें कि वह WebAssembly के माध्यम से लो-लेवल एक्सीक्यूशन वाले एनवायरनमेंट को एक्सेस कर सके।",
-    "description": "An extended description of the `endowment:webassembly` permission. $1 is the snap name."
-  },
   "permissions": {
     "message": "अनुमतियां"
   },
   "permissionsPageEmptyDescription": {
-    "message": "कोई अनुमति नहीं पाई गई। जब आप किसी साइट को अनुमति देते हैं या Snap इनस्टॉल करते हैं, तो विवरण यहां दिखाई देंगे।"
+    "message": "No permissions detected. Once you grant permissions to a site, the details will appear here."
   },
   "permitSimulationChange_approve": {
     "message": "खर्च करने की लिमिट"
@@ -6487,12 +6203,6 @@
   "removeAll": {
     "message": "सभी हटाएं"
   },
-  "removeKeyringSnap": {
-    "message": "इस Snap को हटाने से ये अकाउंट्स 1do से हट जाते हैं:"
-  },
-  "removeKeyringSnapToolTip": {
-    "message": "Snap इन एकाउंट्स को कंट्रोल करता है और अगर इसे हटा दिया जाता है तो एकाउंट्स 1do से भी हटा दिए जाएंगे। हालांकि, वे एकाउंट्स ब्लॉकचेन में बने रहेंगे।"
-  },
   "removeNFT": {
     "message": "NFT हटाएं"
   },
@@ -6501,22 +6211,6 @@
   },
   "removeNftMessage": {
     "message": "NET सफलतापूर्वक हटा दिया गया!"
-  },
-  "removeSnap": {
-    "message": "स्नैप हटाएं"
-  },
-  "removeSnapAccountDescription": {
-    "message": "यदि आप आगे बढ़ते हैं, तो यह अकाउंट अब 1do में उपलब्ध नहीं होगा।"
-  },
-  "removeSnapAccountTitle": {
-    "message": "अकाउंट हटाएं"
-  },
-  "removeSnapConfirmation": {
-    "message": "क्या आप वाकई $1 निकालना चाहते हैं?",
-    "description": "$1 represents the name of the snap"
-  },
-  "removeSnapDescription": {
-    "message": "यह कार्यवाही स्नैप और उसके डेटा को हटा देगी और आपकी दी गई अनुमतियों को रद्द कर देगी।"
   },
   "rename": {
     "message": "नया नाम दें",
@@ -6536,9 +6230,6 @@
   },
   "requestFromInfo": {
     "message": "यह वह साइट है जो आपका सिग्नेचर मांग रही है।"
-  },
-  "requestFromInfoSnap": {
-    "message": "यह वह Snap है जो आपका सिग्नेचर मांग रहा है।"
   },
   "requestFromTransactionDescription": {
     "message": "यह वही साइट है जो आपका कन्फर्मेशन मांग रही है।"
@@ -7105,9 +6796,6 @@
   "setUp": {
     "message": "सेट अप करें",
     "description": "Action label for Smart Accounts. Used on multichain details page."
-  },
-  "settingAddSnapAccount": {
-    "message": "अकाउंट Snap जोड़ें"
   },
   "settings": {
     "message": "सेटिंग्स"
@@ -8013,168 +7701,6 @@
   "smartTransactionsEnabledTitle": {
     "message": "ट्रांसेक्शन अब और स्मार्ट हो गया है"
   },
-  "snapAccountCreated": {
-    "message": "अकाउंट बनाया गया"
-  },
-  "snapAccountCreatedDescription": {
-    "message": "आपका नया अकाउंट उपयोग के लिए तैयार है!"
-  },
-  "snapAccountCreationFailed": {
-    "message": "अकाउंट बनाने की प्रक्रिया विफल हो गई"
-  },
-  "snapAccountCreationFailedDescription": {
-    "message": "$1 आपके लिए अकाउंट नहीं बना पाया।",
-    "description": "$1 is the snap name"
-  },
-  "snapAccountRedirectFinishSigningTitle": {
-    "message": "साइन करने का काम पूरा करें"
-  },
-  "snapAccountRedirectSiteDescription": {
-    "message": "$1 के निर्देशों का पालन करें"
-  },
-  "snapAccountRemovalFailed": {
-    "message": "अकाउंट हटाने की प्रक्रिया विफल हो गई"
-  },
-  "snapAccountRemovalFailedDescription": {
-    "message": "$1 आपके लिए अकाउंट नहीं हटा पाया।",
-    "description": "$1 is the snap name"
-  },
-  "snapAccountRemoved": {
-    "message": "अकाउंट हटाया गया"
-  },
-  "snapAccountRemovedDescription": {
-    "message": "यह अकाउंट अब 1do में उपयोग के लिए उपलब्ध नहीं होगा।"
-  },
-  "snapConnectTo": {
-    "message": "$1 से कनेक्ट करें",
-    "description": "$1 is the website URL or a Snap name. Used for Snaps pre-approved connections."
-  },
-  "snapConnectionPermissionDescription": {
-    "message": "आपके एप्रूवल के बिना $1 को स्वचालित रूप से $2 से कनेक्ट होने दें।",
-    "description": "Used for Snap pre-approved connections. $1 is the Snap name, $2 is a website URL."
-  },
-  "snapConnectionWarning": {
-    "message": "$1 $2 का उपयोग करना चाहता है",
-    "description": "$2 is the snap and $1 is the dapp requesting connection to the snap."
-  },
-  "snapDetailWebsite": {
-    "message": "वेबसाइट"
-  },
-  "snapHomeMenu": {
-    "message": "Snap होम मेन्यू"
-  },
-  "snapInstallRequest": {
-    "message": "$1 इंस्टॉल करने से इसे निम्नलिखित अनुमतियां मिलती हैं।",
-    "description": "$1 is the snap name."
-  },
-  "snapInstallSuccess": {
-    "message": "इंस्टॉलेशन समाप्त"
-  },
-  "snapInstallWarningCheck": {
-    "message": "$1 यह अनुमति चाहता है कि:",
-    "description": "Warning message used in popup displayed on snap install. $1 is the snap name."
-  },
-  "snapInstallWarningHeading": {
-    "message": "सावधानी से आगे बढ़ें"
-  },
-  "snapInstallWarningPermissionDescriptionForBip32View": {
-    "message": "$1 को यह अनुमति दी जाए कि वह आपकी पब्लिक कीज़ (keys) (और एड्रेसों) को देख सके। इस अनुमति से आपके एकाउंट्स या एसेट्स पर कोई कंट्रोल नहीं मिलता है।",
-    "description": "An extended description for the `snap_getBip32PublicKey` permission used for tooltip on Snap Install Warning screen (popup/modal). $1 is the snap name."
-  },
-  "snapInstallWarningPermissionDescriptionForEntropy": {
-    "message": "$1 Snap को, रिक्वेस्ट किए गए नेटवर्क पर एकाउंट्स और एसेट्स को मैनेज करने की अनुमति दी जाए। ये एकाउंट्स, आपके सीक्रेट रिकवरी फ्रेज़ (इसे सामने लाए बिना) का उपयोग करके डिराइव और बैकअप किए जाते हैं। $1 में Keys डिराइव करने की पावर होती है जिसके माध्यम से वह Ethereum (EVMs) के अलावा भी कई प्रकार के ब्लॉकचेन प्रोटोकॉल को सपोर्ट कर सकता है।",
-    "description": "An extended description for the `snap_getBip44Entropy` and `snap_getBip44Entropy` permissions used for tooltip on Snap Install Warning screen (popup/modal). $1 is the snap name."
-  },
-  "snapInstallWarningPermissionNameForEntropy": {
-    "message": "$1 एकाउंट्स को मैनेज करें।",
-    "description": "Permission name used for the Permission Cell component displayed on warning popup when installing a Snap. $1 is list of account types."
-  },
-  "snapInstallWarningPermissionNameForViewPublicKey": {
-    "message": "$1 के लिए अपनी पब्लिक की (key) को देखें",
-    "description": "Permission name used for the Permission Cell component displayed on warning popup when installing a Snap. $1 is list of account types."
-  },
-  "snapInstallationErrorDescription": {
-    "message": "$1 इंस्टॉल नहीं किया जा सका.",
-    "description": "Error description used when snap installation fails. $1 is the snap name."
-  },
-  "snapInstallationErrorTitle": {
-    "message": "इंस्टॉलेशन नहीं हो पाया",
-    "description": "Error title used when snap installation fails."
-  },
-  "snapResultError": {
-    "message": "गड़बड़ी"
-  },
-  "snapResultSuccess": {
-    "message": "सफल"
-  },
-  "snapResultSuccessDescription": {
-    "message": "$1 इस्तेमाल के लिए तैयार है"
-  },
-  "snapUIAccountSelectorTitle": {
-    "message": "अकाउंट चुनें"
-  },
-  "snapUIAssetSelectorTitle": {
-    "message": "किसी एसेट को चुनें"
-  },
-  "snapUpdateAlertDescription": {
-    "message": "$1 का लेटेस्ट वर्ज़न पाएं",
-    "description": "Description used in Snap update alert banner when snap update is available. $1 is the Snap name."
-  },
-  "snapUpdateAvailable": {
-    "message": "अपडेट उपलब्ध है"
-  },
-  "snapUpdateErrorDescription": {
-    "message": "$1 अपडेट नहीं किया जा सका।",
-    "description": "Error description used when snap update fails. $1 is the snap name."
-  },
-  "snapUpdateErrorTitle": {
-    "message": "अपडेट नहीं हो पाया",
-    "description": "Error title used when snap update fails."
-  },
-  "snapUpdateRequest": {
-    "message": "$1 को अपडेट करने से इसे निम्नलिखित अनुमतियां मिलती हैं।",
-    "description": "$1 is the Snap name."
-  },
-  "snapUpdateSuccess": {
-    "message": "अपडेट समाप्त"
-  },
-  "snapUrlIsBlocked": {
-    "message": "यह Snap आपको एक ब्लॉक्ड साइट पर ले जाना चाहता है। $1."
-  },
-  "snaps": {
-    "message": "स्नैप"
-  },
-  "snapsConnected": {
-    "message": "Snaps कनेक्ट किए गए"
-  },
-  "snapsNoInsight": {
-    "message": "दिखाने के लिए कोई इनसाइट नहीं"
-  },
-  "snapsPrivacyWarningFirstMessage": {
-    "message": "आप इस बात को स्वीकार करते हैं कि आपके द्वारा इंस्टॉल किया गया कोई भी Snap एक थर्ड-पार्टी सर्विस है, जब तक कि इसे अलग से न बताया गया हो, जैसा कि Consensys $1 में बताया गया है। थर्ड-पार्टी सर्विस का आपका इस्तेमाल थर्ड-पार्टी सर्विस प्रोवाइडर द्वारा तय किए गए अलग-अलग नियमों और शर्तों के तहत होता है। Consensys किसी खास व्यक्ति को किसी खास वजह से किसी भी Snap के इस्तेमाल की सलाह नहीं देता है। आप अपने जोखिम पर थर्ड-पार्टी सर्विस को एक्सेस करते हैं, उस पर भरोसा करते हैं या उसका इस्तेमाल करते हैं। थर्ड-पार्टी सर्विस के इस्तेमाल की वजह से आपको होने वाले किसी भी नुकसान के लिए Consensys की कोई भी ज़िम्मेदारी और देनदारी नहीं होगी।",
-    "description": "First part of a message in popup modal displayed when installing a snap for the first time. $1 is terms of use link."
-  },
-  "snapsPrivacyWarningSecondMessage": {
-    "message": "थर्ड पार्टी सेवाओं के साथ आप जो भी सूचना शेयर करते हैं, उसे उन थर्ड पार्टी सेवाओं द्वारा उनकी अपनी गोपनीयता नीतियों के अनुसार सीधे एकत्र की जाएगी। अधिक जानकारी के लिए कृपया उनकी गोपनीयता नीतियां देखें।",
-    "description": "Second part of a message in popup modal displayed when installing a snap for the first time."
-  },
-  "snapsPrivacyWarningThirdMessage": {
-    "message": "Consensys के पास थर्ड पार्टी सेवाओं के साथ आपके द्वारा शेयर की गई जानकारी का कोई एक्सेस नहीं है।",
-    "description": "Third part of a message in popup modal displayed when installing a snap for the first time."
-  },
-  "snapsSettings": {
-    "message": "Snap सेटिंग्स"
-  },
-  "snapsTermsOfUse": {
-    "message": "उपयोग की शर्तों"
-  },
-  "snapsToggle": {
-    "message": "स्नैप तभी चलेगा जब वह सक्षम हो"
-  },
-  "snapsUIError": {
-    "message": "अधिक सहायता के लिए $1 के निर्माताओं से कॉन्टेक्ट करें।",
-    "description": "This is shown when the insight snap throws an error. $1 is the snap name"
-  },
   "solanaAccountRequested": {
     "message": "यह साइट Solana अकाउंट का अनुरोध कर रही है।"
   },
@@ -8568,10 +8094,6 @@
   },
   "submitted": {
     "message": "सबमिट किया गया"
-  },
-  "suggestedBySnap": {
-    "message": "$1 के द्वारा सुझाव दिया गया",
-    "description": "$1 is the snap name"
   },
   "suggestedCurrencySymbol": {
     "message": "सुझाया गया करेंसी सिंबल:"
@@ -8975,10 +8497,6 @@
   "thirdPartyApisDescription": {
     "message": "चुनें कि आप अपना IP एड्रेस या Ethereum एड्रेस थर्ड-पार्टी APIs के साथ कैसे शेयर करते हैं। बदलाव आपके 1do एक्सपीरियंस पर असर डालेंगे।"
   },
-  "thirdPartySoftware": {
-    "message": "थर्ड-पार्टी सॉफ्टवेयर नोटिस",
-    "description": "Title of a popup modal displayed when installing a snap for the first time."
-  },
   "thisContactWillBeDeleted": {
     "message": "यह कॉन्टेक्ट मिटा दिया जाएगा।"
   },
@@ -9319,10 +8837,6 @@
     "message": "अज्ञात नेटवर्क",
     "description": "Displayed on places like Gator permissions when regular name is not available."
   },
-  "unknownNetworkForKeyEntropy": {
-    "message": "अज्ञात नेटवर्क",
-    "description": "Displayed on places like Snap install warning when regular name is not available."
-  },
   "unknownQrCode": {
     "message": "गड़बड़ी: हम उस QR कोड की पहचान नहीं कर पाए"
   },
@@ -9551,10 +9065,6 @@
   "warning": {
     "message": "चेतावनी"
   },
-  "warningFromSnap": {
-    "message": "$1 से चेतावनी",
-    "description": "$1 represents the name of the snap"
-  },
   "watchEthereumAccountsDescription": {
     "message": "इस विकल्प को चालू करने से आपको पब्लिक एड्रेस या ENS नाम के माध्यम से Ethereum एकाउंट्स को देखने की सुविधा मिलेगी। इस Beta फीचर पर प्रतिक्रिया के लिए कृपया इस $1 को पूरा करें।",
     "description": "$1 is the link to a product feedback form"
@@ -9643,5 +9153,20 @@
   },
   "yourWalletIsReadyFromReminder": {
     "message": "अपने सीक्रेट रिकवरी फ्रेज़ को सुरक्षित रखें!"
+  },
+  "suggestedBySource": {
+    "message": "$1 के द्वारा सुझाव दिया गया",
+    "description": "$1 is the source name."
+  },
+  "permissionConnectTo": {
+    "message": "$1 से कनेक्ट करें",
+    "description": "$1 is the website URL."
+  },
+  "permissionConnectionDescription": {
+    "message": "आपके एप्रूवल के बिना $1 को स्वचालित रूप से $2 से कनेक्ट होने दें।",
+    "description": "$1 is the subject name, $2 is a website URL."
+  },
+  "noHardwareWalletSupport": {
+    "message": "Most hardware wallets will not work with your current browser version."
   }
 }

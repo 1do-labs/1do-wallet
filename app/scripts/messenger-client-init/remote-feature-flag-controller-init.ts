@@ -4,6 +4,7 @@ import {
   EnvironmentType,
   RemoteFeatureFlagController,
 } from '@metamask/remote-feature-flag-controller';
+import { assert } from '@metamask/utils';
 import { ENVIRONMENT } from '../../../development/build/constants';
 import { getBaseSemVerVersion } from '../../../shared/lib/feature-flags/version-gating';
 import { MessengerClientInitFunction } from './types';

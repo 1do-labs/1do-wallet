@@ -30,9 +30,9 @@ yarn test:e2e:benchmark --preset userJourneyOnboardingNew --out results.json
 | `interactionUserActions`       | Single-action interaction times | `load-new-account.ts`, `confirm-tx.ts`, `bridge-user-actions.ts` |
 | `userJourneyOnboardingImport`  | Import wallet onboarding        | `onboarding-import-wallet.ts`                                    |
 | `userJourneyOnboardingNew`     | New wallet onboarding           | `onboarding-new-wallet.ts`                                       |
-| `userJourneyAssets`            | Asset detail page loads         | `asset-details.ts`, `solana-asset-details.ts`                    |
+| `userJourneyAssets`            | Asset detail page loads         | `asset-details.ts`                                                |
 | `userJourneyAccountManagement` | Login from home (import SRP)    | `import-srp-home.ts`                                             |
-| `userJourneyTransactions`      | Send and swap transaction flows | `send-transactions.ts`, `swap.ts`                                |
+| `userJourneyTransactions`      | Send transaction flows          | `send-transactions.ts`                                            |
 | `pageLoadBenchmark`            | Dapp page load (Playwright)     | `dapp-page-load/`                                                |
 | `all`                          | All benchmarks                  | Everything above                                                 |
 

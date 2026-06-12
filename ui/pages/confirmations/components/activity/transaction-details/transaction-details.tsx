@@ -11,7 +11,6 @@ import { TransactionDetailsDateRow } from '../transaction-details-date-row';
 import { TransactionDetailsAccountRow } from '../transaction-details-account-row';
 import { TransactionDetailsPaidWithRow } from '../transaction-details-paid-with-row';
 import { TransactionDetailsNetworkFeeRow } from '../transaction-details-network-fee-row';
-import { TransactionDetailsBridgeFeeRow } from '../transaction-details-bridge-fee-row';
 import { TransactionDetailsTotalRow } from '../transaction-details-total-row';
 import { TransactionDetailsSummary } from '../transaction-details-summary';
 import { useTransactionDetails } from '../transaction-details-context';
@@ -56,7 +55,6 @@ export function TransactionDetails() {
           >
             <TransactionDetailsPaidWithRow />
             <TransactionDetailsNetworkFeeRow />
-            <TransactionDetailsBridgeFeeRow />
             <TransactionDetailsTotalRow />
           </Box>
         </>

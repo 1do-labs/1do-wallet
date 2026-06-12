@@ -33,9 +33,9 @@ describe('PermissionController selectors', () => {
                         },
                       },
                       optionalScopes: {
-                        'bip122:000000000019d6689c085ae165831e93': {
+                        'eip155:137': {
                           accounts: [
-                            'bip122:000000000019d6689c085ae165831e93:128Lkh3S7CkDTBZ8W7BbpsN3YYizJMp8p6',
+                            'eip155:137:0x1280000000000000000000000000000000000000',
                           ],
                         },
                       },
@@ -484,7 +484,7 @@ describe('PermissionController selectors', () => {
                         },
                       },
                       optionalScopes: {
-                        'bip122:000000000019d6689c085ae165831e93': {
+                        'eip155:137': {
                           accounts: [],
                         },
                       },

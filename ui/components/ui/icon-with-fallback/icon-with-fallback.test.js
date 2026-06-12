@@ -4,7 +4,7 @@ import IconWithFallback from '.';
 
 describe('IconWithFallback', () => {
   const args = {
-    name: 'Snap name',
+    name: 'Icon name',
     icon: './AST.png',
     className: 'classname-test',
     fallbackClassName: 'fallback-classname-test',

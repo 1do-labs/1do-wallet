@@ -1,13 +1,8 @@
-import { useEffect, useState, useMemo } from 'react';
+import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
-import {
-  BridgeClientId,
-  formatChainIdToCaip,
-  isNativeAddress as isNativeAddressFromBridge,
-} from '@metamask/bridge-controller';
-import { isCaipChainId, Hex } from '@metamask/utils';
-import { handleFetch } from '@metamask/controller-utils';
-import { isEvmChainId, toAssetId } from '../../shared/lib/asset-utils';
+import { isNativeAddress as isNativeAddressFromBridge } from '@metamask/bridge-controller';
+import { Hex } from '@metamask/utils';
+import { isEvmChainId } from '../../shared/lib/asset-utils';
 import { getMarketData } from '../selectors';
 import { getCurrentCurrency } from '../ducks/metamask/metamask';
 import { getCurrencyRates } from '../selectors/selectors';
@@ -82,10 +77,6 @@ export const useTokenInsightsData = (
     return chainData?.[token.address.toLowerCase()] || null;
   }, [token, isEvm, marketDataState]);
 
-  const [apiData, setApiData] = useState<MarketData | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
   // Check if address is native
   const isNativeToken = useMemo(() => {
     if (!token?.address) {
@@ -108,59 +99,7 @@ export const useTokenInsightsData = (
     ? currencyRates?.[baseCurrency]?.conversionRate
     : undefined;
 
-  // Fetch from API if not in cache
-  useEffect(() => {
-    if (!token || evmMarketData) {
-      return;
-    }
-
-    const fetchMarketData = async () => {
-      setIsLoading(true);
-      setError(null);
-
-      try {
-        const caipChainId = isCaipChainId(token.chainId)
-          ? token.chainId
-          : formatChainIdToCaip(token.chainId as Hex);
-        const assetId = toAssetId(token.address || '', caipChainId);
-
-        if (!assetId) {
-          setError('Invalid asset ID');
-          return;
-        }
-
-        const url = `https://price.api.cx.metamask.io/v3/spot-prices?assetIds=${assetId}&includeMarketData=true&vsCurrency=${currentCurrency.toLowerCase()}`;
-
-        const response = await handleFetch(url, {
-          method: 'GET',
-          headers: { 'X-Client-Id': BridgeClientId.EXTENSION },
-        });
-
-        const tokenData = assetId ? response?.[assetId] : null;
-        if (tokenData) {
-          const marketData: MarketData = {
-            price: tokenData.price || tokenData.usd,
-            pricePercentChange1d:
-              tokenData.pricePercentChange1d ||
-              tokenData.pricePercentChange?.P1D ||
-              0,
-            totalVolume: tokenData.totalVolume,
-            marketCap: tokenData.marketCap,
-            dilutedMarketCap: tokenData.dilutedMarketCap,
-          };
-          setApiData(marketData);
-        }
-      } catch (err) {
-        setError((err as Error).message);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchMarketData();
-  }, [token, evmMarketData, currentCurrency]);
-
-  // Combine data sources and convert to fiat for EVM tokens
+  // Convert locally cached market data to fiat for EVM tokens.
   const marketData = useMemo(() => {
     if (evmMarketData) {
       return {
@@ -172,8 +111,8 @@ export const useTokenInsightsData = (
           evmMarketData.dilutedMarketCap ?? evmMarketData.marketCap,
       };
     }
-    return apiData;
-  }, [evmMarketData, apiData]);
+    return null;
+  }, [evmMarketData]);
 
   const marketDataFiat = useMemo(() => {
     const formatPriceWithThreshold = (price: number | undefined): string => {
@@ -248,8 +187,8 @@ export const useTokenInsightsData = (
   return {
     marketData,
     marketDataFiat,
-    isLoading,
-    error,
+    isLoading: false,
+    error: null,
     isNativeToken,
   };
 };

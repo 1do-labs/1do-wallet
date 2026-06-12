@@ -8,7 +8,6 @@ import {
 import type { Provider } from '@metamask/network-controller';
 import { CaipAssetType, parseCaipAssetType } from '@metamask/utils';
 import { MultichainAssetsRatesControllerState } from '@metamask/assets-controllers';
-import { AssetConversion, FungibleAssetMarketData } from '@metamask/snaps-sdk';
 import {
   DEVICE_TYPE,
   OS,
@@ -657,6 +656,13 @@ export function getBooleanFlag(value: string | boolean | undefined): boolean {
 
 type AssetsRatesState = {
   metamask: MultichainAssetsRatesControllerState;
+};
+
+type FungibleAssetMarketData = Record<string, unknown>;
+
+type AssetConversion = {
+  rate: string;
+  conversionTime: number;
 };
 
 export function getConversionRatesForNativeAsset({

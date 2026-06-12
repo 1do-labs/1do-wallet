@@ -119,9 +119,6 @@ export const SENTRY_BACKGROUND_STATE: SentryBackgroundControllerMasks = {
   ConnectivityController: {
     connectivityStatus: true,
   },
-  CronjobController: {
-    events: false,
-  },
   CurrencyController: {
     currentCurrency: true,
     currencyRates: true,
@@ -228,7 +225,6 @@ export const SENTRY_BACKGROUND_STATE: SentryBackgroundControllerMasks = {
       avatarType: true,
     },
     useExternalServices: false,
-    snapRegistryList: false,
     theme: true,
     signatureSecurityAlertResponses: false,
     addressSecurityAlertResponses: false,

@@ -315,12 +315,6 @@
   "addRpcUrl": {
     "message": "Agregar URL de RPC"
   },
-  "addSnapAccountToggle": {
-    "message": "Activar \"Añadir una cuenta Snap (Beta)\""
-  },
-  "addSnapAccountsDescription": {
-    "message": "Activar esta función le dará la opción de agregar los nuevos Snaps de la cuenta Beta directamente desde su lista de cuentas. Si instala una cuenta Snap, recuerde que es un servicio de terceros."
-  },
   "addSuggestedNFTs": {
     "message": "Añadir NFT sugeridos"
   },
@@ -651,11 +645,11 @@
   },
   "andForListItems": {
     "message": "$1, y $2",
-    "description": "$1 is the first item, $2 is the last item in a list of items. Used in Snap Install Warning modal."
+    "description": "$1 is the first item, $2 is the last item in a list of items."
   },
   "andForTwoItems": {
     "message": "$1 y $2",
-    "description": "$1 is the first item, $2 is the second item. Used in Snap Install Warning modal."
+    "description": "$1 is the first item, $2 is the second item."
   },
   "annual": {
     "message": "Anual"
@@ -842,9 +836,6 @@
   "backupApprovalNotice": {
     "message": "Cree una copia de seguridad de su frase secreta de recuperación para mantener protegidos sus fondos y su monedero."
   },
-  "backupKeyringSnapReminder": {
-    "message": "Asegúrese de que puede acceder por sí mismo a cualquier cuenta creada por este Snap antes de eliminarlo"
-  },
   "backupNow": {
     "message": "Realizar una copia de seguridad ahora"
   },
@@ -895,9 +886,6 @@
   "basicFunctionalityRequired_goToHome": {
     "message": "Ir a la página de inicio"
   },
-  "basicFunctionalityRequired_openCreateSnapAccountPage": {
-    "message": "Abrir la página \"Crear cuenta\""
-  },
   "basicFunctionalityRequired_openDefiPage": {
     "message": "Abrir la página DeFi"
   },
@@ -912,9 +900,6 @@
   },
   "basicFunctionalityRequired_openRewardsPage": {
     "message": "Abrir la página Recompensas"
-  },
-  "basicFunctionalityRequired_openSnapsPage": {
-    "message": "Abrir la página Snaps"
   },
   "basicFunctionalityRequired_openSwapsPage": {
     "message": "Abrir la página Canjear"
@@ -1498,21 +1483,6 @@
   "concentratedSupplyDistributionTitle": {
     "message": "Distribución de suministro concentrado"
   },
-  "configureSnapPopupDescription": {
-    "message": "Ahora está saliendo de 1do para configurar este snap."
-  },
-  "configureSnapPopupInstallDescription": {
-    "message": "Ahora está saliendo de 1do para instalar este snap."
-  },
-  "configureSnapPopupInstallTitle": {
-    "message": "Instalar snap"
-  },
-  "configureSnapPopupLink": {
-    "message": "Haga clic para continuar:"
-  },
-  "configureSnapPopupTitle": {
-    "message": "Configurar snap"
-  },
   "confirm": {
     "message": "Confirmar"
   },
@@ -1749,10 +1719,6 @@
   "connectMoreAccounts": {
     "message": "Conectar más cuentas"
   },
-  "connectSnap": {
-    "message": "Conectar $1",
-    "description": "$1 is the snap for which a connection is being requested."
-  },
   "connectWithMetaMask": {
     "message": "Conectarse con 1do"
   },
@@ -1773,9 +1739,6 @@
   "connectedSites": {
     "message": "Sitios conectados"
   },
-  "connectedSitesAndSnaps": {
-    "message": "Sitios conectados y Snaps"
-  },
   "connectedSitesDescription": {
     "message": "$1 está conectado a estos sitios. Pueden ver la dirección de su cuenta.",
     "description": "$1 is the account name"
@@ -1783,12 +1746,6 @@
   "connectedSitesEmptyDescription": {
     "message": "$1 no está conectado a ningún sitio.",
     "description": "$1 is the account name"
-  },
-  "connectedSnapAndNoAccountDescription": {
-    "message": "1do está conectado a este sitio, pero aún no hay cuentas conectadas"
-  },
-  "connectedSnaps": {
-    "message": "Snaps conectados"
   },
   "connectedWithAccount": {
     "message": "$1 cuentas conectadas",
@@ -1836,10 +1793,6 @@
   "connectionFailed": {
     "message": "Conexión fallida"
   },
-  "connectionFailedDescription": {
-    "message": "Error al obtener $1, verifique su red y vuelva a intentarlo.",
-    "description": "$1 is the name of the snap being fetched."
-  },
   "connectionPopoverDescription": {
     "message": "Para conectarse a un sitio, seleccione el botón de conexión. 1do solo puede conectarse a sitios Web3."
   },
@@ -1847,7 +1800,7 @@
     "message": "Solicitud de conexión"
   },
   "connectionsRemovedModalDescription": {
-    "message": "Algunas conexiones (como billeteras físicas y snaps) se eliminaron por inactividad en este dispositivo. Puedes volver a agregarlas en cualquier momento en Configuración."
+    "message": "Some connections (like hardware wallets) were removed due to inactivity on this device. You can re-add them anytime in Settings."
   },
   "connectionsRemovedModalTitle": {
     "message": "Conexiones eliminadas"
@@ -1866,10 +1819,6 @@
   },
   "contacts": {
     "message": "Contactos"
-  },
-  "contentFromSnap": {
-    "message": "Contenido de $1",
-    "description": "$1 represents the name of the snap"
   },
   "continue": {
     "message": "Continuar"
@@ -1954,12 +1903,6 @@
   },
   "createPasswordMarketing": {
     "message": "Recibe actualizaciones sobre productos, consejos y noticias, incluso por correo electrónico. Podemos usar tus interacciones para mejorar lo que compartimos."
-  },
-  "createSnapAccountDescription": {
-    "message": "$1 quiere agregar una nueva cuenta a 1do."
-  },
-  "createSnapAccountTitle": {
-    "message": "Crear cuenta"
   },
   "createSolanaAccount": {
     "message": "Crear cuenta de Solana"
@@ -2346,10 +2289,6 @@
   "description": {
     "message": "Descripción"
   },
-  "descriptionFromSnap": {
-    "message": "Descripción de $1",
-    "description": "$1 represents the name of the snap"
-  },
   "destinationAccountPickerNoEligible": {
     "message": "No se encontraron cuentas elegibles"
   },
@@ -2406,9 +2345,6 @@
   "disconnectAllSitesSuccess": {
     "message": "Todas las dapps se desconectaron con éxito."
   },
-  "disconnectAllSnapsText": {
-    "message": "Snaps"
-  },
   "disconnectMessage": {
     "message": "Esto lo desconectará de este sitio"
   },
@@ -2420,10 +2356,6 @@
   },
   "discover": {
     "message": "Descubrir"
-  },
-  "discoverSnaps": {
-    "message": "Descubrir Snaps",
-    "description": "Text that links to the Snaps website. Displayed in a banner on Snaps list page in settings."
   },
   "dismiss": {
     "message": "Ignorar"
@@ -2619,9 +2551,6 @@
   "enableSmartContractAccountDescription": {
     "message": "Desbloquea transacciones más rápidas, tarifas de red más bajas y mayor seguridad en redes compatibles."
   },
-  "enableSnap": {
-    "message": "Habilitar"
-  },
   "enableToken": {
     "message": "activar $1",
     "description": "$1 is a token symbol, e.g. ETH"
@@ -2774,10 +2703,6 @@
   "errorWhileConnectingToRPC": {
     "message": "Error al conectarse a la red personalizada."
   },
-  "errorWithSnap": {
-    "message": "Error con $1",
-    "description": "$1 represents the name of the snap"
-  },
   "estimatedChanges": {
     "message": "Cambios estimados"
   },
@@ -2829,10 +2754,6 @@
   },
   "exportYourDataDescription": {
     "message": "Puede exportar datos como sus contactos y preferencias."
-  },
-  "extendWalletWithSnaps": {
-    "message": "Explore los Snaps creados por la comunidad para personalizar su experiencia web3",
-    "description": "Banner description displayed on Snaps list page in Settings when less than 6 Snaps is installed."
   },
   "externalAccount": {
     "message": "Cuenta externa"
@@ -2893,7 +2814,7 @@
     "description": "This is a warning shown on the Flask Welcome screen, intended to encourage non-developers not to proceed any further. $1 is the bolded message 'flaskWelcomeUninstall'"
   },
   "flaskWelcomeWarning2": {
-    "message": "No garantizamos la seguridad o estabilidad de esta extensión. Las nuevas API ofrecidas por Flask no están protegidas contra los ataques de phishing, lo que significa que cualquier sitio o snap que requiera Flask podría ser un intento malicioso de robar sus activos.",
+    "message": "We do not guarantee the safety or stability of this extension. The new APIs offered by Flask are not hardened against phishing attacks, meaning that any site that requires Flask might be a malicious attempt to steal your assets.",
     "description": "This explains the risks of using MetaMask Flask"
   },
   "flaskWelcomeWarning3": {
@@ -3450,10 +3371,6 @@
   "insights": {
     "message": "Perspectivas"
   },
-  "insightsFromSnap": {
-    "message": "Perspectivas de $1",
-    "description": "$1 represents the name of the snap"
-  },
   "install": {
     "message": "Instalar"
   },
@@ -3462,10 +3379,6 @@
   },
   "installRequest": {
     "message": "Añadir a 1do"
-  },
-  "installedOn": {
-    "message": "Instalado en $1",
-    "description": "$1 is the date when the snap has been installed"
   },
   "insufficientBalance": {
     "message": "Saldo insuficiente."
@@ -3599,18 +3512,6 @@
   },
   "keyringAccountPublicAddress": {
     "message": "Dirección pública"
-  },
-  "keyringSnapRemovalResult1": {
-    "message": "$1 eliminado $2",
-    "description": "Displays the result after removal of a keyring snap. $1 is the snap name, $2 is whether it is successful or not"
-  },
-  "keyringSnapRemovalResultNotSuccessful": {
-    "message": "no ",
-    "description": "Displays the `not` word in $2."
-  },
-  "keyringSnapRemoveConfirmation": {
-    "message": "Ingrese $1 para confirmar que desea eliminar este snap:",
-    "description": "Asks user to input the name nap prior to deleting the snap. $1 is the snap name"
   },
   "keystone": {
     "message": "Keystone"
@@ -3765,9 +3666,6 @@
   },
   "loading": {
     "message": "Cargando..."
-  },
-  "loadingScreenSnapMessage": {
-    "message": "Por favor, complete la transacción en el Snap."
   },
   "loadingTokenList": {
     "message": "Cargando lista de tokens"
@@ -3950,10 +3848,6 @@
   "metaMetricsIdNotAvailableError": {
     "message": "Como nunca ha utilizado 1do Metrics, no hay datos que eliminar aquí."
   },
-  "metadataModalSourceTooltip": {
-    "message": "$1 está alojado en npm y $2 es el identificador único de este Snap.",
-    "description": "$1 is the snap name and $2 is the snap NPM id."
-  },
   "metamaskFee": {
     "message": "Tarifa de 1do"
   },
@@ -4091,10 +3985,6 @@
   },
   "multichainQuoteCardRateLabel": {
     "message": "Tasa"
-  },
-  "multipleSnapConnectionWarning": {
-    "message": "$1 quiere conectarse a $2",
-    "description": "$1 is the dapp and $2 is the number of snaps it wants to connect to."
   },
   "musdBonusExplanation": {
     "message": "Convierte tus monedas estables a mUSD y gana\nhasta un $1 % de bono anualizado que puedes\nreclamar diariamente. $2",
@@ -4581,9 +4471,6 @@
   "noDomainResolution": {
     "message": "No se proporcionó resolución para el dominio."
   },
-  "noHardwareWalletOrSnapsSupport": {
-    "message": "Snaps, y la mayoría de los monederos físicos, no funcionarán con la versión actual de su navegador."
-  },
   "noMMFeeSwapping": {
     "message": "Sin tarifa de 1do"
   },
@@ -4601,9 +4488,6 @@
   },
   "noOptionsAvailableMessage": {
     "message": "Esta ruta comercial no está disponible en este momento. Intente cambiar el monto, la red o el token y encontraremos la mejor opción."
-  },
-  "noSnaps": {
-    "message": "No tiene ningún snap instalado."
   },
   "noTokensMatchingYourFilters": {
     "message": "No hay tokens que coincidan con tus filtros"
@@ -4998,10 +4882,6 @@
   "otherPermissionsOnSiteTitle": {
     "message": "Otros permisos en este sitio"
   },
-  "otherSnaps": {
-    "message": "otros snaps",
-    "description": "Used in the 'permission_rpc' message."
-  },
   "others": {
     "message": "otros"
   },
@@ -5116,49 +4996,13 @@
     "message": "Revocado en esta actualización por $1",
     "description": "Permission cell status for revoked permission including accounts, rendered as AvatarGroup which is $1."
   },
-  "permission_accessNamedSnap": {
-    "message": "Conectarse a $1.",
-    "description": "The description for the `wallet_snap` permission. $1 is the human-readable name of the snap."
-  },
   "permission_accessNetwork": {
     "message": "Acceder a Internet.",
     "description": "The description of the `endowment:network-access` permission."
   },
-  "permission_accessNetworkDescription": {
-    "message": "Permita que $1 tenga acceso a Internet. Esto se puede usar tanto para enviar como para recibir datos con servidores de terceros.",
-    "description": "An extended description of the `endowment:network-access` permission. $1 is the snap name."
-  },
-  "permission_accessSnap": {
-    "message": "Conéctese al snap de $1.",
-    "description": "The description for the `wallet_snap` permission. $1 is the name of the snap."
-  },
-  "permission_accessSnapDescription": {
-    "message": "Permita que el sitio web o el snap interactúen con $1.",
-    "description": "The description for the `wallet_snap_*` permission. $1 is the name of the Snap."
-  },
   "permission_assets": {
     "message": "Mostrar los activos de la cuenta en 1do.",
     "description": "The description for the `endowment:assets` permission."
-  },
-  "permission_assetsDescription": {
-    "message": "Permitir que $1 proporcione información de activos al cliente de 1do. Los activos pueden estar en la cadena o fuera de la cadena.",
-    "description": "An extended description for the `endowment:assets` permission. $1 is the name of the Snap."
-  },
-  "permission_cronjob": {
-    "message": "Programar y ejecutar acciones periódicas.",
-    "description": "The description for the `snap_cronjob` permission"
-  },
-  "permission_cronjobDescription": {
-    "message": "Permita que $1 realice acciones que se ejecutan periódicamente en horas, fechas o intervalos fijos. Esto se puede usar para activar interacciones o notificaciones sensibles al tiempo.",
-    "description": "An extended description for the `snap_cronjob` permission. $1 is the snap name."
-  },
-  "permission_dialog": {
-    "message": "Mostrar ventanas de diálogo en 1do.",
-    "description": "The description for the `snap_dialog` permission"
-  },
-  "permission_dialogDescription": {
-    "message": "Permita que $1 muestre ventanas emergentes de 1do con texto personalizado, campo de entrada y botones para aprobar o rechazar una acción.\nSe puede usar para crear, p. ej. alertas, confirmaciones y flujos de suscripción para un snap.",
-    "description": "An extended description for the `snap_dialog` permission. $1 is the snap name."
   },
   "permission_ethereumAccounts": {
     "message": "Ver dirección, saldo de cuenta, actividad e iniciar transacciones",
@@ -5168,125 +5012,29 @@
     "message": "Acceda al proveedor de Ethereum.",
     "description": "The description for the `endowment:ethereum-provider` permission"
   },
-  "permission_ethereumProviderDescription": {
-    "message": "Permita que $1 se comunique directamente con 1do para que lea datos de la cadena de bloques y sugiera mensajes y transacciones.",
-    "description": "An extended description for the `endowment:ethereum-provider` permission. $1 is the snap name."
-  },
-  "permission_getEntropy": {
-    "message": "Obtenga claves arbitrarias únicas para $1.",
-    "description": "The description for the `snap_getEntropy` permission. $1 is the snap name."
-  },
-  "permission_getEntropyDescription": {
-    "message": "Permita que $1 obtenga claves arbitrarias únicas para $1, sin exponerlas. Estas claves son independientes de su(s) cuenta(s) de 1do y no están relacionadas con sus claves privadas ni su frase secreta de recuperación. Otros snaps no pueden acceder a esta información.",
-    "description": "An extended description for the `snap_getEntropy` permission. $1 is the snap name."
-  },
-  "permission_getLocale": {
-    "message": "Vea su idioma preferido.",
-    "description": "The description for the `snap_getLocale` permission"
-  },
-  "permission_getLocaleDescription": {
-    "message": "Permita que $1 acceda a su idioma preferido desde la configuración de 1do. Esto se puede usar para localizar y mostrar el contenido de $1 usando su idioma.",
-    "description": "An extended description for the `snap_getLocale` permission. $1 is the snap name."
-  },
-  "permission_getPreferences": {
-    "message": "Consulta información como tu idioma preferido y moneda fiduciaria.",
-    "description": "The description for the `snap_getPreferences` permission"
-  },
-  "permission_getPreferencesDescription": {
-    "message": "Permita que $1 acceda a información como su idioma preferido y moneda fiduciaria en su configuración de 1do. Esto ayuda a que $1 muestre contenido adaptado a sus preferencias. ",
-    "description": "An extended description for the `snap_getPreferences` permission. $1 is the snap name."
-  },
   "permission_homePage": {
     "message": "Mostrar una pantalla personalizada",
     "description": "The description for the `endowment:page-home` permission"
-  },
-  "permission_homePageDescription": {
-    "message": "Permita que $1 muestre una pantalla de inicio personalizada en 1do. Esto se puede utilizar para interfaces de usuario, configuración y paneles.",
-    "description": "An extended description for the `endowment:page-home` permission. $1 is the snap name."
   },
   "permission_keyring": {
     "message": "Permitir solicitudes para agregar y controlar cuentas de Ethereum",
     "description": "The description for the `endowment:keyring` permission"
   },
-  "permission_keyringDescription": {
-    "message": "Permita que $1 reciba solicitudes para agregar o eliminar cuentas, además de firmar y realizar transacciones en nombre de estas cuentas.",
-    "description": "An extended description for the `endowment:keyring` permission. $1 is the snap name."
-  },
   "permission_lifecycleHooks": {
     "message": "Usar ganchos de ciclo de vida.",
     "description": "The description for the `endowment:lifecycle-hooks` permission"
-  },
-  "permission_lifecycleHooksDescription": {
-    "message": "Permita que $1 use ganchos de ciclo de vida para ejecutar código en momentos específicos durante su ciclo de vida.",
-    "description": "An extended description for the `endowment:lifecycle-hooks` permission. $1 is the snap name."
-  },
-  "permission_manageAccounts": {
-    "message": "Agregar y controlar cuentas de Ethereum",
-    "description": "The description for `snap_manageAccounts` permission"
-  },
-  "permission_manageAccountsDescription": {
-    "message": "Permita que $1 agregue o elimine cuentas de Ethereum, luego realice transacciones y firme con estas cuentas.",
-    "description": "An extended description for the `snap_manageAccounts` permission. $1 is the snap name."
-  },
-  "permission_manageBip32Keys": {
-    "message": "Administrar cuentas de $1.",
-    "description": "The description for the `snap_getBip32Entropy` permission. $1 is a derivation path, e.g. 'm/44'/0'/0' (secp256k1)'."
-  },
-  "permission_manageBip44AndBip32KeysDescription": {
-    "message": "Permita a $1 para administrar cuentas y activos en la red solicitada. Estas cuentas se derivan y se respaldan utilizando su frase de recuperación secreta (sin revelarla). Con el poder de derivar claves, $1 puede admitir una variedad de protocolos de cadenas de bloques más allá de Ethereum (EVM).",
-    "description": "An extended description for the `snap_getBip44Entropy` and `snap_getBip44Entropy` permissions. $1 is the snap name."
-  },
-  "permission_manageBip44Keys": {
-    "message": "Administrar cuentas de $1.",
-    "description": "The description for the `snap_getBip44Entropy` permission. $1 is the name of a protocol, e.g. 'Filecoin'."
-  },
-  "permission_manageState": {
-    "message": "Almacene y administre sus datos en su dispositivo.",
-    "description": "The description for the `snap_manageState` permission"
-  },
-  "permission_manageStateDescription": {
-    "message": "Permita que $1 almacene, actualice y recupere datos de forma segura con cifrado. Otros snaps no pueden acceder a esta información.",
-    "description": "An extended description for the `snap_manageState` permission. $1 is the snap name."
   },
   "permission_multichainProvider": {
     "message": "Accede al proveedor Multichain.",
     "description": "The description for the `endowment:multichain-provider` permission"
   },
-  "permission_multichainProviderDescription": {
-    "message": "Permita que $1 se comunique directamente con 1do para que lea datos de la cadena de bloques y sugiera mensajes y transacciones.",
-    "description": "An extended description for the `endowment:multichain-provider` permission. $1 is the snap name."
-  },
   "permission_nameLookup": {
     "message": "Proporcionar búsquedas de dominios y direcciones.",
     "description": "The description for the `endowment:name-lookup` permission."
   },
-  "permission_nameLookupDescription": {
-    "message": "Permita que el snap obtenga y muestre búsquedas de direcciones y dominios en diferentes partes de la interfaz de usuario de 1do.",
-    "description": "An extended description for the `endowment:name-lookup` permission."
-  },
-  "permission_notifications": {
-    "message": "Mostrar notificaciones.",
-    "description": "The description for the `snap_notify` permission"
-  },
-  "permission_notificationsDescription": {
-    "message": "Permita que $1 muestre notificaciones dentro de 1do. Se puede activar un breve texto de notificación con un snap para obtener información procesable o sensible al tiempo.",
-    "description": "An extended description for the `snap_notify` permission. $1 is the snap name."
-  },
   "permission_protocol": {
     "message": "Proporciona datos de protocolo para una o más cadenas de bloques.",
     "description": "The description for the `endowment:protocol` permission."
-  },
-  "permission_protocolDescription": {
-    "message": "Asigna $1 para que 1do pueda obtener datos del protocolo, como estimaciones de gas o información sobre tokens.",
-    "description": "An extended description for the `endowment:protocol` permission. $1 is the name of the Snap."
-  },
-  "permission_rpc": {
-    "message": "Permitir que $1 se comunique directamente con $2.",
-    "description": "The description for the `endowment:rpc` permission. $1 is 'other snaps' or 'websites', $2 is the snap name."
-  },
-  "permission_rpcDescription": {
-    "message": "Permita que $1 envíe mensajes a $2 y reciba una respuesta de $2.",
-    "description": "An extended description for the `endowment:rpc` permission. $1 is 'other snaps' or 'websites', $2 is the snap name."
   },
   "permission_rpcDescriptionOriginList": {
     "message": "$1 y $2",
@@ -5296,49 +5044,21 @@
     "message": "Mostrar modo de información de firma.",
     "description": "The description for the `endowment:signature-insight` permission"
   },
-  "permission_signatureInsightDescription": {
-    "message": "Permita que $1 muestre un modo con información sobre cualquier solicitud de firma antes de su aprobación. Esto se puede utilizar para soluciones de seguridad y antiphishing.",
-    "description": "An extended description for the `endowment:signature-insight` permission. $1 is the snap name."
-  },
   "permission_signatureInsightOrigin": {
     "message": "Vea los orígenes de los sitios web que inician una solicitud de firma",
     "description": "The description for the `signatureOrigin` caveat, to be used with the `endowment:signature-insight` permission"
-  },
-  "permission_signatureInsightOriginDescription": {
-    "message": "Permita que $1 vea el origen (URI) de los sitios web que inician solicitudes de firma. Esto se puede utilizar para soluciones antiphishing y de seguridad.",
-    "description": "An extended description for the `signatureOrigin` caveat, to be used with the `endowment:signature-insight` permission. $1 is the snap name."
   },
   "permission_transactionInsight": {
     "message": "Obtener y mostrar perspectivas de transacciones.",
     "description": "The description for the `endowment:transaction-insight` permission"
   },
-  "permission_transactionInsightDescription": {
-    "message": "Permita que $1 decodifique transacciones y muestre información dentro de la interfaz de usuario de 1do. Esto se puede utilizar para soluciones antiphishing y de seguridad.",
-    "description": "An extended description for the `endowment:transaction-insight` permission. $1 is the snap name."
-  },
   "permission_transactionInsightOrigin": {
     "message": "Ver los orígenes de los sitios web que sugieren transacciones",
     "description": "The description for the `transactionOrigin` caveat, to be used with the `endowment:transaction-insight` permission"
   },
-  "permission_transactionInsightOriginDescription": {
-    "message": "Permita que $1 vea el origen (URI) de los sitios web que sugieren transacciones. Esto se puede utilizar para soluciones antiphishing y de seguridad.",
-    "description": "An extended description for the `transactionOrigin` caveat, to be used with the `endowment:transaction-insight` permission. $1 is the snap name."
-  },
   "permission_unknown": {
     "message": "Permiso desconocido: $1",
     "description": "$1 is the name of a requested permission that is not recognized."
-  },
-  "permission_viewBip32PublicKeys": {
-    "message": "Ver su clave pública para $1 ($2).",
-    "description": "The description for the `snap_getBip32PublicKey` permission. $1 is a derivation path, e.g. 'm/44'/0'/0''. $2 is the elliptic curve name, e.g. 'secp256k1'."
-  },
-  "permission_viewBip32PublicKeysDescription": {
-    "message": "Permita que $2 vea sus claves (y direcciones) públicas para $1. Esto no otorga ningún control de cuentas o activos.",
-    "description": "An extended description for the `snap_getBip32PublicKey` permission. $1 is a derivation path (name). $2 is the snap name."
-  },
-  "permission_viewNamedBip32PublicKeys": {
-    "message": "Ver su clave pública para $1.",
-    "description": "The description for the `snap_getBip32PublicKey` permission. $1 is a name for the derivation path, e.g., 'Ethereum accounts'."
   },
   "permission_walletSwitchEthereumChain": {
     "message": "Utilizar sus redes habilitadas",
@@ -5348,15 +5068,11 @@
     "message": "Soporte para WebAssembly.",
     "description": "The description of the `endowment:webassembly` permission."
   },
-  "permission_webAssemblyDescription": {
-    "message": "Permita que $1 acceda a entornos de ejecución de bajo nivel a través de WebAssembly.",
-    "description": "An extended description of the `endowment:webassembly` permission. $1 is the snap name."
-  },
   "permissions": {
     "message": "Permisos"
   },
   "permissionsPageEmptyDescription": {
-    "message": "No se detectaron permisos. Una vez que otorgues permisos a un sitio o instales un Snap, los detalles aparecerán aquí."
+    "message": "No permissions detected. Once you grant permissions to a site, the details will appear here."
   },
   "permitSimulationChange_approve": {
     "message": "Límite de gasto"
@@ -6491,12 +6207,6 @@
   "removeAll": {
     "message": "Eliminar todo"
   },
-  "removeKeyringSnap": {
-    "message": "Al eliminar este Snap se eliminan estas cuentas de 1do:"
-  },
-  "removeKeyringSnapToolTip": {
-    "message": "El snap controla las cuentas y, al eliminarlo, las cuentas también se eliminarán de 1do, pero permanecerán en la cadena de bloques."
-  },
   "removeNFT": {
     "message": "Eliminar NFT"
   },
@@ -6505,22 +6215,6 @@
   },
   "removeNftMessage": {
     "message": "¡El NFT se eliminó con éxito!"
-  },
-  "removeSnap": {
-    "message": "Eliminar complemento"
-  },
-  "removeSnapAccountDescription": {
-    "message": "Si continúa, esta cuenta ya no estará disponible en 1do."
-  },
-  "removeSnapAccountTitle": {
-    "message": "Eliminar cuenta"
-  },
-  "removeSnapConfirmation": {
-    "message": "¿Está seguro de que desea eliminar $1?",
-    "description": "$1 represents the name of the snap"
-  },
-  "removeSnapDescription": {
-    "message": "Esta acción eliminará el snap, sus datos y revocará los permisos otorgados."
   },
   "rename": {
     "message": "Renombrar",
@@ -6540,9 +6234,6 @@
   },
   "requestFromInfo": {
     "message": "Este es el sitio que solicita su firma."
-  },
-  "requestFromInfoSnap": {
-    "message": "Este es el Snap que solicita su firma."
   },
   "requestFromTransactionDescription": {
     "message": "Este es el sitio que le pide su confirmación."
@@ -7109,9 +6800,6 @@
   "setUp": {
     "message": "Configuración",
     "description": "Action label for Smart Accounts. Used on multichain details page."
-  },
-  "settingAddSnapAccount": {
-    "message": "Añadir una cuenta Snap"
   },
   "settings": {
     "message": "Configuración"
@@ -8017,168 +7705,6 @@
   "smartTransactionsEnabledTitle": {
     "message": "Las transacciones ahora son más inteligentes"
   },
-  "snapAccountCreated": {
-    "message": "Cuenta creada"
-  },
-  "snapAccountCreatedDescription": {
-    "message": "¡Su nueva cuenta está lista para usar!"
-  },
-  "snapAccountCreationFailed": {
-    "message": "Error al crear la cuenta"
-  },
-  "snapAccountCreationFailedDescription": {
-    "message": "$1 no logró crear una cuenta para usted.",
-    "description": "$1 is the snap name"
-  },
-  "snapAccountRedirectFinishSigningTitle": {
-    "message": "Terminar de firmar"
-  },
-  "snapAccountRedirectSiteDescription": {
-    "message": "Siga las instrucciones desde $1"
-  },
-  "snapAccountRemovalFailed": {
-    "message": "Error al eliminar la cuenta"
-  },
-  "snapAccountRemovalFailedDescription": {
-    "message": "$1 no logró eliminar esta cuenta para usted.",
-    "description": "$1 is the snap name"
-  },
-  "snapAccountRemoved": {
-    "message": "Cuenta eliminada"
-  },
-  "snapAccountRemovedDescription": {
-    "message": "Esta cuenta ya no estará disponible para su uso en 1do."
-  },
-  "snapConnectTo": {
-    "message": "Conectarse a $1",
-    "description": "$1 is the website URL or a Snap name. Used for Snaps pre-approved connections."
-  },
-  "snapConnectionPermissionDescription": {
-    "message": "Permita que $1 se conecte automáticamente a $2 sin su aprobación.",
-    "description": "Used for Snap pre-approved connections. $1 is the Snap name, $2 is a website URL."
-  },
-  "snapConnectionWarning": {
-    "message": "$1 quiere conectarse a $2",
-    "description": "$2 is the snap and $1 is the dapp requesting connection to the snap."
-  },
-  "snapDetailWebsite": {
-    "message": "Sitio web"
-  },
-  "snapHomeMenu": {
-    "message": "Menú de inicio de Snap"
-  },
-  "snapInstallRequest": {
-    "message": "Instalar $1 le otorga los siguientes permisos.",
-    "description": "$1 is the snap name."
-  },
-  "snapInstallSuccess": {
-    "message": "Instalación completa"
-  },
-  "snapInstallWarningCheck": {
-    "message": "$1 quiere permiso para hacer lo siguiente:",
-    "description": "Warning message used in popup displayed on snap install. $1 is the snap name."
-  },
-  "snapInstallWarningHeading": {
-    "message": "Procede con precaución"
-  },
-  "snapInstallWarningPermissionDescriptionForBip32View": {
-    "message": "Permita que $1 vea sus claves (y direcciones) públicas. Esto no otorga ningún control de cuentas o activos.",
-    "description": "An extended description for the `snap_getBip32PublicKey` permission used for tooltip on Snap Install Warning screen (popup/modal). $1 is the snap name."
-  },
-  "snapInstallWarningPermissionDescriptionForEntropy": {
-    "message": "Permita que Snap $1 administre cuentas y activos en las red(es) solicitada(s). Estas cuentas se derivan y se respaldan utilizando su frase de recuperación secreta (sin revelarla). Con el poder de derivar claves, $1 puede admitir una variedad de protocolos blockchain más allá de Ethereum (EVM).",
-    "description": "An extended description for the `snap_getBip44Entropy` and `snap_getBip44Entropy` permissions used for tooltip on Snap Install Warning screen (popup/modal). $1 is the snap name."
-  },
-  "snapInstallWarningPermissionNameForEntropy": {
-    "message": "Administrar cuentas de $1",
-    "description": "Permission name used for the Permission Cell component displayed on warning popup when installing a Snap. $1 is list of account types."
-  },
-  "snapInstallWarningPermissionNameForViewPublicKey": {
-    "message": "Ver su clave pública para $1",
-    "description": "Permission name used for the Permission Cell component displayed on warning popup when installing a Snap. $1 is list of account types."
-  },
-  "snapInstallationErrorDescription": {
-    "message": "$1 no se pudo instalar.",
-    "description": "Error description used when snap installation fails. $1 is the snap name."
-  },
-  "snapInstallationErrorTitle": {
-    "message": "Instalación fallida",
-    "description": "Error title used when snap installation fails."
-  },
-  "snapResultError": {
-    "message": "Error"
-  },
-  "snapResultSuccess": {
-    "message": "Éxito"
-  },
-  "snapResultSuccessDescription": {
-    "message": "$1 está listo para usar"
-  },
-  "snapUIAccountSelectorTitle": {
-    "message": "Selecciona una cuenta"
-  },
-  "snapUIAssetSelectorTitle": {
-    "message": "Seleccione un activo"
-  },
-  "snapUpdateAlertDescription": {
-    "message": "Obtenga la última versión de $1",
-    "description": "Description used in Snap update alert banner when snap update is available. $1 is the Snap name."
-  },
-  "snapUpdateAvailable": {
-    "message": "Actualización disponible"
-  },
-  "snapUpdateErrorDescription": {
-    "message": "$1 no se pudo actualizar.",
-    "description": "Error description used when snap update fails. $1 is the snap name."
-  },
-  "snapUpdateErrorTitle": {
-    "message": "Actualización fallida",
-    "description": "Error title used when snap update fails."
-  },
-  "snapUpdateRequest": {
-    "message": "Actualizar $1 le otorga los siguientes permisos.",
-    "description": "$1 is the Snap name."
-  },
-  "snapUpdateSuccess": {
-    "message": "Actualización completa"
-  },
-  "snapUrlIsBlocked": {
-    "message": "Este Snap quiere llevarlo a un sitio bloqueado. $1."
-  },
-  "snaps": {
-    "message": "Snaps"
-  },
-  "snapsConnected": {
-    "message": "Snaps conectados"
-  },
-  "snapsNoInsight": {
-    "message": "No hay información que mostrar"
-  },
-  "snapsPrivacyWarningFirstMessage": {
-    "message": "Reconoces que el snap que estás a punto de instalar es un Servicio de terceros, a menos que se identifique de otro modo, según se define en Consensys $1. El uso que hagas de los Servicios de terceros se rige por términos y condiciones independientes establecidos por el proveedor de Servicios de terceros. Consensys no recomienda el uso de ningún snap a ninguna persona en particular por ningún motivo en particular. Accedes, confías o utilizas el Servicio de terceros bajo tu propio riesgo. Consensys se exime de toda responsabilidad por cualquier pérdida a causa del uso de los Servicios de terceros.",
-    "description": "First part of a message in popup modal displayed when installing a snap for the first time. $1 is terms of use link."
-  },
-  "snapsPrivacyWarningSecondMessage": {
-    "message": "Cualquier información que compartas con Servicios de terceros será recopilada directamente por dichos Servicios de terceros de acuerdo con sus políticas de privacidad. Consulta sus políticas de privacidad para obtener más información.",
-    "description": "Second part of a message in popup modal displayed when installing a snap for the first time."
-  },
-  "snapsPrivacyWarningThirdMessage": {
-    "message": "Consensys no tiene acceso a la información que compartes con servicios de terceros.",
-    "description": "Third part of a message in popup modal displayed when installing a snap for the first time."
-  },
-  "snapsSettings": {
-    "message": "Configuración de Snap"
-  },
-  "snapsTermsOfUse": {
-    "message": "Términos de uso"
-  },
-  "snapsToggle": {
-    "message": "Un snap solo se ejecutará si está habilitado"
-  },
-  "snapsUIError": {
-    "message": "Póngase en contacto con los creadores de $1 para obtener más ayuda.",
-    "description": "This is shown when the insight snap throws an error. $1 is the snap name"
-  },
   "solanaAccountRequested": {
     "message": "Este sitio solicita una cuenta de Solana."
   },
@@ -8572,10 +8098,6 @@
   },
   "submitted": {
     "message": "Enviado"
-  },
-  "suggestedBySnap": {
-    "message": "Sugerido por $1",
-    "description": "$1 is the snap name"
   },
   "suggestedCurrencySymbol": {
     "message": "Símbolo de moneda sugerido:"
@@ -8979,10 +8501,6 @@
   "thirdPartyApisDescription": {
     "message": "Elige cómo compartir tu dirección IP o dirección Ethereum con las API de terceros. Los cambios afectarán tu experiencia con 1do."
   },
-  "thirdPartySoftware": {
-    "message": "Aviso de software de terceros",
-    "description": "Title of a popup modal displayed when installing a snap for the first time."
-  },
   "thisContactWillBeDeleted": {
     "message": "Este contacto se eliminará."
   },
@@ -9323,10 +8841,6 @@
     "message": "Red desconocida",
     "description": "Displayed on places like Gator permissions when regular name is not available."
   },
-  "unknownNetworkForKeyEntropy": {
-    "message": "Red desconocida",
-    "description": "Displayed on places like Snap install warning when regular name is not available."
-  },
   "unknownQrCode": {
     "message": "Error: No se pudo identificar ese código QR"
   },
@@ -9555,10 +9069,6 @@
   "warning": {
     "message": "Advertencia"
   },
-  "warningFromSnap": {
-    "message": "Advertencia de $1",
-    "description": "$1 represents the name of the snap"
-  },
   "watchEthereumAccountsDescription": {
     "message": "Al activar esta opción, podrá ver las cuentas de Ethereum a través de una dirección pública o un nombre de ENS. Para recibir comentarios sobre esta función Beta, complete este $1.",
     "description": "$1 is the link to a product feedback form"
@@ -9647,5 +9157,20 @@
   },
   "yourWalletIsReadyFromReminder": {
     "message": "¡Mantén segura tu frase secreta de recuperación!"
+  },
+  "suggestedBySource": {
+    "message": "Sugerido por $1",
+    "description": "$1 is the source name."
+  },
+  "permissionConnectTo": {
+    "message": "Conectarse a $1",
+    "description": "$1 is the website URL."
+  },
+  "permissionConnectionDescription": {
+    "message": "Permita que $1 se conecte automáticamente a $2 sin su aprobación.",
+    "description": "$1 is the subject name, $2 is a website URL."
+  },
+  "noHardwareWalletSupport": {
+    "message": "Most hardware wallets will not work with your current browser version."
   }
 }

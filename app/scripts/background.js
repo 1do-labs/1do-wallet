@@ -52,7 +52,6 @@ import {
 import { captureException } from '../../shared/lib/sentry';
 import { getCurrentChainId } from '../../shared/lib/selectors/networks';
 import { createCaipStream } from '../../shared/lib/caip-stream';
-import getFetchWithTimeout from '../../shared/lib/fetch-with-timeout';
 import { isStateCorruptionError } from '../../shared/constants/errors';
 import getFirstPreferredLangCode from '../../shared/lib/get-first-preferred-lang-code';
 import { getManifestFlags } from '../../shared/lib/manifestFlags';
@@ -96,13 +95,11 @@ import {
   METAMASK_CAIP_MULTICHAIN_PROVIDER,
   METAMASK_EIP_1193_PROVIDER,
 } from './constants/stream';
-import { PREINSTALLED_SNAPS_URLS } from './constants/snaps';
 import { ExtensionLazyListener } from './lib/extension-lazy-listener/extension-lazy-listener';
 import { DeepLinkRouter } from './lib/deep-links/deep-link-router';
 import { createEvent } from './lib/deep-links/metrics';
 import { getRequestSafeReload } from './lib/safe-reload';
 import { tryPostMessage } from './lib/start-up-errors/start-up-errors';
-import { CronjobControllerStorageManager } from './lib/CronjobControllerStorageManager';
 import { ReferralTriggerType } from './lib/createDefiReferralMiddleware';
 import { getIframeProperties } from './lib/getIframeProperties';
 
@@ -812,10 +809,6 @@ async function initialize(backup) {
       }
     : {};
 
-  const preinstalledSnaps = await loadPreinstalledSnaps();
-  const cronjobControllerStorageManager = new CronjobControllerStorageManager();
-  await cronjobControllerStorageManager.init();
-
   setupController(
     initState,
     initLangCode,
@@ -823,8 +816,6 @@ async function initialize(backup) {
     isFirstMetaMaskControllerSetup,
     initData.meta,
     offscreenPromise,
-    preinstalledSnaps,
-    cronjobControllerStorageManager,
   );
 
   controller.metaMetricsController.updateTraits({
@@ -872,29 +863,6 @@ async function initialize(backup) {
     })
     .on('error', (error) => sentry?.captureException(error))
     .install();
-}
-
-/**
- * Loads the preinstalled snaps from urls and returns them as an array.
- * It fails if any Snap fails to load in the expected time range.
- * Supports .json.gz files using gzip decompression.
- */
-async function loadPreinstalledSnaps() {
-  const fetchWithTimeout = getFetchWithTimeout();
-  const promises = PREINSTALLED_SNAPS_URLS.map(async (url) => {
-    const response = await fetchWithTimeout(url);
-
-    // If the Snap is compressed, decompress it
-    if (url.pathname.endsWith('.json.gz')) {
-      const ds = new DecompressionStream('gzip');
-      const decompressedStream = response.body.pipeThrough(ds);
-      return await new Response(decompressedStream).json();
-    }
-
-    return await response.json();
-  });
-
-  return Promise.all(promises);
 }
 
 /**
@@ -1423,8 +1391,6 @@ const refreshAppActiveTab = async (windowId) => {
  * @param isFirstMetaMaskControllerSetup
  * @param {object} stateMetadata - Metadata about the initial state and migrations, including the most recent migration version
  * @param {Promise<void>} offscreenPromise - A promise that resolves when the offscreen document has finished initialization.
- * @param {Array} preinstalledSnaps - A list of preinstalled Snaps loaded from disk during boot.
- * @param {CronjobControllerStorageManager} cronjobControllerStorageManager - A storage manager for the CronjobController.
  */
 export function setupController(
   initState,
@@ -1433,8 +1399,6 @@ export function setupController(
   isFirstMetaMaskControllerSetup,
   stateMetadata,
   offscreenPromise,
-  preinstalledSnaps,
-  cronjobControllerStorageManager,
 ) {
   //
   // MetaMask Controller
@@ -1462,9 +1426,7 @@ export function setupController(
     currentMigrationVersion: stateMetadata.version,
     featureFlags: {},
     offscreenPromise,
-    preinstalledSnaps,
     requestSafeReload,
-    cronjobControllerStorageManager,
   });
 
   // Wire up the callback to notify the UI when set operations fail

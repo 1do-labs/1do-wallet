@@ -16,49 +16,32 @@ import {
   TextColor,
   TextVariant,
 } from '@metamask/design-system-react';
-import {
-  BtcMethod,
-  EthMethod,
-  SolMethod,
-  TrxAccountType,
-} from '@metamask/keyring-api';
+import { EthMethod } from '@metamask/keyring-api';
 import { InternalAccount } from '@metamask/keyring-internal-api';
-import {
-  type CaipAssetType,
-  isCaipChainId,
-  parseCaipAssetType,
-} from '@metamask/utils';
-import React, { ReactNode, useEffect, useMemo, useState } from 'react';
+import { isCaipChainId } from '@metamask/utils';
+import React, { ReactNode, useEffect, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { AssetType } from '../../../../shared/constants/transaction';
-import { isEvmChainId } from '../../../../shared/lib/asset-utils';
 import { endTrace, TraceName } from '../../../../shared/lib/trace';
 import { hexToDecimal } from '../../../../shared/lib/conversion.utils';
 import { toChecksumHexAddress } from '../../../../shared/lib/hexstring-utils';
 import TokenCell from '../../../components/app/assets/token-cell';
-import { MarketClosedModal } from '../../../components/app/assets/market-closed-modal';
 import {
   TokenFiatDisplayInfo,
   type TokenWithFiatAmount,
 } from '../../../components/app/assets/types';
 import { ActivityList } from '../../../components/multichain/activity-v2/activity-list';
 import CoinButtons from '../../../components/app/wallet-overview/coin-buttons';
-import { StockBadge } from '../../../components/app/assets/stock-badge/stock-badge';
 import { AddressCopyButton } from '../../../components/multichain';
 import { getCurrentCurrency } from '../../../ducks/metamask/metamask';
 import { useI18nContext } from '../../../hooks/useI18nContext';
 import { useMultichainSelector } from '../../../hooks/useMultichainSelector';
 import { transitionBack } from '../../../components/ui/transition';
-import {
-  getIsBridgeChain,
-  getIsSwapsChain,
-  getShowFiatInTestnets,
-} from '../../../selectors';
+import { getShowFiatInTestnets } from '../../../selectors';
 import {
   getAsset,
   getAssetsBySelectedAccountGroup,
-  getMultichainNativeAssetType,
 } from '../../../selectors/assets';
 import {
   getImageForChainId,
@@ -70,10 +53,8 @@ import { getInternalAccountBySelectedAccountGroupAndCaip } from '../../../select
 import { useSafeChains } from '../../settings/networks-tab/networks-form/use-safe-chains';
 import { useCurrentPrice } from '../hooks/useCurrentPrice';
 import { isNativeAsset, type Asset } from '../types/asset';
-import { useRWAToken } from '../../bridge/hooks/useRWAToken';
 import { AssetMarketDetails } from './asset-market-details';
 import AssetChart from './chart/asset-chart';
-import { MarketClosedActionButton } from './market-closed-action-button';
 import TokenButtons from './token-buttons';
 
 // TODO BIP44 Refactor: BIP-44 has been enabled and is stable, this page needs a significant refactor to remove confusing branching logic
@@ -87,9 +68,6 @@ const AssetPage = ({
   const t = useI18nContext();
   const navigate = useNavigate();
   const currency = useSelector(getCurrentCurrency);
-  const isEvm = isEvmChainId(asset.chainId);
-  // TODO BIP44 Refactor: This selector does not work with BIP44 enabled, pass the information in the asset object
-  const nativeAssetType = useSelector(getMultichainNativeAssetType);
   const accountGroupIdAssets = useSelector(getAssetsBySelectedAccountGroup);
   const caipChainId = isCaipChainId(asset.chainId)
     ? asset.chainId
@@ -104,17 +82,9 @@ const AssetPage = ({
 
   const { chainId, type, symbol, name, image } = asset;
 
-  const isSwapsChain = useSelector((state) => getIsSwapsChain(state, chainId));
-  const isBridgeChain = useSelector((state) =>
-    getIsBridgeChain(state, chainId),
-  );
-
   const isSigningEnabled =
     selectedAccount.methods.includes(EthMethod.SignTransaction) ||
-    selectedAccount.methods.includes(EthMethod.SignUserOperation) ||
-    selectedAccount.methods.includes(SolMethod.SignTransaction) ||
-    selectedAccount.methods.includes(BtcMethod.SignPsbt) ||
-    selectedAccount.type === TrxAccountType.Eoa;
+    selectedAccount.methods.includes(EthMethod.SignUserOperation);
 
   const isTestnet = useMultichainSelector(getMultichainIsTestnet);
   const shouldShowFiat = useMultichainSelector(getMultichainShouldShowFiat);
@@ -128,17 +98,15 @@ const AssetPage = ({
   let address =
     (() => {
       if (type === AssetType.token) {
-        return isEvm ? toChecksumHexAddress(asset.address) : asset.address;
+        return toChecksumHexAddress(asset.address);
       }
-      return isEvm ? getNativeTokenAddress(chainId) : nativeAssetType;
+      return getNativeTokenAddress(chainId);
     })() ?? '';
 
   const shouldShowContractAddress = type === AssetType.token;
   const contractAddress = (() => {
     if (shouldShowContractAddress) {
-      return isEvm
-        ? toChecksumHexAddress(asset.address)
-        : parseCaipAssetType(address as CaipAssetType).assetReference;
+      return toChecksumHexAddress(asset.address);
     }
     return '';
   })();
@@ -146,13 +114,9 @@ const AssetPage = ({
   const { currentPrice } = useCurrentPrice(asset);
 
   const assetWithBalance = accountGroupIdAssets[chainId]?.find(
-    (item) =>
-      item.assetId.toLowerCase() === address.toLowerCase() ||
-      // TODO: This is a workaround for non-evm native assets, as the address that is received here is blank
-      (!address && !isEvm && item.isNative),
+    (item) => item.assetId.toLowerCase() === address.toLowerCase(),
   );
 
-  // Display historical data for non-evm token without a balance
   address = assetWithBalance?.assetId || address;
   const assetId = assetWithBalance?.assetId || '';
   const balance = assetWithBalance?.balance ?? '0';
@@ -179,7 +143,7 @@ const AssetPage = ({
   };
 
   const tokenWithFiatAmount = {
-    address: isEvm ? address : assetId,
+    address,
     chainId,
     symbol,
     image,
@@ -197,9 +161,6 @@ const AssetPage = ({
     rwaData,
   };
   const { safeChains } = useSafeChains();
-  const { isStockToken: checkIsStockToken, isTokenTradingOpen } = useRWAToken();
-  const isStockToken = checkIsStockToken(updatedAsset);
-  const isMarketClosed = isStockToken && !isTokenTradingOpen(updatedAsset);
   const assetDisplayName =
     name && symbol && name !== symbol
       ? `${name} (${symbol})`
@@ -217,11 +178,6 @@ const AssetPage = ({
 
   const isUpdatedAssetNative = isNativeAsset(updatedAsset);
   const tokenAsset = isUpdatedAssetNative ? null : updatedAsset;
-
-  const [isMarketClosedModalOpen, setIsMarketClosedModalOpen] = useState(false);
-  const handleOpenMarketClosedModal = () => {
-    setIsMarketClosedModalOpen(true);
-  };
 
   return (
     <Box className="asset__content">
@@ -245,16 +201,7 @@ const AssetPage = ({
         </Box>
         {optionsButton}
       </Box>
-      <Box paddingLeft={4}>
-        {isStockToken ? (
-          <Box alignItems={BoxAlignItems.Center} gap={2}>
-            {assetNameElement}
-            <StockBadge isMarketClosed={isMarketClosed} />
-          </Box>
-        ) : (
-          assetNameElement
-        )}
-      </Box>
+      <Box paddingLeft={4}>{assetNameElement}</Box>
       <AssetChart
         chainId={chainId}
         address={address}
@@ -269,25 +216,11 @@ const AssetPage = ({
               account: selectedAccount,
               trackingLocation: 'asset-page',
               isSigningEnabled,
-              isSwapsChain,
-              isBridgeChain,
               chainId,
-              disableSendForNonEvm: true,
             }}
           />
         ) : null}
-        {tokenAsset ? (
-          <TokenButtons
-            token={tokenAsset}
-            disableSendForNonEvm
-            isMarketClosed={isMarketClosed}
-          />
-        ) : null}
-        {isMarketClosed && tokenAsset ? (
-          <Box marginTop={4}>
-            <MarketClosedActionButton onClick={handleOpenMarketClosedModal} />
-          </Box>
-        ) : null}
+        {tokenAsset ? <TokenButtons token={tokenAsset} /> : null}
       </Box>
       <Box flexDirection={BoxFlexDirection.Column} paddingTop={3}>
         <Text
@@ -398,7 +331,6 @@ const AssetPage = ({
                   type === AssetType.native
                     ? {
                         kind: 'native',
-                        ...(!isEvm && { caipAssetType: address }),
                       }
                     : { kind: 'token', tokenAddress: address },
               }}
@@ -406,10 +338,6 @@ const AssetPage = ({
           </Box>
         </Box>
       </Box>
-      <MarketClosedModal
-        isOpen={isMarketClosedModalOpen}
-        onClose={() => setIsMarketClosedModalOpen(false)}
-      />
     </Box>
   );
 };

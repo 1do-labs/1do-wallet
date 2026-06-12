@@ -42,14 +42,6 @@
     },
     {
       "active": true,
-      "chainId": "bip122:000000000019d6689c085ae165831e93",
-      "chainName": "Bitcoin",
-      "shortName": "Bitcoin",
-      "nativeTokenSupported": true,
-      "isEvm": false
-    },
-    {
-      "active": true,
       "chainId": "56",
       "chainName": "BNB Chain",
       "shortName": "BNB Chain",

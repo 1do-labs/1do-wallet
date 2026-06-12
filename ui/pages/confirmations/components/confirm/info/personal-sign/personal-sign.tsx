@@ -1,7 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 
-import { isSnapId } from '@metamask/snaps-utils';
 import {
   ConfirmInfoRowText,
   ConfirmInfoRowUrl,
@@ -65,14 +64,7 @@ const PersonalSignInfo: React.FC = () => {
     currentConfirmation.msgParams?.data as string,
   );
 
-  let toolTipMessage;
-  if (!isSIWE) {
-    if (isSnapId(currentConfirmation.msgParams.origin)) {
-      toolTipMessage = t('requestFromInfoSnap');
-    } else {
-      toolTipMessage = t('requestFromInfo');
-    }
-  }
+  const toolTipMessage = isSIWE ? undefined : t('requestFromInfo');
 
   const SimulationDetailsKey = (
     <Box

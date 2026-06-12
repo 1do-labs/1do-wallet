@@ -114,7 +114,7 @@ function collectTestFiles(dir: string): string[] {
 
 /**
  * Uses word-boundary regex (\b) to avoid substring false positives
- * (e.g. "addBitcoinAccount" matching inside "addBitcoinAccountDummyFlag").
+ * (e.g. one flag name matching inside another).
  * \b treats underscores as word chars, which works because flag names in
  * test files appear as object keys where word boundaries naturally occur.
  * @param content

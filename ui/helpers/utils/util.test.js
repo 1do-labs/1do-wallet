@@ -2,9 +2,7 @@ import Bowser from 'bowser';
 import { toChecksumAddress } from 'ethereumjs-util';
 import { KeyringTypes } from '@metamask/keyring-controller';
 import { CHAIN_IDS } from '../../../shared/constants/network';
-import { addHexPrefixToObjectValues } from '../../../shared/lib/swaps-utils';
 import { toPrecisionWithoutTrailingZeros } from '../../../shared/lib/transactions-controller-utils';
-import { MinPermissionAbstractionDisplayCount } from '../../../shared/constants/permissions';
 import { createMockInternalAccount } from '../../../test/jest/mocks';
 import * as util from './util';
 
@@ -432,22 +430,6 @@ describe('util', () => {
     testData.forEach(({ args, result }) => {
       it(`should return ${result} when passed number ${args[0]} and precision ${args[1]}`, () => {
         expect(toPrecisionWithoutTrailingZeros(...args)).toStrictEqual(result);
-      });
-    });
-  });
-
-  describe('addHexPrefixToObjectValues()', () => {
-    it('should return a new object with the same properties with a 0x prefix', () => {
-      expect(
-        addHexPrefixToObjectValues({
-          prop1: '0x123',
-          prop2: '456',
-          prop3: 'x',
-        }),
-      ).toStrictEqual({
-        prop1: '0x123',
-        prop2: '0x456',
-        prop3: '0xx',
       });
     });
   });
@@ -1207,138 +1189,6 @@ describe('util', () => {
     });
   });
 
-  describe('getFilteredSnapPermissions', () => {
-    it('should return permission filtered by weight', () => {
-      const WEIGHT_THRESHOLD = 3;
-      const mockPermissions = [
-        {
-          label: 'Permission A',
-          weight: 4,
-        },
-        {
-          label: 'Permission B',
-          weight: 4,
-        },
-        {
-          label: 'Permission C',
-          weight: 1,
-        },
-        {
-          label: 'Permission D',
-          weight: 5,
-        },
-        {
-          label: 'Permission E',
-          weight: 2,
-        },
-      ];
-      expect(
-        util.getFilteredSnapPermissions(mockPermissions, WEIGHT_THRESHOLD, 2),
-      ).toStrictEqual([
-        {
-          label: 'Permission C',
-          weight: 1,
-        },
-        {
-          label: 'Permission E',
-          weight: 2,
-        },
-      ]);
-    });
-
-    it('should return the first three permissions because none matches the filter criteria', () => {
-      const WEIGHT_THRESHOLD = 3;
-      const mockPermissions = [
-        {
-          label: 'Permission A',
-          weight: 4,
-        },
-        {
-          label: 'Permission B',
-          weight: 4,
-        },
-        {
-          label: 'Permission C',
-          weight: 5,
-        },
-        {
-          label: 'Permission D',
-          weight: 5,
-        },
-        {
-          label: 'Permission E',
-          weight: 6,
-        },
-      ];
-      expect(
-        util.getFilteredSnapPermissions(
-          mockPermissions,
-          WEIGHT_THRESHOLD,
-          MinPermissionAbstractionDisplayCount,
-        ),
-      ).toStrictEqual([
-        {
-          label: 'Permission A',
-          weight: 4,
-        },
-        {
-          label: 'Permission B',
-          weight: 4,
-        },
-        {
-          label: 'Permission C',
-          weight: 5,
-        },
-      ]);
-    });
-
-    it('should return permissions filtered by weight and gap filled with other permissions', () => {
-      const WEIGHT_THRESHOLD = 3;
-      const mockPermissions = [
-        {
-          label: 'Permission A',
-          weight: 4,
-        },
-        {
-          label: 'Permission B',
-          weight: 4,
-        },
-        {
-          label: 'Permission C',
-          weight: 1,
-        },
-        {
-          label: 'Permission D',
-          weight: 5,
-        },
-        {
-          label: 'Permission E',
-          weight: 6,
-        },
-      ];
-      expect(
-        util.getFilteredSnapPermissions(
-          mockPermissions,
-          WEIGHT_THRESHOLD,
-          MinPermissionAbstractionDisplayCount,
-        ),
-      ).toStrictEqual([
-        {
-          label: 'Permission C',
-          weight: 1,
-        },
-        {
-          label: 'Permission A',
-          weight: 4,
-        },
-        {
-          label: 'Permission B',
-          weight: 4,
-        },
-      ]);
-    });
-  });
-
   describe('getCalculatedTokenAmount1dAgo', () => {
     it('should return successfully balance of token 1dago', () => {
       const mockTokenFiatAmount = '10';
@@ -1445,52 +1295,36 @@ describe('util', () => {
       expect(util.isAbleToRevealSrp(hdAccount, [mockHDKeyring])).toBe(true);
     });
 
-    it('returns false for snap accounts derived from an HD keyring', () => {
-      const snapAccount = {
+    it('returns false for non-HD accounts derived from an HD keyring', () => {
+      const nonHdAccount = {
         address: '0x123',
         options: {
           entropySource: mockHDKeyring.metadata.id,
         },
         metadata: {
           keyring: {
-            type: KeyringTypes.snap,
+            type: KeyringTypes.ledger,
           },
         },
       };
 
-      expect(util.isAbleToRevealSrp(snapAccount, [mockHDKeyring])).toBe(false);
+      expect(util.isAbleToRevealSrp(nonHdAccount, [mockHDKeyring])).toBe(false);
     });
 
-    it('returns false for third-party Snap accounts derived from HD keyring', () => {
-      const snapAccount = {
-        address: '0x123',
-        options: {
-          entropySource: mockHDKeyring.metadata.id,
-        },
-        metadata: {
-          keyring: {
-            type: KeyringTypes.snap,
-          },
-        },
-      };
-
-      expect(util.isAbleToRevealSrp(snapAccount, [mockHDKeyring])).toBe(false);
-    });
-
-    it('returns false for Snap accounts not derived from HD keyring', () => {
-      const snapAccount = {
+    it('returns false for non-HD accounts not derived from HD keyring', () => {
+      const nonHdAccount = {
         address: '0x123',
         options: {
           entropySource: 'some-other-id',
         },
         metadata: {
           keyring: {
-            type: KeyringTypes.snap,
+            type: KeyringTypes.ledger,
           },
         },
       };
 
-      expect(util.isAbleToRevealSrp(snapAccount, [mockHDKeyring])).toBe(false);
+      expect(util.isAbleToRevealSrp(nonHdAccount, [mockHDKeyring])).toBe(false);
     });
 
     it('should return false for hardware wallet accounts', () => {

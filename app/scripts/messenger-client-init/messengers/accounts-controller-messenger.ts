@@ -33,9 +33,6 @@ export function getAccountsControllerMessenger(
     ],
     events: [
       'KeyringController:stateChange',
-      'SnapKeyring:accountAssetListUpdated',
-      'SnapKeyring:accountBalancesUpdated',
-      'SnapKeyring:accountTransactionsUpdated',
       'MultichainNetworkController:networkDidChange',
     ],
   });

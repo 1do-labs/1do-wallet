@@ -73,10 +73,6 @@ jest.mock('../../../selectors/multi-srp/multi-srp', () => ({
   getShouldShowSeedPhraseReminder: () => false,
 }));
 
-jest.mock('../../../ducks/bridge/selectors', () => ({
-  getAllBridgeableNetworks: () => [],
-}));
-
 const MOCK_RECENT_PAGE = '/home';
 jest.mock('../../../ducks/history/history', () => ({
   getMostRecentOverviewPage: jest

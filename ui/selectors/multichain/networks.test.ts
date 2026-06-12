@@ -98,7 +98,7 @@ const mockState: TestState = {
   metamask: {
     remoteFeatureFlags: {},
     multichainNetworkConfigurationsByChainId: {},
-    selectedMultichainNetworkChainId: 'solana:ignored' as CaipChainId,
+    selectedMultichainNetworkChainId: 'unknown:ignored' as CaipChainId,
     isEvmSelected: false,
     selectedNetworkClientId: 'mainnet',
     networkConfigurationsByChainId: {
@@ -146,9 +146,10 @@ describe('Multichain network selectors', () => {
 
   describe('getMultichainNetworkConfigurationsTuple', () => {
     it('returns multichain and EVM network configurations', () => {
-      expect(getMultichainNetworkConfigurationsTuple(mockState)).toStrictEqual(
-        [mockEvmNetworksWithNewConfig, mockEvmNetworksWithOldConfig],
-      );
+      expect(getMultichainNetworkConfigurationsTuple(mockState)).toStrictEqual([
+        mockEvmNetworksWithNewConfig,
+        mockEvmNetworksWithOldConfig,
+      ]);
     });
   });
 

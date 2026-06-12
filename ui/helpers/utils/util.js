@@ -9,8 +9,6 @@ import {
 } from '@metamask/assets-controllers';
 import * as lodash from 'lodash';
 import bowser from 'bowser';
-import { WALLET_SNAP_PERMISSION_KEY } from '@metamask/snaps-rpc-methods';
-import { stripSnapPrefix } from '@metamask/snaps-utils';
 import { isObject, isStrictHexString } from '@metamask/utils';
 import { Web3Provider } from '@ethersproject/providers';
 import { Contract } from '@ethersproject/contracts';
@@ -160,8 +158,8 @@ export function isValidDomainName(address) {
 }
 
 /**
- * Checks if a name could potentially be resolved by name resolution services or Snaps.
- * This is more permissive than isValidDomainName to allow resolver Snaps to handle
+ * Checks if a name could potentially be resolved by name resolution services.
+ * This is more permissive than isValidDomainName to allow resolvers to handle
  * various name formats like email-like names (yulia@beast), scheme-based names (ens:vitalik),
  * or other custom formats.
  *
@@ -742,31 +740,6 @@ export function isNullish(value) {
   return value === null || value === undefined;
 }
 
-export const getSnapName = (snapsMetadata) => {
-  return (snapId) => {
-    return snapsMetadata[snapId]?.name ?? stripSnapPrefix(snapId);
-  };
-};
-
-export const getDedupedSnaps = (request, permissions) => {
-  const permission = request?.permissions?.[WALLET_SNAP_PERMISSION_KEY];
-  const requestedSnaps = permission?.caveats[0].value;
-  const currentSnaps =
-    permissions?.[WALLET_SNAP_PERMISSION_KEY]?.caveats[0].value;
-
-  if (!isObject(currentSnaps) && requestedSnaps) {
-    return Object.keys(requestedSnaps);
-  }
-
-  const requestedSnapKeys = requestedSnaps ? Object.keys(requestedSnaps) : [];
-  const currentSnapKeys = currentSnaps ? Object.keys(currentSnaps) : [];
-  const dedupedSnaps = requestedSnapKeys.filter(
-    (snapId) => !currentSnapKeys.includes(snapId),
-  );
-
-  return dedupedSnaps.length > 0 ? dedupedSnaps : requestedSnapKeys;
-};
-
 export const IS_FLASK = process.env.METAMASK_BUILD_TYPE === 'flask';
 
 /**
@@ -797,16 +770,16 @@ export const sanitizeString = (value) => {
  * Checks if the given keyring type is able to export an account.
  *
  * @param keyringType - The type of the keyring.
- * @returns {boolean} `false` if the keyring type includes 'Hardware' or 'Snap', `true` otherwise.
+ * @returns {boolean} `false` if the keyring type includes 'Hardware', `true` otherwise.
  */
 export const isAbleToExportAccount = (keyringType) => {
   if (typeof keyringType !== 'string') {
     return false;
   }
-  return !keyringType.includes('Hardware') && !keyringType.includes('Snap');
+  return !keyringType.includes('Hardware');
 };
 
-export const isAbleToRevealSrp = (accountToExport, keyrings = []) => {
+export const isAbleToRevealSrp = (accountToExport) => {
   if (!isObject(accountToExport)) {
     return false;
   }
@@ -898,7 +871,7 @@ export const hexToText = (hex) => {
 /**
  * Extract and return first character (letter or number) of a provided string.
  * If not possible, return question mark.
- * Note: This function is used for generating fallback avatars for different entities (websites, Snaps, etc.)
+ * Note: This function is used for generating fallback avatars for different entities such as websites.
  * Note: Only letters and numbers will be returned if possible (special characters are ignored).
  *
  * @param {string} subjectName - Name of a subject.
@@ -950,41 +923,6 @@ export const transformOriginToTitle = (rawOrigin) => {
   }
 };
 
-/**
- * Get abstracted Snap permissions filtered by weight.
- *
- * @param weightedPermissions - Set of Snap permissions that have 'weight' property assigned.
- * @param weightThreshold - Number that represents weight threshold for filtering.
- * @param minPermissionCount - Minimum number of permissions to show,
- * if filtered permissions count are less than the value specified.
- * @returns Subset of permissions passing weight criteria.
- */
-export const getFilteredSnapPermissions = (
-  weightedPermissions,
-  weightThreshold = Infinity,
-  minPermissionCount = 3,
-) => {
-  const filteredPermissions = weightedPermissions.filter(
-    (permission) => permission.weight <= weightThreshold,
-  );
-
-  // If there are not enough permissions that fall into desired set filtered by weight,
-  // then fill the gap, no matter what the weight is
-  if (minPermissionCount && filteredPermissions.length < minPermissionCount) {
-    const remainingPermissions = weightedPermissions.filter(
-      (permission) => permission.weight > weightThreshold,
-    );
-    // Add permissions until desired count is reached
-    return filteredPermissions.concat(
-      remainingPermissions.slice(
-        0,
-        minPermissionCount - filteredPermissions.length,
-      ),
-    );
-  }
-
-  return filteredPermissions;
-};
 /**
  * Helper function to calculate the token amount 1dAgo using price percentage a day ago.
  *

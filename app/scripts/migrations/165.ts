@@ -6,15 +6,21 @@ import {
   assert,
   isPlainObject,
 } from '@metamask/utils';
-import { SnapId } from '@metamask/snaps-sdk';
 import { DateTime } from 'luxon';
 import { parseExpression } from 'cron-parser';
 import {
   PermissionControllerState,
   PermissionConstraint,
 } from '@metamask/permission-controller';
-import { isSnapId, SnapCaveatType } from '@metamask/snaps-utils';
-import { SnapEndowments } from '@metamask/snaps-rpc-methods';
+
+type SnapId = `npm:${string}` | `local:${string}`;
+
+const SNAP_ENDOWMENT_CRONJOB = 'endowment:cronjob';
+const SNAP_CRONJOB_CAVEAT_TYPE = 'snapCronjob';
+
+function isSnapId(origin: string): origin is SnapId {
+  return origin.startsWith('npm:') || origin.startsWith('local:');
+}
 
 /**
  * The versioned data containing the extension state and metadata.
@@ -200,16 +206,16 @@ function transformState(
       .filter(
         (subject) =>
           isSnapId(subject.origin) &&
-          subject.permissions[SnapEndowments.Cronjob],
+          subject.permissions[SNAP_ENDOWMENT_CRONJOB],
       )
       .flatMap((subject) => {
-        const { caveats } = subject.permissions[SnapEndowments.Cronjob];
+        const { caveats } = subject.permissions[SNAP_ENDOWMENT_CRONJOB];
         if (!Array.isArray(caveats)) {
           return [];
         }
 
         const cronjobCaveat = caveats.find(
-          (caveat) => caveat.type === SnapCaveatType.SnapCronjob,
+          (caveat) => caveat.type === SNAP_CRONJOB_CAVEAT_TYPE,
         );
 
         if (

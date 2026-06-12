@@ -95,9 +95,9 @@ describe('MultichainSiteCellTooltip', () => {
       ],
     },
     {
-      id: 'snap:local:custody:test/0xca8f1F0245530118D0cf14a06b01Daf8f76Cf281',
+      id: 'keyring:Ledger Hardware/0xca8f1F0245530118D0cf14a06b01Daf8f76Cf281',
       metadata: {
-        name: 'Snap Account 1',
+        name: 'Ledger Account 1',
         pinned: false,
         hidden: false,
         lastSelected: 0,
@@ -105,7 +105,7 @@ describe('MultichainSiteCellTooltip', () => {
       accounts: [
         createMockInternalAccount({
           address: '0xca8f1F0245530118D0cf14a06b01Daf8f76Cf281',
-          name: 'Another Snap Account 1',
+          name: 'Ledger Account 1',
         }),
       ],
     },
@@ -289,8 +289,9 @@ describe('MultichainSiteCellTooltip', () => {
   });
 
   it('shows overflow indicator for many networks in avatar group', () => {
-    const manyNetworks: EvmNetworkConfigurationWithCaipChainId[] =
-      Array.from({ length: 10 }, (_, index) => ({
+    const manyNetworks: EvmNetworkConfigurationWithCaipChainId[] = Array.from(
+      { length: 10 },
+      (_, index) => ({
         name: `Network ${index + 1}`,
         chainId: `0x${index + 1}`,
         caipChainId: `eip155:${index + 1}` as CaipChainId,
@@ -304,7 +305,8 @@ describe('MultichainSiteCellTooltip', () => {
             url: `https://rpc${index + 1}.com`,
           },
         ],
-      }));
+      }),
+    );
 
     const { getByTestId, container } = renderWithProvider(
       <MultichainSiteCellTooltip accountGroups={[]} networks={manyNetworks} />,

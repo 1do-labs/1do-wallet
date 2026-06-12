@@ -1802,7 +1802,7 @@ class Driver {
   #getErrorFromEvent(event) {
     // Extract the values from the array
     const values = event.args.map((a) => {
-      // Handle snaps error type
+      // Handle structured error type
       if (a && a.preview && Array.isArray(a.preview.properties)) {
         return a.preview.properties
           .filter((prop) => prop.value !== 'Object')

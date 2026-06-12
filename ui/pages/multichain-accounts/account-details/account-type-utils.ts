@@ -23,7 +23,6 @@ export const getAccountTypeCategory = (
 
   const { type, metadata } = account;
   const keyringType = metadata?.keyring?.type as KeyringTypes;
-  const snapId = metadata?.snap?.id;
 
   // Hardware accounts (must be checked before EVM check)
   if (
@@ -42,10 +41,6 @@ export const getAccountTypeCategory = (
   // Private key accounts (must be checked before EVM check)
   if (keyringType === KeyringTypes.simple) {
     return 'private-key';
-  }
-
-  if (snapId === 'npm:@metamask/institutional-wallet-snap') {
-    return 'institutional';
   }
 
   // EVM accounts (EOA and ERC-4337) - general fallback

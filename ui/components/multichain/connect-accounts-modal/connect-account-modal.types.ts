@@ -2,7 +2,7 @@ import { type InternalAccount } from '@metamask/keyring-internal-api';
 
 export enum ConnectAccountsType {
   Account = 'disconnectAllAccountsText',
-  Snap = 'disconnectAllSnapsText',
+  NonEvm = 'disconnectAllAccountsText',
 }
 
 export type AccountType = InternalAccount & {

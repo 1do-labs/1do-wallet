@@ -374,7 +374,7 @@ describe('Selectors', () => {
       },
     );
 
-    jestIt('returns false if a snap account is used', () => {
+    jestIt('returns false if a non-selected account is used', () => {
       const state = createSwapsMockStore();
       state.metamask.internalAccounts.selectedAccount =
         '36eb02e0-7925-47f0-859f-076608f09b69';

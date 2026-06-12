@@ -6,9 +6,6 @@ import type { Hex } from 'viem';
 import type { MetaMetricsEventFragment } from '../constants/metametrics';
 import type { TokenStandard } from '../constants/transaction';
 import type { HardwareKeyringType } from '../constants/hardware-wallets';
-// TODO: Remove restricted import
-// eslint-disable-next-line import-x/no-restricted-paths
-import type { SnapAndHardwareMessenger } from '../../app/scripts/lib/snap-keyring/metrics';
 import type { ScanAddressResponse } from '../lib/trust-signals';
 
 export type TransactionMetricsRequest = {
@@ -43,7 +40,6 @@ export type TransactionMetricsRequest = {
   }>;
   getTransaction: (transactionId: string) => TransactionMeta;
   provider: Provider;
-  snapAndHardwareMessenger: SnapAndHardwareMessenger;
   // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31973
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   trackEvent: (payload: any) => void;

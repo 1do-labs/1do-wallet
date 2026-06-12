@@ -208,9 +208,6 @@ describe('useAccountTotalCrossChainFiatBalance', () => {
         '0x1': true,
         '0xe708': true,
       },
-      solana: {
-        'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp': true,
-      },
     });
 
     mockGetProviderConfig.mockReturnValue({

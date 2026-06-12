@@ -16,7 +16,6 @@ import { useSendContext } from '../../../context/send';
 import { useRecipientValidation } from '../../../hooks/send/useRecipientValidation';
 import { useRecipientSelectionMetrics } from '../../../hooks/send/metrics/useRecipientSelectionMetrics';
 import { useAmountValidation } from '../../../hooks/send/useAmountValidation';
-import { useSendType } from '../../../hooks/send/useSendType';
 import { SendHero } from '../../UI/send-hero';
 import { Amount } from '../amount/amount';
 import { Recipient } from '../recipient';
@@ -28,8 +27,7 @@ export const AmountRecipient = () => {
   const [hexDataError, setHexDataError] = useState<string>();
   const [isAlertModalOpen, setIsAlertModalOpen] = useState(false);
   const { asset, toResolved, nonEVMSubmitError } = useSendContext();
-  const { amountError, validateNonEvmAmountAsync } = useAmountValidation();
-  const { isNonEvmSendType } = useSendType();
+  const { amountError } = useAmountValidation();
   const { handleSubmit } = useSendActions();
   const { captureAmountSelected } = useAmountSelectionMetrics();
   const { captureRecipientSelected } = useRecipientSelectionMetrics();
@@ -59,24 +57,10 @@ export const AmountRecipient = () => {
   }, []);
 
   const proceedWithSubmit = useCallback(async () => {
-    if (isNonEvmSendType) {
-      // Non EVM flows need an extra validation because "value" can be empty dependent on the blockchain (e.g it's fine for Solana but not for Bitcoin)
-      // Hence we do a call for `validateNonEvmAmountAsync` here to raise UI validation errors if exists
-      const nonEvmAmountError = await validateNonEvmAmountAsync();
-      if (nonEvmAmountError) {
-        return;
-      }
-    }
     handleSubmit();
     captureAmountSelected();
     captureRecipientSelected();
-  }, [
-    captureAmountSelected,
-    captureRecipientSelected,
-    handleSubmit,
-    isNonEvmSendType,
-    validateNonEvmAmountAsync,
-  ]);
+  }, [captureAmountSelected, captureRecipientSelected, handleSubmit]);
 
   const handleAlertModalAcknowledge = useCallback(async () => {
     setIsAlertModalOpen(false);

@@ -1,4 +1,4 @@
-import { BtcAccountType, EthScope } from '@metamask/keyring-api';
+import { EthScope } from '@metamask/keyring-api';
 import {
   GOERLI_DISPLAY_NAME,
   LINEA_GOERLI_DISPLAY_NAME,
@@ -10,8 +10,6 @@ import { BackgroundColor } from '../constants/design-system';
 import { KeyringType } from '../../../shared/constants/keyring';
 import { HardwareKeyringNames } from '../../../shared/constants/hardware-wallets';
 import mockState from '../../../test/data/mock-state.json';
-import { SOLANA_WALLET_SNAP_ID } from '../../../shared/lib/accounts/solana-wallet-snap';
-import { BITCOIN_WALLET_SNAP_ID } from '../../../shared/lib/accounts';
 import {
   getAccountLabels,
   getAccountNameErrorMessage,
@@ -115,9 +113,6 @@ describe('Accounts', () => {
         keyring: {
           type: KeyringType.hdKeyTree,
         },
-        snap: {
-          id: SOLANA_WALLET_SNAP_ID,
-        },
       },
       options: {},
       methods: [
@@ -199,63 +194,6 @@ describe('Accounts', () => {
       ).toStrictEqual([]);
     });
 
-    describe('Snap Account Label', () => {
-      const mockSnapName = 'Test Snap Name';
-      const mockSnapAccountWithName = {
-        ...mockAccount,
-        metadata: {
-          ...mockAccount.metadata,
-          type: KeyringType.snap,
-          snap: {
-            name: mockSnapName,
-            id: SOLANA_WALLET_SNAP_ID,
-          },
-        },
-      };
-      const mockSnapAccountWithoutName = {
-        ...mockAccount,
-        metadata: {
-          ...mockAccount.metadata,
-          type: KeyringType.snap,
-        },
-      };
-
-      it('should not return snap name with beta tag if snap name is provided but the snap is preinstalled', () => {
-        expect(
-          getAccountLabels(
-            KeyringType.snap,
-            mockSnapAccountWithName,
-            keyringsWithMetadata,
-            mockSnapName,
-            false,
-          ),
-        ).toStrictEqual([]);
-      });
-
-      it('should not return generic snap label with beta tag if snap name is not provided and the snap is preinstalled', () => {
-        expect(
-          getAccountLabels(
-            KeyringType.snap,
-            mockSnapAccountWithoutName,
-            keyringsWithMetadata,
-            false,
-          ),
-        ).toStrictEqual([]);
-      });
-
-      it('should return empty array if snap is preinstalled and the account does not define a entropySource', () => {
-        expect(
-          getAccountLabels(
-            KeyringType.snap,
-            mockSnapAccountWithName,
-            keyringsWithMetadata,
-            mockSnapName,
-            true,
-          ),
-        ).toStrictEqual([]);
-      });
-    });
-
     describe('SRP label', () => {
       it('should show SRP label with index when there are multiple HD keyrings', () => {
         const mockAccountWithHdKeyring = {
@@ -263,9 +201,6 @@ describe('Accounts', () => {
           type: EthScope.Eoa,
           metadata: {
             keyring: { type: KeyringType.hdKeyTree },
-            snap: {
-              id: SOLANA_WALLET_SNAP_ID,
-            },
           },
         };
 
@@ -295,9 +230,6 @@ describe('Accounts', () => {
           type: EthScope.Eoa,
           metadata: {
             keyring: { type: KeyringType.hdKeyTree },
-            snap: {
-              id: SOLANA_WALLET_SNAP_ID,
-            },
           },
         };
 
@@ -316,64 +248,6 @@ describe('Accounts', () => {
           ),
         ).toStrictEqual([]);
       });
-
-      it('should show SRP label for snap accounts with entropySource matching HD keyring', () => {
-        const mockSnapAccount = {
-          address: '0x0dcd5d886577d5081b0c52e242ef29e70be3e7bc',
-          type: EthScope.Eoa,
-          options: {
-            entropySource: 'hdKeyring2',
-          },
-          metadata: {
-            keyring: { type: KeyringType.snap },
-            snap: {
-              id: SOLANA_WALLET_SNAP_ID,
-            },
-          },
-        };
-
-        expect(
-          getAccountLabels(
-            KeyringType.snap,
-            mockSnapAccount,
-            keyringsWithMetadata,
-            'Test Snap',
-          ),
-        ).toStrictEqual([{ label: 'SRP #2', icon: null }]);
-      });
-    });
-
-    describe('Bitcoin account type label', () => {
-      it.each([
-        [BtcAccountType.P2pkh, 'Legacy'],
-        [BtcAccountType.P2sh, 'SegWit'],
-        [BtcAccountType.P2wpkh, 'Native SegWit'],
-        [BtcAccountType.P2tr, 'Taproot'],
-      ])(
-        'should show Bitcoin account type label: %s',
-        (type, expectedLabel) => {
-          const mockBitcoinAccount = {
-            ...mockAccount,
-            address: 'bc1q4degm5k044n9xv3ds7d8l6hfavydte6wn6sesw',
-            type,
-            metadata: {
-              ...mockAccount.metadata,
-              snap: {
-                ...mockAccount.metadata.snap,
-                id: BITCOIN_WALLET_SNAP_ID,
-              },
-            },
-          };
-
-          expect(
-            getAccountLabels(
-              KeyringType.snap,
-              mockBitcoinAccount,
-              keyringsWithMetadata,
-            ),
-          ).toStrictEqual([{ label: expectedLabel, icon: null }]);
-        },
-      );
     });
   });
 });

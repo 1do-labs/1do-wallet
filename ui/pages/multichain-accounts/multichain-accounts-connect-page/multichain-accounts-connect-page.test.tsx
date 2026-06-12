@@ -209,7 +209,9 @@ jest.mock('../../../hooks/useAccountGroupsForPermissions', () => ({
 
 jest.mock('../../../../shared/lib/selectors/networks', () => ({
   ...jest.requireActual('../../../../shared/lib/selectors/networks'),
-  getAllNetworkConfigurationsByCaipChainId: jest.fn(() => STABLE_EVM_NETWORK_CONFIGS),
+  getAllNetworkConfigurationsByCaipChainId: jest.fn(
+    () => STABLE_EVM_NETWORK_CONFIGS,
+  ),
 }));
 
 jest.mock('../../../selectors/multichain-accounts/account-tree', () => ({
@@ -326,11 +328,6 @@ const mockInternalAccountsState = {
         name: 'Test Account',
         importTime: Date.now(),
         keyring: { type: 'HD Key Tree' },
-        snap: {
-          name: 'Test Snap',
-          id: 'test-snap-id',
-          enabled: true,
-        },
       },
       options: {},
       methods: ['eth_sendTransaction', 'eth_sign'],
@@ -683,7 +680,7 @@ describe('MultichainConnectPage', () => {
                       'eip155:1': {
                         accounts: [],
                       },
-                      'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp': {
+                      'eip155:137': {
                         accounts: [],
                       },
                     },
@@ -942,7 +939,7 @@ describe('MultichainConnectPage', () => {
                         'eip155:1': {
                           accounts: [],
                         },
-                        'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp': {
+                        'eip155:137': {
                           accounts: [],
                         },
                       },

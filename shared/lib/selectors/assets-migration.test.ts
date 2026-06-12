@@ -44,11 +44,11 @@ const erc20AssetAddressChecksummed = toChecksumHexAddress(
   erc20AssetAddressLowercase,
 ) as Hex;
 const erc20AssetId = `eip155:1/erc20:${erc20AssetAddressLowercase}`;
-const solanaTokenAssetId =
-  'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp/token:EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v';
+const unsupportedTokenAssetId =
+  'unknown:1/token:EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v';
 
 const nativePolygonAssetId = 'eip155:137/slip44:966';
-const bitcoinNativeAssetId = 'bip122:000000000019d6689c085ae165831e93/slip44:0';
+const unsupportedNativeAssetId = 'unknown:2/slip44:999';
 const mockAccountId3 = 'mock-account-id-3';
 const mockAccountAddressLowercase2: Hex =
   '0x1234567890abcdef1234567890abcdef12345678';
@@ -140,7 +140,7 @@ describe('getAccountTrackerControllerAccountsByChainId', () => {
               },
               [mockAccountId2]: {
                 id: mockAccountId2,
-                type: 'solana:data-account',
+                type: 'unknown:data-account',
               },
             },
           },
@@ -386,7 +386,7 @@ describe('getTokensControllerAllTokens', () => {
               },
               [mockAccountId2]: {
                 id: mockAccountId2,
-                type: 'solana:data-account',
+                type: 'unknown:data-account',
               },
             },
           },
@@ -596,7 +596,7 @@ describe('getTokensControllerAllIgnoredTokens', () => {
           allTokens: {},
           assetPreferences: {
             [erc20AssetId]: { hidden: true },
-            [solanaTokenAssetId]: { hidden: true },
+            [unsupportedTokenAssetId]: { hidden: true },
           },
           internalAccounts: {
             accounts: {
@@ -607,7 +607,7 @@ describe('getTokensControllerAllIgnoredTokens', () => {
               },
               [mockAccountId2]: {
                 id: mockAccountId2,
-                type: 'solana:data-account',
+                type: 'unknown:data-account',
               },
             },
           },
@@ -673,7 +673,7 @@ describe('getTokensControllerAllIgnoredTokens', () => {
               },
               [mockAccountId2]: {
                 id: mockAccountId2,
-                type: 'solana:data-account',
+                type: 'unknown:data-account',
               },
             },
           },
@@ -708,7 +708,7 @@ describe('getTokenBalancesControllerTokenBalances', () => {
       },
       [mockAccountId2]: {
         id: mockAccountId2,
-        type: 'solana:data-account',
+        type: 'unknown:data-account',
       },
     },
   };
@@ -837,7 +837,7 @@ describe('getTokenBalancesControllerTokenBalances', () => {
           remoteFeatureFlags: enabledFeatureFlags,
           tokenBalances: {},
           assetsInfo: {
-            [solanaTokenAssetId]: {
+            [unsupportedTokenAssetId]: {
               type: 'token',
               decimals: 6,
               symbol: 'USDC',
@@ -845,7 +845,7 @@ describe('getTokenBalancesControllerTokenBalances', () => {
           },
           assetsBalance: {},
           customAssets: {
-            [mockAccountId2]: [solanaTokenAssetId],
+            [mockAccountId2]: [unsupportedTokenAssetId],
           },
           internalAccounts: baseInternalAccounts,
         },
@@ -946,7 +946,7 @@ describe('getMultiChainAssetsControllerAccountsAssets', () => {
   describe('when assets unify state feature is disabled', () => {
     it('returns accountsAssets from state unchanged', () => {
       const legacyAccountsAssets = {
-        [mockAccountId2]: [solanaTokenAssetId] as CaipAssetType[],
+        [mockAccountId2]: [unsupportedTokenAssetId] as CaipAssetType[],
       };
       const state = {
         metamask: {
@@ -977,7 +977,7 @@ describe('getMultiChainAssetsControllerAccountsAssets', () => {
               [erc20AssetId]: { amount: '1' },
             },
             [mockAccountId2]: {
-              [solanaTokenAssetId]: { amount: '100' },
+              [unsupportedTokenAssetId]: { amount: '100' },
             },
           },
           customAssets: {},
@@ -990,7 +990,7 @@ describe('getMultiChainAssetsControllerAccountsAssets', () => {
               },
               [mockAccountId2]: {
                 id: mockAccountId2,
-                type: 'solana:data-account',
+                type: 'unknown:data-account',
               },
             },
           },
@@ -999,35 +999,35 @@ describe('getMultiChainAssetsControllerAccountsAssets', () => {
       const result = getMultiChainAssetsControllerAccountsAssets(state);
 
       expect(result).toStrictEqual({
-        [mockAccountId2]: [solanaTokenAssetId],
+        [mockAccountId2]: [unsupportedTokenAssetId],
       });
     });
   });
 
   describe('edge cases when enabled', () => {
     it('merges and deduplicates assetsBalance and customAssets', () => {
-      const extraSolAssetId =
-        'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp/token:So11111111111111111111111111111111111111112' as CaipAssetType;
+      const extraUnsupportedAssetId =
+        'unknown:1/token:So11111111111111111111111111111111111111112' as CaipAssetType;
       const state = {
         metamask: {
           ...enabledFlags,
           accountsAssets: {},
           assetsBalance: {
             [mockAccountId2]: {
-              [solanaTokenAssetId]: { amount: '100' },
+              [unsupportedTokenAssetId]: { amount: '100' },
             },
           },
           customAssets: {
             [mockAccountId2]: [
-              solanaTokenAssetId as CaipAssetType,
-              extraSolAssetId,
+              unsupportedTokenAssetId as CaipAssetType,
+              extraUnsupportedAssetId,
             ],
           },
           internalAccounts: {
             accounts: {
               [mockAccountId2]: {
                 id: mockAccountId2,
-                type: 'solana:data-account',
+                type: 'unknown:data-account',
               },
             },
           },
@@ -1036,8 +1036,8 @@ describe('getMultiChainAssetsControllerAccountsAssets', () => {
       const result = getMultiChainAssetsControllerAccountsAssets(state);
 
       expect(result[mockAccountId2]).toHaveLength(2);
-      expect(result[mockAccountId2]).toContain(solanaTokenAssetId);
-      expect(result[mockAccountId2]).toContain(extraSolAssetId);
+      expect(result[mockAccountId2]).toContain(unsupportedTokenAssetId);
+      expect(result[mockAccountId2]).toContain(extraUnsupportedAssetId);
     });
 
     it('filters out EIP155 assets for non-EVM accounts', () => {
@@ -1048,7 +1048,7 @@ describe('getMultiChainAssetsControllerAccountsAssets', () => {
           assetsBalance: {
             [mockAccountId2]: {
               [nativeEthAssetId]: { amount: '1' },
-              [solanaTokenAssetId]: { amount: '100' },
+              [unsupportedTokenAssetId]: { amount: '100' },
             },
           },
           customAssets: {},
@@ -1056,7 +1056,7 @@ describe('getMultiChainAssetsControllerAccountsAssets', () => {
             accounts: {
               [mockAccountId2]: {
                 id: mockAccountId2,
-                type: 'solana:data-account',
+                type: 'unknown:data-account',
               },
             },
           },
@@ -1064,7 +1064,7 @@ describe('getMultiChainAssetsControllerAccountsAssets', () => {
       };
       const result = getMultiChainAssetsControllerAccountsAssets(state);
 
-      expect(result[mockAccountId2]).toStrictEqual([solanaTokenAssetId]);
+      expect(result[mockAccountId2]).toStrictEqual([unsupportedTokenAssetId]);
     });
 
     it('returns empty array when non-EVM account has only EIP155 assets', () => {
@@ -1082,7 +1082,7 @@ describe('getMultiChainAssetsControllerAccountsAssets', () => {
             accounts: {
               [mockAccountId2]: {
                 id: mockAccountId2,
-                type: 'solana:data-account',
+                type: 'unknown:data-account',
               },
             },
           },
@@ -1099,7 +1099,7 @@ describe('getMultiChainAssetsControllerAssetsMetadata', () => {
   describe('when assets unify state feature is disabled', () => {
     it('returns assetsMetadata from state unchanged', () => {
       const legacyAssetsMetadata = {
-        [solanaTokenAssetId]: {
+        [unsupportedTokenAssetId]: {
           fungible: true as const,
           iconUrl: 'https://example.com/sol.png',
           units: [{ decimals: 6, symbol: 'USDC', name: 'USD Coin' }],
@@ -1138,7 +1138,7 @@ describe('getMultiChainAssetsControllerAssetsMetadata', () => {
               symbol: 'USDC',
               name: 'USD Coin',
             },
-            [solanaTokenAssetId]: {
+            [unsupportedTokenAssetId]: {
               type: 'token',
               decimals: 6,
               symbol: 'USDC',
@@ -1151,7 +1151,7 @@ describe('getMultiChainAssetsControllerAssetsMetadata', () => {
       const result = getMultiChainAssetsControllerAssetsMetadata(state);
 
       expect(result).toStrictEqual({
-        [solanaTokenAssetId]: {
+        [unsupportedTokenAssetId]: {
           fungible: true,
           iconUrl: 'https://example.com/sol-usdc.png',
           units: [
@@ -1175,18 +1175,18 @@ describe('getMultiChainAssetsControllerAssetsMetadata', () => {
           ...enabledFlags,
           assetsMetadata: {},
           assetsInfo: {
-            [solanaTokenAssetId]: {
+            [unsupportedTokenAssetId]: {
               type: 'token',
               decimals: 9,
               symbol: 'SOL',
-              name: 'Solana',
+              name: 'Unsupported',
             },
           },
         },
       };
       const result = getMultiChainAssetsControllerAssetsMetadata(state);
 
-      expect(result[solanaTokenAssetId as CaipAssetType].iconUrl).toBe('');
+      expect(result[unsupportedTokenAssetId as CaipAssetType].iconUrl).toBe('');
     });
 
     it('excludes EIP155 assets from multichain metadata', () => {
@@ -1221,7 +1221,7 @@ describe('getMultiChainAssetsControllerAllIgnoredAssets', () => {
   describe('when assets unify state feature is disabled', () => {
     it('returns allIgnoredAssets from state unchanged', () => {
       const legacyAllIgnoredAssets = {
-        [mockAccountId2]: [solanaTokenAssetId] as CaipAssetType[],
+        [mockAccountId2]: [unsupportedTokenAssetId] as CaipAssetType[],
       };
       const state = {
         metamask: {
@@ -1248,7 +1248,7 @@ describe('getMultiChainAssetsControllerAllIgnoredAssets', () => {
           allIgnoredAssets: {},
           assetPreferences: {
             [erc20AssetId]: { hidden: true },
-            [solanaTokenAssetId]: { hidden: true },
+            [unsupportedTokenAssetId]: { hidden: true },
           },
           internalAccounts: {
             accounts: {
@@ -1259,7 +1259,7 @@ describe('getMultiChainAssetsControllerAllIgnoredAssets', () => {
               },
               [mockAccountId2]: {
                 id: mockAccountId2,
-                type: 'solana:data-account',
+                type: 'unknown:data-account',
               },
             },
           },
@@ -1268,7 +1268,7 @@ describe('getMultiChainAssetsControllerAllIgnoredAssets', () => {
       const result = getMultiChainAssetsControllerAllIgnoredAssets(state);
 
       expect(result).toStrictEqual({
-        [mockAccountId2]: [solanaTokenAssetId],
+        [mockAccountId2]: [unsupportedTokenAssetId],
       });
     });
   });
@@ -1280,13 +1280,13 @@ describe('getMultiChainAssetsControllerAllIgnoredAssets', () => {
           ...enabledFlags,
           allIgnoredAssets: {},
           assetPreferences: {
-            [solanaTokenAssetId]: { hidden: false },
+            [unsupportedTokenAssetId]: { hidden: false },
           },
           internalAccounts: {
             accounts: {
               [mockAccountId2]: {
                 id: mockAccountId2,
-                type: 'solana:data-account',
+                type: 'unknown:data-account',
               },
             },
           },
@@ -1309,7 +1309,7 @@ describe('getMultiChainAssetsControllerAllIgnoredAssets', () => {
             accounts: {
               [mockAccountId2]: {
                 id: mockAccountId2,
-                type: 'solana:data-account',
+                type: 'unknown:data-account',
               },
             },
           },
@@ -1326,7 +1326,7 @@ describe('getMultiChainAssetsControllerAllIgnoredAssets', () => {
           ...enabledFlags,
           allIgnoredAssets: {},
           assetPreferences: {
-            [solanaTokenAssetId]: { hidden: true },
+            [unsupportedTokenAssetId]: { hidden: true },
           },
           internalAccounts: {
             accounts: {
@@ -1351,7 +1351,7 @@ describe('getMultiChainBalancesControllerBalances', () => {
     it('returns balances from state unchanged', () => {
       const legacyBalances = {
         [mockAccountId2]: {
-          [solanaTokenAssetId]: { amount: '100', unit: 'USDC' },
+          [unsupportedTokenAssetId]: { amount: '100', unit: 'USDC' },
         },
       };
       const state = {
@@ -1380,7 +1380,7 @@ describe('getMultiChainBalancesControllerBalances', () => {
           assetsInfo: {
             [nativeEthAssetId]: { type: 'native', decimals: 18 },
             [erc20AssetId]: { type: 'erc20', decimals: 6, symbol: 'USDC' },
-            [solanaTokenAssetId]: {
+            [unsupportedTokenAssetId]: {
               type: 'token',
               decimals: 6,
               symbol: 'USDC',
@@ -1392,7 +1392,7 @@ describe('getMultiChainBalancesControllerBalances', () => {
               [erc20AssetId]: { amount: '1' },
             },
             [mockAccountId2]: {
-              [solanaTokenAssetId]: { amount: '250.5' },
+              [unsupportedTokenAssetId]: { amount: '250.5' },
             },
           },
           internalAccounts: {
@@ -1404,7 +1404,7 @@ describe('getMultiChainBalancesControllerBalances', () => {
               },
               [mockAccountId2]: {
                 id: mockAccountId2,
-                type: 'solana:data-account',
+                type: 'unknown:data-account',
               },
             },
           },
@@ -1414,7 +1414,7 @@ describe('getMultiChainBalancesControllerBalances', () => {
 
       expect(result).toStrictEqual({
         [mockAccountId2]: {
-          [solanaTokenAssetId]: { amount: '250.5', unit: 'USDC' },
+          [unsupportedTokenAssetId]: { amount: '250.5', unit: 'USDC' },
         },
       });
     });
@@ -1699,7 +1699,7 @@ describe('getTokenRatesControllerMarketData', () => {
               symbol: 'ETH',
               decimals: 18,
             },
-            [solanaTokenAssetId]: {
+            [unsupportedTokenAssetId]: {
               type: 'token',
               symbol: 'USDC',
               decimals: 6,
@@ -1707,7 +1707,7 @@ describe('getTokenRatesControllerMarketData', () => {
           },
           assetsPrice: {
             [nativeEthAssetId]: makeMockPrice({ id: 'eth', price: 2000 }),
-            [solanaTokenAssetId]: makeMockPrice({
+            [unsupportedTokenAssetId]: makeMockPrice({
               id: 'sol-usdc',
               price: 1,
             }),
@@ -1927,7 +1927,7 @@ describe('getMultichainAssetsRatesControllerConversionRates', () => {
   describe('when assets unify state feature is disabled', () => {
     it('returns conversionRates from state unchanged', () => {
       const legacyConversionRates = {
-        [solanaTokenAssetId]: {
+        [unsupportedTokenAssetId]: {
           rate: '1',
           conversionTime: 1700000000000,
           expirationTime: undefined,
@@ -1999,7 +1999,7 @@ describe('getMultichainAssetsRatesControllerConversionRates', () => {
               pricePercentChange200d: 20,
               pricePercentChange1y: 30,
             },
-            [solanaTokenAssetId]: {
+            [unsupportedTokenAssetId]: {
               assetPriceType: 'fungible',
               id: 'sol-usdc-price',
               price: 1.02,
@@ -2029,7 +2029,7 @@ describe('getMultichainAssetsRatesControllerConversionRates', () => {
       const result = getMultichainAssetsRatesControllerConversionRates(state);
 
       expect(result[nativeEthAssetId]).toBeUndefined();
-      expect(result[solanaTokenAssetId]).toStrictEqual({
+      expect(result[unsupportedTokenAssetId]).toStrictEqual({
         rate: '1.02',
         conversionTime: lastUpdated,
         expirationTime: undefined,
@@ -2078,7 +2078,7 @@ describe('getMultichainAssetsRatesControllerConversionRates', () => {
           ...enabledFlags,
           conversionRates: {},
           assetsPrice: {
-            [solanaTokenAssetId]: makeMockPrice({
+            [unsupportedTokenAssetId]: makeMockPrice({
               id: 'sol-usdc',
               price: 1.5,
               lastUpdated,
@@ -2093,7 +2093,7 @@ describe('getMultichainAssetsRatesControllerConversionRates', () => {
       };
       const result = getMultichainAssetsRatesControllerConversionRates(state);
 
-      const entry = result[solanaTokenAssetId];
+      const entry = result[unsupportedTokenAssetId];
       expect(entry.rate).toBe('1.5');
       expect(entry.conversionTime).toBe(lastUpdated);
       expect(entry.expirationTime).toBeUndefined();
@@ -2120,8 +2120,7 @@ describe('getMultichainAssetsRatesControllerConversionRates', () => {
 });
 
 describe('getRatesControllerRates', () => {
-  const solanaNativeAssetId =
-    'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp/slip44:501';
+  const solanaNativeAssetId = 'unknown:1/slip44:999';
 
   describe('when assets unify state feature is disabled', () => {
     it('returns rates from state unchanged', () => {
@@ -2162,7 +2161,7 @@ describe('getRatesControllerRates', () => {
               symbol: 'ETH',
               decimals: 18,
             },
-            [bitcoinNativeAssetId]: {
+            [unsupportedNativeAssetId]: {
               type: 'native',
               symbol: 'BTC',
               decimals: 8,
@@ -2180,7 +2179,7 @@ describe('getRatesControllerRates', () => {
               usdPrice: 2000,
               lastUpdated,
             }),
-            [bitcoinNativeAssetId]: makeMockPrice({
+            [unsupportedNativeAssetId]: makeMockPrice({
               id: 'btc',
               price: 71052.43,
               usdPrice: 71052.43,

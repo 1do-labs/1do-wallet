@@ -38,7 +38,6 @@ import {
   REVIEW_PERMISSIONS,
   IMPORT_SRP_ROUTE,
   BASIC_FUNCTIONALITY_OFF_ROUTE,
-  DEFI_ROUTE,
   DEEP_LINK_ROUTE,
   ACCOUNT_LIST_PAGE_ROUTE,
   MULTICHAIN_ACCOUNT_ADDRESS_LIST_PAGE_ROUTE,
@@ -137,7 +136,6 @@ const ConfirmDecryptMessage = mmLazy(
 );
 const Confirm = mmLazy(() => import('../confirmations/confirm/confirm.tsx'));
 const SendPage = mmLazy(() => import('../confirmations/send/index.ts'));
-const CrossChainSwap = mmLazy(() => import('../bridge/index.tsx'));
 const PermissionsConnect = mmLazy(
   () => import('../permissions-connect/index.js'),
 );
@@ -361,15 +359,6 @@ export const routeConfig = [
       {
         path: DEFAULT_ROUTE,
         element: <Home />,
-      },
-      {
-        element: <RequireBasicFunctionality />,
-        children: [
-          {
-            path: `${DEFI_ROUTE}/:chainId/:protocolId`,
-            element: <DisabledFeatureRedirect />,
-          },
-        ],
       },
     ],
   },

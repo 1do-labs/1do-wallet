@@ -152,25 +152,6 @@ describe('AccountShowPrivateKeyRow', () => {
 
       expect(screen.queryByText('privateKey')).not.toBeInTheDocument();
     });
-
-    it('does not render for non-exportable account (snap)', () => {
-      const state = createMockState();
-      const store = mockStore(state);
-      const snapAccount = {
-        ...MOCK_ACCOUNT_EOA,
-        metadata: {
-          ...MOCK_ACCOUNT_EOA.metadata,
-          keyring: { type: 'Snap' },
-        },
-      };
-
-      renderWithProvider(
-        <AccountShowPrivateKeyRow account={snapAccount} />,
-        store,
-      );
-
-      expect(screen.queryByText('privateKey')).not.toBeInTheDocument();
-    });
   });
 
   describe('Click Functionality', () => {

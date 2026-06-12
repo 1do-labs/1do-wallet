@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo } from 'react';
 import classnames from 'clsx';
 import {
   AddNetworkFields,
@@ -9,7 +9,6 @@ import { useSelector } from 'react-redux';
 import { useCurrencyDisplay } from '../../../../hooks/useCurrencyDisplay';
 import { AssetType } from '../../../../../shared/constants/transaction';
 import { Box } from '../../../component-library';
-import { MarketClosedModal } from '../../../app/assets/market-closed-modal';
 import {
   AlignItems,
   BackgroundColor,
@@ -33,7 +32,6 @@ import {
   type SafeChain,
   useSafeChains,
 } from '../../../../pages/settings/networks-tab/networks-form/use-safe-chains';
-import { useRWAToken } from '../../../../pages/bridge/hooks/useRWAToken';
 import { hexToDecimal } from '../../../../../shared/lib/conversion.utils';
 import AssetComponent from './Asset';
 import { AssetWithDisplayData, ERC20Asset, NFT, NativeAsset } from './types';
@@ -104,8 +102,6 @@ export default function AssetList({
   });
 
   const { safeChains } = useSafeChains();
-  const { isStockToken, isTokenTradingOpen } = useRWAToken();
-  const [showMarketClosedModal, setShowMarketClosedModal] = useState(false);
   const safeChainDetails: SafeChain | undefined = useMemo(
     () =>
       safeChains?.find((chain) => {
@@ -139,7 +135,6 @@ export default function AssetList({
         const isSelected = isMatchingChainId && isMatchingAddress;
 
         const isDisabled = isTokenDisabled?.(token) ?? false;
-        const tokenIsStock = isStockToken(token);
 
         return (
           <Box
@@ -159,10 +154,6 @@ export default function AssetList({
             data-testid="asset-list-item"
             onClick={() => {
               if (isDisabled) {
-                return;
-              }
-              if (tokenIsStock && !isTokenTradingOpen(token)) {
-                setShowMarketClosedModal(true);
                 return;
               }
               handleAssetChange(token);
@@ -218,10 +209,6 @@ export default function AssetList({
           </Box>
         );
       })}
-      <MarketClosedModal
-        isOpen={showMarketClosedModal}
-        onClose={() => setShowMarketClosedModal(false)}
-      />
     </Box>
   );
 }

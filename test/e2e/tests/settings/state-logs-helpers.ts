@@ -216,13 +216,10 @@ export const createTypeMapFromDefinition = (
 const getIgnoredKeys = (): string[] => [
   'localeMessages',
   'metamask.currentBlockGasLimitByChainId',
-  'metamask.database.verifiedSnaps',
   'metamask.domains',
   'metamask.networkConfigurationsByChainId',
   'metamask.slides',
-  'metamask.snaps',
   'metamask.subjects',
-  'metamask.verifiedSnaps',
   'metamask.networksMetadata',
   'metamask.appActiveTab', // Firefox doesn't support sidepanel and tabs may not be available at startup in E2E tests
 ];

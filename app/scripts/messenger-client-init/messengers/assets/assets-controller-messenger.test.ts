@@ -35,9 +35,6 @@ describe('getAssetsControllerMessenger', () => {
           // Network dependencies
           'NetworkController:getState',
           'NetworkController:getNetworkClientById',
-          // SnapDataSource dependencies
-          'SnapController:handleRequest',
-          'SnapController:getRunnableSnaps',
           'PermissionController:getPermissions',
           'PhishingController:bulkScanTokens',
         ]),
@@ -96,7 +93,6 @@ describe('getAssetsControllerInitMessenger', () => {
     expect(delegateSpy).toHaveBeenCalledWith(
       expect.objectContaining({
         actions: expect.arrayContaining([
-          'SnapController:handleRequest',
           'PreferencesController:getState',
           'OnboardingController:getState',
         ]),

@@ -110,7 +110,6 @@ import { getSelectedMultichainNetworkChainId } from '../../../selectors/multicha
 import { NetworkListItem } from '../network-list-item';
 import TokenListPlaceholder from '../../app/import-token/token-list/token-list-placeholder';
 import { endTrace, trace, TraceName } from '../../../../shared/lib/trace';
-import { useTokensWithFiltering } from '../../../hooks/bridge/useTokensWithFiltering';
 import { getIsAssetsUnifyStateEnabled } from '../../../selectors/assets-unify-state/feature-flags';
 import {
   getAssetsControllerAssetPreferences,
@@ -176,7 +175,7 @@ export const ImportTokensModal = ({ onClose }) => {
         setSelectedNetwork(chainId);
       }
     }
-  }, [currentMultichainChainId, chainId]); // This should not be executed when selectedNetwork changes
+  }, [currentMultichainChainId, chainId, selectedNetwork]);
 
   const useTokenDetection = useSelector(
     ({ metamask }) => metamask.useTokenDetection,
@@ -191,51 +190,19 @@ export const ImportTokensModal = ({ onClose }) => {
   const tokens = allTokens?.[selectedNetwork]?.[selectedAccount.address] || [];
   const contractExchangeRates = useSelector(getTokenExchangeRates);
 
-  // Use the new useTokensWithFiltering hook for getting token data
-  const { filteredTokenListGenerator, isLoading } = useTokensWithFiltering(
-    selectedNetwork,
-    null,
-    selectedAccount?.address,
-  );
+  const isLoading = false;
 
-  const shouldAddToken = useCallback(
-    (_symbol, _address, tokenChainId) => {
-      if (!tokenChainId || !selectedNetwork) {
-        return false;
-      }
-
-      return tokenChainId === selectedNetwork;
-    },
-    [selectedNetwork],
-  );
-
-  // Convert generator to token list for compatibility with existing components
   const tokenListByChain = useMemo(() => {
-    if (!filteredTokenListGenerator) {
+    if (selectedNetwork !== CHAIN_IDS.MAINNET) {
       return {};
-    }
-
-    const tokenData = {};
-    for (const token of filteredTokenListGenerator(shouldAddToken)) {
-      if (token.address) {
-        tokenData[token.address.toLowerCase()] = {
-          address: token.address,
-          symbol: token.symbol,
-          name: token.name,
-          decimals: token.decimals,
-          iconUrl: token.image,
-          aggregators: token.aggregators,
-          occurrences: token.occurrences,
-        };
-      }
     }
 
     return {
       [selectedNetwork]: {
-        data: tokenData,
+        data: STATIC_MAINNET_TOKEN_LIST,
       },
     };
-  }, [filteredTokenListGenerator, selectedNetwork, shouldAddToken]);
+  }, [selectedNetwork]);
 
   const [customAddress, setCustomAddress] = useState('');
   const [customAddressError, setCustomAddressError] = useState(null);
@@ -781,7 +748,9 @@ export const ImportTokensModal = ({ onClose }) => {
                       clearAllFormData();
                       setActionMode(ACTION_MODES.IMPORT_TOKEN);
                     }}
-                    selected={formatChainIdToHex(network.chainId) === selectedNetwork}
+                    selected={
+                      formatChainIdToHex(network.chainId) === selectedNetwork
+                    }
                   />
                 </Box>
               ))}
@@ -825,9 +794,7 @@ export const ImportTokensModal = ({ onClose }) => {
           ) : (
             <>
               <NetworkSelectorCustomImport
-                title={
-                  networkConfigurations[selectedNetwork]?.name
-                }
+                title={networkConfigurations[selectedNetwork]?.name}
                 buttonDataTestId="test-import-tokens-drop-down-custom-import"
                 chainId={selectedNetwork}
                 onSelectNetwork={() =>

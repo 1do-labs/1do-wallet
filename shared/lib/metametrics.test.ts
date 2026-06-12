@@ -35,9 +35,6 @@ const createTransactionMetricsRequest = (customProps = {}) => {
     getTokenStandardAndDetails: jest.fn(),
     getTransaction: jest.fn(),
     provider: provider as unknown as Provider,
-    // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31973
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    snapAndHardwareMessenger: jest.fn() as any,
     trackEvent: jest.fn(),
     getIsSmartTransaction: jest.fn().mockReturnValue(false),
     getSmartTransactionsPreferenceEnabled: jest.fn(),

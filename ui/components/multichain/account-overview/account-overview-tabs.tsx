@@ -13,7 +13,7 @@ import {
 import { MetaMetricsEventCategory } from '../../../../shared/constants/metametrics';
 import { endTrace, trace } from '../../../../shared/lib/trace';
 import { MetaMetricsContext } from '../../../contexts/metametrics';
-import { ASSET_ROUTE, DEFI_ROUTE } from '../../../helpers/constants/routes';
+import { ASSET_ROUTE } from '../../../helpers/constants/routes';
 import { useI18nContext } from '../../../hooks/useI18nContext';
 import { useTabState } from '../../../hooks/useTabState';
 import { useSafeChains } from '../../../pages/settings/networks-tab/networks-form/use-safe-chains';
@@ -27,7 +27,6 @@ import {
   setDefaultHomeActiveTabName,
 } from '../../../store/actions';
 import AssetList from '../../app/assets/asset-list';
-import DeFiTab from '../../app/assets/defi-list/defi-tab';
 import NftsTab from '../../app/assets/nfts/nfts-tab';
 import { Tab, Tabs } from '../../ui/tabs';
 import { useTokenBalances } from '../../../hooks/useTokenBalances';
@@ -42,7 +41,6 @@ export type AccountOverviewTabsProps = AccountOverviewCommonProps & {
   showTokensLinks?: boolean;
   showNfts: boolean;
   showActivity: boolean;
-  showDefi?: boolean;
   showRuntime?: boolean;
 };
 
@@ -51,7 +49,6 @@ export const AccountOverviewTabs = ({
   showTokensLinks,
   showNfts,
   showActivity,
-  showDefi,
   showRuntime,
 }: AccountOverviewTabsProps) => {
   const persistedTab = useSelector(getDefaultHomeActiveTabName);
@@ -137,12 +134,6 @@ export const AccountOverviewTabs = ({
       ),
     [navigate],
   );
-  const onClickDeFi = useCallback(
-    (chainId: string, protocolId: string) =>
-      navigate(`${DEFI_ROUTE}/${chainId}/${encodeURIComponent(protocolId)}`),
-    [navigate],
-  );
-
   const { safeChains } = useSafeChains();
 
   return (
@@ -164,22 +155,6 @@ export const AccountOverviewTabs = ({
             <AssetList
               showTokensLinks={showTokensLinks ?? true}
               onClickAsset={onClickAsset}
-              safeChains={safeChains}
-            />
-          </ErrorBoundary>
-        </Tab>
-      )}
-
-      {showDefi && (
-        <Tab
-          name={t('defi')}
-          tabKey={AccountOverviewTabKey.DeFi}
-          data-testid="account-overview__defi-tab"
-        >
-          <ErrorBoundary key="defi">
-            <DeFiTab
-              showTokensLinks={showTokensLinks ?? true}
-              onClickAsset={onClickDeFi}
               safeChains={safeChains}
             />
           </ErrorBoundary>

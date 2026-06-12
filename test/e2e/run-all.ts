@@ -243,7 +243,6 @@ async function main(): Promise<void> {
   // builds.
   const featureTestsOnMain = [
     ...(await getTestPathsForTestDir(path.join(__dirname, 'accounts'))),
-    ...(await getTestPathsForTestDir(path.join(__dirname, 'snaps'))),
   ];
 
   if (buildType === 'flask') {

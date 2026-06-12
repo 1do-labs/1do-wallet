@@ -5,18 +5,9 @@ import { Driver } from '../../webdriver/driver';
 import { login } from '../../page-objects/flows/login.flow';
 import TestDapp from '../../page-objects/pages/test-dapp';
 import { createDappTransaction } from '../../page-objects/flows/transaction';
-import { TestSnaps } from '../../page-objects/pages/test-snaps';
-import { openTestSnapClickButtonAndInstall } from '../../page-objects/flows/install-test-snap.flow';
 import SignTypedData from '../../page-objects/pages/confirmations/sign-typed-data-confirmation';
 import TransactionConfirmation from '../../page-objects/pages/confirmations/transaction-confirmation';
-import {
-  DAPP_ONE_URL,
-  DAPP_PATH,
-  MOCK_META_METRICS_ID,
-  WINDOW_TITLES,
-} from '../../constants';
-import FixtureBuilderV2 from '../../fixtures/fixture-builder-v2';
-import { mockDialogSnap } from '../../mock-response-data/snaps/snap-binary-mocks';
+import { WINDOW_TITLES } from '../../constants';
 import { withTransactionEnvelopeTypeFixtures } from './helpers';
 
 describe('Confirmation Navigation', function (this: Suite) {
@@ -108,67 +99,6 @@ describe('Confirmation Navigation', function (this: Suite) {
         await testDapp.checkFailedSignTypedData('User rejected the request.');
         await testDapp.checkFailedSignTypedDataV3('User rejected the request.');
         await testDapp.checkFailedSignTypedDataV4('User rejected the request.');
-      },
-    );
-  });
-
-  it('navigates between transactions, signatures, and snap dialogs', async function () {
-    await withFixtures(
-      {
-        dappOptions: {
-          numberOfTestDapps: 1,
-          customDappPaths: [DAPP_PATH.TEST_SNAPS],
-        },
-        driverOptions: { timeOut: 20000 },
-        fixtures: new FixtureBuilderV2()
-          .withPermissionControllerConnectedToTestDapp()
-          .withSnapsPrivacyWarningAlreadyShown()
-          .withMetaMetricsController({
-            metaMetricsId: MOCK_META_METRICS_ID,
-            participateInMetaMetrics: true,
-          })
-          .build(),
-        testSpecificMock: mockDialogSnap,
-        title: this.test?.fullTitle(),
-      },
-      async ({ driver }: { driver: Driver }) => {
-        await login(driver);
-
-        const testSnaps = new TestSnaps(driver);
-        await openTestSnapClickButtonAndInstall(
-          driver,
-          'connectDialogsButton',
-          { url: DAPP_ONE_URL },
-        );
-        await testSnaps.scrollAndClickButton('confirmationButton');
-
-        const testDapp = new TestDapp(driver);
-        await testDapp.openTestDappPage();
-        await testDapp.clickSignTypedDatav4();
-
-        await createDappTransaction(driver);
-        await driver.switchToWindowWithTitle(WINDOW_TITLES.Dialog);
-
-        const confirmation = new TransactionConfirmation(driver);
-        const signTypedDataConfirmation = new SignTypedData(driver);
-        await confirmation.checkPageNumbers(1, 3);
-        await confirmation.verifyConfirmationHeadingTitle();
-
-        await confirmation.clickNextPage();
-        await confirmation.checkPageNumbers(2, 3);
-        await signTypedDataConfirmation.verifyConfirmationHeadingTitle();
-
-        await confirmation.clickNextPage();
-        await confirmation.checkPageNumbers(3, 3);
-        await confirmation.checkDappInitiatedHeadingTitle();
-
-        await confirmation.clickPreviousPage();
-        await confirmation.checkPageNumbers(2, 3);
-        await signTypedDataConfirmation.verifyConfirmationHeadingTitle();
-
-        await confirmation.clickPreviousPage();
-        await confirmation.checkPageNumbers(1, 3);
-        await confirmation.verifyConfirmationHeadingTitle();
       },
     );
   });

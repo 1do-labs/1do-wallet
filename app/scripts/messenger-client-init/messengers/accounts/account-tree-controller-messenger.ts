@@ -8,7 +8,6 @@ import {
   AccountsControllerSetSelectedAccountAction,
 } from '@metamask/accounts-controller';
 import { Messenger } from '@metamask/messenger';
-import { SnapControllerGetSnapAction } from '@metamask/snaps-controllers';
 import { KeyringControllerGetStateAction } from '@metamask/keyring-controller';
 import {
   MultichainAccountServiceCreateMultichainAccountGroupAction,
@@ -25,7 +24,6 @@ type Actions =
   | AccountsControllerGetSelectedMultichainAccountAction
   | AccountsControllerSetSelectedAccountAction
   | AccountsControllerListMultichainAccountsAction
-  | SnapControllerGetSnapAction
   | KeyringControllerGetStateAction
   | MultichainAccountServiceCreateMultichainAccountGroupAction
   | MultichainAccountServiceCreateMultichainAccountGroupsAction;
@@ -72,7 +70,6 @@ export function getAccountTreeControllerMessenger(
       'AccountsController:setSelectedAccount',
       'MultichainAccountService:createMultichainAccountGroup',
       'MultichainAccountService:createMultichainAccountGroups',
-      'SnapController:getSnap',
       'KeyringController:getState',
     ],
   });

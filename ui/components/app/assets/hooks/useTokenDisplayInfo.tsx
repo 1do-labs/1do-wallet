@@ -17,7 +17,6 @@ import {
 import { getCurrentCurrency } from '../../../../ducks/metamask/metamask';
 import { useMultichainSelector } from '../../../../hooks/useMultichainSelector';
 import { useFormatters } from '../../../../hooks/useFormatters';
-import { isEvmChainId } from '../../../../../shared/lib/asset-utils';
 import { getInternalAccountBySelectedAccountGroupAndCaip } from '../../../../selectors/multichain-accounts/account-tree';
 import { TEST_CHAINS } from '../../../../../shared/constants/network';
 
@@ -30,7 +29,6 @@ export const useTokenDisplayInfo = ({
   token,
   fixCurrencyToUSD,
 }: UseTokenDisplayInfoProps): TokenDisplayInfo => {
-  const isEvm = isEvmChainId(token.chainId);
   const tokenList = useSelector(getTokenList) || {};
   const erc20TokensByChain = useSelector(selectERC20TokensByChain);
   const currentCurrency = useSelector(getCurrentCurrency);
@@ -79,59 +77,40 @@ export const useTokenDisplayInfo = ({
         )
       : undefined;
 
-  const isEvmMainnet =
-    token.chainId && isEvm ? isChainIdMainnet(token.chainId) : false;
+  const isEvmMainnet = token.chainId ? isChainIdMainnet(token.chainId) : false;
 
-  const isStakeable =
-    token.isStakeable || (isEvmMainnet && isEvm && token.isNative);
+  const isStakeable = token.isStakeable || (isEvmMainnet && token.isNative);
 
-  if (isEvm) {
-    const tokenData = Object.values(tokenList).find(
-      (tokenToFind) =>
-        isEqualCaseInsensitive(tokenToFind.symbol, token.symbol) &&
-        isEqualCaseInsensitive(tokenToFind.address, token.address),
-    );
+  const tokenData = Object.values(tokenList).find(
+    (tokenToFind) =>
+      isEqualCaseInsensitive(tokenToFind.symbol, token.symbol) &&
+      isEqualCaseInsensitive(tokenToFind.address, token.address),
+  );
 
-    const title =
-      tokenData?.name ||
-      (token.chainId === '0x1' && token.symbol === 'ETH'
-        ? 'Ethereum'
-        : token.chainId &&
-          erc20TokensByChain?.[token.chainId]?.data?.[
-            token.address.toLowerCase()
-          ]?.name) ||
-      token.symbol;
-
-    const tokenImage =
-      tokenData?.iconUrl ||
-      (token.chainId &&
+  const title =
+    tokenData?.name ||
+    (token.chainId === '0x1' && token.symbol === 'ETH'
+      ? 'Ethereum'
+      : token.chainId &&
         erc20TokensByChain?.[token.chainId]?.data?.[token.address.toLowerCase()]
-          ?.iconUrl) ||
-      token.image;
+          ?.name) ||
+    token.symbol;
 
-    return {
-      title,
-      tokenImage,
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      secondary,
-      isStakeable,
-      tokenChainImage: tokenChainImage as string,
-    };
-  }
+  const tokenImage =
+    tokenData?.iconUrl ||
+    (token.chainId &&
+      erc20TokensByChain?.[token.chainId]?.data?.[token.address.toLowerCase()]
+        ?.iconUrl) ||
+    token.image;
 
-  // TODO BIP44 Refactor: type for secondary is wrongly set as number | null, when it is a string | null
-  // Just changing it causes a number of errors all over the codebase
-  // The BIP44 flag is enabled and stable, so this can be refactored to use the type from the new selector
-  const nonEvmSecondary = secondary as unknown as number;
-
-  // TODO non-evm assets. this is only the native token
   return {
-    title: token.title,
-    tokenImage: token.image,
-    secondary: showFiat ? nonEvmSecondary : null,
-    isStakeable: false,
-    tokenChainImage: token.image as string,
+    title,
+    tokenImage,
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    secondary,
+    isStakeable,
+    tokenChainImage: tokenChainImage as string,
   };
 };
 

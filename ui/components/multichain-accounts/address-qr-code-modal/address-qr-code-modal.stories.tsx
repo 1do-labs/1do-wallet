@@ -31,46 +31,8 @@ export const Default: Story = {
   },
 };
 
-export const Solana: Story = {
-  render: function SolanaStory() {
-    const [isOpen, setIsOpen] = useState(true);
-    return (
-      <>
-        <Button onClick={() => setIsOpen(true)}>Open Modal</Button>
-        <AddressQRCodeModal
-          accountName="Account 1"
-          address="Dh9ZYBBCdD5FjjgKpAi9w9GQvK4f8k3b8a8HHKhz7kLa"
-          networkName="Solana"
-          networkImageSrc="./images/solana-logo.svg"
-          isOpen={isOpen}
-          onClose={() => setIsOpen(false)}
-        />
-      </>
-    );
-  },
-};
-
-export const Bitcoin: Story = {
-  render: function BitcoinStory() {
-    const [isOpen, setIsOpen] = useState(true);
-    return (
-      <>
-        <Button onClick={() => setIsOpen(true)}>Open Modal</Button>
-        <AddressQRCodeModal
-          accountName="Account 1"
-          address="bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh"
-          networkName="Bitcoin"
-          networkImageSrc="./images/bitcoin-logo.svg"
-          isOpen={isOpen}
-          onClose={() => setIsOpen(false)}
-        />
-      </>
-    );
-  },
-};
-
 export const UnknownNetwork: Story = {
-  render: function BitcoinStory() {
+  render: function UnknownNetworkStory() {
     const [isOpen, setIsOpen] = useState(true);
     return (
       <>

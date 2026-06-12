@@ -27,8 +27,6 @@ import {
   // TODO: Remove restricted import
   // eslint-disable-next-line import-x/no-restricted-paths
 } from '../../../ui/helpers/utils/metrics';
-import { isSnapPreinstalled } from '../../../shared/lib/snaps/snaps';
-import { getSnapAndHardwareInfoForMetrics } from './snap-keyring/metrics';
 import { getIframeProperties } from './getIframeProperties';
 
 /**
@@ -230,7 +228,6 @@ function isMultichainRequestMethod(method) {
  * @param {Function} opts.getAccountType
  * @param {Function} opts.getDeviceModel
  * @param {Function} opts.getHardwareTypeForMetric
- * @param {Messenger} opts.snapAndHardwareMessenger
  * @param {number} [opts.globalRateLimitTimeout] - time, in milliseconds, of the sliding
  * time window that should limit the number of method calls tracked to globalRateLimitMaxAmount.
  * @param {number} [opts.globalRateLimitMaxAmount] - max number of method calls that should
@@ -248,7 +245,6 @@ export default function createRPCMethodTrackingMiddleware({
   getAccountType,
   getDeviceModel,
   getHardwareTypeForMetric,
-  snapAndHardwareMessenger,
   appStateController,
   metaMetricsController,
   getHDEntropyIndex,
@@ -330,14 +326,10 @@ export default function createRPCMethodTrackingMiddleware({
 
     let sensitiveEventProperties;
 
-    const isPreinstalledSnap = isSnapPreinstalled(origin);
-
     // Boolean variable that reduces code duplication and increases legibility
     const shouldTrackEvent =
       // Don't track if the request came from our own UI or background
       origin !== ORIGIN_METAMASK &&
-      // Don't track requests coming from preinstalled Snaps
-      !isPreinstalledSnap &&
       // Don't track if the rate limit has been hit
       !isRateLimited &&
       // Don't track if the global rate limit has been hit
@@ -361,10 +353,13 @@ export default function createRPCMethodTrackingMiddleware({
         // In personal messages the first param is data while in typed messages second param is data
         // if condition below is added to ensure that the right params are captured as data and address.
         let data;
+        let address;
         if (isValidAddress(req?.params?.[1])) {
           data = req?.params?.[0];
+          address = req?.params?.[1];
         } else {
           data = req?.params?.[1];
+          address = req?.params?.[0];
         }
 
         if (req.securityAlertResponse?.providerRequestsCount) {
@@ -389,15 +384,15 @@ export default function createRPCMethodTrackingMiddleware({
             req.securityAlertResponse.description;
         }
 
-        const snapAndHardwareInfo = await getSnapAndHardwareInfoForMetrics(
-          getAccountType,
-          getDeviceModel,
-          getHardwareTypeForMetric,
-          snapAndHardwareMessenger,
+        Object.assign(
+          eventProperties,
+          await getHardwareInfoForMetrics(
+            address,
+            getAccountType,
+            getDeviceModel,
+            getHardwareTypeForMetric,
+          ),
         );
-
-        // merge the snapAndHardwareInfo into eventProperties
-        Object.assign(eventProperties, snapAndHardwareInfo);
 
         try {
           if (invokedMethod === MESSAGE_TYPE.PERSONAL_SIGN) {
@@ -504,11 +499,8 @@ export default function createRPCMethodTrackingMiddleware({
         stage = STAGE.REJECTED;
       } else if (
         res.error?.code === errorCodes.rpc.internal &&
-        [errorMessage, res.error.message].includes(
-          'Request rejected by user or snap.',
-        )
+        [errorMessage, res.error.message].includes('Request rejected by user.')
       ) {
-        // The signature was approved in MetaMask but rejected in the snap
         event = eventType.REJECTED;
         stage = STAGE.REJECTED;
         eventProperties.status = errorMessage;
@@ -524,17 +516,15 @@ export default function createRPCMethodTrackingMiddleware({
       CUSTOM_PROPERTIES_MAP[invokedMethod]?.(req, res, stage, eventProperties);
 
       if (eventType.REQUESTED === MetaMetricsEventName.SignatureRequested) {
-        // get the snap and hardware info again in case we were not able to during the initial request
-        // because the KeyringController was locked
-        const snapAndHardwareInfo = await getSnapAndHardwareInfoForMetrics(
-          getAccountType,
-          getDeviceModel,
-          getHardwareTypeForMetric,
-          snapAndHardwareMessenger,
+        Object.assign(
+          eventProperties,
+          await getHardwareInfoForMetrics(
+            getAddressFromSignatureParams(req?.params),
+            getAccountType,
+            getDeviceModel,
+            getHardwareTypeForMetric,
+          ),
         );
-
-        // merge the snapAndHardwareInfo into eventProperties
-        Object.assign(eventProperties, snapAndHardwareInfo);
       }
 
       let blockaidMetricProps = {};
@@ -590,6 +580,33 @@ export default function createRPCMethodTrackingMiddleware({
       }
       return callback();
     });
+  };
+}
+
+function getAddressFromSignatureParams(params) {
+  if (isValidAddress(params?.[1])) {
+    return params[1];
+  }
+
+  return params?.[0];
+}
+
+async function getHardwareInfoForMetrics(
+  address,
+  getAccountType,
+  getDeviceModel,
+  getHardwareTypeForMetric,
+) {
+  if (!address || !isValidAddress(address)) {
+    return {};
+  }
+
+  const hardwareType = await getHardwareTypeForMetric(address);
+
+  return {
+    account_type: await getAccountType(address),
+    device_model: await getDeviceModel(address),
+    ...(hardwareType ? { account_hardware_type: hardwareType } : {}),
   };
 }
 

@@ -382,7 +382,6 @@ Each of these actions requires first [locating](#locators) the web element you w
 > **Example**
 >
 > ```jsx
-> await driver.clickElementSafe('[data-testid="snap-install-scroll"]');
 > ```
 
 </details>
@@ -849,10 +848,8 @@ A representation of any pointer device for interacting with a web page.
 >
 > ```jsx
 > const removeButton = await driver.findElement(
->   '[data-testid="remove-snap-button"]',
 > );
 > await driver.scrollToElement(removeButton);
-> await driver.clickElement('[data-testid="remove-snap-button"]');
 > ```
 
 </details>
@@ -1154,7 +1151,6 @@ Web browsers can have multiple windows or tabs open at the same time. In web aut
 >
 > ```jsx
 > windowHandles = await driver.waitUntilXWindowHandles(2, 1000, 10000);
-> await driver.switchToWindowWithTitle('Test Snaps', windowHandles);
 > ```
 
 </details>

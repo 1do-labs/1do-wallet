@@ -65,7 +65,7 @@ describe('Multichain Accounts Selectors', () => {
   const ACCOUNT_3_ADDRESS = '0xeb9e64b93097bc15f01f13eae97015c57ab64823';
 
   const EIP155_MAINNET_SCOPE = 'eip155:0';
-  const SOLANA_MAINNET_SCOPE = 'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp';
+  const POLYGON_SCOPE = 'eip155:137';
 
   const createStateWithMissingInternalAccount = (): MultichainAccountsState =>
     createMockMultichainAccountsState(
@@ -439,56 +439,6 @@ describe('Multichain Accounts Selectors', () => {
             },
           },
         },
-        'snap:local:custody:test': {
-          id: 'snap:local:custody:test',
-          type: 'snap',
-          groups: {
-            'snap:local:custody:test/0xca8f1F0245530118D0cf14a06b01Daf8f76Cf281':
-              {
-                id: 'snap:local:custody:test/0xca8f1F0245530118D0cf14a06b01Daf8f76Cf281',
-                type: 'single-account',
-                accounts: [
-                  {
-                    active: false,
-                    address: '0xca8f1F0245530118D0cf14a06b01Daf8f76Cf281',
-                    balance: '0x0',
-                    id: '694225f4-d30b-4e77-a900-c8bbce735b42',
-                    pinned: false,
-                    hidden: false,
-                    metadata: {
-                      importTime: 0,
-                      keyring: {
-                        type: 'Custody test',
-                      },
-                      name: 'Test Account 4',
-                    },
-                    methods: [
-                      'personal_sign',
-                      'eth_signTransaction',
-                      'eth_signTypedData_v1',
-                      'eth_signTypedData_v3',
-                      'eth_signTypedData_v4',
-                    ],
-                    options: {},
-                    scopes: ['eip155:0'],
-                    type: 'eip155:eoa',
-                  },
-                ],
-                metadata: {
-                  name: 'Another Snap Account 1',
-                  pinned: false,
-                  hidden: false,
-                  lastSelected: 0,
-                },
-              },
-          },
-          metadata: {
-            name: 'Custody test',
-            snap: {
-              id: 'local:custody:test',
-            },
-          },
-        },
         'keyring:Ledger Hardware': {
           id: 'keyring:Ledger Hardware',
           type: 'keyring',
@@ -539,60 +489,6 @@ describe('Multichain Accounts Selectors', () => {
             },
           },
         },
-        'snap:local:snap-id': {
-          id: 'snap:local:snap-id',
-          type: 'snap',
-          groups: {
-            'snap:local:snap-id/0xb552685e3d2790efd64a175b00d51f02cdafee5d': {
-              id: 'snap:local:snap-id/0xb552685e3d2790efd64a175b00d51f02cdafee5d',
-              type: 'single-account',
-              accounts: [
-                {
-                  active: false,
-                  address: '0xb552685e3d2790efd64a175b00d51f02cdafee5d',
-                  balance: '0x0',
-                  id: 'c3deeb99-ba0d-4a4e-a0aa-033fc1f79ae3',
-                  pinned: false,
-                  hidden: false,
-                  metadata: {
-                    importTime: 0,
-                    keyring: {
-                      type: 'Snap Keyring',
-                    },
-                    name: 'Snap Account 1',
-                    snap: {
-                      enabled: true,
-                      id: 'local:snap-id',
-                      name: 'snap-name',
-                    },
-                  },
-                  methods: [
-                    'personal_sign',
-                    'eth_signTransaction',
-                    'eth_signTypedData_v1',
-                    'eth_signTypedData_v3',
-                    'eth_signTypedData_v4',
-                  ],
-                  options: {},
-                  scopes: ['eip155:0'],
-                  type: 'eip155:eoa',
-                },
-              ],
-              metadata: {
-                name: 'Snap Account 1',
-                pinned: false,
-                hidden: false,
-                lastSelected: 0,
-              },
-            },
-          },
-          metadata: {
-            name: 'Snap: snap-name',
-            snap: {
-              id: 'local:snap-id',
-            },
-          },
-        },
       });
     });
   });
@@ -616,14 +512,6 @@ describe('Multichain Accounts Selectors', () => {
         'keyring:Ledger Hardware/0xc42edfcc21ed14dda456aa0756c153f7985d8813': {
           name: 'ledger account 1',
           accounts: ['0xc42edfcc21ed14dda456aa0756c153f7985d8813'],
-        },
-        'snap:local:custody:test/0xca8f1F0245530118D0cf14a06b01Daf8f76Cf281': {
-          name: 'another snap account 1',
-          accounts: ['0xca8f1f0245530118d0cf14a06b01daf8f76cf281'],
-        },
-        'snap:local:snap-id/0xb552685e3d2790efd64a175b00d51f02cdafee5d': {
-          name: 'snap account 1',
-          accounts: ['0xb552685e3d2790efd64a175b00d51f02cdafee5d'],
         },
       });
     });
@@ -748,7 +636,7 @@ describe('Multichain Accounts Selectors', () => {
       const result = getInternalAccountByGroupAndCaip(
         typedMockState,
         ENTROPY_GROUP_1_ID as AccountGroupId,
-        SOLANA_MAINNET_SCOPE,
+        POLYGON_SCOPE,
       );
 
       expect(result).toBeNull();
@@ -781,7 +669,7 @@ describe('Multichain Accounts Selectors', () => {
     it('returns null if the internal account is not found in the selected account group', () => {
       const result = getInternalAccountBySelectedAccountGroupAndCaip(
         typedMockState,
-        SOLANA_MAINNET_SCOPE,
+        POLYGON_SCOPE,
       );
 
       expect(result).toBeNull();
@@ -873,13 +761,11 @@ describe('Multichain Accounts Selectors', () => {
     it('returns all account groups from all wallets', () => {
       const result = getAllAccountGroups(typedMockState);
 
-      expect(result).toHaveLength(5);
+      expect(result).toHaveLength(3);
       expect(result.map((group) => group.id)).toEqual([
         ENTROPY_GROUP_1_ID,
         ENTROPY_GROUP_2_ID,
         LEDGER_GROUP_ID,
-        'snap:local:custody:test/0xca8f1F0245530118D0cf14a06b01Daf8f76Cf281',
-        'snap:local:snap-id/0xb552685e3d2790efd64a175b00d51f02cdafee5d',
       ]);
     });
 
@@ -963,17 +849,13 @@ describe('Multichain Accounts Selectors', () => {
     it('returns only non-entropy account groups', () => {
       const result = getSingleAccountGroups(typedMockState);
 
-      expect(result).toHaveLength(3);
+      expect(result).toHaveLength(1);
       expect(
         result.every(
           (group) => !group.id.startsWith(AccountWalletType.Entropy),
         ),
       ).toBe(true);
-      expect(result.map((group) => group.id)).toEqual([
-        LEDGER_GROUP_ID,
-        'snap:local:custody:test/0xca8f1F0245530118D0cf14a06b01Daf8f76Cf281',
-        'snap:local:snap-id/0xb552685e3d2790efd64a175b00d51f02cdafee5d',
-      ]);
+      expect(result.map((group) => group.id)).toEqual([LEDGER_GROUP_ID]);
     });
 
     it('returns all groups when no entropy groups exist', () => {
@@ -1027,7 +909,7 @@ describe('Multichain Accounts Selectors', () => {
     it('returns account groups with resolved internal accounts', () => {
       const result = getAccountGroupWithInternalAccounts(typedMockState);
 
-      expect(result).toHaveLength(5);
+      expect(result).toHaveLength(3);
 
       const entropyGroup = result.find(
         (group) => group.id === ENTROPY_GROUP_1_ID,
@@ -1143,7 +1025,7 @@ describe('Multichain Accounts Selectors', () => {
       const result = getCaip25IdByAccountGroupAndScope(
         typedMockState,
         accountGroup as unknown as AccountGroupObject,
-        SOLANA_MAINNET_SCOPE,
+        POLYGON_SCOPE,
       );
       expect(result).toBeUndefined();
     });
@@ -1433,7 +1315,7 @@ describe('Multichain Accounts Selectors', () => {
         ENTROPY_GROUP_2_ID,
       );
 
-      expect(result).toHaveLength(5);
+      expect(result).toHaveLength(3);
       expect(result[0]).toHaveProperty('scope', 'eip155:1');
       expect(result[1]).toHaveProperty('scope', 'eip155:5');
       expect(result[2]).toHaveProperty('scope', 'eip155:56');
@@ -1447,7 +1329,7 @@ describe('Multichain Accounts Selectors', () => {
         LEDGER_GROUP_ID,
       );
 
-      expect(result).toHaveLength(5);
+      expect(result).toHaveLength(3);
       expect(result[0]).toHaveProperty('scope', 'eip155:1');
       expect(result[1]).toHaveProperty('scope', 'eip155:5');
       expect(result[2]).toHaveProperty('scope', 'eip155:56');

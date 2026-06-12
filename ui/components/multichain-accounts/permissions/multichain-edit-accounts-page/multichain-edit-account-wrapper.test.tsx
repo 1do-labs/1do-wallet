@@ -1,5 +1,5 @@
 import React from 'react';
-import { EthAccountType, SolAccountType } from '@metamask/keyring-api';
+import { EthAccountType } from '@metamask/keyring-api';
 import {
   Caip25EndowmentPermissionName,
   Caip25CaveatType,
@@ -54,11 +54,11 @@ const mockEvmAccount2 = createMockInternalAccount({
   type: EthAccountType.Eoa,
 });
 
-const mockSolAccount1 = createMockInternalAccount({
+const mockEvmAccount3 = createMockInternalAccount({
   id: '9b6b30a0-3c87-4a33-9d10-a27a2aba2ba2',
-  name: 'Solana Account 1',
-  address: 'So1anaAddr1111111111111111111111111111111111',
-  type: SolAccountType.DataAccount,
+  name: 'EVM Account 3',
+  address: '0x3333333333333333333333333333333333333333',
+  type: EthAccountType.Eoa,
 });
 
 const createMockAccountGroups = (): AccountGroupWithInternalAccounts[] => [
@@ -80,8 +80,8 @@ const createMockAccountGroups = (): AccountGroupWithInternalAccounts[] => [
         scopes: ['eip155:1'],
       },
       {
-        ...mockSolAccount1,
-        scopes: ['solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp'],
+        ...mockEvmAccount3,
+        scopes: ['eip155:1'],
       },
     ],
     walletName: 'Test Wallet 1',
@@ -135,7 +135,7 @@ const createMockState = (overrides = {}) => {
               },
               lastSelected: 0,
             },
-            accounts: [mockEvmAccount1.id, mockSolAccount1.id],
+            accounts: [mockEvmAccount1.id, mockEvmAccount3.id],
           },
           [MOCK_GROUP_ID_2]: {
             id: MOCK_GROUP_ID_2,
@@ -166,9 +166,9 @@ const createMockState = (overrides = {}) => {
         ...mockEvmAccount2,
         scopes: ['eip155:1'],
       },
-      [mockSolAccount1.id]: {
-        ...mockSolAccount1,
-        scopes: ['solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp'],
+      [mockEvmAccount3.id]: {
+        ...mockEvmAccount3,
+        scopes: ['eip155:137'],
       },
     },
     selectedAccount: mockEvmAccount1.id,

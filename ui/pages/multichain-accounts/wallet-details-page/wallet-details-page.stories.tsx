@@ -72,30 +72,3 @@ export const KeyringWallet: Story = {
     },
   },
 };
-
-export const SnapWallet: Story = {
-  decorators: [
-    (Story) => {
-      const stateCopy = JSON.parse(JSON.stringify(mockState));
-      const store = configureStore(stateCopy);
-
-      return (
-        <Provider store={store}>
-          <Story />
-        </Provider>
-      );
-    },
-  ],
-  parameters: {
-    initialEntries: [
-      '/multichain-wallet-details-page/snap%3Alocal%3Acustody%3Atest',
-    ],
-    path: '/multichain-wallet-details-page/:id',
-    docs: {
-      description: {
-        story:
-          'View of the Wallet Details Page for a Snap-type wallet, showing a different UI without SRP options.',
-      },
-    },
-  },
-};

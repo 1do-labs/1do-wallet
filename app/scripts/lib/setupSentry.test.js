@@ -160,19 +160,6 @@ describe('Setup Sentry', () => {
   });
 
   describe('shouldCreateSpanForRequest', () => {
-    it('should return false for snap manifest fetches', () => {
-      expect(
-        shouldCreateSpanForRequest(
-          'chrome-extension://abcdefg/snaps/npm:@metamask/preinstalled-example-snap/snap.manifest.json',
-        ),
-      ).toStrictEqual(false);
-      expect(
-        shouldCreateSpanForRequest(
-          'moz-extension://abcdefg/snaps/npm:@metamask/message-signing-snap/snap.manifest.json',
-        ),
-      ).toStrictEqual(false);
-    });
-
     it('should return false for locale file fetches', () => {
       expect(
         shouldCreateSpanForRequest(

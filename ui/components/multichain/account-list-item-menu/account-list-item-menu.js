@@ -224,11 +224,6 @@ AccountListItemMenu.propTypes = {
     balance: PropTypes.string.isRequired,
     metadata: PropTypes.shape({
       name: PropTypes.string.isRequired,
-      snap: PropTypes.shape({
-        id: PropTypes.string.isRequired,
-        name: PropTypes.string,
-        enabled: PropTypes.bool,
-      }),
       keyring: PropTypes.shape({
         type: PropTypes.string.isRequired,
       }).isRequired,

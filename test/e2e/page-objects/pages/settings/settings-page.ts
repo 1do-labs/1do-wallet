@@ -65,11 +65,6 @@ class SettingsPage {
   private readonly transactionsSettingsButton =
     '[data-testid="settings-v2-tab-item-transactions"]';
 
-  private readonly preinstalledExampleSnapSidebarItem = {
-    text: 'Preinstalled Example Snap',
-    tag: 'p',
-  } as const;
-
   private readonly autoLockOptionsList =
     '[data-testid="auto-lock-options-list"]';
 
@@ -145,11 +140,6 @@ class SettingsPage {
     console.log('Toggling Show Fiat on Testnets setting');
     await this.driver.waitForSelector(this.showFiatOnTestnetsToggleLabel);
     await this.driver.clickElement(this.showFiatOnTestnetsToggleLabel);
-  }
-
-  async goToPreInstalledExample(): Promise<void> {
-    console.log('Navigating to Preinstalled Example Snap settings page');
-    await this.driver.clickElement(this.preinstalledExampleSnapSidebarItem);
   }
 
   async waitForAutoLockOptionsList(): Promise<void> {

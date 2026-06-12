@@ -144,7 +144,6 @@ async function main() {
             only: ['wallet_getSession', 'wallet_revokeSession'],
           }),
           // Temporarily disabled as the wallet/wallet:eip155 behavior is broken
-          // but this shouldn't block Solana integration
           // new MultichainAuthorizationConfirmation({
           //   driver,
           // }),

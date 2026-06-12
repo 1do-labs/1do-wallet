@@ -42,8 +42,8 @@ export const StartIconNameStory: StoryFn<typeof Tag> = (args) => (
 );
 
 StartIconNameStory.args = {
-  label: 'Snap Name',
-  startIconName: IconName.Snaps,
+  label: 'Network',
+  startIconName: IconName.Global,
 };
 
 StartIconNameStory.storyName = 'StartIconName';
@@ -53,8 +53,8 @@ export const StartIconPropsStory: StoryFn<typeof Tag> = (args) => (
 );
 
 StartIconPropsStory.args = {
-  label: 'Snap Name',
-  startIconName: IconName.Snaps,
+  label: 'Network',
+  startIconName: IconName.Global,
   startIconProps: {
     color: IconColor.primaryDefault,
   },

@@ -1,5 +1,4 @@
 import { AVAILABLE_MULTICHAIN_NETWORK_CONFIGURATIONS } from '@metamask/multichain-network-controller';
-import { BtcScope } from '@metamask/keyring-api';
 import { waitFor } from '@testing-library/react';
 import { renderHookWithProvider } from '../../test/lib/render-helpers-navigate';
 import {
@@ -60,7 +59,7 @@ const BASE_STATE = {
         '0x1': true,
       },
     },
-    selectedMultichainNetworkChainId: BtcScope.Mainnet,
+    selectedMultichainNetworkChainId: '0x1',
     isEvmSelected: true,
     multichainNetworkConfigurationsByChainId:
       AVAILABLE_MULTICHAIN_NETWORK_CONFIGURATIONS,

@@ -1,21 +1,11 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { debounce } from 'lodash';
 
-import {
-  isSolanaAddress,
-  isBtcMainnetAddress,
-  isTronAddress,
-} from '../../../../../shared/lib/multichain/accounts';
 import { isValidHexAddress } from '../../../../../shared/lib/hexstring-utils';
 import { isResolvableName } from '../../../../helpers/utils/util';
 import { useI18nContext } from '../../../../hooks/useI18nContext';
 import { RecipientValidationResult } from '../../types/send';
-import {
-  validateBtcAddress,
-  validateEvmHexAddress,
-  validateSolanaAddress,
-  validateTronAddress,
-} from '../../utils/sendValidations';
+import { validateEvmHexAddress } from '../../utils/sendValidations';
 import { useSendContext } from '../../context/send';
 import { useSendType } from './useSendType';
 import { useNameValidation } from './useNameValidation';
@@ -25,8 +15,7 @@ const VALIDATION_DEBOUNCE_MS = 500;
 export const useRecipientValidation = () => {
   const t = useI18nContext();
   const { asset, chainId, to } = useSendContext();
-  const { isBitcoinSendType, isEvmSendType, isSolanaSendType, isTronSendType } =
-    useSendType();
+  const { isEvmSendType } = useSendType();
   const { validateName } = useNameValidation();
   const [result, setResult] = useState<RecipientValidationResult>({});
   const [acknowledged, setAcknowledged] = useState(false);
@@ -70,18 +59,6 @@ export const useRecipientValidation = () => {
         return await validateEvmHexAddress(toAddress, chainId, asset?.address);
       }
 
-      if (isSolanaSendType && isSolanaAddress(toAddress)) {
-        return validateSolanaAddress(toAddress);
-      }
-
-      if (isBitcoinSendType && isBtcMainnetAddress(toAddress)) {
-        return validateBtcAddress(toAddress);
-      }
-
-      if (isTronSendType && isTronAddress(toAddress)) {
-        return validateTronAddress(toAddress);
-      }
-
       if (isResolvableName(toAddress)) {
         return await validateName(chainId, toAddress, signal);
       }
@@ -90,15 +67,7 @@ export const useRecipientValidation = () => {
         error: 'invalidAddress',
       };
     };
-  }, [
-    asset,
-    chainId,
-    isBitcoinSendType,
-    isEvmSendType,
-    isSolanaSendType,
-    isTronSendType,
-    validateName,
-  ]);
+  }, [asset, chainId, isEvmSendType, validateName]);
 
   // Create debounced function only once - it calls through the ref to get latest validation logic
   const debouncedValidateRecipient = useMemo(

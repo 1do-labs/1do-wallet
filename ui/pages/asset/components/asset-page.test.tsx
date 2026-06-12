@@ -1,10 +1,8 @@
 import React from 'react';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-import { fireEvent, waitFor } from '@testing-library/react';
+import { waitFor } from '@testing-library/react';
 import { EthAccountType, EthScope } from '@metamask/keyring-api';
-import nock from 'nock';
-import { toChecksumHexAddress } from '@metamask/controller-utils';
 import {
   CHAIN_IDS,
   MAINNET_DISPLAY_NAME,
@@ -21,6 +19,10 @@ import {
 import useMultiPolling from '../../../hooks/useMultiPolling';
 import { getAssetsBySelectedAccountGroup } from '../../../selectors/assets';
 import { enLocale as messages } from '../../../../test/lib/i18n-helpers';
+import {
+  DEFAULT_USE_HISTORICAL_PRICES_METADATA,
+  useHistoricalPrices,
+} from '../hooks/useHistoricalPrices';
 import AssetPage from './asset-page';
 
 jest.mock('../../../store/actions', () => ({
@@ -32,7 +34,13 @@ jest.mock('../../../store/actions', () => ({
 jest.mock('../../../store/controller-actions/transaction-controller');
 
 // Mock the price chart
-jest.mock('react-chartjs-2', () => ({ Line: () => null }));
+jest.mock('react-chartjs-2', () => {
+  const react = jest.requireActual('react');
+
+  return {
+    Line: react.forwardRef(() => null),
+  };
+});
 
 // Mock BUYABLE_CHAINS_MAP
 jest.mock('../../../../shared/constants/network', () => ({
@@ -61,6 +69,21 @@ jest.mock('../../../hooks/useMultiPolling', () => ({
   __esModule: true,
   default: jest.fn(),
 }));
+
+jest.mock('../hooks/useHistoricalPrices', () => {
+  const actual = jest.requireActual('../hooks/useHistoricalPrices');
+
+  return {
+    ...actual,
+    useHistoricalPrices: jest.fn(() => ({
+      loading: false,
+      data: {
+        prices: [],
+        metadata: actual.DEFAULT_USE_HISTORICAL_PRICES_METADATA,
+      },
+    })),
+  };
+});
 
 const selectedAccountAddress = 'cf8dace4-9439-4bd4-b3a8-88c821c8fcb3';
 
@@ -227,8 +250,6 @@ describe('AssetPage', () => {
 
   const store = configureMockStore([thunk])(mockStore);
 
-  let openTabSpy: jest.SpyInstance;
-
   beforeAll(() => {
     jest.clearAllMocks();
     Object.defineProperty(global, 'platform', {
@@ -236,7 +257,6 @@ describe('AssetPage', () => {
         openTab: jest.fn(),
       },
     });
-    openTabSpy = jest.spyOn(global.platform, 'openTab');
     setBackgroundConnection({
       getTokenSymbol: jest.fn(),
       getBearerToken: jest.fn().mockResolvedValue('mock-bearer-token'),
@@ -244,13 +264,13 @@ describe('AssetPage', () => {
   });
 
   beforeEach(() => {
-    openTabSpy.mockClear();
-
-    nock('https://price.api.cx.metamask.io')
-      .get(/\/v3\/historical-prices\//u)
-      .query(true)
-      .reply(200, {})
-      .persist();
+    (useHistoricalPrices as jest.Mock).mockReturnValue({
+      loading: false,
+      data: {
+        prices: [],
+        metadata: DEFAULT_USE_HISTORICAL_PRICES_METADATA,
+      },
+    });
 
     // Mocking Date.now would not be sufficient, since it would render differently
     // depending on the machine's timezone. Mock the formatter instead.
@@ -285,7 +305,6 @@ describe('AssetPage', () => {
   afterEach(() => {
     store.clearActions();
     jest.restoreAllMocks();
-    nock.cleanAll();
   });
 
   const native = {
@@ -334,88 +353,6 @@ describe('AssetPage', () => {
       name: 'CONVERT_TOKEN_TO_NFT',
       tokenAddress: token.address,
     });
-  });
-
-  it('should enable the buy button on supported chains', () => {
-    const { queryByTestId } = renderWithProvider(
-      <AssetPage asset={token} optionsButton={null} />,
-      store,
-    );
-    const buyButton = queryByTestId('token-overview-buy');
-    expect(buyButton).toBeInTheDocument();
-    expect(buyButton).toBeEnabled();
-  });
-
-  it('should disable the buy button on unsupported chains', () => {
-    const { queryByTestId } = renderWithProvider(
-      <AssetPage asset={token} optionsButton={null} />,
-      configureMockStore([thunk])({
-        ...mockStore,
-        metamask: {
-          ...mockStore.metamask,
-          ...mockNetworkState({ chainId: CHAIN_IDS.SEPOLIA }),
-        },
-      }),
-    );
-    const buyButton = queryByTestId('token-overview-buy');
-    expect(buyButton).toBeInTheDocument();
-    expect(buyButton).toBeDisabled();
-  });
-
-  it('should open the buy crypto URL for a buyable chain ID', async () => {
-    const mockedStoreWithBuyableChainId = {
-      ...mockStore,
-      metamask: {
-        ...mockStore.metamask,
-        ...mockNetworkState({ chainId: CHAIN_IDS.POLYGON }),
-      },
-    };
-    const mockedStore = configureMockStore([thunk])(
-      mockedStoreWithBuyableChainId,
-    );
-
-    const { queryByTestId } = renderWithProvider(
-      <AssetPage asset={token} optionsButton={null} />,
-      mockedStore,
-    );
-    const buyButton = queryByTestId('token-overview-buy');
-    expect(buyButton).toBeInTheDocument();
-    expect(buyButton).not.toBeDisabled();
-
-    fireEvent.click(buyButton as HTMLElement);
-    expect(openTabSpy).toHaveBeenCalledTimes(1);
-
-    await waitFor(() =>
-      expect(openTabSpy).toHaveBeenCalledWith({
-        url: expect.stringContaining(`/buy?metamaskEntry=ext_buy_sell_button`),
-      }),
-    );
-  });
-
-  it('should show the Swap button if chain id is supported', async () => {
-    const { queryByTestId } = renderWithProvider(
-      <AssetPage asset={token} optionsButton={null} />,
-      store,
-    );
-    const swapButton = queryByTestId('token-overview-swap');
-    expect(swapButton).toBeInTheDocument();
-    expect(swapButton).not.toBeDisabled();
-  });
-
-  it('should render Swap button on testnet chains', async () => {
-    const { queryByTestId } = renderWithProvider(
-      <AssetPage asset={token} optionsButton={null} />,
-      configureMockStore([thunk])({
-        ...mockStore,
-        metamask: {
-          ...mockStore.metamask,
-          ...mockNetworkState({ chainId: CHAIN_IDS.SEPOLIA }),
-        },
-      }),
-    );
-    const swapButton = queryByTestId('token-overview-swap');
-    expect(swapButton).toBeInTheDocument();
-    expect(swapButton).not.toBeDisabled();
   });
 
   it('should render the network name', async () => {
@@ -485,13 +422,20 @@ describe('AssetPage', () => {
     const address = '0xe4246B1Ac0Ba6839d9efA41a8A30AE3007185f55';
     const marketCap = 456;
 
-    // Mock price history (v3 CAIP path; address must match checksummed segment from useHistoricalPrices)
-    nock('https://price.api.cx.metamask.io')
-      .get(
-        `/v3/historical-prices/eip155:1/erc20:${toChecksumHexAddress(address)}`,
-      )
-      .query(true)
-      .reply(200, { prices: [[1, 1]] });
+    (useHistoricalPrices as jest.Mock).mockReturnValue({
+      loading: false,
+      data: {
+        prices: [{ x: 1, y: 1 }],
+        metadata: {
+          minPricePoint: { x: 1, y: 1 },
+          maxPricePoint: { x: 1, y: 1 },
+          xMin: 1,
+          xMax: 1,
+          yMin: 1,
+          yMax: 1,
+        },
+      },
+    });
 
     const { queryByTestId, container } = renderWithProvider(
       <AssetPage asset={{ ...token, address }} optionsButton={null} />,

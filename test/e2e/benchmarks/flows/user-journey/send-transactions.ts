@@ -10,7 +10,7 @@ import { login } from '../../../page-objects/flows/login.flow';
 import AccountListPage from '../../../page-objects/pages/account-list-page';
 import HeaderNavbar from '../../../page-objects/pages/header-navbar';
 import AssetListPage from '../../../page-objects/pages/home/asset-list';
-import SnapTransactionConfirmation from '../../../page-objects/pages/confirmations/snap-transaction-confirmation';
+import TransactionConfirmation from '../../../page-objects/pages/confirmations/transaction-confirmation';
 import HomePage from '../../../page-objects/pages/home/homepage';
 import SendPage from '../../../page-objects/pages/send/send-page';
 import { Driver } from '../../../webdriver/driver';
@@ -32,7 +32,7 @@ import { WITH_STATE_POWER_USER } from '../../utils/constants';
 import { collectWebVitals } from '../../utils';
 import type { BenchmarkRunResult, LongTaskStepResult } from '../../utils/types';
 
-const RECIPIENT_ADDRESS = 'GxSJqxAyTjCjyDmPxdBBfVE9QwuMhEoHrPLRTmMyqxnU';
+const RECIPIENT_ADDRESS = '0x2f318C334780961FB129D2a6c30D0763d9a5C970';
 
 export const testTitle = 'benchmark-send-transactions-power-user';
 export const persona = BENCHMARK_PERSONA.POWER_USER;
@@ -68,11 +68,11 @@ export async function runSendTransactionsBenchmark(): Promise<BenchmarkRunResult
         const headerNavbar = new HeaderNavbar(driver);
         await headerNavbar.openAccountMenu();
         await accountListPage.switchToAccount('Account 1');
-        // Wait for Solana balance to load before starting the send flow
+        // Wait for ETH balance to load before starting the send flow
         if (shouldUseMockedRequests()) {
-          await assetListPage.checkTokenAmountIsDisplayed('50 SOL');
+          await assetListPage.checkTokenAmountIsDisplayed('25 ETH');
         } else {
-          await assetListPage.waitForTokenToBeDisplayed('SOL');
+          await assetListPage.waitForTokenToBeDisplayed('ETH');
         }
 
         // Measure: Open send page
@@ -90,10 +90,7 @@ export async function runSendTransactionsBenchmark(): Promise<BenchmarkRunResult
 
         // Measure: Select token and load form
         const sendPage = new SendPage(driver);
-        await sendPage.selectToken(
-          'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp',
-          'SOL',
-        );
+        await sendPage.selectToken('0x1', 'ETH');
         steps.push(
           await measureStepWithLongTasks(
             driver,
@@ -113,7 +110,7 @@ export async function runSendTransactionsBenchmark(): Promise<BenchmarkRunResult
             driver,
             'reviewTransactionToConfirmationPage',
             async () => {
-              const confirmation = new SnapTransactionConfirmation(driver);
+              const confirmation = new TransactionConfirmation(driver);
               await confirmation.checkPageIsLoaded();
             },
           ),
