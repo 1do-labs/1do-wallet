@@ -378,6 +378,19 @@ describe('preferences controller', () => {
       expect(controller.state.useNftDetection).toStrictEqual(false);
       expect(controller.state.useSafeChainsListValidation).toStrictEqual(false);
     });
+
+    it('useExternalServices to true', () => {
+      const { controller } = setupController({});
+      controller.toggleExternalServices(true);
+      expect(controller.state.useExternalServices).toStrictEqual(true);
+      expect(controller.state.useTokenDetection).toStrictEqual(true);
+      expect(controller.state.useCurrencyRateCheck).toStrictEqual(true);
+      expect(controller.state.usePhishDetect).toStrictEqual(true);
+      expect(controller.state.useAddressBarEnsResolution).toStrictEqual(true);
+      expect(controller.state.openSeaEnabled).toStrictEqual(true);
+      expect(controller.state.useNftDetection).toStrictEqual(true);
+      expect(controller.state.useSafeChainsListValidation).toStrictEqual(true);
+    });
   });
 
   describe('knownMethodData', () => {

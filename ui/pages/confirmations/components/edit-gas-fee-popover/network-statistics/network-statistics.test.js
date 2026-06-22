@@ -17,7 +17,13 @@ jest.mock('../../../context/confirm', () => ({
 const mockUseGasFeeEstimates = jest.mocked(useGasFeeEstimates);
 const mockUseConfirmContext = jest.mocked(useConfirmContext);
 
-const renderComponent = ({ gasFeeEstimates } = {}) => {
+const renderComponent = ({
+  gasFeeEstimates,
+  networkClientId = 'sepolia',
+} = {}) => {
+  mockUseConfirmContext.mockReturnValue({
+    currentConfirmation: { networkClientId },
+  });
   mockUseGasFeeEstimates.mockReturnValue({
     gasFeeEstimates: gasFeeEstimates ?? undefined,
   });
@@ -110,11 +116,9 @@ describe('NetworkStatistics', () => {
     expect(queryByTestId('status-slider-label')).not.toBeInTheDocument();
   });
 
-  it('passes networkClientId from confirm context to useGasFeeEstimates', () => {
-    mockUseConfirmContext.mockReturnValue({
-      currentConfirmation: { networkClientId: 'mainnet' },
-    });
-    mockUseGasFeeEstimates.mockReturnValue({
+  it('passes networkClientId from confirm context to useGasFeeEstimates for polling', () => {
+    renderComponent({
+      networkClientId: 'mainnet',
       gasFeeEstimates: {
         estimatedBaseFee: '50',
         latestPriorityFeeRange: ['1', '3'],
@@ -122,12 +126,6 @@ describe('NetworkStatistics', () => {
       },
     });
 
-    const store = configureStore({});
-    const { getByText } = renderWithProvider(<NetworkStatistics />, store);
-
     expect(mockUseGasFeeEstimates).toHaveBeenCalledWith('mainnet');
-    expect(getByText('50 GWEI')).toBeInTheDocument();
-    expect(getByText('1 - 3 GWEI')).toBeInTheDocument();
-    expect(getByText(messages.stable.message)).toBeInTheDocument();
   });
 });

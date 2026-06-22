@@ -6119,8 +6119,8 @@ export default class MetamaskController extends EventEmitter {
     };
   }
 
-  toggleExternalServices(_useExternal) {
-    const nextValue = false;
+  toggleExternalServices(useExternal) {
+    const nextValue = Boolean(useExternal);
 
     this.preferencesController.toggleExternalServices(nextValue);
     if (nextValue) {

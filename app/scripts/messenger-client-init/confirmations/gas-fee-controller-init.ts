@@ -1,9 +1,8 @@
 import { GasFeeController } from '@metamask/gas-fee-controller';
 import {
   GAS_API_BASE_URL,
-  GAS_DEV_API_BASE_URL,
-  SWAPS_CLIENT_ID,
-} from '../../../../shared/constants/swaps';
+  GAS_CLIENT_ID,
+} from '../../../../shared/constants/gas';
 import { CHAIN_IDS } from '../../../../shared/constants/network';
 import {
   GasFeeControllerInitMessenger,
@@ -12,9 +11,7 @@ import {
 import { MessengerClientInitFunction } from '../types';
 import { getGlobalChainId } from '../init-utils';
 
-const GAS_API_URL = process.env.SWAPS_USE_DEV_APIS
-  ? GAS_DEV_API_BASE_URL
-  : GAS_API_BASE_URL;
+const GAS_API_URL = GAS_API_BASE_URL;
 
 /**
  * Initialize the gas fee controller.
@@ -30,12 +27,20 @@ export const GasFeeControllerInit: MessengerClientInitFunction<
   GasFeeControllerMessenger,
   GasFeeControllerInitMessenger
 > = ({ controllerMessenger, initMessenger, persistedState }) => {
+  const { useExternalServices } = initMessenger.call(
+    'PreferencesController:getState',
+  );
+  const gasFeeControllerState = {
+    ...persistedState.GasFeeController,
+    nonRPCGasFeeApisDisabled: !useExternalServices,
+  };
+
   const messengerClient = new GasFeeController({
     // @ts-expect-error: `GasFeeController` does not accept a partial state.
-    state: persistedState.GasFeeController,
+    state: gasFeeControllerState,
     messenger: controllerMessenger,
     interval: 10_000,
-    clientId: SWAPS_CLIENT_ID,
+    clientId: GAS_CLIENT_ID,
     legacyAPIEndpoint: `${GAS_API_URL}/networks/<chain_id>/gasPrices`,
     EIP1559APIEndpoint: `${GAS_API_URL}/networks/<chain_id>/suggestedGasFees`,
 
@@ -58,8 +63,11 @@ export const GasFeeControllerInit: MessengerClientInitFunction<
 
     // @ts-expect-error: `NetworkController:getEIP1559Compatibility` can return
     // `undefined`, but `GasFeeController` expects a defined value.
-    getCurrentNetworkEIP1559Compatibility: () => {
-      return initMessenger.call('NetworkController:getEIP1559Compatibility');
+    getCurrentNetworkEIP1559Compatibility: (networkClientId) => {
+      return initMessenger.call(
+        'NetworkController:getEIP1559Compatibility',
+        networkClientId,
+      );
     },
 
     getCurrentAccountEIP1559Compatibility: () => true,

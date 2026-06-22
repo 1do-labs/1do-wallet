@@ -42,4 +42,22 @@ describe('PreferencesControllerInit', () => {
       },
     });
   });
+
+  it('preserves persisted external services preference', () => {
+    const requestMock = getInitRequestMock();
+    requestMock.persistedState.PreferencesController = {
+      useExternalServices: true,
+    };
+
+    PreferencesControllerInit(requestMock);
+
+    const controllerMock = jest.mocked(PreferencesController);
+    expect(controllerMock).toHaveBeenLastCalledWith({
+      messenger: expect.any(Object),
+      state: {
+        currentLocale: 'en-US',
+        useExternalServices: true,
+      },
+    });
+  });
 });

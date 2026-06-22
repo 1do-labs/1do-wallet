@@ -22,8 +22,6 @@ export const PreferencesControllerInit: MessengerClientInitFunction<
     state: {
       currentLocale: initLangCode ?? '',
       ...persistedPreferences,
-      // This fork keeps remote-backed auxiliary services permanently disabled.
-      useExternalServices: false,
     },
     messenger: controllerMessenger,
   });

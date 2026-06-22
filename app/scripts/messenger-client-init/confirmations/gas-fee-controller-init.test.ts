@@ -25,6 +25,9 @@ function getInitRequestMock(): jest.Mocked<
     controllerMessenger: getGasFeeControllerMessenger(baseMessenger),
     initMessenger: getGasFeeControllerInitMessenger(baseMessenger),
   };
+  requestMock.initMessenger.call = jest.fn().mockReturnValue({
+    useExternalServices: true,
+  });
 
   return requestMock;
 }
@@ -36,12 +39,16 @@ describe('GasFeeControllerInit', () => {
   });
 
   it('passes the proper arguments to the controller', () => {
-    GasFeeControllerInit(getInitRequestMock());
+    const requestMock = getInitRequestMock();
+
+    GasFeeControllerInit(requestMock);
 
     expect(GasFeeController).toHaveBeenCalledWith(
       expect.objectContaining({
         messenger: expect.any(Object),
-        state: undefined,
+        state: {
+          nonRPCGasFeeApisDisabled: false,
+        },
         interval: 10_000,
         clientId: 'extension',
         legacyAPIEndpoint: expect.any(String),
@@ -53,6 +60,49 @@ describe('GasFeeControllerInit', () => {
         getCurrentNetworkLegacyGasAPICompatibility: expect.any(Function),
         getChainId: expect.any(Function),
       }),
+    );
+  });
+
+  it('disables non-RPC gas fee APIs when external services are disabled', () => {
+    const requestMock = getInitRequestMock();
+    requestMock.initMessenger.call = jest.fn().mockReturnValue({
+      useExternalServices: false,
+    });
+    requestMock.persistedState.GasFeeController = {
+      nonRPCGasFeeApisDisabled: false,
+    };
+
+    GasFeeControllerInit(requestMock);
+
+    expect(GasFeeController).toHaveBeenCalledWith(
+      expect.objectContaining({
+        state: {
+          nonRPCGasFeeApisDisabled: true,
+        },
+      }),
+    );
+  });
+
+  it('checks EIP-1559 compatibility for the polling network client', async () => {
+    const requestMock = getInitRequestMock();
+    const initMessengerCallMock = jest.fn().mockImplementation((method) => {
+      if (method === 'PreferencesController:getState') {
+        return { useExternalServices: true };
+      }
+      return true;
+    });
+    requestMock.initMessenger.call = initMessengerCallMock;
+
+    GasFeeControllerInit(requestMock);
+
+    const getCurrentNetworkEIP1559Compatibility =
+      jest.mocked(GasFeeController).mock.lastCall?.[0]
+        .getCurrentNetworkEIP1559Compatibility;
+
+    expect(await getCurrentNetworkEIP1559Compatibility?.('sepolia')).toBe(true);
+    expect(initMessengerCallMock).toHaveBeenCalledWith(
+      'NetworkController:getEIP1559Compatibility',
+      'sepolia',
     );
   });
 });

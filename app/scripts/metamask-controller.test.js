@@ -598,6 +598,48 @@ describe('MetaMaskController', () => {
       });
     });
 
+    describe('toggleExternalServices', () => {
+      it('enables remote gas fee APIs when external services are enabled', () => {
+        jest.spyOn(metamaskController.tokenDetectionController, 'enable');
+        jest.spyOn(
+          metamaskController.gasFeeController,
+          'enableNonRPCGasFeeApis',
+        );
+
+        metamaskController.toggleExternalServices(true);
+
+        expect(
+          metamaskController.preferencesController.state.useExternalServices,
+        ).toBe(true);
+        expect(
+          metamaskController.tokenDetectionController.enable,
+        ).toHaveBeenCalled();
+        expect(
+          metamaskController.gasFeeController.enableNonRPCGasFeeApis,
+        ).toHaveBeenCalled();
+      });
+
+      it('disables remote gas fee APIs when external services are disabled', () => {
+        jest.spyOn(metamaskController.tokenDetectionController, 'disable');
+        jest.spyOn(
+          metamaskController.gasFeeController,
+          'disableNonRPCGasFeeApis',
+        );
+
+        metamaskController.toggleExternalServices(false);
+
+        expect(
+          metamaskController.preferencesController.state.useExternalServices,
+        ).toBe(false);
+        expect(
+          metamaskController.tokenDetectionController.disable,
+        ).toHaveBeenCalled();
+        expect(
+          metamaskController.gasFeeController.disableNonRPCGasFeeApis,
+        ).toHaveBeenCalled();
+      });
+    });
+
     describe('#handleWatchAssetRequest', () => {
       const watchAssetNetworkClientId = NETWORK_CONFIGURATION_ID_1;
       const watchAssetTokenAddress =

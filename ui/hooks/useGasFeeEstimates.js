@@ -12,8 +12,29 @@ import {
   gasFeeStopPollingByPollingToken,
   getNetworkConfigurationByNetworkClientId,
 } from '../store/actions';
-import { getSelectedNetworkClientId } from '../../shared/lib/selectors/networks';
+import {
+  getNetworkConfigurationsByChainId,
+  getSelectedNetworkClientId,
+} from '../../shared/lib/selectors/networks';
 import usePolling from './usePolling';
+
+const getChainIdForNetworkClientId = (
+  networkConfigurationsByChainId,
+  networkClientId,
+) => {
+  if (!networkClientId) {
+    return '';
+  }
+
+  return (
+    Object.entries(networkConfigurationsByChainId ?? {}).find(
+      ([, networkConfiguration]) =>
+        networkConfiguration.rpcEndpoints?.some(
+          (rpcEndpoint) => rpcEndpoint.networkClientId === networkClientId,
+        ),
+    )?.[0] ?? ''
+  );
+};
 
 /**
  * @typedef {object} GasEstimates
@@ -39,8 +60,16 @@ import usePolling from './usePolling';
 export function useGasFeeEstimates(_networkClientId, enabled = true) {
   const selectedNetworkClientId = useSelector(getSelectedNetworkClientId);
   const networkClientId = _networkClientId ?? selectedNetworkClientId;
+  const networkConfigurationsByChainId = useSelector(
+    getNetworkConfigurationsByChainId,
+  );
+  const chainIdFromState = getChainIdForNetworkClientId(
+    networkConfigurationsByChainId,
+    networkClientId,
+  );
 
-  const [chainId, setChainId] = useState('');
+  const [chainIdFromBackground, setChainIdFromBackground] = useState('');
+  const chainId = chainIdFromState || chainIdFromBackground;
 
   const gasEstimateType = useSelector((state) =>
     getGasEstimateTypeByChainId(state, chainId),
@@ -66,11 +95,18 @@ export function useGasFeeEstimates(_networkClientId, enabled = true) {
       };
     }
 
+    if (chainIdFromState) {
+      setChainIdFromBackground('');
+      return () => {
+        // No cleanup needed when chain ID is available in state
+      };
+    }
+
     let isMounted = true;
     getNetworkConfigurationByNetworkClientId(networkClientId).then(
       (networkConfig) => {
         if (networkConfig && isMounted) {
-          setChainId(networkConfig.chainId);
+          setChainIdFromBackground(networkConfig.chainId);
         }
       },
     );
@@ -78,7 +114,7 @@ export function useGasFeeEstimates(_networkClientId, enabled = true) {
     return () => {
       isMounted = false;
     };
-  }, [networkClientId, enabled]);
+  }, [networkClientId, enabled, chainIdFromState]);
 
   usePolling({
     startPolling: (input) =>

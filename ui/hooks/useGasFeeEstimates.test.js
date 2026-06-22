@@ -37,6 +37,9 @@ jest.mock('../ducks/metamask/metamask', () => ({
 }));
 
 jest.mock('../../shared/lib/selectors/networks', () => ({
+  getNetworkConfigurationsByChainId: jest
+    .fn()
+    .mockReturnValue('getNetworkConfigurationsByChainId'),
   getSelectedNetworkClientId: jest
     .fn()
     .mockReturnValue('getSelectedNetworkClientId'),
@@ -66,6 +69,7 @@ const DEFAULT_OPTS = {
     high: '30',
   },
   isGasEstimatesLoading: true,
+  networkConfigurationsByChainId: {},
 };
 
 const MOCK_STATE = {};
@@ -82,6 +86,12 @@ const generateUseSelectorRouter =
     }
     if (selectorId === 'getSelectedNetworkClientId') {
       return 'selectedNetworkClientId';
+    }
+    if (selectorId === 'getNetworkConfigurationsByChainId') {
+      return (
+        opts.networkConfigurationsByChainId ??
+        DEFAULT_OPTS.networkConfigurationsByChainId
+      );
     }
     if (selectorId === 'getGasEstimateTypeByChainId') {
       return opts.gasEstimateType ?? DEFAULT_OPTS.gasEstimateType;
@@ -150,6 +160,40 @@ describe('useGasFeeEstimates', () => {
       networkClientId: 'networkClientId1',
     });
     expect(getIsNetworkBusyByChainId).toHaveBeenCalledWith(MOCK_STATE, '0xa');
+  });
+
+  it('reads estimates synchronously using network configurations from state', async () => {
+    useSelector.mockImplementation(
+      generateUseSelectorRouter({
+        networkConfigurationsByChainId: {
+          '0xaa36a7': {
+            rpcEndpoints: [{ networkClientId: 'networkClientId1' }],
+          },
+        },
+      }),
+    );
+
+    await act(async () =>
+      renderHook(() => useGasFeeEstimates('networkClientId1')),
+    );
+
+    expect(getGasEstimateTypeByChainId).toHaveBeenCalledWith(
+      MOCK_STATE,
+      '0xaa36a7',
+    );
+    expect(getGasFeeEstimatesByChainId).toHaveBeenCalledWith(
+      MOCK_STATE,
+      '0xaa36a7',
+    );
+    expect(getIsGasEstimatesLoadingByChainId).toHaveBeenCalledWith(MOCK_STATE, {
+      chainId: '0xaa36a7',
+      networkClientId: 'networkClientId1',
+    });
+    expect(getIsNetworkBusyByChainId).toHaveBeenCalledWith(
+      MOCK_STATE,
+      '0xaa36a7',
+    );
+    expect(getNetworkConfigurationByNetworkClientId).not.toHaveBeenCalled();
   });
 
   it('works with LEGACY gas prices', async () => {

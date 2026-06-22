@@ -549,7 +549,7 @@ export class PreferencesController extends BaseController<
   }
 
   toggleExternalServices(useExternalServices: boolean): void {
-    const nextValue = false;
+    const nextValue = Boolean(useExternalServices);
 
     this.update((state) => {
       state.useExternalServices = nextValue;
