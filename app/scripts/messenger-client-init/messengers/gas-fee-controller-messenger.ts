@@ -7,7 +7,6 @@ import {
   NetworkControllerNetworkDidChangeEvent,
   NetworkControllerStateChangeEvent,
 } from '@metamask/network-controller';
-import { PreferencesControllerGetStateAction } from '../../controllers/preferences-controller';
 import { RootMessenger } from '../../lib/messenger';
 
 type AllowedActions =
@@ -56,8 +55,7 @@ type AllowedInitializationActions =
   | NetworkControllerGetEIP1559CompatibilityAction
   | NetworkControllerGetNetworkClientByIdAction
   | NetworkControllerGetSelectedNetworkClientAction
-  | NetworkControllerGetStateAction
-  | PreferencesControllerGetStateAction;
+  | NetworkControllerGetStateAction;
 
 type AllowedInitializationEvents = NetworkControllerNetworkDidChangeEvent;
 
@@ -94,7 +92,6 @@ export function getGasFeeControllerInitMessenger(
       'NetworkController:getNetworkClientById',
       'NetworkController:getSelectedNetworkClient',
       'NetworkController:getState',
-      'PreferencesController:getState',
     ],
     events: ['NetworkController:networkDidChange'],
   });

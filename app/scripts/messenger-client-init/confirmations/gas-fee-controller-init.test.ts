@@ -25,9 +25,9 @@ function getInitRequestMock(): jest.Mocked<
     controllerMessenger: getGasFeeControllerMessenger(baseMessenger),
     initMessenger: getGasFeeControllerInitMessenger(baseMessenger),
   };
-  requestMock.initMessenger.call = jest.fn().mockReturnValue({
-    useExternalServices: true,
-  });
+  requestMock.persistedState.GasFeeController = {
+    nonRPCGasFeeApisDisabled: false,
+  };
 
   return requestMock;
 }
@@ -63,11 +63,9 @@ describe('GasFeeControllerInit', () => {
     );
   });
 
-  it('disables non-RPC gas fee APIs when external services are disabled', () => {
+  it('does not disable non-RPC gas fee APIs based on external services', () => {
     const requestMock = getInitRequestMock();
-    requestMock.initMessenger.call = jest.fn().mockReturnValue({
-      useExternalServices: false,
-    });
+    requestMock.initMessenger.call = jest.fn();
     requestMock.persistedState.GasFeeController = {
       nonRPCGasFeeApisDisabled: false,
     };
@@ -77,7 +75,27 @@ describe('GasFeeControllerInit', () => {
     expect(GasFeeController).toHaveBeenCalledWith(
       expect.objectContaining({
         state: {
-          nonRPCGasFeeApisDisabled: true,
+          nonRPCGasFeeApisDisabled: false,
+        },
+      }),
+    );
+    expect(requestMock.initMessenger.call).not.toHaveBeenCalledWith(
+      'PreferencesController:getState',
+    );
+  });
+
+  it('enables non-RPC gas fee APIs when persisted state disabled them', () => {
+    const requestMock = getInitRequestMock();
+    requestMock.persistedState.GasFeeController = {
+      nonRPCGasFeeApisDisabled: true,
+    };
+
+    GasFeeControllerInit(requestMock);
+
+    expect(GasFeeController).toHaveBeenCalledWith(
+      expect.objectContaining({
+        state: {
+          nonRPCGasFeeApisDisabled: false,
         },
       }),
     );
@@ -85,12 +103,7 @@ describe('GasFeeControllerInit', () => {
 
   it('checks EIP-1559 compatibility for the polling network client', async () => {
     const requestMock = getInitRequestMock();
-    const initMessengerCallMock = jest.fn().mockImplementation((method) => {
-      if (method === 'PreferencesController:getState') {
-        return { useExternalServices: true };
-      }
-      return true;
-    });
+    const initMessengerCallMock = jest.fn().mockReturnValue(true);
     requestMock.initMessenger.call = initMessengerCallMock;
 
     GasFeeControllerInit(requestMock);

@@ -599,7 +599,7 @@ describe('MetaMaskController', () => {
     });
 
     describe('toggleExternalServices', () => {
-      it('enables remote gas fee APIs when external services are enabled', () => {
+      it('does not change gas fee APIs when external services are enabled', () => {
         jest.spyOn(metamaskController.tokenDetectionController, 'enable');
         jest.spyOn(
           metamaskController.gasFeeController,
@@ -616,10 +616,10 @@ describe('MetaMaskController', () => {
         ).toHaveBeenCalled();
         expect(
           metamaskController.gasFeeController.enableNonRPCGasFeeApis,
-        ).toHaveBeenCalled();
+        ).not.toHaveBeenCalled();
       });
 
-      it('disables remote gas fee APIs when external services are disabled', () => {
+      it('does not change gas fee APIs when external services are disabled', () => {
         jest.spyOn(metamaskController.tokenDetectionController, 'disable');
         jest.spyOn(
           metamaskController.gasFeeController,
@@ -636,7 +636,7 @@ describe('MetaMaskController', () => {
         ).toHaveBeenCalled();
         expect(
           metamaskController.gasFeeController.disableNonRPCGasFeeApis,
-        ).toHaveBeenCalled();
+        ).not.toHaveBeenCalled();
       });
     });
 

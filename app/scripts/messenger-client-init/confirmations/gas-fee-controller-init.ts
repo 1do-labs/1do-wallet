@@ -27,12 +27,9 @@ export const GasFeeControllerInit: MessengerClientInitFunction<
   GasFeeControllerMessenger,
   GasFeeControllerInitMessenger
 > = ({ controllerMessenger, initMessenger, persistedState }) => {
-  const { useExternalServices } = initMessenger.call(
-    'PreferencesController:getState',
-  );
   const gasFeeControllerState = {
     ...persistedState.GasFeeController,
-    nonRPCGasFeeApisDisabled: !useExternalServices,
+    nonRPCGasFeeApisDisabled: false,
   };
 
   const messengerClient = new GasFeeController({
