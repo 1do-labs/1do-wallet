@@ -1,6 +1,4 @@
-import { isSolanaChainId } from '@metamask/bridge-controller';
-import { isObject } from '@metamask/utils';
-import { type BridgeStatusControllerState } from '@metamask/bridge-status-controller';
+import { isCaipChainId, isObject, parseCaipChainId } from '@metamask/utils';
 import { cloneDeep } from 'lodash';
 import { captureException } from '../../../shared/lib/sentry';
 
@@ -35,15 +33,31 @@ function transformState(state: Record<string, unknown>) {
     return state;
   }
 
-  const { txHistory } =
-    bridgeStatusControllerState as BridgeStatusControllerState;
+  const { txHistory } = bridgeStatusControllerState as {
+    txHistory?: Record<
+      string,
+      {
+        status?: {
+          srcChain?: {
+            chainId?: string;
+            txHash?: string;
+          };
+        };
+        txMetaId?: string;
+      }
+    >;
+  };
   if (!isObject(txHistory)) {
     return state;
   }
 
   try {
     Object.entries(txHistory).forEach(([key, historyItem]) => {
-      const isSolanaTx = isSolanaChainId(historyItem.status?.srcChain?.chainId);
+      const chainId = historyItem.status?.srcChain?.chainId;
+      const isSolanaTx =
+        typeof chainId === 'string' &&
+        isCaipChainId(chainId) &&
+        parseCaipChainId(chainId).namespace === 'solana';
       const newId = historyItem.status?.srcChain?.txHash;
       if (isSolanaTx && newId && newId !== key) {
         txHistory[newId] = {

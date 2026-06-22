@@ -3,8 +3,8 @@ import {
   parseCaipAssetType,
   isStrictHexString,
 } from '@metamask/utils';
-import { isNativeAddress as isNativeAddressFromBridge } from '@metamask/bridge-controller';
 import { TextColor } from '@metamask/design-system-react';
+import { isNativeAddress as isNativeAddressFromBridge } from '../../../shared/lib/chain-utils';
 import { toChecksumHexAddress } from '../../../shared/lib/hexstring-utils';
 
 /**

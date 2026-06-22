@@ -33,7 +33,7 @@ describe('string-utils', () => {
   describe('toKebabCase', () => {
     it('converts camelCase and PascalCase to kebab-case', () => {
       expect(toKebabCase('startupStandardHome')).toBe('startup-standard-home');
-      expect(toKebabCase('SwapPage')).toBe('swap-page');
+      expect(toKebabCase('SettingsPage')).toBe('settings-page');
       expect(toKebabCase('getHTTPSUrl')).toBe('get-h-t-t-p-s-url');
     });
   });

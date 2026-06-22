@@ -10,23 +10,17 @@ import { useGasSponsorshipWarningAlerts } from './alerts/transactions/useGasSpon
 import { useGasTooLowAlerts } from './alerts/transactions/useGasTooLowAlerts';
 import { useSuggestedGasFeeHighAlert } from './alerts/transactions/useSuggestedGasFeeHighAlert';
 import { useInsufficientBalanceAlerts } from './alerts/transactions/useInsufficientBalanceAlerts';
-import { useInsufficientPayTokenBalanceAlert } from './alerts/transactions/useInsufficientPayTokenBalanceAlert';
 import { useMultipleApprovalsAlerts } from './alerts/transactions/useMultipleApprovalsAlerts';
 import { useNoGasPriceAlerts } from './alerts/transactions/useNoGasPriceAlerts';
-import { useNoPayTokenQuotesAlert } from './alerts/transactions/useNoPayTokenQuotesAlert';
 import { useNonContractAddressAlerts } from './alerts/transactions/useNonContractAddressAlerts';
 import { usePendingTransactionAlerts } from './alerts/transactions/usePendingTransactionAlerts';
 import { usePayHardwareAccountAlert } from './alerts/transactions/usePayHardwareAccountAlert';
 import { useResimulationAlert } from './alerts/transactions/useResimulationAlert';
 import { useSigningOrSubmittingAlerts } from './alerts/transactions/useSigningOrSubmittingAlerts';
-import useBlockaidAlerts from './alerts/useBlockaidAlerts';
 import useConfirmationOriginAlerts from './alerts/useConfirmationOriginAlerts';
 import { useNetworkAndOriginSwitchingAlerts } from './alerts/useNetworkAndOriginSwitchingAlerts';
 import { useSelectedAccountAlerts } from './alerts/useSelectedAccountAlerts';
-import { useAddressTrustSignalAlerts } from './alerts/useAddressTrustSignalAlerts';
-import { useOriginTrustSignalAlerts } from './alerts/useOriginTrustSignalAlerts';
 import { useSpenderAlerts } from './alerts/useSpenderAlerts';
-import { useTokenTrustSignalAlerts } from './alerts/useTokenTrustSignalAlerts';
 import { useAddEthereumChainAlerts } from './alerts/useAddEthereumChainAlerts';
 import { useBurnAddressAlert } from './alerts/transactions/useBurnAddressAlert';
 import { useTokenContractAlert } from './alerts/transactions/useTokenContractAlert';
@@ -50,11 +44,8 @@ function useTransactionAlerts(): Alert[] {
   const gasSponsorshipWarningAlerts = useGasSponsorshipWarningAlerts();
   const gasTooLowAlerts = useGasTooLowAlerts();
   const insufficientBalanceAlerts = useInsufficientBalanceAlerts();
-  const insufficientPayTokenBalanceAlerts =
-    useInsufficientPayTokenBalanceAlert();
   const multipleApprovalAlerts = useMultipleApprovalsAlerts();
   const noGasPriceAlerts = useNoGasPriceAlerts();
-  const noPayTokenQuotesAlerts = useNoPayTokenQuotesAlert();
   const nonContractAddressAlerts = useNonContractAddressAlerts();
   const pendingTransactionAlerts = usePendingTransactionAlerts();
   const payHardwareAccountAlerts = usePayHardwareAccountAlert();
@@ -62,7 +53,6 @@ function useTransactionAlerts(): Alert[] {
   const signingOrSubmittingAlerts = useSigningOrSubmittingAlerts();
   const suggestedGasFeeHighAlert = useSuggestedGasFeeHighAlert();
   const tokenContractAlert = useTokenContractAlert();
-  const tokenTrustSignalAlerts = useTokenTrustSignalAlerts();
 
   return useMemo(
     () => [
@@ -74,10 +64,8 @@ function useTransactionAlerts(): Alert[] {
       ...gasSponsorshipWarningAlerts,
       ...gasTooLowAlerts,
       ...insufficientBalanceAlerts,
-      ...insufficientPayTokenBalanceAlerts,
       ...multipleApprovalAlerts,
       ...noGasPriceAlerts,
-      ...noPayTokenQuotesAlerts,
       ...nonContractAddressAlerts,
       ...pendingTransactionAlerts,
       ...payHardwareAccountAlerts,
@@ -85,7 +73,6 @@ function useTransactionAlerts(): Alert[] {
       ...signingOrSubmittingAlerts,
       ...suggestedGasFeeHighAlert,
       ...tokenContractAlert,
-      ...tokenTrustSignalAlerts,
     ],
     [
       accountTypeUpgradeAlerts,
@@ -96,10 +83,8 @@ function useTransactionAlerts(): Alert[] {
       gasSponsorshipWarningAlerts,
       gasTooLowAlerts,
       insufficientBalanceAlerts,
-      insufficientPayTokenBalanceAlerts,
       multipleApprovalAlerts,
       noGasPriceAlerts,
-      noPayTokenQuotesAlerts,
       nonContractAddressAlerts,
       pendingTransactionAlerts,
       payHardwareAccountAlerts,
@@ -107,45 +92,35 @@ function useTransactionAlerts(): Alert[] {
       signingOrSubmittingAlerts,
       suggestedGasFeeHighAlert,
       tokenContractAlert,
-      tokenTrustSignalAlerts,
     ],
   );
 }
 
 export default function useConfirmationAlerts(): Alert[] {
-  const blockaidAlerts = useBlockaidAlerts();
   const confirmationOriginAlerts = useConfirmationOriginAlerts();
   const signatureAlerts = useSignatureAlerts();
   const transactionAlerts = useTransactionAlerts();
   const selectedAccountAlerts = useSelectedAccountAlerts();
   const networkAndOriginSwitchingAlerts = useNetworkAndOriginSwitchingAlerts();
-  const addressTrustSignalAlerts = useAddressTrustSignalAlerts();
-  const originTrustSignalAlerts = useOriginTrustSignalAlerts();
   const spenderAlerts = useSpenderAlerts();
   const addEthereumChainAlerts = useAddEthereumChainAlerts();
 
   return useMemo(
     () => [
-      ...blockaidAlerts,
       ...confirmationOriginAlerts,
       ...signatureAlerts,
       ...transactionAlerts,
       ...selectedAccountAlerts,
       ...networkAndOriginSwitchingAlerts,
-      ...addressTrustSignalAlerts,
-      ...originTrustSignalAlerts,
       ...spenderAlerts,
       ...addEthereumChainAlerts,
     ],
     [
-      blockaidAlerts,
       confirmationOriginAlerts,
       signatureAlerts,
       transactionAlerts,
       selectedAccountAlerts,
       networkAndOriginSwitchingAlerts,
-      addressTrustSignalAlerts,
-      originTrustSignalAlerts,
       spenderAlerts,
       addEthereumChainAlerts,
     ],

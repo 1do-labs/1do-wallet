@@ -7,7 +7,6 @@ import {
 import type { Messenger } from '@metamask/messenger';
 import log from 'loglevel';
 import { FirstTimeFlowType } from '../../../shared/constants/onboarding';
-import { getIsSeedlessOnboardingFeatureEnabled } from '../../../shared/lib/environment';
 import { OnboardingControllerMethodActions } from './onboarding-method-action-types';
 
 // Unique name for the controller
@@ -123,7 +122,6 @@ const MESSENGER_EXPOSED_METHODS = [
   'completeOnboarding',
   'setFirstTimeFlowType',
   'registerOnboarding',
-  'getIsSocialLoginFlow',
   'resetOnboarding',
 ] as const;
 
@@ -230,24 +228,6 @@ export class OnboardingController extends BaseController<
         };
       });
     }
-  }
-
-  /**
-   * Check if the user onboarding flow is Social login flow or not.
-   *
-   * @returns true if the user onboarding flow is Social loing flow, otherwise false.
-   */
-  getIsSocialLoginFlow(): boolean {
-    const isSocialLoginFeatureEnabled = getIsSeedlessOnboardingFeatureEnabled();
-    if (!isSocialLoginFeatureEnabled) {
-      return false;
-    }
-
-    const { firstTimeFlowType } = this.state;
-    return (
-      firstTimeFlowType === FirstTimeFlowType.socialCreate ||
-      firstTimeFlowType === FirstTimeFlowType.socialImport
-    );
   }
 
   /**

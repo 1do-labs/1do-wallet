@@ -178,32 +178,6 @@ describe('useTransactionCustomAmountAlerts', () => {
     });
   });
 
-  it('sets hideResults to true when InsufficientPayTokenBalance alert exists', () => {
-    useAlertsMock.mockReturnValue(
-      createMockUseAlertsReturnValue({
-        alerts: [
-          createMockAlert({
-            key: AlertsName.InsufficientPayTokenBalance,
-            message: 'Insufficient funds',
-            isBlocking: true,
-            severity: Severity.Danger,
-          }),
-        ],
-        hasDangerAlerts: true,
-        hasAlerts: true,
-        hasUnconfirmedDangerAlerts: true,
-      }),
-    );
-
-    const { result } = runHook();
-
-    expect(result.current).toStrictEqual({
-      alertMessage: 'Insufficient funds',
-      disableUpdate: false,
-      hideResults: true,
-    });
-  });
-
   it('sets hideResults to true when SigningOrSubmitting alert exists', () => {
     useAlertsMock.mockReturnValue(
       createMockUseAlertsReturnValue({

@@ -150,7 +150,6 @@ function extractTeamsFromScenarios(scenarios: TestingScenario[]): string[] {
     backup: 'Onboarding',
     notification: 'Notifications',
     phishing: 'Product Safety',
-    blockaid: 'Product Safety',
   };
 
   const teams = new Set<string>();

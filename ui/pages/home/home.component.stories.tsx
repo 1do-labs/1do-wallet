@@ -73,9 +73,7 @@ const meta: Meta<typeof Home> = {
     hasAllowedPopupRedirectApprovals: false,
     useExternalServices: true,
     redirectAfterDefaultPage: null,
-    isSeedlessPasswordOutdated: false,
     isPrimarySeedPhraseBackedUp: true,
-    isSocialLoginFlow: false,
 
     // Function props (mocked)
     navigate: () => {},

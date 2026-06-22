@@ -1,6 +1,6 @@
-import { AssetType } from '@metamask/bridge-controller';
 import { Hex } from '@metamask/utils';
 import { useSelector } from 'react-redux';
+import { AssetType } from '../../../../shared/constants/transaction';
 import { toChecksumHexAddress } from '../../../../shared/lib/hexstring-utils';
 import { getCurrencyRates, getMarketData } from '../../../selectors';
 import { Asset } from '../types/asset';

@@ -68,7 +68,7 @@
     "showCopyAddressToast": "boolean",
     "showDataDeletionErrorModal": "boolean",
     "showDeleteMetaMetricsDataModal": "boolean",
-    "showInfuraSwitchToast": "boolean",
+    "showDefaultRpcSwitchToast": "boolean",
     "showIpfsModalOpen": "boolean",
     "showNewSrpAddedToast": "boolean",
     "showNftDetectionEnablementToast": "boolean",
@@ -739,7 +739,6 @@
       }
     ],
     "permissionHistory": {},
-    "perpsBalances": {},
     "pinnedAccountList": [],
     "popupGasPollTokens": [],
     "preferences": {
@@ -833,7 +832,6 @@
     "rewardsSeasons": {},
     "rewardsSeasonStatuses": {},
     "rewardsSubscriptions": {},
-    "securityAlertsEnabled": "boolean",
     "seedPhraseBackedUp": "null",
     "segmentApiCalls": {},
     "selectedAccountGroup": "string",
@@ -1027,11 +1025,6 @@
     "withdrawalRequests": [],
     "web3ShimUsageOrigins": {}
   },
-  "perpsTutorial": {
-    "tutorialModalOpen": "boolean",
-    "activeStep": "string",
-    "tutorialCompleted": "boolean"
-  },
   "platform": {
     "arch": "string",
     "os": "string"
@@ -1083,7 +1076,6 @@
     "maxSlippage": "number",
     "quotesFetchStartTime": "null",
     "reviewSwapClickedTimestamp": "null",
-    "swapsSTXLoading": "boolean",
     "topAssets": {},
     "toToken": "null",
     "tradeTxId": "null",

@@ -6,12 +6,10 @@ const {
 } = require('../../shared/constants/accounts');
 const {
   GAS_API_BASE_URL,
-  SWAPS_API_V2_BASE_URL,
   TOKEN_API_BASE_URL,
-} = require('../../shared/constants/swaps');
+} = require('../../shared/constants/gas');
 const { TX_SENTINEL_URL } = require('../../shared/constants/transaction');
 const { DEFAULT_FIXTURE_ACCOUNT_LOWERCASE } = require('./constants');
-const { SECURITY_ALERTS_PROD_API_BASE_URL } = require('./tests/ppom/constants');
 const {
   ACCOUNT_ACTIVITY_WS_PORT,
 } = require('./websocket/account-activity-mocks');
@@ -21,23 +19,8 @@ const {
   getProductionRemoteFlagApiResponse,
 } = require('./feature-flags/feature-flag-registry');
 
-const CDN_CONFIG_PATH = 'test/e2e/mock-cdn/cdn-config.txt';
-const CDN_STALE_DIFF_PATH = 'test/e2e/mock-cdn/cdn-stale-diff.txt';
-const CDN_STALE_PATH = 'test/e2e/mock-cdn/cdn-stale.txt';
-const PPOM_VERSION_PATH = 'test/e2e/mock-cdn/ppom-version.json';
-const PPOM_VERSION_HEADERS_PATH = 'test/e2e/mock-cdn/ppom-version-headers.json';
-
-const CDN_CONFIG_RES_HEADERS_PATH =
-  'test/e2e/mock-cdn/cdn-config-res-headers.json';
-const CDN_STALE_DIFF_RES_HEADERS_PATH =
-  'test/e2e/mock-cdn/cdn-stale-diff-res-headers.json';
-const CDN_STALE_RES_HEADERS_PATH =
-  'test/e2e/mock-cdn/cdn-stale-res-headers.json';
-
 const ACCOUNTS_API_TOKENS_PATH =
   'test/e2e/mock-response-data/accounts-api-tokens.json';
-const AGGREGATOR_METADATA_PATH =
-  'test/e2e/mock-response-data/aggregator-metadata.json';
 const CHAIN_ID_NETWORKS_PATH =
   'test/e2e/mock-response-data/chain-id-network-chains.json';
 const CLIENT_SIDE_DETECTION_BLOCKLIST_PATH =
@@ -187,64 +170,6 @@ async function setupMocking(
       };
     });
 
-  // Subscriptions Polling Get Subscriptions
-  await server
-    .forGet('https://subscription.api.cx.metamask.io/v1/subscriptions')
-    .thenCallback(() => {
-      return {
-        statusCode: 200,
-        json: {
-          subscriptions: [],
-          trialedProducts: [],
-        },
-      };
-    });
-
-  // Subscriptions Eligibility
-  await server
-    .forGet(
-      'https://subscription.api.cx.metamask.io/v1/subscriptions/eligibility',
-    )
-    .thenCallback(() => {
-      return {
-        statusCode: 200,
-        json: [
-          {
-            canSubscribe: false,
-            canViewEntryModal: false,
-            minBalanceUSD: 1000,
-            product: 'shield',
-            modalType: 'A',
-            cohorts: [],
-            assignedCohort: null,
-            hasAssignedCohortExpired: null,
-          },
-        ],
-      };
-    });
-
-  // User Profile Lineage
-  await server
-    .forGet('https://authentication.api.cx.metamask.io/api/v2/profile/lineage')
-    .thenCallback(() => {
-      return {
-        statusCode: 200,
-        json: {
-          lineage: [
-            {
-              agent: 'mobile',
-              metametrics_id: '0xdeadbeef',
-              created_at: '2021-01-01',
-              updated_at: '2021-01-01',
-              counter: 1,
-            },
-          ],
-          created_at: '2025-07-16T10:03:57Z',
-          profile_id: '0deaba86-4b9d-4137-87d7-18bc5bf7708d',
-        },
-      };
-    });
-
   // Account link
   const accountLinkRegex =
     /^https:\/\/etherscan.io\/address\/0x[a-fA-F0-9]{40}$/u;
@@ -273,23 +198,6 @@ async function setupMocking(
       body: emptyHtmlPage(),
     };
   });
-
-  await server
-    .forPost(
-      `${SECURITY_ALERTS_PROD_API_BASE_URL}/validate/0x${chainId.toString(16)}`,
-    )
-    .thenCallback(() => {
-      return {
-        statusCode: 200,
-        json: {
-          block: 20733513,
-          result_type: 'Benign',
-          reason: '',
-          description: '',
-          features: [],
-        },
-      };
-    });
 
   await server
     .forPost(
@@ -384,23 +292,6 @@ async function setupMocking(
     });
 
   await server
-    .forGet(`${SWAPS_API_V2_BASE_URL}/networks/1/token`)
-    .withQuery({ address: '0x72c9Fb7ED19D3ce51cea5C56B3e023cd918baaDf' })
-    .thenCallback(() => {
-      return {
-        statusCode: 200,
-        json: {
-          symbol: 'AGLT',
-          type: 'erc20',
-          decimals: '18',
-          address: '0x72c9fb7ed19d3ce51cea5c56b3e023cd918baadf',
-          occurences: 1,
-          aggregators: ['dynamic'],
-        },
-      };
-    });
-
-  await server
     .forGet(`${GAS_API_BASE_URL}/networks/${chainId}/suggestedGasFees`)
     .thenCallback(() => {
       return {
@@ -460,41 +351,6 @@ async function setupMocking(
     smartTransactions: true,
     hidden: false,
   });
-
-  await server
-    .forGet(`${SWAPS_API_V2_BASE_URL}/featureFlags`)
-    .thenCallback(() => {
-      return {
-        statusCode: 200,
-        json: {
-          ethereum: {
-            fallbackToV1: false,
-            mobileActive: true,
-            extensionActive: true,
-          },
-          bsc: {
-            fallbackToV1: false,
-            mobileActive: true,
-            extensionActive: true,
-          },
-          polygon: {
-            fallbackToV1: false,
-            mobileActive: true,
-            extensionActive: true,
-          },
-          avalanche: {
-            fallbackToV1: false,
-            mobileActive: true,
-            extensionActive: true,
-          },
-          smartTransactions: {
-            mobileActive: false,
-            extensionActive: true,
-          },
-          updated_at: '2022-03-17T15:54:00.360Z',
-        },
-      };
-    });
 
   // Surveys
   await server
@@ -587,303 +443,6 @@ async function setupMocking(
       };
     });
 
-  const AGGREGATOR_METADATA = fs.readFileSync(AGGREGATOR_METADATA_PATH);
-  await server
-    .forGet(`${SWAPS_API_V2_BASE_URL}/networks/1/aggregatorMetadata`)
-    .thenCallback(() => {
-      return {
-        statusCode: 200,
-        json: JSON.parse(AGGREGATOR_METADATA),
-      };
-    });
-
-  // Bridge API mocks - must be after AGGREGATOR_METADATA is defined
-  // Network 1 (Mainnet)
-  await server
-    .forGet(`https://bridge.api.cx.metamask.io/networks/1/topAssets`)
-    .thenCallback(() => {
-      return {
-        statusCode: 200,
-        json: [
-          {
-            address: '0x0000000000000000000000000000000000000000',
-            symbol: 'ETH',
-          },
-          {
-            address: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
-            symbol: 'USDC',
-          },
-          {
-            address: '0xdac17f958d2ee523a2206206994597c13d831ec7',
-            symbol: 'USDT',
-          },
-          {
-            address: '0x6b175474e89094c44da98b954eedeac495271d0f',
-            symbol: 'DAI',
-          },
-        ],
-      };
-    });
-
-  await server
-    .forGet('https://bridge.api.cx.metamask.io/networks/1/aggregatorMetadata')
-    .thenCallback(() => {
-      return {
-        statusCode: 200,
-        json: JSON.parse(AGGREGATOR_METADATA),
-      };
-    });
-
-  await server
-    .forGet('https://bridge.api.cx.metamask.io/networks/1/tokens')
-    .withQuery({ includeBlockedTokens: 'true' })
-    .thenCallback(() => {
-      return {
-        statusCode: 200,
-        json: [
-          {
-            chainId: 1,
-            address: '0x0000000000000000000000000000000000000000',
-            symbol: 'ETH',
-            name: 'Ethereum',
-            decimals: 18,
-            icon: 'https://media.socket.tech/tokens/all/ETH',
-            logoURI: 'https://media.socket.tech/tokens/all/ETH',
-            chainAgnosticId: null,
-          },
-          {
-            chainId: 1,
-            address: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
-            symbol: 'USDC',
-            name: 'USD Coin',
-            decimals: 6,
-            icon: 'https://media.socket.tech/tokens/all/USDC',
-            logoURI: 'https://media.socket.tech/tokens/all/USDC',
-            chainAgnosticId: null,
-          },
-          {
-            chainId: 1,
-            address: '0xdac17f958d2ee523a2206206994597c13d831ec7',
-            symbol: 'USDT',
-            name: 'Tether USD',
-            decimals: 6,
-            icon: 'https://media.socket.tech/tokens/all/USDT',
-            logoURI: 'https://media.socket.tech/tokens/all/USDT',
-            chainAgnosticId: null,
-          },
-          {
-            chainId: 1,
-            address: '0x6b175474e89094c44da98b954eedeac495271d0f',
-            symbol: 'DAI',
-            name: 'Dai Stablecoin',
-            decimals: 18,
-            icon: 'https://media.socket.tech/tokens/all/DAI',
-            logoURI: 'https://media.socket.tech/tokens/all/DAI',
-            chainAgnosticId: null,
-          },
-        ],
-      };
-    });
-
-  // Network 59144 (Linea)
-  await server
-    .forGet('https://bridge.api.cx.metamask.io/networks/59144/topAssets')
-    .thenCallback(() => {
-      return {
-        statusCode: 200,
-        json: [
-          {
-            address: '0x0000000000000000000000000000000000000000',
-            symbol: 'ETH',
-          },
-          {
-            address: '0x176211869cA2b568f2A7D4EE941E073a821EE1ff',
-            symbol: 'USDC',
-          },
-          {
-            address: '0xa219439258ca9da29e9cc4ce5596924745e12b93',
-            symbol: 'USDT',
-          },
-          {
-            address: '0xe5d7c2a44ffddf6b295a15c148167daaaf5cf34f',
-            symbol: 'WETH',
-          },
-        ],
-      };
-    });
-
-  await server
-    .forGet(
-      'https://bridge.api.cx.metamask.io/networks/59144/aggregatorMetadata',
-    )
-    .thenCallback(() => {
-      return {
-        statusCode: 200,
-        json: JSON.parse(AGGREGATOR_METADATA),
-      };
-    });
-
-  await server
-    .forGet('https://bridge.api.cx.metamask.io/networks/59144/tokens')
-    .withQuery({ includeBlockedTokens: 'true' })
-    .thenCallback(() => {
-      return {
-        statusCode: 200,
-        json: [
-          {
-            chainId: 59144,
-            address: '0x0000000000000000000000000000000000000000',
-            symbol: 'ETH',
-            name: 'Ethereum',
-            decimals: 18,
-            icon: 'https://media.socket.tech/tokens/all/ETH',
-            logoURI: 'https://media.socket.tech/tokens/all/ETH',
-            chainAgnosticId: null,
-          },
-          {
-            chainId: 59144,
-            address: '0x176211869cA2b568f2A7D4EE941E073a821EE1ff',
-            symbol: 'USDC',
-            name: 'USD Coin',
-            decimals: 6,
-            icon: 'https://media.socket.tech/tokens/all/USDC',
-            logoURI: 'https://media.socket.tech/tokens/all/USDC',
-            chainAgnosticId: null,
-          },
-          {
-            chainId: 59144,
-            address: '0xa219439258ca9da29e9cc4ce5596924745e12b93',
-            symbol: 'USDT',
-            name: 'Tether USD',
-            decimals: 6,
-            icon: 'https://media.socket.tech/tokens/all/USDT',
-            logoURI: 'https://media.socket.tech/tokens/all/USDT',
-            chainAgnosticId: null,
-          },
-          {
-            chainId: 59144,
-            address: '0xe5d7c2a44ffddf6b295a15c148167daaaf5cf34f',
-            symbol: 'WETH',
-            name: 'Wrapped Ether',
-            decimals: 18,
-            icon: 'https://media.socket.tech/tokens/all/WETH',
-            logoURI: 'https://media.socket.tech/tokens/all/WETH',
-            chainAgnosticId: null,
-          },
-        ],
-      };
-    });
-
-  await server
-    .forGet(`${SWAPS_API_V2_BASE_URL}/networks/1/tokens`)
-    .thenCallback(() => {
-      return {
-        statusCode: 200,
-        json: [
-          {
-            name: 'Ethereum',
-            symbol: 'ETH',
-            decimals: 18,
-            type: 'native',
-            iconUrl:
-              'https://token.api.cx.metamask.io/assets/nativeCurrencyLogos/ethereum.svg',
-            coingeckoId: 'ethereum',
-            address: '0x0000000000000000000000000000000000000000',
-            occurrences: 100,
-            aggregators: [],
-          },
-          {
-            address: '0x6b175474e89094c44da98b954eedeac495271d0f',
-            symbol: 'DAI',
-            decimals: 18,
-            name: 'Dai Stablecoin',
-            iconUrl:
-              'https://static.cx.metamask.io/api/v1/tokenIcons/1/0x6b175474e89094c44da98b954eedeac495271d0f.png',
-            type: 'erc20',
-            aggregators: [
-              'aave',
-              'bancor',
-              'cmc',
-              'cryptocom',
-              'coinGecko',
-              'oneInch',
-              'pmm',
-              'zerion',
-              'lifi',
-            ],
-            occurrences: 9,
-            fees: {
-              '0xb0da5965d43369968574d399dbe6374683773a65': 0,
-            },
-            storage: {
-              balance: 2,
-            },
-          },
-          {
-            address: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
-            symbol: 'USDC',
-            decimals: 6,
-            name: 'USD Coin',
-            iconUrl:
-              'https://static.cx.metamask.io/api/v1/tokenIcons/1/0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48.png',
-            type: 'erc20',
-            aggregators: [
-              'aave',
-              'bancor',
-              'cryptocom',
-              'coinGecko',
-              'oneInch',
-              'pmm',
-              'zerion',
-              'lifi',
-            ],
-            occurrences: 8,
-            fees: {},
-            storage: {
-              balance: 9,
-            },
-          },
-          {
-            address: '0xc6bdb96e29c38dc43f014eed44de4106a6a8eb5f',
-            symbol: 'INUINU',
-            decimals: 18,
-            name: 'Inu Inu',
-            iconUrl:
-              'https://assets.coingecko.com/coins/images/26391/thumb/logo_square_200.png?1657752596',
-            type: 'erc20',
-            aggregators: ['coinGecko'],
-            occurrences: 1,
-          },
-        ],
-      };
-    });
-
-  await server
-    .forGet(`${SWAPS_API_V2_BASE_URL}/networks/1/topAssets`)
-    .thenCallback(() => {
-      return {
-        statusCode: 200,
-        json: [
-          {
-            address: '0x0000000000000000000000000000000000000000',
-            symbol: 'ETH',
-          },
-          {
-            address: '0x6b175474e89094c44da98b954eedeac495271d0f',
-            symbol: 'DAI',
-          },
-          {
-            address: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
-            symbol: 'USDC',
-          },
-          {
-            address: '0xdac17f958d2ee523a2206206994597c13d831ec7',
-            symbol: 'USDT',
-          },
-        ],
-      };
-    });
-
   await server
     .forGet(`https://token.api.cx.metamask.io/token/${chainId}`)
     .thenCallback(() => {
@@ -925,75 +484,6 @@ async function setupMocking(
             pricePercentChange1d: 0,
           },
         },
-      };
-    });
-
-  const PPOM_VERSION = fs.readFileSync(PPOM_VERSION_PATH);
-  const PPOM_VERSION_HEADERS = fs.readFileSync(PPOM_VERSION_HEADERS_PATH);
-  const CDN_CONFIG = fs.readFileSync(CDN_CONFIG_PATH);
-  const CDN_STALE = fs.readFileSync(CDN_STALE_PATH);
-  const CDN_STALE_DIFF = fs.readFileSync(CDN_STALE_DIFF_PATH);
-  const CDN_CONFIG_RES_HEADERS = fs.readFileSync(CDN_CONFIG_RES_HEADERS_PATH);
-  const CDN_STALE_RES_HEADERS = fs.readFileSync(CDN_STALE_RES_HEADERS_PATH);
-  const CDN_STALE_DIFF_RES_HEADERS = fs.readFileSync(
-    CDN_STALE_DIFF_RES_HEADERS_PATH,
-  );
-
-  await server
-    .forHead(
-      'https://static.cx.metamask.io/api/v1/confirmations/ppom/ppom_version.json',
-    )
-    .thenCallback(() => {
-      return {
-        statusCode: 200,
-      };
-    });
-
-  await server
-    .forGet(
-      'https://static.cx.metamask.io/api/v1/confirmations/ppom/ppom_version.json',
-    )
-    .thenCallback(() => {
-      return {
-        statusCode: 200,
-        json: JSON.parse(PPOM_VERSION),
-        headers: JSON.parse(PPOM_VERSION_HEADERS),
-      };
-    });
-
-  await server
-    .forGet(
-      /^https:\/\/static.cx.metamask.io\/api\/v1\/confirmations\/ppom\/config\/0x1\/(.*)/u,
-    )
-    .thenCallback(() => {
-      return {
-        statusCode: 200,
-        rawBody: CDN_CONFIG,
-        headers: JSON.parse(CDN_CONFIG_RES_HEADERS),
-      };
-    });
-
-  await server
-    .forGet(
-      /^https:\/\/static.cx.metamask.io\/api\/v1\/confirmations\/ppom\/stale_diff\/0x1\/(.*)/u,
-    )
-    .thenCallback(() => {
-      return {
-        statusCode: 200,
-        rawBody: CDN_STALE_DIFF,
-        headers: JSON.parse(CDN_STALE_DIFF_RES_HEADERS),
-      };
-    });
-
-  await server
-    .forGet(
-      /^https:\/\/static.cx.metamask.io\/api\/v1\/confirmations\/ppom\/stale\/0x1\/(.*)/u,
-    )
-    .thenCallback(() => {
-      return {
-        statusCode: 200,
-        rawBody: CDN_STALE,
-        headers: JSON.parse(CDN_STALE_RES_HEADERS),
       };
     });
 
@@ -1045,7 +535,7 @@ async function setupMocking(
 
   // Accounts API: supported networks
   await server
-    .forGet('https://accounts.api.cx.metamask.io/v1/supportedNetworks')
+    .forGet('https://accounts.disabled.1do.local/v1/supportedNetworks')
     .thenCallback(() => {
       return {
         statusCode: 200,
@@ -1061,7 +551,7 @@ async function setupMocking(
   // Accounts API: tokens
   const ACCOUNTS_API_TOKENS = fs.readFileSync(ACCOUNTS_API_TOKENS_PATH);
   await server
-    .forGet('https://account.api.cx.metamask.io/networks')
+    .forGet('https://account.disabled.1do.local/networks')
     .thenCallback(() => {
       return {
         statusCode: 200,
@@ -1071,7 +561,7 @@ async function setupMocking(
 
   // Accounts API: transactions
   await server
-    .forGet('https://accounts.api.cx.metamask.io/v4/multiaccount/transactions')
+    .forGet('https://accounts.disabled.1do.local/v4/multiaccount/transactions')
     .always()
     .thenCallback(() => {
       return {

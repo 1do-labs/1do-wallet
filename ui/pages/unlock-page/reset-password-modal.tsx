@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import {
   Box,
@@ -8,7 +8,6 @@ import {
   ButtonVariant,
   Icon,
   IconName,
-  IconSize,
   Text,
   TextVariant,
   TextColor,
@@ -25,7 +24,6 @@ import {
   ModalHeader,
   ModalOverlay,
 } from '../../components/component-library';
-import { getIsSocialLoginFlow } from '../../selectors';
 import { resetWallet as resetWalletAction } from '../../store/actions';
 import { DEFAULT_ROUTE } from '../../helpers/constants/routes';
 import {
@@ -48,7 +46,6 @@ export default function ResetPasswordModal({
 }) {
   const t = useI18nContext();
   const { trackEvent } = useContext(MetaMetricsContext);
-  const isSocialLoginEnabled = useSelector(getIsSocialLoginFlow);
   const { value: resetWallet, toggle: handleResetWallet } = useBoolean();
   const navigate = useNavigate();
 
@@ -72,112 +69,6 @@ export default function ResetPasswordModal({
       {
         contextPropsIntoEventProperties: [MetaMetricsContextProp.PageTitle],
       },
-    );
-  };
-
-  const socialLoginContent = () => {
-    return (
-      <Box paddingHorizontal={4}>
-        <Text
-          variant={TextVariant.BodyMd}
-          color={TextColor.TextAlternative}
-          className="mb-4"
-        >
-          {t('forgotPasswordSocialDescription', [
-            <TextButton
-              key="need-help-link"
-              onClick={handleContactSupportTrackEvent}
-              asChild
-            >
-              <a
-                href={SUPPORT_LINK}
-                type="button"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                {t('forgotPasswordModalContactSupportLink')}
-              </a>
-            </TextButton>,
-          ])}
-        </Text>
-        <Box
-          flexDirection={BoxFlexDirection.Column}
-          gap={4}
-          marginBottom={6}
-          asChild
-        >
-          <ul>
-            <Box asChild>
-              <li className="flex gap-4 items-center">
-                <Icon
-                  name={IconName.FaceId}
-                  size={IconSize.Md}
-                  color={IconColor.IconAlternative}
-                  className="mt-2"
-                />
-                <Text
-                  variant={TextVariant.BodyMd}
-                  color={TextColor.TextAlternative}
-                >
-                  {t('forgotPasswordSocialStep1', [
-                    <Text
-                      variant={TextVariant.BodyMd}
-                      key="reset-password-step-1-biometrics"
-                      color={TextColor.TextAlternative}
-                    >
-                      {t('forgotPasswordSocialStep1Biometrics')}
-                    </Text>,
-                  ])}
-                </Text>
-              </li>
-            </Box>
-            <Box asChild>
-              <li className="flex gap-4 items-center">
-                <Icon
-                  name={IconName.SecurityKey}
-                  size={IconSize.Md}
-                  color={IconColor.IconAlternative}
-                  className="mt-2"
-                />
-                <Text
-                  variant={TextVariant.BodyMd}
-                  color={TextColor.TextAlternative}
-                >
-                  {t('forgotPasswordSocialStep2', [
-                    <Text
-                      variant={TextVariant.BodyMd}
-                      key="reset-password-step-2-srp"
-                      color={TextColor.TextAlternative}
-                    >
-                      {t('secretRecoveryPhrase')}
-                    </Text>,
-                  ])}
-                </Text>
-              </li>
-            </Box>
-          </ul>
-        </Box>
-        <Box flexDirection={BoxFlexDirection.Column} gap={3}>
-          <Button
-            data-testid="reset-password-modal-button"
-            variant={ButtonVariant.Primary}
-            onClick={onRestore}
-            size={ButtonSize.Lg}
-            className="w-full"
-          >
-            {t('forgotPasswordModalButton')}
-          </Button>
-          <Button
-            data-testid="reset-password-modal-button-link"
-            variant={ButtonVariant.Secondary}
-            onClick={handleResetWallet}
-            size={ButtonSize.Lg}
-            className="w-full"
-          >
-            {t('forgotPasswordModalButtonLink')}
-          </Button>
-        </Box>
-      </Box>
     );
   };
 
@@ -296,9 +187,6 @@ export default function ResetPasswordModal({
     );
   };
 
-  const restoreContent = () =>
-    isSocialLoginEnabled ? socialLoginContent() : srpLoginContent();
-
   return (
     <Modal
       isOpen
@@ -337,7 +225,7 @@ export default function ResetPasswordModal({
             {t(resetWallet ? 'resetWalletTitle' : 'forgotPasswordModalTitle')}
           </Text>
         </ModalHeader>
-        {resetWallet ? resetWalletContent() : restoreContent()}
+        {resetWallet ? resetWalletContent() : srpLoginContent()}
       </ModalContent>
     </Modal>
   );

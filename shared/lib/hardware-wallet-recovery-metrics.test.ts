@@ -260,7 +260,7 @@ describe('hardware-wallet-recovery-metrics', () => {
         userMessage: 'x',
       });
       const props = buildHardwareWalletRecoverySegmentProperties({
-        location: MetaMetricsHardwareWalletRecoveryLocation.Swaps,
+        location: MetaMetricsHardwareWalletRecoveryLocation.Send,
         deviceType: MetaMetricsHardwareWalletDeviceType.Trezor,
         deviceModel: 'N/A',
         errorType: MetaMetricsHardwareWalletRecoveryErrorType.GenericError,

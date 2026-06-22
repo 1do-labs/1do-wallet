@@ -152,7 +152,6 @@ const PRESETS: Record<string, string[]> = {
   [INTERACTION_PRESETS.USER_ACTIONS]: [
     `${BENCHMARK_DIR}/interaction/load-new-account.ts`,
     `${BENCHMARK_DIR}/interaction/confirm-tx.ts`,
-    `${BENCHMARK_DIR}/interaction/bridge-user-actions.ts`,
   ],
   // Dapp page-load benchmark (Playwright-based; runs separately in CI)
   [DAPP_PAGE_LOAD_PRESETS.PAGE_LOAD]: [DAPP_PAGE_LOAD_BENCHMARK_SPEC_PATH],

@@ -7,7 +7,6 @@ import { onboarding } from './onboarding';
 import { predict } from './predict';
 import type { Route } from './route';
 import { sell } from './sell';
-import { swap } from './swap';
 import { trending } from './trending';
 
 export type { Route } from './route';
@@ -44,7 +43,6 @@ addRoute(card);
 addRoute(home);
 addRoute(nfts);
 addRoute(onboarding);
-addRoute(swap);
 addRoute(predict);
 addRoute(asset);
 addRoute(trending);

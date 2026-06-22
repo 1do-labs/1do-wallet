@@ -10,7 +10,7 @@ exports[`MetaFoxLogo does not set icon height and width when unsetIconHeight is 
     <img
       alt=""
       class="app-header__metafox-logo--icon"
-      src="./images/logo/metamask-fox.svg"
+      src="./images/logo/1do-mark.svg"
     />
   </button>
 </div>
@@ -27,7 +27,7 @@ exports[`MetaFoxLogo should match snapshot with img width and height default set
       alt=""
       class="app-header__metafox-logo--icon"
       height="42"
-      src="./images/logo/metamask-fox.svg"
+      src="./images/logo/1do-mark.svg"
       width="42"
     />
   </button>

@@ -48,9 +48,7 @@ import {
   KEYRING_TRANSACTION_STATUS_KEY,
   useMultichainTransactionDisplay,
 } from '../../../hooks/useMultichainTransactionDisplay';
-import {
-  getInternalAccountsObject,
-} from '../../../selectors/accounts';
+import { getInternalAccountsObject } from '../../../selectors/accounts';
 import { selectAccountGroupNameByAddress } from '../../../selectors/multichain-accounts/account-tree';
 import {
   formatTimestamp,
@@ -197,7 +195,7 @@ export function MultichainTransactionDetailsModal({
     // TODO: Add support for other transaction types
     [TransactionType.Send]: t('send'),
     [TransactionType.Receive]: t('receive'),
-    [TransactionType.Swap]: t('swap'),
+    [TransactionType.Swap]: t('interaction'),
     [TransactionType.StakeDeposit]: t('stakingDeposit'),
     [TransactionType.StakeWithdraw]: t('stakingWithdrawal'),
     [TransactionType.Unknown]: t('interaction'),
@@ -319,11 +317,7 @@ export function MultichainTransactionDetailsModal({
             {/* Amounts per token */}
             <>
               <AccountRow label={t('to')} address={toAddress} chain={chain} />
-              {amountComponent(
-                type === TransactionType.Swap ? from : to,
-                t('amount'),
-                'transaction-amount',
-              )}
+              {amountComponent(to, t('amount'), 'transaction-amount')}
             </>
             {/* Base Fees */}
             {amountComponent(baseFee, t('networkFee'), 'transaction-base-fee')}

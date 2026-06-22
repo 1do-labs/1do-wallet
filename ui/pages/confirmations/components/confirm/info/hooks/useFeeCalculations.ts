@@ -123,7 +123,7 @@ export function useFeeCalculations(transactionMeta: TransactionMeta) {
   const gasFeeEstimate = useTransactionGasFeeEstimate(
     transactionMeta,
     supportsEIP1559,
-    quotedGasLimit,
+    optimizedGasLimit as Hex,
   );
 
   const { gasFeeEstimates } = useGasFeeEstimates(

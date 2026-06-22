@@ -1,9 +1,5 @@
 import React from 'react';
 import {
-  SECURITY_PROVIDER_CONFIG,
-  SecurityProvider,
-} from '../../../../../shared/constants/security-provider';
-import {
   Box,
   ButtonLink,
   ButtonLinkSize,
@@ -22,9 +18,10 @@ import {
   TextVariant,
 } from '../../../../helpers/constants/design-system';
 import { useI18nContext } from '../../../../hooks/useI18nContext';
+import { AlertProviderInfo } from '../../../../ducks/confirm-alerts/confirm-alerts';
 
 export type AlertProviderProps = {
-  provider?: SecurityProvider;
+  provider?: AlertProviderInfo;
   paddingTop?: SizeNumber;
   textAlign?: TextAlign;
 };
@@ -59,12 +56,12 @@ export function AlertProvider({
         />
         {t('securityProviderPoweredBy', [
           <ButtonLink
-            key={`security-provider-button-link-${provider}`}
+            key={`security-provider-button-link-${provider.name}`}
             size={ButtonLinkSize.Inherit}
-            href={SECURITY_PROVIDER_CONFIG[provider]?.url}
+            href={provider.url}
             externalLink
           >
-            {t(SECURITY_PROVIDER_CONFIG[provider]?.tKeyName)}
+            {provider.name}
           </ButtonLink>,
         ])}
       </Text>

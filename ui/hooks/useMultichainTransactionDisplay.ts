@@ -70,9 +70,7 @@ export function useMultichainTransactionDisplay(transaction: Transaction) {
     // TODO: Add support for other transaction types
     [TransactionType.Send]: t('sent'),
     [TransactionType.Receive]: t('received'),
-    [TransactionType.Swap]: `${t('swap')} ${from?.unit} ${t(
-      'to',
-    ).toLowerCase()} ${to?.unit}`,
+    [TransactionType.Swap]: t('interaction'),
     [TransactionType.StakeDeposit]: t('stakingDeposit'),
     [TransactionType.StakeWithdraw]: t('stakingWithdrawal'),
     [TransactionType.Unknown]: t('interaction'),

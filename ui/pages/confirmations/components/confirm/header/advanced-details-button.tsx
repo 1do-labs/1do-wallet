@@ -1,7 +1,4 @@
-import {
-  TransactionMeta,
-  TransactionType,
-} from '@metamask/transaction-controller';
+import { TransactionMeta } from '@metamask/transaction-controller';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -44,13 +41,7 @@ export const AdvancedDetailsButton = () => {
       borderRadius={BorderRadius.MD}
       // hiding through visibility instead of rendering conditionally so the
       // header layout is not affected
-      style={
-        currentConfirmation?.type ===
-          TransactionType.shieldSubscriptionApprove ||
-        currentConfirmation?.type === TransactionType.perpsDeposit
-          ? { visibility: 'hidden' }
-          : {}
-      }
+      style={{}}
     >
       <Tooltip
         title={

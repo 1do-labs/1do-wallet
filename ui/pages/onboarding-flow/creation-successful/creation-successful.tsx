@@ -36,8 +36,6 @@ import {
 import {
   getExternalServicesOnboardingToggleState,
   getFirstTimeFlowType,
-  getIsSocialLoginFlow,
-  getSocialLoginType,
   getParticipateInMetaMetrics,
   getDeferredDeepLink,
 } from '../../../selectors';
@@ -60,7 +58,6 @@ import {
   setUseSidePanelAsDefault,
   removeDeferredDeepLink,
 } from '../../../store/actions';
-import { LottieAnimation } from '../../../components/component-library/lottie-animation';
 import { useSidePanelEnabled } from '../../../hooks/useSidePanelEnabled';
 import type { BrowserWithSidePanel } from '../../../../shared/types';
 import {
@@ -88,8 +85,6 @@ export default function CreationSuccessful() {
   );
   const { trackEvent } = useContext(MetaMetricsContext);
   const firstTimeFlowType = useSelector(getFirstTimeFlowType);
-  const isSocialLoginFlow = useSelector(getIsSocialLoginFlow);
-  const socialLoginType = useSelector(getSocialLoginType);
   const isSidePanelEnabled = useSidePanelEnabled();
   const isOnboardingCompleted = useSelector(getCompletedOnboarding);
   const participateInMetaMetrics = useSelector(getParticipateInMetaMetrics);
@@ -155,13 +150,19 @@ export default function CreationSuccessful() {
     return t('walletReadyLoseSrp');
   }, [isFromReminder, t]);
 
-  const renderFox = useMemo(() => {
+  const renderBrandMark = useMemo(() => {
     return (
-      <LottieAnimation
-        path="images/animations/fox/celebrating.lottie.json"
-        loop
-        autoplay
-      />
+      <Box className="creation-successful__brand-animation" aria-hidden="true">
+        <Box className="creation-successful__brand-orbit" />
+        <Box className="creation-successful__brand-pulse" />
+        <img
+          className="creation-successful__brand-mark"
+          src="images/logo/1do-mark.svg"
+          width="96"
+          height="96"
+          alt=""
+        />
+      </Box>
     );
   }, []);
 
@@ -260,9 +261,7 @@ export default function CreationSuccessful() {
 
     // Track onboarding completion event
     if (!isOnboardingCompleted) {
-      const isNewWallet =
-        firstTimeFlowType === FirstTimeFlowType.create ||
-        firstTimeFlowType === FirstTimeFlowType.socialCreate;
+      const isNewWallet = firstTimeFlowType === FirstTimeFlowType.create;
 
       trackEvent({
         category: MetaMetricsEventCategory.Onboarding,
@@ -288,16 +287,10 @@ export default function CreationSuccessful() {
     if (!isOnboardingCompleted) {
       // before onboarding completion, we track the MetricsOptIn/Out event
 
-      const isNewWallet =
-        firstTimeFlowType === FirstTimeFlowType.create ||
-        firstTimeFlowType === FirstTimeFlowType.socialCreate;
+      const isNewWallet = firstTimeFlowType === FirstTimeFlowType.create;
       const baseAccountType = isNewWallet
         ? MetaMetricsEventAccountType.Default
         : MetaMetricsEventAccountType.Imported;
-      const accountType =
-        isSocialLoginFlow && socialLoginType
-          ? `${baseAccountType}_${socialLoginType}`
-          : baseAccountType;
 
       trackEvent(
         {
@@ -307,7 +300,7 @@ export default function CreationSuccessful() {
             : MetaMetricsEventName.MetricsOptOut,
           properties: {
             // eslint-disable-next-line @typescript-eslint/naming-convention
-            account_type: accountType,
+            account_type: baseAccountType,
           },
         },
         {
@@ -368,8 +361,6 @@ export default function CreationSuccessful() {
     dispatch,
     externalServicesOnboardingToggleState,
     isSidePanelEnabled,
-    isSocialLoginFlow,
-    socialLoginType,
     navigate,
     isFromSettingsSecurity,
     firstTimeFlowType,
@@ -427,7 +418,7 @@ export default function CreationSuccessful() {
               {t('yourWalletIsReadyFromReminder')}
             </Text>
             <Box className="w-full mb-6">
-              <Box className="w-36 h-36 mx-auto">{renderFox}</Box>
+              <Box className="w-36 h-36 mx-auto">{renderBrandMark}</Box>
             </Box>
             <Text
               variant={TextVariant.BodyMd}

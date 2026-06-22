@@ -90,7 +90,7 @@ export const EditGasFeesRow = ({
 
   let tooltip = t('estimatedFeeTooltip');
   if (isGasFeeSponsored) {
-    tooltip = t('swapGasFeesSponsoredExplanation', [nativeTokenSymbol]);
+    tooltip = t('gasFeesSponsoredExplanation', [nativeTokenSymbol]);
   } else if (gasFeeToken?.metaMaskFee && gasFeeToken.metaMaskFee !== '0x0') {
     tooltip = t('confirmGasFeeTokenTooltip', [metamaskFeeFiat]);
   }

@@ -47,12 +47,9 @@ const VisitSupportDataConsentModal: React.FC<
     (params: { version: string; metaMetricsId?: string }) => {
       onClose();
       const url = new URL(SUPPORT_LINK as string);
-      url.searchParams.append('metamask_version', params.version);
+      url.searchParams.append('1do_version', params.version);
       if (params.metaMetricsId) {
-        url.searchParams.append(
-          'metamask_metametrics_id',
-          params.metaMetricsId,
-        );
+        url.searchParams.append('1do_metrics_id', params.metaMetricsId);
       }
 
       const supportLinkWithUserId = url.toString();

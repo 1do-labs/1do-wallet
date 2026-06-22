@@ -99,16 +99,6 @@ describe('TransactionDetailsSummary', () => {
     expect(getByText(messages.summary.message)).toBeInTheDocument();
   });
 
-  it('renders bridge title for bridge transactions', () => {
-    const { getByText } = render(TransactionType.bridge);
-    expect(getByText(messages.bridge.message)).toBeInTheDocument();
-  });
-
-  it('renders swap title for swap transactions', () => {
-    const { getByText } = render(TransactionType.swap);
-    expect(getByText(messages.swap.message)).toBeInTheDocument();
-  });
-
   it('uses metamaskPay chain for relayDeposit source token lookup', () => {
     useTokenWithBalanceMock.mockReturnValue({
       address: '0xabc123',
@@ -127,40 +117,6 @@ describe('TransactionDetailsSummary', () => {
     });
 
     expect(useTokenWithBalanceMock).toHaveBeenCalledWith('0xabc123', '0x89');
-  });
-
-  it('renders bridge send title for perpsRelayDeposit instead of generic transaction', () => {
-    useTokenWithBalanceMock.mockReturnValue({
-      address: '0xabc123',
-      chainId: CHAIN_ID,
-      symbol: 'USDC',
-      decimals: 6,
-      balance: '1',
-      balanceFiat: '$1.00',
-      balanceRaw: '1000000',
-      tokenFiatAmount: 1,
-    });
-
-    const { getByText, queryByText } = renderWithProvider(
-      <TransactionDetailsProvider
-        transactionMeta={
-          createMockTransactionMeta(TransactionType.perpsRelayDeposit, {
-            metamaskPay: {
-              tokenAddress: '0xabc123',
-              chainId: CHAIN_ID,
-            },
-          }) as never
-        }
-      >
-        <TransactionDetailsSummary />
-      </TransactionDetailsProvider>,
-      mockStore(createMockState()),
-    );
-
-    expect(
-      getByText(tEn('bridgeSend', ['USDC', 'Ethereum'])),
-    ).toBeInTheDocument();
-    expect(queryByText(messages.transaction.message)).not.toBeInTheDocument();
   });
 
   it('renders bridge send title for predictRelayDeposit instead of generic transaction', () => {

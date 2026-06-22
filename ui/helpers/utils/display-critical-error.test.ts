@@ -4,13 +4,7 @@ import * as errorUtils from '../../../shared/lib/error-utils';
 import {
   displayCriticalErrorMessage,
   CriticalErrorTranslationKey,
-  extractEnvelopeUrlFromDsn,
 } from './display-critical-error';
-
-const MOCK_UUID = '550e8400e29b41d4a716446655440000';
-jest.mock('uuid', () => ({
-  v4: jest.fn(() => MOCK_UUID),
-}));
 
 const MOCK_RELEASE_VERSION = '13.0.0';
 jest.mock('webextension-polyfill', () => ({
@@ -19,19 +13,6 @@ jest.mock('webextension-polyfill', () => ({
     getManifest: jest.fn(() => ({ version: MOCK_RELEASE_VERSION })),
   },
 }));
-
-// Mock environment variables before importing the module
-const MOCK_SENTRY_DSN =
-  'https://3567c198f8a8412082d32655da2961d0@sentry.io/273505';
-const MOCK_SENTRY_DSN_DEV = 'https://dev123@sentry.io/273505';
-
-const originalEnv = process.env;
-process.env = {
-  ...originalEnv,
-  SENTRY_DSN: MOCK_SENTRY_DSN,
-  SENTRY_DSN_DEV: MOCK_SENTRY_DSN_DEV,
-  METAMASK_ENVIRONMENT: 'development',
-};
 
 jest.mock('../../../shared/lib/manifestFlags', () => ({
   getManifestFlags: jest.fn(() => ({
@@ -42,14 +23,12 @@ jest.mock('../../../shared/lib/manifestFlags', () => ({
 describe('displayCriticalError', () => {
   let rootContainer: HTMLElement;
   let container: HTMLElement;
+  let consoleErrorSpy: jest.SpyInstance;
   const MOCK_ERROR_MESSAGE = 'test error';
-  const EXPECTED_ENVELOPE_URL = extractEnvelopeUrlFromDsn(MOCK_SENTRY_DSN_DEV);
-
-  afterAll(() => {
-    process.env = originalEnv;
-  });
 
   beforeEach(() => {
+    consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation();
+
     container = document.createElement('div');
     // When a critical error is displayed, the main application container is removed from the DOM.
     // We use `container.parentElement` to determine whether the container has been removed yet or
@@ -79,6 +58,7 @@ describe('displayCriticalError', () => {
 
   afterEach(() => {
     jest.clearAllMocks();
+    consoleErrorSpy.mockRestore();
   });
 
   it('renders critical error html into parent of container', async () => {
@@ -104,7 +84,7 @@ describe('displayCriticalError', () => {
     ).toContain('critical-error-button');
   });
 
-  it('clicking restart button calls fetch and reload if checkbox checked', async () => {
+  it('clicking restart button does not send remote reports and reloads if checkbox checked', async () => {
     const error = new Error(MOCK_ERROR_MESSAGE);
 
     await expect(
@@ -135,75 +115,7 @@ describe('displayCriticalError', () => {
         await flushPromises();
       });
 
-      expect(fetch).toHaveBeenCalledWith(
-        EXPECTED_ENVELOPE_URL,
-        expect.objectContaining({
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/x-sentry-envelope',
-          },
-        }),
-      );
-
-      // Additional body content assertions
-      const mockFetch = fetch as jest.MockedFunction<typeof fetch>;
-      const fetchCall = mockFetch.mock.calls[0];
-      const requestBody = fetchCall[1]?.body as string;
-      const [envelopeHeader, itemHeader, eventPayload] =
-        requestBody.split('\n');
-
-      // Parse and verify envelope structure
-      const parsedEnvelopeHeader = JSON.parse(envelopeHeader);
-      const parsedItemHeader = JSON.parse(itemHeader);
-      const parsedEventPayload = JSON.parse(eventPayload);
-
-      // Verify envelope header
-      expect(parsedEnvelopeHeader).toMatchObject({
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        event_id: MOCK_UUID,
-        dsn: MOCK_SENTRY_DSN_DEV,
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        sent_at: expect.stringMatching(
-          /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/u,
-        ), // ISO timestamp
-      });
-
-      // Verify item header
-      expect(parsedItemHeader).toMatchObject({
-        type: 'event',
-        length: expect.any(Number),
-      });
-
-      // Verify event payload
-      expect(parsedEventPayload).toMatchObject({
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        event_id: MOCK_UUID,
-        timestamp: expect.any(Number),
-        platform: 'javascript',
-        level: 'error',
-        message: MOCK_ERROR_MESSAGE,
-        release: MOCK_RELEASE_VERSION,
-        extra: {
-          // eslint-disable-next-line @typescript-eslint/naming-convention
-          error_details: expect.any(Object), // Error object serialization varies by environment
-          // eslint-disable-next-line @typescript-eslint/naming-convention
-          user_agent: expect.any(String),
-        },
-      });
-
-      // Additional checks for error_details content
-      expect(parsedEventPayload.extra.error_details).toBeDefined();
-      if (
-        typeof parsedEventPayload.extra.error_details === 'object' &&
-        parsedEventPayload.extra.error_details !== null
-      ) {
-        // If error details are populated, check they contain error info
-        const errorDetails = parsedEventPayload.extra.error_details as Record<
-          string,
-          unknown
-        >;
-        expect(Object.keys(errorDetails).length).toBeGreaterThanOrEqual(0);
-      }
+      expect(fetch).not.toHaveBeenCalled();
       expect(browser.runtime.reload).toHaveBeenCalled();
     }
   });
@@ -242,32 +154,5 @@ describe('displayCriticalError', () => {
       expect(fetch).not.toHaveBeenCalled();
       expect(browser.runtime.reload).toHaveBeenCalled();
     }
-  });
-});
-
-describe('extractEnvelopeUrlFromDsn', () => {
-  it('should extract correct envelope URL from valid DSN', () => {
-    const dsn = 'https://3567c198f8a8412082d32655da2961d0@sentry.io/273505';
-    const result = extractEnvelopeUrlFromDsn(dsn);
-    expect(result).toBe('https://sentry.io/api/273505/envelope/');
-  });
-
-  it('should handle different regions', () => {
-    const dsn = 'https://key@o123.ingest.eu.sentry.io/456';
-    const result = extractEnvelopeUrlFromDsn(dsn);
-    expect(result).toBe('https://o123.ingest.eu.sentry.io/api/456/envelope/');
-  });
-
-  it('should throw error for invalid DSN', () => {
-    const invalidDsn = 'not-a-valid-url';
-    expect(() => extractEnvelopeUrlFromDsn(invalidDsn)).toThrow(
-      'Invalid Sentry DSN format',
-    );
-  });
-
-  it('should throw error for empty string', () => {
-    expect(() => extractEnvelopeUrlFromDsn('')).toThrow(
-      'Invalid Sentry DSN format',
-    );
   });
 });

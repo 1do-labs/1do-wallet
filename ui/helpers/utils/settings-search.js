@@ -1,14 +1,10 @@
 /* eslint-disable require-unicode-regexp */
 import SETTINGS_CONSTANTS from '../constants/settings';
-import {
-  getIsMetaMaskShieldFeatureEnabled,
-  getIsSettingsPageDevOptionsEnabled,
-} from '../../../shared/lib/environment';
+import { getIsSettingsPageDevOptionsEnabled } from '../../../shared/lib/environment';
 
 let settingsRoutes;
 
 const FEATURE_FLAG_CHECKERS = {
-  METAMASK_SHIELD_ENABLED: getIsMetaMaskShieldFeatureEnabled,
   ENABLE_SETTINGS_PAGE_DEV_OPTIONS: getIsSettingsPageDevOptionsEnabled,
 };
 
@@ -98,17 +94,43 @@ export function handleSettingsRefs(t, tabMessage, settingsRefs) {
 }
 
 export function colorText(menuElement, regex) {
-  if (menuElement !== null) {
-    let elemText = menuElement.innerHTML;
-    elemText = elemText.replace('&amp;', '&');
-    elemText = elemText.replace(
-      /(<span class="settings-page__header__search__list__item__highlight">|<\/span>)/gim,
-      '',
-    );
-    menuElement.innerHTML = elemText.replace(
-      regex,
-      '<span class="settings-page__header__search__list__item__highlight">$&</span>',
-    );
+  if (menuElement === null) {
+    return;
+  }
+
+  const elemText = menuElement.textContent ?? '';
+  menuElement.textContent = '';
+
+  let lastIndex = 0;
+  let match;
+  regex.lastIndex = 0;
+
+  while ((match = regex.exec(elemText)) !== null) {
+    if (match[0] === '') {
+      break;
+    }
+
+    if (match.index > lastIndex) {
+      menuElement.appendChild(
+        document.createTextNode(elemText.slice(lastIndex, match.index)),
+      );
+    }
+
+    const highlight = document.createElement('span');
+    highlight.className =
+      'settings-page__header__search__list__item__highlight';
+    highlight.textContent = match[0];
+    menuElement.appendChild(highlight);
+
+    lastIndex = regex.lastIndex;
+  }
+
+  if (lastIndex < elemText.length) {
+    menuElement.appendChild(document.createTextNode(elemText.slice(lastIndex)));
+  }
+
+  if (lastIndex === 0) {
+    menuElement.textContent = elemText;
   }
 }
 
@@ -125,6 +147,10 @@ export const escapeRegExp = (input) => {
 
 export function highlightSearchedText() {
   const searchElem = document.getElementById('search-settings');
+  if (!searchElem?.value) {
+    return;
+  }
+
   const searchRegex = new RegExp(escapeRegExp(searchElem.value), 'gi');
   const results = document.querySelectorAll(
     '.settings-page__header__search__list__item',

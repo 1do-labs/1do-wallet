@@ -9,11 +9,10 @@
       "128": "images/icon-128.png",
       "512": "images/icon-512.png"
     },
-    "default_title": "MetaMask Beta"
+    "default_title": "1do Beta"
   },
   "externally_connectable": {
-    "matches": ["http://*/*", "https://*/*"],
-    "ids": ["*"]
+    "matches": ["http://*/*", "https://*/*"]
   },
   "icons": {
     "16": "images/icon-16.png",

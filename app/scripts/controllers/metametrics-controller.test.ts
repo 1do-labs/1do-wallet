@@ -1010,12 +1010,12 @@ describe('MetaMetricsController', function () {
         {
           flagKey: TEST_QUICK_AMOUNTS_FLAG_KEY,
           validVariants: ['control', 'treatment'],
-          eventNames: ['Unified SwapBridge Page Viewed'],
+          eventNames: ['Portfolio Page Viewed'],
         },
         {
           flagKey: TEST_LAYOUT_FLAG_KEY,
           validVariants: ['control', 'treatment'],
-          eventNames: ['Unified SwapBridge Page Viewed'],
+          eventNames: ['Portfolio Page Viewed'],
         },
       );
 
@@ -1030,7 +1030,7 @@ describe('MetaMetricsController', function () {
           const spy = jest.spyOn(segmentMock, 'track');
 
           controller.trackEvent({
-            event: 'Unified SwapBridge Page Viewed',
+            event: 'Portfolio Page Viewed',
             category: 'Unit Test',
           });
 
@@ -1061,12 +1061,12 @@ describe('MetaMetricsController', function () {
         {
           flagKey: TEST_QUICK_AMOUNTS_FLAG_KEY,
           validVariants: ['control', 'treatment'],
-          eventNames: ['Unified SwapBridge Page Viewed'],
+          eventNames: ['Portfolio Page Viewed'],
         },
         {
           flagKey: TEST_LAYOUT_FLAG_KEY,
           validVariants: ['control', 'treatment'],
-          eventNames: ['Unified SwapBridge Page Viewed'],
+          eventNames: ['Portfolio Page Viewed'],
         },
       );
 
@@ -1081,7 +1081,7 @@ describe('MetaMetricsController', function () {
           const spy = jest.spyOn(segmentMock, 'track');
 
           controller.trackEvent({
-            event: 'Unified SwapBridge Page Viewed',
+            event: 'Portfolio Page Viewed',
             category: 'Unit Test',
             properties: {
               // eslint-disable-next-line @typescript-eslint/naming-convention
@@ -1249,7 +1249,7 @@ describe('MetaMetricsController', function () {
       AB_TEST_ANALYTICS_MAPPINGS.push({
         flagKey: TEST_QUICK_AMOUNTS_FLAG_KEY,
         validVariants: ['control', 'treatment'],
-        eventNames: ['Unified SwapBridge Page Viewed'],
+        eventNames: ['Portfolio Page Viewed'],
       });
       jest.spyOn(ManifestFlags, 'getManifestFlags').mockReturnValue({
         remoteFeatureFlags: {
@@ -1267,7 +1267,7 @@ describe('MetaMetricsController', function () {
           const spy = jest.spyOn(segmentMock, 'track');
 
           controller.trackEvent({
-            event: 'Unified SwapBridge Page Viewed',
+            event: 'Portfolio Page Viewed',
             category: 'Unit Test',
           });
 
@@ -1871,7 +1871,6 @@ describe('MetaMetricsController', function () {
           ledgerTransportType: LedgerTransportTypes.webhid,
           openSeaEnabled: true,
           useNftDetection: false,
-          securityAlertsEnabled: true,
           theme: 'default' as ThemeType,
           useTokenDetection: true,
           names: {
@@ -1948,7 +1947,7 @@ describe('MetaMetricsController', function () {
           [MetaMetricsUserTrait.ShowNativeTokenAsMainBalance]: true,
           [MetaMetricsUserTrait.CurrentCurrency]: 'usd',
           [MetaMetricsUserTrait.HasMarketingConsent]: false,
-          [MetaMetricsUserTrait.SecurityProviders]: ['blockaid'],
+          [MetaMetricsUserTrait.SecurityProviders]: [],
           [MetaMetricsUserTrait.IsMetricsOptedIn]: true,
           [MetaMetricsUserTrait.ProfileId]: undefined,
           [MetaMetricsUserTrait.PetnameAddressCount]: 3,
@@ -2012,7 +2011,6 @@ describe('MetaMetricsController', function () {
             },
             showNativeTokenAsMainBalance: true,
           } as Preferences,
-          securityAlertsEnabled: true,
           names: {
             ethereumAddress: {},
           },
@@ -2077,7 +2075,6 @@ describe('MetaMetricsController', function () {
             },
             showNativeTokenAsMainBalance: false,
           } as Preferences,
-          securityAlertsEnabled: true,
           srpSessionData: {
             entropySourceId1: {
               token: {
@@ -2159,7 +2156,6 @@ describe('MetaMetricsController', function () {
           names: {
             ethereumAddress: {},
           },
-          securityAlertsEnabled: true,
           currentCurrency: 'usd',
           srpSessionData: {
             entropySourceId1: {
@@ -2223,7 +2219,6 @@ describe('MetaMetricsController', function () {
           names: {
             ethereumAddress: {},
           },
-          securityAlertsEnabled: true,
           currentCurrency: 'usd',
           srpSessionData: {
             entropySourceId1: {

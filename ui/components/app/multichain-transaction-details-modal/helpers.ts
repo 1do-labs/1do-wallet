@@ -1,5 +1,5 @@
 import { DateTime } from 'luxon';
-import { formatChainIdToHex } from '@metamask/bridge-controller';
+import { formatChainIdToHex } from '../../../../shared/lib/chain-utils';
 import { CHAINID_DEFAULT_BLOCK_EXPLORER_URL_MAP } from '../../../../shared/constants/common';
 import {
   formatDateWithYearContext,

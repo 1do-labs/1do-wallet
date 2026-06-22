@@ -15,11 +15,9 @@ import {
   MetaMetricsEventName,
 } from '../../../../shared/constants/metametrics';
 import transactionGroup from '../../../../test/data/mock-pending-transaction-data.json';
-import mockLegacySwapTxGroup from '../../../../test/data/swap/mock-legacy-swap-transaction-group.json';
 import mockState from '../../../../test/data/mock-state.json';
 import { renderWithProvider } from '../../../../test/lib/render-helpers-navigate';
 import { MetaMetricsContext } from '../../../contexts/metametrics';
-import { selectBridgeHistoryForAccountGroup } from '../../../ducks/bridge-status/selectors';
 import { getTokens } from '../../../ducks/metamask/metamask';
 import { useGasFeeEstimates } from '../../../hooks/useGasFeeEstimates';
 import {
@@ -139,8 +137,6 @@ const generateUseSelectorRouter = (opts) => (selector) => {
     return opts.shouldShowFiat ?? false;
   } else if (selector === getTokens) {
     return opts.tokens ?? [];
-  } else if (selector === selectBridgeHistoryForAccountGroup) {
-    return opts.bridgeHistory ?? {};
   } else if (selector === getAccountTree) {
     return opts.accountTree ?? { wallets: {} };
   } else if (selector === getSelectedInternalAccount) {
@@ -332,57 +328,6 @@ describe('TransactionListItem', () => {
     expect(abortTransactionSigning).toHaveBeenCalledWith(
       transactionGroupSigning.primaryTransaction.id,
     );
-  });
-
-  it('should render pending legacy swap tx summary', () => {
-    useSelector.mockImplementation(generateUseSelectorRouter({}));
-    const { queryByTestId, getByText } = renderWithProvider(
-      <TransactionListItem
-        transactionGroup={{
-          ...mockLegacySwapTxGroup,
-          primaryTransaction: {
-            ...mockLegacySwapTxGroup.primaryTransaction,
-            status: TransactionStatus.approved,
-          },
-        }}
-      />,
-    );
-
-    expect(queryByTestId('activity-list-item')).toHaveTextContent(
-      '?Swap USDC to UNISigningCancel',
-    );
-    expect(getByText(messages.signing.message)).toBeInTheDocument();
-  });
-
-  it('should render confirmed legacy swap tx summary', () => {
-    useSelector.mockImplementation(generateUseSelectorRouter({}));
-    const { queryByTestId } = renderWithProvider(
-      <TransactionListItem transactionGroup={mockLegacySwapTxGroup} />,
-    );
-
-    expect(queryByTestId('activity-list-item')).toHaveTextContent(
-      '?Swap USDC to UNIConfirmed-2 USDC',
-    );
-  });
-
-  it('should render failed legacy swap tx summary', () => {
-    useSelector.mockImplementation(generateUseSelectorRouter({}));
-    const { queryByTestId, getByText } = renderWithProvider(
-      <TransactionListItem
-        transactionGroup={{
-          ...mockLegacySwapTxGroup,
-          primaryTransaction: {
-            ...mockLegacySwapTxGroup.primaryTransaction,
-            status: TransactionStatus.failed,
-          },
-        }}
-      />,
-    );
-
-    expect(queryByTestId('activity-list-item')).toHaveTextContent(
-      '?Swap USDC to UNIFailed-2 USDC',
-    );
-    expect(getByText(messages.failed.message)).toBeInTheDocument();
   });
 
   describe('gas fee token selected', () => {

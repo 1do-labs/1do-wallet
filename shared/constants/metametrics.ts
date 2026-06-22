@@ -554,24 +554,6 @@ export type MetaMetricsUserTraits = {
   // eslint-disable-next-line @typescript-eslint/naming-convention
   profile_id?: string;
   /**
-   * Whether the user has opted into Rewards.
-   */
-  // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-  // eslint-disable-next-line @typescript-eslint/naming-convention
-  has_rewards_opted_in?: string;
-  /**
-   * Whether the user was referred when opting into Rewards.
-   */
-  // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-  // eslint-disable-next-line @typescript-eslint/naming-convention
-  rewards_referred?: boolean;
-  /**
-   * The referral code used when opting into Rewards.
-   */
-  // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-  // eslint-disable-next-line @typescript-eslint/naming-convention
-  rewards_referral_code_used?: string;
-  /**
    * The platform (browser) where the extension is running.
    */
   platform?: Platform;
@@ -702,12 +684,6 @@ export enum MetaMetricsUserTrait {
    */
   ChainIdList = 'chain_id_list',
   /**
-   * Rewards-specific traits
-   */
-  HasRewardsOptedIn = 'has_rewards_opted_in',
-  RewardsReferred = 'rewards_referred',
-  RewardsReferralCodeUsed = 'rewards_referral_code_used',
-  /**
    * The platform (browser) where the extension is running.
    */
   Platform = 'platform',
@@ -780,8 +756,6 @@ export enum MetaMetricsEventName {
   BannerDisplay = 'Banner Display',
   BannerCloseAll = 'Banner Close All',
   BannerSelect = 'Banner Select',
-  BridgeLinkClicked = 'Bridge Link Clicked',
-  SwapLinkClicked = 'Swap Link Clicked',
   CurrentCurrency = 'Selected Currency Changed',
   DappViewed = 'Dapp Viewed',
   DecryptionApproved = 'Decryption Approved',
@@ -814,7 +788,6 @@ export enum MetaMetricsEventName {
   KeyTokenDetectionSelected = 'Key Token Detection Selected',
   KeyGlobalSecurityToggleSelected = 'Key Global Security/Privacy Settings',
   KeyBalanceTokenPriceChecker = 'Key Show Balance and Token Price Checker Settings',
-  KeyGasFeeEstimationBuySwapTokens = 'Key Show Gas Fee Estimation, Buy Crypto and Swap Tokens',
   MarkAllNotificationsRead = 'Notifications Marked All as Read',
   MetricsOptIn = 'Metrics Opt In',
   MetricsOptOut = 'Metrics Opt Out',
@@ -845,7 +818,6 @@ export enum MetaMetricsEventName {
   NavNetworkSwitched = 'Network Switched',
   NavBuyButtonClicked = 'Buy Button Clicked',
   NavSendButtonClicked = 'Send Button Clicked',
-  NavSwapButtonClicked = 'Swap Button Clicked',
   NavReceiveButtonClicked = 'Receive Button Clicked',
   NftAdded = 'NFT Added',
   NftDetected = 'NFT Detected',
@@ -937,15 +909,6 @@ export enum MetaMetricsEventName {
   WalletCreated = 'Wallet Created',
   WalletSetupFailure = 'Wallet Setup Failure',
   WalletSetupCompleted = 'Wallet Setup Completed',
-  SocialLoginCompleted = 'Social Login Completed',
-  SocialLoginFailed = 'Social Login Failed',
-  AccountAlreadyExistsPageViewed = 'Account Already Exists Page Viewed',
-  AccountNotFoundPageViewed = 'Account Not Found Page Viewed',
-  RehydrationPasswordAttempted = 'Rehydration Password Attempted',
-  RehydrationCompleted = 'Rehydration Completed',
-  RehydrationPasswordFailed = 'Rehydration Password Failed',
-  UseDifferentLoginMethodClicked = 'Use Different Login Method Clicked',
-  PasswordOutdatedModalViewed = 'Password Outdated Modal Viewed',
   WatchEthereumAccountsToggled = 'Watch Ethereum Accounts Toggled',
   AccountDetailMenuOpened = 'Account Details Menu Opened',
   BlockExplorerLinkClicked = 'Block Explorer Clicked',
@@ -959,32 +922,13 @@ export enum MetaMetricsEventName {
   DeFiScreenOpened = 'DeFi Screen Opened',
   DeFiDetailsOpened = 'DeFi Details Opened',
   ActivityScreenOpened = 'Activity Screen Opened',
-  PerpsScreenViewed = 'Perp Screen Viewed',
-  PerpsUiInteraction = 'Perp UI Interaction',
-  PerpsTradeTransaction = 'Perp Trade Transaction',
-  PerpsPositionCloseTransaction = 'Perp Position Close Transaction',
-  PerpsOrderCancelTransaction = 'Perp Order Cancel Transaction',
-  PerpsWithdrawalTransaction = 'Perp Withdrawal Transaction',
-  PerpsRiskManagement = 'Perp Risk Management',
-  PerpsError = 'Perp Error',
   WhatsNewViewed = `What's New Viewed`,
   WhatsNewClicked = `What's New Link Clicked`,
-  PrepareSwapPageLoaded = 'Prepare Swap Page Loaded',
-  QuotesRequested = 'Quotes Requested',
-  QuotesReceived = 'Quotes Received',
-  BestQuoteReviewed = 'Best Quote Reviewed',
-  AllAvailableQuotesOpened = 'All Available Quotes Opened',
-  SwapStarted = 'Swap Started',
   TransactionAdded = 'Transaction Added',
   TransactionSubmitted = 'Transaction Submitted',
   TransactionApproved = 'Transaction Approved',
-  SwapCompleted = 'Swap Completed',
   TransactionFinalized = 'Transaction Finalized',
   ConfirmationQueued = 'Confirmation Queued',
-  ExitedSwaps = 'Exited Swaps',
-  MakeAnotherSwap = 'Make Another Swap',
-  SwapError = 'Swap Error',
-  SwapFailed = 'Swap Failed',
   TurnOnMetaMetrics = 'MetaMetrics Turned On',
   TurnOffMetaMetrics = 'MetaMetrics Turned Off',
   // Notifications
@@ -999,15 +943,6 @@ export enum MetaMetricsEventName {
   // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
   // eslint-disable-next-line @typescript-eslint/naming-convention
   sendFlowExited = 'Send Flow Exited',
-  // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-  // eslint-disable-next-line @typescript-eslint/naming-convention
-  sendSwapQuoteError = 'Send Swap Quote Error',
-  // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-  // eslint-disable-next-line @typescript-eslint/naming-convention
-  sendSwapQuoteRequested = 'Send Swap Quote Requested',
-  // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-  // eslint-disable-next-line @typescript-eslint/naming-convention
-  sendSwapQuoteReceived = 'Send Swap Quote Received',
   // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
   // eslint-disable-next-line @typescript-eslint/naming-convention
   sendTokenModalOpened = 'Send Token Modal Opened',
@@ -1055,7 +990,6 @@ export enum MetaMetricsHardwareWalletRecoveryLocation {
   Connection = 'Connection',
   Transaction = 'Transaction',
   Message = 'Message',
-  Swaps = 'Swaps',
   Send = 'Send',
 }
 
@@ -1127,7 +1061,6 @@ export enum MetaMetricsEventCategory {
   Petnames = 'Petnames',
   // eslint-disable-next-line @typescript-eslint/no-shadow
   Permissions = 'Permissions',
-  Perps = 'Perps',
   Phishing = 'Phishing',
   Referrals = 'Referrals',
   BackupAndSync = 'Backup And Sync',
@@ -1136,16 +1069,12 @@ export enum MetaMetricsEventCategory {
   Send = 'Send',
   Settings = 'Settings',
   Feedback = 'Feedback',
-  Swaps = 'Swaps',
   Tokens = 'Tokens',
   Transactions = 'Transactions',
   Wallet = 'Wallet',
   Confirmations = 'Confirmations',
   Contacts = 'Contacts',
-  CrossChainSwaps = 'Cross Chain Swaps',
   PortStream = 'Port Stream',
-  Rewards = 'Rewards',
-  Shield = 'Shield',
 }
 
 export enum MetaMetricsEventLinkType {
@@ -1171,14 +1100,6 @@ export enum MetaMetricsNetworkEventSource {
   Dapp = 'dapp',
   DeprecatedNetworkModal = 'deprecated_network_modal',
   NewAddNetworkFlow = 'new_add_network_flow',
-  Bridge = 'bridge',
-}
-
-export enum MetaMetricsSwapsEventSource {
-  MainView = 'Main View',
-  TokenView = 'Token View',
-  ActivityTabEmptyState = 'Activity Tab Empty State',
-  TransactionShield = 'Transaction Shield',
 }
 
 export enum MetaMetricsTokenEventSource {

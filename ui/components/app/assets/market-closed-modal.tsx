@@ -41,7 +41,7 @@ export const MarketClosedModal = ({
       <ModalOverlay />
       <ModalContent>
         <ModalHeader onClose={onClose}>
-          {t('bridgeMarketClosedModalTitle')}
+          {t('marketClosedModalTitle')}
         </ModalHeader>
         <ModalBody>
           <Box flexDirection={BoxFlexDirection.Column} gap={4}>
@@ -50,7 +50,7 @@ export const MarketClosedModal = ({
               color={TextColor.TextDefault}
               textAlign={TextAlign.Left}
             >
-              {t('bridgeMarketClosedModalDescription')}&nbsp;
+              {t('marketClosedModalDescription')}&nbsp;
               <TextButton
                 asChild
                 data-testid="market-closed-modal-learn-more"
@@ -66,7 +66,7 @@ export const MarketClosedModal = ({
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  {t('bridgeMarketClosedModalLearnMore')}
+                  {t('marketClosedModalLearnMore')}
                 </a>
               </TextButton>
             </Text>

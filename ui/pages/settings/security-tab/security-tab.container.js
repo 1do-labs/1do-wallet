@@ -16,19 +16,14 @@ import {
   setUse4ByteResolution,
   setUseSafeChainsListValidation,
   setUseTransactionSimulations,
-  setSecurityAlertsEnabled,
   updateDataDeletionTaskStatus,
   setSkipDeepLinkInterstitial,
-  getMarketingConsent,
-  setMarketingConsent,
   setParticipateInMetaMetrics,
 } from '../../../store/actions';
 import {
-  getIsSecurityAlertsEnabled,
   getMetaMetricsDataDeletionId,
   getHDEntropyIndex,
   getPreferences,
-  getIsSocialLoginFlow,
   getParticipateInMetaMetrics,
   getDataCollectionForMarketing,
 } from '../../../selectors';
@@ -73,14 +68,11 @@ const mapStateToProps = (state) => {
     useNftDetection,
     use4ByteResolution,
     useExternalServices,
-    securityAlertsEnabled: getIsSecurityAlertsEnabled(state),
     useTransactionSimulations: metamask.useTransactionSimulations,
     metaMetricsDataDeletionId: getMetaMetricsDataDeletionId(state),
     hdEntropyIndex: getHDEntropyIndex(state),
     skipDeepLinkInterstitial: Boolean(skipDeepLinkInterstitial),
     isSeedPhraseBackedUp: getIsPrimarySeedPhraseBackedUp(state),
-    socialLoginEnabled: getIsSocialLoginFlow(state),
-    socialLoginType: undefined,
   };
 };
 
@@ -119,9 +111,6 @@ const mapDispatchToProps = (dispatch) => {
     updateDataDeletionTaskStatus: () => {
       return updateDataDeletionTaskStatus();
     },
-    setSecurityAlertsEnabled: (value) => setSecurityAlertsEnabled(value),
-    getMarketingConsent: () => getMarketingConsent(),
-    setMarketingConsent: (value) => dispatch(setMarketingConsent(value)),
   };
 };
 

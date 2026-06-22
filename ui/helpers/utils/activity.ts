@@ -1,8 +1,4 @@
-import {
-  TransactionMeta,
-  TransactionType,
-} from '@metamask/transaction-controller';
-import { PAY_TRANSACTION_TYPES } from '../../pages/confirmations/constants/pay';
+import { TransactionMeta } from '@metamask/transaction-controller';
 
 type TransactionGroup = {
   initialTransaction: TransactionMeta;
@@ -13,21 +9,7 @@ export function filterTransactionByChain(
   enabledChainIds: string[],
 ): boolean {
   const { initialTransaction } = transactionGroup;
-  const { type, chainId, metamaskPay } = initialTransaction;
-  const sourceChainId = metamaskPay?.chainId;
+  const { chainId } = initialTransaction;
 
-  if (
-    !PAY_TRANSACTION_TYPES.includes(type as TransactionType) ||
-    !sourceChainId
-  ) {
-    return enabledChainIds.includes(chainId);
-  }
-
-  if (type === TransactionType.perpsDeposit) {
-    return enabledChainIds.includes(sourceChainId);
-  }
-
-  return (
-    enabledChainIds.includes(chainId) || enabledChainIds.includes(sourceChainId)
-  );
+  return enabledChainIds.includes(chainId);
 }

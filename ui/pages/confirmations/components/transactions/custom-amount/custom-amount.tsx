@@ -13,10 +13,6 @@ import { Box, Text } from '../../../../../components/component-library';
 import { Skeleton } from '../../../../../components/component-library/skeleton';
 import { getCurrencySymbol } from '../../../../../helpers/utils/common.util';
 import { getCurrentCurrency } from '../../../../../ducks/metamask/metamask';
-import {
-  useIsTransactionPayLoading,
-  useTransactionPayIsMaxAmount,
-} from '../../../hooks/pay/useTransactionPayData';
 
 export type CustomAmountProps = {
   amountFiat: string;
@@ -88,14 +84,12 @@ export const CustomAmount: React.FC<CustomAmountProps> = React.memo(
     isLoading,
     onChange,
   }) => {
-    const isMaxAmount = useTransactionPayIsMaxAmount();
-    const isQuotesLoading = useIsTransactionPayLoading();
     const selectedCurrency = useSelector(getCurrentCurrency);
     const currency = currencyProp ?? selectedCurrency;
     const fiatSymbol = getCurrencySymbol(currency);
     const amountLength = amountFiat.length;
 
-    const showLoader = isLoading || (isMaxAmount && isQuotesLoading);
+    const showLoader = isLoading;
 
     const handleChange = useCallback(
       (e: React.ChangeEvent<HTMLInputElement>) => {

@@ -740,7 +740,7 @@ export const STABLE_IMAGE_URL = './images/stable.svg';
 export const STABLE_NATIVE_TOKEN_IMAGE_URL = './images/stable-native.svg';
 export const TEMPO_NATIVE_TOKEN_IMAGE_URL = './images/tempo-native.svg';
 
-export const INFURA_PROVIDER_TYPES = [
+export const DEFAULT_PROVIDER_TYPES = [
   NETWORK_TYPES.MAINNET,
   NETWORK_TYPES.SEPOLIA,
   NETWORK_TYPES.LINEA_SEPOLIA,
@@ -793,7 +793,7 @@ export const TEST_NETWORK_TICKER_MAP: {
 };
 
 /**
- * Map of all build-in Infura networks to their network, ticker and chain IDs.
+ * Map of all built-in default networks to their network, ticker and chain IDs.
  */
 export const BUILT_IN_NETWORKS = {
   [NETWORK_TYPES.SEPOLIA]: {
@@ -836,12 +836,12 @@ export const BUILT_IN_NETWORKS = {
   },
 } as const;
 
-export const BUILT_IN_INFURA_NETWORKS = pick(
+export const BUILT_IN_DEFAULT_NETWORKS = pick(
   BUILT_IN_NETWORKS,
-  INFURA_PROVIDER_TYPES,
+  DEFAULT_PROVIDER_TYPES,
 );
 
-export type BuiltInInfuraNetwork = keyof typeof BUILT_IN_INFURA_NETWORKS;
+export type BuiltInDefaultNetwork = keyof typeof BUILT_IN_DEFAULT_NETWORKS;
 
 // type SupportedNetworksType = {
 //   [key: string]: {
@@ -1498,27 +1498,7 @@ export const UNSUPPORTED_RPC_METHODS = new Set([
 export const IPFS_DEFAULT_GATEWAY_URL = 'dweb.link';
 export const IPFS_FORBIDDEN_GATEWAY = 'gateway.ipfs.io';
 
-export const QUICKNODE_ENDPOINT_URLS_BY_INFURA_NETWORK_NAME = {
-  'ethereum-mainnet': () => process.env.QUICKNODE_MAINNET_URL,
-  'linea-mainnet': () => process.env.QUICKNODE_LINEA_MAINNET_URL,
-  'arbitrum-mainnet': () => process.env.QUICKNODE_ARBITRUM_URL,
-  'avalanche-mainnet': () => process.env.QUICKNODE_AVALANCHE_URL,
-  'optimism-mainnet': () => process.env.QUICKNODE_OPTIMISM_URL,
-  'polygon-mainnet': () => process.env.QUICKNODE_POLYGON_URL,
-  'base-mainnet': () => process.env.QUICKNODE_BASE_URL,
-  'bsc-mainnet': () => process.env.QUICKNODE_BSC_URL,
-  'sei-mainnet': () => process.env.QUICKNODE_SEI_URL,
-  'monad-mainnet': () => process.env.QUICKNODE_MONAD_URL,
-  'hyperevm-mainnet': () => process.env.QUICKNODE_HYPEREVM_URL,
-};
-
-export function getFailoverUrlsForInfuraNetwork(
-  infuraNetwork: keyof typeof QUICKNODE_ENDPOINT_URLS_BY_INFURA_NETWORK_NAME,
-) {
-  const url = QUICKNODE_ENDPOINT_URLS_BY_INFURA_NETWORK_NAME[infuraNetwork]();
-  if (url) {
-    return [url];
-  }
+export function getFailoverUrlsForNetwork(_networkName: string) {
   return [];
 }
 
@@ -1530,7 +1510,7 @@ export const FEATURED_RPCS: AddNetworkFields[] = [
     rpcEndpoints: [
       {
         url: getRpcUrl({ network: 'linea-mainnet' }),
-        failoverUrls: getFailoverUrlsForInfuraNetwork('linea-mainnet'),
+        failoverUrls: getFailoverUrlsForNetwork('linea-mainnet'),
         type: RpcEndpointType.Custom,
       },
     ],
@@ -1545,7 +1525,7 @@ export const FEATURED_RPCS: AddNetworkFields[] = [
     rpcEndpoints: [
       {
         url: getRpcUrl({ network: 'arbitrum-mainnet' }),
-        failoverUrls: getFailoverUrlsForInfuraNetwork('arbitrum-mainnet'),
+        failoverUrls: getFailoverUrlsForNetwork('arbitrum-mainnet'),
         type: RpcEndpointType.Custom,
       },
     ],
@@ -1560,7 +1540,7 @@ export const FEATURED_RPCS: AddNetworkFields[] = [
     rpcEndpoints: [
       {
         url: getRpcUrl({ network: 'avalanche-mainnet' }),
-        failoverUrls: getFailoverUrlsForInfuraNetwork('avalanche-mainnet'),
+        failoverUrls: getFailoverUrlsForNetwork('avalanche-mainnet'),
         type: RpcEndpointType.Custom,
       },
     ],
@@ -1575,7 +1555,7 @@ export const FEATURED_RPCS: AddNetworkFields[] = [
     rpcEndpoints: [
       {
         url: getRpcUrl({ network: 'bsc-mainnet' }),
-        failoverUrls: getFailoverUrlsForInfuraNetwork('bsc-mainnet'),
+        failoverUrls: getFailoverUrlsForNetwork('bsc-mainnet'),
         type: RpcEndpointType.Custom,
       },
     ],
@@ -1590,7 +1570,7 @@ export const FEATURED_RPCS: AddNetworkFields[] = [
     rpcEndpoints: [
       {
         url: getRpcUrl({ network: 'optimism-mainnet' }),
-        failoverUrls: getFailoverUrlsForInfuraNetwork('optimism-mainnet'),
+        failoverUrls: getFailoverUrlsForNetwork('optimism-mainnet'),
         type: RpcEndpointType.Custom,
       },
     ],
@@ -1605,7 +1585,7 @@ export const FEATURED_RPCS: AddNetworkFields[] = [
     rpcEndpoints: [
       {
         url: getRpcUrl({ network: 'polygon-mainnet' }),
-        failoverUrls: getFailoverUrlsForInfuraNetwork('polygon-mainnet'),
+        failoverUrls: getFailoverUrlsForNetwork('polygon-mainnet'),
         type: RpcEndpointType.Custom,
       },
     ],
@@ -1635,7 +1615,7 @@ export const FEATURED_RPCS: AddNetworkFields[] = [
     rpcEndpoints: [
       {
         url: getRpcUrl({ network: 'sei-mainnet' }),
-        failoverUrls: getFailoverUrlsForInfuraNetwork('sei-mainnet'),
+        failoverUrls: getFailoverUrlsForNetwork('sei-mainnet'),
         type: RpcEndpointType.Custom,
       },
     ],
@@ -1650,7 +1630,7 @@ export const FEATURED_RPCS: AddNetworkFields[] = [
     rpcEndpoints: [
       {
         url: getRpcUrl({ network: 'monad-mainnet' }),
-        failoverUrls: getFailoverUrlsForInfuraNetwork('monad-mainnet'),
+        failoverUrls: getFailoverUrlsForNetwork('monad-mainnet'),
         type: RpcEndpointType.Custom,
       },
     ],
@@ -1665,7 +1645,7 @@ export const FEATURED_RPCS: AddNetworkFields[] = [
     rpcEndpoints: [
       {
         url: getRpcUrl({ network: 'hyperevm-mainnet' }),
-        failoverUrls: getFailoverUrlsForInfuraNetwork('hyperevm-mainnet'),
+        failoverUrls: getFailoverUrlsForNetwork('hyperevm-mainnet'),
         type: RpcEndpointType.Custom,
       },
     ],
@@ -1680,7 +1660,7 @@ export const FEATURED_RPCS: AddNetworkFields[] = [
     rpcEndpoints: [
       {
         url: getRpcUrl({ network: 'base-mainnet' }),
-        failoverUrls: getFailoverUrlsForInfuraNetwork('base-mainnet'),
+        failoverUrls: getFailoverUrlsForNetwork('base-mainnet'),
         type: RpcEndpointType.Custom,
       },
     ],

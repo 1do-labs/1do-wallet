@@ -1,10 +1,10 @@
-import { createBridgeMockStore } from '../../test/data/bridge/mock-bridge-store';
+import { createSmartTransactionsMockStore } from '../../test/jest';
 import { renderHookWithProvider } from '../../test/lib/render-helpers-navigate';
 import { useMultichainBalances } from './useMultichainBalances';
 
 describe('useMultichainBalances', () => {
   it('should return the native token of each imported network when no token balances are cached', () => {
-    const mockStore = createBridgeMockStore({
+    const mockStore = createSmartTransactionsMockStore({
       metamaskStateOverrides: {
         allTokens: {},
       },
@@ -70,7 +70,7 @@ describe('useMultichainBalances', () => {
   });
 
   it('should return a list of assets with balances', () => {
-    const mockStore = createBridgeMockStore();
+    const mockStore = createSmartTransactionsMockStore();
     const { result } = renderHookWithProvider(
       () => useMultichainBalances(),
       mockStore,
@@ -84,10 +84,12 @@ describe('useMultichainBalances', () => {
           "assetId": undefined,
           "balance": "1",
           "chainId": "0x1",
+          "decimals": 18,
           "isNative": false,
           "secondary": 0,
           "string": "1",
-          "title": undefined,
+          "symbol": "LINK",
+          "title": "LINK",
           "tokenFiatAmount": 3029.1,
           "type": "TOKEN",
         },
@@ -148,7 +150,8 @@ describe('useMultichainBalances', () => {
           "isNative": false,
           "secondary": 0,
           "string": "0.00184",
-          "title": undefined,
+          "symbol": "UNI",
+          "title": "UNI",
           "tokenFiatAmount": 10.682625999999999,
           "type": "TOKEN",
         },
@@ -157,10 +160,12 @@ describe('useMultichainBalances', () => {
           "assetId": undefined,
           "balance": "0",
           "chainId": "0xe708",
+          "decimals": 18,
           "isNative": false,
           "secondary": 0,
           "string": "0",
-          "title": undefined,
+          "symbol": "UNI",
+          "title": "UNI",
           "tokenFiatAmount": 0,
           "type": "TOKEN",
         },
@@ -169,7 +174,7 @@ describe('useMultichainBalances', () => {
   });
 
   it('should return a mapping of chainId to balance', () => {
-    const mockStore = createBridgeMockStore();
+    const mockStore = createSmartTransactionsMockStore();
     const { result } = renderHookWithProvider(
       () => useMultichainBalances(),
       mockStore,

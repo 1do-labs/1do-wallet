@@ -42,8 +42,6 @@ import { useI18nContext } from '../../../hooks/useI18nContext';
 import {
   getUseExternalNameSources,
   getExternalServicesOnboardingToggleState,
-  getIsSocialLoginFlow,
-  getDataCollectionForMarketing,
 } from '../../../selectors';
 import { getNetworkConfigurationsByChainId } from '../../../../shared/lib/selectors/networks';
 import {
@@ -57,8 +55,6 @@ import {
   setUseTransactionSimulations,
   setUseExternalNameSources,
   setEditedNetwork,
-  setDataCollectionForMarketing,
-  setMarketingConsent,
 } from '../../../store/actions';
 import {
   onboardingToggleBasicFunctionalityOn,
@@ -69,8 +65,6 @@ import {
   IPFS_FORBIDDEN_GATEWAY,
   TEST_CHAINS,
 } from '../../../../shared/constants/network';
-import DeleteMetaMetricsDataButton from '../../settings/security-tab/delete-metametrics-data-button';
-import MetametricsToggle from '../../settings/security-tab/metametrics-toggle/metametrics-toggle';
 import { MetaMaskReduxState } from '../../../store/store';
 import { Setting } from './setting';
 
@@ -104,9 +98,6 @@ export default function PrivacySettings() {
     useTransactionSimulations,
   } = defaultState;
   const useExternalNameSources = useSelector(getUseExternalNameSources);
-  const isSocialLoginFlow = useSelector(getIsSocialLoginFlow);
-  const dataCollectionForMarketing = useSelector(getDataCollectionForMarketing);
-
   const [turnOn4ByteResolution, setTurnOn4ByteResolution] =
     useState(use4ByteResolution);
   const [turnOnTokenDetection, setTurnOnTokenDetection] =
@@ -217,23 +208,10 @@ export default function PrivacySettings() {
     { id: 2, title: t('assets'), subtitle: t('assetsDescription') },
     {
       id: 3,
-      title: isSocialLoginFlow
-        ? t('securityDefaultSettingsSocialLogin')
-        : t('security'),
-      subtitle: isSocialLoginFlow
-        ? t('securitySocialLoginDefaultSettingsDescription')
-        : t('securityDescription'),
+      title: t('security'),
+      subtitle: t('securityDescription'),
     },
   ];
-
-  const handleDataCollectionForMarketing = async (value: boolean) => {
-    try {
-      dispatch(setMarketingConsent(value));
-    } catch (error) {
-      log.error('Error setting marketing consent in default settings', error);
-    }
-    dispatch(setDataCollectionForMarketing(value));
-  };
 
   return (
     <>
@@ -694,18 +672,6 @@ export default function PrivacySettings() {
                     title={t('externalNameSourcesSetting')}
                     description={t('externalNameSourcesSettingDescription')}
                   />
-                  {isSocialLoginFlow && (
-                    <>
-                      <MetametricsToggle
-                        dataCollectionForMarketing={dataCollectionForMarketing}
-                        setDataCollectionForMarketing={
-                          handleDataCollectionForMarketing
-                        }
-                        fromDefaultSettings
-                      />
-                      <DeleteMetaMetricsDataButton defaultPrivacySettings />
-                    </>
-                  )}
                 </>
               ) : null}
             </Box>

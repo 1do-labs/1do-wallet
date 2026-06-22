@@ -16,18 +16,11 @@ import { decimalToPrefixedHex } from '../conversion.utils';
 const DOMAIN = 'https://metamask.io';
 
 export function isSecurityAlertsAPIEnabled() {
-  const isEnabled = process.env.SECURITY_ALERTS_API_ENABLED;
-  return isEnabled?.toString() === 'true';
+  return false;
 }
 
 function getUrl(endpoint: string) {
-  const host = process.env.SECURITY_ALERTS_API_URL;
-
-  if (!host) {
-    throw new Error('Security alerts API URL is not set');
-  }
-
-  return `${host}/${endpoint}`;
+  throw new Error(`Security alerts API is disabled: ${endpoint}`);
 }
 
 function getSecurityApiScanTokenRequestBody(

@@ -143,7 +143,7 @@ export function GasFeeTokenModal({ onClose }: { onClose?: () => void }) {
                 }
               />
               {hasGasFeeTokens && (
-                <Title text={t('confirmGasFeeTokenModalPayToken')} />
+                <Title text={t('confirmGasFeeTokenModalToken')} />
               )}
             </>
           )}

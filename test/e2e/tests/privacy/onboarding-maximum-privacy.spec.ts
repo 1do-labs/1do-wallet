@@ -13,7 +13,6 @@ import { promises as fs } from 'fs';
 import path from 'path';
 import { Mockttp, MockedEndpoint } from 'mockttp';
 import { withFixtures, veryLargeDelayMs } from '../../helpers';
-import { FEATURE_FLAGS_API_MOCK_RESULT } from '../../../data/mock-data';
 import FixtureBuilderV2 from '../../fixtures/fixture-builder-v2';
 import HomePage from '../../page-objects/pages/home/homepage';
 import OnboardingCompletePage from '../../page-objects/pages/onboarding/onboarding-complete-page';
@@ -38,12 +37,6 @@ async function mockApis(mockServer: Mockttp): Promise<MockedEndpoint[]> {
           id: '1',
           result: '0x1',
         },
-      })),
-    await mockServer
-      .forGet('https://bridge.api.cx.metamask.io/featureFlags')
-      .thenCallback(() => ({
-        statusCode: 200,
-        json: FEATURE_FLAGS_API_MOCK_RESULT,
       })),
     // Mock chainid.network used by NetworkEnablementController
     await mockServer

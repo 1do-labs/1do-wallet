@@ -55,7 +55,6 @@ export async function runImportSrpHomeBenchmark(): Promise<BenchmarkRunResult> {
         manifestFlags: {
           testing: {
             disableSync: true,
-            infuraProjectId: process.env.INFURA_PROJECT_ID,
           },
         },
         useMockingPassThrough: !shouldUseMockedRequests(),

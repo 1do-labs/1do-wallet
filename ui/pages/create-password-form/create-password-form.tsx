@@ -27,14 +27,12 @@ import ZENDESK_URLS from '../../helpers/constants/zendesk-url';
 import { useBoolean } from '../../hooks/useBoolean';
 
 type CreatePasswordFormProps = {
-  isSocialLoginFlow: boolean;
   onSubmit: (password: string, termsChecked: boolean) => Promise<void>;
   onBack: (event: React.MouseEvent<HTMLButtonElement>) => void;
   loading?: boolean;
 };
 
 const CreatePasswordForm = ({
-  isSocialLoginFlow,
   onSubmit,
   onBack,
   loading = false,
@@ -79,10 +77,6 @@ const CreatePasswordForm = ({
     </a>
   );
 
-  const checkboxLabel = isSocialLoginFlow
-    ? t('createPasswordMarketing')
-    : t('passwordTermsWarning');
-
   return (
     <Box
       asChild
@@ -108,30 +102,12 @@ const CreatePasswordForm = ({
           </Box>
           <Box className="mb-4 w-full">
             <Text variant={TextVariant.HeadingLg}>{t('createPassword')}</Text>
-            {isSocialLoginFlow ? (
-              <Text
-                variant={TextVariant.BodyMd}
-                color={TextColor.TextAlternative}
-              >
-                {t('createPasswordDetailsSocial', [
-                  <Text
-                    key="create-password-details-social-reset"
-                    variant={TextVariant.BodyMd}
-                    color={TextColor.WarningDefault}
-                    asChild
-                  >
-                    <span>{t('createPasswordDetailsSocialReset')}</span>
-                  </Text>,
-                ])}
-              </Text>
-            ) : (
-              <Text
-                variant={TextVariant.BodyMd}
-                color={TextColor.TextAlternative}
-              >
-                {t('createPasswordDetails')}
-              </Text>
-            )}
+            <Text
+              variant={TextVariant.BodyMd}
+              color={TextColor.TextAlternative}
+            >
+              {t('createPasswordDetails')}
+            </Text>
           </Box>
           <PasswordForm
             onChange={(newPassword) => setPassword(newPassword)}
@@ -157,13 +133,9 @@ const CreatePasswordForm = ({
                   color={TextColor.TextDefault}
                 >
                   <span>
-                    {checkboxLabel}
-                    {!isSocialLoginFlow && (
-                      <>
-                        <br />
-                        {createPasswordLink}
-                      </>
-                    )}
+                    {t('passwordTermsWarning')}
+                    <br />
+                    {createPasswordLink}
                   </span>
                 </Text>
               }
@@ -177,9 +149,7 @@ const CreatePasswordForm = ({
             variant={ButtonVariant.Primary}
             size={ButtonSize.Lg}
             className="create-password__form--submit-button w-full"
-            disabled={
-              !password || (!isSocialLoginFlow && !termsChecked) || loading
-            }
+            disabled={!password || !termsChecked || loading}
             isLoading={loading}
           >
             {t('createPasswordCreate')}

@@ -40,8 +40,7 @@ import { CHAIN_IDS, TEST_CHAINS } from '../../../shared/constants/network';
 import { getMethodDataAsync } from '../../../shared/lib/four-byte';
 import {
   getSafeChainsListFromCacheOnly,
-  getIsMetaMaskInfuraEndpointUrl,
-  getIsQuicknodeEndpointUrl,
+  getIsLegacyInfuraEndpointUrl,
   KNOWN_CUSTOM_ENDPOINT_URLS,
 } from '../../../shared/lib/network-utils';
 // Re-export install type utilities from dedicated module to avoid circular dependencies
@@ -863,20 +862,16 @@ export function isPublicEndpointUrl(
   endpointUrl: string,
   infuraProjectId: string,
 ): boolean {
-  const isMetaMaskInfuraEndpointUrl = getIsMetaMaskInfuraEndpointUrl(
+  const isLegacyInfuraEndpointUrl = getIsLegacyInfuraEndpointUrl(
     endpointUrl,
     infuraProjectId,
   );
-  const isQuicknodeEndpointUrl = getIsQuicknodeEndpointUrl(endpointUrl);
   const isKnownCustomEndpointUrl =
     KNOWN_CUSTOM_ENDPOINT_URLS.includes(endpointUrl);
   const isKnownEndpoint = isKnownEndpointUrl(endpointUrl);
 
   return (
-    isMetaMaskInfuraEndpointUrl ||
-    isQuicknodeEndpointUrl ||
-    isKnownCustomEndpointUrl ||
-    isKnownEndpoint
+    isLegacyInfuraEndpointUrl || isKnownCustomEndpointUrl || isKnownEndpoint
   );
 }
 

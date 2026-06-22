@@ -18,7 +18,7 @@ import {
   getNativeAssetForChainId,
   isNativeAddress,
   isNonEvmChainId,
-} from '@metamask/bridge-controller';
+} from './chain-utils';
 
 const STATIC_METAMASK_BASE_URL = 'https://static.cx.metamask.io';
 

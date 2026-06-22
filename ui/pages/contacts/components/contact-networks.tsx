@@ -19,9 +19,11 @@ import {
   Modal,
 } from '../../../components/component-library';
 import { getNetworkConfigurationsByChainId } from '../../../../shared/lib/selectors/networks';
-import { TEST_CHAINS } from '../../../../shared/constants/network';
+import {
+  NETWORK_TO_NAME_MAP,
+  TEST_CHAINS,
+} from '../../../../shared/constants/network';
 import { useI18nContext } from '../../../hooks/useI18nContext';
-import { NETWORK_TO_SHORT_NETWORK_NAME_MAP } from '../../../../shared/constants/bridge';
 import { getImageForChainId } from '../../../selectors/multichain';
 
 export const ContactNetworks = ({
@@ -57,9 +59,7 @@ export const ContactNetworks = ({
     iconSrc: string | undefined,
   ) => {
     const displayName =
-      NETWORK_TO_SHORT_NETWORK_NAME_MAP[
-        chainId as unknown as keyof typeof NETWORK_TO_SHORT_NETWORK_NAME_MAP
-      ] ?? name;
+      NETWORK_TO_NAME_MAP[chainId as keyof typeof NETWORK_TO_NAME_MAP] ?? name;
     const selected = selectedChainId === chainId;
 
     return (
@@ -111,7 +111,7 @@ export const ContactNetworks = ({
       <ModalOverlay />
       <ModalContent modalDialogProps={{ padding: 0 }}>
         <ModalHeader onBack={onClose} onClose={onClose}>
-          {t('bridgeSelectNetwork')}
+          {t('selectNetwork')}
         </ModalHeader>
         <Box
           flexDirection={BoxFlexDirection.Column}

@@ -14,7 +14,6 @@ import {
   getCaip25CaveatFromPermission,
 } from '@metamask/chain-agnostic-permission';
 import { KeyringTypes } from '@metamask/keyring-controller';
-import { selectBridgeFeatureFlags } from '@metamask/bridge-controller';
 import {
   KnownCaipNamespace,
   parseCaipAccountId,
@@ -91,13 +90,8 @@ import { KeyringType } from '../../shared/constants/keyring';
 
 import { TRUNCATED_NAME_CHAR_LIMIT } from '../../shared/constants/labels';
 
-import {
-  SWAPS_CHAINID_DEFAULT_TOKEN_MAP,
-  ALLOWED_PROD_SWAPS_CHAIN_IDS,
-  ALLOWED_DEV_SWAPS_CHAIN_IDS,
-} from '../../shared/constants/swaps';
+import { CHAIN_ID_DEFAULT_NATIVE_TOKEN_MAP } from '../../shared/constants/native-assets';
 
-import { ALLOWED_BRIDGE_CHAIN_IDS } from '../../shared/constants/bridge';
 import { AssetType } from '../../shared/constants/transaction';
 
 import {
@@ -152,7 +146,6 @@ import { getApprovalRequestsByType } from './approvals';
 import {
   getSelectedMultichainNetworkChainId,
   getIsEvmMultichainNetworkSelected,
-  getMultichainNetwork,
 } from './multichain/networks';
 import {
   getUnapprovedTransactions,
@@ -1664,8 +1657,8 @@ export function getWeb3ShimUsageStateForOrigin(state, origin) {
  * `string` is the token balance in a readable format, ready for rendering.
  *
  * Swaps treats the selected chain's currency as a token, and we use the token constants
- * in the SWAPS_CHAINID_DEFAULT_TOKEN_MAP to set the standard properties for
- * the token. The getSwapsDefaultToken selector extends that object with
+ * in CHAIN_ID_DEFAULT_NATIVE_TOKEN_MAP to set the standard properties for
+ * the token. The getDefaultNativeToken selector extends that object with
  * `balance` and `string` values of the same type as in regular ERC-20 token
  * objects, per the above description.
  *
@@ -1673,16 +1666,16 @@ export function getWeb3ShimUsageStateForOrigin(state, origin) {
  * @param {object} state - the redux state object
  * @param {string} overrideChainId - the chainId to override the current chainId
  * @returns {SwapsEthToken} The token object representation of the currently
- * selected account's ETH balance, as expected by the Swaps API.
+ * selected account's native token balance.
  */
 
-export function getSwapsDefaultToken(state, overrideChainId = null) {
+export function getDefaultNativeToken(state, overrideChainId = null) {
   const selectedAccount = getSelectedAccount(state);
   const balance = selectedAccount?.balance;
   const currentChainId = getCurrentChainId(state);
 
   const chainId = overrideChainId ?? currentChainId;
-  const defaultTokenObject = SWAPS_CHAINID_DEFAULT_TOKEN_MAP[chainId];
+  const defaultTokenObject = CHAIN_ID_DEFAULT_NATIVE_TOKEN_MAP[chainId];
 
   return {
     ...defaultTokenObject,
@@ -1695,68 +1688,6 @@ export function getSwapsDefaultToken(state, overrideChainId = null) {
     }),
   };
 }
-
-/**
- * @deprecated Check if chainId is in ALLOWED_BRIDGE_CHAIN_IDS constant instead
- * @param state - The Redux state
- * @param {string} [overrideChainId] - (Optional) The chainId to check
- * @returns {boolean} Whether the chainId is a swaps chain
- */
-export function getIsSwapsChain(state, overrideChainId) {
-  const currentChainId = getCurrentChainId(state);
-  const chainId = overrideChainId ?? currentChainId;
-  const isDevelopment =
-    process.env.METAMASK_ENVIRONMENT === 'development' ||
-    process.env.METAMASK_ENVIRONMENT === 'testing';
-  return isDevelopment
-    ? ALLOWED_DEV_SWAPS_CHAIN_IDS.includes(chainId)
-    : ALLOWED_PROD_SWAPS_CHAIN_IDS.includes(chainId);
-}
-
-export function selectHasBridgeQuotes(state) {
-  return Boolean(Object.values(state.metamask.quotes || {}).length);
-}
-
-/**
- * @deprecated Check if chainId is in ALLOWED_BRIDGE_CHAIN_IDS constant instead
- * @param state - The Redux state
- * @param overrideChainId - The chainId to check
- * @returns {boolean} Whether the chainId is a bridge chain
- */
-export function getIsBridgeChain(state, overrideChainId) {
-  const account = getSelectedInternalAccount(state);
-  const { chainId: selectedMultiChainId, isEvmNetwork } = getMultichainNetwork(
-    state,
-    account,
-  );
-
-  let currentChainId = selectedMultiChainId;
-
-  // While we do not support the multichain network on EVM chains (ex: mainnet is epi155:1), use the old chainId
-  if (isEvmNetwork) {
-    currentChainId = getCurrentChainId(state);
-  }
-
-  const chainId = overrideChainId ?? currentChainId;
-  return ALLOWED_BRIDGE_CHAIN_IDS.includes(chainId);
-}
-
-const getBridgeFeatureFlags = createDeepEqualSelector(
-  [(state) => getRemoteFeatureFlags(state).bridgeConfig],
-  (bridgeConfig) => {
-    const validatedFlags = selectBridgeFeatureFlags({
-      remoteFeatureFlags: { bridgeConfig },
-    });
-    return validatedFlags;
-  },
-);
-
-export const getIsBridgeEnabled = createSelector(
-  [getBridgeFeatureFlags, getUseExternalServices],
-  (bridgeFeatureFlags, shouldUseExternalServices) => {
-    return (shouldUseExternalServices && bridgeFeatureFlags?.support) ?? false;
-  },
-);
 
 export function getNativeCurrencyImage(state) {
   const chainId = getCurrentChainId(state);
@@ -2443,10 +2374,6 @@ function getIsTokenDetectionInactiveOnMainnet(state) {
  * @param {*} state
  * @returns Boolean
  */
-export function getIsSecurityAlertsEnabled(state) {
-  return state.metamask.securityAlertsEnabled;
-}
-
 /**
  * To get the `getUsePhishDetect` value which determines whether phishing detection is enabled
  *
@@ -2455,21 +2382,6 @@ export function getIsSecurityAlertsEnabled(state) {
  */
 export function getUsePhishDetect(state) {
   return state.metamask.usePhishDetect;
-}
-
-/**
- * Gets the cached address security alert response for a given address
- *
- * @param {*} state
- * @param {string} cacheKey - The cache key in format "chain:address" to get security alert for. Use createCacheKey to generate the cache key.
- * @returns the cached address security alert response for the given cache key
- */
-export function getAddressSecurityAlertResponse(state, cacheKey) {
-  if (!cacheKey) {
-    return undefined;
-  }
-
-  return state.metamask.addressSecurityAlertResponses?.[cacheKey];
 }
 
 /**

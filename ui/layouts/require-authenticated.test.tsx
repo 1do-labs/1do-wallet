@@ -58,7 +58,7 @@ describe('RequireAuthenticated', () => {
     };
 
     mockUseLocation.mockReturnValue({
-      pathname: '/bridge/prepare',
+      pathname: '/settings',
       search: '?foo=bar',
       hash: '#ignored',
     } as ReturnType<typeof useLocation>);
@@ -72,7 +72,7 @@ describe('RequireAuthenticated', () => {
         replace: true,
         state: {
           from: expect.objectContaining({
-            pathname: '/bridge/prepare',
+            pathname: '/settings',
             search: '?foo=bar',
           }),
         },

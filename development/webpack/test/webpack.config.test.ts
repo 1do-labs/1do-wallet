@@ -238,7 +238,7 @@ ${Object.entries(env)
         ...removeUnsupportedFeatures,
       ],
       {
-        INFURA_PROD_PROJECT_ID: '00000000000000000000000000000000',
+        ALCHEMY_PROD_API_KEY: '00000000000000000000000000000000',
         SEGMENT_WRITE_KEY: '-',
         SEGMENT_PROD_WRITE_KEY: '-',
         GOOGLE_PROD_CLIENT_ID: '00000000000',

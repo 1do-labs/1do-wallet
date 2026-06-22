@@ -23,7 +23,6 @@ import {
   getSelectedInternalAccount,
   getEditedNetwork,
   getShowUpdateModal,
-  getIsSocialLoginFlow,
   getPendingRedirectRoute,
 } from '../../selectors';
 import { getInfuraBlocked } from '../../../shared/lib/selectors/networks';
@@ -50,7 +49,6 @@ import {
 import { openBasicFunctionalityModal } from '../../ducks/app/app';
 import {
   getIsPrimarySeedPhraseBackedUp,
-  getIsSeedlessPasswordOutdated,
   getWeb3ShimUsageAlertEnabledness,
 } from '../../ducks/metamask/metamask';
 // TODO: Remove restricted import
@@ -146,9 +144,7 @@ const mapStateToProps = (state) => {
     showMultiRpcModal: state.metamask.preferences.showMultiRpcModal,
     showUpdateModal: getShowUpdateModal(state),
     redirectAfterDefaultPage,
-    isSeedlessPasswordOutdated: getIsSeedlessPasswordOutdated(state),
     isPrimarySeedPhraseBackedUp: getIsPrimarySeedPhraseBackedUp(state),
-    isSocialLoginFlow: getIsSocialLoginFlow(state),
     pendingRedirectRoute: getPendingRedirectRoute(state),
   };
 };

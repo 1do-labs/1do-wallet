@@ -1,7 +1,6 @@
-import { capitalize, startCase } from 'lodash';
+import { startCase } from 'lodash';
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
-import log from 'loglevel';
 import {
   addUrlProtocolPrefix,
   getEnvironmentType,
@@ -25,7 +24,6 @@ import {
   CONSENSYS_PRIVACY_LINK,
   CRYPTOCOMPARE_LINK,
   PRIVACY_POLICY_LINK,
-  SECURITY_ALERTS_LEARN_MORE_LINK,
   TRANSACTION_SIMULATIONS_LEARN_MORE_LINK,
 } from '../../../../shared/lib/ui-utils';
 import SRPQuiz from '../../../components/app/srp-quiz-modal/SRPQuiz';
@@ -64,7 +62,6 @@ import {
 } from '../../../helpers/utils/settings-search';
 import { updateDataDeletionTaskStatus } from '../../../store/actions';
 import ZENDESK_URLS from '../../../helpers/constants/zendesk-url';
-import { getIsSeedlessOnboardingFeatureEnabled } from '../../../../shared/lib/environment';
 
 export default class SecurityTab extends PureComponent {
   static contextTypes = {
@@ -102,18 +99,12 @@ export default class SecurityTab extends PureComponent {
     setBasicFunctionalityModalOpen: PropTypes.func.isRequired,
     setUseTransactionSimulations: PropTypes.func.isRequired,
     useTransactionSimulations: PropTypes.bool.isRequired,
-    securityAlertsEnabled: PropTypes.bool,
     useExternalServices: PropTypes.bool,
     setSkipDeepLinkInterstitial: PropTypes.func.isRequired,
     skipDeepLinkInterstitial: PropTypes.bool,
-    setSecurityAlertsEnabled: PropTypes.func,
     metaMetricsDataDeletionId: PropTypes.string,
     hdEntropyIndex: PropTypes.number,
     isSeedPhraseBackedUp: PropTypes.bool,
-    socialLoginEnabled: PropTypes.bool,
-    socialLoginType: PropTypes.string,
-    setMarketingConsent: PropTypes.func,
-    getMarketingConsent: PropTypes.func,
   };
 
   state = {
@@ -145,8 +136,7 @@ export default class SecurityTab extends PureComponent {
     if (
       prevProps.dataCollectionForMarketing === true &&
       this.props.participateInMetaMetrics === true &&
-      this.props.dataCollectionForMarketing === false &&
-      !this.props.socialLoginEnabled
+      this.props.dataCollectionForMarketing === false
     ) {
       this.setState({ showDataCollectionDisclaimer: true });
     }
@@ -158,13 +148,6 @@ export default class SecurityTab extends PureComponent {
     if (this.props.metaMetricsDataDeletionId) {
       await updateDataDeletionTaskStatus();
     }
-
-    if (this.props.socialLoginEnabled) {
-      // Fetch marketing consent from remote server for social login users
-      const marketingConsentFromRemote = await this.props.getMarketingConsent();
-      // Update marketing consent in the store
-      this.props.setDataCollectionForMarketing(marketingConsentFromRemote);
-    }
   }
 
   toggleSetting(value, toggleMethod) {
@@ -172,14 +155,6 @@ export default class SecurityTab extends PureComponent {
   }
 
   async toggleDataCollectionForMarketing(value) {
-    if (this.props.socialLoginEnabled) {
-      try {
-        await this.props.setMarketingConsent(value);
-      } catch (error) {
-        log.error('Error setting marketing consent', error);
-      }
-    }
-
     this.props.setDataCollectionForMarketing(value);
     if (this.props.participateInMetaMetrics) {
       this.context.trackEvent({
@@ -191,8 +166,7 @@ export default class SecurityTab extends PureComponent {
           location: 'Settings',
         },
       });
-    } else if (!this.props.socialLoginEnabled) {
-      // for non-social login users, we need to set the participate in meta metrics to true if they have data collection for marketing
+    } else {
       this.props.setParticipateInMetaMetrics(true);
     }
   }
@@ -201,19 +175,9 @@ export default class SecurityTab extends PureComponent {
 
   renderSeedWords() {
     const { t } = this.context;
-    const {
-      isSeedPhraseBackedUp,
-      socialLoginEnabled,
-      socialLoginType,
-      navigate,
-      hdEntropyIndex,
-    } = this.props;
+    const { isSeedPhraseBackedUp, navigate, hdEntropyIndex } = this.props;
 
     const getBannerDescription = () => {
-      if (socialLoginEnabled) {
-        return t('securityLoginWithSocial', [capitalize(socialLoginType)]);
-      }
-
       return isSeedPhraseBackedUp
         ? t('securityLoginWithSrpBackedUp')
         : t('securityLoginWithSrpNotBackedUp');
@@ -226,9 +190,7 @@ export default class SecurityTab extends PureComponent {
     };
 
     const getButtonText = () => {
-      if (socialLoginEnabled) {
-        return t('securitySrpWalletRecovery');
-      } else if (isSeedPhraseBackedUp) {
+      if (isSeedPhraseBackedUp) {
         return t('revealSeedWords');
       }
       return t('revealSecretRecoveryPhrase');
@@ -345,57 +307,6 @@ export default class SecurityTab extends PureComponent {
     );
   }
 
-  renderSecurityAlertsToggle() {
-    const { t } = this.context;
-    const { securityAlertsEnabled } = this.props;
-
-    return (
-      <>
-        <div ref={this.settingsRefs[16]}>
-          <span className="settings-page__security-tab-sub-header">
-            {t('securityAlerts')}
-          </span>
-        </div>
-        <div className="settings-page__content-padded">
-          <Box
-            ref={this.settingsRefs[2]}
-            className="settings-page__content-row"
-            display={Display.Flex}
-            flexDirection={FlexDirection.Row}
-            justifyContent={JustifyContent.spaceBetween}
-            gap={4}
-          >
-            <div className="settings-page__content-item">
-              <div className="settings-page__content-description">
-                {t('securityAlertsDescription', [
-                  <a
-                    key="learn_more_link"
-                    href={SECURITY_ALERTS_LEARN_MORE_LINK}
-                    rel="noreferrer"
-                    target="_blank"
-                  >
-                    {t('learnMoreUpperCase')}
-                  </a>,
-                ])}
-              </div>
-            </div>
-            <div
-              className="settings-page__content-item-col"
-              data-testid="securityAlert"
-            >
-              <ToggleButton
-                value={securityAlertsEnabled}
-                onToggle={this.toggleSecurityAlert.bind(this)}
-                offLabel={t('off')}
-                onLabel={t('on')}
-              />
-            </div>
-          </Box>
-        </div>
-      </>
-    );
-  }
-
   renderPhishingDetectionToggle() {
     const { t } = this.context;
     const { usePhishDetect, setUsePhishDetect } = this.props;
@@ -473,7 +384,6 @@ export default class SecurityTab extends PureComponent {
     const {
       dataCollectionForMarketing,
       useExternalServices,
-      socialLoginEnabled,
       participateInMetaMetrics,
     } = this.props;
 
@@ -492,11 +402,7 @@ export default class SecurityTab extends PureComponent {
           <div className="settings-page__content-item">
             <span>{t('dataCollectionForMarketing')}</span>
             <div className="settings-page__content-description">
-              <span>
-                {socialLoginEnabled
-                  ? t('dataCollectionForMarketingDescriptionSocialLogin')
-                  : t('dataCollectionForMarketingDescription')}
-              </span>
+              <span>{t('dataCollectionForMarketingDescription')}</span>
             </div>
           </div>
 
@@ -1098,24 +1004,6 @@ export default class SecurityTab extends PureComponent {
     );
   }
 
-  /**
-   * toggleSecurityAlert
-   *
-   * @param {boolean} oldValue - the current securityAlertEnabled value.
-   */
-  toggleSecurityAlert(oldValue) {
-    const newValue = !oldValue;
-    const { setSecurityAlertsEnabled } = this.props;
-    this.context.trackEvent({
-      category: MetaMetricsEventCategory.Settings,
-      event: MetaMetricsEventName.SettingsUpdated,
-      properties: {
-        blockaid_alerts_enabled: newValue,
-      },
-    });
-    setSecurityAlertsEnabled(newValue);
-  }
-
   renderUseExternalServices() {
     const { t } = this.context;
     const { useExternalServices, setBasicFunctionalityModalOpen } = this.props;
@@ -1270,8 +1158,7 @@ export default class SecurityTab extends PureComponent {
           {this.context.t('security')}
         </span>
         {this.renderSeedWords()}
-        {getIsSeedlessOnboardingFeatureEnabled() && this.renderChangePassword()}
-        {this.renderSecurityAlertsToggle()}
+        {this.renderChangePassword()}
         <span className="settings-page__security-tab-sub-header__bold">
           {this.context.t('privacy')}
         </span>

@@ -51,7 +51,7 @@ exports[`App Header locked state matches snapshot: locked 1`] = `
         <img
           alt=""
           class="app-header__metafox-logo--icon"
-          src="./images/logo/metamask-fox.svg"
+          src="./images/logo/1do-mark.svg"
         />
       </button>
     </div>
@@ -85,7 +85,7 @@ exports[`App Header unlocked state matches snapshot: unlocked 1`] = `
       <img
         alt=""
         class="app-header__metafox-logo--icon"
-        src="./images/logo/metamask-fox.svg"
+        src="./images/logo/1do-mark.svg"
       />
     </button>
   </div>

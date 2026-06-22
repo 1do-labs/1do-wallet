@@ -119,15 +119,6 @@ function transformState(state: Record<string, unknown>) {
         return rpcEndpoint;
       }
 
-      // Add QuickNode failover URL
-      const quickNodeUrl = process.env.QUICKNODE_SEI_URL;
-      if (quickNodeUrl) {
-        return {
-          ...rpcEndpoint,
-          failoverUrls: [quickNodeUrl],
-        };
-      }
-
       return rpcEndpoint;
     });
 

@@ -393,7 +393,7 @@ describe('Transaction Details', () => {
       expect(
         getByTestId('transaction-details-recipient-row'),
       ).not.toContainElement(
-        document.querySelector('img[src="images/logo/metamask-fox.svg"]'),
+        document.querySelector('img[src="images/logo/1do-mark.svg"]'),
       );
     });
   });

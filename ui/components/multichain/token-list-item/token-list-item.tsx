@@ -49,10 +49,12 @@ import {
   MetaMetricsEventCategory,
   MetaMetricsEventName,
 } from '../../../../shared/constants/metametrics';
-import { CURRENCY_SYMBOLS } from '../../../../shared/constants/network';
+import {
+  CURRENCY_SYMBOLS,
+  NETWORK_TO_NAME_MAP,
+} from '../../../../shared/constants/network';
 import { NETWORKS_ROUTE } from '../../../helpers/constants/routes';
 import { setEditedNetwork } from '../../../store/actions';
-import { NETWORK_TO_SHORT_NETWORK_NAME_MAP } from '../../../../shared/constants/bridge';
 import { getNetworkConfigurationsByChainId } from '../../../../shared/lib/selectors/networks';
 import { ACCOUNT_TYPE_LABELS } from '../../app/assets/constants';
 import { TokenWithFiatAmount } from '../../app/assets/types';
@@ -124,9 +126,7 @@ export const TokenListItemComponent = ({
 
   const getTokenTitle = () => {
     if (isTitleNetworkName) {
-      return NETWORK_TO_SHORT_NETWORK_NAME_MAP[
-        chainId as keyof typeof NETWORK_TO_SHORT_NETWORK_NAME_MAP
-      ];
+      return NETWORK_TO_NAME_MAP[chainId as keyof typeof NETWORK_TO_NAME_MAP];
     }
     if (isTitleHidden) {
       return undefined;

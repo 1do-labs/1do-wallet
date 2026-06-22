@@ -16,7 +16,6 @@ import { getHashMetricsProperties } from './hash';
 import { getRPCMetricsProperties } from './rpc';
 import { getSecurityMetricsProperties } from './security';
 import { getSmartTransactionProperties } from './smart-transactions';
-import { getSwapBridgeMetricsProperties } from './swap-bridge';
 import { getTransactionDetailsMetricsProperties } from './transaction-details';
 import { getUICustomizationsMetricsProperties } from './ui-customizations';
 import type { TransactionMetrics, TransactionMetricsBuilder } from './types';
@@ -36,7 +35,6 @@ const METRICS_BUILDERS: TransactionMetricsBuilder[] = [
   getSmartTransactionProperties,
   getSecurityMetricsProperties,
   getRPCMetricsProperties,
-  getSwapBridgeMetricsProperties,
   getAccountMetricsProperties,
   getGaslessMetricsProperties,
   getTransactionDetailsMetricsProperties,

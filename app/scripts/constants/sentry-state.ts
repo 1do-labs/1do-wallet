@@ -186,11 +186,6 @@ export const SENTRY_BACKGROUND_STATE: SentryBackgroundControllerMasks = {
     onboardingTabs: false,
     seedPhraseBackedUp: true,
   },
-  PPOMController: {
-    securityAlertsEnabled: false,
-    storageMetadata: [],
-    versionInfo: [],
-  },
   PermissionController: {
     subjects: false,
   },
@@ -298,9 +293,6 @@ export const SENTRY_BACKGROUND_STATE: SentryBackgroundControllerMasks = {
     transactions: false,
     lastFetchedBlockNumbers: false,
     methodData: false,
-  },
-  TransactionPayController: {
-    transactionData: false,
   },
   TxController: {
     transactions: false,

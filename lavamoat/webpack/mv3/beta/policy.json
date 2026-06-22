@@ -694,27 +694,6 @@
         "immer": true
       }
     },
-    "@metamask/bridge-controller": {
-      "globals": {
-        "URLSearchParams": true,
-        "console.warn": true
-      },
-      "packages": {
-        "ethers>@ethersproject/address": true,
-        "ethers>@ethersproject/constants": true,
-        "@ethersproject/contracts": true,
-        "@ethersproject/providers": true,
-        "@metamask/controller-utils": true,
-        "@metamask/keyring-api": true,
-        "@metamask/metamask-eth-abis": true,
-        "@metamask/multichain-network-controller": true,
-        "@metamask/superstruct": true,
-        "@metamask/utils": true,
-        "@metamask/bridge-controller>bignumber.js": true,
-        "lodash": true,
-        "reselect": true
-      }
-    },
     "@metamask/chain-agnostic-permission": {
       "packages": {
         "@metamask/chain-agnostic-permission>@metamask/api-specs": true,
@@ -2356,11 +2335,6 @@
       }
     },
     "@metamask/assets-controller>bignumber.js": {
-      "globals": {
-        "crypto": true
-      }
-    },
-    "@metamask/bridge-controller>bignumber.js": {
       "globals": {
         "crypto": true
       }

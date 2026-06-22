@@ -20,7 +20,7 @@ type SmartTransactionsFeatureFlag = {
   extensionReturnTxHashAsap: boolean;
 };
 
-export type SwapsFeatureFlags = {
+export type SmartTransactionsFeatureFlags = {
   [networkName: string]: NetworkFeatureFlag;
   smartTransactions: SmartTransactionsFeatureFlag;
 };
@@ -41,8 +41,8 @@ export type SmartTransactionsNetworks = {
 
 export type FeatureFlagsMetaMaskState = {
   metamask: {
-    swapsState: {
-      swapsFeatureFlags: SwapsFeatureFlags;
+    smartTransactionsFeatureFlagsState: {
+      smartTransactionsFeatureFlags: SmartTransactionsFeatureFlags;
     };
     remoteFeatureFlags?: {
       smartTransactionsNetworks?: SmartTransactionsNetworks;
@@ -64,7 +64,9 @@ export function getFeatureFlagsByChainId(
   // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
   const effectiveChainId = chainId || getCurrentChainId(state);
   const networkName = getNetworkNameByChainId(effectiveChainId);
-  const featureFlags = state.metamask.swapsState?.swapsFeatureFlags;
+  const featureFlags =
+    state.metamask.smartTransactionsFeatureFlagsState
+      ?.smartTransactionsFeatureFlags;
   if (!featureFlags?.[networkName]) {
     return null;
   }

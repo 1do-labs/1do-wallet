@@ -21,8 +21,6 @@ const CONTRACT_ADDRESS_ERROR = 'contractAddressError';
 const CONFUSING_ENS_ERROR = 'confusingEnsDomain';
 const ENS_UNKNOWN_ERROR = 'ensUnknownError';
 const NO_RESOLUTION_FOR_DOMAIN = 'noDomainResolution';
-const SWAPS_NO_QUOTES = 'swapQuotesNotAvailableErrorTitle';
-const SWAPS_QUOTES_ERROR = 'swapFetchingQuotesErrorTitle';
 const INVALID_HEX_DATA_ERROR = 'invalidHexDataError';
 
 const RECIPIENT_TYPES = {
@@ -50,7 +48,5 @@ export {
   NFT_TRANSFER_FROM_FUNCTION_SIGNATURE,
   NFT_SAFE_TRANSFER_FROM_FUNCTION_SIGNATURE,
   RECIPIENT_TYPES,
-  SWAPS_NO_QUOTES,
-  SWAPS_QUOTES_ERROR,
   INVALID_HEX_DATA_ERROR,
 };

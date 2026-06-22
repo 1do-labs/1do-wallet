@@ -7,8 +7,7 @@
     "value": "same-origin-allow-popups"
   },
   "externally_connectable": {
-    "matches": ["http://*/*", "https://*/*"],
-    "ids": ["*"]
+    "matches": ["http://*/*", "https://*/*"]
   },
   "minimum_chrome_version": "115",
   "side_panel": {

@@ -20,7 +20,7 @@ type State = {
       | 'showPasswordChangeToast'
       | 'showCopyAddressToast'
       | 'showClaimSubmitToast'
-      | 'showInfuraSwitchToast'
+      | 'showDefaultRpcSwitchToast'
     >
   >;
   metamask: Partial<
@@ -131,15 +131,15 @@ export function selectClaimSubmitToast(
 }
 
 /**
- * Retrieves user preference to see the "Updated to MetaMask default" toast
+ * Retrieves user preference to see the "Updated to 1do default" toast
  *
  * @param state - Redux state object.
  * @returns Boolean preference value
  */
-export function selectShowInfuraSwitchToast(
+export function selectShowDefaultRpcSwitchToast(
   state: Pick<State, 'appState'>,
 ): boolean {
-  return Boolean(state.appState.showInfuraSwitchToast);
+  return Boolean(state.appState.showDefaultRpcSwitchToast);
 }
 
 /**

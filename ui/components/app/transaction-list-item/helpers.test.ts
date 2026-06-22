@@ -29,10 +29,6 @@ const expectedResults = [
     category: TransactionGroupCategory.receive,
   },
   {
-    title: 'Swap ETH to ABC',
-    category: TransactionType.swap,
-  },
-  {
     title: 'Contract deployment',
     category: TransactionGroupCategory.interaction,
   },
@@ -45,18 +41,6 @@ const expectedResults = [
     category: TransactionGroupCategory.approval,
   },
   {
-    title: 'Sent BAT as ETH',
-    category: TransactionType.swapAndSend,
-  },
-  {
-    title: 'Sent USDC as DAI',
-    category: TransactionType.swapAndSend,
-  },
-  {
-    title: 'Sent BNB as USDC',
-    category: TransactionType.swapAndSend,
-  },
-  {
     title: 'Sent ABC',
     category: TransactionGroupCategory.send,
   },
@@ -64,7 +48,18 @@ const expectedResults = [
 
 describe('mapTransactionTypeToCategory', () => {
   it('returns correct categories for transaction types', () => {
-    transactions.forEach(({ primaryTransaction }, index) => {
+    const supportedTransactions = transactions.filter(
+      ({ primaryTransaction }) =>
+        ![
+          'swap',
+          'swapAndSend',
+          'bridge',
+          'swapApproval',
+          'bridgeApproval',
+        ].includes(primaryTransaction.type),
+    );
+
+    supportedTransactions.forEach(({ primaryTransaction }, index) => {
       const transactionType = primaryTransaction.type as TransactionType;
 
       const result = mapTransactionTypeToCategory(transactionType);

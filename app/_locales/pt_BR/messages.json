@@ -630,7 +630,7 @@
   },
   "flaskWelcomeWarning2": {
     "message": "We do not guarantee the safety or stability of this extension. The new APIs offered by Flask are not hardened against phishing attacks, meaning that any site that requires Flask might be a malicious attempt to steal your assets.",
-    "description": "This explains the risks of using MetaMask Flask"
+    "description": "This explains the risks of using 1do Flask"
   },
   "flaskWelcomeWarning3": {
     "message": "Todas as APIs do Flask são experimentais. Elas podem ser alteradas ou removidas sem aviso prévio, ou podem permanecer no Flask indefinidamente, sem jamais serem migradas para a 1do estável. Use-as com cautela.",
@@ -941,9 +941,6 @@
   "metaMaskConnectStatusParagraphTwo": {
     "message": "O botão de status da conexão mostra se o website que você está visitando está conectado à conta selecionada no momento."
   },
-  "metamaskSwapsOfflineDescription": {
-    "message": "O 1do Swaps está em manutenção. Verifique novamente mais tarde."
-  },
   "metamaskVersion": {
     "message": "Versão da 1do"
   },
@@ -1091,7 +1088,7 @@
   },
   "openFullScreenForLedgerWebHid": {
     "message": "Abra a 1do em tela cheia para conectar sua ledger por meio do WebHID.",
-    "description": "Shown to the user on the confirm screen when they are viewing MetaMask in a popup window but need to connect their ledger via webhid."
+    "description": "Shown to the user on the confirm screen when they are viewing 1do in a popup window but need to connect their ledger via webhid."
   },
   "origin": {
     "message": "Origem"
@@ -1456,7 +1453,7 @@
   },
   "swapFailedErrorDescriptionWithSupportLink": {
     "message": "Falhas na transação acontecem, e estamos aqui para ajudar. Se esse problema persistir, você pode entrar em contato com nosso atendimento ao cliente em $1 para receber assistência adicional.",
-    "description": "This message is shown to a user if their swap fails. The $1 will be replaced by support.metamask.io"
+    "description": "This message is shown to a user if their swap fails. The $1 will be replaced by support.1do.io"
   },
   "swapFailedErrorTitle": {
     "message": "Falha na troca"
@@ -1479,17 +1476,10 @@
   },
   "swapIncludesMMFee": {
     "message": "Inclui uma taxa de $1% da 1do.",
-    "description": "Provides information about the fee that MetaMask takes for swaps. $1 is a decimal number."
+    "description": "Provides information about the fee that 1do takes for swaps. $1 is a decimal number."
   },
   "swapMaxSlippage": {
     "message": "Slippage máximo"
-  },
-  "swapMetaMaskFee": {
-    "message": "Taxa da 1do"
-  },
-  "swapMetaMaskFeeDescription": {
-    "message": "Encontramos o melhor preço das principais fontes de liquidez – todas as vezes. Uma taxa de $1% é automaticamente incorporada nessa cotação.",
-    "description": "Provides information about the fee that MetaMask takes for swaps. $1 is a decimal number."
   },
   "swapNQuotesWithDot": {
     "message": "$1 cotações.",
@@ -1687,7 +1677,7 @@
   },
   "u2f": {
     "message": "U2F",
-    "description": "A name on an API for the browser to interact with devices that support the U2F protocol. On some browsers we use it to connect MetaMask to Ledger devices."
+    "description": "A name on an API for the browser to interact with devices that support the U2F protocol. On some browsers we use it to connect 1do to Ledger devices."
   },
   "unapproved": {
     "message": "Não aprovado"
@@ -1770,5 +1760,13 @@
   },
   "youNeedToAllowCameraAccess": {
     "message": "Você precisa permitir o acesso à câmera para usar esse recurso."
+  },
+  "permission_signatureInsight": {
+    "message": "Display signature insights modal.",
+    "description": "The description for the `endowment:signature-insight` permission"
+  },
+  "permission_signatureInsightOrigin": {
+    "message": "See the origins of websites that initiate a signature request",
+    "description": "The description for the `signatureOrigin` caveat, to be used with the `endowment:signature-insight` permission"
   }
 }

@@ -50,7 +50,6 @@ export async function runOnboardingNewWalletBenchmark(): Promise<BenchmarkRunRes
         manifestFlags: {
           testing: {
             disableSync: true,
-            infuraProjectId: process.env.INFURA_PROJECT_ID,
           },
         },
         useMockingPassThrough: !shouldUseMockedRequests(),

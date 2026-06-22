@@ -336,13 +336,13 @@ describe('Wallet Ready Page', () => {
     });
 
     it('should skip side panel opening and navigate to interstitial page for Interstitial type (unsigned/invalid signature)', async () => {
-      const urlPathAndQuery = '/swap?amount=100';
+      const urlPathAndQuery = '/home?utm_source=test';
       (deepLinkUtils.getDeferredDeepLinkRoute as jest.Mock).mockResolvedValue({
         type: DeferredDeepLinkRouteType.Interstitial,
         urlPathAndQuery,
       });
       (deepLinkUtils.buildInterstitialRoute as jest.Mock).mockReturnValue(
-        `${DEEP_LINK_ROUTE}?u=%2Fswap%3Famount%3D100`,
+        `${DEEP_LINK_ROUTE}?u=%2Fhome%3Futm_source%3Dtest`,
       );
 
       const browserMock = jest.requireMock('webextension-polyfill');
@@ -357,7 +357,7 @@ describe('Wallet Ready Page', () => {
           ...mockState.metamask,
           deferredDeepLink: {
             createdAt: Date.now(),
-            referringLink: 'https://link.metamask.io/swap?amount=100',
+            referringLink: 'https://link.1do.io/home?utm_source=test',
           },
         },
       });
@@ -377,7 +377,7 @@ describe('Wallet Ready Page', () => {
           urlPathAndQuery,
         );
         expect(mockUseNavigate).toHaveBeenCalledWith(
-          `${DEEP_LINK_ROUTE}?u=%2Fswap%3Famount%3D100`,
+          `${DEEP_LINK_ROUTE}?u=%2Fhome%3Futm_source%3Dtest`,
         );
         expect(mockRemoveDeferredDeepLink).toHaveBeenCalled();
       });
@@ -410,7 +410,7 @@ describe('Wallet Ready Page', () => {
           ...mockState.metamask,
           deferredDeepLink: {
             createdAt: Date.now(),
-            referringLink: 'https://link.metamask.io/buy',
+            referringLink: 'https://link.1do.io/buy',
           },
         },
       });
@@ -432,7 +432,7 @@ describe('Wallet Ready Page', () => {
     });
 
     it('should navigate to internal route when deferred deep link has Navigate type and side panel is disabled', async () => {
-      const testRoute = '/swap';
+      const testRoute = '/home';
       (deepLinkUtils.getDeferredDeepLinkRoute as jest.Mock).mockResolvedValue({
         type: DeferredDeepLinkRouteType.Navigate,
         route: testRoute,
@@ -444,7 +444,7 @@ describe('Wallet Ready Page', () => {
           ...mockState.metamask,
           deferredDeepLink: {
             createdAt: Date.now(),
-            referringLink: 'https://link.metamask.io/swap',
+            referringLink: 'https://link.1do.io/home',
           },
         },
       });
@@ -474,7 +474,7 @@ describe('Wallet Ready Page', () => {
           ...mockState.metamask,
           deferredDeepLink: {
             createdAt: Date.now() - 2 * 60 * 60 * 1000, // Expired link
-            referringLink: 'https://link.metamask.io/swap',
+            referringLink: 'https://link.1do.io/home',
           },
         },
       });
@@ -519,13 +519,13 @@ describe('Wallet Ready Page', () => {
     });
 
     it('should navigate to interstitial page for Interstitial type (unsigned/invalid signature) when side panel is disabled', async () => {
-      const urlPathAndQuery = '/swap?amount=100';
+      const urlPathAndQuery = '/home?utm_source=test';
       (deepLinkUtils.getDeferredDeepLinkRoute as jest.Mock).mockResolvedValue({
         type: DeferredDeepLinkRouteType.Interstitial,
         urlPathAndQuery,
       });
       (deepLinkUtils.buildInterstitialRoute as jest.Mock).mockReturnValue(
-        `${DEEP_LINK_ROUTE}?u=%2Fswap%3Famount%3D100`,
+        `${DEEP_LINK_ROUTE}?u=%2Fhome%3Futm_source%3Dtest`,
       );
 
       const mockStore = configureMockStore([thunk])({
@@ -534,7 +534,7 @@ describe('Wallet Ready Page', () => {
           ...mockState.metamask,
           deferredDeepLink: {
             createdAt: Date.now(),
-            referringLink: 'https://link.metamask.io/swap?amount=100',
+            referringLink: 'https://link.1do.io/home?utm_source=test',
           },
         },
       });
@@ -552,7 +552,7 @@ describe('Wallet Ready Page', () => {
           urlPathAndQuery,
         );
         expect(mockUseNavigate).toHaveBeenCalledWith(
-          `${DEEP_LINK_ROUTE}?u=%2Fswap%3Famount%3D100`,
+          `${DEEP_LINK_ROUTE}?u=%2Fhome%3Futm_source%3Dtest`,
         );
         expect(mockRemoveDeferredDeepLink).toHaveBeenCalled();
       });

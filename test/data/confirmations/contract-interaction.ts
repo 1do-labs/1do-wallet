@@ -14,7 +14,6 @@ import {
   UserFeeLevel,
 } from '@metamask/transaction-controller';
 import { Hex } from '@metamask/utils';
-import { QuoteResponse } from '@metamask/bridge-controller';
 
 import {
   Confirmation,
@@ -418,4 +417,4 @@ export const mockBridgeQuotes = [
     },
     estimatedProcessingTimeInSeconds: 0,
   },
-] as unknown as QuoteResponse[];
+] as unknown[];

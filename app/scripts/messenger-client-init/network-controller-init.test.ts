@@ -98,7 +98,7 @@ describe('NetworkControllerInit', () => {
       additionalDefaultNetworks: ADDITIONAL_DEFAULT_NETWORKS,
       getBlockTrackerOptions: expect.any(Function),
       getRpcServiceOptions: expect.any(Function),
-      infuraProjectId: undefined,
+      infuraProjectId: '1do-alchemy-rpc-only',
       isRpcFailoverEnabled: true,
     });
   });
@@ -159,9 +159,9 @@ describe('NetworkControllerInit', () => {
             "rpcEndpoints": [
               {
                 "failoverUrls": [],
-                "networkClientId": "base-mainnet",
-                "type": "infura",
-                "url": "https://base-mainnet.infura.io/v3/{infuraProjectId}",
+                "networkClientId": "base-mainnet-alchemy",
+                "type": "custom",
+                "url": "https://base-mainnet.g.alchemy.com/v2/{alchemyApiKey}",
               },
             ],
           },
@@ -195,9 +195,9 @@ describe('NetworkControllerInit', () => {
             "rpcEndpoints": [
               {
                 "failoverUrls": [],
-                "networkClientId": "bsc-mainnet",
-                "type": "infura",
-                "url": "https://bsc-mainnet.infura.io/v3/{infuraProjectId}",
+                "networkClientId": "bsc-mainnet-alchemy",
+                "type": "custom",
+                "url": "https://bnb-mainnet.g.alchemy.com/v2/{alchemyApiKey}",
               },
             ],
           },
@@ -228,9 +228,9 @@ describe('NetworkControllerInit', () => {
             "rpcEndpoints": [
               {
                 "failoverUrls": [],
-                "networkClientId": "polygon-mainnet",
-                "type": "infura",
-                "url": "https://polygon-mainnet.infura.io/v3/{infuraProjectId}",
+                "networkClientId": "polygon-mainnet-alchemy",
+                "type": "custom",
+                "url": "https://polygon-mainnet.g.alchemy.com/v2/{alchemyApiKey}",
               },
             ],
           },
@@ -246,9 +246,9 @@ describe('NetworkControllerInit', () => {
             "rpcEndpoints": [
               {
                 "failoverUrls": [],
-                "networkClientId": "optimism-mainnet",
-                "type": "infura",
-                "url": "https://optimism-mainnet.infura.io/v3/{infuraProjectId}",
+                "networkClientId": "optimism-mainnet-alchemy",
+                "type": "custom",
+                "url": "https://opt-mainnet.g.alchemy.com/v2/{alchemyApiKey}",
               },
             ],
           },
@@ -264,9 +264,9 @@ describe('NetworkControllerInit', () => {
             "rpcEndpoints": [
               {
                 "failoverUrls": [],
-                "networkClientId": "arbitrum-mainnet",
-                "type": "infura",
-                "url": "https://arbitrum-mainnet.infura.io/v3/{infuraProjectId}",
+                "networkClientId": "arbitrum-mainnet-alchemy",
+                "type": "custom",
+                "url": "https://arb-mainnet.g.alchemy.com/v2/{alchemyApiKey}",
               },
             ],
           },

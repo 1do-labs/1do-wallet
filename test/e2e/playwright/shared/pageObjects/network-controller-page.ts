@@ -1,7 +1,4 @@
-import { toEvmCaipChainId } from '@metamask/multichain-network-controller';
-import type { Hex } from '@metamask/utils';
 import { type Locator, type Page } from '@playwright/test';
-import { Tenderly } from '../../swap/tenderly-network';
 
 export class NetworkController {
   readonly page: Page;
@@ -64,36 +61,16 @@ export class NetworkController {
     chainID: string;
     symbol: string;
   }) {
-    let rpcName = options.name;
+    const rpcName = options.name;
     await this.networkDisplay.click();
-    if (
-      options.name === Tenderly.Mainnet.name ||
-      options.name === Tenderly.Linea.name
-    ) {
-      rpcName = options.rpcName;
-      await this.page
-        .getByTestId(
-          `network-list-item-options-button-${toEvmCaipChainId(
-            options.chainID as Hex,
-          )}`,
-        )
-        .click();
-      await this.networkListEdit.click();
-    } else {
-      await this.addNetworkButton.click();
-      await this.networkName.fill(rpcName);
-    }
+    await this.addNetworkButton.click();
+    await this.networkName.fill(rpcName);
     await this.addRpcDropDown.click();
     await this.addRpcURLBtn.click();
     await this.networkRpc.fill(options.url);
     await this.rpcName.fill(rpcName);
     await this.addURLBtn.click();
-    if (
-      options.name !== Tenderly.Mainnet.name &&
-      options.name !== Tenderly.Linea.name
-    ) {
-      await this.networkChainId.fill(options.chainID);
-    }
+    await this.networkChainId.fill(options.chainID);
     await this.networkTicker.fill(options.symbol);
     await this.saveBtn.waitFor({ state: 'visible' });
     await this.saveBtn.click({ timeout: 60000 });
@@ -119,12 +96,7 @@ export class NetworkController {
     const currentNetwork = await this.networkDisplay.textContent();
     if (currentNetwork !== options.name) {
       await this.networkDisplay.click();
-      if (options.name === Tenderly.Mainnet.name) {
-        await this.page.getByText(options.rpcName).click();
-        await this.page.getByText(options.rpcName).click();
-      } else {
-        await this.page.getByTestId(options.name).click();
-      }
+      await this.page.getByTestId(options.name).click();
     }
   }
 }

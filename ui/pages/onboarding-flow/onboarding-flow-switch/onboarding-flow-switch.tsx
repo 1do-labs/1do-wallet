@@ -9,7 +9,6 @@ import {
   ONBOARDING_EXPERIMENTAL_AREA,
   ONBOARDING_WELCOME_ROUTE,
   ONBOARDING_METAMETRICS,
-  ONBOARDING_CREATE_PASSWORD_ROUTE,
 } from '../../../helpers/constants/routes';
 import {
   getCompletedOnboarding,
@@ -23,10 +22,7 @@ import { getBrowserName } from '../../../../shared/lib/browser-runtime.utils';
 import {
   getFirstTimeFlowType,
   getIsParticipateInMetaMetricsSet,
-  getIsSocialLoginFlow,
-  getIsSocialLoginUserAuthenticated,
 } from '../../../selectors';
-import { FirstTimeFlowType } from '../../../../shared/constants/onboarding';
 import {
   isBeta,
   isExperimental,
@@ -41,12 +37,8 @@ export default function OnboardingFlowSwitch() {
   const completedOnboarding = useSelector(getCompletedOnboarding);
   const isInitialized = useSelector(getIsInitialized);
   const isWalletResetInProgress = useSelector(getIsWalletResetInProgress);
-  const isUserAuthenticatedWithSocialLogin = useSelector(
-    getIsSocialLoginUserAuthenticated,
-  );
   const seedPhraseBackedUp = useSelector(getSeedPhraseBackedUp);
   const firstTimeFlowType = useSelector(getFirstTimeFlowType);
-  const isSocialLoginFlow = useSelector(getIsSocialLoginFlow);
   const isUnlocked = useSelector(getIsUnlocked);
   const isParticipateInMetaMetricsSet = useSelector(
     getIsParticipateInMetaMetricsSet,
@@ -56,7 +48,7 @@ export default function OnboardingFlowSwitch() {
     return <Navigate to={DEFAULT_ROUTE} replace />;
   }
 
-  if (seedPhraseBackedUp !== null || (isUnlocked && isSocialLoginFlow)) {
+  if (seedPhraseBackedUp !== null) {
     return (
       <Navigate
         to={
@@ -74,10 +66,7 @@ export default function OnboardingFlowSwitch() {
   }
 
   // TODO(ritave): Remove allow-list and only leave experimental_area exception
-  if (
-    (!isInitialized || isWalletResetInProgress) &&
-    !isUserAuthenticatedWithSocialLogin
-  ) {
+  if (!isInitialized || isWalletResetInProgress) {
     let redirect;
 
     if (isFlask()) {
@@ -101,13 +90,5 @@ export default function OnboardingFlowSwitch() {
 
     return redirect;
   }
-  if (
-    (!isInitialized || isWalletResetInProgress) &&
-    isUserAuthenticatedWithSocialLogin &&
-    firstTimeFlowType === FirstTimeFlowType.socialCreate
-  ) {
-    return <Navigate to={ONBOARDING_CREATE_PASSWORD_ROUTE} replace />;
-  }
-
   return <Navigate to={ONBOARDING_UNLOCK_ROUTE} replace />;
 }

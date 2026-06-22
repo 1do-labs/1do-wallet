@@ -23,10 +23,7 @@ import {
   getSelectedAccountGroupName,
   mock4byte,
 } from '../../helpers';
-import {
-  getMaliciousUnapprovedTransaction,
-  getUnapprovedContractInteractionTransaction,
-} from './transactionDataHelpers';
+import { getUnapprovedContractInteractionTransaction } from './transactionDataHelpers';
 
 jest.setTimeout(30_000);
 
@@ -137,21 +134,6 @@ const setupSubmitRequestToBackgroundMocks = (
       ...mockRequests,
     }),
   );
-};
-
-const getMetaMaskStateWithMaliciousUnapprovedContractInteraction = (
-  accountAddress: string,
-) => {
-  return {
-    ...getMetaMaskStateWithUnapprovedContractInteraction({ accountAddress }),
-    transactions: [
-      getMaliciousUnapprovedTransaction(
-        accountAddress,
-        pendingTransactionId,
-        pendingTransactionTime,
-      ),
-    ],
-  };
 };
 
 describe('Contract Interaction Confirmation', () => {
@@ -440,77 +422,5 @@ describe('Contract Interaction Confirmation', () => {
     expect(dataSection).toContainElement(transactionDataParams);
     expect(transactionDataParams).toHaveTextContent('Number Of Tokens');
     expect(transactionDataParams).toHaveTextContent('1');
-  });
-
-  it('displays the warning for malicious request', async () => {
-    const account =
-      mockMetaMaskState.internalAccounts.accounts[
-        mockMetaMaskState.internalAccounts
-          .selectedAccount as keyof typeof mockMetaMaskState.internalAccounts.accounts
-      ];
-
-    const mockedMetaMaskState =
-      getMetaMaskStateWithMaliciousUnapprovedContractInteraction(
-        account.address,
-      );
-
-    await act(async () => {
-      await integrationTestRender({
-        preloadedState: mockedMetaMaskState,
-        backgroundConnection: backgroundConnectionMocked,
-      });
-    });
-
-    const headingText = tEn('blockaidTitleDeceptive');
-    const bodyText = tEn('blockaidDescriptionTransferFarming');
-    expect(await screen.findByText(headingText)).toBeInTheDocument();
-    expect(await screen.findByText(bodyText)).toBeInTheDocument();
-  });
-
-  it('tracks external link clicked in transaction metrics', async () => {
-    const account =
-      mockMetaMaskState.internalAccounts.accounts[
-        mockMetaMaskState.internalAccounts
-          .selectedAccount as keyof typeof mockMetaMaskState.internalAccounts.accounts
-      ];
-
-    const mockedMetaMaskState =
-      getMetaMaskStateWithMaliciousUnapprovedContractInteraction(
-        account.address,
-      );
-
-    await act(async () => {
-      await integrationTestRender({
-        preloadedState: mockedMetaMaskState,
-        backgroundConnection: backgroundConnectionMocked,
-      });
-    });
-
-    fireEvent.click(await screen.findByTestId('disclosure'));
-    expect(
-      await screen.findByTestId('alert-provider-report-link'),
-    ).toBeInTheDocument();
-
-    fireEvent.click(await screen.findByTestId('alert-provider-report-link'));
-
-    fireEvent.click(await screen.findByTestId('confirm-footer-cancel-button'));
-
-    await waitFor(() => {
-      expect(
-        mockedBackgroundConnection.submitRequestToBackground,
-      ).toHaveBeenCalledWith(
-        'upsertTransactionUIMetricsFragment',
-        expect.arrayContaining([
-          expect.any(String),
-          expect.objectContaining({
-            properties: expect.objectContaining({
-              // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-              // eslint-disable-next-line @typescript-eslint/naming-convention
-              external_link_clicked: 'security_alert_support_link',
-            }),
-          }),
-        ]),
-      );
-    });
   });
 });

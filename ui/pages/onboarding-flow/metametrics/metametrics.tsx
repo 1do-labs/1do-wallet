@@ -166,14 +166,9 @@ export default function OnboardingMetametrics() {
     getFirstTimeFlowTypeRouteAfterMetaMetricsOptIn,
   );
   if (isFirefox && firstTimeFlowType !== FirstTimeFlowType.restore) {
-    if (
-      currentKeyring &&
-      firstTimeFlowType === FirstTimeFlowType.socialCreate
-    ) {
-      nextRouteByBrowser = ONBOARDING_COMPLETION_ROUTE;
-    } else {
-      nextRouteByBrowser = ONBOARDING_WELCOME_ROUTE;
-    }
+    nextRouteByBrowser = currentKeyring
+      ? ONBOARDING_COMPLETION_ROUTE
+      : ONBOARDING_WELCOME_ROUTE;
   }
 
   const handleContinue = async (e: React.MouseEvent<HTMLButtonElement>) => {

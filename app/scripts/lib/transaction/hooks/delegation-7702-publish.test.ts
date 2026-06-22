@@ -96,7 +96,6 @@ describe('Delegation 7702 Publish Hook', () => {
     jest.resetAllMocks();
 
     process.env.DELEGATION_MANAGER_ADDRESS = DELEGATION_MANAGER_ADDRESS_MOCK;
-    process.env.GASLESS_7702_ENFORCER_ADDRESS = ENFORCE_ADDRESS_MOCK;
 
     const baseMessenger = new Messenger<
       MockAnyNamespace,
@@ -484,7 +483,7 @@ describe('Delegation 7702 Publish Hook', () => {
     ).rejects.toThrow('Transaction relay returned success without a hash');
   });
 
-  it('submits request to relay for gasless 7702 swap without gas fee tokens', async () => {
+  it('submits request to relay for gasless 7702 batch transaction without gas fee tokens', async () => {
     isAtomicBatchSupportedMock.mockResolvedValueOnce([
       {
         chainId: TRANSACTION_META_MOCK.chainId,
@@ -499,7 +498,7 @@ describe('Delegation 7702 Publish Hook', () => {
       ...TRANSACTION_META_MOCK,
       id: GASLESS_TX_ID,
       type: TransactionType.batch,
-      nestedTransactions: [{ type: TransactionType.swap }],
+      nestedTransactions: [{ type: TransactionType.contractInteraction }],
       // No gasFeeTokens and no selectedGasFeeToken
       isGasFeeIncluded: true,
     } as unknown as TransactionMeta;
@@ -533,7 +532,7 @@ describe('Delegation 7702 Publish Hook', () => {
     expect(signArgs.delegation.caveats).toHaveLength(2);
   });
 
-  it('signs delegation for gasless 7702 swap without gas fee tokens', async () => {
+  it('signs delegation for gasless 7702 batch transaction without gas fee tokens', async () => {
     isAtomicBatchSupportedMock.mockResolvedValueOnce([
       {
         chainId: TRANSACTION_META_MOCK.chainId,
@@ -549,7 +548,7 @@ describe('Delegation 7702 Publish Hook', () => {
       ...TRANSACTION_META_MOCK,
       id: GASLESS_TX_ID,
       type: TransactionType.batch,
-      nestedTransactions: [{ type: TransactionType.swap }],
+      nestedTransactions: [{ type: TransactionType.contractInteraction }],
       // No gasFeeTokens and no selectedGasFeeToken
       isGasFeeIncluded: true,
     } as unknown as TransactionMeta;

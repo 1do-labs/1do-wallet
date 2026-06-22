@@ -1,71 +1,48 @@
-import { EventEmitter } from 'events';
 import React, {
+  ChangeEvent,
   Component,
   ComponentType,
   FormEvent,
-  ChangeEvent,
   MutableRefObject,
 } from 'react';
 import PropTypes from 'prop-types';
 import { Location as RouterLocation, NavigateFunction } from 'react-router-dom';
 import {
-  TextVariant,
-  TextColor,
-  FontWeight,
-  Text,
   Box,
-  TextButton,
   BoxAlignItems,
+  BoxBackgroundColor,
   BoxFlexDirection,
   BoxJustifyContent,
-  BoxBackgroundColor,
-  TextAlign,
   Button,
-  ButtonVariant,
   ButtonSize,
+  ButtonVariant,
+  FontWeight,
+  Text,
+  TextAlign,
+  TextButton,
+  TextColor,
+  TextVariant,
 } from '@metamask/design-system-react';
 import {
   FormTextField,
-  TextFieldType,
   FormTextFieldSize,
+  TextFieldType,
 } from '../../components/component-library';
 import {
   BlockSize,
   TextTransform,
 } from '../../helpers/constants/design-system';
-import Mascot from '../../components/ui/mascot';
+import { DEFAULT_ROUTE } from '../../helpers/constants/routes';
 import {
-  DEFAULT_ROUTE,
-  ONBOARDING_WELCOME_ROUTE,
-} from '../../helpers/constants/routes';
-import {
-  MetaMetricsContextProp,
   MetaMetricsEventCategory,
   MetaMetricsEventName,
 } from '../../../shared/constants/metametrics';
-import { isFlask, isBeta } from '../../../shared/lib/build-types';
-import { SUPPORT_LINK } from '../../../shared/lib/ui-utils';
+import { isBeta, isFlask } from '../../../shared/lib/build-types';
 import { TraceName, TraceOperation } from '../../../shared/lib/trace';
-import { FirstTimeFlowType } from '../../../shared/constants/onboarding';
 import { withMetaMetrics } from '../../contexts/metametrics';
-import LoginErrorModal from '../onboarding-flow/welcome/login-error-modal';
-import { LOGIN_ERROR } from '../onboarding-flow/welcome/types';
-import ConnectionsRemovedModal from '../../components/app/connections-removed-modal';
-import { captureException } from '../../../shared/lib/sentry';
-import { getCaretCoordinates } from './unlock-page.util';
 import ResetPasswordModal from './reset-password-modal';
 import FormattedCounter from './formatted-counter';
 import { OneDoUnlockLogo } from './one-do-unlock-logo';
-
-const SeedlessOnboardingControllerErrorMessage = {
-  IncorrectPassword: 'Incorrect password',
-  TooManyLoginAttempts: 'Too many login attempts',
-  OutdatedPassword: 'Outdated password',
-  AuthenticationError: 'Authentication error',
-  InvalidRevokeToken: 'Invalid revoke token',
-  InvalidRefreshToken: 'Invalid refresh token',
-  MaxKeyChainLengthExceeded: 'Max key chain length exceeded',
-} as const;
 
 type UnlockPageProps = {
   navigate: NavigateFunction;
@@ -74,12 +51,8 @@ type UnlockPageProps = {
   isOnboardingCompleted: boolean;
   onRestore: () => void;
   onSubmit: (password: string) => Promise<void>;
-  checkIsSeedlessPasswordOutdated: () => Promise<void>;
-  getIsSeedlessOnboardingUserAuthenticated: () => Promise<boolean>;
   forceUpdateMetamaskState: () => Promise<void>;
-  isSocialLoginFlow: boolean;
   onboardingParentContext: MutableRefObject<unknown>;
-  loginWithDifferentMethod: () => Promise<void>;
   firstTimeFlowType: string | null;
   resetWallet: () => Promise<void>;
   isPopup: boolean;
@@ -93,8 +66,6 @@ type UnlockPageState = {
   isLocked: boolean;
   isSubmitting: boolean;
   unlockDelayPeriod: number;
-  showLoginErrorModal: boolean;
-  showConnectionsRemovedModal: boolean;
 };
 
 type UnlockPageContext = {
@@ -121,70 +92,17 @@ class UnlockPage extends Component<UnlockPageProps, UnlockPageState> {
   };
 
   static propTypes = {
-    /**
-     * navigate function for redirect after action
-     */
     navigate: PropTypes.func.isRequired,
-    /**
-     * Location router for redirect after action
-     */
     location: PropTypes.object.isRequired,
-    /**
-     * If isUnlocked is true will redirect to most recent route in history
-     */
     isUnlocked: PropTypes.bool,
-    /**
-     * If isOnboardingCompleted is true, `Use a different login method` button
-     * will be shown instead of `Forgot password?`
-     */
     isOnboardingCompleted: PropTypes.bool,
-    /**
-     * onClick handler for "Forgot password?" link
-     */
     onRestore: PropTypes.func,
-    /**
-     * onSubmit handler when form is submitted
-     */
     onSubmit: PropTypes.func,
-    /**
-     * check password is outdated for social login flow
-     */
-    checkIsSeedlessPasswordOutdated: PropTypes.func,
-    /**
-     * check if the seedless onboarding user is authenticated for social login flow to do the rehydration
-     */
-    getIsSeedlessOnboardingUserAuthenticated: PropTypes.func,
-    /**
-     * Force update metamask data state
-     */
     forceUpdateMetamaskState: PropTypes.func,
-    /**
-     * isSocialLoginFlow. True if the user is on a social login flow
-     */
-    isSocialLoginFlow: PropTypes.bool,
-    /**
-     * Sentry trace context ref for onboarding journey tracing
-     */
     onboardingParentContext: PropTypes.object,
-    /**
-     * Reset Onboarding and OAuth login state
-     */
-    loginWithDifferentMethod: PropTypes.func,
-    /**
-     * Indicates the type of first time flow
-     */
     firstTimeFlowType: PropTypes.string,
-    /**
-     * Reset Wallet
-     */
     resetWallet: PropTypes.func,
-    /**
-     * Indicates if the environment is a popup
-     */
     isPopup: PropTypes.bool,
-    /**
-     * Indicates if the wallet is reset in progress
-     */
     isWalletResetInProgress: PropTypes.bool,
   };
 
@@ -195,27 +113,11 @@ class UnlockPage extends Component<UnlockPageProps, UnlockPageState> {
     isLocked: false,
     isSubmitting: false,
     unlockDelayPeriod: 0,
-    showLoginErrorModal: false,
-    showConnectionsRemovedModal: false,
   };
 
   // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
   // eslint-disable-next-line @typescript-eslint/naming-convention
   failed_attempts = 0;
-
-  animationEventEmitter = new EventEmitter();
-
-  /**
-   * Determines if the current user is in the social import rehydration phase
-   *
-   * @returns True if user is importing social wallet during onboarding
-   */
-  isSocialImportRehydration() {
-    return (
-      this.props.firstTimeFlowType === FirstTimeFlowType.socialImport &&
-      !this.props.isOnboardingCompleted
-    );
-  }
 
   // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
   // eslint-disable-next-line @typescript-eslint/naming-convention
@@ -223,7 +125,6 @@ class UnlockPage extends Component<UnlockPageProps, UnlockPageState> {
     const { isUnlocked, navigate, location } = this.props;
 
     if (isUnlocked) {
-      // Redirect to the intended route if available, otherwise DEFAULT_ROUTE
       let redirectTo = DEFAULT_ROUTE;
       const fromLocation = location.state?.from;
       if (fromLocation?.pathname) {
@@ -235,19 +136,6 @@ class UnlockPage extends Component<UnlockPageProps, UnlockPageState> {
   }
 
   async componentDidMount() {
-    const { isOnboardingCompleted, isSocialLoginFlow } = this.props;
-    if (isOnboardingCompleted) {
-      await this.props.checkIsSeedlessPasswordOutdated();
-    } else if (isSocialLoginFlow) {
-      // if the onboarding is not completed, check if the seedless onboarding user is authenticated to do the rehydration
-      // we have to consider the case where required tokens for rehydration are removed when user closed the browser app after social login is completed.
-      const isAuthenticated =
-        await this.props.getIsSeedlessOnboardingUserAuthenticated();
-      if (!isAuthenticated) {
-        // if the seedless onboarding user is not authenticated, redirect to the onboarding welcome page
-        this.props.navigate(ONBOARDING_WELCOME_ROUTE, { replace: true });
-      }
-    }
     if (
       this.props.isWalletResetInProgress &&
       this.props.firstTimeFlowType === null
@@ -269,22 +157,7 @@ class UnlockPage extends Component<UnlockPageProps, UnlockPageState> {
 
     this.setState({ error: null, isSubmitting: true });
 
-    // Capture the rehydration state before async operations that might change it
-    const isRehydrationFlow = this.isSocialImportRehydration();
-
-    // Track wallet rehydration attempted for social import users (only during rehydration)
-    if (isRehydrationFlow) {
-      this.context.trackEvent({
-        category: MetaMetricsEventCategory.Onboarding,
-        event: MetaMetricsEventName.RehydrationPasswordAttempted,
-        properties: {
-          // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-          // eslint-disable-next-line @typescript-eslint/naming-convention
-          account_type: 'social',
-          biometrics: false,
-        },
-      });
-    } else if (!isOnboardingCompleted) {
+    if (!isOnboardingCompleted) {
       this.context.bufferedTrace({
         name: TraceName.OnboardingPasswordLoginAttempt,
         op: TraceOperation.OnboardingUserJourney,
@@ -294,28 +167,6 @@ class UnlockPage extends Component<UnlockPageProps, UnlockPageState> {
 
     try {
       await onSubmit(password);
-
-      // Track wallet rehydration completed for social import users (only during rehydration)
-      if (isRehydrationFlow) {
-        this.context.trackEvent({
-          category: MetaMetricsEventCategory.Onboarding,
-          event: MetaMetricsEventName.RehydrationCompleted,
-          properties: {
-            // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-            // eslint-disable-next-line @typescript-eslint/naming-convention
-            account_type: 'social',
-            // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-            // eslint-disable-next-line @typescript-eslint/naming-convention
-            biometrics: false,
-            // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-            // eslint-disable-next-line @typescript-eslint/naming-convention
-            failed_attempts: this.failed_attempts,
-          },
-        });
-        this.context.bufferedEndTrace({
-          name: TraceName.OnboardingExistingSocialLogin,
-        });
-      }
 
       if (!isOnboardingCompleted) {
         this.context.bufferedEndTrace({
@@ -341,18 +192,16 @@ class UnlockPage extends Component<UnlockPageProps, UnlockPageState> {
         },
       );
     } catch (error) {
-      await this.handleLoginError(error as LoginError, isRehydrationFlow);
+      await this.handleLoginError(error as LoginError);
     } finally {
       this.setState({ isSubmitting: false });
     }
   };
 
-  handleLoginError = async (error: LoginError, isRehydrationFlow = false) => {
+  handleLoginError = async (error: LoginError) => {
     const { t } = this.context as UnlockPageContext;
     const { message, data } = error;
-    const { isOnboardingCompleted } = this.props;
 
-    // Sync failed_attempts with numberOfAttempts from error data
     if (data?.numberOfAttempts !== undefined) {
       this.failed_attempts = data.numberOfAttempts;
     }
@@ -360,40 +209,17 @@ class UnlockPage extends Component<UnlockPageProps, UnlockPageState> {
     let finalErrorMessage = message;
     let finalUnlockDelayPeriod = 0;
     let errorReason;
-    let shouldShowLoginErrorModal = false;
-    let shouldShowConnectionsRemovedModal = false;
 
     switch (message) {
       case 'Incorrect password':
-      case SeedlessOnboardingControllerErrorMessage.IncorrectPassword:
         finalErrorMessage = t('unlockPageIncorrectPassword');
         errorReason = 'incorrect_password';
         break;
-      case SeedlessOnboardingControllerErrorMessage.TooManyLoginAttempts:
+      case 'Too many login attempts':
         this.setState({ isLocked: true });
-
         finalErrorMessage = t('unlockPageTooManyFailedAttempts');
         errorReason = 'too_many_login_attempts';
         finalUnlockDelayPeriod = data?.remainingTime ?? 0;
-        break;
-      case SeedlessOnboardingControllerErrorMessage.OutdatedPassword:
-        finalErrorMessage = t('passwordChangedRecently');
-        errorReason = 'outdated_password';
-        break;
-      case SeedlessOnboardingControllerErrorMessage.AuthenticationError:
-      case SeedlessOnboardingControllerErrorMessage.InvalidRevokeToken:
-      case SeedlessOnboardingControllerErrorMessage.InvalidRefreshToken:
-        // capture the error to sentry
-        captureException(error);
-
-        if (isOnboardingCompleted) {
-          finalErrorMessage = message;
-          shouldShowLoginErrorModal = true;
-        }
-        break;
-      case SeedlessOnboardingControllerErrorMessage.MaxKeyChainLengthExceeded:
-        finalErrorMessage = message;
-        shouldShowConnectionsRemovedModal = true;
         break;
       default:
         finalErrorMessage = message;
@@ -402,25 +228,6 @@ class UnlockPage extends Component<UnlockPageProps, UnlockPageState> {
 
     if (errorReason) {
       await this.props.forceUpdateMetamaskState();
-
-      // Track wallet rehydration failed for social import users (only during rehydration)
-      if (isRehydrationFlow) {
-        this.context.trackEvent({
-          category: MetaMetricsEventCategory.Onboarding,
-          event: MetaMetricsEventName.RehydrationPasswordFailed,
-          properties: {
-            // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-            // eslint-disable-next-line @typescript-eslint/naming-convention
-            account_type: 'social',
-            // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-            // eslint-disable-next-line @typescript-eslint/naming-convention
-            failed_attempts: this.failed_attempts,
-            // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-            // eslint-disable-next-line @typescript-eslint/naming-convention
-            error_type: errorReason,
-          },
-        });
-      }
       this.context.trackEvent({
         category: MetaMetricsEventCategory.Navigation,
         event: MetaMetricsEventName.AppUnlockedFailed,
@@ -432,42 +239,17 @@ class UnlockPage extends Component<UnlockPageProps, UnlockPageState> {
         },
       });
     }
+
     this.setState({
       error: finalErrorMessage,
       unlockDelayPeriod: finalUnlockDelayPeriod,
-      showLoginErrorModal: shouldShowLoginErrorModal,
-      showConnectionsRemovedModal: shouldShowConnectionsRemovedModal,
     });
   };
 
   handleInputChange(event: ChangeEvent<HTMLInputElement>) {
     const { target } = event;
     this.setState({ password: target.value, error: null });
-
-    const element = target;
-    const boundingRect = element.getBoundingClientRect();
-    const coordinates = getCaretCoordinates(element, element.selectionEnd ?? 0);
-    this.animationEventEmitter.emit('point', {
-      x: boundingRect.left + coordinates.left - element.scrollLeft,
-      y: boundingRect.top + coordinates.top - element.scrollTop,
-    });
   }
-
-  renderMascot = () => {
-    if (isFlask()) {
-      return <img src="./images/logo/1do-mark.svg" width="115" height="115" />;
-    }
-    if (isBeta()) {
-      return <img src="./images/logo/1do-mark.svg" width="115" height="115" />;
-    }
-    return (
-      <Mascot
-        animationEventEmitter={this.animationEventEmitter}
-        width="170"
-        height="170"
-      />
-    );
-  };
 
   renderHelpText = () => {
     const { error, unlockDelayPeriod } = this.state;
@@ -481,62 +263,38 @@ class UnlockPage extends Component<UnlockPageProps, UnlockPageState> {
         className="unlock-page__help-text"
         flexDirection={BoxFlexDirection.Column}
       >
-        {error && (
-          <Text
-            data-testid="unlock-page-help-text"
-            variant={TextVariant.BodySm}
-            textAlign={TextAlign.Left}
-            color={TextColor.ErrorDefault}
-          >
-            {error}
-            {unlockDelayPeriod > 0 && (
-              <FormattedCounter
-                startFrom={unlockDelayPeriod}
-                onCountdownEnd={() =>
-                  this.setState({
-                    isLocked: false,
-                    error: null,
-                    unlockDelayPeriod: 0,
-                  })
-                }
-              />
-            )}
-          </Text>
-        )}
+        <Text
+          data-testid="unlock-page-help-text"
+          variant={TextVariant.BodySm}
+          textAlign={TextAlign.Left}
+          color={TextColor.ErrorDefault}
+        >
+          {error}
+          {unlockDelayPeriod > 0 && (
+            <FormattedCounter
+              startFrom={unlockDelayPeriod}
+              onCountdownEnd={() =>
+                this.setState({
+                  isLocked: false,
+                  error: null,
+                  unlockDelayPeriod: 0,
+                })
+              }
+            />
+          )}
+        </Text>
       </Box>
     );
   };
 
   onForgotPasswordOrLoginWithDiffMethods = async () => {
-    const { isSocialLoginFlow, navigate, isOnboardingCompleted } = this.props;
-
-    // in `onboarding_unlock` route, if the user is on a social login flow and onboarding is not completed,
-    // we can redirect to `onboarding_welcome` route to select a different login method
-    if (!isOnboardingCompleted && isSocialLoginFlow) {
-      // Track when user clicks "Use a different login method" during rehydration
-      this.context.trackEvent({
-        category: MetaMetricsEventCategory.Onboarding,
-        event: MetaMetricsEventName.UseDifferentLoginMethodClicked,
-        properties: {
-          // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-          // eslint-disable-next-line @typescript-eslint/naming-convention
-          account_type: 'social',
-        },
-      });
-
-      await this.props.loginWithDifferentMethod();
-      await this.props.forceUpdateMetamaskState();
-      navigate(ONBOARDING_WELCOME_ROUTE, { replace: true });
-      return;
-    }
-
     this.context.trackEvent({
       category: MetaMetricsEventCategory.Onboarding,
       event: MetaMetricsEventName.ForgotPasswordClicked,
       properties: {
         // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
         // eslint-disable-next-line @typescript-eslint/naming-convention
-        account_type: isSocialLoginFlow ? 'social' : 'metamask',
+        account_type: 'metamask',
       },
     });
 
@@ -544,45 +302,28 @@ class UnlockPage extends Component<UnlockPageProps, UnlockPageState> {
   };
 
   onRestoreWallet = async () => {
-    const { isSocialLoginFlow } = this.props;
-
     this.context.trackEvent({
       category: MetaMetricsEventCategory.Accounts,
       event: MetaMetricsEventName.ResetWallet,
       properties: {
         // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
         // eslint-disable-next-line @typescript-eslint/naming-convention
-        account_type: isSocialLoginFlow ? 'social' : 'metamask',
+        account_type: 'metamask',
       },
     });
     this.props.onRestore();
   };
 
   onResetWallet = async () => {
-    this.setState({
-      showLoginErrorModal: false,
-      showConnectionsRemovedModal: false,
-      showResetPasswordModal: false,
-    });
+    this.setState({ showResetPasswordModal: false });
     await this.props.resetWallet();
     await this.props.forceUpdateMetamaskState();
     this.props.navigate(DEFAULT_ROUTE, { replace: true });
   };
 
   render() {
-    const {
-      password,
-      error,
-      isLocked,
-      showResetPasswordModal,
-      showLoginErrorModal,
-      showConnectionsRemovedModal,
-    } = this.state;
-    const { isOnboardingCompleted, isSocialLoginFlow } = this.props;
+    const { password, error, isLocked, showResetPasswordModal } = this.state;
     const { t } = this.context as UnlockPageContext;
-
-    const needHelpText = t('needHelpLinkText');
-    const isRehydrationFlow = isSocialLoginFlow && !isOnboardingCompleted;
 
     return (
       <Box
@@ -591,22 +332,13 @@ class UnlockPage extends Component<UnlockPageProps, UnlockPageState> {
         justifyContent={BoxJustifyContent.Center}
         backgroundColor={BoxBackgroundColor.BackgroundDefault}
         className="w-full"
-        paddingBottom={12} // offset header to center content
+        paddingBottom={12}
       >
         {showResetPasswordModal && (
           <ResetPasswordModal
             onClose={() => this.setState({ showResetPasswordModal: false })}
             onRestore={this.onRestoreWallet}
           />
-        )}
-        {showLoginErrorModal && (
-          <LoginErrorModal
-            onDone={this.onResetWallet}
-            loginError={LOGIN_ERROR.RESET_WALLET}
-          />
-        )}
-        {showConnectionsRemovedModal && (
-          <ConnectionsRemovedModal onConfirm={this.onResetWallet} />
         )}
         <Box
           flexDirection={BoxFlexDirection.Column}
@@ -627,26 +359,22 @@ class UnlockPage extends Component<UnlockPageProps, UnlockPageState> {
                 className="unlock-page__mascot-container"
                 marginBottom={isBeta() || isFlask() ? 6 : 0}
               >
-                {isRehydrationFlow ? (
-                  this.renderMascot()
-                ) : (
-                  <Box
-                    className="unlock-page__brand"
-                    flexDirection={BoxFlexDirection.Column}
-                    alignItems={BoxAlignItems.Center}
+                <Box
+                  className="unlock-page__brand"
+                  flexDirection={BoxFlexDirection.Column}
+                  alignItems={BoxAlignItems.Center}
+                >
+                  <Text
+                    data-testid="unlock-page-brand-title"
+                    variant={TextVariant.DisplayMd}
+                    fontWeight={FontWeight.Medium}
+                    color={TextColor.TextDefault}
+                    textAlign={TextAlign.Center}
+                    className="unlock-page__brand-title"
                   >
-                    <Text
-                      data-testid="unlock-page-brand-title"
-                      variant={TextVariant.DisplayMd}
-                      fontWeight={FontWeight.Medium}
-                      color={TextColor.TextDefault}
-                      textAlign={TextAlign.Center}
-                      className="unlock-page__brand-title"
-                    >
-                      1Do
-                    </Text>
-                  </Box>
-                )}
+                    1Do
+                  </Text>
+                </Box>
                 {isBeta() ? (
                   <Text
                     className="unlock-page__mascot-container__beta bg-primary-default rounded-lg p-1"
@@ -658,25 +386,9 @@ class UnlockPage extends Component<UnlockPageProps, UnlockPageState> {
                   </Text>
                 ) : null}
               </Box>
-              {isRehydrationFlow && (
-                <Text
-                  data-testid="unlock-page-title"
-                  variant={TextVariant.DisplayMd}
-                  className="mb-12"
-                  fontWeight={FontWeight.Medium}
-                  color={TextColor.TextDefault}
-                  textAlign={TextAlign.Center}
-                >
-                  {t('welcomeBack')}
-                </Text>
-              )}
               <FormTextField
                 id="password"
-                placeholder={
-                  this.props.isSocialLoginFlow
-                    ? t('enterYourPasswordSocialLoginFlow')
-                    : t('enterYourPassword')
-                }
+                placeholder={t('enterYourPassword')}
                 size={FormTextFieldSize.Lg}
                 inputProps={{
                   'data-testid': 'unlock-password',
@@ -705,77 +417,29 @@ class UnlockPage extends Component<UnlockPageProps, UnlockPageState> {
                 data-testid="unlock-submit"
                 disabled={!password || isLocked}
               >
-                {this.context.t('unlock')}
+                {t('unlock')}
               </Button>
-
               <TextButton
                 data-testid="unlock-forgot-password-button"
                 key="import-account"
                 type="button"
                 onClick={this.onForgotPasswordOrLoginWithDiffMethods}
                 className="mb-4"
-                color={
-                  isRehydrationFlow
-                    ? TextColor.TextDefault
-                    : TextColor.PrimaryDefault
-                }
+                color={TextColor.PrimaryDefault}
               >
-                {isRehydrationFlow
-                  ? t('useDifferentLoginMethod')
-                  : t('forgotPassword')}
+                {t('forgotPassword')}
               </TextButton>
-
-              {isRehydrationFlow && (
-                <Text
-                  variant={TextVariant.BodyMd}
-                  color={TextColor.TextDefault}
-                >
-                  {t('needHelp', [
-                    <TextButton
-                      key="need-help-link"
-                      onClick={() => {
-                        this.context.trackEvent(
-                          {
-                            category: MetaMetricsEventCategory.Navigation,
-                            event: MetaMetricsEventName.SupportLinkClicked,
-                            properties: {
-                              url: SUPPORT_LINK,
-                            },
-                          },
-                          {
-                            contextPropsIntoEventProperties: [
-                              MetaMetricsContextProp.PageTitle,
-                            ],
-                          },
-                        );
-                      }}
-                      asChild
-                    >
-                      <a
-                        href={SUPPORT_LINK}
-                        type="button"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        {needHelpText}
-                      </a>
-                    </TextButton>,
-                  ])}
-                </Text>
-              )}
             </Box>
           </form>
         </Box>
-        {!isRehydrationFlow && (
-          <Box className="unlock-page__bottom-logo">
-            <OneDoUnlockLogo isPopup={this.props.isPopup ?? false} />
-          </Box>
-        )}
+        <Box className="unlock-page__bottom-logo">
+          <OneDoUnlockLogo isPopup={this.props.isPopup ?? false} />
+        </Box>
       </Box>
     );
   }
 }
 
 export default withMetaMetrics(
-  UnlockPage as unknown as React.ComponentType<Record<string, unknown>>,
+  UnlockPage as unknown as ComponentType<Record<string, unknown>>,
 );

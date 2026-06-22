@@ -2,7 +2,7 @@ import { cloneDeep } from 'lodash';
 import { hasProperty, isObject } from '@metamask/utils';
 import {
   CHAIN_IDS,
-  getFailoverUrlsForInfuraNetwork,
+  getFailoverUrlsForNetwork,
 } from '../../../shared/constants/network';
 
 type VersionedData = {
@@ -70,8 +70,8 @@ function transformState(
     networkState.networkConfigurationsByChainId[CHAIN_IDS.BASE];
 
   if (existingBaseNetwork && isObject(existingBaseNetwork)) {
-    // Check if Infura endpoint already exists
-    const hasInfuraEndpoint =
+    // Check if default endpoint already exists
+    const hasDefaultRpcEndpoint =
       hasProperty(existingBaseNetwork, 'rpcEndpoints') &&
       Array.isArray(existingBaseNetwork.rpcEndpoints) &&
       existingBaseNetwork.rpcEndpoints.some(
@@ -83,19 +83,19 @@ function transformState(
           endpoint.type === 'infura',
       );
 
-    if (hasInfuraEndpoint) {
+    if (hasDefaultRpcEndpoint) {
       return state;
     }
 
-    // Add Infura endpoint to existing Base network configuration
-    const infuraConfig = getBaseNetworkConfiguration();
+    // Add default endpoint to existing Base network configuration
+    const defaultRpcConfig = getBaseNetworkConfiguration();
     const updatedBaseNetwork = {
       ...existingBaseNetwork,
       rpcEndpoints: [
         ...(Array.isArray(existingBaseNetwork.rpcEndpoints)
           ? existingBaseNetwork.rpcEndpoints
           : []),
-        ...infuraConfig.rpcEndpoints,
+        ...defaultRpcConfig.rpcEndpoints,
       ],
     };
 
@@ -120,7 +120,7 @@ export function getBaseNetworkConfiguration() {
     nativeCurrency: 'ETH',
     rpcEndpoints: [
       {
-        failoverUrls: getFailoverUrlsForInfuraNetwork('base-mainnet'),
+        failoverUrls: getFailoverUrlsForNetwork('base-mainnet'),
         networkClientId: 'base-mainnet',
         type: 'infura',
         url: 'https://base-mainnet.infura.io/v3/{infuraProjectId}',

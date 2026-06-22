@@ -29,7 +29,7 @@ export const MarketClosedActionButton = ({
       }}
       data-testid="market-closed-action-button"
     >
-      {t('bridgeMarketClosedAction')}
+      {t('marketClosedAction')}
     </Button>
   );
 };

@@ -4,9 +4,9 @@ import { getTokens } from '../ducks/metamask/metamask';
 import { getCurrentChainId } from '../../shared/lib/selectors/networks';
 import { ASSET_ROUTE } from '../helpers/constants/routes';
 import {
-  SWAPS_CHAINID_DEFAULT_TOKEN_MAP,
-  ETH_SWAPS_TOKEN_OBJECT,
-} from '../../shared/constants/swaps';
+  CHAIN_ID_DEFAULT_NATIVE_TOKEN_MAP,
+  ETH_NATIVE_TOKEN_OBJECT,
+} from '../../shared/constants/native-assets';
 import { isEqualCaseInsensitive } from '../../shared/lib/string-utils';
 
 /**
@@ -18,8 +18,6 @@ import { isEqualCaseInsensitive } from '../../shared/lib/string-utils';
  * @returns {import('./useTokenDisplayValue').Token}
  */
 export function useCurrentAsset() {
-  // To determine which primary currency to display for swaps transactions we need to be aware
-  // of which asset, if any, we are viewing at present
   const match = useMatch({
     path: `${ASSET_ROUTE}/:asset`,
     end: true,
@@ -35,6 +33,6 @@ export function useCurrentAsset() {
 
   return (
     token ??
-    (SWAPS_CHAINID_DEFAULT_TOKEN_MAP[chainId] || ETH_SWAPS_TOKEN_OBJECT)
+    (CHAIN_ID_DEFAULT_NATIVE_TOKEN_MAP[chainId] || ETH_NATIVE_TOKEN_OBJECT)
   );
 }

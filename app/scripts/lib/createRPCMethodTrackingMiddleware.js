@@ -11,19 +11,12 @@ import {
 import { parseTypedDataMessage } from '../../../shared/lib/transaction.utils';
 
 import {
-  BlockaidResultType,
-  BlockaidReason,
-} from '../../../shared/constants/security-provider';
-import { ResultType } from '../../../shared/lib/trust-signals';
-import {
   PRIMARY_TYPES_ORDER,
   PRIMARY_TYPES_PERMIT,
 } from '../../../shared/constants/signatures';
-import { SIGNING_METHODS } from '../../../shared/constants/transaction';
 import { getErrorMessage } from '../../../shared/lib/error';
 import {
   generateSignatureUniqueId,
-  getBlockaidMetricsProps,
   // TODO: Remove restricted import
   // eslint-disable-next-line import-x/no-restricted-paths
 } from '../../../ui/helpers/utils/metrics';
@@ -245,7 +238,6 @@ export default function createRPCMethodTrackingMiddleware({
   getAccountType,
   getDeviceModel,
   getHardwareTypeForMetric,
-  appStateController,
   metaMetricsController,
   getHDEntropyIndex,
 }) {
@@ -360,28 +352,6 @@ export default function createRPCMethodTrackingMiddleware({
         } else {
           data = req?.params?.[1];
           address = req?.params?.[0];
-        }
-
-        if (req.securityAlertResponse?.providerRequestsCount) {
-          Object.keys(req.securityAlertResponse.providerRequestsCount).forEach(
-            (key) => {
-              const metricKey = `ppom_${key}_count`;
-              eventProperties[metricKey] =
-                req.securityAlertResponse.providerRequestsCount[key];
-            },
-          );
-        }
-
-        eventProperties.security_alert_response =
-          req.securityAlertResponse?.result_type ??
-          BlockaidResultType.NotApplicable;
-        eventProperties.security_alert_reason =
-          req.securityAlertResponse?.reason ?? BlockaidReason.notApplicable;
-        eventProperties.address_alert_response = ResultType.Loading;
-
-        if (req.securityAlertResponse?.description) {
-          eventProperties.security_alert_description =
-            req.securityAlertResponse.description;
         }
 
         Object.assign(
@@ -527,25 +497,10 @@ export default function createRPCMethodTrackingMiddleware({
         );
       }
 
-      let blockaidMetricProps = {};
-      if (SIGNING_METHODS.includes(invokedMethod)) {
-        const securityAlertResponse =
-          appStateController.getSignatureSecurityAlertResponse(
-            req.securityAlertResponse?.securityAlertId,
-          );
-
-        blockaidMetricProps = getBlockaidMetricsProps({
-          securityAlertResponse,
-        });
-      }
-
       const properties = {
         ...eventProperties,
-        ...blockaidMetricProps,
         location,
       };
-      // Exclude address_alert_response so useTrustSignalMetrics value is preserved during finalization
-      delete properties.address_alert_response;
 
       if (
         event === MetaMetricsEventName.SignatureRejected ||

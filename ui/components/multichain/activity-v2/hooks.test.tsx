@@ -69,42 +69,6 @@ function renderHook<Result>(callback: () => Result) {
 }
 
 describe('useGetTitle', () => {
-  it('returns swap title for swap-like CONTRACT_CALL', () => {
-    const tx = {
-      amounts: {
-        from: {
-          amount: -100000n,
-          token: {
-            address: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
-            chainId: '0x1',
-            decimals: 6,
-            symbol: 'USDC',
-          },
-        },
-        to: {
-          amount: 99857n,
-          token: {
-            address: '0xdac17f958d2ee523a2206206994597c13d831ec7',
-            chainId: '0x1',
-            decimals: 6,
-            symbol: 'USDT',
-          },
-        },
-      },
-      transactionCategory: 'CONTRACT_CALL',
-      transactionProtocol: '',
-      transactionType: 'GENERIC_CONTRACT_CALL',
-      txParams: {
-        from: selectedAddress,
-        to: selectedAddress,
-      },
-    } as unknown as TransactionViewModel;
-
-    const { result } = renderHook(() => useGetTitle(tx));
-
-    expect(result.current).toBe('swapTokenToToken:USDC,USDT');
-  });
-
   it('uses the API readable label when extensionTransactionLabels is enabled', () => {
     const flaggedStore = configureMockStore()({
       metamask: {
@@ -123,7 +87,7 @@ describe('useGetTitle', () => {
       },
     });
     const tx = {
-      readable: 'Swap 100 USDC to 99.857 USDT',
+      readable: 'Contract call',
       amounts: {
         from: {
           amount: -100000n,
@@ -159,12 +123,12 @@ describe('useGetTitle', () => {
       ),
     });
 
-    expect(result.current).toBe('Swap 100 USDC to 99.857 USDT');
+    expect(result.current).toBe('Contract call');
   });
 
   it('falls back to legacy title logic when extensionTransactionLabels is disabled', () => {
     const tx = {
-      readable: 'Swap 100 USDC to 99.857 USDT',
+      readable: 'Contract call',
       amounts: {
         from: {
           amount: -100000n,
@@ -196,7 +160,7 @@ describe('useGetTitle', () => {
 
     const { result } = renderHook(() => useGetTitle(tx));
 
-    expect(result.current).toBe('swapTokenToToken:USDC,USDT');
+    expect(result.current).toBe('contractInteraction');
   });
 
   it('returns received for STANDARD incoming native transfer', () => {

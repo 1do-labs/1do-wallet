@@ -165,8 +165,6 @@ import {
 import { getProviderConfig } from '../../shared/lib/selectors/networks';
 import { selectAllEnabledNetworkClientIds } from '../../shared/lib/selectors/multichain';
 import { trace, endTrace, TraceName } from '../../shared/lib/trace';
-import { ALLOWED_BRIDGE_CHAIN_IDS } from '../../shared/constants/bridge';
-import { FirstTimeFlowType } from '../../shared/constants/onboarding';
 import { updateCurrentLocale } from '../../shared/lib/translate';
 import { getIsAssetsUnifiedStateIncludedInBuild } from '../../shared/lib/environment';
 import { toChecksumHexAddress } from '../../shared/lib/hexstring-utils';
@@ -186,8 +184,6 @@ import {
 import { onStreamClosed } from '../../shared/lib/stream-utils';
 
 import { AddressBookPetnamesBridge } from './lib/AddressBookPetnamesBridge';
-import { createPPOMMiddleware } from './lib/ppom/ppom-middleware';
-import { createTrustSignalsMiddleware } from './lib/trust-signals/trust-signals-middleware';
 import {
   onMessageReceived,
   checkForMultipleVersionsRunning,
@@ -246,11 +242,6 @@ import {
   PHISHING_SAFELIST,
 } from './constants/stream';
 
-// Notification controllers
-import {
-  updateSecurityAlertResponse,
-  validateRequestWithPPOM,
-} from './lib/ppom/ppom-util';
 import { decodeTransactionData } from './lib/transaction/decode/util';
 import createTracingMiddleware from './lib/createTracingMiddleware';
 import createOriginThrottlingMiddleware from './lib/createOriginThrottlingMiddleware';
@@ -276,16 +267,15 @@ import {
   TokenRatesControllerInit,
 } from './messenger-client-init/assets';
 import { TransactionControllerInit } from './messenger-client-init/confirmations/transaction-controller-init';
-import { TransactionPayControllerInit } from './messenger-client-init/transaction-pay-controller-init';
 import { GeolocationApiServiceInit } from './messenger-client-init/geolocation-api-service-init';
 import { GeolocationControllerInit } from './messenger-client-init/geolocation-controller-init';
-import { PPOMControllerInit } from './messenger-client-init/confirmations/ppom-controller-init';
 import { SmartTransactionsControllerInit } from './messenger-client-init/smart-transactions/smart-transactions-controller-init';
 import { initMessengerClients } from './messenger-client-init/utils';
 import { DelegationControllerInit } from './messenger-client-init/delegation/delegation-controller-init';
 import { isRelaySupported } from './lib/transaction/transaction-relay';
 import { openUpdateTabAndReload } from './lib/open-update-tab-and-reload';
 import { AccountTreeControllerInit } from './messenger-client-init/accounts/account-tree-controller-init';
+import { registerNoRemoteUserStorageControllerHandlers } from './lib/no-remote-user-storage';
 import { MultichainAccountServiceInit } from './messenger-client-init/multichain/multichain-account-service-init';
 import { applyTransactionContainersExisting } from './lib/transaction/containers/util';
 import {
@@ -409,6 +399,7 @@ export default class MetamaskController extends EventEmitter {
     this.initializeChainlist();
 
     this.controllerMessenger = controllerMessenger;
+    registerNoRemoteUserStorageControllerHandlers(this.controllerMessenger);
     this.currentMigrationVersion = opts.currentMigrationVersion;
 
     // observable state store
@@ -500,11 +491,9 @@ export default class MetamaskController extends EventEmitter {
       SelectedNetworkController: SelectedNetworkControllerInit,
       GeolocationApiService: GeolocationApiServiceInit,
       GeolocationController: GeolocationControllerInit,
-      PPOMController: PPOMControllerInit,
       PhishingController: PhishingControllerInit,
       AccountTrackerController: AccountTrackerControllerInit,
       TransactionController: TransactionControllerInit,
-      TransactionPayController: TransactionPayControllerInit,
       SmartTransactionsController: SmartTransactionsControllerInit,
       NftController: NftControllerInit,
       AssetsContractController: AssetsContractControllerInit,
@@ -592,7 +581,6 @@ export default class MetamaskController extends EventEmitter {
       messengerClientsByName.UserOperationController;
     this.selectedNetworkController =
       messengerClientsByName.SelectedNetworkController;
-    this.ppomController = messengerClientsByName.PPOMController;
     this.phishingController = messengerClientsByName.PhishingController;
     this.onboardingController = messengerClientsByName.OnboardingController;
     this.accountTrackerController =
@@ -706,24 +694,15 @@ export default class MetamaskController extends EventEmitter {
       `OnboardingController:stateChange`,
       previousValueComparator(async (prevState, currState) => {
         const { completedOnboarding: prevCompletedOnboarding } = prevState;
-        const {
-          completedOnboarding: currCompletedOnboarding,
-          firstTimeFlowType,
-        } = currState;
+        const { completedOnboarding: currCompletedOnboarding } = currState;
         if (!prevCompletedOnboarding && currCompletedOnboarding) {
           // Safely read the selected account and entropy id. In some test or
           // edge flows the selected account may not yet be available.
           const selected = this.accountsController.getSelectedAccount();
           const address = selected?.address;
-          if (firstTimeFlowType === FirstTimeFlowType.socialImport) {
-            log.debug(
-              'Skipping non-EVM multichain account import during onboarding',
-            );
-          } else {
-            log.debug(
-              'Skipping non-EVM multichain account discovery during onboarding',
-            );
-          }
+          log.debug(
+            'Skipping non-EVM multichain account discovery during onboarding',
+          );
 
           this.postOnboardingInitialization();
           this.triggerNetworkrequests();
@@ -770,8 +749,7 @@ export default class MetamaskController extends EventEmitter {
                 ),
               isRelaySupported,
               getSendBundleSupportedChains,
-              isAuxiliaryFundsSupported: (chainId) =>
-                ALLOWED_BRIDGE_CHAIN_IDS.includes(chainId),
+              isAuxiliaryFundsSupported: () => false,
             },
             this.controllerMessenger,
           ),
@@ -812,19 +790,8 @@ export default class MetamaskController extends EventEmitter {
                 this.txController.isAtomicBatchSupported.bind(
                   this.txController,
                 ),
-              validateSecurity: (securityAlertId, request, chainId) =>
-                validateRequestWithPPOM({
-                  chainId,
-                  ppomController: this.ppomController,
-                  request,
-                  securityAlertId,
-                  updateSecurityAlertResponse:
-                    this.updateSecurityAlertResponse.bind(this),
-                  getSecurityAlertsConfig:
-                    this.getSecurityAlertsConfig.bind(this),
-                }),
-              isAuxiliaryFundsSupported: (chainId) =>
-                ALLOWED_BRIDGE_CHAIN_IDS.includes(chainId),
+              validateSecurity: async () => undefined,
+              isAuxiliaryFundsSupported: () => false,
             },
             this.controllerMessenger,
           ),
@@ -1768,10 +1735,6 @@ export default class MetamaskController extends EventEmitter {
       grantPermissions: this.permissionController.grantPermissions.bind(
         this.permissionController,
       ),
-      setSecurityAlertsEnabled:
-        preferencesController.setSecurityAlertsEnabled.bind(
-          preferencesController,
-        ),
       setUseExternalNameSources:
         preferencesController.setUseExternalNameSources.bind(
           preferencesController,
@@ -1825,8 +1788,6 @@ export default class MetamaskController extends EventEmitter {
       resetAccount: this.resetAccount.bind(this),
       removeAccount: this.removeAccount.bind(this),
       importAccountWithStrategy: this.importAccountWithStrategy.bind(this),
-      checkIsSeedlessPasswordOutdated:
-        this.checkIsSeedlessPasswordOutdated.bind(this),
       syncPasswordAndUnlockWallet: this.syncPasswordAndUnlockWallet.bind(this),
 
       // hardware wallets
@@ -2792,34 +2753,9 @@ export default class MetamaskController extends EventEmitter {
   }
 
   /**
-   * Creates a PRIMARY seed phrase backup for the user.
+   * Unlock the vault with the submitted password.
    *
-   * Generate Encryption Key from the password using the Threshold OPRF and encrypt the seed phrase with the key.
-   * Save the encrypted seed phrase in the metadata store.
-   *
-   * @param {string} _password - The user's password.
-   * @param {number[]} _encodedSeedPhrase - The seed phrase to backup.
-   * @param {string} _keyringId - The keyring id of the backup seed phrase.
-   */
-  async createSeedPhraseBackup(_password, _encodedSeedPhrase, _keyringId) {
-    throw new Error('Seedless onboarding is disabled.');
-  }
-
-  /**
-   * Fetches and restores all the backed-up Secret Data (SRPs and Private keys)
-   *
-   * @param {string} _password - The user's password.
-   * @returns {Promise<Buffer[]>} The seed phrase.
-   */
-  async fetchAllSecretData(_password) {
-    return [];
-  }
-
-  /**
-   * Sync latest global seedless password and override the current device password with latest global password.
-   * Unlock the vault with the latest global password.
-   *
-   * @param {string} password - latest global seedless password
+   * @param {string} password - The password.
    * @returns {void}
    */
   async syncPasswordAndUnlockWallet(password) {
@@ -2827,53 +2763,7 @@ export default class MetamaskController extends EventEmitter {
   }
 
   /**
-   * Syncs the keyring encryption key with the seedless onboarding controller.
-   *
-   * @returns {Promise<void>}
-   */
-  async syncKeyringEncryptionKey() {
-    return undefined;
-  }
-
-  /**
-   * Checks if the seedless password is outdated.
-   *
-   * @param {object} _args - The arguments for the checkIsSeedlessPasswordOutdated method.
-   * @param {boolean} _args.skipCache - whether to skip the cache @default false
-   * @param {boolean} _args.captureSentryError - whether to capture the sentry error. @default false
-   * @returns {Promise<boolean | undefined>} true if the password is outdated, false otherwise, undefined if the flow is not seedless
-   */
-  async checkIsSeedlessPasswordOutdated(_args) {
-    return false;
-  }
-
-  /**
-   * Syncs the seed phrases with the social login flow.
-   *
-   * @returns {Promise<void>}
-   */
-  async syncSeedPhrases() {
-    return undefined;
-  }
-
-  /**
-   * Adds a new seed phrase backup for the user.
-   *
-   * If `syncWithSocial` is false, it will only update the local state,
-   * and not sync the seed phrase to the server.
-   *
-   * @param {string} _mnemonic - The mnemonic to derive the seed phrase from.
-   * @param {string} _keyringId - The keyring id of the backup seed phrase.
-   * @param {boolean} _syncWithSocial - whether to skip syncing with social login
-   */
-  async addNewSeedPhraseBackup(_mnemonic, _keyringId, _syncWithSocial = true) {
-    return undefined;
-  }
-
-  /**
    * Changes the password for the wallet.
-   *
-   * If the flow is social login flow, it will also change the password for the seedless onboarding controller.
    *
    * @param {string} newPassword - The new password.
    * @param {string} _oldPassword - The old password.
@@ -2967,18 +2857,16 @@ export default class MetamaskController extends EventEmitter {
    *
    * @param {string} mnemonic - The mnemonic to import.
    * @param {object} options - The options for the import.
-   * @param {boolean} options.shouldCreateSocialBackup - whether to create a backup for the seedless onboarding flow
    * @param {boolean} options.shouldSelectAccount - whether to select the new account in the wallet
    * @returns {Promise<void>}
    */
   async importMnemonicToVault(
     mnemonic,
     options = {
-      shouldCreateSocialBackup: true,
       shouldSelectAccount: true,
     },
   ) {
-    const { shouldCreateSocialBackup, shouldSelectAccount } = options;
+    const { shouldSelectAccount } = options;
     const releaseLock = await this.createVaultMutex.acquire();
     try {
       const { entropySource: id } =
@@ -2993,23 +2881,6 @@ export default class MetamaskController extends EventEmitter {
         { id },
         async ({ keyring }) => keyring.getAccounts(),
       );
-
-      if (this.onboardingController.getIsSocialLoginFlow()) {
-        try {
-          // if social backup is requested, add the seed phrase backup
-          await this.addNewSeedPhraseBackup(
-            mnemonic,
-            id,
-            shouldCreateSocialBackup,
-          );
-        } catch (err) {
-          await this.multichainAccountService.removeMultichainAccountWallet(
-            id,
-            newAccountAddress,
-          );
-          throw err;
-        }
-      }
 
       if (shouldSelectAccount) {
         const account =
@@ -3042,28 +2913,6 @@ export default class MetamaskController extends EventEmitter {
     } finally {
       releaseLock();
     }
-  }
-
-  /**
-   * Restores an array of seed phrases to the vault and updates the SocialBackupMetadataState if import is successful.
-   *
-   * This method is used to restore seed phrases from the Social Backup.
-   *
-   * @param {{data: Uint8Array, timestamp: number, version: number}[]} _secretDatas - The seed phrases to restore.
-   * @returns {Promise<void>}
-   */
-  async restoreSeedPhrasesToVault(_secretDatas) {
-    return undefined;
-  }
-
-  /**
-   * Fetches and restores the seed phrase from the metadata store using the social login and restore the vault using the seed phrase.
-   *
-   * @param {string} _password - The password.
-   * @returns The seed phrase.
-   */
-  async restoreSocialBackupAndGetSeedPhrase(_password) {
-    throw new Error('Seedless onboarding is disabled.');
   }
 
   /**
@@ -4131,49 +3980,19 @@ export default class MetamaskController extends EventEmitter {
    * @param {'privateKey' | 'json'} strategy - A unique identifier for an account import strategy.
    * @param {any} args - The data required by that strategy to import an account.
    * @param {object} options - The options for the import.
-   * @param {boolean} options.shouldCreateSocialBackup - whether to create a backup for the seedless onboarding flow
    * @param {boolean} options.shouldSelectAccount - whether to select the new account in the wallet
    */
   async importAccountWithStrategy(
     strategy,
     args,
     options = {
-      shouldCreateSocialBackup: true,
       shouldSelectAccount: true,
     },
   ) {
-    const { shouldCreateSocialBackup, shouldSelectAccount } = options;
+    const { shouldSelectAccount } = options;
 
     const importedAccountAddress =
       await this.keyringController.importAccountWithStrategy(strategy, args);
-
-    if (this.onboardingController.getIsSocialLoginFlow()) {
-      // Use withKeyring to get keyring metadata for an address
-      const { id: keyringId, privateKey: privateKeyFromKeyring } =
-        await this.keyringController.withKeyring(
-          { address: importedAccountAddress },
-          async ({ keyring, metadata }) => {
-            const privateKey = await keyring.exportAccount(
-              importedAccountAddress,
-            );
-            return { id: metadata.id, privateKey };
-          },
-        );
-
-      try {
-        // if social backup is requested, add the seed phrase backup
-        await this.addNewPrivateKeyBackup(
-          privateKeyFromKeyring,
-          keyringId,
-          shouldCreateSocialBackup,
-        );
-      } catch (err) {
-        // handle seedless controller import error by reverting keyring controller mnemonic import
-        // KeyringController.removeAccount will remove keyring when it's emptied, currently there are no other method in keyring controller to remove keyring
-        await this.keyringController.removeAccount(importedAccountAddress);
-        throw err;
-      }
-    }
 
     if (shouldSelectAccount) {
       const account = this.accountsController.getAccountByAddress(
@@ -4187,24 +4006,6 @@ export default class MetamaskController extends EventEmitter {
         );
       }
     }
-  }
-
-  /**
-   * Adds a new private key backup for the user
-   *
-   * If `syncWithSocial` is false, it will only update the local state,
-   * and not sync the private key to the server.
-   *
-   * @param {string} _privateKey - The privateKey from keyring.
-   * @param {string} _keyringId - The keyring id to add the private key backup to.
-   * @param {boolean} _syncWithSocial - whether to skip syncing with social login
-   */
-  async addNewPrivateKeyBackup(
-    _privateKey,
-    _keyringId,
-    _syncWithSocial = true,
-  ) {
-    return undefined;
   }
 
   /**
@@ -4293,19 +4094,6 @@ export default class MetamaskController extends EventEmitter {
       transactionParams,
       userOperationController: this.userOperationController,
       chainId,
-      ppomController: this.ppomController,
-      securityAlertsEnabled:
-        this.preferencesController.state?.securityAlertsEnabled,
-      updateSecurityAlertResponse: this.updateSecurityAlertResponse.bind(this),
-      getSecurityAlertResponse:
-        this.appStateController.getAddressSecurityAlertResponse.bind(
-          this.appStateController,
-        ),
-      addSecurityAlertResponse:
-        this.appStateController.addAddressSecurityAlertResponse.bind(
-          this.appStateController,
-        ),
-      getSecurityAlertsConfig: this.getSecurityAlertsConfig.bind(this),
       ...otherParams,
     };
   }
@@ -4504,22 +4292,6 @@ export default class MetamaskController extends EventEmitter {
         throw new Error(`Asset type ${type} not supported`);
     }
   };
-
-  async updateSecurityAlertResponse(
-    method,
-    securityAlertId,
-    securityAlertResponse,
-  ) {
-    return await updateSecurityAlertResponse({
-      appStateController: this.appStateController,
-      messenger: this.controllerMessenger,
-      method,
-      securityAlertId,
-      securityAlertResponse,
-      signatureController: this.signatureController,
-      transactionController: this.txController,
-    });
-  }
 
   /**
    * Returns the index of the HD keyring containing the selected account.
@@ -5291,28 +5063,6 @@ export default class MetamaskController extends EventEmitter {
 
     // Block requests while a wallet_requestExecutionPermissions request is in process.
     engine.push(this.eip7715BlockingMiddleware);
-
-    engine.push(
-      createPPOMMiddleware(
-        this.ppomController,
-        this.preferencesController,
-        this.networkController,
-        this.appStateController,
-        this.accountsController,
-        this.updateSecurityAlertResponse.bind(this),
-        this.getSecurityAlertsConfig.bind(this),
-      ),
-    );
-
-    engine.push(
-      createTrustSignalsMiddleware(
-        this.networkController,
-        this.appStateController,
-        this.phishingController,
-        this.preferencesController,
-        this.getPermittedAccounts.bind(this),
-      ),
-    );
 
     engine.push(
       createRPCMethodTrackingMiddleware({
@@ -6101,14 +5851,6 @@ export default class MetamaskController extends EventEmitter {
       getPna25Acknowledged: () => {
         return this.appStateController?.state?.pna25Acknowledged;
       },
-      getAddressSecurityAlertResponse: (cacheKey) => {
-        return this.appStateController?.getAddressSecurityAlertResponse(
-          cacheKey,
-        );
-      },
-      getSecurityAlertsEnabled: () => {
-        return this.preferencesController?.state?.securityAlertsEnabled;
-      },
     };
 
     return {
@@ -6275,9 +6017,8 @@ export default class MetamaskController extends EventEmitter {
    * Locks MetaMask
    *
    * @param {object} _options - The options for setting the locked state.
-   * @param {boolean} _options.skipSeedlessOperationLock - If true, the seedless operation mutex will not be locked.
    */
-  async setLocked(_options = { skipSeedlessOperationLock: false }) {
+  async setLocked(_options = {}) {
     await this.keyringController.setLocked();
   }
 

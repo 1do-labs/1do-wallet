@@ -63,7 +63,6 @@ const initialState = {
     },
   },
   throttledOrigins: {},
-  isSeedlessOnboardingUserAuthenticated: false,
 };
 
 /**
@@ -183,20 +182,6 @@ export default function reduceMetamask(state = initialState, action) {
       return {
         ...metamaskState,
         firstTimeFlowType: action.value,
-      };
-    }
-
-    case actionConstants.RESET_SOCIAL_LOGIN_ONBOARDING: {
-      return {
-        ...metamaskState,
-        userId: undefined,
-        accessToken: undefined,
-        refreshToken: undefined,
-        socialLoginEmail: undefined,
-        authConnection: undefined,
-        nodeAuthTokens: undefined,
-        passwordOutdatedCache: undefined,
-        isSeedlessOnboardingUserAuthenticated: false,
       };
     }
 
@@ -564,16 +549,6 @@ export function getIsPrimarySeedPhraseBackedUp(state) {
   }
 
   return state.metamask.seedPhraseBackedUp;
-}
-
-/**
- * Retrieves the outdated status of the seedless password.
- *
- * @param {object} state - The Redux state object.
- * @returns {boolean} True if the seedless password is considered outdated, false otherwise.
- */
-export function getIsSeedlessPasswordOutdated(state) {
-  return Boolean(state.metamask.passwordOutdatedCache?.isExpiredPwd);
 }
 
 /**

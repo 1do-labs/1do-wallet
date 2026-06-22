@@ -28,7 +28,7 @@ exports[`OnboardingAppHeader shoul match snapshot on onboarding completion page 
         <img
           alt=""
           class="onboarding-app-header__metafox-logo--icon"
-          src="./images/logo/metamask-fox.svg"
+          src="./images/logo/1do-mark.svg"
         />
       </button>
       <div
@@ -43,7 +43,7 @@ exports[`OnboardingAppHeader shoul match snapshot on onboarding completion page 
             <img
               alt="Fox"
               class="mm-box mm-banner-tip--logo"
-              src="images/fox.png"
+              src="images/logo/1do-mark.svg"
             />
           </div>
           <div
@@ -121,7 +121,7 @@ exports[`OnboardingAppHeader should match snapshot 1`] = `
         <img
           alt=""
           class="onboarding-app-header__metafox-logo--icon"
-          src="./images/logo/metamask-fox.svg"
+          src="./images/logo/1do-mark.svg"
         />
       </button>
       <div

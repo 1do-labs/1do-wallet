@@ -34,7 +34,6 @@ describe('TransactionsTab', () => {
 
       const expectedTestIds = [
         'transactions-simulations-toggle',
-        'transactions-security-alerts-toggle',
         'transactions-smart-transactions-toggle',
         'transactions-smart-account-requests-toggle',
         'transactions-proposed-nicknames-toggle',

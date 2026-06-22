@@ -9,7 +9,6 @@ import {
 import { cloneDeep } from 'lodash';
 import { v4 } from 'uuid';
 import { captureException } from '../../../shared/lib/sentry';
-import { infuraProjectId } from '../../../shared/constants/network';
 
 export type VersionedData = {
   meta: { version: number };
@@ -45,6 +44,8 @@ type NetworkConfiguration = {
 export const version = 197;
 
 export const HYPEREVM_CHAIN_ID: string = '0x3e7';
+const HYPEREVM_ALCHEMY_RPC_URL =
+  'https://hyperliquid-mainnet.g.alchemy.com/v2/{alchemyApiKey}';
 
 /**
  * This migration does:
@@ -119,34 +120,18 @@ function transformState(
 function mergeHyperevmNetworkConfiguration(
   hyperevmMainnetConfiguration: NetworkConfiguration,
 ) {
-  // If the Infura Project ID is set and the same RPC doesn't already exist, we add it and set by default
-  if (infuraProjectId) {
-    const newInfuraURL = `https://hyperevm-mainnet.infura.io/v3/${infuraProjectId}`;
-    const isInfuraRpcPresent = hyperevmMainnetConfiguration.rpcEndpoints.find(
-      (rpc) => rpc.url === newInfuraURL,
-    );
-    // Avoid RPC duplication if Infura is already present.
-    if (!isInfuraRpcPresent) {
-      hyperevmMainnetConfiguration.rpcEndpoints.push({
-        failoverUrls: [],
-        // For networkClientId and type, we stick to 'custom' for now for consistency.
-        // This is because "InfuraNetworkType" has this network missing if done now
-        // and because other Infura networks use 'custom' types as of now.
-        // Planning to run a dedicated migration script for set all infura RPCs to 'infura' type.
-        // Dicussion: https://github.com/MetaMask/metamask-extension/pull/39635#issuecomment-3861983789
-        networkClientId: v4(),
-        type: 'custom',
-        url: newInfuraURL,
-      });
-      hyperevmMainnetConfiguration.defaultRpcEndpointIndex =
-        hyperevmMainnetConfiguration.rpcEndpoints.length - 1;
-    }
-  } else {
-    captureException(
-      new Error(
-        `Migration ${version}: Infura project ID is not set, skip the HyperEVM RPC part of the migration`,
-      ),
-    );
+  const isAlchemyRpcPresent = hyperevmMainnetConfiguration.rpcEndpoints.find(
+    (rpc) => rpc.url === HYPEREVM_ALCHEMY_RPC_URL,
+  );
+  if (!isAlchemyRpcPresent) {
+    hyperevmMainnetConfiguration.rpcEndpoints.push({
+      failoverUrls: [],
+      networkClientId: v4(),
+      type: 'custom',
+      url: HYPEREVM_ALCHEMY_RPC_URL,
+    });
+    hyperevmMainnetConfiguration.defaultRpcEndpointIndex =
+      hyperevmMainnetConfiguration.rpcEndpoints.length - 1;
   }
 
   // Update RPC endpoints to add failover URL if needed
@@ -169,15 +154,6 @@ function mergeHyperevmNetworkConfiguration(
       // Only add failover URL to Infura endpoints
       if (!isInfuraEndpoint(rpcEndpoint)) {
         return rpcEndpoint;
-      }
-
-      // Add QuickNode failover URL
-      const quickNodeUrl = process.env.QUICKNODE_HYPEREVM_URL;
-      if (quickNodeUrl) {
-        return {
-          ...rpcEndpoint,
-          failoverUrls: [quickNodeUrl],
-        };
       }
 
       return rpcEndpoint;
@@ -351,19 +327,5 @@ function isInfuraEndpoint(rpcEndpoint: {
   // Check if URL matches Infura pattern
   // All featured networks that use Infura get added as custom RPC
   // endpoints, not Infura RPC endpoints, so we need to check the URL pattern
-  const infuraUrlPattern = /^https:\/\/(.+?)\.infura\.io\/v3\//u;
-  const match = rpcEndpoint.url.match(infuraUrlPattern);
-
-  if (!match) {
-    return false;
-  }
-
-  // If INFURA_PROJECT_ID is set, verify it matches for more precise detection
-  if (infuraProjectId) {
-    const expectedUrl = `https://${match[1]}.infura.io/v3/${infuraProjectId}`;
-    return rpcEndpoint.url.startsWith(expectedUrl);
-  }
-
-  // If INFURA_PROJECT_ID is not set, just check if it matches the Infura pattern
-  return true;
+  return /^https:\/\/(.+?)\.infura\.io\/v3\/[^/?#]+/u.test(rpcEndpoint.url);
 }

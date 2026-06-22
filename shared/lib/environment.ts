@@ -8,14 +8,6 @@ export const isProduction = (): boolean => {
   );
 };
 
-export const getIsSeedlessOnboardingFeatureEnabled = (): boolean => {
-  return false;
-};
-
-export const getIsMetaMaskShieldFeatureEnabled = (): boolean => {
-  return process.env.METAMASK_SHIELD_ENABLED?.toString() === 'true';
-};
-
 /**
  * Compile-time gate (`ASSETS_UNIFIED_STATE_ENABLED`): controls whether
  * AssetsController populates state. The controller is always instantiated,
@@ -39,16 +31,11 @@ export const getIsSettingsPageDevOptionsEnabled = (): boolean => {
  * 'erc20-token-periodic'), or an empty array if none are configured.
  */
 export const getEnabledAdvancedPermissions = (): SupportedPermissionType[] => {
-  const enabled =
-    process.env.GATOR_ENABLED_PERMISSION_TYPES?.toString().trim() || '';
-
-  return enabled.split(',').filter(Boolean) as SupportedPermissionType[];
+  return [];
 };
 
 export const isGatorPermissionsRevocationFeatureEnabled = (): boolean => {
-  return (
-    process.env.GATOR_PERMISSIONS_REVOCATION_ENABLED?.toString() === 'true'
-  );
+  return false;
 };
 
 /**

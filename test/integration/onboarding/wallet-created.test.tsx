@@ -1,6 +1,5 @@
 import React from 'react';
 import { waitFor } from '@testing-library/react';
-import nock from 'nock';
 import mockMetaMaskState from '../data/onboarding-completion-route.json';
 import { integrationTestRender } from '../../lib/render-helpers';
 import * as backgroundConnection from '../../../ui/store/background-connection';
@@ -17,10 +16,6 @@ import {
 jest.mock('../../../ui/store/background-connection', () => ({
   ...jest.requireActual('../../../ui/store/background-connection'),
   submitRequestToBackground: jest.fn(),
-}));
-
-jest.mock('../../../ui/ducks/bridge/actions', () => ({
-  ...jest.requireActual('../../../ui/ducks/bridge/actions'),
 }));
 
 jest.mock(
@@ -67,27 +62,10 @@ const setupSubmitRequestToBackgroundMocks = (
   );
 };
 
-export function mockSurveyLink() {
-  const mockEndpoint = nock('https://accounts.api.cx.metamask.io')
-    .persist()
-    .get(
-      '/v1/users/0x4d6d78a255217af6411a5bbd39e31b5e46e0e920bdf7e979470f316cbe8c00eb/surveys',
-    )
-    .reply(200, {
-      surveys: {},
-    });
-  return mockEndpoint;
-}
-
 describe('Wallet Created Events', () => {
   beforeEach(() => {
     jest.resetAllMocks();
-    mockSurveyLink();
     setupSubmitRequestToBackgroundMocks();
-  });
-
-  afterEach(() => {
-    nock.cleanAll();
   });
 
   it('are sent when onboarding user who chooses to opt in metrics', async () => {

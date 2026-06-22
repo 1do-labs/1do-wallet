@@ -150,7 +150,7 @@ const t = (key) => {
 describe('Settings Search Utils', () => {
   describe('getSettingsRoutes', () => {
     it('should be an array of settings routes objects', () => {
-      const NUM_OF_ENV_FEATURE_FLAG_SETTINGS = 6;
+      const NUM_OF_ENV_FEATURE_FLAG_SETTINGS = 3;
       const NUM_OF_HIDDEN_SETTINGS = 3;
 
       expect(getSettingsRoutes()).toHaveLength(
@@ -173,13 +173,13 @@ describe('Settings Search Utils', () => {
     it('returns "Backup And Sync" section count', () => {
       expect(
         getNumberOfSettingRoutesInTab(t, t('backupAndSync')),
-      ).toStrictEqual(3);
+      ).toStrictEqual(0);
     });
 
     it('returns "Security & privacy" section count', () => {
       expect(
         getNumberOfSettingRoutesInTab(t, t('securityAndPrivacy')),
-      ).toStrictEqual(21);
+      ).toStrictEqual(16);
     });
 
     it('returns "Network" section count', () => {
@@ -188,7 +188,7 @@ describe('Settings Search Utils', () => {
 
     it('returns "Experimental" section count', () => {
       expect(getNumberOfSettingRoutesInTab(t, t('experimental'))).toStrictEqual(
-        2,
+        0,
       );
     });
 
@@ -268,9 +268,8 @@ describe('Settings Search Utils', () => {
     let mockElement;
 
     beforeEach(() => {
-      mockElement = {
-        innerHTML: 'Test &amp; string with multiple words',
-      };
+      mockElement = document.createElement('div');
+      mockElement.innerHTML = 'Test &amp; string with multiple words';
     });
 
     afterEach(() => {
@@ -281,7 +280,7 @@ describe('Settings Search Utils', () => {
       const regex = /string/giu;
       colorText(mockElement, regex);
       expect(mockElement.innerHTML).toBe(
-        'Test & <span class="settings-page__header__search__list__item__highlight">string</span> with multiple words',
+        'Test &amp; <span class="settings-page__header__search__list__item__highlight">string</span> with multiple words',
       );
     });
 
@@ -289,7 +288,7 @@ describe('Settings Search Utils', () => {
       const regex = /&/giu;
       colorText(mockElement, regex);
       expect(mockElement.innerHTML).toBe(
-        'Test <span class="settings-page__header__search__list__item__highlight">&</span> string with multiple words',
+        'Test <span class="settings-page__header__search__list__item__highlight">&amp;</span> string with multiple words',
       );
     });
 
@@ -299,7 +298,7 @@ describe('Settings Search Utils', () => {
       const regex = /multiple/giu;
       colorText(mockElement, regex);
       expect(mockElement.innerHTML).toBe(
-        'Test & string with <span class="settings-page__header__search__list__item__highlight">multiple</span> words',
+        'Test &amp; string with <span class="settings-page__header__search__list__item__highlight">multiple</span> words',
       );
     });
 
@@ -313,7 +312,23 @@ describe('Settings Search Utils', () => {
     it('should not highlight anything if regex doesn’t match', () => {
       const regex = /nomatch/giu;
       colorText(mockElement, regex);
-      expect(mockElement.innerHTML).toBe('Test & string with multiple words');
+      expect(mockElement.innerHTML).toBe(
+        'Test &amp; string with multiple words',
+      );
+    });
+
+    it('treats existing markup as text when applying highlights', () => {
+      mockElement.innerHTML =
+        'Test <img src=x onerror=alert(1)> string with multiple words';
+      const regex = /string/giu;
+      colorText(mockElement, regex);
+
+      expect(mockElement.innerHTML).toBe(
+        'Test  string with multiple words'.replace(
+          'string',
+          '<span class="settings-page__header__search__list__item__highlight">string</span>',
+        ),
+      );
     });
   });
 
@@ -404,12 +419,8 @@ describe('Settings Search Utils', () => {
           '.settings-page__header__search__list__item__section',
         );
 
-        expect(tabElement.innerHTML).toBe(
-          '<span class="settings-page__header__search__list__item__highlight"></span>T<span class="settings-page__header__search__list__item__highlight"></span>e<span class="settings-page__header__search__list__item__highlight"></span>s<span class="settings-page__header__search__list__item__highlight"></span>t<span class="settings-page__header__search__list__item__highlight"></span> <span class="settings-page__header__search__list__item__highlight"></span>t<span class="settings-page__header__search__list__item__highlight"></span>a<span class="settings-page__header__search__list__item__highlight"></span>b<span class="settings-page__header__search__list__item__highlight"></span>',
-        );
-        expect(sectionElement.innerHTML).toBe(
-          '<span class="settings-page__header__search__list__item__highlight"></span>T<span class="settings-page__header__search__list__item__highlight"></span>e<span class="settings-page__header__search__list__item__highlight"></span>s<span class="settings-page__header__search__list__item__highlight"></span>t<span class="settings-page__header__search__list__item__highlight"></span> <span class="settings-page__header__search__list__item__highlight"></span>s<span class="settings-page__header__search__list__item__highlight"></span>e<span class="settings-page__header__search__list__item__highlight"></span>c<span class="settings-page__header__search__list__item__highlight"></span>t<span class="settings-page__header__search__list__item__highlight"></span>i<span class="settings-page__header__search__list__item__highlight"></span>o<span class="settings-page__header__search__list__item__highlight"></span>n<span class="settings-page__header__search__list__item__highlight"></span>',
-        );
+        expect(tabElement.innerHTML).toBe('Test tab');
+        expect(sectionElement.innerHTML).toBe('Test section');
       });
     });
   });

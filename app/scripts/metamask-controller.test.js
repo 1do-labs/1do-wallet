@@ -1033,12 +1033,6 @@ describe('MetaMaskController', () => {
           transactionParams,
           userOperationController: expect.any(Object),
           chainId: '0x1',
-          ppomController: expect.any(Object),
-          securityAlertsEnabled: expect.any(Boolean),
-          updateSecurityAlertResponse: expect.any(Function),
-          getSecurityAlertResponse: expect.any(Function),
-          addSecurityAlertResponse: expect.any(Function),
-          getSecurityAlertsConfig: expect.any(Function),
         });
       });
       it('passes through any additional params to the object', () => {
@@ -2808,9 +2802,6 @@ describe('MetaMaskController', () => {
     describe('#setupUntrustedCommunicationEip1193', () => {
       beforeEach(() => {
         initializeMockMiddlewareLog();
-        metamaskController.preferencesController.setSecurityAlertsEnabled(
-          false,
-        );
         jest
           .spyOn(metamaskController.onboardingController, 'state', 'get')
           .mockReturnValue({ completedOnboarding: true });
@@ -4614,7 +4605,7 @@ describe('MetaMaskController', () => {
 
       it('ensures initial network state networks contain failover RPCs', () => {
         jest
-          .spyOn(NetworkConstantsModule, 'getFailoverUrlsForInfuraNetwork')
+          .spyOn(NetworkConstantsModule, 'getFailoverUrlsForNetwork')
           .mockReturnValue(['https://mock_rpc']);
 
         const initState = cloneDeep(firstTimeState);

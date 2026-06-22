@@ -28,7 +28,7 @@ exports[`ConnectPage should render correctly 1`] = `
                 <img
                   alt="metamask.github.io logo"
                   class="mm-avatar-favicon__image"
-                  src="https://metamask.github.io/test-dapp/metamask-fox.svg"
+                  src="./images/logo/1do-mark.svg"
                 />
               </div>
             </div>
@@ -435,7 +435,7 @@ exports[`ConnectPage should render with defaults from the requested permissions 
                 <img
                   alt="metamask.github.io logo"
                   class="mm-avatar-favicon__image"
-                  src="https://metamask.github.io/test-dapp/metamask-fox.svg"
+                  src="./images/logo/1do-mark.svg"
                 />
               </div>
             </div>

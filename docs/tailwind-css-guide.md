@@ -104,7 +104,7 @@ When you're ready to use **strict Tailwind** in your workspace:
 {
   files: [
     'ui/pages/design-system/**/*.{ts,tsx}',
-    'ui/pages/bridge/**/*.{ts,tsx}', // ✅ Add your directory
+    'ui/pages/settings/**/*.{ts,tsx}', // ✅ Add your directory
     'ui/components/your-component/**/*.{ts,tsx}', // ✅ Or component
   ],
   // ... strict Tailwind rules

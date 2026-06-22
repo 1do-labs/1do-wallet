@@ -43,7 +43,7 @@ const I18N_KEYS = {
   goToHome: 'basicFunctionalityRequired_goToHome',
   toggleLabel: 'basicFunctionalityRequired_toggleLabel',
   reviewInSettings: 'basicFunctionalityRequired_reviewInSettings',
-  openSwapsPage: 'basicFunctionalityRequired_openSwapsPage',
+  openNotificationsPage: 'basicFunctionalityRequired_openNotificationsPage',
   off: 'off',
   on: 'on',
 } as const;
@@ -59,7 +59,7 @@ jest.mock('../../hooks/useI18nContext', () => ({
       [I18N_KEYS.goToHome]: 'Go to the home page',
       [I18N_KEYS.toggleLabel]: 'Basic functionality',
       [I18N_KEYS.reviewInSettings]: 'Review in settings',
-      [I18N_KEYS.openSwapsPage]: 'Open the Swap page',
+      [I18N_KEYS.openNotificationsPage]: 'Open the Notifications page',
       [I18N_KEYS.off]: 'Off',
       [I18N_KEYS.on]: 'On',
     };
@@ -146,7 +146,7 @@ describe('BasicFunctionalityOff', () => {
       mockUseLocation.mockReturnValue({
         pathname: '/basic-functionality-off',
         state: {
-          blockedRoutePath: '/cross-chain/swaps/prepare-bridge-page',
+          blockedRoutePath: '/notifications',
         },
         key: '',
         search: '',
@@ -159,7 +159,7 @@ describe('BasicFunctionalityOff', () => {
 
       expect(
         screen.getByTestId('basic-functionality-off-open-feature'),
-      ).toHaveTextContent('Open the Swap page');
+      ).toHaveTextContent('Open the Notifications page');
     });
 
     it('disables primary CTA when Basic functionality is off', () => {
@@ -191,9 +191,7 @@ describe('BasicFunctionalityOff', () => {
       expect(primaryButton).not.toBeDisabled();
       primaryButton.click();
 
-      expect(mockNavigate).toHaveBeenCalledWith(
-        '/cross-chain/swaps/prepare-bridge-page',
-      );
+      expect(mockNavigate).toHaveBeenCalledWith('/notifications');
     });
   });
 

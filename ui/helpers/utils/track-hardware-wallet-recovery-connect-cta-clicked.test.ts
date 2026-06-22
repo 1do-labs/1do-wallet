@@ -30,7 +30,7 @@ describe('trackHardwareWalletRecoveryConnectCtaClicked', () => {
     const trackEvent = jest.fn().mockResolvedValue(undefined);
 
     trackHardwareWalletRecoveryConnectCtaClicked(trackEvent, {
-      location: MetaMetricsHardwareWalletRecoveryLocation.Swaps,
+      location: MetaMetricsHardwareWalletRecoveryLocation.Send,
       walletType: HardwareWalletType.Ledger,
       connectionState: disconnectedState,
     });
@@ -40,7 +40,7 @@ describe('trackHardwareWalletRecoveryConnectCtaClicked', () => {
       category: MetaMetricsEventCategory.Accounts,
       event: MetaMetricsEventName.HardwareWalletRecoveryCtaClicked,
       properties: expect.objectContaining({
-        location: MetaMetricsHardwareWalletRecoveryLocation.Swaps,
+        location: MetaMetricsHardwareWalletRecoveryLocation.Send,
         device_type: MetaMetricsHardwareWalletDeviceType.Ledger,
         device_model: 'N/A',
         error_type:
@@ -105,7 +105,7 @@ describe('trackHardwareWalletRecoveryConnectCtaClicked', () => {
     const trackEvent = jest.fn().mockResolvedValue(undefined);
 
     trackHardwareWalletRecoveryConnectCtaClicked(trackEvent, {
-      location: MetaMetricsHardwareWalletRecoveryLocation.Swaps,
+      location: MetaMetricsHardwareWalletRecoveryLocation.Send,
       walletType: null,
       connectionState: disconnectedState,
     });
@@ -116,7 +116,7 @@ describe('trackHardwareWalletRecoveryConnectCtaClicked', () => {
   it('increments error_type_view_count on repeated CTA for the same error identity', () => {
     const trackEvent = jest.fn().mockResolvedValue(undefined);
     const options = {
-      location: MetaMetricsHardwareWalletRecoveryLocation.Swaps,
+      location: MetaMetricsHardwareWalletRecoveryLocation.Send,
       walletType: HardwareWalletType.Ledger,
       connectionState: disconnectedState,
     };
@@ -145,7 +145,7 @@ describe('trackHardwareWalletRecoveryConnectCtaClicked', () => {
   it('starts error_type_view_count at 1 again after reset for the same identity', () => {
     const trackEvent = jest.fn().mockResolvedValue(undefined);
     const options = {
-      location: MetaMetricsHardwareWalletRecoveryLocation.Swaps,
+      location: MetaMetricsHardwareWalletRecoveryLocation.Send,
       walletType: HardwareWalletType.Ledger,
       connectionState: disconnectedState,
     };
@@ -170,7 +170,7 @@ describe('trackHardwareWalletRecoveryConnectCtaClicked', () => {
       .mockRejectedValue(new Error('segment unavailable'));
 
     trackHardwareWalletRecoveryConnectCtaClicked(trackEvent, {
-      location: MetaMetricsHardwareWalletRecoveryLocation.Swaps,
+      location: MetaMetricsHardwareWalletRecoveryLocation.Send,
       walletType: HardwareWalletType.Ledger,
       connectionState: disconnectedState,
     });

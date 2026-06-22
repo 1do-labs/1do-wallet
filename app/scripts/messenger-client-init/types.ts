@@ -148,9 +148,10 @@ export type MessengerClientInitRequest<
   };
 
   /**
-   * The Infura project ID to use for the network controller.
+   * Legacy NetworkController compatibility value. 1DO defaults do not use
+   * Infura RPC endpoints.
    */
-  infuraProjectId: string;
+  infuraProjectId?: string;
 
   /**
    * A promise that resolves when the offscreen document is ready.

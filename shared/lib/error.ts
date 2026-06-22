@@ -32,62 +32,6 @@ export function logErrorWithMessage(error: unknown) {
   log.error(isErrorWithMessage(error) ? getErrorMessage(error) : error);
 }
 
-export enum OAuthErrorMessages {
-  // Error message for Authentication Server when failed to get the auth token
-  // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-  // eslint-disable-next-line @typescript-eslint/naming-convention
-  FAILED_TO_GET_AUTH_TOKEN_ERROR = 'Failed to get auth token',
-
-  // Error message for Authentication Server when failed to refresh the auth token
-  // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-  // eslint-disable-next-line @typescript-eslint/naming-convention
-  FAILED_TO_GET_AUTH_TOKEN_REFRESH_ERROR = 'Failed to refresh auth token',
-
-  // Error message for Authentication Server when failed to renew the refresh token
-  // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-  // eslint-disable-next-line @typescript-eslint/naming-convention
-  FAILED_TO_RENEW_REFRESH_TOKEN = 'Failed to renew refresh token',
-
-  // Error message for Authentication Server when failed to revoke the refresh token
-  // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-  // eslint-disable-next-line @typescript-eslint/naming-convention
-  FAILED_TO_REVOKE_TOKEN = 'Failed to revoke refresh token',
-
-  // Error message from the Identity API when the user cancels the login
-  // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-  // eslint-disable-next-line @typescript-eslint/naming-convention
-  USER_CANCELLED_LOGIN_ERROR = 'The user did not approve access.',
-
-  // Error message from the Identity API when the user cancels the login in Firefox
-  // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-  // eslint-disable-next-line @typescript-eslint/naming-convention
-  USER_CANCELLED_LOGIN_ERROR_FIREFOX = 'User cancelled or denied access.',
-
-  // Error message when no redirect URL is found from the Browser WebAuthentication flow
-  // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-  // eslint-disable-next-line @typescript-eslint/naming-convention
-  NO_REDIRECT_URL_FOUND_ERROR = 'No redirect URL found',
-
-  // Error message when the OAuth state is invalid in the redirect URL from the Browser WebAuthentication flow
-  // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-  // eslint-disable-next-line @typescript-eslint/naming-convention
-  INVALID_OAUTH_STATE_ERROR = 'Invalid OAuth state',
-}
-
-/**
- * Checks if the Web Authentication error is a user cancelled error.
- *
- * @param error - The error to check.
- * @returns True if the error is a user cancelled login error, false otherwise.
- */
-export function isUserCancelledLoginError(error: Error | undefined): boolean {
-  // NOTE: Firefox and chrome have different error messages for user cancelled the social login window.
-  return (
-    error?.message === OAuthErrorMessages.USER_CANCELLED_LOGIN_ERROR ||
-    error?.message === OAuthErrorMessages.USER_CANCELLED_LOGIN_ERROR_FIREFOX
-  );
-}
-
 /**
  * Creates an error instance with readable message and cause for sentry.
  *

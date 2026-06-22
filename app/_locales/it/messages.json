@@ -760,9 +760,6 @@
   "metaMaskConnectStatusParagraphTwo": {
     "message": "Il bottone di stato della connessione mostra se il sito che stai visitando è connesso all'account corrente"
   },
-  "metamaskSwapsOfflineDescription": {
-    "message": "1do Swaps è in manutenzione. Prova più tardi."
-  },
   "metamaskVersion": {
     "message": "versione di 1do"
   },
@@ -1069,13 +1066,6 @@
   "swapMaxSlippage": {
     "message": "Slippage massimo"
   },
-  "swapMetaMaskFee": {
-    "message": "Tassa 1do"
-  },
-  "swapMetaMaskFeeDescription": {
-    "message": "Troviamo i migliori prezzi dalle sorgenti di liquidità migliori, sempre. Una tassa del $1% è automaticamente aggiunta ad ogni quotazione, ciò serve a supportare lo sviluppo in modo da rendere 1do sempre migliore.",
-    "description": "Provides information about the fee that MetaMask takes for swaps. $1 is a decimal number."
-  },
   "swapOnceTransactionHasProcess": {
     "message": "I tuoi $1 saranno aggiunti al tuo account quando la transazione sarà processata.",
     "description": "This message communicates the token that is being transferred. It is shown on the awaiting swap screen. The $1 will be a token symbol."
@@ -1248,5 +1238,13 @@
   },
   "youNeedToAllowCameraAccess": {
     "message": "Devi consentire l'accesso alla fotocamera per usare questa funzionalità."
+  },
+  "permission_signatureInsight": {
+    "message": "Display signature insights modal.",
+    "description": "The description for the `endowment:signature-insight` permission"
+  },
+  "permission_signatureInsightOrigin": {
+    "message": "See the origins of websites that initiate a signature request",
+    "description": "The description for the `signatureOrigin` caveat, to be used with the `endowment:signature-insight` permission"
   }
 }

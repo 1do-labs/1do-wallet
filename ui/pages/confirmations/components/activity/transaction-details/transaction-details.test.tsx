@@ -163,37 +163,4 @@ describe('TransactionDetails', () => {
       ).not.toBeInTheDocument();
     });
   });
-
-  describe('with metamaskPay data', () => {
-    it('renders hero section', () => {
-      const { getByTestId } = render(TransactionType.perpsDeposit, true);
-      expect(getByTestId('transaction-details-hero')).toBeInTheDocument();
-    });
-
-    it('renders paid with row', () => {
-      const { getByTestId } = render(TransactionType.perpsDeposit, true);
-      expect(
-        getByTestId('transaction-details-paid-with-row'),
-      ).toBeInTheDocument();
-    });
-
-    it('renders network fee row', () => {
-      const { getByTestId } = render(TransactionType.perpsDeposit, true);
-      expect(
-        getByTestId('transaction-details-network-fee-row'),
-      ).toBeInTheDocument();
-    });
-
-    it('renders total row', () => {
-      const { getByTestId } = render(TransactionType.perpsDeposit, true);
-      expect(getByTestId('transaction-details-total-row')).toBeInTheDocument();
-    });
-
-    it('renders account row', () => {
-      const { getByTestId } = render(TransactionType.perpsDeposit, true);
-      expect(
-        getByTestId('transaction-details-account-row'),
-      ).toBeInTheDocument();
-    });
-  });
 });

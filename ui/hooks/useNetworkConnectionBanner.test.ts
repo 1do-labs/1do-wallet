@@ -7,7 +7,7 @@ import {
   getIsDeviceOffline,
 } from '../selectors/selectors';
 import { updateNetworkConnectionBanner, updateNetwork } from '../store/actions';
-import { setShowInfuraSwitchToast } from '../components/app/toast-master/utils';
+import { setShowDefaultRpcSwitchToast } from '../components/app/toast-master/utils';
 import mockState from '../../test/data/mock-state.json';
 import { MetaMetricsEventName } from '../../shared/constants/metametrics';
 import { getNetworkConfigurationsByChainId } from '../../shared/lib/selectors/networks';
@@ -51,8 +51,8 @@ jest.mock('../store/actions', () => {
 jest.mock('../components/app/toast-master/utils', () => {
   return {
     ...jest.requireActual('../components/app/toast-master/utils'),
-    setShowInfuraSwitchToast: jest.fn((value) => ({
-      type: 'SET_SHOW_INFURA_SWITCH_TOAST',
+    setShowDefaultRpcSwitchToast: jest.fn((value) => ({
+      type: 'SET_SHOW_DEFAULT_RPC_SWITCH_TOAST',
       payload: value,
     })),
   };
@@ -84,7 +84,9 @@ const mockGetNetworkConfigurationsByChainId = jest.mocked(
   getNetworkConfigurationsByChainId,
 );
 const mockUpdateNetwork = jest.mocked(updateNetwork);
-const mockSetShowInfuraSwitchToast = jest.mocked(setShowInfuraSwitchToast);
+const mockSetShowDefaultRpcSwitchToast = jest.mocked(
+  setShowDefaultRpcSwitchToast,
+);
 
 describe('useNetworkConnectionBanner', () => {
   beforeEach(() => {
@@ -170,8 +172,8 @@ describe('useNetworkConnectionBanner', () => {
             networkName: 'Ethereum Mainnet',
             networkClientId: 'mainnet',
             chainId: '0x1',
-            isInfuraEndpoint: true,
-            infuraEndpointIndex: undefined,
+            isDefaultRpcEndpoint: true,
+            defaultRpcEndpointIndex: undefined,
           });
           mockGetNetworkConnectionBanner.mockReturnValue({ status: 'unknown' });
 
@@ -188,8 +190,8 @@ describe('useNetworkConnectionBanner', () => {
             networkName: 'Ethereum Mainnet',
             networkClientId: 'mainnet',
             chainId: '0x1',
-            isInfuraEndpoint: true,
-            infuraEndpointIndex: undefined,
+            isDefaultRpcEndpoint: true,
+            defaultRpcEndpointIndex: undefined,
           });
         });
 
@@ -198,8 +200,8 @@ describe('useNetworkConnectionBanner', () => {
             networkName: 'Ethereum Mainnet',
             networkClientId: 'mainnet',
             chainId: '0x1',
-            isInfuraEndpoint: true,
-            infuraEndpointIndex: undefined,
+            isDefaultRpcEndpoint: true,
+            defaultRpcEndpointIndex: undefined,
           });
           mockGetNetworkConnectionBanner.mockReturnValue({ status: 'unknown' });
           const mockTrackEvent = jest.fn();
@@ -240,8 +242,8 @@ describe('useNetworkConnectionBanner', () => {
           networkName: 'Ethereum Mainnet',
           networkClientId: 'mainnet',
           chainId: '0x1',
-          isInfuraEndpoint: true,
-          infuraEndpointIndex: undefined,
+          isDefaultRpcEndpoint: true,
+          defaultRpcEndpointIndex: undefined,
         });
         mockGetNetworkConnectionBanner.mockReturnValue({
           status: 'available',
@@ -260,8 +262,8 @@ describe('useNetworkConnectionBanner', () => {
           networkName: 'Ethereum Mainnet',
           networkClientId: 'mainnet',
           chainId: '0x1',
-          isInfuraEndpoint: true,
-          infuraEndpointIndex: undefined,
+          isDefaultRpcEndpoint: true,
+          defaultRpcEndpointIndex: undefined,
         });
       });
     });
@@ -272,16 +274,16 @@ describe('useNetworkConnectionBanner', () => {
           networkName: 'Ethereum Mainnet',
           networkClientId: 'mainnet',
           chainId: '0x1',
-          isInfuraEndpoint: true,
-          infuraEndpointIndex: undefined,
+          isDefaultRpcEndpoint: true,
+          defaultRpcEndpointIndex: undefined,
         });
         mockGetNetworkConnectionBanner.mockReturnValue({
           status: 'degraded',
           networkName: 'Ethereum Mainnet',
           networkClientId: 'mainnet',
           chainId: '0x1',
-          isInfuraEndpoint: true,
-          infuraEndpointIndex: undefined,
+          isDefaultRpcEndpoint: true,
+          defaultRpcEndpointIndex: undefined,
         });
 
         renderHookWithProviderTyped(
@@ -297,8 +299,8 @@ describe('useNetworkConnectionBanner', () => {
           networkName: 'Ethereum Mainnet',
           networkClientId: 'mainnet',
           chainId: '0x1',
-          isInfuraEndpoint: true,
-          infuraEndpointIndex: undefined,
+          isDefaultRpcEndpoint: true,
+          defaultRpcEndpointIndex: undefined,
         });
       });
 
@@ -307,16 +309,16 @@ describe('useNetworkConnectionBanner', () => {
           networkName: 'Ethereum Mainnet',
           networkClientId: 'mainnet',
           chainId: '0x1',
-          isInfuraEndpoint: true,
-          infuraEndpointIndex: undefined,
+          isDefaultRpcEndpoint: true,
+          defaultRpcEndpointIndex: undefined,
         });
         mockGetNetworkConnectionBanner.mockReturnValue({
           status: 'degraded',
           networkName: 'Ethereum Mainnet',
           networkClientId: 'mainnet',
           chainId: '0x1',
-          isInfuraEndpoint: true,
-          infuraEndpointIndex: undefined,
+          isDefaultRpcEndpoint: true,
+          defaultRpcEndpointIndex: undefined,
         });
         const mockTrackEvent = jest.fn();
 
@@ -356,8 +358,8 @@ describe('useNetworkConnectionBanner', () => {
         networkName: 'Ethereum Mainnet',
         networkClientId: 'mainnet',
         chainId: '0x1',
-        isInfuraEndpoint: true,
-        infuraEndpointIndex: undefined,
+        isDefaultRpcEndpoint: true,
+        defaultRpcEndpointIndex: undefined,
       });
       mockGetNetworkConnectionBanner.mockReturnValue({ status: 'unknown' });
 
@@ -384,8 +386,8 @@ describe('useNetworkConnectionBanner', () => {
         networkName: 'Ethereum Mainnet',
         networkClientId: 'mainnet',
         chainId: '0x1',
-        isInfuraEndpoint: true,
-        infuraEndpointIndex: undefined,
+        isDefaultRpcEndpoint: true,
+        defaultRpcEndpointIndex: undefined,
       });
       mockGetNetworkConnectionBanner.mockReturnValue({ status: 'unknown' });
 
@@ -413,8 +415,8 @@ describe('useNetworkConnectionBanner', () => {
         networkName: 'Ethereum Mainnet',
         networkClientId: 'mainnet',
         chainId: '0x1',
-        isInfuraEndpoint: true,
-        infuraEndpointIndex: undefined,
+        isDefaultRpcEndpoint: true,
+        defaultRpcEndpointIndex: undefined,
       });
       mockGetNetworkConnectionBanner.mockReturnValue({ status: 'unknown' });
 
@@ -440,16 +442,16 @@ describe('useNetworkConnectionBanner', () => {
         networkName: 'Ethereum Mainnet',
         networkClientId: 'mainnet',
         chainId: '0x1',
-        isInfuraEndpoint: true,
-        infuraEndpointIndex: undefined,
+        isDefaultRpcEndpoint: true,
+        defaultRpcEndpointIndex: undefined,
       });
       mockGetNetworkConnectionBanner.mockReturnValue({
         status: 'degraded',
         networkName: 'Ethereum Mainnet',
         networkClientId: 'mainnet',
         chainId: '0x1',
-        isInfuraEndpoint: true,
-        infuraEndpointIndex: undefined,
+        isDefaultRpcEndpoint: true,
+        defaultRpcEndpointIndex: undefined,
       });
 
       renderHookWithProviderTyped(
@@ -467,8 +469,8 @@ describe('useNetworkConnectionBanner', () => {
         networkName: 'Ethereum Mainnet',
         networkClientId: 'mainnet',
         chainId: '0x1',
-        isInfuraEndpoint: true,
-        infuraEndpointIndex: undefined,
+        isDefaultRpcEndpoint: true,
+        defaultRpcEndpointIndex: undefined,
       });
       mockGetNetworkConnectionBanner.mockReturnValue({ status: 'available' });
 
@@ -487,16 +489,16 @@ describe('useNetworkConnectionBanner', () => {
         networkName: 'Ethereum Mainnet',
         networkClientId: 'mainnet',
         chainId: '0x1',
-        isInfuraEndpoint: true,
-        infuraEndpointIndex: undefined,
+        isDefaultRpcEndpoint: true,
+        defaultRpcEndpointIndex: undefined,
       });
       mockGetNetworkConnectionBanner.mockReturnValue({
         status: 'degraded',
         networkName: 'Ethereum Mainnet',
         networkClientId: 'mainnet',
         chainId: '0x1',
-        isInfuraEndpoint: true,
-        infuraEndpointIndex: undefined,
+        isDefaultRpcEndpoint: true,
+        defaultRpcEndpointIndex: undefined,
       });
 
       renderHookWithProviderTyped(
@@ -525,8 +527,8 @@ describe('useNetworkConnectionBanner', () => {
         networkName: 'Ethereum Mainnet',
         networkClientId: 'mainnet',
         chainId: '0x1',
-        isInfuraEndpoint: true,
-        infuraEndpointIndex: undefined,
+        isDefaultRpcEndpoint: true,
+        defaultRpcEndpointIndex: undefined,
       });
       // Use 'unknown' so it will try to start timers when coming back online
       mockGetNetworkConnectionBanner.mockReturnValue({ status: 'unknown' });
@@ -554,14 +556,14 @@ describe('useNetworkConnectionBanner', () => {
         networkName: 'Ethereum Mainnet',
         networkClientId: 'mainnet',
         chainId: '0x1',
-        isInfuraEndpoint: true,
-        infuraEndpointIndex: undefined,
+        isDefaultRpcEndpoint: true,
+        defaultRpcEndpointIndex: undefined,
       });
     });
   });
 
-  describe('switchToInfura', () => {
-    it('calls updateNetwork and shows toast when infuraEndpointIndex is available', async () => {
+  describe('switchToDefaultRpc', () => {
+    it('calls updateNetwork and shows toast when defaultRpcEndpointIndex is available', async () => {
       const networkConfig = {
         '0xa4b1': {
           name: 'Arbitrum One',
@@ -596,8 +598,8 @@ describe('useNetworkConnectionBanner', () => {
         networkName: 'Arbitrum One',
         networkClientId: 'custom-arbitrum',
         chainId: '0xa4b1',
-        isInfuraEndpoint: false,
-        infuraEndpointIndex: 1,
+        isDefaultRpcEndpoint: false,
+        defaultRpcEndpointIndex: 1,
       });
 
       const { result } = renderHookWithProviderTyped(
@@ -606,7 +608,7 @@ describe('useNetworkConnectionBanner', () => {
       );
 
       await act(async () => {
-        await result.current.switchToInfura();
+        await result.current.switchToDefaultRpc();
       });
 
       expect(mockUpdateNetwork).toHaveBeenCalledWith(
@@ -616,7 +618,7 @@ describe('useNetworkConnectionBanner', () => {
         }),
         { replacementSelectedRpcEndpointIndex: 1 },
       );
-      expect(mockSetShowInfuraSwitchToast).toHaveBeenCalledWith(true);
+      expect(mockSetShowDefaultRpcSwitchToast).toHaveBeenCalledWith(true);
     });
 
     it('does nothing when status is available', async () => {
@@ -629,22 +631,22 @@ describe('useNetworkConnectionBanner', () => {
       );
 
       await act(async () => {
-        await result.current.switchToInfura();
+        await result.current.switchToDefaultRpc();
       });
 
       expect(mockUpdateNetwork).not.toHaveBeenCalled();
-      expect(mockSetShowInfuraSwitchToast).not.toHaveBeenCalled();
+      expect(mockSetShowDefaultRpcSwitchToast).not.toHaveBeenCalled();
     });
 
-    it('does nothing when infuraEndpointIndex is undefined', async () => {
+    it('does nothing when defaultRpcEndpointIndex is undefined', async () => {
       mockSelectFirstUnavailableEvmNetwork.mockReturnValue(null);
       mockGetNetworkConnectionBanner.mockReturnValue({
         status: 'unavailable',
         networkName: 'Custom Network',
         networkClientId: 'custom-network',
         chainId: '0x1000',
-        isInfuraEndpoint: false,
-        infuraEndpointIndex: undefined,
+        isDefaultRpcEndpoint: false,
+        defaultRpcEndpointIndex: undefined,
       });
 
       const { result } = renderHookWithProviderTyped(
@@ -653,11 +655,11 @@ describe('useNetworkConnectionBanner', () => {
       );
 
       await act(async () => {
-        await result.current.switchToInfura();
+        await result.current.switchToDefaultRpc();
       });
 
       expect(mockUpdateNetwork).not.toHaveBeenCalled();
-      expect(mockSetShowInfuraSwitchToast).not.toHaveBeenCalled();
+      expect(mockSetShowDefaultRpcSwitchToast).not.toHaveBeenCalled();
     });
 
     it('does not show toast when updateNetwork fails', async () => {
@@ -700,8 +702,8 @@ describe('useNetworkConnectionBanner', () => {
         networkName: 'Arbitrum One',
         networkClientId: 'custom-arbitrum',
         chainId: '0xa4b1',
-        isInfuraEndpoint: false,
-        infuraEndpointIndex: 1,
+        isDefaultRpcEndpoint: false,
+        defaultRpcEndpointIndex: 1,
       });
 
       const { result } = renderHookWithProviderTyped(
@@ -710,15 +712,15 @@ describe('useNetworkConnectionBanner', () => {
       );
 
       await act(async () => {
-        await result.current.switchToInfura();
+        await result.current.switchToDefaultRpc();
       });
 
       expect(mockUpdateNetwork).toHaveBeenCalled();
       // Toast should NOT be shown when update fails
-      expect(mockSetShowInfuraSwitchToast).not.toHaveBeenCalled();
+      expect(mockSetShowDefaultRpcSwitchToast).not.toHaveBeenCalled();
     });
 
-    it('returns fresh network details from selector to prevent stale Switch to MetaMask default RPC button', async () => {
+    it('returns fresh network details from selector to prevent stale Switch to 1do default RPC button', async () => {
       const networkConfig = {
         '0xa4b1': {
           name: 'Arbitrum One',
@@ -754,17 +756,17 @@ describe('useNetworkConnectionBanner', () => {
         networkName: 'Arbitrum One',
         networkClientId: 'custom-arbitrum',
         chainId: '0xa4b1',
-        isInfuraEndpoint: false,
-        infuraEndpointIndex: 1,
+        isDefaultRpcEndpoint: false,
+        defaultRpcEndpointIndex: 1,
       });
 
-      // But selector now returns Infura endpoint (fresh data after switch)
+      // But selector now returns the default endpoint (fresh data after switch)
       mockSelectFirstUnavailableEvmNetwork.mockReturnValue({
         networkName: 'Arbitrum One',
         networkClientId: 'arbitrum-mainnet',
         chainId: '0xa4b1',
-        isInfuraEndpoint: true,
-        infuraEndpointIndex: undefined,
+        isDefaultRpcEndpoint: true,
+        defaultRpcEndpointIndex: undefined,
       });
 
       const { result } = renderHookWithProviderTyped(
@@ -773,12 +775,12 @@ describe('useNetworkConnectionBanner', () => {
       );
 
       // Hook should return fresh data from selector, not stale Redux state
-      // This prevents showing "Switch to MetaMask default RPC" when already on Infura
+      // This prevents showing "Switch to 1do default RPC" when already on Infura
       expect(result.current).toStrictEqual(
         expect.objectContaining({
           status: 'unavailable',
-          isInfuraEndpoint: true,
-          infuraEndpointIndex: undefined,
+          isDefaultRpcEndpoint: true,
+          defaultRpcEndpointIndex: undefined,
           networkClientId: 'arbitrum-mainnet',
         }),
       );

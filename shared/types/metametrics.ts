@@ -6,7 +6,6 @@ import type { Hex } from 'viem';
 import type { MetaMetricsEventFragment } from '../constants/metametrics';
 import type { TokenStandard } from '../constants/transaction';
 import type { HardwareKeyringType } from '../constants/hardware-wallets';
-import type { ScanAddressResponse } from '../lib/trust-signals';
 
 export type TransactionMetricsRequest = {
   getTransactionUIMetricsFragment: (
@@ -55,10 +54,6 @@ export type TransactionMetricsRequest = {
   getNetworkRpcUrl: (chainId: Hex) => string;
   getFeatureFlags: () => Record<string, unknown>;
   getPna25Acknowledged: () => boolean;
-  getAddressSecurityAlertResponse: (
-    cacheKey: string,
-  ) => ScanAddressResponse | undefined;
-  getSecurityAlertsEnabled: () => boolean;
 };
 
 export type TransactionEventPayload = {

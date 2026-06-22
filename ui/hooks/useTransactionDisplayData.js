@@ -1,7 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useRef, useState } from 'react';
 import { TransactionType } from '@metamask/transaction-controller';
-import BigNumber from 'bignumber.js';
 import {
   getAllTokens,
   getKnownMethodData,
@@ -28,11 +27,8 @@ import { getNfts } from '../ducks/metamask/metamask';
 import { captureSingleException } from '../store/actions';
 import { isEqualCaseInsensitive } from '../../shared/lib/string-utils';
 import { getTokenValueParam } from '../../shared/lib/metamask-controller-utils';
-import { formatAmount } from '../pages/confirmations/components/simulation-details/formatAmount';
-import { getIntlLocale } from '../ducks/locale/locale';
 import { calcTokenAmount } from '../../shared/lib/transactions-controller-utils';
 
-import { PAY_TRANSACTION_TYPES } from '../pages/confirmations/constants/pay';
 import { isOneDo7702UpgradeAuthorization } from '../../shared/lib/eip7702-utils';
 import { useI18nContext } from './useI18nContext';
 import { useTokenFiatAmount } from './useTokenFiatAmount';
@@ -40,19 +36,14 @@ import { useUserPreferencedCurrency } from './useUserPreferencedCurrency';
 import { useCurrencyDisplay } from './useCurrencyDisplay';
 import { useTokenDisplayValue } from './useTokenDisplayValue';
 import { useTokenData } from './useTokenData';
-import { useSwappedTokenValue } from './useSwappedTokenValue';
-import { useCurrentAsset } from './useCurrentAsset';
-import { useFiatFormatter } from './useFiatFormatter';
 
 /**
- *  There are seven types of transaction entries that are currently differentiated in the design:
+ *  Transaction entries are currently differentiated in the design as:
  *  1. Signature request
  *  2. Send (sendEth sendTokens)
  *  3. Deposit
  *  4. Site interaction
  *  5. Approval
- *  6. Swap
- *  7. Swap Approval
  */
 const signatureTypes = [
   null,
@@ -89,17 +80,11 @@ const signatureTypes = [
  * @returns {TransactionDisplayData}
  */
 export function useTransactionDisplayData(transactionGroup) {
-  // To determine which primary currency to display for swaps transactions we need to be aware
-  // of which asset, if any, we are viewing at present
   const dispatch = useDispatch();
-  const locale = useSelector(getIntlLocale);
-  const currentAsset = useCurrentAsset();
   const knownTokens = useSelector(getAllTokens);
   const selectedAddress = useSelector(getSelectedAddress);
   const knownNfts = useSelector(getNfts);
   const tokenListAllChains = useSelector(selectERC20TokensByChain);
-  const fiatFormatter = useFiatFormatter();
-
   const t = useI18nContext();
 
   const { initialTransaction, primaryTransaction } = transactionGroup;
@@ -231,77 +216,16 @@ export function useTransactionDisplayData(transactionGroup) {
     initialTransaction?.chainId,
   );
 
-  // used to append to the primary display value. initialized to either token.symbol or undefined
-  // but can later be modified if dealing with a swap
-  let primarySuffix = isTokenCategory ? token?.symbol : undefined;
-  // used to display the primary value of tx. initialized to either tokenDisplayValue or undefined
-  // but can later be modified if dealing with a swap
-  let primaryDisplayValue = isTokenCategory ? tokenDisplayValue : undefined;
-  // used to display fiat amount of tx. initialized to either tokenFiatAmount or undefined
-  // but can later be modified if dealing with a swap
-  let secondaryDisplayValue = isTokenCategory ? tokenFiatAmount : undefined;
+  const primarySuffix = isTokenCategory ? token?.symbol : undefined;
+  const primaryDisplayValue = isTokenCategory ? tokenDisplayValue : undefined;
+  const secondaryDisplayValue = isTokenCategory ? tokenFiatAmount : undefined;
 
   let title;
-
-  const {
-    swapTokenValue,
-    isNegative,
-    swapTokenFiatAmount,
-    isViewingReceivedTokenFromSwap,
-  } = useSwappedTokenValue(transactionGroup, currentAsset);
 
   if (signatureTypes.includes(type)) {
     title = t('signatureRequest');
   } else if (isOneDoSmartAccountUpgrade) {
     title = t('upgradeSmartAccount');
-  } else if (type === TransactionType.swap) {
-    title = t('swapTokenToToken', [
-      initialTransaction.sourceTokenSymbol,
-      initialTransaction.destinationTokenSymbol,
-    ]);
-    const symbolFromTx = initialTransaction.sourceTokenSymbol;
-    primarySuffix = isViewingReceivedTokenFromSwap
-      ? currentAsset.symbol
-      : symbolFromTx;
-    const value = swapTokenValue;
-    primaryDisplayValue = value
-      ? formatAmount(locale, new BigNumber(value))
-      : undefined;
-    secondaryDisplayValue = swapTokenFiatAmount;
-    if (isNegative) {
-      prefix = '';
-    } else if (isViewingReceivedTokenFromSwap) {
-      prefix = '+';
-    } else {
-      prefix = '-';
-    }
-  } else if (type === TransactionType.swapAndSend) {
-    const isSenderTokenRecipient =
-      initialTransaction.swapAndSendRecipient === senderAddress;
-
-    recipientAddress = initialTransaction.swapAndSendRecipient;
-
-    title = t('sentTokenAsToken', [
-      initialTransaction.sourceTokenSymbol,
-      initialTransaction.destinationTokenSymbol,
-    ]);
-    primarySuffix =
-      isViewingReceivedTokenFromSwap && isSenderTokenRecipient
-        ? currentAsset.symbol
-        : initialTransaction.sourceTokenSymbol;
-    primaryDisplayValue = swapTokenValue;
-    secondaryDisplayValue = swapTokenFiatAmount;
-
-    if (isNegative) {
-      prefix = '';
-    } else if (isViewingReceivedTokenFromSwap && isSenderTokenRecipient) {
-      prefix = '+';
-    } else {
-      prefix = '-';
-    }
-  } else if (type === TransactionType.swapApproval) {
-    title = t('swapApproval', [primaryTransaction.sourceTokenSymbol]);
-    primarySuffix = primaryTransaction.sourceTokenSymbol;
   } else if (type === TransactionType.tokenMethodApprove) {
     prefix = '';
     title = t('approveSpendingCap', [
@@ -344,28 +268,6 @@ export function useTransactionDisplayData(transactionGroup) {
     recipientAddress = getTokenAddressParam(tokenData);
   } else if (type === TransactionType.simpleSend) {
     title = t('sent');
-  } else if (PAY_TRANSACTION_TYPES.includes(type)) {
-    const { metamaskPay } = initialTransaction;
-
-    title = t('perpsDepositActivityTitle');
-
-    prefix = '';
-    const targetTokenAddress = to?.toLowerCase();
-
-    const targetToken =
-      targetTokenAddress &&
-      tokenListAllChains?.[initialTransaction.chainId]?.data?.[
-        targetTokenAddress
-      ];
-
-    if (targetToken?.symbol) {
-      primarySuffix = targetToken.symbol;
-    }
-
-    if (metamaskPay?.targetFiat) {
-      primaryDisplayValue = metamaskPay.targetFiat;
-      secondaryDisplayValue = fiatFormatter(Number(metamaskPay.targetFiat));
-    }
   } else {
     dispatch(
       captureSingleException(
@@ -397,7 +299,7 @@ export function useTransactionDisplayData(transactionGroup) {
     {
       prefix,
       displayValue: secondaryDisplayValue,
-      hideLabel: isTokenCategory || Boolean(swapTokenValue),
+      hideLabel: isTokenCategory,
       ...secondaryCurrencyPreferences,
     },
     transactionGroup?.initialTransaction?.chainId,
@@ -409,16 +311,10 @@ export function useTransactionDisplayData(transactionGroup) {
 
   return {
     title,
-    primaryCurrency:
-      (type === TransactionType.swap && isPending) || isOneDoSmartAccountUpgrade
-        ? ''
-        : primaryCurrency,
+    primaryCurrency: isOneDoSmartAccountUpgrade ? '' : primaryCurrency,
     recipientAddress,
     secondaryCurrency:
-      isOneDoSmartAccountUpgrade ||
-      (isTokenCategory && !tokenFiatAmount) ||
-      ([TransactionType.swap, TransactionType.swapAndSend].includes(type) &&
-        !swapTokenFiatAmount)
+      isOneDoSmartAccountUpgrade || (isTokenCategory && !tokenFiatAmount)
         ? undefined
         : secondaryCurrency,
     isPending,

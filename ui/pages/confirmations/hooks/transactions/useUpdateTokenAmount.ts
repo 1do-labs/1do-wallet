@@ -6,10 +6,9 @@ import { BigNumber } from 'bignumber.js';
 import { Interface } from '@ethersproject/abi';
 import { useConfirmContext } from '../../context/confirm';
 import { parseStandardTokenTransactionData } from '../../../../../shared/lib/transaction.utils';
-import { getTokenTransferData } from '../../utils/transaction-pay';
+import { getTokenTransferData } from '../../utils/token-transfer';
 import { updateEditableParams } from '../../../../store/actions';
 import { updateAtomicBatchData } from '../../../../store/controller-actions/transaction-controller';
-import { useTransactionPayPrimaryRequiredToken } from '../pay/useTransactionPayData';
 
 const ERC20_ABI = ['function transfer(address to, uint256 amount)'];
 let erc20Interface: Interface | null = null;
@@ -48,9 +47,7 @@ export function useUpdateTokenAmount() {
     [transactionMeta],
   );
 
-  const primaryRequiredToken = useTransactionPayPrimaryRequiredToken();
-
-  const decimals = primaryRequiredToken?.decimals ?? 18;
+  const decimals = 18;
 
   const amountRaw = useMemo(() => {
     if (!data) {

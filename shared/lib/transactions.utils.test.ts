@@ -85,20 +85,22 @@ describe('Transactions utils', () => {
         nestedTransactions: [{ type: TransactionType.tokenMethodTransfer }],
       } as unknown as TransactionMeta;
 
-      expect(hasTransactionType(transactionMeta, [TransactionType.swap])).toBe(
-        false,
-      );
+      expect(
+        hasTransactionType(transactionMeta, [
+          TransactionType.tokenMethodApprove,
+        ]),
+      ).toBe(false);
     });
 
     it('returns true for top-level type even with nested transactions', () => {
       const transactionMeta = {
-        type: TransactionType.swap,
+        type: TransactionType.simpleSend,
         nestedTransactions: [{ type: TransactionType.tokenMethodTransfer }],
       } as unknown as TransactionMeta;
 
-      expect(hasTransactionType(transactionMeta, [TransactionType.swap])).toBe(
-        true,
-      );
+      expect(
+        hasTransactionType(transactionMeta, [TransactionType.simpleSend]),
+      ).toBe(true);
     });
 
     it('returns false when nestedTransactions is empty', () => {
@@ -107,9 +109,11 @@ describe('Transactions utils', () => {
         nestedTransactions: [],
       } as unknown as TransactionMeta;
 
-      expect(hasTransactionType(transactionMeta, [TransactionType.swap])).toBe(
-        false,
-      );
+      expect(
+        hasTransactionType(transactionMeta, [
+          TransactionType.tokenMethodApprove,
+        ]),
+      ).toBe(false);
     });
   });
 });

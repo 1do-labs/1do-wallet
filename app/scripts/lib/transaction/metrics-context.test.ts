@@ -73,17 +73,4 @@ describe('buildTransactionMetricsContext', () => {
     expect(context.transactionTypeForMetrics).toBe('simpleSend');
     expect(context.contractMethodName).toBeUndefined();
   });
-
-  it('returns perpsDeposit as transaction type for perps deposit transactions', async () => {
-    const context = await buildTransactionMetricsContext({
-      transactionMeta: createTransactionMeta({
-        type: TransactionType.perpsDeposit,
-        txParams: { data: '0xa9059cbb' },
-      }),
-      transactionMetricsRequest: createRequest(),
-    });
-
-    expect(context.transactionTypeForMetrics).toBe('perpsDeposit');
-    expect(context.isContractInteraction).toBe(false);
-  });
 });

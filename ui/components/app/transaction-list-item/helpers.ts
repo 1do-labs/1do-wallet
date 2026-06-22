@@ -14,11 +14,9 @@ export function mapTransactionTypeToCategory(
     case TransactionType.ethGetEncryptionPublicKey: {
       return GroupCategory.signatureRequest;
     }
-    case TransactionType.swapApproval:
     case TransactionType.tokenMethodApprove:
     case TransactionType.tokenMethodSetApprovalForAll:
-    case TransactionType.tokenMethodIncreaseAllowance:
-    case TransactionType.bridgeApproval: {
+    case TransactionType.tokenMethodIncreaseAllowance: {
       return GroupCategory.approval;
     }
     case TransactionType.contractInteraction:
@@ -32,15 +30,6 @@ export function mapTransactionTypeToCategory(
     case TransactionType.tokenMethodSafeTransferFrom:
     case TransactionType.simpleSend: {
       return GroupCategory.send;
-    }
-    case TransactionType.swap: {
-      return GroupCategory.swap;
-    }
-    case TransactionType.swapAndSend: {
-      return GroupCategory.swapAndSend;
-    }
-    case TransactionType.bridge: {
-      return GroupCategory.bridge;
     }
     case TransactionType.incoming: {
       return GroupCategory.receive;

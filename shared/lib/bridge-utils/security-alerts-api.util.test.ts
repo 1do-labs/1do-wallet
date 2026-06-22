@@ -21,8 +21,6 @@ describe('Security alerts utils', () => {
     jest.clearAllMocks();
     signal = new AbortController().signal;
     process.env = { ...originalEnv };
-    process.env.SECURITY_ALERTS_API_ENABLED = 'true';
-    process.env.SECURITY_ALERTS_API_URL = BASE_URL;
     nock.cleanAll();
   });
 
@@ -104,18 +102,7 @@ describe('Security alerts utils', () => {
   });
 
   describe('isSecurityAlertsAPIEnabled', () => {
-    it('should return true when SECURITY_ALERTS_API_ENABLED is set to true', () => {
-      process.env.SECURITY_ALERTS_API_ENABLED = 'true';
-      expect(isSecurityAlertsAPIEnabled()).toBe(true);
-    });
-
-    it('should return false when SECURITY_ALERTS_API_ENABLED is set to false', () => {
-      process.env.SECURITY_ALERTS_API_ENABLED = 'false';
-      expect(isSecurityAlertsAPIEnabled()).toBe(false);
-    });
-
-    it('should return false when SECURITY_ALERTS_API_ENABLED is not set', () => {
-      delete process.env.SECURITY_ALERTS_API_ENABLED;
+    it('should return false', () => {
       expect(isSecurityAlertsAPIEnabled()).toBe(false);
     });
   });

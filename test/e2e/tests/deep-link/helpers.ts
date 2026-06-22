@@ -140,7 +140,7 @@ const TEST_PAGE = 'https://doesntexist.test/';
  * Options for navigating to a deep link.
  */
 export type DeepLinkNavigationOptions = {
-  /** The route path to navigate to (e.g., '/home', '/swap') */
+  /** The route path to navigate to (e.g., '/home') */
   route: string;
   /** Whether the link should be signed */
   signed: 'signed with sig_params' | 'signed without sig_params' | 'unsigned';
@@ -270,43 +270,6 @@ export const shouldRenderCheckbox = (
     signed === 'signed with sig_params' ||
     signed === 'signed without sig_params'
   );
-};
-
-/**
- * Mocks the rewards API endpoints for testing.
- *
- * @param server - The Mockttp server instance.
- */
-export const mockRewardsApi = async (server: Mockttp): Promise<void> => {
-  await server
-    .forPost('https://rewards.uat-api.cx.metamask.io/public/rewards/ois')
-    .thenJson(200, {
-      ois: [true],
-      sids: ['019b2245-9533-7739-a89c-b4c839a3d53a'],
-    });
-
-  await server
-    .forPost('https://rewards.uat-api.cx.metamask.io/auth/mobile-login')
-    .thenJson(200, {
-      sessionId: 'yErC0OBAAh9BlS7frZYkjGz6RVyoo4p3R6nz3THmQlc=',
-      accessToken: 'yErC0OBAAh9BlS7frZYkjGz6RVyoo4p3R6nz3THmQlc=',
-      subscription: {
-        id: '019b2245-9533-7739-a89c-b4c839a3d53a',
-        createdAt: '2025-12-15T13:49:04.180Z',
-        updatedAt: '2025-12-15T13:49:04.180Z',
-        referralCode: '4DFZV9',
-        accounts: [
-          {
-            id: 4338,
-            address: '0x5CfE73b6021E818B776b421B1c4Db2474086a7e1',
-            blockchain: 1,
-            subscriptionId: '019b2245-9533-7739-a89c-b4c839a3d53a',
-            createdAt: '2025-12-15T13:49:04.180Z',
-            updatedAt: '2025-12-15T13:49:04.180Z',
-          },
-        ],
-      },
-    });
 };
 
 export const REDIRECT_ROUTES = [

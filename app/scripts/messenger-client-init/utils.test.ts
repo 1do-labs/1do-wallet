@@ -1,4 +1,3 @@
-import { PPOMController } from '@metamask/ppom-validator';
 import {
   MOCK_ANY_NAMESPACE,
   Messenger,
@@ -12,11 +11,11 @@ type InitFunctions = Parameters<
   typeof initMessengerClients
 >[0]['initFunctions'];
 
-const CONTROLLER_NAME_MOCK = 'PPOMController';
+const CONTROLLER_NAME_MOCK = 'MockController';
 const CONTROLLER_NAME_2_MOCK = 'TransactionController';
 
 function buildControllerMock(name?: string) {
-  return { name: name ?? CONTROLLER_NAME_MOCK } as unknown as PPOMController;
+  return { name: name ?? CONTROLLER_NAME_MOCK };
 }
 
 function buildControllerInitResultMock({

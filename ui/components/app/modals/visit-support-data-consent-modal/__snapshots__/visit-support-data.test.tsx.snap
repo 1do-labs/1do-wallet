@@ -44,7 +44,7 @@ exports[`VisitSupportDataConsentModal renders the modal correctly when open 1`] 
           <p
             class="mm-box mm-text mm-text--body-md mm-box--color-text-default"
           >
-            Do you want to share your MetaMask Identifier and app version with our Support Center? This can help us better solve your problem, but is optional.
+            Do you want to share your 1do Identifier and app version with our Support Center? This can help us better solve your problem, but is optional.
           </p>
         </div>
         <div

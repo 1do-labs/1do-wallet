@@ -16,7 +16,7 @@ export async function openUpdateTabAndReload(
 ) {
   try {
     await browser.tabs.create({
-      url: 'https://metamask.io/updating',
+      url: 'https://www.1do.io/',
       active: true,
     });
   } catch (error) {

@@ -11,8 +11,6 @@ import type { TransactionMetricsRequest } from '../../../../shared/types/metamet
 import type { TransactionMetricsBuilderRequest } from './metrics-builders/types';
 
 export const CONTRACT_INTERACTION_TYPES = [
-  TransactionType.bridge,
-  TransactionType.bridgeApproval,
   TransactionType.contractInteraction,
   TransactionType.tokenMethodApprove,
   TransactionType.tokenMethodIncreaseAllowance,
@@ -20,9 +18,6 @@ export const CONTRACT_INTERACTION_TYPES = [
   TransactionType.tokenMethodSetApprovalForAll,
   TransactionType.tokenMethodTransfer,
   TransactionType.tokenMethodTransferFrom,
-  TransactionType.swap,
-  TransactionType.swapAndSend,
-  TransactionType.swapApproval,
 ];
 
 /**
@@ -103,8 +98,6 @@ function determineTransactionTypeAndContractInteraction(
     'deployContract',
     'gasPayment',
     'batch',
-    'shieldSubscriptionApprove',
-    'perpsDeposit',
   ];
 
   if (directTypeMappings.includes(type)) {
@@ -122,18 +115,6 @@ function determineTransactionTypeAndContractInteraction(
   }
 
   if (isContractInteraction) {
-    if (type === 'swap') {
-      return {
-        transactionType: 'mm_swap',
-        isContractInteraction: true,
-      };
-    }
-    if (type === 'bridge') {
-      return {
-        transactionType: 'mm_bridge',
-        isContractInteraction: true,
-      };
-    }
     return {
       transactionType: 'contractInteraction',
       isContractInteraction: true,

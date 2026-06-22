@@ -152,8 +152,7 @@ const withMetamaskConnectedToMainnet = {
           'metamask-staking': {
             protocolDetails: {
               name: 'MetaMask Staking',
-              iconUrl:
-                'https://raw.githubusercontent.com/MetaMask/brand-resources/master/SVG/metamask-fox.svg',
+              iconUrl: './images/logo/1do-mark.svg',
             },
             aggregatedMarketValue: 6522.67,
             positionTypes: {

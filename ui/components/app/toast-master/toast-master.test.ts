@@ -6,7 +6,7 @@ import {
   selectShowPrivacyPolicyToast,
   selectShowSurveyToast,
   selectShowCopyAddressToast,
-  selectShowInfuraSwitchToast,
+  selectShowDefaultRpcSwitchToast,
 } from './selectors';
 
 const createMockSurveyState = (surveyLinkLastClickedOrClosed?: number) => ({
@@ -240,32 +240,32 @@ describe('#selectShowCopyAddressToast', () => {
   });
 });
 
-describe('#selectShowInfuraSwitchToast', () => {
-  it('returns true when showInfuraSwitchToast is true', () => {
+describe('#selectShowDefaultRpcSwitchToast', () => {
+  it('returns true when showDefaultRpcSwitchToast is true', () => {
     const mockStateData = {
       appState: {
-        showInfuraSwitchToast: true,
+        showDefaultRpcSwitchToast: true,
       },
     };
-    const result = selectShowInfuraSwitchToast(mockStateData);
+    const result = selectShowDefaultRpcSwitchToast(mockStateData);
     expect(result).toBe(true);
   });
 
-  it('returns false when showInfuraSwitchToast is false', () => {
+  it('returns false when showDefaultRpcSwitchToast is false', () => {
     const mockStateData = {
       appState: {
-        showInfuraSwitchToast: false,
+        showDefaultRpcSwitchToast: false,
       },
     };
-    const result = selectShowInfuraSwitchToast(mockStateData);
+    const result = selectShowDefaultRpcSwitchToast(mockStateData);
     expect(result).toBe(false);
   });
 
-  it('returns false when showInfuraSwitchToast is undefined', () => {
+  it('returns false when showDefaultRpcSwitchToast is undefined', () => {
     const mockStateData = {
       appState: {},
     };
-    const result = selectShowInfuraSwitchToast(mockStateData);
+    const result = selectShowDefaultRpcSwitchToast(mockStateData);
     expect(result).toBe(false);
   });
 });

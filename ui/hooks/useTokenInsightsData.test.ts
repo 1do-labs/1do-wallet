@@ -1,6 +1,6 @@
 import { renderHook } from '@testing-library/react-hooks';
 import { useSelector } from 'react-redux';
-import { isNativeAddress } from '@metamask/bridge-controller';
+import { isNativeAddress } from '../../shared/lib/chain-utils';
 import { isEvmChainId } from '../../shared/lib/asset-utils';
 import { formatCompactCurrency } from '../helpers/utils/token-insights';
 import { useFormatters } from './useFormatters';
@@ -25,7 +25,7 @@ jest.mock('../selectors/selectors', () => ({
   getCurrencyRates: jest.fn((state) => state.currencyRates),
 }));
 
-jest.mock('@metamask/bridge-controller', () => ({
+jest.mock('../../shared/lib/chain-utils', () => ({
   BridgeClientId: {
     EXTENSION: 'extension',
   },

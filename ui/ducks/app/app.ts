@@ -126,7 +126,7 @@ type AppState = {
   showPasswordChangeToast: PasswordChangeToastType | null;
   showCopyAddressToast: boolean;
   showClaimSubmitToast: ClaimSubmitToastType | null;
-  showInfuraSwitchToast: boolean;
+  showDefaultRpcSwitchToast: boolean;
 };
 
 export type AppSliceState = {
@@ -220,7 +220,7 @@ const initialState: AppState = {
   showPasswordChangeToast: null,
   showCopyAddressToast: false,
   showClaimSubmitToast: null,
-  showInfuraSwitchToast: false,
+  showDefaultRpcSwitchToast: false,
   showSupportDataConsentModal: false,
 };
 
@@ -732,10 +732,10 @@ export default function reduceApp(
         showClaimSubmitToast: action.payload,
       };
 
-    case actionConstants.SET_SHOW_INFURA_SWITCH_TOAST:
+    case actionConstants.SET_SHOW_DEFAULT_RPC_SWITCH_TOAST:
       return {
         ...appState,
-        showInfuraSwitchToast: action.payload,
+        showDefaultRpcSwitchToast: action.payload,
       };
 
     case actionConstants.SET_SHOW_SUPPORT_DATA_CONSENT_MODAL:

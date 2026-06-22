@@ -19,12 +19,12 @@ const TEST_ANALYTICS_MAPPINGS = [
   {
     flagKey: TEST_QUICK_AMOUNTS_FLAG_KEY,
     validVariants: ['control', 'treatment'],
-    eventNames: ['Unified SwapBridge Page Viewed'],
+    eventNames: ['Portfolio Page Viewed'],
   },
   {
     flagKey: TEST_LAYOUT_FLAG_KEY,
     validVariants: ['control', 'treatment'],
-    eventNames: ['Unified SwapBridge Page Viewed'],
+    eventNames: ['Portfolio Page Viewed'],
   },
 ] as const;
 
@@ -85,7 +85,7 @@ describe('ab-test-analytics', () => {
 
     it('injects multiple assignments when multiple tests match the same event', () => {
       const result = enrichWithABTests(
-        createEvent('Unified SwapBridge Page Viewed'),
+        createEvent('Portfolio Page Viewed'),
         {
           [TEST_QUICK_AMOUNTS_FLAG_KEY]: { name: 'treatment' },
           [TEST_LAYOUT_FLAG_KEY]: 'control',
@@ -120,7 +120,7 @@ describe('ab-test-analytics', () => {
     });
 
     it('ignores missing and invalid flag values', () => {
-      const event = createEvent('Unified SwapBridge Page Viewed');
+      const event = createEvent('Portfolio Page Viewed');
 
       expect(
         enrichWithABTests(
@@ -136,7 +136,7 @@ describe('ab-test-analytics', () => {
 
     it('merges with existing active_ab_tests and preserves explicit payload values', () => {
       const result = enrichWithABTests(
-        createEvent('Unified SwapBridge Page Viewed', {
+        createEvent('Portfolio Page Viewed', {
           // eslint-disable-next-line @typescript-eslint/naming-convention
           active_ab_tests: [
             {

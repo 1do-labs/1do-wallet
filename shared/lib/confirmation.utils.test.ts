@@ -19,7 +19,7 @@ describe('confirmation.utils', () => {
       TransactionType.simpleSend,
     ];
 
-    const unsupportedTransactionType = TransactionType.swap;
+    const unsupportedTransactionType = TransactionType.smart;
 
     it('should return true for supported transaction types', () => {
       supportedTransactionTypes.forEach((transactionType) => {

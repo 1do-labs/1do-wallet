@@ -14,17 +14,19 @@ import {
   FontWeight,
   TextVariant,
 } from '../../../../helpers/constants/design-system';
-import { SecurityProvider } from '../../../../../shared/constants/security-provider';
 import ZENDESK_URLS from '../../../../helpers/constants/zendesk-url';
 import { getBannerAlertSeverity } from '../utils';
 import { AlertProvider } from '../alert-provider';
-import { AlertSeverity } from '../../../../ducks/confirm-alerts/confirm-alerts';
+import {
+  AlertProviderInfo,
+  AlertSeverity,
+} from '../../../../ducks/confirm-alerts/confirm-alerts';
 
 export type GeneralAlertProps = {
   description?: string;
   details?: React.ReactNode | string[];
   onClickSupportLink?: () => void;
-  provider?: SecurityProvider;
+  provider?: AlertProviderInfo;
   reportUrl?: string;
   severity: AlertSeverity;
   title?: string;
@@ -39,7 +41,7 @@ function ReportLink({
   onClickSupportLink,
 }: {
   reportUrl?: string;
-  provider?: SecurityProvider;
+  provider?: AlertProviderInfo;
   onClickSupportLink?: () => void;
 }) {
   const t = useI18nContext();
@@ -48,7 +50,7 @@ function ReportLink({
       {t('somethingDoesntLookRight', [
         <ButtonLink
           data-testid="alert-provider-report-link"
-          key={`security-provider-button-supporturl-${provider}`}
+          key={`security-provider-button-supporturl-${provider?.name ?? 'default'}`}
           size={ButtonLinkSize.Inherit}
           href={reportUrl ?? ZENDESK_URLS.SUPPORT_URL}
           externalLink
@@ -72,7 +74,7 @@ function AlertDetails({
   details?: React.ReactNode | string[];
   reportUrl?: string;
   onClickSupportLink?: () => void;
-  provider?: SecurityProvider;
+  provider?: AlertProviderInfo;
 }) {
   const t = useI18nContext();
   if (!details) {

@@ -39,7 +39,6 @@ async function measurePagePowerUser(
       manifestFlags: {
         testing: {
           disableSync: true,
-          infuraProjectId: process.env.INFURA_PROJECT_ID,
         },
       },
       useMockingPassThrough: true,

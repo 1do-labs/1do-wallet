@@ -926,13 +926,13 @@ describe('app utils', () => {
   });
 
   describe('isPublicEndpointUrl', () => {
-    const MOCK_INFURA_PROJECT_ID = 'test-project-id';
+    const MOCK_LEGACY_RPC_PROJECT_ID = 'test-project-id';
 
     it('should return true for Infura URLs', () => {
       expect(
         isPublicEndpointUrl(
-          `https://mainnet.infura.io/v3/${MOCK_INFURA_PROJECT_ID}`,
-          MOCK_INFURA_PROJECT_ID,
+          `https://mainnet.infura.io/v3/${MOCK_LEGACY_RPC_PROJECT_ID}`,
+          MOCK_LEGACY_RPC_PROJECT_ID,
         ),
       ).toBe(true);
     });
@@ -941,7 +941,7 @@ describe('app utils', () => {
       expect(
         isPublicEndpointUrl(
           'https://unknown.example.com',
-          MOCK_INFURA_PROJECT_ID,
+          MOCK_LEGACY_RPC_PROJECT_ID,
         ),
       ).toBe(false);
     });
@@ -949,39 +949,51 @@ describe('app utils', () => {
     describe('localhost and IP addresses', () => {
       it('should return false for localhost', () => {
         expect(
-          isPublicEndpointUrl('http://localhost:8545', MOCK_INFURA_PROJECT_ID),
+          isPublicEndpointUrl(
+            'http://localhost:8545',
+            MOCK_LEGACY_RPC_PROJECT_ID,
+          ),
         ).toBe(false);
       });
 
       it('should return false for any IPv4 address', () => {
         // Loopback
         expect(
-          isPublicEndpointUrl('http://127.0.0.1:8545', MOCK_INFURA_PROJECT_ID),
+          isPublicEndpointUrl(
+            'http://127.0.0.1:8545',
+            MOCK_LEGACY_RPC_PROJECT_ID,
+          ),
         ).toBe(false);
         // Private ranges
         expect(
-          isPublicEndpointUrl('http://10.0.0.1:8545', MOCK_INFURA_PROJECT_ID),
+          isPublicEndpointUrl(
+            'http://10.0.0.1:8545',
+            MOCK_LEGACY_RPC_PROJECT_ID,
+          ),
         ).toBe(false);
         expect(
           isPublicEndpointUrl(
             'http://192.168.1.1:8545',
-            MOCK_INFURA_PROJECT_ID,
+            MOCK_LEGACY_RPC_PROJECT_ID,
           ),
         ).toBe(false);
         // Public IPs should also return false (public providers use domain names)
         expect(
-          isPublicEndpointUrl('http://8.8.8.8:8545', MOCK_INFURA_PROJECT_ID),
+          isPublicEndpointUrl(
+            'http://8.8.8.8:8545',
+            MOCK_LEGACY_RPC_PROJECT_ID,
+          ),
         ).toBe(false);
       });
 
       it('should return false for any IPv6 address', () => {
         expect(
-          isPublicEndpointUrl('http://[::1]:8545', MOCK_INFURA_PROJECT_ID),
+          isPublicEndpointUrl('http://[::1]:8545', MOCK_LEGACY_RPC_PROJECT_ID),
         ).toBe(false);
         expect(
           isPublicEndpointUrl(
             'http://[2001:db8::1]:8545',
-            MOCK_INFURA_PROJECT_ID,
+            MOCK_LEGACY_RPC_PROJECT_ID,
           ),
         ).toBe(false);
       });

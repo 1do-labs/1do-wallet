@@ -88,15 +88,15 @@ describe('ConfirmContextProvider', () => {
   });
 
   it('navigates to goBackTo when confirmation disappears and goBackTo is present', () => {
-    mockWindowSearch = '?goBackTo=/perps/trade/BTC';
-    window.history.replaceState({}, '', '/?goBackTo=/perps/trade/BTC');
+    mockWindowSearch = '?goBackTo=/asset/0x123';
+    window.history.replaceState({}, '', '/?goBackTo=/asset/0x123');
     const store = createStore();
     const { rerender } = renderContextProvider(store);
 
     mockCurrentConfirmation = undefined;
     rerender();
 
-    expect(mockNavigate).toHaveBeenCalledWith('/perps/trade/BTC', {
+    expect(mockNavigate).toHaveBeenCalledWith('/asset/0x123', {
       replace: true,
     });
   });

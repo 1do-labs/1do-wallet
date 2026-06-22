@@ -251,26 +251,6 @@ describe('submitSmartTransactionHook', () => {
     );
   });
 
-  it('falls back to regular transaction submit if the transaction type is "swapAndSend"', async () => {
-    withRequest(async ({ request }) => {
-      if (request.transactionMeta) {
-        request.transactionMeta.type = TransactionType.swapAndSend;
-      }
-      const result = await submitSmartTransactionHook(request);
-      expect(result).toEqual({ transactionHash: undefined });
-    });
-  });
-
-  it('falls back to regular transaction submit if the transaction type is "swapApproval"', async () => {
-    withRequest(async ({ request }) => {
-      if (request.transactionMeta) {
-        request.transactionMeta.type = TransactionType.swapApproval;
-      }
-      const result = await submitSmartTransactionHook(request);
-      expect(result).toEqual({ transactionHash: undefined });
-    });
-  });
-
   it('falls back to regular transaction submit if it is a legacy transaction', async () => {
     withRequest(async ({ request }) => {
       // Modify transaction to be a legacy transaction (has gasPrice, no maxFeePerGas/maxPriorityFeePerGas)
@@ -684,106 +664,6 @@ describe('submitSmartTransactionHook', () => {
   });
 
   describe('shouldShowStatusPage logic', () => {
-    it('does not show status page for bridge transaction type', async () => {
-      withRequest(
-        {
-          options: {
-            transactionMeta: {
-              hash: txHash,
-              status: TransactionStatus.signed,
-              id: '1',
-              txParams: {
-                from: addressFrom,
-                to: '0x1678a085c290ebd122dc42cba69373b5953b831d',
-                maxFeePerGas: '0x2fd8a58d7',
-                maxPriorityFeePerGas: '0xaa0f8a94',
-                gas: '0x7b0d',
-                nonce: '0x4b',
-              },
-              type: TransactionType.bridge,
-              chainId: CHAIN_IDS.MAINNET,
-              networkClientId: 'testNetworkClientId',
-              time: 1624408066355,
-              defaultGasEstimates: {
-                gas: '0x7b0d',
-                gasPrice: '0x77359400',
-              },
-              securityProviderResponse: {
-                flagAsDangerous: 0,
-              },
-            },
-          },
-        },
-        async ({ request, messenger, startFlowSpy, addRequestSpy }) => {
-          setImmediate(() => {
-            messenger.publish('SmartTransactionsController:smartTransaction', {
-              status: 'success',
-              uuid,
-              statusMetadata: {
-                minedHash: txHash,
-              },
-            } as SmartTransaction);
-          });
-
-          await submitSmartTransactionHook(request);
-
-          // Status page should not be shown for bridge transactions
-          expect(startFlowSpy).not.toHaveBeenCalled();
-          expect(addRequestSpy).not.toHaveBeenCalled();
-        },
-      );
-    });
-
-    it('does not show status page for shieldSubscriptionApprove transaction type', async () => {
-      withRequest(
-        {
-          options: {
-            transactionMeta: {
-              hash: txHash,
-              status: TransactionStatus.signed,
-              id: '1',
-              txParams: {
-                from: addressFrom,
-                to: '0x1678a085c290ebd122dc42cba69373b5953b831d',
-                maxFeePerGas: '0x2fd8a58d7',
-                maxPriorityFeePerGas: '0xaa0f8a94',
-                gas: '0x7b0d',
-                nonce: '0x4b',
-              },
-              type: TransactionType.shieldSubscriptionApprove,
-              chainId: CHAIN_IDS.MAINNET,
-              networkClientId: 'testNetworkClientId',
-              time: 1624408066355,
-              defaultGasEstimates: {
-                gas: '0x7b0d',
-                gasPrice: '0x77359400',
-              },
-              securityProviderResponse: {
-                flagAsDangerous: 0,
-              },
-            },
-          },
-        },
-        async ({ request, messenger, startFlowSpy, addRequestSpy }) => {
-          setImmediate(() => {
-            messenger.publish('SmartTransactionsController:smartTransaction', {
-              status: 'success',
-              uuid,
-              statusMetadata: {
-                minedHash: txHash,
-              },
-            } as SmartTransaction);
-          });
-
-          await submitSmartTransactionHook(request);
-
-          // Status page should not be shown for shieldSubscriptionApprove transactions
-          expect(startFlowSpy).not.toHaveBeenCalled();
-          expect(addRequestSpy).not.toHaveBeenCalled();
-        },
-      );
-    });
-
     it('shows status page for simpleSend transaction type', async () => {
       withRequest(
         async ({ request, messenger, startFlowSpy, addRequestSpy }) => {
@@ -800,66 +680,6 @@ describe('submitSmartTransactionHook', () => {
           await submitSmartTransactionHook(request);
 
           // Status page should be shown for simpleSend transactions
-          expect(startFlowSpy).toHaveBeenCalled();
-          expect(addRequestSpy).toHaveBeenCalled();
-        },
-      );
-    });
-
-    it('shows status page for bridge transaction type when there are batch transactions', async () => {
-      withRequest(
-        {
-          options: {
-            transactionMeta: {
-              hash: txHash,
-              status: TransactionStatus.signed,
-              id: '1',
-              txParams: {
-                from: addressFrom,
-                to: '0x1678a085c290ebd122dc42cba69373b5953b831d',
-                maxFeePerGas: '0x2fd8a58d7',
-                maxPriorityFeePerGas: '0xaa0f8a94',
-                gas: '0x7b0d',
-                nonce: '0x4b',
-              },
-              type: TransactionType.bridge,
-              chainId: CHAIN_IDS.MAINNET,
-              networkClientId: 'testNetworkClientId',
-              time: 1624408066355,
-              defaultGasEstimates: {
-                gas: '0x7b0d',
-                gasPrice: '0x77359400',
-              },
-              securityProviderResponse: {
-                flagAsDangerous: 0,
-              },
-            },
-            transactions: [
-              {
-                id: '1',
-                signedTx: '0x1234',
-                params: {
-                  to: '0xf231d46dd78806e1dd93442cf33c7671f8538748',
-                  value: '0x0',
-                },
-              },
-            ],
-          },
-        },
-        async ({ request, messenger, startFlowSpy, addRequestSpy }) => {
-          setImmediate(() => {
-            messenger.publish('SmartTransactionsController:smartTransaction', {
-              status: 'success',
-              uuid,
-              statusMetadata: {
-                minedHash: txHash,
-              },
-            } as SmartTransaction);
-          });
-
-          await submitSmartTransactionHook(request);
-
-          // Status page should be shown for bridge transactions with batch transactions
           expect(startFlowSpy).toHaveBeenCalled();
           expect(addRequestSpy).toHaveBeenCalled();
         },

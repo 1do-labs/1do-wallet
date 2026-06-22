@@ -18,10 +18,7 @@ import { TokenStandard } from '../../../../../../../../shared/constants/transact
 import { useI18nContext } from '../../../../../../../hooks/useI18nContext';
 import { updateAtomicBatchData } from '../../../../../../../store/controller-actions/transaction-controller';
 import { useIsUpgradeTransaction } from '../../hooks/useIsUpgradeTransaction';
-import {
-  isOneDoRuntimeAccessUpdateTransactionCandidate,
-  isOneDoWalletNativeTransferTransactionCandidate,
-} from '../../../../../utils/onedo-clear-signing';
+import { isOneDoRuntimeAccessUpdateTransactionCandidate } from '../../../../../utils/onedo-clear-signing';
 
 // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
 // eslint-disable-next-line @typescript-eslint/naming-convention
@@ -31,8 +28,6 @@ export function BatchSimulationDetails() {
 
   const { currentConfirmation: transactionMeta } =
     useConfirmContext<TransactionMeta>();
-  const isOneDoWalletNativeTransfer =
-    isOneDoWalletNativeTransferTransactionCandidate(transactionMeta);
   const isOneDoRuntimeAccessUpdate =
     isOneDoRuntimeAccessUpdateTransactionCandidate(transactionMeta);
 
@@ -81,7 +76,7 @@ export function BatchSimulationDetails() {
         balanceChanges: finalBalanceChanges ?? [],
       },
     ];
-  }, [approveBalanceChanges, handleEdit]);
+  }, [approveBalanceChanges, handleEdit, t]);
 
   if (
     transactionMeta?.type === TransactionType.revokeDelegation ||
@@ -116,9 +111,7 @@ export function BatchSimulationDetails() {
             staticRows={approveRows}
             isTransactionsRedesign
             enableMetrics
-            metricsOnly={
-              isOneDoWalletNativeTransfer || isOneDoRuntimeAccessUpdate
-            }
+            metricsOnly={isOneDoRuntimeAccessUpdate}
           />
         </>
       )}

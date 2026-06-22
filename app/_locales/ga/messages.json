@@ -1,11 +1,11 @@
 {
   "CSS_loadingTakingTooLongActionText": {
     "message": "Athsheol 1do má leanann an fhadhb.",
-    "description": "Second line of the message that is shown when the initial loading of the MetaMask UI takes a very long time."
+    "description": "Second line of the message that is shown when the initial loading of the 1do UI takes a very long time."
   },
   "CSS_loadingTakingTooLongMessageText": {
     "message": "Tá an luchtú ag glacadh níos faide ná mar is gnách.",
-    "description": "First line of the message that is shown when the initial loading of the MetaMask UI takes a very long time."
+    "description": "First line of the message that is shown when the initial loading of the 1do UI takes a very long time."
   },
   "QRHardwareInvalidTransactionTitle": {
     "message": "Earráid"
@@ -765,60 +765,6 @@
     "message": "Féach ar chuntas ag $1",
     "description": "$1 replaced by URL for custom block explorer"
   },
-  "blockaid": {
-    "message": "Blockaid"
-  },
-  "blockaidAlertDescriptionBlur": {
-    "message": "Má leanann tú ar aghaidh, d’fhéadfadh na sócmhainní go léir atá liostaithe agat ar Blur a bheith i mbaol."
-  },
-  "blockaidAlertDescriptionMalicious": {
-    "message": "Tá tú ag idirghníomhú le suíomh mailíseach. Má leanann tú ar aghaidh, caillfidh tú do shócmhainní."
-  },
-  "blockaidAlertDescriptionOpenSea": {
-    "message": "Má leanann tú ar aghaidh, d’fhéadfadh na sócmhainní go léir atá liostaithe agat ar OpenSea a bheith i mbaol."
-  },
-  "blockaidAlertDescriptionOthers": {
-    "message": "Má dheimhníonn tú an t-iarratas seo, d’fhéadfá do shócmhainní a chailleadh. Molaimid duit an t-iarratas seo a chealú."
-  },
-  "blockaidAlertDescriptionTokenTransfer": {
-    "message": "Tá tú ag seoladh do shócmhainní chuig camscéimeoir. Má leanann tú ar aghaidh, caillfidh tú na sócmhainní sin."
-  },
-  "blockaidAlertDescriptionWithdraw": {
-    "message": "Má dheimhníonn tú an t-iarratas seo, tá tú ag ligean do chalaoiseoir do shócmhainní a tharraingt siar agus a chaitheamh. Ní bhfaighidh tú ar ais iad."
-  },
-  "blockaidDescriptionApproveFarming": {
-    "message": "Má cheadaíonn tú an t-iarratas seo, d’fhéadfadh tríú páirtí atá aitheanta as camscéimeanna do shócmhainní go léir a thógáil."
-  },
-  "blockaidDescriptionBlurFarming": {
-    "message": "Má cheadaíonn tú an t-iarratas seo, is féidir le duine éigin do shócmhainní atá liostaithe ar Blur a ghoid."
-  },
-  "blockaidDescriptionErrored": {
-    "message": "Mar gheall ar earráid, ní raibh muid in ann foláirimh slándála a sheiceáil. Ná lean ar aghaidh ach amháin má tá muinín agat as gach seoladh lena mbaineann."
-  },
-  "blockaidDescriptionMaliciousDomain": {
-    "message": "Tá tú ag idirghníomhú le fearann ​​mailíseach. Má cheadaíonn tú an t-iarratas seo, d'fhéadfá do shócmhainní a chailleadh."
-  },
-  "blockaidDescriptionMightLoseAssets": {
-    "message": "Má cheadaíonn tú an t-iarratas seo, d’fhéadfá do shócmhainní a chailleadh."
-  },
-  "blockaidDescriptionSeaportFarming": {
-    "message": "Má cheadaíonn tú an iarratas seo, is féidir le duine éigin do shócmhainní atá liostaithe ar OpenSea a ghoid."
-  },
-  "blockaidDescriptionTransferFarming": {
-    "message": "Má cheadaíonn tú an t-iarratas seo, tógfaidh tríú páirtí atá aitheanta as camscéimeanna do shócmhainní go léir."
-  },
-  "blockaidMessage": {
-    "message": "Príobháideacht á caomhnú - ní roinntear aon sonraí le tríú páirtithe. Ar fáil ar Arbitrum, Avalanche, BNB chain, Ethereum Mainnet, Linea, Optimism, Polygon, Base agus Sepolia."
-  },
-  "blockaidTitleDeceptive": {
-    "message": "Is iarratas mealltach é seo"
-  },
-  "blockaidTitleMayNotBeSafe": {
-    "message": "Bí cúramach"
-  },
-  "blockaidTitleSuspicious": {
-    "message": "Is iarratas amhrasach é seo"
-  },
   "blockies": {
     "message": "Blocaigh"
   },
@@ -1165,7 +1111,7 @@
   "confirmGasFeeTokenModalPayETH": {
     "message": "Íoc le ETH"
   },
-  "confirmGasFeeTokenModalPayToken": {
+  "confirmGasFeeTokenModalToken": {
     "message": "Íoc le comharthaí eile"
   },
   "confirmGasFeeTokenModalTitle": {
@@ -1465,7 +1411,7 @@
   },
   "createPasswordDetailsSocial": {
     "message": "Má chailleann tú an pasfhocal seo, caillfidh tú rochtain ar do sparán ar gach gléas. Stóráil é in áit shábháilte, ",
-    "description": "$1 is the text 'MetaMask can't reset it.'"
+    "description": "$1 is the text '1do can't reset it.'"
   },
   "createPasswordDetailsSocialReset": {
     "message": "Ní féidir le 1do é a athshocrú."
@@ -1645,7 +1591,7 @@
   },
   "deepLink_Error404_CTA_LinkText": {
     "message": "Nuashonraigh go dtí an leagan is déanaí de 1do",
-    "description": "Part of `deepLink_Error404_CTA`. The text links to https://support.metamask.io/configure/wallet/how-to-update-the-version-of-metamask/"
+    "description": "Part of `deepLink_Error404_CTA`. The text links to https://support.1do.io/configure/wallet/how-to-update-the-version-of-1do/"
   },
   "deepLink_ErrorMissingUrl": {
     "message": "Níor soláthraíodh aon URL le nascleanúint chuige."
@@ -1674,15 +1620,6 @@
   },
   "deepLink_theNotificationsPage": {
     "message": "an leathanach fógraí"
-  },
-  "deepLink_thePerpsPage": {
-    "message": "an leathanach perps"
-  },
-  "deepLink_theSwapsPage": {
-    "message": "an leathanach malartuithe"
-  },
-  "deepLink_theSwapsRampsPage": {
-    "message": "an leathanach Malartuithe/Rampaí"
   },
   "defaultRpcUrl": {
     "message": "URL RPC réamhshocraithe"
@@ -2247,7 +2184,7 @@
   },
   "flaskWelcomeWarning2": {
     "message": "We do not guarantee the safety or stability of this extension. The new APIs offered by Flask are not hardened against phishing attacks, meaning that any site that requires Flask might be a malicious attempt to steal your assets.",
-    "description": "This explains the risks of using MetaMask Flask"
+    "description": "This explains the risks of using 1do Flask"
   },
   "flaskWelcomeWarning3": {
     "message": "Is turgnamhacha iad gach API Flask. Féadfar iad a athrú nó a bhaint gan fógra, nó d'fhéadfadh siad fanacht ar Flask go ceann tréimhse éiginnte gan iad a aistriú go 1do cobhsaí riamh. Bain úsáid astu ar do phriacal féin.",
@@ -2255,7 +2192,7 @@
   },
   "flaskWelcomeWarning4": {
     "message": "Bí cinnte do shíneadh rialta 1do a dhíchumasú agus Flask in úsáid agat.",
-    "description": "This message calls to pay attention about multiple versions of MetaMask running on the same site (Flask + Prod)"
+    "description": "This message calls to pay attention about multiple versions of 1do running on the same site (Flask + Prod)"
   },
   "flaskWelcomeWarningAcceptButton": {
     "message": "Glacaim leis na rioscaí",
@@ -3014,9 +2951,6 @@
   },
   "metamaskNotificationsAreOff": {
     "message": "Níl fógraí sparán gníomhach faoi láthair."
-  },
-  "metamaskSwapsOfflineDescription": {
-    "message": "Tá cothabháil á déanamh ar 1do Swaps. Seiceáil ar ais ar ball."
   },
   "metamaskVersion": {
     "message": "Leagan 1do"
@@ -3825,7 +3759,7 @@
   },
   "openFullScreenForLedgerWebHid": {
     "message": "Téigh go dtí an scáileán iomlán chun do Ledger a nascadh.",
-    "description": "Shown to the user on the confirm screen when they are viewing MetaMask in a popup window but need to connect their ledger via webhid."
+    "description": "Shown to the user on the confirm screen when they are viewing 1do in a popup window but need to connect their ledger via webhid."
   },
   "openInBlockExplorer": {
     "message": "Oscail i mbloc-iniúchóir"
@@ -3985,14 +3919,6 @@
   "permission_rpcDescriptionOriginList": {
     "message": "$1 agus $2",
     "description": "A list of allowed origins where $2 is the last origin of the list and $1 is the rest of the list separated by ','."
-  },
-  "permission_signatureInsight": {
-    "message": "Taispeáin léargais shínithe modúl.",
-    "description": "The description for the `endowment:signature-insight` permission"
-  },
-  "permission_signatureInsightOrigin": {
-    "message": "Féach bunús na suíomhanna gréasáin a thionscnaíonn iarratas sínithe",
-    "description": "The description for the `signatureOrigin` caveat, to be used with the `endowment:signature-insight` permission"
   },
   "permission_transactionInsight": {
     "message": "Faigh agus taispeáin léargais idirbheart.",
@@ -4542,13 +4468,6 @@
   "securityAlert": {
     "message": "Foláireamh slándála ó $1 agus $2"
   },
-  "securityAlerts": {
-    "message": "Foláirimh slándála"
-  },
-  "securityAlertsDescription": {
-    "message": "Tugann an ghné seo foláireamh duit faoi ghníomhaíocht mailíseach nó neamhghnách trí athbhreithniú gníomhach a dhéanamh ar iarratais ar idirbhearta agus ar shínithe. $1",
-    "description": "Link to learn more about security alerts"
-  },
   "securityAndPrivacy": {
     "message": "Slándáil & príobháideacht"
   },
@@ -4734,189 +4653,6 @@
   "settingsSearchMatchingNotFound": {
     "message": "Ní bhfuarthas aon torthaí comhoiriúnacha."
   },
-  "shieldClaim": {
-    "message": "Cuir éileamh isteach"
-  },
-  "shieldClaimDescription": {
-    "message": "Cur síos ar an gcás"
-  },
-  "shieldClaimEmail": {
-    "message": "Ríomhphost"
-  },
-  "shieldClaimEmailHelpText": {
-    "message": "Úsáidfimid an ríomhphost seo chun tú a choinneáil ar an eolas faoi nuashonruithe."
-  },
-  "shieldClaimFileUploader": {
-    "message": "Uaslódáil Íomhá"
-  },
-  "shieldClaimFileUploaderHelpText": {
-    "message": "Má tá aon fhianaise bhreise agat, uaslódáil anseo í le do thoil."
-  },
-  "shieldClaimImpactedTxHash": {
-    "message": "Hais idirbhirt a ndearnadh difear dó"
-  },
-  "shieldClaimImpactedTxHashHelpText": {
-    "message": "Ar a dtugtar TXID, hais-aitheantas, nó aitheantóir idirbhirt freisin."
-  },
-  "shieldClaimImpactedTxHashHelpTextLink": {
-    "message": "An bhfuil cabhair uait chun é a aimsiú?"
-  },
-  "shieldClaimImpactedWalletAddress": {
-    "message": "Seoladh sparán atá buailte"
-  },
-  "shieldClaimInvalidEmail": {
-    "message": "Ríomhphost neamhbhailí"
-  },
-  "shieldClaimInvalidTxHash": {
-    "message": "Hais idirbhirt neamhbhailí"
-  },
-  "shieldClaimInvalidWalletAddress": {
-    "message": "Seoladh sparán neamhbhailí"
-  },
-  "shieldClaimReimbursementWalletAddress": {
-    "message": "Seoladh sparán le haghaidh aisíocaíochta"
-  },
-  "shieldClaimReimbursementWalletAddressHelpText": {
-    "message": "Cinntigh nach sparán atá i mbaol é seo."
-  },
-  "shieldClaimSubmit": {
-    "message": "Cuir éileamh isteach"
-  },
-  "shieldConfirmMembership": {
-    "message": "Deimhnigh ballraíocht"
-  },
-  "shieldCoverageAlertMessageChainNotSupported": {
-    "message": "Ní thacaítear leis an slabhra seo, mar sin níl sé faoi chosaint ag Transaction Shield. $1."
-  },
-  "shieldCoverageAlertMessageLearnHowCoverageWorks": {
-    "message": "Foghlaim conas a oibríonn clúdach"
-  },
-  "shieldCoverageAlertMessagePotentialRisks": {
-    "message": "Tá rioscaí féideartha ag baint leis an idirbheart seo, mar sin níl sé faoi chosaint ag Transaction Shield. $1."
-  },
-  "shieldCoverageAlertMessageSignatureNotSupported": {
-    "message": "Ní thacaítear leis an síniú seo, mar sin níl sé faoi chosaint ag Transaction Shield. $1."
-  },
-  "shieldCoverageAlertMessageTitle": {
-    "message": "Níl an t-idirbheart seo clúdaithe"
-  },
-  "shieldCoverageAlertMessageTxTypeNotSupported": {
-    "message": "Ní thacaítear leis an gcineál idirbhirt seo, mar sin níl sé faoi chosaint ag Transaction Shield. $1"
-  },
-  "shieldCoverageAlertMessageUnknown": {
-    "message": "Ní féidir an t-iarratas seo a fhíorú, mar sin níl sé faoi chosaint ag Transaction Shield. $1."
-  },
-  "shieldCovered": {
-    "message": "Clúdaithe"
-  },
-  "shieldEntryModalGetStarted": {
-    "message": "Tosaigh"
-  },
-  "shieldFooterAgreement": {
-    "message": "Trí leanúint ar aghaidh, aontaím le Sciath Idirbhirt $1."
-  },
-  "shieldNotCovered": {
-    "message": "Gan chlúdach"
-  },
-  "shieldPlanAnnual": {
-    "message": "Bliantúil"
-  },
-  "shieldPlanAnnualPrice": {
-    "message": "$1/bliain",
-    "description": "The $1 is the price of the annual plan"
-  },
-  "shieldPlanCard": {
-    "message": "Cárta"
-  },
-  "shieldPlanDetails": {
-    "message": "Sonraí an phlean"
-  },
-  "shieldPlanDetails1": {
-    "message": "Gan aon táille anois, bain triail as saor in aisce ar feadh $1 lá",
-    "description": "The $1 is the number of days"
-  },
-  "shieldPlanDetails3": {
-    "message": "Cosnaíonn sé do shócmhainní ó idirbhearta contúirteacha"
-  },
-  "shieldPlanMonthly": {
-    "message": "Míosúil"
-  },
-  "shieldPlanMonthlyPrice": {
-    "message": "$1/mí",
-    "description": "The $1 is the price of the monthly plan"
-  },
-  "shieldPlanPayWith": {
-    "message": "Íoc le"
-  },
-  "shieldPlanPayWithCard": {
-    "message": "Íoc le cárta"
-  },
-  "shieldPlanPayWithToken": {
-    "message": "Íoc le $1",
-    "description": "The $1 is token"
-  },
-  "shieldPlanPaymentTitle": {
-    "message": "Athraigh modh íocaíochta"
-  },
-  "shieldPlanSave": {
-    "message": "Sábháil 16%"
-  },
-  "shieldPlanSelectToken": {
-    "message": "Roghnaigh comhartha"
-  },
-  "shieldPlanTitle": {
-    "message": "Roghnaigh do phlean"
-  },
-  "shieldTx": {
-    "message": "Sciath Idirbhirt"
-  },
-  "shieldTxCancelDetails": {
-    "message": "Mura gcealaíonn tú, ní bheidh do sparán ná d’idirbhearta clúdaithe ag tosú le $1.",
-    "description": "The $1 is the date subscription ends"
-  },
-  "shieldTxDetails1Title": {
-    "message": "Clúdaíonn sé $10,000 i gcosaint idirbhirt"
-  },
-  "shieldTxMembershipActive": {
-    "message": "Ballraíocht ghníomhach"
-  },
-  "shieldTxMembershipBillingDetailsViewBillingHistory": {
-    "message": "Féach ar stair billeála"
-  },
-  "shieldTxMembershipCancel": {
-    "message": "Cealaigh ballraíocht"
-  },
-  "shieldTxMembershipCancelNotification": {
-    "message": "Cuirfear do bhallra�ocht ar ceal ar $1.",
-    "description": "The $1 is the date"
-  },
-  "shieldTxMembershipErrorPausedCardTooltip": {
-    "message": "Diúltaíodh do d’íocaíocht. Nuashonraigh do mhodh íocaíochta le go leanfaidh do chlúdach ar aghaidh."
-  },
-  "shieldTxMembershipErrorPausedCryptoTooltip": {
-    "message": "Iarmhéid neamhleor comharthaí i do sparán. Cuir barr leis chun clúdach a atosú."
-  },
-  "shieldTxMembershipFreeTrial": {
-    "message": "Triail saor in aisce"
-  },
-  "shieldTxMembershipId": {
-    "message": "Aitheantas Ball"
-  },
-  "shieldTxMembershipInactive": {
-    "message": "Ballraíocht neamhghníomhach"
-  },
-  "shieldTxMembershipPaused": {
-    "message": "Sosaithe"
-  },
-  "shieldTxMembershipRenew": {
-    "message": "Athnuachan ballraíochta"
-  },
-  "shieldTxMembershipResubscribe": {
-    "message": "Atosaigh ballraíocht"
-  },
-  "shieldTxMembershipSubmitCase": {
-    "message": "Cuir éileamh isteach"
-  },
   "show": {
     "message": "Taispeáin"
   },
@@ -5078,7 +4814,7 @@
     "message": "Ná taispeáin an scáileán idirmheánach agus naisc dhomhain á n-oscailt"
   },
   "skipDeepLinkInterstitialDescription": {
-    "message": "Má chumasaíonn tú an rogha seo, scipeálfar an scáileán idirmheánach a thaispeántar agus naisc dhomhain á n-oscailt i 1do. Is nasc cosúil le https://link.metamask.io/home é \"nasc domhain\" a chuirfidh faoi deara go n-osclófar 1do; is féidir le daoine eile na naisc seo a cheilt. Tá an scáileán idirmheánach deartha chun tú a chosaint ó leathanaigh a oscailt de thaisme laistigh de 1do a d'fhéadfadh do chuntais, comharthaí, stair, iarmhéideanna, socruithe, nó faisnéis eile a d'fhéadfadh a bheith íogair a thaispeáint. Ní bhaineann an socrú seo ach le naisc atá sínithe ag 1do."
+    "message": "Má chumasaíonn tú an rogha seo, scipeálfar an scáileán idirmheánach a thaispeántar agus naisc dhomhain á n-oscailt i 1do. Is nasc cosúil le https://link.1do.io/home é \"nasc domhain\" a chuirfidh faoi deara go n-osclófar 1do; is féidir le daoine eile na naisc seo a cheilt. Tá an scáileán idirmheánach deartha chun tú a chosaint ó leathanaigh a oscailt de thaisme laistigh de 1do a d'fhéadfadh do chuntais, comharthaí, stair, iarmhéideanna, socruithe, nó faisnéis eile a d'fhéadfadh a bheith íogair a thaispeáint. Ní bhaineann an socrú seo ach le naisc atá sínithe ag 1do."
   },
   "slippage": {
     "message": "Sleamhnú"
@@ -5106,12 +4842,6 @@
   },
   "smartContracts": {
     "message": "Conarthaí cliste"
-  },
-  "smartSwapsErrorNotEnoughFunds": {
-    "message": "Níl dóthain cistí ann le haghaidh malartú cliste."
-  },
-  "smartSwapsErrorUnavailable": {
-    "message": "Níl Smart Swaps ar fáil go sealadach."
   },
   "smartTransactionCancelled": {
     "message": "Cuireadh do idirbheart ar ceal"
@@ -5455,7 +5185,7 @@
   },
   "stxFailureDescription": {
     "message": "Is féidir le hathruithe tobann sa mhargadh teipeanna a chur faoi deara. Má leanann an fhadhb, déan teagmháil le $1 le do thoil.",
-    "description": "This message is shown to a user if their swap fails. The $1 will be replaced by support.metamask.io"
+    "description": "This message is shown to a user if their swap fails. The $1 will be replaced by support.1do.io"
   },
   "stxOptInSupportedNetworksDescription": {
     "message": "Cas ar Idirbhearta Cliste le haghaidh idirbhearta níos iontaofa agus níos sláine ar líonraí tacaithe. $1"
@@ -5595,7 +5325,7 @@
   },
   "swapFailedErrorDescriptionWithSupportLink": {
     "message": "Tarlaíonn teipeanna idirbheart agus táimid anseo chun cabhrú leat. Má leanann an fhadhb seo ar aghaidh, is féidir leat teagmháil a dhéanamh lenár dtacaíocht do chustaiméirí ag $1 le haghaidh tuilleadh cúnaimh.",
-    "description": "This message is shown to a user if their swap fails. The $1 will be replaced by support.metamask.io"
+    "description": "This message is shown to a user if their swap fails. The $1 will be replaced by support.1do.io"
   },
   "swapFailedErrorTitle": {
     "message": "Theip ar an malartú"
@@ -5633,7 +5363,7 @@
   },
   "swapIncludesMMFee": {
     "message": "Áirítear táille $1% le haghaidh 1do.",
-    "description": "Provides information about the fee that MetaMask takes for swaps. $1 is a decimal number."
+    "description": "Provides information about the fee that 1do takes for swaps. $1 is a decimal number."
   },
   "swapLearnMore": {
     "message": "Foghlaim tuilleadh faoi Mhalartuithe"
@@ -5643,13 +5373,6 @@
   },
   "swapMaxSlippage": {
     "message": "Sleamhnú uasta"
-  },
-  "swapMetaMaskFee": {
-    "message": "Táille 1do"
-  },
-  "swapMetaMaskFeeDescription": {
-    "message": "Cuirtear an táille $1% san áireamh go huathoibríoch sa luachan seo. Íocann tú í mar mhalairt ar cheadúnas chun bogearraí comhiomlánaithe faisnéise soláthraí leachtachta 1do a úsáid.",
-    "description": "Provides information about the fee that MetaMask takes for swaps. $1 is a decimal number."
   },
   "swapNQuotesWithDot": {
     "message": "Sleachta $1.",
@@ -5994,9 +5717,6 @@
   "transactionSettings": {
     "message": "Socruithe idirbhirt"
   },
-  "transactionShield": {
-    "message": "Sciath Idirbhirt"
-  },
   "transactionTotalGasFee": {
     "message": "Táille iomlán gáis",
     "description": "Label for the total gas fee incurred in the transaction."
@@ -6092,7 +5812,7 @@
   },
   "u2f": {
     "message": "U2F",
-    "description": "A name on an API for the browser to interact with devices that support the U2F protocol. On some browsers we use it to connect MetaMask to Ledger devices."
+    "description": "A name on an API for the browser to interact with devices that support the U2F protocol. On some browsers we use it to connect 1do to Ledger devices."
   },
   "unableToConnectTo": {
     "message": "Ní féidir ceangal le $1.",
@@ -6430,5 +6150,13 @@
   },
   "noHardwareWalletSupport": {
     "message": "Most hardware wallets will not work with your current browser version."
+  },
+  "permission_signatureInsight": {
+    "message": "Display signature insights modal.",
+    "description": "The description for the `endowment:signature-insight` permission"
+  },
+  "permission_signatureInsightOrigin": {
+    "message": "See the origins of websites that initiate a signature request",
+    "description": "The description for the `signatureOrigin` caveat, to be used with the `endowment:signature-insight` permission"
   }
 }

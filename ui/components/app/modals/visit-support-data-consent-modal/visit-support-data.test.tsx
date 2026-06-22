@@ -83,8 +83,8 @@ describe('VisitSupportDataConsentModal', () => {
     });
 
     const url = new URL(SUPPORT_LINK as string);
-    url.searchParams.append('metamask_version', 'MOCK_VERSION');
-    url.searchParams.append('metamask_metametrics_id', mockMetaMetricsId);
+    url.searchParams.append('1do_version', 'MOCK_VERSION');
+    url.searchParams.append('1do_metrics_id', mockMetaMetricsId);
     const expectedUrl = url.toString();
 
     expect(mockTrackEvent).toHaveBeenCalledWith(
@@ -150,7 +150,7 @@ describe('VisitSupportDataConsentModal', () => {
     });
 
     const url = new URL(SUPPORT_LINK as string);
-    url.searchParams.append('metamask_version', 'MOCK_VERSION');
+    url.searchParams.append('1do_version', 'MOCK_VERSION');
     const expectedUrl = url.toString();
 
     expect(mockTrackEvent).toHaveBeenCalledWith(
@@ -188,7 +188,7 @@ describe('VisitSupportDataConsentModal', () => {
     });
 
     const url = new URL(SUPPORT_LINK as string);
-    url.searchParams.append('metamask_version', 'MOCK_VERSION');
+    url.searchParams.append('1do_version', 'MOCK_VERSION');
     const expectedUrl = url.toString();
 
     expect(mockTrackEvent).toHaveBeenCalledWith(
@@ -218,7 +218,7 @@ describe('VisitSupportDataConsentModal', () => {
     const calledUrl = (openWindow as jest.Mock).mock.calls[0][0];
 
     // Verify URL is properly formed with correct separator
-    expect(calledUrl).toMatch(/[?&]metamask_version=/u);
+    expect(calledUrl).toMatch(/[?&]1do_version=/u);
     // Should not have double separators
     expect(calledUrl).not.toContain('??');
   });
@@ -237,9 +237,9 @@ describe('VisitSupportDataConsentModal', () => {
     const calledUrl = (openWindow as jest.Mock).mock.calls[0][0];
 
     // Verify personal params are not in URL
-    expect(calledUrl).not.toContain('metamask_profile_id');
-    expect(calledUrl).not.toContain('metamask_metametrics_id');
-    expect(calledUrl).not.toContain('metamask_version');
+    expect(calledUrl).not.toContain('1do_profile_id');
+    expect(calledUrl).not.toContain('1do_metrics_id');
+    expect(calledUrl).not.toContain('1do_version');
   });
 
   it('handles reject button and opens support link', async () => {
@@ -299,8 +299,8 @@ describe('VisitSupportDataConsentModal', () => {
     });
 
     const url = new URL(SUPPORT_LINK as string);
-    url.searchParams.append('metamask_version', 'MOCK_VERSION');
-    url.searchParams.append('metamask_metametrics_id', mockMetaMetricsId);
+    url.searchParams.append('1do_version', 'MOCK_VERSION');
+    url.searchParams.append('1do_metrics_id', mockMetaMetricsId);
     const expectedUrl = url.toString();
 
     expect(openWindow).toHaveBeenCalledWith(expectedUrl);
@@ -326,8 +326,8 @@ describe('VisitSupportDataConsentModal', () => {
     });
 
     const url = new URL(SUPPORT_LINK as string);
-    url.searchParams.append('metamask_version', 'MOCK_VERSION');
-    url.searchParams.append('metamask_metametrics_id', mockMetaMetricsId);
+    url.searchParams.append('1do_version', 'MOCK_VERSION');
+    url.searchParams.append('1do_metrics_id', mockMetaMetricsId);
     const expectedUrl = url.toString();
 
     expect(openWindow).toHaveBeenCalledWith(expectedUrl);
@@ -353,8 +353,8 @@ describe('VisitSupportDataConsentModal', () => {
     });
 
     const url = new URL(SUPPORT_LINK as string);
-    url.searchParams.append('metamask_version', 'MOCK_VERSION');
-    url.searchParams.append('metamask_metametrics_id', mockMetaMetricsId);
+    url.searchParams.append('1do_version', 'MOCK_VERSION');
+    url.searchParams.append('1do_metrics_id', mockMetaMetricsId);
     const expectedUrl = url.toString();
 
     expect(openWindow).toHaveBeenCalledWith(expectedUrl);

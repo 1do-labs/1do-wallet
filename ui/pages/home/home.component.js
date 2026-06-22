@@ -54,7 +54,6 @@ import ZENDESK_URLS from '../../helpers/constants/zendesk-url';
 import { METAMETRICS_SETTINGS_LINK } from '../../helpers/constants/common';
 import { SUPPORT_LINK } from '../../../shared/lib/ui-utils';
 import { AccountOverview } from '../../components/multichain';
-import PasswordOutdatedModal from '../../components/app/password-outdated-modal';
 import { isBeta, isFlask, isMain } from '../../../shared/lib/build-types';
 import BetaAndFlaskHomeFooter from './beta-and-flask-home-footer.component';
 import { HomeDeepLinkActions } from './HomeDeepLinkActions';
@@ -139,9 +138,7 @@ export default class Home extends PureComponent {
     redirectAfterDefaultPage: PropTypes.object,
     setRedirectAfterDefaultPage: PropTypes.func,
     clearRedirectAfterDefaultPage: PropTypes.func,
-    isSeedlessPasswordOutdated: PropTypes.bool,
     isPrimarySeedPhraseBackedUp: PropTypes.bool,
-    isSocialLoginFlow: PropTypes.bool,
     lookupSelectedNetworks: PropTypes.func.isRequired,
     envType: PropTypes.string,
     pendingRedirectRoute: PropTypes.object,
@@ -787,9 +784,7 @@ export default class Home extends PureComponent {
       newNetworkAddedConfigurationId,
       showMultiRpcModal,
       showUpdateModal,
-      isSeedlessPasswordOutdated,
       isPrimarySeedPhraseBackedUp,
-      isSocialLoginFlow,
     } = this.props;
 
     if (forgottenPassword) {
@@ -811,10 +806,7 @@ export default class Home extends PureComponent {
       canSeeModals && showUpdateModal && !showMultiRpcEditModal;
 
     const showTermsOfUse =
-      completedOnboarding &&
-      !onboardedInThisUISession &&
-      showTermsOfUsePopup &&
-      !isSocialLoginFlow;
+      completedOnboarding && !onboardedInThisUISession && showTermsOfUsePopup;
 
     const showRecoveryPhrase =
       showRecoveryPhraseReminder && !isPrimarySeedPhraseBackedUp;
@@ -846,7 +838,6 @@ export default class Home extends PureComponent {
           participateInMetaMetrics === true
             ? this.renderOnboardingPopover()
             : null}
-          {isSeedlessPasswordOutdated && <PasswordOutdatedModal />}
           {showMultiRpcEditModal && <MultiRpcEditModal />}
           {displayUpdateModal && <UpdateModal />}
           {showRecoveryPhrase ? (

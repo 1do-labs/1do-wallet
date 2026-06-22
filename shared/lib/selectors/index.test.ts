@@ -1,7 +1,7 @@
 // Mocha type definitions are conflicting with Jest
 import { it as jestIt } from '@jest/globals';
 
-import { createSwapsMockStore } from '../../../test/jest';
+import { createSmartTransactionsMockStore } from '../../../test/jest';
 import { CHAIN_IDS } from '../../constants/network';
 import { mockNetworkState } from '../../../test/stub/networks';
 import * as envModule from '../environment';
@@ -186,7 +186,7 @@ describe('Selectors', () => {
     jestIt(
       'returns true if feature flag is enabled, not a HW and is Ethereum network',
       () => {
-        const state = createSwapsMockStore();
+        const state = createSmartTransactionsMockStore();
         expect(getSmartTransactionsEnabled(state)).toBe(true);
       },
     );
@@ -194,7 +194,7 @@ describe('Selectors', () => {
     jestIt(
       'returns false if feature flag is disabled, not a HW and is Ethereum network',
       () => {
-        const state = createSwapsMockStore();
+        const state = createSmartTransactionsMockStore();
         state.metamask.remoteFeatureFlags.smartTransactionsNetworks[
           CHAIN_IDS.MAINNET
         ] = { extensionActive: false };
@@ -205,7 +205,7 @@ describe('Selectors', () => {
     jestIt(
       'returns false if feature flag is enabled, not a HW, STX liveness is false for chain',
       () => {
-        const state = createSwapsMockStore();
+        const state = createSmartTransactionsMockStore();
         state.metamask.smartTransactionsState.livenessByChainId[
           CHAIN_IDS.MAINNET
         ] = false;
@@ -216,7 +216,7 @@ describe('Selectors', () => {
     jestIt(
       'returns false if feature flag is enabled, not a HW, STX liveness is not set for chain',
       () => {
-        const state = createSwapsMockStore();
+        const state = createSmartTransactionsMockStore();
         // @ts-expect-error Testing undefined liveness for chain
         state.metamask.smartTransactionsState.livenessByChainId = {};
         expect(getSmartTransactionsEnabled(state)).toBe(false);
@@ -226,7 +226,7 @@ describe('Selectors', () => {
     jestIt(
       'returns true if feature flag is enabled, is a HW and is Ethereum network',
       () => {
-        const state = createSwapsMockStore();
+        const state = createSmartTransactionsMockStore();
         const newState = {
           ...state,
           metamask: {
@@ -253,7 +253,7 @@ describe('Selectors', () => {
     jestIt(
       'returns false if feature flag is enabled, not a HW and is Optimism network',
       () => {
-        const state = createSwapsMockStore();
+        const state = createSmartTransactionsMockStore();
         const newState = {
           ...state,
           metamask: {
@@ -268,7 +268,7 @@ describe('Selectors', () => {
     jestIt(
       'returns true if feature flag is enabled, not a HW and is BSC network with a default RPC URL',
       () => {
-        const state = createSwapsMockStore();
+        const state = createSmartTransactionsMockStore();
         const newState = {
           ...state,
           metamask: {
@@ -286,7 +286,7 @@ describe('Selectors', () => {
     jestIt(
       'returns false if feature flag is disabled for BSC, not a HW and is BSC network with a default RPC URL',
       () => {
-        const state = createSwapsMockStore();
+        const state = createSmartTransactionsMockStore();
         state.metamask.remoteFeatureFlags.smartTransactionsNetworks[
           CHAIN_IDS.BSC
         ] = { extensionActive: false };
@@ -307,7 +307,7 @@ describe('Selectors', () => {
     jestIt(
       'returns false if feature flag is enabled, not a HW and is BSC network with a non-default RPC URL',
       () => {
-        const state = createSwapsMockStore();
+        const state = createSmartTransactionsMockStore();
         const newState = {
           ...state,
           metamask: {
@@ -325,7 +325,7 @@ describe('Selectors', () => {
     jestIt(
       'returns true if feature flag is enabled, not a HW and is Linea network with a default RPC URL',
       () => {
-        const state = createSwapsMockStore();
+        const state = createSmartTransactionsMockStore();
         (
           state.metamask.remoteFeatureFlags.smartTransactionsNetworks as Record<
             string,
@@ -351,7 +351,7 @@ describe('Selectors', () => {
     jestIt(
       'returns false if feature flag is enabled, not a HW and is Linea network with a non-default RPC URL',
       () => {
-        const state = createSwapsMockStore();
+        const state = createSmartTransactionsMockStore();
         (
           state.metamask.remoteFeatureFlags.smartTransactionsNetworks as Record<
             string,
@@ -375,14 +375,13 @@ describe('Selectors', () => {
     );
 
     jestIt('returns false if a non-selected account is used', () => {
-      const state = createSwapsMockStore();
-      state.metamask.internalAccounts.selectedAccount =
-        '36eb02e0-7925-47f0-859f-076608f09b69';
+      const state = createSmartTransactionsMockStore();
+      state.metamask.internalAccounts.selectedAccount = 'missing-account';
       expect(getSmartTransactionsEnabled(state)).toBe(false);
     });
 
     jestIt('prioritizes provided chainId parameter over state chainId', () => {
-      const state = createSwapsMockStore(); // Ethereum network (supported)
+      const state = createSmartTransactionsMockStore(); // Ethereum network (supported)
 
       // Should be false for Optimism chainId regardless of state
       expect(getSmartTransactionsEnabled(state, CHAIN_IDS.OPTIMISM)).toBe(
@@ -412,7 +411,7 @@ describe('Selectors', () => {
     jestIt('permits Infura URLs in production for RPC URL checks', () => {
       jest.spyOn(envModule, 'isProduction').mockReturnValue(true);
 
-      const state = createSwapsMockStore();
+      const state = createSmartTransactionsMockStore();
       const newState = {
         ...state,
         metamask: {
@@ -430,7 +429,7 @@ describe('Selectors', () => {
     jestIt('permits Binance URLs in production for RPC URL checks', () => {
       jest.spyOn(envModule, 'isProduction').mockReturnValue(true);
 
-      const state = createSwapsMockStore();
+      const state = createSmartTransactionsMockStore();
       const newState = {
         ...state,
         metamask: {
@@ -448,7 +447,7 @@ describe('Selectors', () => {
     jestIt('rejects other URLs in production for RPC URL checks', () => {
       jest.spyOn(envModule, 'isProduction').mockReturnValue(true);
 
-      const state = createSwapsMockStore();
+      const state = createSmartTransactionsMockStore();
       const newState = {
         ...state,
         metamask: {
@@ -466,7 +465,7 @@ describe('Selectors', () => {
     jestIt('allows any URL in non-production for RPC URL checks', () => {
       jest.spyOn(envModule, 'isProduction').mockReturnValue(false);
 
-      const state = createSwapsMockStore();
+      const state = createSmartTransactionsMockStore();
       const newState = {
         ...state,
         metamask: {
@@ -487,7 +486,7 @@ describe('Selectors', () => {
         jest.spyOn(envModule, 'isProduction').mockReturnValue(false);
 
         // Set up a state with a chain ID that should be skipped, but a non-acceptable RPC URL
-        const state = createSwapsMockStore();
+        const state = createSmartTransactionsMockStore();
         const stateWithCustomRpc = {
           ...state,
           metamask: {

@@ -11,15 +11,10 @@ import {
 import ActivityListPage from '../../page-objects/pages/home/activity-list';
 import TransactionConfirmation from '../../page-objects/pages/confirmations/transaction-confirmation';
 import HomePage from '../../page-objects/pages/home/homepage';
-import SwapPage from '../../page-objects/pages/swap/swap-page';
-import { BRIDGE_FEATURE_FLAGS_WITH_SSE_ENABLED } from '../bridge/constants';
-import { mockGetTxStatus } from '../bridge/bridge-test-utils';
 import { mockSpotPrices } from '../tokens/utils/mocks';
 import {
   mockSmartTransactionRequests,
-  mockGasIncludedTransactionRequests,
   mockChooseGasFeeTokenRequests,
-  mockSwapTokensMockApis,
   mockSentinelNetworks,
 } from './mocks';
 
@@ -53,11 +48,6 @@ async function withFixturesForSmartTransactions(
       localNodeOptions: {
         hardfork: 'london',
         chainId: '1',
-      },
-      manifestFlags: {
-        remoteFeatureFlags: {
-          bridgeConfig: BRIDGE_FEATURE_FLAGS_WITH_SSE_ENABLED,
-        },
       },
       testSpecificMock,
       ignoredConsoleErrors,
@@ -111,83 +101,6 @@ describe('Smart Transactions', function () {
         await activityList.checkNoFailedTransactions();
         await activityList.checkConfirmedTxNumberDisplayedInActivity(1);
         await activityList.checkTxAmountInActivity(`-0.01 ETH`, 1);
-      },
-    );
-  });
-
-  it('should Swap using smart transaction', async function () {
-    await withFixturesForSmartTransactions(
-      {
-        title: this.test?.fullTitle(),
-        testSpecificMock: async (mockServer: MockttpServer) => {
-          await mockSpotPrices(mockServer, {
-            'eip155:1/slip44:60': {
-              price: 1700,
-              marketCap: 382623505141,
-              pricePercentChange1d: 0,
-            },
-          });
-          await mockSmartTransactionRequests(mockServer);
-          await mockSwapTokensMockApis(mockServer);
-          await mockGetTxStatus(mockServer);
-        },
-      },
-      async ({ driver }) => {
-        const homePage = new HomePage(driver);
-        await homePage.checkIfSwapButtonIsClickable();
-        await homePage.startSwapFlow();
-
-        const swapPage = new SwapPage(driver);
-        await swapPage.checkPageIsLoaded();
-        await swapPage.enterSwapAmount('2');
-        await swapPage.selectDestinationToken('DAI');
-        await swapPage.checkQuoteIsGasIncluded();
-        await swapPage.submitSwap();
-
-        await swapPage.waitForSmartTransactionToComplete();
-        await swapPage.clickViewActivity();
-
-        await homePage.checkPageIsLoaded();
-        await homePage.goToActivityList();
-
-        const activityList = new ActivityListPage(driver);
-        await activityList.checkCompletedTxNumberDisplayedInActivity();
-        await activityList.checkNoFailedTransactions();
-        await activityList.checkConfirmedTxNumberDisplayedInActivity();
-        await activityList.checkTxAction({ action: 'Swap ETH to DAI' });
-        await activityList.checkTxAmountInActivity(`-2 ETH`, 1);
-      },
-    );
-  });
-
-  it('should Swap with gas included fee', async function () {
-    await withFixturesForSmartTransactions(
-      {
-        title: this.test?.fullTitle(),
-        testSpecificMock: mockGasIncludedTransactionRequests,
-      },
-      async ({ driver }) => {
-        const homePage = new HomePage(driver);
-        await homePage.checkIfSwapButtonIsClickable();
-        await homePage.startSwapFlow();
-
-        const swapPage = new SwapPage(driver);
-        await swapPage.checkPageIsLoaded();
-        await swapPage.enterSwapAmount('20');
-        await swapPage.waitForQuote();
-        await swapPage.checkQuoteIsGasIncluded();
-        await swapPage.submitSwap();
-
-        await swapPage.waitForSmartTransactionToComplete();
-        await swapPage.clickViewActivity();
-
-        await homePage.checkPageIsLoaded();
-        await homePage.goToActivityList();
-
-        const activityList = new ActivityListPage(driver);
-        await activityList.checkCompletedTxNumberDisplayedInActivity();
-        await activityList.checkNoFailedTransactions();
-        await activityList.checkConfirmedTxNumberDisplayedInActivity();
       },
     );
   });

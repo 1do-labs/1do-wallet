@@ -1,8 +1,4 @@
 import React, { useCallback, useEffect } from 'react';
-import {
-  BlockaidReason,
-  SecurityProvider,
-} from '../../../../../shared/constants/security-provider';
 import { Alert } from '../../../../ducks/confirm-alerts/confirm-alerts';
 import {
   AlignItems,
@@ -19,7 +15,6 @@ import {
 } from '../../../../helpers/constants/design-system';
 import useAlerts from '../../../../hooks/useAlerts';
 import { useI18nContext } from '../../../../hooks/useI18nContext';
-import { useConfirmContext } from '../../../../pages/confirmations/context/confirm';
 import {
   Box,
   Button,
@@ -152,47 +147,6 @@ function AlertHeader({
         {customTitle ?? reason ?? t('alert')}
       </Text>
     </Box>
-  );
-}
-
-// TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-// eslint-disable-next-line @typescript-eslint/naming-convention
-function BlockaidAlertDetails() {
-  const t = useI18nContext();
-  const { currentConfirmation } = useConfirmContext();
-  const { securityAlertResponse } = currentConfirmation;
-  let copy;
-  switch (securityAlertResponse?.reason) {
-    case BlockaidReason.approvalFarming:
-    case BlockaidReason.setApprovalForAll:
-    case BlockaidReason.permitFarming:
-      copy = t('blockaidAlertDescriptionWithdraw');
-      break;
-    case BlockaidReason.transferFarming:
-    case BlockaidReason.transferFromFarming:
-    case BlockaidReason.rawNativeTokenTransfer:
-      copy = t('blockaidAlertDescriptionTokenTransfer');
-      break;
-    case BlockaidReason.seaportFarming:
-      copy = t('blockaidAlertDescriptionOpenSea');
-      break;
-    case BlockaidReason.blurFarming:
-      copy = t('blockaidAlertDescriptionBlur');
-      break;
-    case BlockaidReason.maliciousDomain:
-      copy = t('blockaidAlertDescriptionMalicious');
-      break;
-    case BlockaidReason.rawSignatureFarming:
-    case BlockaidReason.tradeOrderFarming:
-    case BlockaidReason.other:
-    default:
-      copy = t('blockaidAlertDescriptionOthers');
-  }
-
-  return (
-    <Text textAlign={TextAlign.Center} variant={TextVariant.bodyMd}>
-      {copy}
-    </Text>
   );
 }
 
@@ -435,14 +389,10 @@ export function AlertModal({
         />
         <AlertHeader selectedAlert={selectedAlert} customTitle={customTitle} />
         <ModalBody>
-          {selectedAlert.provider === SecurityProvider.Blockaid ? (
-            <BlockaidAlertDetails />
-          ) : (
-            <AlertDetails
-              selectedAlert={selectedAlert}
-              customDetails={customDetails}
-            />
-          )}
+          <AlertDetails
+            selectedAlert={selectedAlert}
+            customDetails={customDetails}
+          />
           {customAcknowledgeCheckbox ?? (
             <AcknowledgeCheckboxBase
               selectedAlert={selectedAlert}

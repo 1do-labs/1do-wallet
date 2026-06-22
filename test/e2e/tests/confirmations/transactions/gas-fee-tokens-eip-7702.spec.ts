@@ -279,14 +279,6 @@ async function mockTransactionRelayStatus(
     });
 }
 
-async function mockSmartTransactionFeatureFlags(mockServer: MockttpServer) {
-  await mockServer
-    .forGet('https://bridge.api.cx.metamask.io/featureFlags')
-    .thenCallback(() => {
-      return {
-        ok: true,
-        statusCode: 200,
-        json: {},
-      };
-    });
+async function mockSmartTransactionFeatureFlags(_mockServer: MockttpServer) {
+  return [];
 }

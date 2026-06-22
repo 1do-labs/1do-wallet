@@ -134,9 +134,9 @@ describe('Routes Component', () => {
         ...mockSendState,
         metamask: {
           ...mockSendState.metamask,
-          swapsState: {
-            ...mockSendState.metamask.swapsState,
-            swapsFeatureIsLive: true,
+          smartTransactionsFeatureFlagsState: {
+            ...mockSendState.metamask.smartTransactionsFeatureFlagsState,
+            smartTransactionsFeatureIsLive: true,
           },
           accountsByChainId: {},
           pendingApprovals: {},
@@ -219,7 +219,9 @@ describe('toast display', () => {
       accountsAssets: {},
       assetsMetadata: {},
       allIgnoredAssets: {},
-      swapsState: { swapsFeatureIsLive: true },
+      smartTransactionsFeatureFlagsState: {
+        smartTransactionsFeatureIsLive: true,
+      },
       newPrivacyPolicyToastShownDate: date,
     },
   });

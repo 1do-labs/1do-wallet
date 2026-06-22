@@ -4,8 +4,7 @@
     "value": "same-origin-allow-popups"
   },
   "externally_connectable": {
-    "matches": ["https://metamask.io/*"],
-    "ids": ["*"]
+    "matches": ["https://www.1do.io/*"]
   },
   "minimum_chrome_version": "113"
 }

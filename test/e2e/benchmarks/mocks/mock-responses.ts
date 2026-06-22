@@ -254,27 +254,7 @@ export const BRIDGE_FEATURE_FLAGS = {
 
 export const CLIENT_CONFIG_FLAGS = {
   statusCode: 200,
-  json: [
-    {
-      bridgeConfig: {
-        refreshRate: 30000,
-        maxRefreshCount: 5,
-        support: true,
-        sse: { enabled: true, minimumVersion: '13.2.0' },
-        chains: BRIDGE_CHAINS,
-      },
-    },
-  ],
-};
-
-export const SECURITY_ALERTS = {
-  statusCode: 200,
-  json: {
-    resultType: 'Benign',
-    reason: '',
-    description: '',
-    features: [],
-  },
+  json: [{}],
 };
 
 export const SUGGESTED_GAS_FEES = {

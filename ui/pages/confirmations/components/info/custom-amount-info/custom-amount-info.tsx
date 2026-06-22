@@ -15,31 +15,11 @@ import {
   CustomAmountSkeleton,
 } from '../../transactions/custom-amount/custom-amount';
 import {
-  PayTokenAmount,
-  PayTokenAmountSkeleton,
-} from '../../pay-token-amount/pay-token-amount';
-import {
-  PayWithRow,
-  PayWithRowSkeleton,
-} from '../../rows/pay-with-row/pay-with-row';
-import { BridgeTimeRow } from '../../rows/bridge-time-row/bridge-time-row';
-import { TotalRow } from '../../rows/total-row/total-row';
-import { ConfirmInfoRowSize } from '../../../../../components/app/confirm/info/row/row';
-import {
   PercentageButtons,
   PercentageButtonsSkeleton,
 } from '../../percentage-buttons';
 import { useTransactionCustomAmount } from '../../../hooks/transactions/useTransactionCustomAmount';
 import { useTransactionCustomAmountAlerts } from '../../../hooks/transactions/useTransactionCustomAmountAlerts';
-import { useAutomaticTransactionPayToken } from '../../../hooks/pay/useAutomaticTransactionPayToken';
-import type { SetPayTokenRequest } from '../../../hooks/pay/types';
-import {
-  useIsTransactionPayLoading,
-  useTransactionPayQuotes,
-} from '../../../hooks/pay/useTransactionPayData';
-import { useTransactionPayMetrics } from '../../../hooks/pay/useTransactionPayMetrics';
-import { useTransactionPayAvailableTokens } from '../../../hooks/pay/useTransactionPayAvailableTokens';
-import { useTransactionPayToken } from '../../../hooks/pay/useTransactionPayToken';
 import { useConfirmContext } from '../../../context/confirm';
 
 /* eslint-disable @typescript-eslint/naming-convention */
@@ -47,17 +27,7 @@ import { useConfirmContext } from '../../../context/confirm';
 export type CustomAmountInfoProps = {
   children?: ReactNode;
   currency?: string;
-  /**
-   * When true, it prevents automatic selection of payment token based on balance and feature flags
-   */
-  disableAutomaticToken?: boolean;
-  /**
-   * When true, it disables MetaMask Pay for transactions that just need custom amount input
-   */
-  disablePay?: boolean;
   hasMax?: boolean;
-  hidePayTokenAmount?: boolean;
-  preferredToken?: SetPayTokenRequest;
   overrideBottomContent?: ReactNode;
   overrideCenterContent?: (amountHuman: string) => ReactNode;
 };
@@ -66,24 +36,11 @@ export const CustomAmountInfo: React.FC<CustomAmountInfoProps> = React.memo(
   ({
     children,
     currency,
-    disableAutomaticToken,
-    disablePay,
     hasMax,
-    hidePayTokenAmount,
     overrideBottomContent,
     overrideCenterContent,
-    preferredToken,
   }) => {
-    useAutomaticTransactionPayToken({
-      disable: Boolean(disablePay) || Boolean(disableAutomaticToken),
-      preferredToken,
-    });
-    useTransactionPayMetrics();
-
     const { currentConfirmation } = useConfirmContext<TransactionMeta>();
-    const { isNative: isNativePayToken } = useTransactionPayToken();
-    const availableTokens = useTransactionPayAvailableTokens();
-    const hasTokens = availableTokens.length > 0;
 
     const { disableUpdate } = useTransactionCustomAmountAlerts();
 
@@ -123,10 +80,7 @@ export const CustomAmountInfo: React.FC<CustomAmountInfoProps> = React.memo(
           amountFiat={amountFiat}
           amountHuman={amountHuman}
           currency={currency}
-          disablePay={disablePay}
-          hasMax={hasMax && !isNativePayToken}
-          hasTokens={hasTokens}
-          hidePayTokenAmount={hidePayTokenAmount}
+          hasMax={hasMax}
           onAmountChange={handleAmountChange}
           onPercentageClick={handlePercentageClick}
           overrideCenterContent={overrideCenterContent}
@@ -157,10 +111,7 @@ type CenterContainerProps = {
   amountHuman: string;
   children?: ReactNode;
   currency?: string;
-  disablePay?: boolean;
   hasMax?: boolean;
-  hasTokens: boolean;
-  hidePayTokenAmount?: boolean;
   onAmountChange: (value: string) => void;
   onPercentageClick: (percentage: number) => void;
   overrideCenterContent?: (amountHuman: string) => ReactNode;
@@ -171,10 +122,7 @@ function CenterContainer({
   amountHuman,
   children,
   currency,
-  disablePay,
   hasMax,
-  hasTokens,
-  hidePayTokenAmount,
   onAmountChange,
   onPercentageClick,
   overrideCenterContent,
@@ -191,7 +139,6 @@ function CenterContainer({
       <CustomAmount
         amountFiat={amountFiat}
         currency={currency}
-        disabled={!hasTokens}
         onChange={onAmountChange}
       />
 
@@ -204,19 +151,11 @@ function CenterContainer({
           alignItems={AlignItems.center}
           gap={3}
         >
-          {disablePay !== true && !hidePayTokenAmount && (
-            <PayTokenAmount amountHuman={amountHuman} disabled={!hasTokens} />
-          )}
           {children}
-          {disablePay !== true && hasTokens && (
-            <PayWithRow variant={ConfirmInfoRowSize.Small} />
-          )}
         </Box>
       )}
 
-      {hasTokens && hasMax && (
-        <PercentageButtons onPercentageClick={onPercentageClick} />
-      )}
+      {hasMax && <PercentageButtons onPercentageClick={onPercentageClick} />}
 
       <AlertMessage />
     </Box>
@@ -239,41 +178,20 @@ function CenterContainerSkeleton() {
         flexDirection={FlexDirection.Column}
         alignItems={AlignItems.center}
         gap={2}
-      >
-        <PayTokenAmountSkeleton />
-        <PayWithRowSkeleton />
-      </Box>
+      ></Box>
       <PercentageButtonsSkeleton />
     </Box>
   );
 }
 
 function BottomContainer() {
-  const isResultReady = useIsResultReady();
   const { hideResults } = useTransactionCustomAmountAlerts();
 
-  if (!isResultReady || hideResults) {
+  if (hideResults) {
     return null;
   }
 
-  return (
-    <Box
-      display={Display.Flex}
-      flexDirection={FlexDirection.Column}
-      gap={2}
-      paddingBottom={4}
-    >
-      <BridgeTimeRow rowVariant={ConfirmInfoRowSize.Small} />
-      <TotalRow variant={ConfirmInfoRowSize.Small} />
-    </Box>
-  );
-}
-
-function useIsResultReady() {
-  const quotes = useTransactionPayQuotes();
-  const isQuotesLoading = useIsTransactionPayLoading();
-
-  return isQuotesLoading || Boolean(quotes?.length);
+  return null;
 }
 
 function AlertMessage() {

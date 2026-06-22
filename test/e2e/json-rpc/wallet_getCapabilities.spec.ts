@@ -7,7 +7,7 @@ import { DEFAULT_FIXTURE_ACCOUNT } from '../constants';
 import { mockEip7702FeatureFlag } from '../tests/confirmations/helpers';
 
 describe('wallet_getCapabilities', function () {
-  it('should indicate auxiliaryFunds support for chains with bridge support', async function () {
+  it('should not include auxiliaryFunds for mainnet', async function () {
     await withFixtures(
       {
         dappOptions: { numberOfTestDapps: 1 },
@@ -31,14 +31,15 @@ describe('wallet_getCapabilities', function () {
         const walletGetCapabilitiesResponse = await driver.executeScript(
           `return window.ethereum.request(${walletGetCapabilitiesRequest})`,
         );
-        assert.deepEqual(walletGetCapabilitiesResponse['0x1'].auxiliaryFunds, {
-          supported: true,
-        });
+        assert.deepEqual(
+          walletGetCapabilitiesResponse['0x1'].auxiliaryFunds,
+          undefined,
+        );
       },
     );
   });
 
-  it('should not include auxiliaryFunds for chains without bridge support', async function () {
+  it('should not include auxiliaryFunds for local test chains', async function () {
     await withFixtures(
       {
         dappOptions: { numberOfTestDapps: 1 },

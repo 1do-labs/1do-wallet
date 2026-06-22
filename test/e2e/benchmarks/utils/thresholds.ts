@@ -112,20 +112,6 @@ const IMPORT_SRP_HOME: ThresholdConfig = {
   ...CLS_THRESHOLDS,
 };
 
-const SWAP: ThresholdConfig = {
-  openSwapPageFromHome: {
-    p75: { warn: 3000, fail: 4500 },
-    p95: { warn: 5000, fail: 7000 },
-    ciMultiplier: DEFAULT_CI_MULTIPLIER,
-  },
-  fetchAndDisplaySwapQuotes: {
-    p75: { warn: 2800, fail: 5000 },
-    p95: { warn: 3500, fail: 6000 },
-    ciMultiplier: DEFAULT_CI_MULTIPLIER,
-  },
-  ...CLS_THRESHOLDS,
-};
-
 const SEND_TRANSACTIONS: ThresholdConfig = {
   openSendPageFromHome: {
     p75: { warn: 1800, fail: 2700 },
@@ -222,24 +208,6 @@ const CONFIRM_TX: ThresholdConfig = {
   },
 };
 
-const BRIDGE_USER_ACTIONS: ThresholdConfig = {
-  bridge_load_page: {
-    p75: { warn: 500, fail: 800 },
-    p95: { warn: 800, fail: 1200 },
-    ciMultiplier: DEFAULT_CI_MULTIPLIER,
-  },
-  bridge_load_asset_picker: {
-    p75: { warn: 500, fail: 800 },
-    p95: { warn: 800, fail: 1200 },
-    ciMultiplier: DEFAULT_CI_MULTIPLIER,
-  },
-  bridge_search_token: {
-    p75: { warn: 1200, fail: 1800 },
-    p95: { warn: 1800, fail: 2500 },
-    ciMultiplier: DEFAULT_CI_MULTIPLIER,
-  },
-};
-
 const DAPP_PAGE_LOAD: ThresholdConfig = {
   pageLoadTime: {
     p75: { warn: 1450, fail: 1700 },
@@ -266,7 +234,6 @@ const BENCHMARK_THRESHOLDS = {
   // Interaction benchmarks (run on all 4 combos, shared baseline)
   loadNewAccount: LOAD_NEW_ACCOUNT,
   confirmTx: CONFIRM_TX,
-  bridgeUserActions: BRIDGE_USER_ACTIONS,
 
   // User journey benchmarks (chrome-browserify in PRs, chrome-webpack on main/release)
   onboardingImportWallet: ONBOARDING_IMPORT_WALLET,
@@ -275,7 +242,6 @@ const BENCHMARK_THRESHOLDS = {
   assetDetails: ASSET_DETAILS,
   solanaAssetDetails: SOLANA_ASSET_DETAILS,
   sendTransactions: SEND_TRANSACTIONS,
-  swap: SWAP,
 
   // Dapp page load benchmarks (chrome-browserify)
   dappPageLoad: DAPP_PAGE_LOAD,

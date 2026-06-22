@@ -42,7 +42,7 @@ async function mockApis(mockServer: Mockttp): Promise<MockedEndpoint[]> {
     // TODO: Enable this mock once bug #32312 is resolved: https://github.com/MetaMask/metamask-extension/issues/32312
     /*
     await mockServer
-      .forGet('https://accounts.api.cx.metamask.io/v2/activeNetworks')
+      .forGet('https://accounts.disabled.1do.local/v2/activeNetworks')
       .thenCallback(() => ({
         statusCode: 200,
         json: [{ fakedata: true }]

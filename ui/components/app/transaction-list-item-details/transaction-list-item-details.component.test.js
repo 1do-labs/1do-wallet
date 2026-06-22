@@ -8,7 +8,6 @@ import { GAS_LIMITS } from '../../../../shared/constants/gas';
 import { COPY_OPTIONS } from '../../../../shared/constants/copy';
 import { renderWithProvider } from '../../../../test/lib/render-helpers-navigate';
 import mockState from '../../../../test/data/mock-state.json';
-import mockSwapTxGroup from '../../../../test/data/swap/mock-legacy-swap-transaction-group.json';
 import { enLocale as messages } from '../../../../test/lib/i18n-helpers';
 import TransactionListItemDetails from '.';
 
@@ -195,37 +194,6 @@ describe('TransactionListItemDetails Component', () => {
         transactionHash,
         COPY_OPTIONS,
       );
-    });
-  });
-});
-
-describe('TransactionListItemDetails for swaps', () => {
-  it('should render confirmed swap tx details', async () => {
-    const { queryByText, queryByTestId, queryAllByTestId } = await render({
-      transactionGroup: mockSwapTxGroup,
-    });
-
-    expect(
-      queryByText(messages.viewOnBlockExplorer.message),
-    ).toBeInTheDocument();
-    // Sender shows account name ("Test Account") since it matches an internal account
-    expect(queryByTestId('sender-to-recipient')).toHaveTextContent(
-      'Test Account0x00000...00000',
-    );
-    const expectedRows = [
-      'Nonce1',
-      'Amount',
-      'Gas limit (units)489075',
-      'Gas used (units)357212',
-      'Base fee (GWEI)0.00000002',
-      'Priority fee (GWEI)30',
-      'Total gas fee0.010716POL',
-      'Max fee per gas0.00000003POL',
-      'Total0.01071636POL',
-    ];
-
-    queryAllByTestId('transaction-breakdown-row').forEach((row, i) => {
-      expect(row).toHaveTextContent(expectedRows[i]);
     });
   });
 });

@@ -1,11 +1,11 @@
 {
   "CSS_loadingTakingTooLongActionText": {
     "message": "Sorun devam ederse 1do'i yeniden başlatın.",
-    "description": "Second line of the message that is shown when the initial loading of the MetaMask UI takes a very long time."
+    "description": "Second line of the message that is shown when the initial loading of the 1do UI takes a very long time."
   },
   "CSS_loadingTakingTooLongMessageText": {
     "message": "Yükleme her zamankinden daha uzun sürüyor.",
-    "description": "First line of the message that is shown when the initial loading of the MetaMask UI takes a very long time."
+    "description": "First line of the message that is shown when the initial loading of the 1do UI takes a very long time."
   },
   "QRHardwareInvalidTransactionTitle": {
     "message": "Hata"
@@ -458,16 +458,6 @@
   "alertDisableTooltip": {
     "message": "\"Ayarlar > Uyarılar\" kısmında değiştirilebilir"
   },
-  "alertInsufficientPayTokenBalance": {
-    "message": "Yetersiz bakiye"
-  },
-  "alertInsufficientPayTokenBalanceFeesNoTarget": {
-    "message": "Daha az miktar girin veya farklı bir token kullanın."
-  },
-  "alertInsufficientPayTokenNative": {
-    "message": "Ücretleri karşılamak için yeterli $1 yok. Devam etmek için başka bir ağda bir token kullanın veya daha fazla $1 ekleyin.",
-    "description": "$1 is the native currency symbol (e.g. ETH)"
-  },
   "alertMessageAddressMismatchWarning": {
     "message": "Saldırganlar bazen site adresinde küçük değişiklikler yaparak siteleri taklit edebilir. Devam etmeden önce planladığınız site ile etkileşim kurduğunuzdan emin olun."
   },
@@ -530,12 +520,6 @@
   },
   "alertModalReviewAllAlerts": {
     "message": "Tüm uyarıları incele"
-  },
-  "alertNoPayTokenQuotesMessage": {
-    "message": "Bu ödeme rotası şu anda kullanılamıyor. Tutarı, ağı veya token'ı değiştirmeyi deneyin ve sizin için en iyi seçeneği bulalım."
-  },
-  "alertNoPayTokenQuotesTitle": {
-    "message": "Teklif yok"
   },
   "alertPayHardwareAccountMessage": {
     "message": "Donanım cüzdanları desteklenmiyor.\nDevam etmek için cüzdan değiştirin."
@@ -889,23 +873,8 @@
   "basicFunctionalityRequired_openDefiPage": {
     "message": "DeFi sayfasını açın"
   },
-  "basicFunctionalityRequired_openMusdConversionPage": {
-    "message": "mUSD Dönüştürme sayfasını açın"
-  },
   "basicFunctionalityRequired_openNotificationsPage": {
     "message": "Bildirimler sayfasını açın"
-  },
-  "basicFunctionalityRequired_openPerpsPage": {
-    "message": "Vadeli işlemler sayfasını açın"
-  },
-  "basicFunctionalityRequired_openRewardsPage": {
-    "message": "Ödüller sayfasını açın"
-  },
-  "basicFunctionalityRequired_openSwapsPage": {
-    "message": "Takas sayfasını açın"
-  },
-  "basicFunctionalityRequired_openTransactionShieldPage": {
-    "message": "İşlem Kalkanı sayfasını açın"
   },
   "basicFunctionalityRequired_reviewInSettings": {
     "message": "Ayarlarda incele"
@@ -952,60 +921,6 @@
   "blockExplorerView": {
     "message": "Hesabı şurada görüntüleyin: $1",
     "description": "$1 replaced by URL for custom block explorer"
-  },
-  "blockaid": {
-    "message": "Blockaid"
-  },
-  "blockaidAlertDescriptionBlur": {
-    "message": "Devam ederseniz Blur'de yer alan tüm varlıklarınız riske girebilir."
-  },
-  "blockaidAlertDescriptionMalicious": {
-    "message": "Kötü niyetli bir siteyle etkileşimde bulunuyorsunuz. Devam ederseniz varlıklarınızı kaybedeceksiniz."
-  },
-  "blockaidAlertDescriptionOpenSea": {
-    "message": "Devam ederseniz OpenSea'de yer alan tüm varlıklarınız riske girebilir."
-  },
-  "blockaidAlertDescriptionOthers": {
-    "message": "Bu talebi onaylarsanız varlıklarınızı kaybedebilirsiniz. Bu talebi iptal etmenizi öneririz."
-  },
-  "blockaidAlertDescriptionTokenTransfer": {
-    "message": "Varlıklarınızı bir dolandırıcıya gönderiyorsunuz. Devam ederseniz bu varlıkları kaybedeceksiniz."
-  },
-  "blockaidAlertDescriptionWithdraw": {
-    "message": "Bu talebi onaylarsanız bir dolandırıcının varlıklarınızı çekmesine ve harcamasına izin verirsiniz. Varlıklarınızı geri alamazsınız."
-  },
-  "blockaidDescriptionApproveFarming": {
-    "message": "Bu talebi onaylarsanız dolandırıcılıkla bilinen üçüncü bir taraf tüm varlıklarınızı çalabilir."
-  },
-  "blockaidDescriptionBlurFarming": {
-    "message": "Bu talebi onaylarsanız birisi Blur üzerinde yer alan varlıklarınızı çalabilir."
-  },
-  "blockaidDescriptionErrored": {
-    "message": "Bir hatadan dolayı güvenlik uyarılarını kontrol edemedik. Sadece ilgili her adrese güveniyorsanız ilerleyin."
-  },
-  "blockaidDescriptionMaliciousDomain": {
-    "message": "Kötü niyetli bir alanla etkileşimde bulunuyorsunuz. Bu talebi onaylarsanız varlıklarınızı kaybedebilirsiniz."
-  },
-  "blockaidDescriptionMightLoseAssets": {
-    "message": "Bu talebi onaylarsanız varlıklarınızı kaybedebilirsiniz."
-  },
-  "blockaidDescriptionSeaportFarming": {
-    "message": "Bu talebi onaylarsanız birisi OpenSea üzerinde yer alan varlıklarınızı çalabilir."
-  },
-  "blockaidDescriptionTransferFarming": {
-    "message": "Bu talebi onaylarsanız dolandırıcılıkla bilinen üçüncü bir taraf tüm varlıklarınızı çalar."
-  },
-  "blockaidMessage": {
-    "message": "Gizlilik koruması - hiçbir veri üçüncü taraflarla paylaşılmaz. Arbitrum, Avalanche, BNB chain, Ethereum Ana Ağı, Linea, Optimism, Polygon, Base ve Sepolia için sunulur."
-  },
-  "blockaidTitleDeceptive": {
-    "message": "Bu, aldatıcı bir taleptir"
-  },
-  "blockaidTitleMayNotBeSafe": {
-    "message": "Dikkatli olun"
-  },
-  "blockaidTitleSuspicious": {
-    "message": "Bu, şüheli bir taleptir"
   },
   "blockies": {
     "message": "Blockie'ler"
@@ -1099,10 +1014,6 @@
     "message": "Tah. puanlar",
     "description": "Label for estimated points that can be earned from a bridge or swap"
   },
-  "bridgePoints_couldntLoad": {
-    "message": "Yüklenemedi",
-    "description": "Text shown in rewards badge when points couldn't be loaded"
-  },
   "bridgePoints_error": {
     "message": "Puanlar yüklenemedi",
     "description": "Tooltip title when there's an error fetching estimated points"
@@ -1114,10 +1025,6 @@
   "bridgePoints_tooltip": {
     "message": "Puan",
     "description": "Tooltip title for points"
-  },
-  "bridgePoints_tooltip_content_1": {
-    "message": "Takas, köprü ve sürekli vadeli işlem sözleşmeleri gibi işlemleri tamamladığınızda puan toplar ve 1do Ödülleri kazanırsınız.",
-    "description": "First part of tooltip content explaining rewards points"
   },
   "bridgePoints_tooltip_content_2": {
     "message": "Bu değerin bir tahmin olduğunu ve işlem tamamlandığında kesinleşeceğini unutmayın. Puanların Ödüller bakiyenizde onaylanması 1 saate kadar sürebilir.",
@@ -1565,7 +1472,7 @@
   "confirmGasFeeTokenModalPayETH": {
     "message": "ETH ile öde"
   },
-  "confirmGasFeeTokenModalPayToken": {
+  "confirmGasFeeTokenModalToken": {
     "message": "Başka token'lerle öde"
   },
   "confirmGasFeeTokenModalTitle": {
@@ -1896,7 +1803,7 @@
   },
   "createPasswordDetailsSocial": {
     "message": "Bu şifrenin kaybedilmesi tüm cihazlarda cüzdan erişiminin kaybedilmesi anlamına gelir, $1",
-    "description": "$1 is the text 'MetaMask can't reset it.'"
+    "description": "$1 is the text '1do can't reset it.'"
   },
   "createPasswordDetailsSocialReset": {
     "message": "1do bunu sıfırlayamaz."
@@ -2019,12 +1926,6 @@
   "dappSuggestedHigh": {
     "message": "Önerilen site"
   },
-  "dappSwapAdvantage": {
-    "message": "1do Swaps ile tasarruf et ve kazan"
-  },
-  "dappSwapAdvantageSaveOnly": {
-    "message": "1do Swaps ile tasarruf et"
-  },
   "dappSwapBenefits": {
     "message": "Başarısız takas işlemlerinde ağ ücretleri iade edilir"
   },
@@ -2124,7 +2025,7 @@
   },
   "deepLink_Error404_CTA_LinkText": {
     "message": "1do’in en son sürümüne güncelleyin",
-    "description": "Part of `deepLink_Error404_CTA`. The text links to https://support.metamask.io/configure/wallet/how-to-update-the-version-of-metamask/"
+    "description": "Part of `deepLink_Error404_CTA`. The text links to https://support.1do.io/configure/wallet/how-to-update-the-version-of-1do/"
   },
   "deepLink_ErrorMissingUrl": {
     "message": "Gidilecek url adresi sunulmadı."
@@ -2157,9 +2058,6 @@
   "deepLink_theHomePage": {
     "message": "ana sayfa"
   },
-  "deepLink_theMusdEducationPage": {
-    "message": "mUSD dönüştürme eğitim sayfası"
-  },
   "deepLink_theNFTsPage": {
     "message": "NFT'ler sayfası"
   },
@@ -2169,32 +2067,11 @@
   "deepLink_theOnboardingPage": {
     "message": "hesap kurulum sayfası"
   },
-  "deepLink_thePerpsMarketDetailPage": {
-    "message": "perps piyasası sayfası"
-  },
-  "deepLink_thePerpsMarketListPage": {
-    "message": "perps piyasa listesi sayfası"
-  },
-  "deepLink_thePerpsPage": {
-    "message": "sürekli vadeli işlem sözleşmeleri sayfası"
-  },
   "deepLink_thePredictPage": {
     "message": "tahmin piyasaları sayfası"
   },
-  "deepLink_theRewardsPage": {
-    "message": "1do Ödüller sayfası"
-  },
   "deepLink_theSellPage": {
     "message": "satış sayfası"
-  },
-  "deepLink_theSwapsPage": {
-    "message": "takaslar sayfası"
-  },
-  "deepLink_theSwapsRampsPage": {
-    "message": "Takas İşlemleri/Ramp sayfası"
-  },
-  "deepLink_theTransactionShieldPage": {
-    "message": "işlem kalkanı sayfası"
   },
   "default": {
     "message": "Varsayılan"
@@ -2815,7 +2692,7 @@
   },
   "flaskWelcomeWarning2": {
     "message": "We do not guarantee the safety or stability of this extension. The new APIs offered by Flask are not hardened against phishing attacks, meaning that any site that requires Flask might be a malicious attempt to steal your assets.",
-    "description": "This explains the risks of using MetaMask Flask"
+    "description": "This explains the risks of using 1do Flask"
   },
   "flaskWelcomeWarning3": {
     "message": "Tüm Flask API'leri deney amaçlıdır. Herhangi bir bildirimde bulunmadan değiştirilebilir veya kaldırılabilir ya da kararlı 1do'e aktarılmadan süresiz olarak Flask'ta kalabilir. Riski kendinize ait olmak üzere kullanın.",
@@ -2823,7 +2700,7 @@
   },
   "flaskWelcomeWarning4": {
     "message": "Flask kullanırken normal 1do uzantınızı devre dışı bıraktığınızdan emin olun.",
-    "description": "This message calls to pay attention about multiple versions of MetaMask running on the same site (Flask + Prod)"
+    "description": "This message calls to pay attention about multiple versions of 1do running on the same site (Flask + Prod)"
   },
   "flaskWelcomeWarningAcceptButton": {
     "message": "Riskleri kabul ediyorum",
@@ -3494,9 +3371,6 @@
   "isSigningOrSubmitting": {
     "message": "Halen önceki bir işlem imzalanıyor veya gönderiliyor"
   },
-  "isSigningOrSubmittingPayToken": {
-    "message": "Bu ağda bekleyen bir işleminiz var. İşlemin tamamlanmasını bekleyin veya başka bir ağda bir token seçin."
-  },
   "jazzicons": {
     "message": "Jazzicons"
   },
@@ -3813,26 +3687,6 @@
   "memo": {
     "message": "memo"
   },
-  "merklRewardsClaimBonus": {
-    "message": "Bonusu al",
-    "description": "Short label shown in token list for tokens with claimable Merkl rewards"
-  },
-  "merklRewardsToastFailed": {
-    "message": "mUSD bonus talebiniz başarısız oldu",
-    "description": "Toast message shown when a Merkl reward claim transaction fails or is dropped"
-  },
-  "merklRewardsToastInProgress": {
-    "message": "mUSD bonusunuz işleniyor",
-    "description": "Toast message shown when a Merkl reward claim transaction is being processed"
-  },
-  "merklRewardsToastSuccess": {
-    "message": "mUSD bonusunuz hazır!",
-    "description": "Toast message shown when a Merkl reward claim transaction is confirmed"
-  },
-  "merklRewardsUnexpectedError": {
-    "message": "Beklenmedik hata. Lütfen tekrar deneyin.",
-    "description": "Error message shown when claiming Merkl rewards fails"
-  },
   "message": {
     "message": "Mesaj"
   },
@@ -3853,12 +3707,6 @@
   },
   "metamaskNotificationsAreOff": {
     "message": "Cüzdan bildirimleri şu anda aktif değil."
-  },
-  "metamaskSwap": {
-    "message": "1do Takas"
-  },
-  "metamaskSwapsOfflineDescription": {
-    "message": "1do Takas İşlemleri bakımda. Lütfen daha sonra tekrar kontrol edin."
   },
   "metamaskVersion": {
     "message": "1do Sürümü"
@@ -3985,113 +3833,6 @@
   },
   "multichainQuoteCardRateLabel": {
     "message": "Oran"
-  },
-  "musdBonusExplanation": {
-    "message": "Stabil kripto paralarınızı mUSD'ye dönüştürün\nve günlük olarak alabileceğiniz %$1 orana kadar\nyıllıklandırılmış bonus kazanın. $2",
-    "description": "$1 is the bonus APY percentage, $2 is the 'Terms apply' link"
-  },
-  "musdBonusPoweredByRelay": {
-    "message": "Destekleyen Relay",
-    "description": "Attribution shown below mUSD bonus explanation on the conversion confirmation info popover"
-  },
-  "musdBoostDescription": {
-    "message": "Stabil kripto paralarınızı mUSD'ye dönüştürün ve %$1 yıllıklandırılmış bonus alın.",
-    "description": "$1 is the bonus percentage (e.g., 3)"
-  },
-  "musdBoostTitle": {
-    "message": "Stabil kripto paralarınızda %$1 alın",
-    "description": "$1 is the bonus percentage (e.g., 3)"
-  },
-  "musdBuyMusd": {
-    "message": "mUSD al"
-  },
-  "musdClaimSendingTo": {
-    "message": "Alıcı",
-    "description": "Label for the account row in the mUSD claim confirmation screen when no wallet name is available"
-  },
-  "musdClaimSendingToWallet": {
-    "message": "Alıcı $1",
-    "description": "Label for the account row in the mUSD claim confirmation screen, where $1 is the wallet name"
-  },
-  "musdClaimTitle": {
-    "message": "Bonusu al",
-    "description": "Title for the mUSD bonus claim confirmation screen"
-  },
-  "musdClaimableBonus": {
-    "message": "Alınabilir bonus",
-    "description": "Label for the claimable bonus row in the mUSD conversion confirmation screen"
-  },
-  "musdClaimableBonusTooltip": {
-    "message": "mUSD tuttuğunuz için kazandığınız yıllıklandırılmış bonus. Bonusunuzu günlük olarak Linea üzerinde alabilirsiniz. $1",
-    "description": "$1 is the 'Terms apply' link"
-  },
-  "musdClaimableBonusTooltipAria": {
-    "message": "Alınabilir bonus bilgileri",
-    "description": "Accessible name for the info control that opens the claimable bonus explanation popover"
-  },
-  "musdConversionActivityTitle": {
-    "message": "$1 miktarı mUSD'ye dönüştür",
-    "description": "$1 is the source token symbol (e.g., USDC)"
-  },
-  "musdConversionBonusTooltipAria": {
-    "message": "Bonus bilgileri",
-    "description": "Accessible name for the info control that opens the mUSD conversion bonus explanation popover"
-  },
-  "musdConversionFeeTooltipDescription": {
-    "message": "mUSD dönüştürme işlemine ağ maliyetleri dahildir ve sağlayıcı ücretleri dahil olabilir. mUSD dönüştürürken 1do ücreti uygulanmaz.",
-    "description": "Body text shown above the fee breakdown in the transaction fee tooltip for mUSD conversion"
-  },
-  "musdConversionTitle": {
-    "message": "mUSD'ye dönüştürüldü",
-    "description": "Title shown in the transaction details modal for mUSD conversion transactions"
-  },
-  "musdConversionToastFailed": {
-    "message": "mUSD dönüştürme işlemi başarısız oldu"
-  },
-  "musdConversionToastInProgress": {
-    "message": "$1 → mUSD dönüştürme işlemi yapılıyor",
-    "description": "$1 is the source token symbol (e.g., USDC)"
-  },
-  "musdConversionToastSuccess": {
-    "message": "mUSD dönüştürme işlemi başarılı"
-  },
-  "musdConversionToastSuccessDescription": {
-    "message": "Bonus bir gün içinde alınabilir olacaktır."
-  },
-  "musdConvert": {
-    "message": "Dönüştür"
-  },
-  "musdConvertAndGetBonus": {
-    "message": "Dönüştür ve %$1 al",
-    "description": "$1 is the bonus percentage (e.g., 3)"
-  },
-  "musdEarnBonusPercentage": {
-    "message": "%$1 bonus kazan",
-    "description": "$1 is the bonus percentage (e.g., 3). Subtitle on the home token list mUSD Buy/Get CTA."
-  },
-  "musdEducationGetStarted": {
-    "message": "Başlarken"
-  },
-  "musdEducationHeadline": {
-    "message": "STABİL KRİPTO PARALARDA\n%$1 ALIN",
-    "description": "$1 is the bonus APY percentage. Line break between ON and STABLECOINS matches splash layout."
-  },
-  "musdEducationNotNow": {
-    "message": "Şimdi değil"
-  },
-  "musdGetBonusPercentage": {
-    "message": "%$1 mUSD bonus al",
-    "description": "$1 is the bonus percentage (e.g., 3)"
-  },
-  "musdGetMusd": {
-    "message": "mUSD kazan"
-  },
-  "musdMetaMaskUsd": {
-    "message": "1do USD",
-    "description": "Product name shown as the title line on the home token list mUSD Buy/Get CTA"
-  },
-  "musdTermsApply": {
-    "message": "Şartlar uygulanır."
   },
   "mustSelectOne": {
     "message": "En az bir token seçilmeli."
@@ -4840,7 +4581,7 @@
   },
   "openFullScreenForLedgerWebHid": {
     "message": "Ledger'ınızı bağlamak için tam ekrana gidin.",
-    "description": "Shown to the user on the confirm screen when they are viewing MetaMask in a popup window but need to connect their ledger via webhid."
+    "description": "Shown to the user on the confirm screen when they are viewing 1do in a popup window but need to connect their ledger via webhid."
   },
   "openInBlockExplorer": {
     "message": "Blok gezgininde aç"
@@ -5040,14 +4781,6 @@
     "message": "$1 ve $2",
     "description": "A list of allowed origins where $2 is the last origin of the list and $1 is the rest of the list separated by ','."
   },
-  "permission_signatureInsight": {
-    "message": "İmza içgörüleri kipini görüntüle.",
-    "description": "The description for the `endowment:signature-insight` permission"
-  },
-  "permission_signatureInsightOrigin": {
-    "message": "İmza talebi başlatan web sitelerinin kökenlerini gör",
-    "description": "The description for the `signatureOrigin` caveat, to be used with the `endowment:signature-insight` permission"
-  },
   "permission_transactionInsight": {
     "message": "İşlem içgörülerini al ve görüntüle.",
     "description": "The description for the `endowment:transaction-insight` permission"
@@ -5100,724 +4833,6 @@
   },
   "permittedChainToastUpdate": {
     "message": "$1 için $2 erişimi var."
-  },
-  "perps": {
-    "message": "Sürekli Vadeli"
-  },
-  "perps24hVolume": {
-    "message": "Son 24 saatin Hacmi"
-  },
-  "perpsActivity": {
-    "message": "Aktivite"
-  },
-  "perpsAddExposure": {
-    "message": "Pozisyon ekle"
-  },
-  "perpsAddExposureDescriptionLong": {
-    "message": "Long pozisyonunuzun boyutunu artırın"
-  },
-  "perpsAddExposureDescriptionShort": {
-    "message": "Short pozisyonunuzun büyüklüğünü artırın"
-  },
-  "perpsAddFunds": {
-    "message": "Fon ekle"
-  },
-  "perpsAddFundsDescription": {
-    "message": "Sürekli vadeli işlem sözleşmeleri ile kaldıraçlı işlem yapmaya başlamak için fon ekle"
-  },
-  "perpsAddMargin": {
-    "message": "Marj ekle"
-  },
-  "perpsAddMarginDescription": {
-    "message": "Likidasyon riskini azaltmak için marjı artırın"
-  },
-  "perpsAddToFavorites": {
-    "message": "Favorilere ekle"
-  },
-  "perpsAutoClose": {
-    "message": "Otomatik kapat"
-  },
-  "perpsAvailable": {
-    "message": "kullanılabilir",
-    "description": "is the available balance amount"
-  },
-  "perpsAvailableBalance": {
-    "message": "Kullanılabilir Perps bakiyesi: "
-  },
-  "perpsAvailableToAdd": {
-    "message": "Eklenebilir"
-  },
-  "perpsAvailableToClose": {
-    "message": "Kapatılabilir"
-  },
-  "perpsAvailableToSubtract": {
-    "message": "Çıkarılabilir"
-  },
-  "perpsAvailableToTrade": {
-    "message": "İşlem yapılabilir",
-    "description": "Label for the available balance that can be used for trading"
-  },
-  "perpsBatchCancelFailed": {
-    "message": "Bir veya daha fazla emir iptal edilemedi. Tekrar deneyin."
-  },
-  "perpsBatchCloseFailed": {
-    "message": "Bir veya daha fazla pozisyon kapatılamadı. Tekrar deneyin."
-  },
-  "perpsCancelAllOrders": {
-    "message": "Tümünü iptal et"
-  },
-  "perpsCancelOrder": {
-    "message": "Emri iptal et"
-  },
-  "perpsCandleIntervals": {
-    "message": "Mum aralıkları"
-  },
-  "perpsCandlePeriodDays": {
-    "message": "Gün"
-  },
-  "perpsCandlePeriodHours": {
-    "message": "Saat"
-  },
-  "perpsCandlePeriodMinutes": {
-    "message": "Dakika"
-  },
-  "perpsCloseAll": {
-    "message": "Tümünü kapat"
-  },
-  "perpsCloseAmount": {
-    "message": "Kapanış Miktarı"
-  },
-  "perpsCloseLong": {
-    "message": "Long pozisyonu kapat"
-  },
-  "perpsClosePartialMinNotional": {
-    "message": "Kısmi kapatma işlemleri en az $1 USD değerinde olmalıdır. Kapatma tutarını artırın veya kaydırıcıyı %100'e ayarlayın."
-  },
-  "perpsClosePosition": {
-    "message": "Pozisyonu kapat"
-  },
-  "perpsCloseShort": {
-    "message": "Short pozisyonu kapat"
-  },
-  "perpsConfirmCloseLong": {
-    "message": "Long pozisyonu kapat"
-  },
-  "perpsConfirmCloseShort": {
-    "message": "Short pozisyonu kapat"
-  },
-  "perpsConnectionTimeout": {
-    "message": "Bağlantı zaman aşımına uğradı. Lütfen tekrar deneyin."
-  },
-  "perpsContactSupport": {
-    "message": "Destek ile iletişime geç"
-  },
-  "perpsDateToday": {
-    "message": "Bugün"
-  },
-  "perpsDateYesterday": {
-    "message": "Dün"
-  },
-  "perpsDepositActivityTitle": {
-    "message": "Fonlanan Sürekli Vadeli İşlem Sözleşmeleri"
-  },
-  "perpsDepositFailed": {
-    "message": "Para yatırma işlemi tamamlanamadı. Tekrar deneyin."
-  },
-  "perpsDepositFundsTitle": {
-    "message": "Sürekli Vadeli İşlemlere para yatır"
-  },
-  "perpsDepositTitle": {
-    "message": "Fonlanmış sürekli vadeli işlem sözleşmeleri hesabı"
-  },
-  "perpsDepositToastErrorDescription": {
-    "message": "Fonlarınız Perps'e eklenmedi. Tekrar deneyin."
-  },
-  "perpsDepositToastErrorTitle": {
-    "message": "Perps yatırma işlemi başarısız oldu"
-  },
-  "perpsDepositToastPendingDescription": {
-    "message": "Fonlarınızla birazdan işlem yapabileceksiniz."
-  },
-  "perpsDepositToastPendingTitle": {
-    "message": "Sürekli Vadeli İşlem Sözleşmelerine fon ekleniyor"
-  },
-  "perpsDepositToastSuccessDescription": {
-    "message": "Fonlarınız işleme hazır."
-  },
-  "perpsDepositToastSuccessTitle": {
-    "message": "Fonlar Perps'e eklendi"
-  },
-  "perpsDeposits": {
-    "message": "Yatırma İşlemleri"
-  },
-  "perpsDetails": {
-    "message": "Ayrıntılar"
-  },
-  "perpsDirection": {
-    "message": "Yön"
-  },
-  "perpsDisclaimer": {
-    "message": "Sürekli vadeli işlem sözleşmeleri çok risklidir ve aniden ve habersiz bir şekilde tüm yatırımınızı kaybedebilirsiniz. İşlemlerinizde tüm risk tamamen size aittir. HyperLiquid tarafından desteklenmektedir. Fiyat grafiği TradingView altyapısı ile desteklenmektedir."
-  },
-  "perpsEmptyDescription": {
-    "message": "Sürekli vadeli işlem sözleşmeleriyle kaldıraçlı işlem yapın. Başlamak için ilk pozisyonunuzu açın."
-  },
-  "perpsEntryPrice": {
-    "message": "Giriş fiyatı"
-  },
-  "perpsEstSize": {
-    "message": "Tah. boyut"
-  },
-  "perpsEstimatedPnlAtStopLoss": {
-    "message": "Zararda durdur için tah. K&Z",
-    "description": "Label for estimated profit or loss when stop loss is hit"
-  },
-  "perpsEstimatedPnlAtTakeProfit": {
-    "message": "Kazancı al için tah. K&Z",
-    "description": "Label for estimated profit or loss when take profit is hit"
-  },
-  "perpsExploreMarkets": {
-    "message": "Piyasaları keşfet"
-  },
-  "perpsFees": {
-    "message": "Ücretler"
-  },
-  "perpsFilterAll": {
-    "message": "Tümü"
-  },
-  "perpsFilterCommodities": {
-    "message": "Emtialar"
-  },
-  "perpsFilterCrypto": {
-    "message": "Kripto"
-  },
-  "perpsFilterForex": {
-    "message": "Forex"
-  },
-  "perpsFilterNew": {
-    "message": "Yeni"
-  },
-  "perpsFilterStocks": {
-    "message": "Hisse Senetleri"
-  },
-  "perpsFunding": {
-    "message": "Fonlama"
-  },
-  "perpsFundingPayments": {
-    "message": "Fonlama ödemeleri"
-  },
-  "perpsFundingRate": {
-    "message": "Fonlama Oranı"
-  },
-  "perpsFundingRateTooltip": {
-    "message": "Fiyatları piyasa ile uyumlu tutmak için yatırımcılar arasında saatlik bir işlem ücreti ödenir. Oran pozitifse uzunlar kısalara ödeme yapar. Negatifse kısalar uzunlara ödeme yapar."
-  },
-  "perpsGeoBlockedDescription": {
-    "message": "Yerel kısıtlamalar veya yaptırımlar nedeniyle sürekli vadeli işlem sözleşmeleri ile işlem konumunuzda kullanılmamaktadır."
-  },
-  "perpsGeoBlockedTitle": {
-    "message": "Sürekli vadeli bölgenizde kullanılamıyor"
-  },
-  "perpsGiveFeedback": {
-    "message": "Bize geri bildirim gönder"
-  },
-  "perpsIncludesPnl": {
-    "message": "K&Z dahil $1"
-  },
-  "perpsInsufficientMargin": {
-    "message": "Bu emri vermek için yeterli marj yok."
-  },
-  "perpsLearnBasics": {
-    "message": "Sürekli vadeli işlem sözleşmeleri hakkındaki temel bilgileri öğrenin"
-  },
-  "perpsLearnMore": {
-    "message": "Daha fazla bilgi edin"
-  },
-  "perpsLeverage": {
-    "message": "Kaldıraç"
-  },
-  "perpsLimit": {
-    "message": "Limit"
-  },
-  "perpsLimitPrice": {
-    "message": "Limit Fiyatı"
-  },
-  "perpsLimitPriceAboveCurrentPrice": {
-    "message": "Limit fiyat, güncel fiyatın üzerinde"
-  },
-  "perpsLimitPriceBelowCurrentPrice": {
-    "message": "Limit fiyat, güncel fiyatın altında"
-  },
-  "perpsLimitPriceNearLiquidation": {
-    "message": "Güncel fiyat tahmini likidasyon fiyatına yakın"
-  },
-  "perpsLiquidationDistance": {
-    "message": "Likidasyon mesafesi"
-  },
-  "perpsLiquidationPrice": {
-    "message": "Likidasyon fiyatı"
-  },
-  "perpsLong": {
-    "message": "Uzun"
-  },
-  "perpsMargin": {
-    "message": "Marj"
-  },
-  "perpsMarginRiskWarning": {
-    "message": "Marjı kaldırmak likidasyon fiyatınızı yaklaştırır. Yeterli güvenlik payınızın bulunduğundan emin olun."
-  },
-  "perpsMarket": {
-    "message": "Piyasa"
-  },
-  "perpsMarketNotFound": {
-    "message": "Piyasa bulunamadı"
-  },
-  "perpsMarketNotFoundDescription": {
-    "message": "\"$1\" piyasası bulunamadı.",
-    "description": "$1 is the market symbol that was not found"
-  },
-  "perpsMarkets": {
-    "message": "Piyasalar"
-  },
-  "perpsMid": {
-    "message": "Orta"
-  },
-  "perpsModify": {
-    "message": "Değiştir"
-  },
-  "perpsModifyPosition": {
-    "message": "Pozisyonu Düzenle"
-  },
-  "perpsMore": {
-    "message": "Daha fazla"
-  },
-  "perpsNetworkError": {
-    "message": "Bir ağ hatası oluştu. Lütfen tekrar deneyin."
-  },
-  "perpsNoMarketsFound": {
-    "message": "Hiçbir piyasa bulunamadı"
-  },
-  "perpsNoTransactions": {
-    "message": "Henüz işlem yok"
-  },
-  "perpsOpenInterest": {
-    "message": "Açık Faiz"
-  },
-  "perpsOpenInterestTooltip": {
-    "message": "Bu sürekli vadeli işlem sözleşmesi için açık pozisyonların birleşik değeri"
-  },
-  "perpsOpenLong": {
-    "message": "$1 değerinde Long pozisyon aç",
-    "description": "$1 is the asset symbol (e.g., BTC, ETH)"
-  },
-  "perpsOpenOrders": {
-    "message": "Açık Emirler"
-  },
-  "perpsOpenShort": {
-    "message": "$1 değerinde Short pozisyon aç",
-    "description": "$1 is the asset symbol (e.g., BTC, ETH)"
-  },
-  "perpsOraclePrice": {
-    "message": "Oracle Fiyatı"
-  },
-  "perpsOraclePriceTooltip": {
-    "message": "Fonlama oranının hesaplanmasında kullanılan, harici fiyatların doğrulayıcılar tarafından bildirilen medyanı"
-  },
-  "perpsOrderDate": {
-    "message": "Tarih"
-  },
-  "perpsOrderFailed": {
-    "message": "Emir verilemedi. Tekrar deneyin."
-  },
-  "perpsOrderOriginalSize": {
-    "message": "Orijinal boyut"
-  },
-  "perpsOrderRejected": {
-    "message": "Emriniz reddedildi. Tekrar deneyin."
-  },
-  "perpsOrderStatus": {
-    "message": "Durum"
-  },
-  "perpsOrderValue": {
-    "message": "Emir değeri"
-  },
-  "perpsOrders": {
-    "message": "Emirler"
-  },
-  "perpsPnl": {
-    "message": "K&Z"
-  },
-  "perpsPosition": {
-    "message": "Pozisyon"
-  },
-  "perpsPositions": {
-    "message": "Pozisyonlar"
-  },
-  "perpsRateLimitExceeded": {
-    "message": "Çok sayıda talepte bulunuldu. Lütfen bekleyip tekrar deneyin."
-  },
-  "perpsRecentActivity": {
-    "message": "Son Faaliyetler"
-  },
-  "perpsReduceExposure": {
-    "message": "Pozisyon büyüklüğünü azalt"
-  },
-  "perpsReduceExposureDescriptionLong": {
-    "message": "Long pozisyonunuzun boyutunu azaltın"
-  },
-  "perpsReduceExposureDescriptionShort": {
-    "message": "Short pozisyonunuzun boyutunu azaltın"
-  },
-  "perpsReduceOnly": {
-    "message": "Yalnızca azalt"
-  },
-  "perpsRemoveFromFavorites": {
-    "message": "Favorilerden kaldır"
-  },
-  "perpsRemoveMargin": {
-    "message": "Marjı kaldır"
-  },
-  "perpsRemoveMarginDescription": {
-    "message": "Pozisyondaki fazla marjı çek"
-  },
-  "perpsReturn": {
-    "message": "Getiri"
-  },
-  "perpsReversePosition": {
-    "message": "Pozisyonu tersine çevir"
-  },
-  "perpsReversePositionDescriptionLong": {
-    "message": "Long pozisyonunuzu short yönüne çevirin"
-  },
-  "perpsReversePositionDescriptionShort": {
-    "message": "Short pozisyonunuzu long yönüne çevirin"
-  },
-  "perpsSaveChanges": {
-    "message": "Değişiklikleri Kaydet",
-    "description": "Button text for saving TP/SL changes"
-  },
-  "perpsSearchMarkets": {
-    "message": "Piyasa ara"
-  },
-  "perpsSeeAll": {
-    "message": "Tümünü Gör"
-  },
-  "perpsServiceUnavailable": {
-    "message": "Hizmet geçici olarak kullanılamıyor. Lütfen daha sonra tekrar deneyin."
-  },
-  "perpsShort": {
-    "message": "Kısa"
-  },
-  "perpsSize": {
-    "message": "Boyut"
-  },
-  "perpsSlippageExceeded": {
-    "message": "Kayma aşıldı. Kayma toleransınızı ayarlayıp tekrar deneyin."
-  },
-  "perpsSortByFundingRate": {
-    "message": "Fonlama oranı"
-  },
-  "perpsSortByHighToLow": {
-    "message": "Yüksekten düşüğe"
-  },
-  "perpsSortByLowToHigh": {
-    "message": "Düşükten yükseğe"
-  },
-  "perpsSortByOpenInterest": {
-    "message": "Açık faiz"
-  },
-  "perpsSortByPriceChange": {
-    "message": "Fiyat değişikliği"
-  },
-  "perpsSortBySection": {
-    "message": "Şuna göre sırala"
-  },
-  "perpsSortByTitle": {
-    "message": "Sırala"
-  },
-  "perpsSortByVolume": {
-    "message": "Hacim"
-  },
-  "perpsStartNewTrade": {
-    "message": "Yeni bir işlem başlat"
-  },
-  "perpsStartTrading": {
-    "message": "İşlem yapmaya başlayın"
-  },
-  "perpsStats": {
-    "message": "İstatistikler"
-  },
-  "perpsStatusCanceled": {
-    "message": "İptal Edildi"
-  },
-  "perpsStatusCompleted": {
-    "message": "Tamamlandı"
-  },
-  "perpsStatusFilled": {
-    "message": "Gerçekleşti"
-  },
-  "perpsStatusOpen": {
-    "message": "Açık"
-  },
-  "perpsStatusQueued": {
-    "message": "Kuyruğa alındı"
-  },
-  "perpsStatusRejected": {
-    "message": "Reddedildi"
-  },
-  "perpsStatusTriggered": {
-    "message": "Tetiklendi"
-  },
-  "perpsStopLoss": {
-    "message": "Zararda Durdur",
-    "description": "Label for stop loss price input"
-  },
-  "perpsStopLossInvalidPrice": {
-    "message": "Zararda durdur fiyatı $1 $2 olmalıdır",
-    "description": "Validation error when stop loss price is on the wrong side of the reference price. $1 is above/below, $2 is current/entry."
-  },
-  "perpsSubmitting": {
-    "message": "Gönderiliyor...",
-    "description": "Loading text shown while an order is being submitted"
-  },
-  "perpsTakeProfit": {
-    "message": "Kazancı Al",
-    "description": "Label for take profit price input"
-  },
-  "perpsTakeProfitInvalidPrice": {
-    "message": "Kazancı al fiyatı $1 $2 olmalıdır",
-    "description": "Validation error when take profit price is on the wrong side of the reference price. $1 is above/below, $2 is current/entry."
-  },
-  "perpsToastCancelOrderFailed": {
-    "message": "Emir iptal edilemedi",
-    "description": "Error toast text shown when cancelling a perps limit order fails"
-  },
-  "perpsToastCancelOrderSuccess": {
-    "message": "Emir iptal edildi",
-    "description": "Success toast text shown when a perps limit order is successfully cancelled"
-  },
-  "perpsToastCloseFailed": {
-    "message": "Pozisyon kapatılamadı",
-    "description": "Error toast text shown when closing a perps position fails"
-  },
-  "perpsToastCloseInProgress": {
-    "message": "Pozisyon kapatılıyor",
-    "description": "In-progress toast text shown while closing a perps position"
-  },
-  "perpsToastClosePnlSubtitle": {
-    "message": "Kâr ve Zararınız $1",
-    "description": "$1 is the formatted PnL percentage for a closed position"
-  },
-  "perpsToastMarginAddSuccess": {
-    "message": "$2 pozisyonunuza $1 marj eklendi",
-    "description": "$1 is the dollar-prefixed amount (e.g. $100) and $2 is the asset symbol for successful margin addition"
-  },
-  "perpsToastMarginAdjustmentFailed": {
-    "message": "Marj ayarlaması başarısız oldu",
-    "description": "Error toast text shown when adding or removing margin fails"
-  },
-  "perpsToastMarginAdjustmentFailedDescriptionFallback": {
-    "message": "Marj ayarlanamıyor. Lütfen tekrar deneyin.",
-    "description": "Fallback description shown when margin adjustment fails without a usable error message."
-  },
-  "perpsToastMarginRemoveSuccess": {
-    "message": "$2 pozisyonunuzdan $1 marj kaldırıldı",
-    "description": "$1 is the dollar-prefixed amount (e.g. $100) and $2 is the asset symbol for successful margin removal"
-  },
-  "perpsToastOrderFailed": {
-    "message": "Emir başarısız oldu",
-    "description": "Error toast text shown when placing a perps order fails"
-  },
-  "perpsToastOrderFailedDescriptionFallback": {
-    "message": "Fonlarınız size iade edildi",
-    "description": "Fallback order failure subtitle shown when no specific order error is available"
-  },
-  "perpsToastOrderFilled": {
-    "message": "Emir gerçekleşti",
-    "description": "Success toast text shown when a perps market order is filled"
-  },
-  "perpsToastOrderPlaced": {
-    "message": "Emir verildi",
-    "description": "Success toast text shown when a perps limit order is accepted"
-  },
-  "perpsToastOrderPlacementSubtitle": {
-    "message": "$1 $2 $3",
-    "description": "$1 is the order direction, $2 is the position size amount, and $3 is the asset symbol"
-  },
-  "perpsToastOrderSubmitted": {
-    "message": "Emir gönderildi",
-    "description": "In-progress toast text shown while a perps order is being submitted"
-  },
-  "perpsToastPartialCloseFailed": {
-    "message": "Kısmen pozisyon kapatma başarısız oldu",
-    "description": "Error toast text shown when a perps position is partially closed and fails"
-  },
-  "perpsToastPartialCloseInProgress": {
-    "message": "Pozisyon kısmen kapatılıyor",
-    "description": "In-progress toast text shown while a perps position is being partially closed"
-  },
-  "perpsToastPartialCloseSuccess": {
-    "message": "Pozisyon kısmen kapatıldı",
-    "description": "Success toast text shown when a perps position is partially closed"
-  },
-  "perpsToastPositionStillActive": {
-    "message": "Pozisyonunuz halen aktif",
-    "description": "Subtitle shown in perps close failure toasts when the position remains open"
-  },
-  "perpsToastReverseFailed": {
-    "message": "Pozisyon tersine çevrilemedi",
-    "description": "Error toast text shown when reversing a perps position fails"
-  },
-  "perpsToastReverseInProgress": {
-    "message": "Pozisyon tersine çevriliyor",
-    "description": "In-progress toast text shown while reversing a perps position"
-  },
-  "perpsToastReverseSuccess": {
-    "message": "Pozisyon tersine çevrildi",
-    "description": "Success toast text shown when a perps position is reversed"
-  },
-  "perpsToastSubmitInProgress": {
-    "message": "İşleminiz gönderiliyor",
-    "description": "In-progress toast text shown while a perps trade is being submitted"
-  },
-  "perpsToastTradeSuccess": {
-    "message": "Pozisyon kapatıldı",
-    "description": "Success toast text shown when a perps position is closed"
-  },
-  "perpsToastUpdateFailed": {
-    "message": "KA/ZD güncellenemedi",
-    "description": "Error toast text shown when updating TP/SL settings fails"
-  },
-  "perpsToastUpdateInProgress": {
-    "message": "KA/ZD güncelleniyor...",
-    "description": "In-progress toast text shown while updating TP/SL settings"
-  },
-  "perpsToastUpdateSuccess": {
-    "message": "KA/ZD başarılı bir şekilde güncellendi",
-    "description": "Success toast text shown when TP/SL settings are updated"
-  },
-  "perpsTotalBalance": {
-    "message": "Toplam bakiye"
-  },
-  "perpsTradePerps": {
-    "message": "Sürekli vadeli işlem sözleşmeleriyle işlem yap"
-  },
-  "perpsTrades": {
-    "message": "İşlemler"
-  },
-  "perpsTutorialChooseLeverageDescription": {
-    "message": "Kaldıraç hem kazançları hem de zararları artırır. 40 kat kaldıraçla %1 oranındaki fiyat hareketi marjınızda %40 kazanç veya zarara eşittir."
-  },
-  "perpsTutorialChooseLeverageTitle": {
-    "message": "Kaldıracınızı seçin"
-  },
-  "perpsTutorialCloseAnytimeDescription": {
-    "message": "Dilediğiniz zaman çıkış yapın. Marjınızı, artı kazançlarınızı veya eksi zararınızı geri alırsınız."
-  },
-  "perpsTutorialCloseAnytimeTitle": {
-    "message": "Dilediğinizde kapatın"
-  },
-  "perpsTutorialContinue": {
-    "message": "Devam Et"
-  },
-  "perpsTutorialGoLongShortDescription": {
-    "message": "Bir token seçerek uzun veya kısa pozisyon açın, ardından emrinizin büyüklüğünü belirleyin."
-  },
-  "perpsTutorialGoLongShortSubtitle": {
-    "message": "Fiyat yukarı giderse kazanç için uzun pozisyon açın. Fiyat aşağı giderse kazanç için kısa pozisyon açın."
-  },
-  "perpsTutorialGoLongShortTitle": {
-    "message": "Long veya short pozisyon aç"
-  },
-  "perpsTutorialLetsGo": {
-    "message": "Başlayalım"
-  },
-  "perpsTutorialReadyToTradeDescription": {
-    "message": "Sürekli vadeli işlem sözleşmeleri hesabınıza herhangi bir token ile fonlama gerçekleştirin ve saniyeler içinde ilk işleminizi yapın."
-  },
-  "perpsTutorialReadyToTradeTitle": {
-    "message": "İşlem yapmaya hazır mısınız?"
-  },
-  "perpsTutorialSkip": {
-    "message": "Atla"
-  },
-  "perpsTutorialWatchLiquidationDescription": {
-    "message": "Token likidasyon fiyatınıza ulaşırsa tüm marjınızı kaybedersiniz. Daha yüksek kaldıraç likidasyon için daha az alan kalması anlamına gelir."
-  },
-  "perpsTutorialWatchLiquidationTitle": {
-    "message": "Likidasyona dikkat edin"
-  },
-  "perpsTutorialWhatArePerpsDescription": {
-    "message": "1do artık bir token satın almadan fiyat hareketinde işlem yapmanıza olanak sağlayan sürekli vadeli sözleşmeler piyasasını destekliyor."
-  },
-  "perpsTutorialWhatArePerpsSubtitle": {
-    "message": "İşte çalışma şekli."
-  },
-  "perpsTutorialWhatArePerpsTitle": {
-    "message": "Sürekli vadeli işlemler nedir?"
-  },
-  "perpsUnrealizedPnl": {
-    "message": "Gerçekleşmemiş K&Z"
-  },
-  "perpsWatchlist": {
-    "message": "İzleme Listesi"
-  },
-  "perpsWithdraw": {
-    "message": "Çek"
-  },
-  "perpsWithdrawEstimatedTime": {
-    "message": "Tahmini süre"
-  },
-  "perpsWithdrawFailed": {
-    "message": "Para çekme işlemi tamamlanamadı. Tekrar deneyin."
-  },
-  "perpsWithdrawFee": {
-    "message": "Sağlayıcı Ücreti"
-  },
-  "perpsWithdrawFundsTitle": {
-    "message": "Çek"
-  },
-  "perpsWithdrawInsufficient": {
-    "message": "Tutar kullanılabilir Perps bakiyenizi aşıyor."
-  },
-  "perpsWithdrawInvalidAddress": {
-    "message": "Geçerli bir alıcı adresi girin."
-  },
-  "perpsWithdrawInvalidAmount": {
-    "message": "Geçerli bir tutar girin."
-  },
-  "perpsWithdrawMinNotice": {
-    "message": "Minimum çekim tutarı: $1 USDC",
-    "description": "$1 is the minimum amount (e.g. 1.01)"
-  },
-  "perpsWithdrawMinutesApprox": {
-    "message": "~$1 dk",
-    "description": "$1 is the estimated number of minutes"
-  },
-  "perpsWithdrawNoAccount": {
-    "message": "Hesap seçilmedi. Bir hesap seçin ve tekrar deneyin."
-  },
-  "perpsWithdrawReceive": {
-    "message": "Al"
-  },
-  "perpsWithdrawRoutesError": {
-    "message": "Para çekme limitleri yüklenemedi. Daha sonra tekrar deneyin."
-  },
-  "perpsWithdrawToastErrorTitle": {
-    "message": "Para çekme işlemi başarısız"
-  },
-  "perpsWithdrawToastSuccessDescription": {
-    "message": "$1 işleminizi gerçekleştiriyoruz. Para genellikle birkaç dakika içinde ulaşır.",
-    "description": "$1 is the formatted withdrawal amount"
-  },
-  "perpsWithdrawToastSuccessTitle": {
-    "message": "Çekim gönderildi"
-  },
-  "perpsYouReceive": {
-    "message": "Aldığınız"
-  },
-  "perpsYouWillReceive": {
-    "message": "Elinize geçecek miktar:"
   },
   "personalAddressDetected": {
     "message": "Kişisel adres algılandı. Token sözleşme adresini girin."
@@ -5962,33 +4977,6 @@
   },
   "pushNotificationPositionLiquidatedTitle": {
     "message": "Pozisyon likidasyona uğradı"
-  },
-  "pushNotificationShieldClaimCreatedDescriptionShort": {
-    "message": "Talebiniz oluşturuldu"
-  },
-  "pushNotificationShieldClaimCreatedTitle": {
-    "message": "Talep oluşturuldu"
-  },
-  "pushNotificationShieldClaimStatusUpdatedDescriptionShort": {
-    "message": "Talebiniz güncellendi"
-  },
-  "pushNotificationShieldClaimStatusUpdatedTitle": {
-    "message": "Talep güncellendi"
-  },
-  "pushNotificationShieldLearnMoreCta": {
-    "message": "Daha fazla bilgi edin"
-  },
-  "pushNotificationShieldSubscriptionCreatedDescriptionShort": {
-    "message": "Planınız şu anda aktif."
-  },
-  "pushNotificationShieldSubscriptionPaymentFailedDescriptionShort": {
-    "message": "Planınız başarısız ödemeden dolayı duraklatıldı."
-  },
-  "pushNotificationShieldSubscriptionTitle": {
-    "message": "1do İşlem Kalkanı"
-  },
-  "pushNotificationShieldUpdatePaymentCta": {
-    "message": "Ödemeyi güncelle"
   },
   "pushNotificationStopLossTriggeredDescriptionLong": {
     "message": "$1 uzun pozisyonunuz zararda durdur noktanızda kapandı.",
@@ -6383,164 +5371,6 @@
   "reward": {
     "message": "Ödül"
   },
-  "rewardsAuthFailDescription": {
-    "message": "Bu hesabın ödüller programıyla doğrulanması sırasında bilinmeyen bir hata oluştu. Lütfen daha sonra tekrar deneyin."
-  },
-  "rewardsAuthFailTitle": {
-    "message": "Bilinmeyen hata."
-  },
-  "rewardsErrorMessagesAccountAlreadyRegistered": {
-    "message": "Bu hesap zaten başka bir Ödüller profili ile kayıtlı. Devam etmek için lütfen hesap değiştirin."
-  },
-  "rewardsErrorMessagesFailedToClaimReward": {
-    "message": "Ödül alınamadı. Lütfen kısa süre sonra tekrar deneyin."
-  },
-  "rewardsErrorMessagesRequestRejected": {
-    "message": "Talebi reddettiniz."
-  },
-  "rewardsErrorMessagesServiceNotAvailable": {
-    "message": "Hizmet şu anda kullanılamıyor. Lütfen kısa süre sonra tekrar deneyin."
-  },
-  "rewardsErrorMessagesSomethingWentWrong": {
-    "message": "Bir hata oluştu. Lütfen kısa süre sonra tekrar deneyin."
-  },
-  "rewardsLinkAccount": {
-    "message": "Hesap ekle"
-  },
-  "rewardsLinkAccountError": {
-    "message": "Hesap eklenemedi"
-  },
-  "rewardsOnboardingIntroDescription": {
-    "message": "Aktivitelerinizden puan kazanın. \nSeviyelerde ilerleyerek ödüllerin kilidini açın."
-  },
-  "rewardsOnboardingIntroGeoCheckFailedDescription": {
-    "message": "Ülkenizin ödüller programına katılıma izin verip vermediğini belirleyemiyoruz. Lütfen bağlantınızı kontrol edin ve tekrar deneyin."
-  },
-  "rewardsOnboardingIntroGeoCheckFailedTitle": {
-    "message": "Katılım uygunluğu belirlenemiyor"
-  },
-  "rewardsOnboardingIntroGeoCheckRetry": {
-    "message": "Tekrar Dene"
-  },
-  "rewardsOnboardingIntroRewardsAuthFailRetry": {
-    "message": "Tekrar Dene"
-  },
-  "rewardsOnboardingIntroStepConfirm": {
-    "message": "250 puan alın"
-  },
-  "rewardsOnboardingIntroStepConfirmLoadingEligibility": {
-    "message": "Uygunluk kontrol ediliyor..."
-  },
-  "rewardsOnboardingIntroStepConfirmLoadingRegion": {
-    "message": "Bölge kontrol ediliyor.."
-  },
-  "rewardsOnboardingIntroStepSkip": {
-    "message": "Şimdi değil"
-  },
-  "rewardsOnboardingIntroTitle": {
-    "message": "Ödüller burada"
-  },
-  "rewardsOnboardingIntroUnsupportedRegionDescription": {
-    "message": "Ödüller henüz bölgenizde desteklenmiyor. Erişimi genişletmek için çalışıyoruz, bu yüzden daha sonra tekrar kontrol edin."
-  },
-  "rewardsOnboardingIntroUnsupportedRegionTitle": {
-    "message": "Bölge desteklenmiyor"
-  },
-  "rewardsOnboardingStep1Description": {
-    "message": "1do'te yaptığınız her takas ve sürekli vadeli işlem sizi ödüllere yaklaştırır. Hesaplarınızı ekleyin ve puanlarınızı takip edin."
-  },
-  "rewardsOnboardingStep1Title": {
-    "message": "Her işlemde puan kazanın"
-  },
-  "rewardsOnboardingStep2Description": {
-    "message": "Belirli puanlara ulaştığınızda, sürekli vadeli işlem ücretlerinde %50 indirim, özel token’lar ve ücretsiz 1do Metal Kart gibi avantajlar kazanabilirsiniz."
-  },
-  "rewardsOnboardingStep2Title": {
-    "message": "Daha büyük avantajlar için seviye yükseltin"
-  },
-  "rewardsOnboardingStep3Description": {
-    "message": "Uzantıda puan kazanabilirsiniz ancak sürekli vadeli işlem sözleşmeleri ile işlem yapmak, ilerlemenizi takip etmek ve ödülleri kullanmak için mobil uygulamaya ihtiyacınız olacak."
-  },
-  "rewardsOnboardingStep3Title": {
-    "message": "Mobilde ödüllerin kilidini aç"
-  },
-  "rewardsOnboardingStep4LegalDisclaimer": {
-    "message": "'Puanları al' düğmesine tıklayarak $1 bölümümüzü kabul edersiniz. Zincir içi aktivitelerinizi takip ederek sizi otomatik olarak ödüllendireceğiz. $2",
-    "description": "$1 is the Terms and Privacy Notice link, $2 is the Learn more link"
-  },
-  "rewardsOnboardingStep4LegalDisclaimerLearnMoreLink": {
-    "message": "Daha fazla bilgi edin"
-  },
-  "rewardsOnboardingStep4LegalDisclaimerTermsLink": {
-    "message": "Şartlar ve Gizlilik Bildirimi"
-  },
-  "rewardsOnboardingStep4OptInError": {
-    "message": "Katılım başarısız oldu"
-  },
-  "rewardsOnboardingStep4ReferralCodeError": {
-    "message": "Geçersiz referans kodu"
-  },
-  "rewardsOnboardingStep4ReferralCodeInput": {
-    "message": "Bir referans kodu kullanarak 250 puan kazanın"
-  },
-  "rewardsOnboardingStep4ReferralCodePlaceholder": {
-    "message": "Referans kodu (isteğe bağlı)"
-  },
-  "rewardsOnboardingStep4ReferralCodeUnknownError": {
-    "message": "Referans kodu doğrulanamadı."
-  },
-  "rewardsOnboardingStep4ReferralCodeUnknownErrorDescription": {
-    "message": "Bağlantınızı kontrol edin ve tekrar deneyin."
-  },
-  "rewardsOnboardingStep4Title": {
-    "message": "Kaydolduğunuzda 250 puan kazanırsınız!"
-  },
-  "rewardsOnboardingStep4TitleWithReferralCode": {
-    "message": "Bir kodla kaydolduğunuzda 500 puan kazanırsınız!"
-  },
-  "rewardsOnboardingStepConfirm": {
-    "message": "Sonraki"
-  },
-  "rewardsOnboardingStepOptIn": {
-    "message": "Puanları al"
-  },
-  "rewardsOptInVerifyingReferralCode": {
-    "message": "Referans kodu doğrulanıyor...",
-    "description": "Text shown while verifying a referral code during rewards opt-in"
-  },
-  "rewardsPointsBalance": {
-    "message": "$1 puan",
-    "description": "$1 is the formatted number of rewards points"
-  },
-  "rewardsPointsBalance_couldntLoad": {
-    "message": "Yüklenemedi",
-    "description": "Text shown when points balance couldn't be loaded"
-  },
-  "rewardsPointsIcon": {
-    "message": "Ödül puanları",
-    "description": "Alt text for the rewards points icon"
-  },
-  "rewardsQRCodeDescription": {
-    "message": "İlerlemenizi takip etmek ve ödülleri kullanmak için uygulamaya ihtiyacınız olacak. Bu QR kodunu tarayın ve hesaplarınızı içe aktarmanıza yardımcı olalım."
-  },
-  "rewardsQRCodeTitle": {
-    "message": "Mobil uygulamayı al"
-  },
-  "rewardsSignInFailed": {
-    "message": "Giriş yapılamadı",
-    "description": "Text shown when the opt-in sign attempt failed, with a retry affordance"
-  },
-  "rewardsSignInToViewPoints": {
-    "message": "Puanları görüntülemek için giriş yapın",
-    "description": "Text shown when user needs to sign in to view their rewards points"
-  },
-  "rewardsSignUp": {
-    "message": "Ödüller için kaydol"
-  },
-  "rewardsSigningIn": {
-    "message": "Giriş yapılıyor...",
-    "description": "Text shown while the user is signing in to view their rewards points"
-  },
   "rpcNameOptional": {
     "message": "RPC Adı (İsteğe Bağlı)"
   },
@@ -6608,16 +5438,6 @@
   },
   "securityAlert": {
     "message": "$1 ve $2 güvenlik uyarısı"
-  },
-  "securityAlerts": {
-    "message": "Güvenlik uyarıları"
-  },
-  "securityAlertsDescription": {
-    "message": "Bu özellik işlem ve imza taleplerini aktif bir şekilde inceleyerek kötü amaçlı veya olağan dışı aktivite konusunda sizi uyarır. $1",
-    "description": "Link to learn more about security alerts"
-  },
-  "securityAlertsDescriptionV2": {
-    "message": "Bu özellik işlem ve imza taleplerini aktif bir şekilde inceleyerek kötü amaçlı aktivite konusunda sizi uyarır. $1"
   },
   "securityAndPassword": {
     "message": "Güvenlik ve şifre"
@@ -6814,615 +5634,6 @@
   "settingsSearchRequestHere": {
     "message": "Buradan talep et"
   },
-  "shieldClaim": {
-    "message": "Bir talep gönder"
-  },
-  "shieldClaimChainNotSupported": {
-    "message": "Bu zincir desteklenmiyor."
-  },
-  "shieldClaimDeleteDraft": {
-    "message": "Taslağı sil"
-  },
-  "shieldClaimDeleteDraftDescription": {
-    "message": "Talep taslağınız silindi."
-  },
-  "shieldClaimDeletedDraft": {
-    "message": "Taslak silindi"
-  },
-  "shieldClaimDescription": {
-    "message": "Talep açıklaması"
-  },
-  "shieldClaimDescriptionPlaceholder": {
-    "message": "Olayın kısa bir özetini sağlayın"
-  },
-  "shieldClaimDetails": {
-    "message": "Her olay için olaydan itibaren $1 gün içinde yalnızca bir talepte bulunabilirsiniz. $2",
-    "description": "The $1 is the number of days and $2 is a link to the full coverage policy"
-  },
-  "shieldClaimDetailsViewClaims": {
-    "message": "Bu talep ekibimiz tarafından inceleniyor. Onaylandığı zaman sizi e-posta yoluyla bilgilendireceğiz. Tam kapsam politikası $1 bölümünü görüntüleyin.",
-    "description": "The $1 is a link to the full coverage policy"
-  },
-  "shieldClaimDraftDeleteFailed": {
-    "message": "Taslak silinemedi"
-  },
-  "shieldClaimDraftDeleteFailedDescription": {
-    "message": "Talep taslağınız silinemiyor. Lütfen tekrar deneyin."
-  },
-  "shieldClaimDraftSaveFailed": {
-    "message": "Taslak kaydedilemedi"
-  },
-  "shieldClaimDraftSaveFailedDescription": {
-    "message": "Talep taslağınız kaydedilemiyor. Lütfen tekrar deneyin."
-  },
-  "shieldClaimDraftSaved": {
-    "message": "Taslak kaydedildi"
-  },
-  "shieldClaimDraftSavedDescription": {
-    "message": "Talep taslağınız kaydedildi."
-  },
-  "shieldClaimDuplicateClaimExists": {
-    "message": "Bu işlem hash'i için zaten bir talep gönderilmiş."
-  },
-  "shieldClaimEmail": {
-    "message": "E-posta"
-  },
-  "shieldClaimEmailHelpText": {
-    "message": "Sizi güncellemelerden haberdar etmek için bu e-posta adresini kullanacağız."
-  },
-  "shieldClaimFileErrorCountExceeded": {
-    "message": "Dosya sayısı maksimum izin verilen sayıyı aşıyor."
-  },
-  "shieldClaimFileErrorInvalidType": {
-    "message": "Dosya türü geçersiz."
-  },
-  "shieldClaimFileErrorSizeExceeded": {
-    "message": "Toplam dosya boyutu maksimum izin verilen boyutu aşıyor."
-  },
-  "shieldClaimFileUploader": {
-    "message": "Görüntü yükle"
-  },
-  "shieldClaimFileUploaderAcceptText": {
-    "message": "PDF, PNG, JPG (Maksimum $1MB)",
-    "description": "The $1 is the maximum file size in MB"
-  },
-  "shieldClaimFileUploaderHelpText": {
-    "message": "Başka kanıtlarınız varsa lütfen buraya yükleyin."
-  },
-  "shieldClaimGroupActive": {
-    "message": "Aktif talepler"
-  },
-  "shieldClaimGroupActiveNote": {
-    "message": "Not: En fazla $1 taslağınız ve aynı anda $2 aktif taslağınız olabilir.",
-    "description": "The $1 is the maximum number of drafts and $2 is the maximum number of active claims"
-  },
-  "shieldClaimGroupCompleted": {
-    "message": "Tamamlanan talepler"
-  },
-  "shieldClaimGroupDrafts": {
-    "message": "Taslaklar"
-  },
-  "shieldClaimGroupNoCompletedClaims": {
-    "message": "Tamamlanan talep yok"
-  },
-  "shieldClaimGroupNoCompletedClaimsDescription": {
-    "message": "Tamamlanan taleplerinizi buradan takip edebilirsiniz."
-  },
-  "shieldClaimGroupNoOpenClaims": {
-    "message": "Açık talep yok"
-  },
-  "shieldClaimGroupNoOpenClaimsDescription": {
-    "message": "Taleplerinizin durumunu buradan takip edebilirsiniz."
-  },
-  "shieldClaimGroupRejected": {
-    "message": "Reddedilen talepler"
-  },
-  "shieldClaimImpactedTxHash": {
-    "message": "Etkilenen işlemin hash değeri"
-  },
-  "shieldClaimImpactedTxHashHelpText": {
-    "message": "TXID, hash ID veya işlem kimliği olarak da bilinir."
-  },
-  "shieldClaimImpactedTxHashHelpTextLink": {
-    "message": "Bulma konusunda yardıma mı ihtiyacınız var?"
-  },
-  "shieldClaimImpactedTxHashNotEligible": {
-    "message": "Bu işlem 1do dahilinde yapılmamış, bu nedenle taleplere uygun değildir"
-  },
-  "shieldClaimImpactedWalletAddress": {
-    "message": "Etkilenen cüzdan adresi"
-  },
-  "shieldClaimIncidentDetails": {
-    "message": "Olay bilgileri"
-  },
-  "shieldClaimInvalidChainId": {
-    "message": "Lütfen geçerli bir zincir kimliği girin"
-  },
-  "shieldClaimInvalidEmail": {
-    "message": "Lütfen geçerli bir e-posta adresi girin"
-  },
-  "shieldClaimInvalidRequired": {
-    "message": "Bu alan gereklidir"
-  },
-  "shieldClaimInvalidTxHash": {
-    "message": "Lütfen geçerli bir işlem hash'i girin"
-  },
-  "shieldClaimInvalidWalletAddress": {
-    "message": "Lütfen geçerli bir cüzdan adresi girin"
-  },
-  "shieldClaimMaxClaimsLimitExceeded": {
-    "message": "Maksimum açık talep sayısına ulaştınız. Daha fazla talep göndermeniz gerekiyorsa lütfen destek bölümüyle iletişime geçin."
-  },
-  "shieldClaimMaxDraftsReached": {
-    "message": "Maksimum taslak sayısına ulaştınız. Yeni bir taslağı kaydetmek için lütfen bir taslağı silin."
-  },
-  "shieldClaimNetwork": {
-    "message": "Ağ seç"
-  },
-  "shieldClaimPersonalDetails": {
-    "message": "Kişisel bilgiler"
-  },
-  "shieldClaimReimbursementWalletAddress": {
-    "message": "Geri ödeme için cüzdan adresi"
-  },
-  "shieldClaimReimbursementWalletAddressHelpText": {
-    "message": "Lütfen bunun gizliliği ihlal edilmiş bir cüzdan olmadığından emin olun."
-  },
-  "shieldClaimSameWalletAddressesError": {
-    "message": "Etkilenen cüzdan adresi ve geri ödeme yapılacak cüzdan adresi farklı olmalıdır."
-  },
-  "shieldClaimSaveAsDraft": {
-    "message": "Taslak olarak kaydet"
-  },
-  "shieldClaimSelectAccount": {
-    "message": "Bir hesap seç"
-  },
-  "shieldClaimSelectNetwork": {
-    "message": "Ağ seç"
-  },
-  "shieldClaimSignatureCoverageNotCovered": {
-    "message": "Belirtilen işlem hash'i için imza kapsamı bulunamadı."
-  },
-  "shieldClaimSubmissionWindowExpired": {
-    "message": "Gönderim penceresinin süresi doldu. Talepler olaydan itibaren $1 gün içinde oluşturulmalıdır.",
-    "description": "The $1 is the number of days"
-  },
-  "shieldClaimSubmit": {
-    "message": "Bir talep gönder"
-  },
-  "shieldClaimSubmitError": {
-    "message": "Talep gönderimi başarısız"
-  },
-  "shieldClaimSubmitSuccess": {
-    "message": "Talep gönderimi gerçekleşti"
-  },
-  "shieldClaimSubmitSuccessDescription": {
-    "message": "Talebiniz gönderildi. İnceleyeceğiz ve e-posta yoluyla güncelleme sağlayacağız."
-  },
-  "shieldClaimTransactionNotFound": {
-    "message": "İşlem zincirde bulunamadı."
-  },
-  "shieldClaimTransactionNotFromWalletAddress": {
-    "message": "İşlem hash'i cüzdan adresinden değil."
-  },
-  "shieldClaimTransactionNotSuccessful": {
-    "message": "İşlem zincirde başarılı olmadı."
-  },
-  "shieldClaimViewGuidelines": {
-    "message": "Kılavuzu görüntüle"
-  },
-  "shieldClaimWalletOwnershipValidationFailed": {
-    "message": "Cüzdan sahipliği doğrulaması başarısız oldu."
-  },
-  "shieldClaimsLastEdited": {
-    "message": "Son düzenleme: $1",
-    "description": "The $1 is the date"
-  },
-  "shieldClaimsListTitle": {
-    "message": "Talepler"
-  },
-  "shieldClaimsNumber": {
-    "message": "Talep #$1",
-    "description": "The $1 is the claim number"
-  },
-  "shieldClaimsTabHistory": {
-    "message": "Talep geçmişi"
-  },
-  "shieldClaimsTabPending": {
-    "message": "Talepler"
-  },
-  "shieldConfirmMembership": {
-    "message": "Planı onayla"
-  },
-  "shieldCoverageAlertCovered": {
-    "message": "1do İşlem Kalkanı ile $2 tutara kadar korunursunuz. $1."
-  },
-  "shieldCoverageAlertHighRiskTransaction": {
-    "message": "Bu, yüksek riskli bir işlemdir, bu nedenle 1do İşlem Kalkanı ile korunmuyor. $1."
-  },
-  "shieldCoverageAlertMessageChainNotSupported": {
-    "message": "Bu zincir desteklenmiyor, bu nedenle 1do İşlem Kalkanı ile korunmuyor. $1"
-  },
-  "shieldCoverageAlertMessageLearnHowCoverageWorks": {
-    "message": "Nelerin kapsandığını gör"
-  },
-  "shieldCoverageAlertMessagePaused": {
-    "message": "1do İşlem Kalkanı planı ödemenizde bir sorun oluştu. Kapsamı sürdürmek için lütfen ödeme yönteminizi güncelleyin."
-  },
-  "shieldCoverageAlertMessagePausedAcknowledgeButton": {
-    "message": "Ödeme yöntemini güncelle"
-  },
-  "shieldCoverageAlertMessagePotentialRisks": {
-    "message": "Bu işlemin potansiyel riskleri var, bu nedenle 1do İşlem Kalkanı ile korunmuyor. $1"
-  },
-  "shieldCoverageAlertMessageSignatureNotSupported": {
-    "message": "Bu imza desteklenmiyor, bu nedenle 1do İşlem Kalkanı ile korunmuyor. $1"
-  },
-  "shieldCoverageAlertMessageTitle": {
-    "message": "Bu işlem kapsanmıyor"
-  },
-  "shieldCoverageAlertMessageTitleCovered": {
-    "message": "Bu işlem kapsanıyor"
-  },
-  "shieldCoverageAlertMessageTitlePaused": {
-    "message": "İşlem Kalkanı duraklatıldı"
-  },
-  "shieldCoverageAlertMessageTitleSignatureRequest": {
-    "message": "Bu imza talebi kapsanmıyor"
-  },
-  "shieldCoverageAlertMessageTitleSignatureRequestCovered": {
-    "message": "Bu imza talebi kapsanıyor"
-  },
-  "shieldCoverageAlertMessageTokenTrustSignalWarning": {
-    "message": "Bu token kötü amaçlı davranışa yönelik güçlü işaretler gösteriyor. Devam etmek fon kaybına neden olabilir. $1."
-  },
-  "shieldCoverageAlertMessageTxTypeNotSupported": {
-    "message": "Bu işlem türü desteklenmiyor, bu nedenle 1do İşlem Kalkanı ile korunmuyor. $1"
-  },
-  "shieldCoverageAlertMessageUnknown": {
-    "message": "Bu talep doğrulanamıyor, bu nedenle 1do İşlem Kalkanı ile korunmuyor. $1."
-  },
-  "shieldCoverageEnding": {
-    "message": "Kalkan kapsamı yakında sona eriyor"
-  },
-  "shieldCoverageEndingAction": {
-    "message": "Yenile"
-  },
-  "shieldCoverageEndingDescription": {
-    "message": "Planın bitiş tarihi $1.",
-    "description": "The $1 is the date"
-  },
-  "shieldCovered": {
-    "message": "Kapsanıyor"
-  },
-  "shieldEntryModalGetStarted": {
-    "message": "14 gün ücretsiz denemeyi başlat"
-  },
-  "shieldEntryModalSubtitleA": {
-    "message": "İşlem Kalkanı, $1 tutara kadar koruma ve 7/24 öncelikli destek sağlar.",
-    "description": "The $1 is the amount of transaction protection"
-  },
-  "shieldEntryModalSubtitleB": {
-    "message": "$1 tutara kadar koruma ve 7/24 öncelikli destek ile daha güvenli işlem yapın.",
-    "description": "The $1 is the amount of transaction protection"
-  },
-  "shieldEntryModalTitleA": {
-    "message": "Daha güvenli işlem yap"
-  },
-  "shieldEntryModalTitleB": {
-    "message": "İşlem Kalkanı Tanıtımı"
-  },
-  "shieldErrorPayerAddressAlreadyUsed": {
-    "message": "Bu adres zaten başka bir hesaba bağlı. Farklı bir adres kullanarak abone olun."
-  },
-  "shieldEstimatedChangesMonthlyTooltipText": {
-    "message": "12 ay boyunca $1/ay (toplamda $2) yetki verin. Her ay ücretlendirilirsiniz; tutarın tamamı şimdi alınmaz."
-  },
-  "shieldFooterAgreement": {
-    "message": "Devam ederek İşlem Kalkanı $1’i kabul ediyorum"
-  },
-  "shieldManagePlan": {
-    "message": "Planı yönet"
-  },
-  "shieldNotCovered": {
-    "message": "Kapsanmıyor"
-  },
-  "shieldPastPlansTitle": {
-    "message": "Geçmiş bilgiler"
-  },
-  "shieldPaused": {
-    "message": "Duraklatıldı"
-  },
-  "shieldPaymentPaused": {
-    "message": "İşlem Kalkanı duraklatıldı"
-  },
-  "shieldPaymentPausedActionCardPayment": {
-    "message": "Güncelle"
-  },
-  "shieldPaymentPausedActionCryptoPayment": {
-    "message": "Güncelle"
-  },
-  "shieldPaymentPausedActionUnexpectedError": {
-    "message": "Görüntüle"
-  },
-  "shieldPaymentPausedDescriptionCardPayment": {
-    "message": "Kart ödemesi başarısız oldu."
-  },
-  "shieldPaymentPausedDescriptionCryptoPayment": {
-    "message": "Token bakiyesi yetersiz."
-  },
-  "shieldPaymentPausedDescriptionUnexpectedError": {
-    "message": "Beklenmedik bir hata oluştu."
-  },
-  "shieldPlanAnnual": {
-    "message": "Yıllık"
-  },
-  "shieldPlanAnnualPrice": {
-    "message": "$1/yıl",
-    "description": "The $1 is the price of the annual plan"
-  },
-  "shieldPlanBillingDate": {
-    "message": "Ücretlendirme tarihi"
-  },
-  "shieldPlanCard": {
-    "message": "Kart"
-  },
-  "shieldPlanCryptoMonthlyNote": {
-    "message": "Bir yıllık toplam aylık ücretler önceden onaylanır"
-  },
-  "shieldPlanDetails": {
-    "message": "Alacağınız"
-  },
-  "shieldPlanDetails1": {
-    "message": "$1 gün ücretsiz deneme",
-    "description": "The $1 is the number of days"
-  },
-  "shieldPlanDetails2": {
-    "message": "$1 tutara kadar işlem koruması",
-    "description": "The $1 is the amount of transaction protection"
-  },
-  "shieldPlanDetails3": {
-    "message": "Öncelikli canlı sohbet desteğine 7/24 erişim"
-  },
-  "shieldPlanDetailsRewards": {
-    "message": "Her $2 için $1 puan kazan",
-    "description": "The $1 is the number of points and $2 plan interval (month or year)"
-  },
-  "shieldPlanDetailsRewardsDescription": {
-    "message": "Bu teklif yalnızca Ödüller sezonları sırasında mevcuttur. Puanlar, ücretsiz deneme sona erdiğinde Ödüllere kaydolan kullanıcılara verilir."
-  },
-  "shieldPlanDetailsRewardsTitle": {
-    "message": "Ödüller"
-  },
-  "shieldPlanErrorText": {
-    "message": "İşlem Kalkanına bağlanılamadı"
-  },
-  "shieldPlanFooterNoteMonthly": {
-    "message": "Aylık olarak ücretlendirilir; dilediğiniz zaman iptal edin"
-  },
-  "shieldPlanFooterNoteYearly": {
-    "message": "Yıllık olarak ücretlendirilir; dilediğiniz zaman iptal edin"
-  },
-  "shieldPlanMonthly": {
-    "message": "Aylık"
-  },
-  "shieldPlanMonthlyPrice": {
-    "message": "$1/ay",
-    "description": "The $1 is the price of the monthly plan"
-  },
-  "shieldPlanPayWith": {
-    "message": "ile öde"
-  },
-  "shieldPlanPayWithCard": {
-    "message": "Kartla öde"
-  },
-  "shieldPlanPayWithToken": {
-    "message": "$1 ile öde",
-    "description": "The $1 is token"
-  },
-  "shieldPlanPaymentTitle": {
-    "message": "Ödeme yöntemini değiştir"
-  },
-  "shieldPlanSave": {
-    "message": "%17 tasarruf et"
-  },
-  "shieldPlanSelectToken": {
-    "message": "Bir token seçin"
-  },
-  "shieldPlanTitle": {
-    "message": "Planınızı seçin"
-  },
-  "shieldPlanYearly": {
-    "message": "Yıllık"
-  },
-  "shieldStartNowCTA": {
-    "message": "Şimdi başla"
-  },
-  "shieldStartNowCTAWithTrial": {
-    "message": "Ücretsiz denemeyi başlat"
-  },
-  "shieldTx": {
-    "message": "İşlem Kalkanı"
-  },
-  "shieldTxBillingAccount": {
-    "message": "Faturalandırılacak hesap"
-  },
-  "shieldTxCancelDetails": {
-    "message": "İptal ederseniz $1 itibarıyla cüzdanınız ve işlemleriniz kapsam dışında kalacaktır.",
-    "description": "The $1 is the date subscription ends"
-  },
-  "shieldTxCancelImmediateDetails": {
-    "message": "İptal ederseniz cüzdanınız ve işlemleriniz kapsam dışında kalır."
-  },
-  "shieldTxCancelNotAllowed": {
-    "message": "Şu anda aboneliğiniz iptal edilemiyor."
-  },
-  "shieldTxCancelNotAllowedPendingVerification": {
-    "message": "Aboneliğiniz bekleyen doğrulama nedeniyle iptal edilemiyor."
-  },
-  "shieldTxCancelWhenPausedDetails": {
-    "message": "Duraklatıldığı zaman planınız artık aktif olmaz. İptal ederseniz planınız hemen sona erer."
-  },
-  "shieldTxDetails1DescriptionTrial": {
-    "message": "$1 gün ücretsiz, ardından $2",
-    "description": "The $1 is the number of days and the $2 is the price of the plan"
-  },
-  "shieldTxDetails1Title": {
-    "message": "1do İşlem Kalkanı"
-  },
-  "shieldTxDetails2Description": {
-    "message": "$1, bir sonraki faturalandırma tarihi $2",
-    "description": "The $1 is interval and the $2 is the date of next billing"
-  },
-  "shieldTxDetails2Title": {
-    "message": "Faturalandırma dönemi"
-  },
-  "shieldTxDetails3DescriptionCrypto": {
-    "message": "Kripto ($1)",
-    "description": "The $1 is the token symbol"
-  },
-  "shieldTxDetails3DescriptionCryptoWithAccount": {
-    "message": "Kripto ($1), $2",
-    "description": "The $1 is the token symbol and the $2 is the account"
-  },
-  "shieldTxDetails3Title": {
-    "message": "Ödeme yöntemi"
-  },
-  "shieldTxDetailsManage": {
-    "message": "Yönet"
-  },
-  "shieldTxDetailsTitle": {
-    "message": "Plan bilgileri"
-  },
-  "shieldTxMembershipActive": {
-    "message": "Aktif plan"
-  },
-  "shieldTxMembershipBenefits": {
-    "message": "Faydalarınız"
-  },
-  "shieldTxMembershipBenefits1Description": {
-    "message": "Kapsanan işlemlerde varlıkları korur"
-  },
-  "shieldTxMembershipBenefits1Title": {
-    "message": "$1 tutara kadar koruma",
-    "description": "The $1 is the amount of transaction protection"
-  },
-  "shieldTxMembershipBenefits2Description": {
-    "message": "Her zaman daha hızlı, özel destek alın"
-  },
-  "shieldTxMembershipBenefits2Title": {
-    "message": "Öncelikli destek"
-  },
-  "shieldTxMembershipBenefits3Description": {
-    "message": "$1 puan/$2 al",
-    "description": "The $1 is the number of points and the $2 is the interval"
-  },
-  "shieldTxMembershipBenefits3DescriptionInactive": {
-    "message": "$1 puan/$2 al",
-    "description": "The $1 is the number of points and the $2 is the interval"
-  },
-  "shieldTxMembershipBenefits3LinkRewards": {
-    "message": "Bağlantı"
-  },
-  "shieldTxMembershipBenefits3SignUp": {
-    "message": "Kaydol"
-  },
-  "shieldTxMembershipBenefits3Title": {
-    "message": "Sezon ödüllerini kazan"
-  },
-  "shieldTxMembershipBenefitsInactive": {
-    "message": "Alacağınız"
-  },
-  "shieldTxMembershipBenefitsViewAll": {
-    "message": "Tümünü görüntüle"
-  },
-  "shieldTxMembershipBillingDetailsViewBillingHistory": {
-    "message": "Ücretlendirmeyi yönet"
-  },
-  "shieldTxMembershipCancel": {
-    "message": "Planı iptal et"
-  },
-  "shieldTxMembershipCancelNotification": {
-    "message": "Planınız $1 tarihinde iptal edilecek.",
-    "description": "The $1 is the date"
-  },
-  "shieldTxMembershipCancelledDate": {
-    "message": "Planınızı $1 tarihinde iptal ettiniz",
-    "description": "The $1 is the date"
-  },
-  "shieldTxMembershipErrorInsufficientFunds": {
-    "message": "Planınız $1 tarihinde sona eriyor. Faydalarınızı devam ettirmek için şimdi yenileyin.",
-    "description": "The $1 is the date subscription ends"
-  },
-  "shieldTxMembershipErrorPausedCard": {
-    "message": "Başarısız bir kart ödemesinden dolayı planınız duraklatıldı."
-  },
-  "shieldTxMembershipErrorPausedCardAction": {
-    "message": "Kart bilgilerini güncelle"
-  },
-  "shieldTxMembershipErrorPausedCardTooltip": {
-    "message": "Ödemeniz reddedildi. Koruma kapsamınızı sürdürmek için lütfen ödeme yönteminizi güncelleyin."
-  },
-  "shieldTxMembershipErrorPausedCryptoInsufficientFunds": {
-    "message": "Plan yetersiz fondan dolayı duraklatıldı. Ödeme güncellemeleri $1 saate kadar sürebilir.",
-    "description": "The $1 is the number of hours"
-  },
-  "shieldTxMembershipErrorPausedCryptoInsufficientFundsAction": {
-    "message": "Fon ekle"
-  },
-  "shieldTxMembershipErrorPausedCryptoTooltip": {
-    "message": "Cüzdanınızdaki token bakiyesi yetersiz. Cüzdanınıza fon ekledikten sonra tekrar dene düğmesine tıklayın."
-  },
-  "shieldTxMembershipErrorPausedUnexpected": {
-    "message": "Plan beklenmedik bir hata nedeniyle duraklatıldı."
-  },
-  "shieldTxMembershipErrorPausedUnexpectedAction": {
-    "message": "Destek ile iletişime geçin"
-  },
-  "shieldTxMembershipFreeTrial": {
-    "message": "Ücretsiz deneme"
-  },
-  "shieldTxMembershipFreeTrialDaysLeft": {
-    "message": "$1 gün deneme süreniz kaldı",
-    "description": "The $1 is the number of days left"
-  },
-  "shieldTxMembershipId": {
-    "message": "Üye Kimliği"
-  },
-  "shieldTxMembershipInactive": {
-    "message": "Aktif olmayan plan"
-  },
-  "shieldTxMembershipMakeClaim": {
-    "message": "Bir talepte bulun"
-  },
-  "shieldTxMembershipPaused": {
-    "message": "Duraklatıldı"
-  },
-  "shieldTxMembershipRenew": {
-    "message": "Planı yenile"
-  },
-  "shieldTxMembershipRenewDescription": {
-    "message": "$1 karşılığında yeniden etkinleştir",
-    "description": "The $1 is the price of the plan"
-  },
-  "shieldTxMembershipResubscribe": {
-    "message": "Planı yeniden başlat"
-  },
-  "shieldTxMembershipSubmitCase": {
-    "message": "Bir talep gönder"
-  },
-  "shieldTxPastPlans": {
-    "message": "Geçmiş planlar"
-  },
-  "shieldTxPastPlansMonthly": {
-    "message": "Aylık plan"
-  },
-  "shieldTxPastPlansYearly": {
-    "message": "Yıllık plan"
-  },
-  "shieldTxViewPastInvoice": {
-    "message": "Geçmiş faturayı görüntüle"
-  },
   "show": {
     "message": "Göster"
   },
@@ -7616,7 +5827,7 @@
     "message": "Derin bağlantıları açarken geçiş ekranını gösterme"
   },
   "skipDeepLinkInterstitialDescription": {
-    "message": "Bu seçenek etkinleştirildiğinde 1do'te derin bağlantıları açarken gösterilen geçiş ekranı atlanacaktır. \"Derin bağlantı\", 1do'in açılmasına sebep olan https://link.metamask.io/home gibi bir bağlantıdır; bu bağlantılar başkaları tarafından gizlenebilir. Geçiş ekranı, sizi 1do dahilinde hesaplarınızı, token'larınızı, geçmişinizi, bakiyelerinizi, ayarlarınızı ve hassas olma potansiyeli olan diğer bilgilerinizi gösterebilecek kazara açılan sayfalardan korumak amacıyla tasarlanmıştır. Bu ayar yalnızca 1do tarafından imzalanan bağlantılar için geçerlidir."
+    "message": "Bu seçenek etkinleştirildiğinde 1do'te derin bağlantıları açarken gösterilen geçiş ekranı atlanacaktır. \"Derin bağlantı\", 1do'in açılmasına sebep olan https://link.1do.io/home gibi bir bağlantıdır; bu bağlantılar başkaları tarafından gizlenebilir. Geçiş ekranı, sizi 1do dahilinde hesaplarınızı, token'larınızı, geçmişinizi, bakiyelerinizi, ayarlarınızı ve hassas olma potansiyeli olan diğer bilgilerinizi gösterebilecek kazara açılan sayfalardan korumak amacıyla tasarlanmıştır. Bu ayar yalnızca 1do tarafından imzalanan bağlantılar için geçerlidir."
   },
   "skipLinkConfirmationScreens": {
     "message": "Bağlantı onay ekranlarını atla"
@@ -7668,12 +5879,6 @@
   },
   "smartContracts": {
     "message": "Akıllı sözleşmeler"
-  },
-  "smartSwapsErrorNotEnoughFunds": {
-    "message": "Akıllı swap için yeterli para yok."
-  },
-  "smartSwapsErrorUnavailable": {
-    "message": "Akıllı Swap'lar geçici olarak kullanılamıyor."
   },
   "smartTransactionCancelled": {
     "message": "İşleminiz iptal edildi"
@@ -8053,7 +6258,7 @@
   },
   "stxFailureDescription": {
     "message": "Ani piyasa değişiklikleri başarısızlıklara neden olabilir. Sorun devam ederse lütfen $1 ile iletişime geç.",
-    "description": "This message is shown to a user if their swap fails. The $1 will be replaced by support.metamask.io"
+    "description": "This message is shown to a user if their swap fails. The $1 will be replaced by support.1do.io"
   },
   "stxOptInDescriptionV2": {
     "message": "Daha güvenilir ve güvenli işlemler için Akıllı İşlemleri açın. $1"
@@ -8122,7 +6327,7 @@
   },
   "supportedLanguagesSectionTitle": {
     "message": "Desteklenen diller",
-    "description": "Section heading on the language settings screen for locales actively maintained by MetaMask."
+    "description": "Section heading on the language settings screen for locales actively maintained by 1do."
   },
   "surveyConversion": {
     "message": "Anketimize katılın"
@@ -8203,7 +6408,7 @@
   },
   "swapFailedErrorDescriptionWithSupportLink": {
     "message": "İşlemler başarısız olabilir ve size yardımcı olmak için buradayız. Bu sorun devam ederse daha fazla destek için $1 adresinden müşteri hizmetleri destek bölümü ile iletişime geçebilirsiniz.",
-    "description": "This message is shown to a user if their swap fails. The $1 will be replaced by support.metamask.io"
+    "description": "This message is shown to a user if their swap fails. The $1 will be replaced by support.1do.io"
   },
   "swapFailedErrorTitle": {
     "message": "Takas başarısız oldu"
@@ -8247,7 +6452,7 @@
   },
   "swapIncludesMMFee": {
     "message": "%$1 1do ücreti dahildir.",
-    "description": "Provides information about the fee that MetaMask takes for swaps. $1 is a decimal number."
+    "description": "Provides information about the fee that 1do takes for swaps. $1 is a decimal number."
   },
   "swapLearnMore": {
     "message": "Swap işlemleri hakkında daha fazla bilgi edinin"
@@ -8257,13 +6462,6 @@
   },
   "swapMaxSlippage": {
     "message": "Maks. kayma"
-  },
-  "swapMetaMaskFee": {
-    "message": "1do ücreti"
-  },
-  "swapMetaMaskFeeDescription": {
-    "message": "%$1 oranında bir ücret otomatik olarak bu teklife dahil edilmiştir. 1do'in likidite sağlayıcı bilgilerinin toplandığı yazılımı kullanma lisansı karşılığında ödersiniz.",
-    "description": "Provides information about the fee that MetaMask takes for swaps. $1 is a decimal number."
   },
   "swapNQuotesWithDot": {
     "message": "$1 teklif.",
@@ -8433,7 +6631,7 @@
   },
   "switchToMetaMaskDefaultRpc": {
     "message": "1do varsayılan RPC'sine geç",
-    "description": "Button text to switch the default RPC endpoint to MetaMask default RPC"
+    "description": "Button text to switch the default RPC endpoint to 1do default RPC"
   },
   "switchToPopup": {
     "message": "Açılır pencereye geç"
@@ -8659,9 +6857,6 @@
   "transactionSettings": {
     "message": "İşlem ayarları"
   },
-  "transactionShield": {
-    "message": "Transaction Shield"
-  },
   "transactionSubmitted": {
     "message": "İşlem gönderildi"
   },
@@ -8803,7 +6998,7 @@
   },
   "u2f": {
     "message": "U2F",
-    "description": "A name on an API for the browser to interact with devices that support the U2F protocol. On some browsers we use it to connect MetaMask to Ledger devices."
+    "description": "A name on an API for the browser to interact with devices that support the U2F protocol. On some browsers we use it to connect 1do to Ledger devices."
   },
   "unableToConnectTo": {
     "message": "$1 ağına bağlanılamıyor.",
@@ -8908,7 +7103,7 @@
   },
   "updatedToMetaMaskDefault": {
     "message": "1do varsayılanına güncellendi",
-    "description": "Toast message confirming that the default RPC endpoint has been updated to MetaMask default"
+    "description": "Toast message confirming that the default RPC endpoint has been updated to 1do default"
   },
   "uploadDropFile": {
     "message": "Dosyanızı buraya sürükleyin"
@@ -9172,5 +7367,13 @@
   },
   "noHardwareWalletSupport": {
     "message": "Most hardware wallets will not work with your current browser version."
+  },
+  "permission_signatureInsight": {
+    "message": "Display signature insights modal.",
+    "description": "The description for the `endowment:signature-insight` permission"
+  },
+  "permission_signatureInsightOrigin": {
+    "message": "See the origins of websites that initiate a signature request",
+    "description": "The description for the `signatureOrigin` caveat, to be used with the `endowment:signature-insight` permission"
   }
 }

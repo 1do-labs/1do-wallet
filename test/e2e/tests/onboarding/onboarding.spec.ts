@@ -347,9 +347,8 @@ describe('MetaMask onboarding', function () {
   });
 
   it('Navigates to a route using deferred deep link after onboarding completes', async function () {
-    const referringLink =
-      'https://link.metamask.io/swap?amount=22000000000000000&from=eip155%3A1%2Fslip44%3A60&sig_params=amount%2Cfrom%2Cto&to=eip155%3A59144%2Ferc20%3A0x176211869cA2b568f2A7D4EE941E073a821EE1ff&sig=KYoYO9beWAlLIT6GUATcHj98hoDiO9h3UZC76ZcMfreKsJcFtCp_vJCWqa9s8-6aO4FLPgoMI02k03t2WcL5bA';
-    const expectedPath = '/cross-chain/swaps/';
+    const referringLink = 'https://link.1do.io/home?sig=valid-test-signature';
+    const expectedPath = '/home';
 
     await withFixtures(
       {
@@ -388,7 +387,7 @@ describe('MetaMask onboarding', function () {
 
         if (!lastUrl.includes(expectedPath)) {
           throw new Error(
-            `Expected to navigate to swaps route after onboarding, but current URL was: ${lastUrl}`,
+            `Expected to navigate to home route after onboarding, but current URL was: ${lastUrl}`,
           );
         }
       },
@@ -487,8 +486,7 @@ describe('MetaMask onboarding', function () {
 
   it('Shows interstitial warning page for unsigned deferred deep link after onboarding completes', async function () {
     // This deep link is unsigned (no sig parameter)
-    const referringLink =
-      'https://link.metamask.io/swap?amount=22000000000000000&from=eip155%3A1%2Fslip44%3A60&sig_params=amount%2Cfrom%2Cto&to=eip155%3A59144%2Ferc20%3A0x176211869cA2b568f2A7D4EE941E073a821EE1ff';
+    const referringLink = 'https://link.1do.io/home';
     const expectedInterstitialPath = '/link';
 
     await withFixtures(
@@ -545,7 +543,7 @@ describe('MetaMask onboarding', function () {
 
   it('Shows interstitial warning page for deferred deep link with invalid signature after onboarding completes', async function () {
     const referringLink =
-      'https://link.metamask.io/swap?amount=22000000000000000&from=eip155%3A1%2Fslip44%3A60&sig_params=amount%2Cfrom%2Cto&to=eip155%3A59144%2Ferc20%3A0x176211869cA2b568f2A7D4EE941E073a821EE1ff&sig=aW52YWxpZC1zaWduYXR1cmU=';
+      'https://link.1do.io/home?sig=aW52YWxpZC1zaWduYXR1cmU=';
     const expectedInterstitialPath = '/link';
 
     await withFixtures(

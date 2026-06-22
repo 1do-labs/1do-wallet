@@ -74,7 +74,6 @@ export const CONFIRM_ADD_SUGGESTED_NFT_ROUTE = '/confirm-add-suggested-nft';
 export const CONNECT_HARDWARE_ROUTE = '/new-account/connect';
 export const SEND_ROUTE = '/send';
 export const REMOTE_ROUTE = '/remote';
-export const REMOTE_ROUTE_SETUP_SWAPS = '/remote/setup-swaps';
 export const REMOTE_ROUTE_SETUP_DAILY_ALLOWANCE =
   '/remote/setup-daily-allowance';
 export const PERMISSIONS = '/permissions';
@@ -106,8 +105,6 @@ export const ONBOARDING_IMPORT_WITH_SRP_ROUTE =
 export const ONBOARDING_PRIVACY_SETTINGS_ROUTE = '/onboarding/privacy-settings';
 export const ONBOARDING_WELCOME_ROUTE = '/onboarding/welcome';
 export const ONBOARDING_METAMETRICS = '/onboarding/metametrics';
-export const ONBOARDING_ACCOUNT_EXIST = '/onboarding/account-exist';
-export const ONBOARDING_ACCOUNT_NOT_FOUND = '/onboarding/account-not-found';
 export const ONBOARDING_DOWNLOAD_APP_ROUTE = '/onboarding/download-app';
 export const INITIALIZE_EXPERIMENTAL_AREA = '/initialize/experimental-area';
 export const ONBOARDING_EXPERIMENTAL_AREA = '/onboarding/experimental-area';
@@ -328,11 +325,6 @@ export const ROUTES = [
   { path: SEND_ROUTE, label: 'Send Page', trackInAnalytics: true },
   { path: REMOTE_ROUTE, label: 'Remote Mode Page', trackInAnalytics: true },
   {
-    path: REMOTE_ROUTE_SETUP_SWAPS,
-    label: 'Remote Mode Setup Swaps Page',
-    trackInAnalytics: true,
-  },
-  {
     path: REMOTE_ROUTE_SETUP_DAILY_ALLOWANCE,
     label: 'Remote Mode Setup Daily Allowance Page',
     trackInAnalytics: true,
@@ -453,16 +445,6 @@ export const ROUTES = [
   {
     path: ONBOARDING_METAMETRICS,
     label: 'Onboarding Metametrics',
-    trackInAnalytics: false,
-  },
-  {
-    path: ONBOARDING_ACCOUNT_EXIST,
-    label: 'Onboarding Account Exist',
-    trackInAnalytics: false,
-  },
-  {
-    path: ONBOARDING_ACCOUNT_NOT_FOUND,
-    label: 'Onboarding Account Not Found',
     trackInAnalytics: false,
   },
   {

@@ -17,22 +17,21 @@ const mockParse = parseModule.parse as jest.MockedFunction<
 >;
 
 const mockBuyLink =
-  'https://link.metamask.io/buy?address=0xacA92E438df0B2401fF60dA7E4337B687a2435DA&amount=100&chainId=1&sig=aagQN9osZ1tfoYIEKvU6t5i8FVaW4Gi6EGimMcZ0VTDmAlPDk800-Nx3131QlDTmO3UF2JCmR2Y2RAJhceNOYw';
-const mockSwapLink =
-  'https://link.metamask.io/swap?amount=22000000000000000&from=eip155%3A1%2Fslip44%3A60&sig_params=amount%2Cfrom%2Cto&to=eip155%3A59144%2Ferc20%3A0x176211869cA2b568f2A7D4EE941E073a821EE1ff&sig=KYoYO9beWAlLIT6GUATcHj98hoDiO9h3UZC76ZcMfreKsJcFtCp_vJCWqa9s8-6aO4FLPgoMI02k03t2WcL5bA';
+  'https://link.1do.io/buy?address=0xacA92E438df0B2401fF60dA7E4337B687a2435DA&amount=100&chainId=1&sig=aagQN9osZ1tfoYIEKvU6t5i8FVaW4Gi6EGimMcZ0VTDmAlPDk800-Nx3131QlDTmO3UF2JCmR2Y2RAJhceNOYw';
+const mockHomeLink = 'https://link.1do.io/home?utm_source=test';
 
 const mockBrowser = browser as jest.Mocked<typeof browser>;
 
 describe('Deep link utils', () => {
   describe('buildInterstitialRoute', () => {
     it('builds the interstitial route with url path and query', () => {
-      const result = buildInterstitialRoute('/swap?amount=100');
-      expect(result).toBe('/link?u=%2Fswap%3Famount%3D100');
+      const result = buildInterstitialRoute('/home?utm_source=test');
+      expect(result).toBe('/link?u=%2Fhome%3Futm_source%3Dtest');
     });
 
     it('handles path without query parameters', () => {
-      const result = buildInterstitialRoute('/swap');
-      expect(result).toBe('/link?u=%2Fswap');
+      const result = buildInterstitialRoute('/home');
+      expect(result).toBe('/link?u=%2Fhome');
     });
 
     it('handles complex query parameters', () => {
@@ -65,7 +64,7 @@ describe('Deep link utils', () => {
     it('returns parsed cookie data', async () => {
       const mockData = {
         createdAt: 1234567890,
-        referringLink: 'https://link.metamask.io/deep-link',
+        referringLink: 'https://link.1do.io/deep-link',
       };
 
       (mockBrowser.cookies.get as jest.Mock).mockResolvedValue({
@@ -116,7 +115,7 @@ describe('Deep link utils', () => {
         async (_description: unknown, invalidValue: unknown) => {
           const mockData = {
             createdAt: invalidValue,
-            referringLink: 'https://link.metamask.io/deep-link',
+            referringLink: 'https://link.1do.io/deep-link',
           };
 
           (mockBrowser.cookies.get as jest.Mock).mockResolvedValue({
@@ -204,8 +203,8 @@ describe('Deep link utils', () => {
 
         mockParse.mockResolvedValue({
           destination: {
-            path: '/swap',
-            query: new URLSearchParams('amount=100'),
+            path: '/home',
+            query: new URLSearchParams('utm_source=test'),
           },
           signature: VALID,
           route: {} as never,
@@ -213,12 +212,12 @@ describe('Deep link utils', () => {
 
         const result = await getDeferredDeepLinkRoute({
           createdAt,
-          referringLink: mockSwapLink,
+          referringLink: mockHomeLink,
         });
 
         expect(result).toStrictEqual({
           type: DeferredDeepLinkRouteType.Navigate,
-          route: '/swap?amount=100',
+          route: '/home?utm_source=test',
           signature: VALID,
         });
       });
@@ -250,8 +249,8 @@ describe('Deep link utils', () => {
 
         mockParse.mockResolvedValue({
           destination: {
-            path: '/swap',
-            query: new URLSearchParams('amount=50'),
+            path: '/home',
+            query: new URLSearchParams('utm_campaign=fresh'),
           },
           signature: VALID,
           route: {} as never,
@@ -259,12 +258,12 @@ describe('Deep link utils', () => {
 
         const result = await getDeferredDeepLinkRoute({
           createdAt,
-          referringLink: mockSwapLink,
+          referringLink: mockHomeLink,
         });
 
         expect(result).toStrictEqual({
           type: DeferredDeepLinkRouteType.Navigate,
-          route: '/swap?amount=50',
+          route: '/home?utm_campaign=fresh',
           signature: VALID,
         });
       });
@@ -277,7 +276,7 @@ describe('Deep link utils', () => {
 
         mockParse.mockResolvedValue({
           destination: {
-            path: '/swap',
+            path: '/home',
             query: new URLSearchParams('amount=100'),
           },
           signature: MISSING,
@@ -286,13 +285,12 @@ describe('Deep link utils', () => {
 
         const result = await getDeferredDeepLinkRoute({
           createdAt,
-          referringLink: mockSwapLink,
+          referringLink: mockHomeLink,
         });
 
         expect(result).toStrictEqual({
           type: DeferredDeepLinkRouteType.Interstitial,
-          urlPathAndQuery:
-            '/swap?amount=22000000000000000&from=eip155%3A1%2Fslip44%3A60&sig_params=amount%2Cfrom%2Cto&to=eip155%3A59144%2Ferc20%3A0x176211869cA2b568f2A7D4EE941E073a821EE1ff&sig=KYoYO9beWAlLIT6GUATcHj98hoDiO9h3UZC76ZcMfreKsJcFtCp_vJCWqa9s8-6aO4FLPgoMI02k03t2WcL5bA',
+          urlPathAndQuery: '/home?utm_source=test',
         });
       });
 
@@ -302,7 +300,7 @@ describe('Deep link utils', () => {
 
         mockParse.mockResolvedValue({
           destination: {
-            path: '/swap',
+            path: '/home',
             query: new URLSearchParams('amount=100'),
           },
           signature: INVALID,
@@ -311,13 +309,12 @@ describe('Deep link utils', () => {
 
         const result = await getDeferredDeepLinkRoute({
           createdAt,
-          referringLink: mockSwapLink,
+          referringLink: mockHomeLink,
         });
 
         expect(result).toStrictEqual({
           type: DeferredDeepLinkRouteType.Interstitial,
-          urlPathAndQuery:
-            '/swap?amount=22000000000000000&from=eip155%3A1%2Fslip44%3A60&sig_params=amount%2Cfrom%2Cto&to=eip155%3A59144%2Ferc20%3A0x176211869cA2b568f2A7D4EE941E073a821EE1ff&sig=KYoYO9beWAlLIT6GUATcHj98hoDiO9h3UZC76ZcMfreKsJcFtCp_vJCWqa9s8-6aO4FLPgoMI02k03t2WcL5bA',
+          urlPathAndQuery: '/home?utm_source=test',
         });
       });
 
@@ -375,7 +372,7 @@ describe('Deep link utils', () => {
 
         const result = await getDeferredDeepLinkRoute({
           createdAt,
-          referringLink: mockSwapLink,
+          referringLink: mockHomeLink,
         });
 
         expect(result).toBeNull();

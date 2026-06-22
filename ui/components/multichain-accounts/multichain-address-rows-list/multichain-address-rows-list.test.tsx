@@ -5,11 +5,11 @@ import configureStore from 'redux-mock-store';
 import { InternalAccount } from '@metamask/keyring-internal-api';
 import { AccountGroupId } from '@metamask/account-api';
 import { CaipChainId } from '@metamask/utils';
-import { formatChainIdToCaip } from '@metamask/bridge-controller';
+import { formatChainIdToCaip } from '../../../../shared/lib/chain-utils';
 import { MultichainAddressRowsList } from './multichain-address-rows-list';
 
-jest.mock('@metamask/bridge-controller', () => ({
-  ...jest.requireActual('@metamask/bridge-controller'),
+jest.mock('../../../../shared/lib/chain-utils', () => ({
+  ...jest.requireActual('../../../../shared/lib/chain-utils'),
   formatChainIdToCaip: jest.fn(),
 }));
 

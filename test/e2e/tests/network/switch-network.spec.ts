@@ -6,12 +6,6 @@ import FixtureBuilderV2 from '../../fixtures/fixture-builder-v2';
 import { login } from '../../page-objects/flows/login.flow';
 import HomePage from '../../page-objects/pages/home/homepage';
 import { switchToNetworkFromNetworkSelect } from '../../page-objects/flows/network.flow';
-import {
-  mockGasPricesArbitrum,
-  mockSwapTokensArbitrum,
-  mockSwapAggregatorMetadataArbitrum,
-  mockTopAssetsArbitrum,
-} from '../bridge/bridge-test-utils';
 
 describe('Switch network - ', function (this: Suite) {
   it('Switch networks to existing and new networks', async function () {
@@ -19,15 +13,7 @@ describe('Switch network - ', function (this: Suite) {
       {
         fixtures: new FixtureBuilderV2().build(),
         title: this.test?.fullTitle(),
-        testSpecificMock: async (mockServer: Mockttp) => {
-          const standardMocks = [
-            await mockGasPricesArbitrum(mockServer),
-            await mockTopAssetsArbitrum(mockServer),
-            await mockSwapTokensArbitrum(mockServer),
-            await mockSwapAggregatorMetadataArbitrum(mockServer),
-          ];
-          return standardMocks;
-        },
+        testSpecificMock: async (_mockServer: Mockttp) => [],
       },
       async ({ driver }: { driver: Driver }) => {
         await login(driver);

@@ -100,7 +100,7 @@ async function mockAccountsApi(
   return [
     await mockServer
       .forGet(
-        `https://accounts.api.cx.metamask.io/v4/multiaccount/transactions`,
+        `https://accounts.disabled.1do.local/v4/multiaccount/transactions`,
       )
       .always()
       .thenCallback(() => ({

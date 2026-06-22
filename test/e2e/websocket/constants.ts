@@ -4,5 +4,4 @@
  */
 export const WEBSOCKET_SERVICES = Object.freeze({
   accountActivity: 'accountActivity',
-  perps: 'perps',
 } as const);

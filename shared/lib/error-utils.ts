@@ -167,8 +167,16 @@ export function getErrorHtml(
   return getErrorHtmlBase(`
       <h1>${lodashEscape(t('troubleStartingTitle'))}</h1>
       <p>
-        ${errorKey === 'troubleStarting' ? t('troubleStartingMessage') : ''}
-        ${errorKey === 'somethingIsWrong' ? t('somethingIsWrong') : ''}
+        ${
+          errorKey === 'troubleStarting'
+            ? lodashEscape(t('troubleStartingMessage'))
+            : ''
+        }
+        ${
+          errorKey === 'somethingIsWrong'
+            ? lodashEscape(t('somethingIsWrong'))
+            : ''
+        }
       </p>
       ${detailsRawHtml}
       <label class="critical-error__report">
@@ -203,7 +211,7 @@ export function getErrorHtml(
       <button
         id="critical-error-button"
         class="critical-error__button-restore button btn-primary"
-        title="Report this error and restart MetaMask">
+        title="Report this error and restart 1do">
         ${lodashEscape(t('restartMetamask'))}
       </button>
       ${footer}

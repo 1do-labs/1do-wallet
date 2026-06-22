@@ -1001,7 +1001,7 @@ describe('AppStateController', () => {
       await withController(async ({ controller }) => {
         const mockDeepLinkData = {
           createdAt: 1765465337256,
-          referringLink: 'https://link.metamask.io/deep-link',
+          referringLink: 'https://link.1do.io/deep-link',
         };
 
         controller.setDeferredDeepLink(mockDeepLinkData);
@@ -1018,7 +1018,7 @@ describe('AppStateController', () => {
       await withController(async ({ controller }) => {
         const mockDeepLinkData = {
           createdAt: 1765465337256,
-          referringLink: 'https://link.metamask.io/deep-link',
+          referringLink: 'https://link.1do.io/deep-link',
         };
 
         controller.setDeferredDeepLink(mockDeepLinkData);

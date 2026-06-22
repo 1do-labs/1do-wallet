@@ -70,8 +70,8 @@ describe('SmartTransactionsBannerAlert', () => {
       smartTransactionsFeatureFlags: {
         enabled: true,
       },
-      swapsState: {
-        swapsFeatureFlags: {
+      smartTransactionsFeatureFlagsState: {
+        smartTransactionsFeatureFlags: {
           ethereum: {
             extensionActive: true,
             mobileActive: false,
@@ -188,8 +188,8 @@ describe('SmartTransactionsBannerAlert', () => {
         smartTransactionsFeatureFlags: {
           enabled: false,
         },
-        swapsState: {
-          swapsFeatureFlags: {
+        smartTransactionsFeatureFlagsState: {
+          smartTransactionsFeatureFlags: {
             ethereum: {
               extensionActive: false,
               smartTransactions: {

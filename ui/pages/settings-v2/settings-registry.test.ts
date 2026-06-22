@@ -76,9 +76,6 @@ describe('settings-registry', () => {
       expect(paths).toContain(THEME_ROUTE);
       expect(paths).toContain(MANAGE_WALLET_RECOVERY_ROUTE);
       expect(paths).toContain(SECURITY_PASSWORD_CHANGE_V2_ROUTE);
-      expect(paths).toContain(TRANSACTION_SHIELD_MANAGE_PLAN_ROUTE);
-      expect(paths).toContain(TRANSACTION_SHIELD_MANAGE_PAST_PLAN_ROUTE);
-      expect(paths).toContain(`${TRANSACTION_SHIELD_CLAIM_ROUTES.BASE}/*`);
     });
 
     it('does not include settings root', () => {

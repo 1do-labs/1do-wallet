@@ -14,7 +14,6 @@ import '../../development/wdyr';
 
 // Import these before network constants are evaluated.
 import '../../shared/constants/alchemy-api-key';
-import '../../shared/constants/infura-project-id';
 
 import * as reactDevtoolsCore from 'react-devtools-core';
 

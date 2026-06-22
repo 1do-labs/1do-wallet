@@ -6,7 +6,7 @@ import {
   Hex,
 } from '@metamask/utils';
 import { toEvmCaipChainId } from '@metamask/multichain-network-controller';
-import { getNativeAssetForChainId } from '@metamask/bridge-controller';
+import { getNativeAssetForChainId } from './chain-utils';
 import {
   getAssetImageUrl,
   fetchAssetMetadata,

@@ -7,7 +7,6 @@ import type {
   TransactionMetricsRequest,
 } from '../../../../shared/types/metametrics';
 import { getBuilderMetrics } from './metrics-builders';
-import { handleSwapPostTransactionMetricHandler } from './swap-post-transaction-metric-handler';
 
 export const handleTransactionAdded = async (
   transactionMetricsRequest: TransactionMetricsRequest,
@@ -115,19 +114,3 @@ async function trackTransactionEvent({
     sensitiveProperties,
   });
 }
-
-export const handlePostTransactionBalanceUpdate = async (
-  transactionMetricsRequest: TransactionMetricsRequest,
-  {
-    transactionMeta,
-    approvalTransactionMeta,
-  }: {
-    transactionMeta: TransactionMeta;
-    approvalTransactionMeta?: TransactionMeta;
-  },
-) => {
-  await handleSwapPostTransactionMetricHandler(transactionMetricsRequest, {
-    transactionMeta,
-    approvalTransactionMeta,
-  });
-};

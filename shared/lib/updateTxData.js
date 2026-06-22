@@ -13,11 +13,7 @@ export default function updateTxData({
   toAddress,
   name,
 }) {
-  if (
-    [TransactionType.simpleSend, TransactionType.swapAndSend].includes(
-      txData.type,
-    )
-  ) {
+  if (txData.type === TransactionType.simpleSend) {
     addToAddressBookIfNew(toAddress, toAccounts);
   }
 

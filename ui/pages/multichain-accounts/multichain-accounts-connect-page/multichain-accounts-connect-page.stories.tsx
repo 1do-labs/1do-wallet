@@ -17,7 +17,7 @@ import { createMockMultichainAccountsState } from '../../../selectors/multichain
 
 const mockTargetSubjectMetadata = {
   extensionId: null,
-  iconUrl: 'https://metamask.github.io/test-dapp/metamask-fox.svg',
+  iconUrl: './images/logo/1do-mark.svg',
   name: 'E2E Test Dapp',
   origin: 'https://metamask.github.io',
   subjectType: 'website' as const,

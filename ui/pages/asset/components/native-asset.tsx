@@ -3,8 +3,8 @@ import { Token } from '@metamask/assets-controllers';
 import { useSelector } from 'react-redux';
 import { getAccountLink } from '@metamask/etherscan-link';
 import { Hex, isCaipChainId } from '@metamask/utils';
-import { formatChainIdToCaip } from '@metamask/bridge-controller';
 import { InternalAccount } from '@metamask/keyring-internal-api';
+import { formatChainIdToCaip } from '../../../../shared/lib/chain-utils';
 import {
   getRpcPrefsForCurrentProvider,
   getSelectedInternalAccount,

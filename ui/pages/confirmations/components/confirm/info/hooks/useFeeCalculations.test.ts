@@ -1,6 +1,5 @@
 import { toHex } from '@metamask/controller-utils';
 import { TransactionMeta } from '@metamask/transaction-controller';
-import { QuoteResponse } from '@metamask/bridge-controller';
 import { merge } from 'lodash';
 
 import {

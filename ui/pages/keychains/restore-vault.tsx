@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import {
   Box,
@@ -21,7 +21,6 @@ import {
 } from '@metamask/design-system-react';
 import {
   createNewVaultAndRestore,
-  resetOAuthLoginState,
   resetWallet,
   setFirstTimeFlowType,
   unMarkPasswordForgotten,
@@ -31,7 +30,6 @@ import {
   MetaMetricsEventCategory,
   MetaMetricsEventName,
 } from '../../../shared/constants/metametrics';
-import { getIsSocialLoginFlow } from '../../selectors';
 import { FirstTimeFlowType } from '../../../shared/constants/onboarding';
 import SrpInputForm from '../srp-input-form';
 import { CreatePasswordForm } from '../create-password-form';
@@ -43,7 +41,6 @@ function RestoreVaultPage() {
   const navigate = useNavigate();
   const t = useI18nContext();
   const { trackEvent } = React.useContext(MetaMetricsContext);
-  const isSocialLoginFlow = useSelector(getIsSocialLoginFlow);
 
   const [srpError, setSrpError] = useState('');
   const [secretRecoveryPhrase, setSecretRecoveryPhrase] = useState('');
@@ -53,17 +50,13 @@ function RestoreVaultPage() {
 
   const handleImport = useCallback(
     async (password: string, termsChecked: boolean) => {
-      if (!isSocialLoginFlow && !termsChecked) {
+      if (!termsChecked) {
         return;
       }
 
       setLoading(true);
 
       try {
-        if (isSocialLoginFlow) {
-          await dispatch(resetOAuthLoginState());
-        }
-
         await dispatch(resetWallet(true));
 
         await dispatch(setFirstTimeFlowType(FirstTimeFlowType.restore));
@@ -84,7 +77,7 @@ function RestoreVaultPage() {
         console.error('[RestoreVault] Error during import:', error);
       }
     },
-    [isSocialLoginFlow, secretRecoveryPhrase, dispatch, trackEvent, navigate],
+    [secretRecoveryPhrase, dispatch, trackEvent, navigate],
   );
 
   const handleContinue = useCallback(() => {
@@ -121,7 +114,6 @@ function RestoreVaultPage() {
     >
       {shouldShowPasswordForm ? (
         <CreatePasswordForm
-          isSocialLoginFlow={false}
           onSubmit={handleImport}
           onBack={handleBack}
           loading={loading}

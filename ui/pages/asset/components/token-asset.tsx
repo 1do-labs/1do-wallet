@@ -11,7 +11,7 @@ import React, { useContext } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { InternalAccount } from '@metamask/keyring-internal-api';
-import { formatChainIdToCaip } from '@metamask/bridge-controller';
+import { formatChainIdToCaip } from '../../../../shared/lib/chain-utils';
 import { MetaMetricsEventCategory } from '../../../../shared/constants/metametrics';
 import { AssetType } from '../../../../shared/constants/transaction';
 import { getNetworkConfigurationsByChainId } from '../../../../shared/lib/selectors/networks';

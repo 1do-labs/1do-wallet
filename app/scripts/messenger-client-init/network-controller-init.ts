@@ -14,7 +14,6 @@ import { CONNECTIVITY_STATUSES } from '@metamask/connectivity-controller';
 import { hasProperty } from '@metamask/utils';
 import { RemoteFeatureFlagControllerState } from '@metamask/remote-feature-flag-controller';
 import { SECOND } from '../../../shared/constants/time';
-import { getIsQuicknodeEndpointUrl } from '../../../shared/lib/network-utils';
 import {
   onRpcEndpointDegraded,
   onRpcEndpointUnavailable,
@@ -22,7 +21,7 @@ import {
 import {
   CHAIN_IDS,
   getRpcUrl,
-  getFailoverUrlsForInfuraNetwork,
+  getFailoverUrlsForNetwork,
 } from '../../../shared/constants/network';
 import { captureException } from '../../../shared/lib/sentry';
 import { MessengerClientInitFunction } from './types';
@@ -38,6 +37,30 @@ const ALCHEMY_NETWORKS = {
     legacyNetworkClientId: 'mainnet',
     network: 'mainnet',
   },
+  [CHAIN_IDS.ARBITRUM]: {
+    legacyNetworkClientId: 'arbitrum-mainnet',
+    network: 'arbitrum-mainnet',
+  },
+  [CHAIN_IDS.AVALANCHE]: {
+    legacyNetworkClientId: 'avalanche-mainnet',
+    network: 'avalanche-mainnet',
+  },
+  [CHAIN_IDS.BSC]: {
+    legacyNetworkClientId: 'bsc-mainnet',
+    network: 'bsc-mainnet',
+  },
+  [CHAIN_IDS.OPTIMISM]: {
+    legacyNetworkClientId: 'optimism-mainnet',
+    network: 'optimism-mainnet',
+  },
+  [CHAIN_IDS.POLYGON]: {
+    legacyNetworkClientId: 'polygon-mainnet',
+    network: 'polygon-mainnet',
+  },
+  [CHAIN_IDS.BASE]: {
+    legacyNetworkClientId: 'base-mainnet',
+    network: 'base-mainnet',
+  },
   [CHAIN_IDS.SEPOLIA]: {
     legacyNetworkClientId: 'sepolia',
     network: 'sepolia',
@@ -51,6 +74,9 @@ const ALCHEMY_NETWORKS = {
     network: 'linea-sepolia',
   },
 } as const;
+
+const NETWORK_CONTROLLER_PROJECT_ID_COMPATIBILITY_PLACEHOLDER =
+  '1do-alchemy-rpc-only';
 
 function normalizeAlchemyRpcEndpoints(
   networks: NetworkController['state']['networkConfigurationsByChainId'],
@@ -115,28 +141,28 @@ function getInitialState(initialState?: Partial<NetworkController['state']>) {
       network.defaultBlockExplorerUrlIndex = 0;
     });
 
-    // Add failovers for default Infura RPC endpoints
+    // Add failovers for default RPC endpoints.
     networks[CHAIN_IDS.MAINNET].rpcEndpoints[0].failoverUrls =
-      getFailoverUrlsForInfuraNetwork('ethereum-mainnet');
+      getFailoverUrlsForNetwork('ethereum-mainnet');
     networks[CHAIN_IDS.LINEA_MAINNET].rpcEndpoints[0].failoverUrls =
-      getFailoverUrlsForInfuraNetwork('linea-mainnet');
+      getFailoverUrlsForNetwork('linea-mainnet');
     networks[CHAIN_IDS.BASE].rpcEndpoints[0].failoverUrls =
-      getFailoverUrlsForInfuraNetwork('base-mainnet');
+      getFailoverUrlsForNetwork('base-mainnet');
     if (networks[CHAIN_IDS.ARBITRUM]?.rpcEndpoints?.[0]) {
       networks[CHAIN_IDS.ARBITRUM].rpcEndpoints[0].failoverUrls =
-        getFailoverUrlsForInfuraNetwork('arbitrum-mainnet');
+        getFailoverUrlsForNetwork('arbitrum-mainnet');
     }
     if (networks[CHAIN_IDS.BSC]?.rpcEndpoints?.[0]) {
       networks[CHAIN_IDS.BSC].rpcEndpoints[0].failoverUrls =
-        getFailoverUrlsForInfuraNetwork('bsc-mainnet');
+        getFailoverUrlsForNetwork('bsc-mainnet');
     }
     if (networks[CHAIN_IDS.OPTIMISM]?.rpcEndpoints?.[0]) {
       networks[CHAIN_IDS.OPTIMISM].rpcEndpoints[0].failoverUrls =
-        getFailoverUrlsForInfuraNetwork('optimism-mainnet');
+        getFailoverUrlsForNetwork('optimism-mainnet');
     }
     if (networks[CHAIN_IDS.POLYGON]?.rpcEndpoints?.[0]) {
       networks[CHAIN_IDS.POLYGON].rpcEndpoints[0].failoverUrls =
-        getFailoverUrlsForInfuraNetwork('polygon-mainnet');
+        getFailoverUrlsForNetwork('polygon-mainnet');
     }
     normalizeAlchemyRpcEndpoints(networks);
 
@@ -216,7 +242,7 @@ function getInitialState(initialState?: Partial<NetworkController['state']>) {
  * @param request - The request object.
  * @param request.controllerMessenger - The messenger to use for the controller.
  * @param request.persistedState - The persisted state of the extension.
- * @param request.infuraProjectId - The Infura project ID to use.
+ * @param request.infuraProjectId - Legacy NetworkController API parameter.
  * @param request.initMessenger
  * @returns The initialized controller.
  */
@@ -234,6 +260,8 @@ export const NetworkControllerInit: MessengerClientInitFunction<
     'RemoteFeatureFlagController:getState',
   );
   const initialState = getInitialState(persistedState.NetworkController);
+  const networkControllerInfuraCompatibilityProjectId =
+    infuraProjectId || NETWORK_CONTROLLER_PROJECT_ID_COMPATIBILITY_PLACEHOLDER;
 
   /**
    * Determines if RPC failover is enabled based on RemoteFeatureFlagController
@@ -283,22 +311,6 @@ export const NetworkControllerInit: MessengerClientInitFunction<
       maxRetries,
     };
 
-    if (getIsQuicknodeEndpointUrl(rpcEndpointUrl)) {
-      return {
-        ...commonOptions,
-        policyOptions: {
-          ...commonPolicyOptions,
-          // The number of rounds of retries that will break the circuit,
-          // triggering a "cooldown".
-          //
-          // When we fail over to QuickNode, we expect it to be down at first
-          // while it is being automatically activated, and we don't want to
-          // activate the "cooldown" accidentally.
-          maxConsecutiveFailures: (maxRetries + 1) * 10,
-        },
-      };
-    }
-
     return {
       ...commonOptions,
       policyOptions: {
@@ -317,7 +329,7 @@ export const NetworkControllerInit: MessengerClientInitFunction<
   const messengerClient = new NetworkController({
     messenger: controllerMessenger,
     state: initialState,
-    infuraProjectId,
+    infuraProjectId: networkControllerInfuraCompatibilityProjectId,
     getBlockTrackerOptions,
     getRpcServiceOptions,
     additionalDefaultNetworks: ADDITIONAL_DEFAULT_NETWORKS,
@@ -333,7 +345,7 @@ export const NetworkControllerInit: MessengerClientInitFunction<
         chainId,
         endpointUrl,
         error,
-        infuraProjectId,
+        infuraProjectId: networkControllerInfuraCompatibilityProjectId,
         trackEvent: initMessenger.call.bind(
           initMessenger,
           'MetaMetricsController:trackEvent',
@@ -359,7 +371,7 @@ export const NetworkControllerInit: MessengerClientInitFunction<
         chainId,
         endpointUrl,
         error,
-        infuraProjectId,
+        infuraProjectId: networkControllerInfuraCompatibilityProjectId,
         retryReason,
         rpcMethodName,
         trackEvent: initMessenger.call.bind(

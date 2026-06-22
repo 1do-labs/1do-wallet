@@ -54,13 +54,15 @@ export async function getStateCorruptionErrorHtml(
   }
 
   const header = `
-    <h1>${t('stateCorruptionMetamaskDatabaseCannotBeAccessed')}</h1>
+    <h1>${lodashEscape(
+      t('stateCorruptionMetamaskDatabaseCannotBeAccessed') ?? '',
+    )}</h1>
   `;
   const body = `
     <p>${lodashEscape(corruptionDetectedMessage)}</p>
     <p>${copyAndRestoreMessage}</p>
     <button disabled id="critical-error-button" class="critical-error__button-restore button btn-primary">
-      ${restoreOrResetMessage}
+      ${lodashEscape(restoreOrResetMessage)}
     </button>
   `;
 

@@ -732,7 +732,7 @@
         "@metamask/client-controller": true,
         "@metamask/controller-utils": true,
         "@metamask/core-backend": true,
-        "@metamask/assets-controller>@metamask/keyring-snap-client": true,
+        "@metamask/keyring-snap-client": true,
         "@metamask/phishing-controller": true,
         "@metamask/polling-controller": true,
         "@metamask/snaps-utils": true,
@@ -770,7 +770,7 @@
         "@metamask/controller-utils": true,
         "@metamask/controller-utils>@metamask/eth-query": true,
         "@metamask/keyring-api": true,
-        "@metamask/assets-controller>@metamask/keyring-snap-client": true,
+        "@metamask/keyring-snap-client": true,
         "@metamask/metamask-eth-abis": true,
         "@metamask/phishing-controller": true,
         "@metamask/polling-controller": true,
@@ -793,69 +793,6 @@
       },
       "packages": {
         "immer": true
-      }
-    },
-    "@metamask/bridge-controller": {
-      "globals": {
-        "AbortController": true,
-        "TextDecoder": true,
-        "URLSearchParams": true,
-        "console.error": true,
-        "console.log": true,
-        "console.warn": true
-      },
-      "packages": {
-        "ethers>@ethersproject/address": true,
-        "@ethersproject/bignumber": true,
-        "ethers>@ethersproject/constants": true,
-        "@ethersproject/contracts": true,
-        "@ethersproject/providers": true,
-        "@metamask/controller-utils": true,
-        "@metamask/keyring-api": true,
-        "@metamask/metamask-eth-abis": true,
-        "@metamask/multichain-network-controller": true,
-        "@metamask/polling-controller": true,
-        "@metamask/superstruct": true,
-        "@metamask/utils": true,
-        "@metamask/bridge-controller>bignumber.js": true,
-        "browserify>buffer": true,
-        "lodash": true,
-        "reselect": true,
-        "uuid": true
-      }
-    },
-    "@metamask/transaction-pay-controller>@metamask/bridge-controller": {
-      "globals": {
-        "AbortController": true,
-        "TextDecoder": true,
-        "URLSearchParams": true,
-        "console.error": true,
-        "console.log": true,
-        "console.warn": true
-      },
-      "packages": {
-        "ethers>@ethersproject/address": true,
-        "@ethersproject/bignumber": true,
-        "ethers>@ethersproject/constants": true,
-        "@ethersproject/contracts": true,
-        "@ethersproject/providers": true,
-        "@metamask/controller-utils": true,
-        "@metamask/keyring-api": true,
-        "@metamask/metamask-eth-abis": true,
-        "@metamask/multichain-network-controller": true,
-        "@metamask/polling-controller": true,
-        "@metamask/superstruct": true,
-        "@metamask/utils": true,
-        "@metamask/transaction-pay-controller>bignumber.js": true,
-        "browserify>buffer": true,
-        "lodash": true,
-        "reselect": true,
-        "uuid": true
-      }
-    },
-    "@metamask/bridge-status-controller": {
-      "packages": {
-        "@metamask/transaction-controller": true
       }
     },
     "@metamask/browser-passworder": {
@@ -1290,7 +1227,7 @@
         "@metamask/eth-sig-util": true,
         "@metamask/keyring-api": true,
         "@metamask/keyring-internal-api": true,
-        "@metamask/accounts-controller>@metamask/eth-snap-keyring>@metamask/keyring-internal-snap-client": true,
+        "@metamask/keyring-internal-snap-client": true,
         "@metamask/accounts-controller>@metamask/eth-snap-keyring>@metamask/keyring-snap-sdk": true,
         "@metamask/keyring-utils": true,
         "@metamask/superstruct": true,
@@ -1491,7 +1428,7 @@
         "bitcoin-address-validation": true
       }
     },
-    "@metamask/accounts-controller>@metamask/eth-snap-keyring>@metamask/keyring-internal-snap-client>@metamask/keyring-api": {
+    "@metamask/keyring-internal-snap-client>@metamask/keyring-api": {
       "packages": {
         "@metamask/keyring-utils": true,
         "@metamask/superstruct": true,
@@ -1507,7 +1444,7 @@
         "bitcoin-address-validation": true
       }
     },
-    "@metamask/assets-controller>@metamask/keyring-snap-client>@metamask/keyring-api": {
+    "@metamask/keyring-snap-client>@metamask/keyring-api": {
       "packages": {
         "@metamask/keyring-utils": true,
         "@metamask/superstruct": true,
@@ -1556,11 +1493,11 @@
         "@metamask/superstruct": true
       }
     },
-    "@metamask/accounts-controller>@metamask/eth-snap-keyring>@metamask/keyring-internal-snap-client": {
+    "@metamask/keyring-internal-snap-client": {
       "packages": {
-        "@metamask/accounts-controller>@metamask/eth-snap-keyring>@metamask/keyring-internal-snap-client>@metamask/keyring-api": true,
+        "@metamask/keyring-internal-snap-client>@metamask/keyring-api": true,
         "@metamask/keyring-internal-api": true,
-        "@metamask/assets-controller>@metamask/keyring-snap-client": true,
+        "@metamask/keyring-snap-client": true,
         "@metamask/keyring-utils": true
       }
     },
@@ -1593,12 +1530,12 @@
         "@metamask/eth-ledger-bridge-keyring>@metamask/keyring-sdk>uuid": true
       }
     },
-    "@metamask/assets-controller>@metamask/keyring-snap-client": {
+    "@metamask/keyring-snap-client": {
       "packages": {
-        "@metamask/assets-controller>@metamask/keyring-snap-client>@metamask/keyring-api": true,
+        "@metamask/keyring-snap-client>@metamask/keyring-api": true,
         "@metamask/keyring-utils": true,
         "@metamask/superstruct": true,
-        "@metamask/assets-controller>@metamask/keyring-snap-client>uuid": true
+        "@metamask/keyring-snap-client>uuid": true
       }
     },
     "@metamask/accounts-controller>@metamask/eth-snap-keyring>@metamask/keyring-snap-sdk": {
@@ -1965,11 +1902,6 @@
         "@metamask/network-controller>@metamask/swappable-obj-proxy": true
       }
     },
-    "@metamask/shield-controller": {
-      "packages": {
-        "@metamask/transaction-controller": true
-      }
-    },
     "@metamask/signature-controller": {
       "globals": {
         "fetch": true
@@ -2104,27 +2036,6 @@
         "uuid": true
       }
     },
-    "@metamask/transaction-pay-controller": {
-      "globals": {
-        "URLSearchParams": true,
-        "clearTimeout": true,
-        "setTimeout": true
-      },
-      "packages": {
-        "@ethersproject/abi": true,
-        "@ethersproject/contracts": true,
-        "@ethersproject/providers": true,
-        "@metamask/base-controller": true,
-        "@metamask/transaction-pay-controller>@metamask/bridge-controller": true,
-        "@metamask/controller-utils": true,
-        "@metamask/keyring-controller": true,
-        "@metamask/metamask-eth-abis": true,
-        "@metamask/transaction-controller": true,
-        "@metamask/utils": true,
-        "@metamask/transaction-pay-controller>bignumber.js": true,
-        "lodash": true
-      }
-    },
     "@metamask/user-operation-controller": {
       "globals": {
         "fetch": true
@@ -2255,14 +2166,6 @@
       }
     },
     "eth-lattice-keyring>gridplus-sdk>ox>@noble/curves": {
-      "globals": {
-        "TextEncoder": true
-      },
-      "packages": {
-        "@noble/hashes": true
-      }
-    },
-    "viem>ox>@noble/curves": {
       "globals": {
         "TextEncoder": true
       },
@@ -2577,51 +2480,6 @@
       "packages": {
         "@noble/hashes": true,
         "@scure/base": true
-      }
-    },
-    "@solana/addresses": {
-      "globals": {
-        "Intl.Collator": true,
-        "TextEncoder": true,
-        "crypto.subtle.digest": true,
-        "crypto.subtle.exportKey": true
-      },
-      "packages": {
-        "@solana/addresses>@solana/assertions": true,
-        "@solana/addresses>@solana/codecs-core": true,
-        "@solana/addresses>@solana/codecs-strings": true,
-        "@solana/addresses>@solana/errors": true
-      }
-    },
-    "@solana/addresses>@solana/assertions": {
-      "globals": {
-        "crypto": true,
-        "isSecureContext": true
-      },
-      "packages": {
-        "@solana/addresses>@solana/errors": true
-      }
-    },
-    "@solana/addresses>@solana/codecs-core": {
-      "packages": {
-        "@solana/addresses>@solana/errors": true
-      }
-    },
-    "@solana/addresses>@solana/codecs-strings": {
-      "globals": {
-        "TextDecoder": true,
-        "TextEncoder": true,
-        "atob": true,
-        "btoa": true
-      },
-      "packages": {
-        "@solana/addresses>@solana/codecs-core": true,
-        "@solana/addresses>@solana/errors": true
-      }
-    },
-    "@solana/addresses>@solana/errors": {
-      "globals": {
-        "btoa": true
       }
     },
     "@metamask/controller-utils>@spruceid/siwe-parser": {
@@ -3088,12 +2946,6 @@
         "define": true
       }
     },
-    "@metamask/bridge-controller>bignumber.js": {
-      "globals": {
-        "crypto": true,
-        "define": true
-      }
-    },
     "@metamask/smart-transactions-controller>bignumber.js": {
       "globals": {
         "crypto": true,
@@ -3101,12 +2953,6 @@
       }
     },
     "@metamask/transaction-controller>bignumber.js": {
-      "globals": {
-        "crypto": true,
-        "define": true
-      }
-    },
-    "@metamask/transaction-pay-controller>bignumber.js": {
       "globals": {
         "crypto": true,
         "define": true
@@ -4594,7 +4440,7 @@
         "crypto.getRandomValues": true
       },
       "packages": {
-        "viem>ox>@noble/curves": true,
+        "viem>@noble/curves": true,
         "@noble/hashes": true,
         "viem>abitype": true
       }
@@ -5664,7 +5510,7 @@
         "crypto": true
       }
     },
-    "@metamask/assets-controller>@metamask/keyring-snap-client>uuid": {
+    "@metamask/keyring-snap-client>uuid": {
       "globals": {
         "crypto": true
       }

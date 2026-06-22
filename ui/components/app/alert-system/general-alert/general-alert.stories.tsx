@@ -1,7 +1,6 @@
 import React from 'react';
 import { Severity } from '../../../../helpers/constants/design-system';
 import { ButtonLink, ButtonLinkSize, Text } from '../../../component-library';
-import { SecurityProvider } from '../../../../../shared/constants/security-provider';
 import GeneralAlert from './general-alert';
 
 const mockPlainText =
@@ -74,7 +73,7 @@ Default.args = {
   description: 'This is a default security alert banner.',
   severity: Severity.Warning,
   title: 'Security Alert',
-  provider: SecurityProvider.Blockaid,
+  provider: { name: 'Security Provider', url: 'https://example.com' },
 };
 
 export const WithDetailsList = (args) => <GeneralAlert {...args} />;

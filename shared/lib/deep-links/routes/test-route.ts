@@ -2,7 +2,7 @@ import { DEVELOPER_OPTIONS_ROUTE, Route } from './route';
 
 export const test = new Route({
   pathname: '/test',
-  getTitle: (_: URLSearchParams) => 'deepLink_thePerpsPage',
+  getTitle: (_: URLSearchParams) => 'deepLink_theHomePage',
   handler: function handler(params: URLSearchParams) {
     return {
       // we use the developer options route for testing purposes

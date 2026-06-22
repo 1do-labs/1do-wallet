@@ -1,24 +1,7 @@
 import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 import { TabEmptyState } from './tab-empty-state';
-import { useTheme } from '../../../hooks/useTheme';
-
-// Theme-aware image component for perps trading
-const TradingIcon = () => {
-  const theme = useTheme();
-  const imageSrc =
-    theme === 'light'
-      ? './images/empty-state-perps-light.png'
-      : './images/empty-state-perps-dark.png';
-
-  return (
-    <img
-      src={imageSrc}
-      alt="Trading perps"
-      style={{ width: '64px', height: '64px' }}
-    />
-  );
-};
+import { Icon, IconName, IconSize } from '../../component-library';
 
 const meta: Meta<typeof TabEmptyState> = {
   title: 'Components/UI/TabEmptyState',
@@ -30,9 +13,9 @@ const meta: Meta<typeof TabEmptyState> = {
     className: { control: 'text' },
   },
   args: {
-    icon: <TradingIcon />,
-    description: 'Bet on price movements with up to 40x leverage.',
-    actionButtonText: 'Trade perps',
+    icon: <Icon name={IconName.Wallet} size={IconSize.Xl} />,
+    description: 'No items to display yet.',
+    actionButtonText: 'Add item',
   },
 };
 

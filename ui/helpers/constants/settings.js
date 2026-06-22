@@ -291,22 +291,6 @@ const SETTINGS_CONSTANTS = [
   // securityAndPrivacy settingsRefs[16]
   {
     tabMessage: (t) => t('securityAndPrivacy'),
-    sectionMessage: (t) => t('securityAlerts'),
-    descriptionMessage: (t) => t('securityAlertsDescription'),
-    route: `${SECURITY_ROUTE}#security-alerts`,
-    icon: 'fa fa-lock',
-  },
-  // securityAndPrivacy settingsRefs[17]
-  {
-    tabMessage: (t) => t('securityAndPrivacy'),
-    sectionMessage: (t) => t('blockaid'),
-    descriptionMessage: (t) => t('blockaidMessage'),
-    route: `${SECURITY_ROUTE}#security-alerts-blockaid`,
-    icon: 'fa fa-lock',
-  },
-  // securityAndPrivacy settingsRefs[18]
-  {
-    tabMessage: (t) => t('securityAndPrivacy'),
     sectionMessage: (t) => t('simulationsSettingSubHeader'),
     descriptionMessage: (t) => t('simulationsSettingDescription'),
     route: `${SECURITY_ROUTE}#transaction-simulations`,

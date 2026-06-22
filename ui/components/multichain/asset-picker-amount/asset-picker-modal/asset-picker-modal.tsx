@@ -52,7 +52,6 @@ import {
 } from '../../../../../shared/constants/network';
 import { useMultichainBalances } from '../../../../hooks/useMultichainBalances';
 import { AvatarType } from '../../avatar-group/avatar-group.types';
-import { NETWORK_TO_SHORT_NETWORK_NAME_MAP } from '../../../../../shared/constants/bridge';
 import { useMultichainSelector } from '../../../../hooks/useMultichainSelector';
 import {
   getMultichainCurrencyImage,
@@ -432,7 +431,7 @@ export function AssetPickerModal({
         selectedNetwork?.name ??
         // @ts-expect-error TODO: fix typing
         selectedNetwork?.nickname ??
-        t('bridgeSelectNetwork')
+        t('selectNetwork')
       );
     }
     switch (selectedChainIds?.length) {
@@ -441,7 +440,7 @@ export function AssetPickerModal({
       case 1:
         return t('singleNetwork');
       case 0:
-        return t('bridgeSelectNetwork');
+        return t('selectNetwork');
       default:
         return t('someNetworks', [selectedChainIds?.length]);
     }
@@ -508,8 +507,8 @@ export function AssetPickerModal({
                       members: selectedChainIds.map((c) => ({
                         avatarValue: getImageForChainId(c) ?? '',
                         symbol:
-                          NETWORK_TO_SHORT_NETWORK_NAME_MAP[
-                            c as keyof typeof NETWORK_TO_SHORT_NETWORK_NAME_MAP
+                          NETWORK_TO_NAME_MAP[
+                            c as keyof typeof NETWORK_TO_NAME_MAP
                           ],
                       })),
                       avatarType: AvatarType.NETWORK,

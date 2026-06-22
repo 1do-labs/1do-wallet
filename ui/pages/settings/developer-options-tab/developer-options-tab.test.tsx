@@ -53,46 +53,6 @@ describe('Develop options tab', () => {
     ).toEqual(JSON.stringify(mockRemoteFeatureFlags));
   });
 
-  describe('Perps Testnet toggle (METAMASK_DEBUG only)', () => {
-    const originalMetaMaskDebug = process.env.METAMASK_DEBUG;
-
-    afterEach(() => {
-      if (originalMetaMaskDebug === undefined) {
-        delete process.env.METAMASK_DEBUG;
-      } else {
-        process.env.METAMASK_DEBUG = originalMetaMaskDebug;
-      }
-    });
-
-    it('does not render perps-testnet-toggle when METAMASK_DEBUG is not set', () => {
-      delete process.env.METAMASK_DEBUG;
-      const { queryByTestId } = renderWithProvider(
-        <DeveloperOptionsTab />,
-        mockStore,
-      );
-      expect(queryByTestId('perps-testnet-toggle')).not.toBeInTheDocument();
-    });
-
-    it('renders perps-testnet-toggle when METAMASK_DEBUG is set', () => {
-      process.env.METAMASK_DEBUG = 'true';
-      const { getByTestId } = renderWithProvider(
-        <DeveloperOptionsTab />,
-        mockStore,
-      );
-      expect(getByTestId('perps-testnet-toggle')).toBeInTheDocument();
-    });
-
-    it('calls perpsToggleTestnet when toggle is clicked', () => {
-      process.env.METAMASK_DEBUG = 'true';
-      const { getByTestId } = renderWithProvider(
-        <DeveloperOptionsTab />,
-        mockStore,
-      );
-      fireEvent.click(getByTestId('perps-testnet-toggle'));
-      expect(mockPerpsToggleTestnet).toHaveBeenCalled();
-    });
-  });
-
   it('should toggle Service Worker Keep Alive', async () => {
     const { getByTestId } = renderWithProvider(
       <DeveloperOptionsTab />,

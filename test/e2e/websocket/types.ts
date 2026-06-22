@@ -1,6 +1,6 @@
 /**
  * Generic WebSocket message mock type used by the registry and all service mocks.
- * Each service (Perps, Account Activity) defines its own default mocks;
+ * Each service defines its own default mocks;
  * this type describes the shape required by the setup functions.
  */
 export type WebSocketMessageMock = {

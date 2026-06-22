@@ -183,8 +183,8 @@ describe('SmartTransactionsController Init', () => {
             extensionReturnTxHashAsap: false,
           },
         },
-        swapsState: {
-          swapsFeatureFlags: {
+        smartTransactionsFeatureFlagsState: {
+          smartTransactionsFeatureFlags: {
             ethereum: {
               extensionActive: true,
               mobileActive: false,
@@ -357,8 +357,8 @@ describe('SmartTransactionsController Init', () => {
           preferences: {
             smartTransactionsOptInStatus: true,
           },
-          swapsState: {
-            swapsFeatureFlags: {
+          smartTransactionsFeatureFlagsState: {
+            smartTransactionsFeatureFlags: {
               ethereum: {
                 extensionActive: true,
                 mobileActive: false,
@@ -396,7 +396,7 @@ describe('SmartTransactionsController Init', () => {
             accounts: {},
           },
           preferences: {},
-          swapsState: {},
+          smartTransactionsFeatureFlagsState: {},
         }),
       });
 

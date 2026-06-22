@@ -1,7 +1,6 @@
 import {
-  TransactionMeta,
   TransactionStatus,
-  TransactionType,
+  type TransactionMeta,
 } from '@metamask/transaction-controller';
 import { getShouldShowFiat } from '../../../selectors';
 import { getNativeCurrency } from '../../../ducks/metamask/metamask';
@@ -11,10 +10,6 @@ import {
   subtractHexes,
   sumHexes,
 } from '../../../../shared/lib/conversion.utils';
-import {
-  calcTokenAmount,
-  getSwapsTokensReceivedFromTxMeta,
-} from '../../../../shared/lib/transactions-controller-utils';
 import { MetaMaskReduxState } from '../../../store/store';
 import { calcHexGasTotal } from '../../../../shared/lib/transaction-breakdown-utils';
 
@@ -33,68 +28,9 @@ export const getTransactionBreakdownData = ({
     txParams: { gas, gasPrice, maxFeePerGas, value } = {},
     txReceipt: { gasUsed, effectiveGasPrice, l1Fee: l1HexGasTotal } = {},
     baseFeePerGas,
-    sourceTokenAmount: rawSourceTokenAmount,
-    sourceTokenDecimals,
-    sourceTokenSymbol,
-    destinationTokenAddress,
-    destinationTokenAmount: rawDestinationTokenAmountEstimate,
-    destinationTokenDecimals,
-    destinationTokenSymbol,
     status,
-    type,
     isGasFeeSponsored,
   } = transaction;
-
-  const sourceTokenAmount =
-    rawSourceTokenAmount && sourceTokenDecimals
-      ? calcTokenAmount(rawSourceTokenAmount, sourceTokenDecimals).toFixed()
-      : undefined;
-  let destinationTokenAmount;
-
-  if (
-    type === TransactionType.swapAndSend &&
-    // ensure fallback values are available
-    rawDestinationTokenAmountEstimate &&
-    destinationTokenDecimals &&
-    destinationTokenSymbol
-  ) {
-    try {
-      // try to get the actual destination token amount from the on-chain events
-      destinationTokenAmount = getSwapsTokensReceivedFromTxMeta(
-        destinationTokenSymbol,
-        transaction,
-        destinationTokenAddress,
-        undefined,
-        destinationTokenDecimals,
-        undefined,
-        undefined,
-        null,
-      );
-
-      // if no amount is found, throw
-      if (!destinationTokenAmount) {
-        throw new Error('Actual destination token amount not found');
-      }
-    } catch (error) {
-      // if actual destination token amount is not found, use the estimated amount from the quote
-      destinationTokenAmount =
-        rawDestinationTokenAmountEstimate && destinationTokenDecimals
-          ? calcTokenAmount(
-              rawDestinationTokenAmountEstimate,
-              destinationTokenDecimals,
-            ).toFixed()
-          : undefined;
-    }
-  }
-
-  const sourceAmountFormatted =
-    sourceTokenAmount && sourceTokenDecimals && sourceTokenSymbol
-      ? `${sourceTokenAmount} ${sourceTokenSymbol}`
-      : undefined;
-  const destinationAmountFormatted =
-    destinationTokenAmount && status === TransactionStatus.confirmed
-      ? `${destinationTokenAmount} ${destinationTokenSymbol}`
-      : undefined;
 
   const priorityFee =
     effectiveGasPrice &&
@@ -131,7 +67,5 @@ export const getTransactionBreakdownData = ({
     isEIP1559Transaction: isEIP1559Transaction(transaction),
     isGasFeeSponsored: isGasActuallySponsored,
     l1HexGasTotal,
-    sourceAmountFormatted,
-    destinationAmountFormatted,
   };
 };

@@ -2,7 +2,6 @@ import React from 'react';
 
 import { Page } from '../../../components/multichain/pages/page';
 import { TransactionModalContextProvider } from '../../../contexts/transaction-modal';
-import { BlockaidLoadingIndicator } from '../components/confirm/blockaid-loading-indicator';
 import { ConfirmAlerts } from '../components/confirm/confirm-alerts';
 import { Footer } from '../components/confirm/footer';
 import { Header } from '../components/confirm/header';
@@ -30,7 +29,6 @@ const Confirm: React.FC<{ confirmationId?: string }> = ({ confirmationId }) => (
               <Header />
               <SmartTransactionsBannerAlert marginType="noTop" />
               <ScrollToBottom>
-                <BlockaidLoadingIndicator />
                 <Title />
                 <Info />
                 <PluggableSection />

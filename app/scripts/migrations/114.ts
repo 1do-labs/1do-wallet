@@ -8,15 +8,6 @@ type VersionedData = {
 
 export const version = 114;
 
-/**
- * This migration sets preference securityAlertsEnabled to true if transactionSecurityCheckEnabled is true and removes transactionSecurityCheckEnabled
- *
- * @param originalVersionedData - Versioned MetaMask extension state, exactly what we persist to dist.
- * @param originalVersionedData.meta - State metadata.
- * @param originalVersionedData.meta.version - The current state version.
- * @param originalVersionedData.data - The persisted MetaMask state, keyed by controller.
- * @returns Updated versioned MetaMask extension state.
- */
 export async function migrate(
   originalVersionedData: VersionedData,
 ): Promise<VersionedData> {
@@ -43,11 +34,6 @@ function transformState(state: Record<string, any>) {
   } else if (
     hasProperty(state.PreferencesController, 'transactionSecurityCheckEnabled')
   ) {
-    if (state.PreferencesController.transactionSecurityCheckEnabled) {
-      state.PreferencesController.securityAlertsEnabled = true;
-      state.PreferencesController.hasMigratedFromOpenSeaToBlockaid = true;
-    }
-
     delete state.PreferencesController.transactionSecurityCheckEnabled;
   }
 

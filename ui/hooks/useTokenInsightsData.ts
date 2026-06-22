@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
-import { isNativeAddress as isNativeAddressFromBridge } from '@metamask/bridge-controller';
 import { Hex } from '@metamask/utils';
+import { isNativeAddress as isNativeAddressFromBridge } from '../../shared/lib/chain-utils';
 import { isEvmChainId } from '../../shared/lib/asset-utils';
 import { getMarketData } from '../selectors';
 import { getCurrentCurrency } from '../ducks/metamask/metamask';

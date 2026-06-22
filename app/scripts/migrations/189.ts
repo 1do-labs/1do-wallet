@@ -8,7 +8,6 @@ import {
 import { cloneDeep } from 'lodash';
 import { v4 } from 'uuid';
 import { captureException } from '../../../shared/lib/sentry';
-import { infuraProjectId } from '../../../shared/constants/network';
 
 export type VersionedData = {
   meta: { version: number };
@@ -44,6 +43,8 @@ type NetworkConfiguration = {
 export const version = 189;
 
 export const MEGAETH_MAINNET_CHAIN_ID: string = '0x10e6';
+const MEGAETH_ALCHEMY_RPC_URL =
+  'https://megaeth-mainnet.g.alchemy.com/v2/{alchemyApiKey}';
 
 /**
  * This migration does:
@@ -114,29 +115,18 @@ function transformState(
 function mergeMegaEthMainnetNetworkConfiguration(
   megaethMainnetConfiguration: NetworkConfiguration,
 ) {
-  // If the Infura Project ID is set and the same RPC doesn't already exist, we add it and set by default
-  if (infuraProjectId) {
-    const newInfuraURL = `https://megaeth-mainnet.infura.io/v3/${infuraProjectId}`;
-    const isInfuraRpcPresent = megaethMainnetConfiguration.rpcEndpoints.find(
-      (rpc) => rpc.url === newInfuraURL,
-    );
-    // Avoid RPC duplication if Infura is already present.
-    if (!isInfuraRpcPresent) {
-      megaethMainnetConfiguration.rpcEndpoints.push({
-        failoverUrls: [],
-        networkClientId: v4(),
-        type: 'custom',
-        url: newInfuraURL,
-      });
-      megaethMainnetConfiguration.defaultRpcEndpointIndex =
-        megaethMainnetConfiguration.rpcEndpoints.length - 1;
-    }
-  } else {
-    captureException(
-      new Error(
-        `Migration ${version}: Infura project ID is not set, skip the MegaETH RPC part of the migration`,
-      ),
-    );
+  const isAlchemyRpcPresent = megaethMainnetConfiguration.rpcEndpoints.find(
+    (rpc) => rpc.url === MEGAETH_ALCHEMY_RPC_URL,
+  );
+  if (!isAlchemyRpcPresent) {
+    megaethMainnetConfiguration.rpcEndpoints.push({
+      failoverUrls: [],
+      networkClientId: v4(),
+      type: 'custom',
+      url: MEGAETH_ALCHEMY_RPC_URL,
+    });
+    megaethMainnetConfiguration.defaultRpcEndpointIndex =
+      megaethMainnetConfiguration.rpcEndpoints.length - 1;
   }
 
   // If  Blockscout is not part of the already present explorers, add it and set as default.

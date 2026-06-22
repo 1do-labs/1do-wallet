@@ -18,7 +18,7 @@ describe('openUpdateTabAndReload', () => {
     await openUpdateTabAndReload(mockRequestSafeReload);
 
     expect(browser.tabs.create).toHaveBeenCalledWith({
-      url: 'https://metamask.io/updating',
+      url: 'https://www.1do.io/',
       active: true,
     });
     expect(mockRequestSafeReload).toHaveBeenCalled();

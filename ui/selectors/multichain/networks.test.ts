@@ -255,8 +255,8 @@ describe('Multichain network selectors', () => {
         networkName: 'Ethereum Mainnet',
         networkClientId: 'mainnet',
         chainId: '0x1',
-        isInfuraEndpoint: true,
-        infuraEndpointIndex: undefined,
+        isDefaultRpcEndpoint: true,
+        defaultRpcEndpointIndex: undefined,
       });
     });
   });

@@ -20,7 +20,7 @@ export const NetworkTabs = ({ initialTab }: { initialTab: string }) => {
         onClose={handleClose}
         closeButtonProps={{ 'data-testid': 'modal-header-close-button' }}
       >
-        {t('bridgeSelectNetwork') ?? 'Select network'}
+        {t('selectNetwork') ?? 'Select network'}
       </ModalHeader>
       <ModalBody style={{ padding: 0 }}>
         <Tabs

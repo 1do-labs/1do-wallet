@@ -1,5 +1,4 @@
 import { getNativeTokenAddress } from '@metamask/assets-controllers';
-import { formatChainIdToCaip } from '@metamask/bridge-controller';
 import {
   Box,
   BoxAlignItems,
@@ -22,6 +21,7 @@ import { isCaipChainId } from '@metamask/utils';
 import React, { ReactNode, useEffect, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { formatChainIdToCaip } from '../../../../shared/lib/chain-utils';
 import { AssetType } from '../../../../shared/constants/transaction';
 import { endTrace, TraceName } from '../../../../shared/lib/trace';
 import { hexToDecimal } from '../../../../shared/lib/conversion.utils';

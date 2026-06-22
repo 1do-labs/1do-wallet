@@ -383,10 +383,10 @@ describe('ActivityList', () => {
         },
       },
       chainId: 'eip155:1',
-      id: 'swap-tx',
+      id: 'exchange-tx',
       time: 1735689601000,
-      transactionCategory: 'SWAP',
-      transactionType: 'SWAP',
+      transactionCategory: 'EXCHANGE',
+      transactionType: 'EXCHANGE',
       txParams: {
         from: '0x4f5243ceea96cee1da0fdb89c756d0e999439424',
       },

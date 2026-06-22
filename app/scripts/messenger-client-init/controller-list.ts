@@ -8,10 +8,8 @@ import {
   PermissionSpecificationConstraint,
   SubjectMetadataController,
 } from '@metamask/permission-controller';
-import { PPOMController } from '@metamask/ppom-validator';
 import { SmartTransactionsController } from '@metamask/smart-transactions-controller';
 import { TransactionController } from '@metamask/transaction-controller';
-import { TransactionPayController } from '@metamask/transaction-pay-controller';
 import { AccountsController } from '@metamask/accounts-controller';
 import {
   AccountTrackerController,
@@ -119,7 +117,6 @@ export type MessengerClient =
     >
   | PermissionLogController
   | PhishingController
-  | PPOMController
   | PreferencesController
   | RatesController
   | RemoteFeatureFlagController
@@ -132,7 +129,6 @@ export type MessengerClient =
   | TokenListController
   | TokensController
   | TransactionController
-  | TransactionPayController
   | UserOperationController
   | TokenRatesController
   | NftController
@@ -184,7 +180,6 @@ export type MessengerClientFlatState = AccountOrderController['state'] &
   >['state'] &
   PermissionLogController['state'] &
   PhishingController['state'] &
-  PPOMController['state'] &
   PreferencesController['state'] &
   RatesController['state'] &
   RemoteFeatureFlagController['state'] &
@@ -197,7 +192,6 @@ export type MessengerClientFlatState = AccountOrderController['state'] &
   TokensController['state'] &
   StaticAssetsController['state'] &
   TransactionController['state'] &
-  TransactionPayController['state'] &
   UserOperationController['state'] &
   TokenRatesController['state'] &
   NftController['state'] &

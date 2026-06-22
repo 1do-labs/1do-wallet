@@ -1,6 +1,5 @@
 import React from 'react';
 import { Severity } from '../../../../helpers/constants/design-system';
-import { SecurityProvider } from '../../../../../shared/constants/security-provider';
 import { Text } from '../../../component-library';
 import { renderWithProvider } from '../../../../../test/lib/render-helpers-navigate';
 import { enLocale as messages } from '../../../../../test/lib/i18n-helpers';
@@ -38,7 +37,7 @@ describe('GeneralAlert', () => {
     const { getByText } = renderWithProvider(
       <GeneralAlert
         {...mockProps}
-        provider={SecurityProvider.Blockaid}
+        provider={{ name: 'Security Provider', url: 'https://example.com' }}
         reportUrl={reportUrl}
       />,
     );

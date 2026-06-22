@@ -312,7 +312,7 @@ describe('delegation', () => {
     it('falls back to txParams when nestedTransactions have no to field', async () => {
       const transaction = {
         ...TRANSACTION_META_MOCK,
-        nestedTransactions: [{ type: 'swap' }],
+        nestedTransactions: [{ type: 'contractInteraction' }],
       } as unknown as TransactionMeta;
 
       await convertTransactionToRedeemDelegations({ transaction, messenger });

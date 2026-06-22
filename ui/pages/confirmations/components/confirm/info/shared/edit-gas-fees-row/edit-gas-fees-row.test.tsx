@@ -1,6 +1,5 @@
 import React from 'react';
 import configureMockStore from 'redux-mock-store';
-import { QuoteResponse } from '@metamask/bridge-controller';
 
 import { CHAIN_IDS, GasFeeToken } from '@metamask/transaction-controller';
 import { Hex } from '@metamask/utils';

@@ -40,12 +40,9 @@ import {
   getUnapprovedTransactions,
   getNetworkToAutomaticallySwitchTo,
   getAllPermittedAccountsForCurrentTab,
-  getIsSocialLoginFlow,
-  getFirstTimeFlowType,
 } from './selectors';
 import { ALERT_STATE } from './ducks/alerts';
 import {
-  getIsUnlocked,
   getUnconnectedAccountAlertEnabledness,
   getUnconnectedAccountAlertShown,
 } from './ducks/metamask/metamask';
@@ -56,7 +53,6 @@ import {
   submitRequestToBackground,
 } from './store/background-connection';
 import { getStartupTraceTags } from './helpers/utils/tags';
-import { SEEDLESS_PASSWORD_OUTDATED_CHECK_INTERVAL_MS } from './constants';
 import { initWebVitals } from './helpers/utils/web-vitals';
 import { setupPatchStoreSubstreamConnection } from './store/patch-store-substream-connection';
 
@@ -310,32 +306,6 @@ export async function runInitialActions(store) {
     const thisPopupId = Date.now();
     global.metamask.id = thisPopupId;
     await store.dispatch(actions.setCurrentExtensionPopupId(thisPopupId));
-  }
-
-  try {
-    const validateSeedlessPasswordOutdated = async (state) => {
-      const isUnlocked = getIsUnlocked(state);
-      if (isUnlocked) {
-        await store.dispatch(
-          actions.checkIsSeedlessPasswordOutdated(false, false), // don't skip cache, don't capture sentry error, we don't want to report to sentry if the check fails
-        );
-      }
-    };
-    await validateSeedlessPasswordOutdated(initialState);
-    // periodically check seedless password outdated when app UI is open
-    const pwdCheckIntervalId = setInterval(() => {
-      const state = store.getState();
-      const firstTimeFlowType = getFirstTimeFlowType(state);
-      const isSocialLoginFlow = getIsSocialLoginFlow(state);
-      if (firstTimeFlowType !== null && !isSocialLoginFlow) {
-        // if the onboarding type is not social login, after wallet reset, we should stop checking for password outdated
-        clearInterval(pwdCheckIntervalId);
-        return;
-      }
-      validateSeedlessPasswordOutdated(state);
-    }, SEEDLESS_PASSWORD_OUTDATED_CHECK_INTERVAL_MS);
-  } catch (e) {
-    log.error('[Metamask] checkIsSeedlessPasswordOutdated error', e);
   }
 }
 

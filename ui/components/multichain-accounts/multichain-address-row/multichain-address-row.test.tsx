@@ -1,6 +1,6 @@
 import React from 'react';
 import { fireEvent, screen, render } from '@testing-library/react';
-import { formatChainIdToCaip } from '@metamask/bridge-controller';
+import { formatChainIdToCaip } from '../../../../shared/lib/chain-utils';
 import { useCopyToClipboard } from '../../../hooks/useCopyToClipboard';
 import { MultichainAddressRow } from './multichain-address-row';
 
@@ -8,8 +8,8 @@ jest.mock('../../../hooks/useCopyToClipboard', () => ({
   useCopyToClipboard: jest.fn(),
 }));
 
-jest.mock('@metamask/bridge-controller', () => ({
-  ...jest.requireActual('@metamask/bridge-controller'),
+jest.mock('../../../../shared/lib/chain-utils', () => ({
+  ...jest.requireActual('../../../../shared/lib/chain-utils'),
   formatChainIdToCaip: jest.fn(),
 }));
 

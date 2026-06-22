@@ -29,8 +29,6 @@ import {
   ONBOARDING_COMPLETION_ROUTE,
   ONBOARDING_IMPORT_WITH_SRP_ROUTE,
   ONBOARDING_METAMETRICS,
-  ONBOARDING_ACCOUNT_EXIST,
-  ONBOARDING_ACCOUNT_NOT_FOUND,
   SECURITY_ROUTE,
   ONBOARDING_REVEAL_SRP_ROUTE,
   ONBOARDING_DOWNLOAD_APP_ROUTE,
@@ -46,8 +44,6 @@ import {
   createNewVaultAndGetSeedPhrase,
   unlockAndGetSeedPhrase,
   createNewVaultAndRestore,
-  restoreSocialBackupAndGetSeedPhrase,
-  createNewVaultAndSyncWithSocial,
   setCompletedOnboarding,
   setUseSidePanelAsDefault,
   setCompletedOnboardingWithSidepanel,
@@ -65,7 +61,6 @@ import {
   ENVIRONMENT_TYPE_SIDEPANEL,
 } from '../../../shared/constants/app';
 import { FirstTimeFlowType } from '../../../shared/constants/onboarding';
-import { getIsSeedlessOnboardingFeatureEnabled } from '../../../shared/lib/environment';
 import { TraceName, TraceOperation } from '../../../shared/lib/trace';
 import LoadingScreen from '../../components/ui/loading-screen';
 import type { MetaMaskReduxDispatch } from '../../store/store';
@@ -84,8 +79,6 @@ import OnboardingWelcome from './welcome/welcome';
 import ImportSRP from './import-srp/import-srp';
 import MetaMetricsComponent from './metametrics/metametrics';
 import OnboardingAppHeader from './onboarding-app-header/onboarding-app-header';
-import AccountExist from './account-exist/account-exist';
-import AccountNotFound from './account-not-found/account-not-found';
 import RevealRecoveryPhrase from './recovery-phrase/reveal-recovery-phrase';
 import OnboardingDownloadApp from './download-app/download-app';
 
@@ -122,8 +115,6 @@ export default function OnboardingFlow() {
     useContext(MetaMetricsContext);
   const isUnlocked = useSelector(getIsUnlocked);
   const firstTimeFlowType = useSelector(getFirstTimeFlowType);
-  const isSeedlessOnboardingFeatureEnabled =
-    getIsSeedlessOnboardingFeatureEnabled();
   const isPrimarySeedPhraseBackedUp = useSelector(
     getIsPrimarySeedPhraseBackedUp,
   );
@@ -215,14 +206,7 @@ export default function OnboardingFlow() {
     try {
       setIsLoading(true);
       let newSecretRecoveryPhrase: string | undefined;
-      if (
-        isSeedlessOnboardingFeatureEnabled &&
-        firstTimeFlowType === FirstTimeFlowType.socialCreate
-      ) {
-        newSecretRecoveryPhrase = await dispatch(
-          createNewVaultAndSyncWithSocial(password),
-        );
-      } else if (firstTimeFlowType === FirstTimeFlowType.create) {
+      if (firstTimeFlowType === FirstTimeFlowType.create) {
         newSecretRecoveryPhrase = await dispatch(
           createNewVaultAndGetSeedPhrase(password),
         );
@@ -236,7 +220,7 @@ export default function OnboardingFlow() {
     }
   };
 
-  const handleSocialLoginRehydration = async () => {
+  const handleSidePanelOnboardingComplete = async () => {
     if (isSidePanelEnabled) {
       await dispatch(setUseSidePanelAsDefault(true));
       await dispatch(setCompletedOnboardingWithSidepanel());
@@ -244,7 +228,6 @@ export default function OnboardingFlow() {
       // for sidepanel, we need to navigate to the next route (i.e. Home)
       navigate(nextRoute, { replace: true });
     } else {
-      // For existing social login users, set onboarding complete
       // The useEffect watching completedOnboarding will handle navigation to DEFAULT_ROUTE
       // Don't navigate here - let the useEffect handle it to avoid duplicate navigations
       await dispatch(setCompletedOnboarding());
@@ -254,27 +237,12 @@ export default function OnboardingFlow() {
   const handleUnlock = async (password: string) => {
     try {
       setIsLoading(true);
-      let retrievedSecretRecoveryPhrase: string | undefined;
-
-      if (
-        isSeedlessOnboardingFeatureEnabled &&
-        firstTimeFlowType === FirstTimeFlowType.socialImport
-      ) {
-        retrievedSecretRecoveryPhrase = await dispatch(
-          restoreSocialBackupAndGetSeedPhrase(password, trackEvent),
-        );
-      } else {
-        retrievedSecretRecoveryPhrase = await dispatch(
-          unlockAndGetSeedPhrase(password),
-        );
-      }
+      const retrievedSecretRecoveryPhrase = await dispatch(
+        unlockAndGetSeedPhrase(password),
+      );
 
       if (retrievedSecretRecoveryPhrase) {
         setSecretRecoveryPhrase(retrievedSecretRecoveryPhrase);
-      }
-      if (firstTimeFlowType === FirstTimeFlowType.socialImport) {
-        await handleSocialLoginRehydration();
-        return;
       }
       navigate(nextRoute, { replace: true });
     } finally {
@@ -350,14 +318,6 @@ export default function OnboardingFlow() {
       >
         <Suspense fallback={null}>
           <Routes>
-            <Route
-              path={toRelativePath(ONBOARDING_ACCOUNT_EXIST)}
-              element={<AccountExist />}
-            />
-            <Route
-              path={toRelativePath(ONBOARDING_ACCOUNT_NOT_FOUND)}
-              element={<AccountNotFound />}
-            />
             <Route
               path={toRelativePath(ONBOARDING_CREATE_PASSWORD_ROUTE)}
               element={

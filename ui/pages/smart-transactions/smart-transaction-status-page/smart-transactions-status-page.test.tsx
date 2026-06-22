@@ -9,7 +9,7 @@ import {
 import { fireEvent } from '@testing-library/react';
 import { renderWithProvider } from '../../../../test/lib/render-helpers-navigate';
 import { enLocale as messages } from '../../../../test/lib/i18n-helpers';
-import { createSwapsMockStore } from '../../../../test/jest';
+import { createSmartTransactionsMockStore } from '../../../../test/jest';
 import { CHAIN_IDS } from '../../../../shared/constants/network';
 import {
   SmartTransactionStatusPage,
@@ -77,7 +77,7 @@ describe('SmartTransactionStatusPage', () => {
     it(`renders the "${snapshotName}" STX status${
       isDapp ? ' for a dapp transaction' : ''
     }`, () => {
-      const state = createSwapsMockStore();
+      const state = createSmartTransactionsMockStore();
       const latestSmartTransaction =
         state.metamask.smartTransactionsState.smartTransactions[
           CHAIN_IDS.MAINNET
@@ -112,7 +112,7 @@ describe('SmartTransactionStatusPage', () => {
   describe('Action Buttons', () => {
     it('calls onCloseExtension when Back to home button is clicked', () => {
       const onCloseExtension = jest.fn();
-      const store = mockStore(createSwapsMockStore());
+      const store = mockStore(createSmartTransactionsMockStore());
 
       const { getByText } = renderWithProvider(
         <SmartTransactionStatusPage
@@ -129,7 +129,7 @@ describe('SmartTransactionStatusPage', () => {
 
     it('calls onViewActivity when View activity button is clicked', () => {
       const onViewActivity = jest.fn();
-      const store = mockStore(createSwapsMockStore());
+      const store = mockStore(createSmartTransactionsMockStore());
 
       const { getByText } = renderWithProvider(
         <SmartTransactionStatusPage

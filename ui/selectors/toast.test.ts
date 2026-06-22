@@ -1,8 +1,6 @@
 import { TransactionType } from '@metamask/transaction-controller';
 import {
   selectTransactionIds,
-  selectBridgeApprovalTxIds,
-  selectCrossChainBridgeSourceTxIds,
   selectEvmTransactionsForToast,
   selectSmartTransactions,
 } from './toast';
@@ -29,49 +27,6 @@ describe('toast selectors', () => {
     });
   });
 
-  describe('selectBridgeApprovalTxIds', () => {
-    it('returns a Set of bridge approval tx ids (lowercased)', () => {
-      const state = {
-        metamask: {
-          txHistory: {
-            entry1: { approvalTxId: 'ABC' },
-            entry2: { approvalTxId: 'def' },
-            entry3: {},
-          },
-        },
-      } as unknown as SelectorState;
-      const result = selectBridgeApprovalTxIds(state);
-      expect(result).toStrictEqual(new Set(['abc', 'def']));
-    });
-
-    it('returns an empty Set when there is no txHistory', () => {
-      const result = selectBridgeApprovalTxIds({
-        metamask: {},
-      } as unknown as SelectorState);
-      expect(result).toStrictEqual(new Set());
-    });
-  });
-
-  describe('selectCrossChainBridgeSourceTxIds', () => {
-    it('returns ids where srcChainId !== destChainId', () => {
-      const state = {
-        metamask: {
-          txHistory: {
-            crossChain: {
-              quote: { srcChainId: 1, destChainId: 10 },
-            },
-            sameChain: {
-              quote: { srcChainId: 1, destChainId: 1 },
-            },
-            noQuote: {},
-          },
-        },
-      } as unknown as SelectorState;
-      const result = selectCrossChainBridgeSourceTxIds(state);
-      expect(result).toStrictEqual(new Set(['crossChain']));
-    });
-  });
-
   describe('selectEvmTransactionsForToast', () => {
     it('returns all transactions except excluded types', () => {
       const state = {
@@ -79,17 +34,9 @@ describe('toast selectors', () => {
           transactions: [
             { id: '0', time: 1, type: TransactionType.simpleSend },
             { id: '1', time: 2, type: TransactionType.deployContract },
-            { id: '2', time: 3, type: TransactionType.swap },
+            { id: '2', time: 3, type: TransactionType.contractInteraction },
             { id: '3', time: 4 },
-            { id: '4', time: 5, type: TransactionType.swapApproval },
-            { id: '5', time: 6, type: TransactionType.bridgeApproval },
-            {
-              id: '6',
-              time: 7,
-              type: TransactionType.shieldSubscriptionApprove,
-            },
-            { id: '7', time: 8, type: TransactionType.perpsDeposit },
-            { id: '8', time: 9, type: TransactionType.perpsDepositAndOrder },
+            { id: '4', time: 5, type: TransactionType.gasPayment },
           ],
         },
       } as unknown as SelectorState;
@@ -99,25 +46,7 @@ describe('toast selectors', () => {
       expect(results).toStrictEqual([
         { id: '0', time: 1, type: TransactionType.simpleSend },
         { id: '1', time: 2, type: TransactionType.deployContract },
-        { id: '2', time: 3, type: TransactionType.swap },
-      ]);
-    });
-
-    it('excludes perps deposit transaction types from toast eligibility', () => {
-      const state = {
-        metamask: {
-          transactions: [
-            { id: '0', time: 1, type: TransactionType.perpsDeposit },
-            { id: '1', time: 2, type: TransactionType.perpsDepositAndOrder },
-            { id: '2', time: 3, type: TransactionType.simpleSend },
-          ],
-        },
-      } as unknown as SelectorState;
-
-      const results = selectEvmTransactionsForToast(state);
-
-      expect(results).toStrictEqual([
-        { id: '2', time: 3, type: TransactionType.simpleSend },
+        { id: '2', time: 3, type: TransactionType.contractInteraction },
       ]);
     });
 
@@ -134,28 +63,6 @@ describe('toast selectors', () => {
       expect(results).toHaveLength(1);
     });
 
-    it('excludes bridge approval and cross-chain bridge source txs', () => {
-      const state = {
-        metamask: {
-          transactions: [
-            { id: 'approval-1', time: 1, type: TransactionType.simpleSend },
-            { id: 'cross-chain-1', time: 2, type: TransactionType.simpleSend },
-            { id: 'normal-1', time: 3, type: TransactionType.simpleSend },
-          ],
-          txHistory: {
-            entry1: { approvalTxId: 'approval-1' },
-            'cross-chain-1': {
-              quote: { srcChainId: 1, destChainId: 10 },
-            },
-          },
-        },
-      } as unknown as SelectorState;
-      const results = selectEvmTransactionsForToast(state);
-      expect(results).toStrictEqual([
-        { id: 'normal-1', time: 3, type: TransactionType.simpleSend },
-      ]);
-    });
-
     it('returns an empty array if there are no transactions', () => {
       const results = selectEvmTransactionsForToast(
         {} as unknown as SelectorState,
@@ -167,7 +74,7 @@ describe('toast selectors', () => {
       const primary = {
         id: 'primary',
         time: 1,
-        type: TransactionType.swap,
+        type: TransactionType.contractInteraction,
         requiredTransactionIds: ['satellite-id'],
       };
       const satellite = {
@@ -197,7 +104,7 @@ describe('toast selectors', () => {
       const primary = {
         id: 'primary',
         time: 2,
-        type: TransactionType.swap,
+        type: TransactionType.contractInteraction,
         requiredTransactionIds: ['satellite-id'],
       };
       const duplicateHashDifferentId = {

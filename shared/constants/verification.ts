@@ -5,11 +5,8 @@ import {
 } from './first-party-contracts';
 
 export const TX_SIG_LEN = 130;
-export const EXPERIENCES_TO_VERIFY = [EXPERIENCES_TYPE.METAMASK_BRIDGE];
-export const TRUSTED_SIGNERS: Partial<Record<EXPERIENCES_TYPE, Hex>> = {
-  [EXPERIENCES_TYPE.METAMASK_BRIDGE]:
-    '0x533FbF047Ed13C20e263e2576e41c747206d1348',
-};
+export const EXPERIENCES_TO_VERIFY: EXPERIENCES_TYPE[] = [];
+export const TRUSTED_SIGNERS: Partial<Record<EXPERIENCES_TYPE, Hex>> = {};
 
 // look up the corresponding experience provided an address on a chain id
 export const getExperience = (
@@ -19,10 +16,10 @@ export const getExperience = (
   (
     Object.entries(FIRST_PARTY_CONTRACT_NAMES) as [
       EXPERIENCES_TYPE,
-      Record<Hex, Hex>,
+      Record<Hex, Hex> | undefined,
     ][]
   ).find(
     ([, chainMap]) =>
-      (chainMap[chainId]?.toLowerCase() as Hex) ===
+      (chainMap?.[chainId]?.toLowerCase() as Hex) ===
       (address.toLowerCase() as Hex),
   )?.[0];

@@ -1,6 +1,6 @@
 import { cloneDeep } from 'lodash';
 import { hasProperty, isObject, parseCaipChainId } from '@metamask/utils';
-import { formatChainIdToCaip } from '@metamask/bridge-controller';
+import { formatChainIdToCaip } from '../../../shared/lib/chain-utils';
 
 type VersionedData = {
   meta: { version: number };

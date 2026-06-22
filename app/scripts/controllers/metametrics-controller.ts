@@ -186,7 +186,6 @@ export type MetaMaskState = Pick<
   | 'dataCollectionForMarketing'
   | 'useNftDetection'
   | 'openSeaEnabled'
-  | 'securityAlertsEnabled'
   | 'useTokenDetection'
   | 'names'
   | 'addressBook'
@@ -1428,8 +1427,7 @@ export class MetaMetricsController extends BaseController<
       [MetaMetricsUserTrait.ShowNativeTokenAsMainBalance]:
         metamaskState.preferences?.showNativeTokenAsMainBalance ?? false,
       [MetaMetricsUserTrait.CurrentCurrency]: metamaskState.currentCurrency,
-      [MetaMetricsUserTrait.SecurityProviders]:
-        metamaskState.securityAlertsEnabled ? ['blockaid'] : [],
+      [MetaMetricsUserTrait.SecurityProviders]: [],
       [MetaMetricsUserTrait.PetnameAddressCount]:
         this.#getPetnameAddressCount(metamaskState),
       [MetaMetricsUserTrait.IsMetricsOptedIn]:

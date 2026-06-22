@@ -1,6 +1,5 @@
 import { RpcEndpointType } from '@metamask/network-controller';
 import { getErrorMessage, hasProperty, Hex, isObject } from '@metamask/utils';
-import { escapeRegExp } from 'lodash';
 import { captureException } from '../../../shared/lib/sentry';
 import { CHAIN_IDS } from '../../../shared/constants/network';
 
@@ -57,23 +56,7 @@ function isInfuraEndpoint(rpcEndpoint: {
   // Check if URL matches Infura pattern
   // All featured networks that use Infura get added as custom RPC
   // endpoints, not Infura RPC endpoints, so we need to check the URL pattern
-  const infuraUrlPattern = /^https:\/\/(.+?)\.infura\.io\/v3\//u;
-  const match = rpcEndpoint.url.match(infuraUrlPattern);
-
-  if (!match) {
-    return false;
-  }
-
-  // If INFURA_PROJECT_ID is set, verify it matches for more precise detection
-  if (process.env.INFURA_PROJECT_ID) {
-    const expectedUrl = `https://${match[1]}.infura.io/v3/${escapeRegExp(
-      process.env.INFURA_PROJECT_ID,
-    )}`;
-    return rpcEndpoint.url.startsWith(expectedUrl);
-  }
-
-  // If INFURA_PROJECT_ID is not set, just check if it matches the Infura pattern
-  return true;
+  return /^https:\/\/(.+?)\.infura\.io\/v3\/[^/?#]+/u.test(rpcEndpoint.url);
 }
 
 /**
@@ -193,15 +176,6 @@ function transformState(
       // Only add failover URL to Infura endpoints
       if (!isInfuraEndpoint(rpcEndpoint)) {
         return rpcEndpoint;
-      }
-
-      // Add QuickNode failover URL
-      const quickNodeUrl = process.env.QUICKNODE_MONAD_URL;
-      if (quickNodeUrl) {
-        return {
-          ...rpcEndpoint,
-          failoverUrls: [quickNodeUrl],
-        };
       }
 
       return rpcEndpoint;

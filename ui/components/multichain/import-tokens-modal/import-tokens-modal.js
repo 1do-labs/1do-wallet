@@ -6,7 +6,6 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import { formatChainIdToHex } from '@metamask/bridge-controller';
 import { TextButton } from '@metamask/design-system-react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -14,6 +13,7 @@ import PropTypes from 'prop-types';
 import { getTokenTrackerLink } from '@metamask/etherscan-link/dist/token-tracker-link';
 import { CHAIN_IDS } from '@metamask/transaction-controller';
 import { ERC20, ERC721, ERC1155 } from '@metamask/controller-utils';
+import { formatChainIdToHex } from '../../../../shared/lib/chain-utils';
 import { Tab, Tabs } from '../../ui/tabs';
 import { useI18nContext } from '../../../hooks/useI18nContext';
 import {

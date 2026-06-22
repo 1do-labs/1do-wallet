@@ -284,25 +284,6 @@ export function useGetTitle(transaction: TransactionViewModel): string {
     return symbol ? t('approveSpendingCap', [symbol]) : t('approve');
   }
 
-  // This should be server-side
-  if (transactionCategory === 'BRIDGE_OUT') {
-    return t('bridged');
-  }
-
-  if (transactionCategory === 'BRIDGE_IN') {
-    return t('bridge');
-  }
-
-  // This should be server-side
-  if (transactionCategory === 'SWAP' || transactionCategory === 'EXCHANGE') {
-    const fromSymbol = transaction.amounts?.from?.token.symbol;
-    const toSymbol = transaction.amounts?.to?.token.symbol;
-    if (fromSymbol && toSymbol && fromSymbol !== toSymbol) {
-      return t('swapTokenToToken', [fromSymbol, toSymbol]);
-    }
-    return t('swap');
-  }
-
   if (transactionCategory === 'TRANSFER') {
     const nft = classifyNft(transaction.valueTransfers, evmAddress ?? '');
     if (nft) {
@@ -350,13 +331,6 @@ export function useGetTitle(transaction: TransactionViewModel): string {
     const from = transaction.txParams?.from?.toLowerCase();
     const to = transaction.txParams?.to?.toLowerCase();
     const isIncoming = evmAddress && to === evmAddress && from !== evmAddress;
-
-    // Swap-like transactions currently classified as CONTRACT_CALL
-    const fromSymbol = transaction.amounts?.from?.token.symbol;
-    const toSymbol = transaction.amounts?.to?.token.symbol;
-    if (fromSymbol && toSymbol && fromSymbol !== toSymbol) {
-      return t('swapTokenToToken', [fromSymbol, toSymbol]);
-    }
 
     if (isIncoming && transaction.amounts?.to) {
       return t('received');

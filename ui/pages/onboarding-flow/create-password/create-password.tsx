@@ -1,11 +1,10 @@
-import React, { useState, useContext, useEffect, useCallback } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import log from 'loglevel';
 import { Box } from '@metamask/design-system-react';
 import {
   ONBOARDING_COMPLETION_ROUTE,
-  ONBOARDING_DOWNLOAD_APP_ROUTE,
   ONBOARDING_IMPORT_WITH_SRP_ROUTE,
   ONBOARDING_METAMETRICS,
   ONBOARDING_REVIEW_SRP_ROUTE,
@@ -14,8 +13,6 @@ import {
 import {
   getFirstTimeFlowType,
   getCurrentKeyring,
-  getIsSocialLoginFlow,
-  getSocialLoginType,
   getIsParticipateInMetaMetricsSet,
 } from '../../../selectors';
 import { MetaMetricsContext } from '../../../contexts/metametrics';
@@ -23,17 +20,13 @@ import {
   MetaMetricsEventAccountType,
   MetaMetricsEventCategory,
   MetaMetricsEventName,
-  MetaMetricsUserTrait,
 } from '../../../../shared/constants/metametrics';
 import { FirstTimeFlowType } from '../../../../shared/constants/onboarding';
 import { PLATFORM_FIREFOX } from '../../../../shared/constants/app';
 import { getBrowserName } from '../../../../shared/lib/browser-runtime.utils';
 import {
   forceUpdateMetamaskState,
-  getIsSeedlessOnboardingUserAuthenticated,
   resetOnboarding,
-  setDataCollectionForMarketing,
-  setMarketingConsent,
 } from '../../../store/actions';
 import { TraceName, TraceOperation } from '../../../../shared/lib/trace';
 import { getIsWalletResetInProgress } from '../../../ducks/metamask/metamask';
@@ -69,8 +62,6 @@ export default function CreatePassword({
     onboardingParentContext,
   } = useContext(MetaMetricsContext);
   const currentKeyring = useSelector(getCurrentKeyring);
-  const isSocialLoginFlow = useSelector(getIsSocialLoginFlow);
-  const socialLoginType = useSelector(getSocialLoginType);
   const isWalletResetInProgress = useSelector(getIsWalletResetInProgress);
 
   const isParticipateInMetaMetricsSet = useSelector(
@@ -78,15 +69,6 @@ export default function CreatePassword({
   );
   const shouldInjectMetametricsIframe = false;
   const analyticsIframeUrl = '';
-
-  const validateSocialLoginAuthenticatedState = useCallback(async () => {
-    const isSeedlessOnboardingUserAuthenticated = await dispatch(
-      getIsSeedlessOnboardingUserAuthenticated(),
-    );
-    if (!isSeedlessOnboardingUserAuthenticated) {
-      navigate(ONBOARDING_WELCOME_ROUTE, { replace: true });
-    }
-  }, [dispatch, navigate]);
 
   useEffect(() => {
     if (
@@ -96,24 +78,14 @@ export default function CreatePassword({
     ) {
       if (
         firstTimeFlowType === FirstTimeFlowType.import ||
-        firstTimeFlowType === FirstTimeFlowType.socialImport
+        firstTimeFlowType === FirstTimeFlowType.restore
       ) {
-        if (
-          !isFirefox &&
-          firstTimeFlowType === FirstTimeFlowType.socialImport
-        ) {
-          // we don't display the metametrics screen for social login flows if the user is not on firefox
-          navigate(ONBOARDING_COMPLETION_ROUTE, { replace: true });
-        } else {
-          navigate(
-            isParticipateInMetaMetricsSet
-              ? ONBOARDING_COMPLETION_ROUTE
-              : ONBOARDING_METAMETRICS,
-            { replace: true },
-          );
-        }
-      } else if (firstTimeFlowType === FirstTimeFlowType.socialCreate) {
-        navigate(ONBOARDING_COMPLETION_ROUTE, { replace: true });
+        navigate(
+          isParticipateInMetaMetricsSet
+            ? ONBOARDING_COMPLETION_ROUTE
+            : ONBOARDING_METAMETRICS,
+          { replace: true },
+        );
       } else {
         navigate(ONBOARDING_REVIEW_SRP_ROUTE, { replace: true });
       }
@@ -132,28 +104,6 @@ export default function CreatePassword({
     isParticipateInMetaMetricsSet,
     isWalletResetInProgress,
   ]);
-
-  useEffect(() => {
-    // validate social login authenticated state on mount
-    // before user attempts to create a new wallet
-    (async () => {
-      if (isSocialLoginFlow) {
-        await validateSocialLoginAuthenticatedState();
-      }
-    })();
-  }, [isSocialLoginFlow, validateSocialLoginAuthenticatedState]);
-
-  // Helper function to determine account type for analytics
-  const getAccountType = (
-    baseType: MetaMetricsEventAccountType,
-    includesSocialLogin: boolean = false,
-  ) => {
-    if (includesSocialLogin && socialLoginType) {
-      const socialProvider = String(socialLoginType).toLowerCase();
-      return `${baseType}_${socialProvider}`;
-    }
-    return baseType;
-  };
 
   const handleWalletImport = async (password: string) => {
     trackEvent({
@@ -184,14 +134,11 @@ export default function CreatePassword({
         // eslint-disable-next-line @typescript-eslint/naming-convention
         new_wallet: false,
         // eslint-disable-next-line @typescript-eslint/naming-convention
-        account_type: getAccountType(
-          MetaMetricsEventAccountType.Imported,
-          isSocialLoginFlow,
-        ),
+        account_type: MetaMetricsEventAccountType.Imported,
       },
     });
 
-    if (isFirefox || isSocialLoginFlow) {
+    if (isFirefox) {
       navigate(ONBOARDING_COMPLETION_ROUTE, { replace: true });
     } else {
       navigate(ONBOARDING_METAMETRICS, { replace: true });
@@ -207,20 +154,12 @@ export default function CreatePassword({
       event: MetaMetricsEventName.WalletCreationAttempted,
       properties: {
         // eslint-disable-next-line @typescript-eslint/naming-convention
-        account_type: getAccountType(
-          MetaMetricsEventAccountType.Default,
-          isSocialLoginFlow,
-        ),
+        account_type: MetaMetricsEventAccountType.Default,
       },
     });
 
     setNewAccountCreationInProgress(true);
     await createNewAccount(password);
-
-    if (isSocialLoginFlow) {
-      bufferedEndTrace?.({ name: TraceName.OnboardingNewSocialCreateWallet });
-      bufferedEndTrace?.({ name: TraceName.OnboardingJourneyOverall });
-    }
 
     trackEvent({
       category: MetaMetricsEventCategory.Onboarding,
@@ -229,10 +168,7 @@ export default function CreatePassword({
         // eslint-disable-next-line @typescript-eslint/naming-convention
         biometrics_enabled: false,
         // eslint-disable-next-line @typescript-eslint/naming-convention
-        account_type: getAccountType(
-          MetaMetricsEventAccountType.Default,
-          isSocialLoginFlow,
-        ),
+        account_type: MetaMetricsEventAccountType.Default,
       },
     });
 
@@ -245,33 +181,10 @@ export default function CreatePassword({
         // eslint-disable-next-line @typescript-eslint/naming-convention
         new_wallet: true,
         // eslint-disable-next-line @typescript-eslint/naming-convention
-        account_type: getAccountType(
-          MetaMetricsEventAccountType.Default,
-          isSocialLoginFlow,
-        ),
+        account_type: MetaMetricsEventAccountType.Default,
       },
     });
-    if (isSocialLoginFlow) {
-      // track analytics preference selected event for social login users
-      // as social login users will not see the metametrics screen
-      trackEvent({
-        category: MetaMetricsEventCategory.Onboarding,
-        event: MetaMetricsEventName.AnalyticsPreferenceSelected,
-        properties: {
-          [MetaMetricsUserTrait.IsMetricsOptedIn]: true,
-          [MetaMetricsUserTrait.HasMarketingConsent]: termsChecked,
-          location: 'onboarding_create_password',
-        },
-      });
-
-      if (termsChecked) {
-        dispatch(setMarketingConsent(true));
-        dispatch(setDataCollectionForMarketing(true));
-      }
-      navigate(ONBOARDING_DOWNLOAD_APP_ROUTE, { replace: true });
-    } else {
-      navigate(ONBOARDING_REVIEW_SRP_ROUTE, { replace: true });
-    }
+    navigate(ONBOARDING_REVIEW_SRP_ROUTE, { replace: true });
   };
 
   useEffect(() => {
@@ -334,7 +247,6 @@ export default function CreatePassword({
   return (
     <Box className="h-full w-full">
       <CreatePasswordForm
-        isSocialLoginFlow={isSocialLoginFlow}
         onSubmit={handleCreatePassword}
         onBack={handleBackClick}
       />

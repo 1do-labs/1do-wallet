@@ -19,13 +19,6 @@ jest.mock('../../store/actions.ts', () => ({
   resetWallet: () => mockResetWallet,
 }));
 
-const mockGetIsSocialLoginFlow = jest.fn().mockReturnValue(false);
-jest.mock('../../selectors', () => ({
-  ...jest.requireActual('../../selectors'),
-  getIsSocialLoginFlow: (...args: unknown[]) =>
-    mockGetIsSocialLoginFlow(...args),
-}));
-
 const buildStore = (metamask: Record<string, unknown> = {}) =>
   configureMockStore([thunk])({ metamask });
 
@@ -70,7 +63,7 @@ describe('ResetPasswordModal', () => {
     });
   });
 
-  describe('SRP login flow (isSocialLoginEnabled = false)', () => {
+  describe('SRP login flow', () => {
     it('renders SRP description paragraphs', () => {
       const { getByText } = renderModal();
       expect(
@@ -99,40 +92,6 @@ describe('ResetPasswordModal', () => {
       const { getByTestId, getByText } = renderModal();
       fireEvent.click(getByTestId('reset-password-modal-button-link'));
       expect(getByText(messages.resetWalletTitle.message)).toBeInTheDocument();
-    });
-  });
-
-  describe('social login flow (isSocialLoginEnabled = true)', () => {
-    const socialLoginMeta = { firstTimeFlowType: 'socialImport' };
-
-    beforeEach(() => {
-      mockGetIsSocialLoginFlow.mockReturnValue(true);
-    });
-
-    afterEach(() => {
-      mockGetIsSocialLoginFlow.mockReturnValue(false);
-    });
-
-    it('renders the social-login description when isSocialLoginEnabled is true', () => {
-      const { getByText } = renderModal({}, socialLoginMeta);
-      expect(
-        getByText(messages.forgotPasswordModalContactSupportLink.message),
-      ).toBeInTheDocument();
-    });
-
-    it('renders the "Import wallet" and "I don\'t know my Phrase" buttons in social flow', () => {
-      const { getByTestId } = renderModal({}, socialLoginMeta);
-      expect(getByTestId('reset-password-modal-button')).toBeInTheDocument();
-      expect(
-        getByTestId('reset-password-modal-button-link'),
-      ).toBeInTheDocument();
-    });
-
-    it('calls onRestore when "Import wallet" is clicked in social flow', () => {
-      const onRestore = jest.fn();
-      const { getByTestId } = renderModal({ onRestore }, socialLoginMeta);
-      fireEvent.click(getByTestId('reset-password-modal-button'));
-      expect(onRestore).toHaveBeenCalledTimes(1);
     });
   });
 

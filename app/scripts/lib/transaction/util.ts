@@ -13,33 +13,10 @@ import {
 } from '@metamask/user-operation-controller';
 import type { Hex, JsonRpcRequest } from '@metamask/utils';
 import { addHexPrefix } from 'ethereumjs-util';
-import { PPOMController } from '@metamask/ppom-validator';
 
 import { KeyringController } from '@metamask/keyring-controller';
 import log from 'loglevel';
-import {
-  generateSecurityAlertId,
-  handlePPOMError,
-  validateRequestWithPPOM,
-} from '../ppom/ppom-util';
-import {
-  SecurityAlertResponse,
-  UpdateSecurityAlertResponse,
-  GetSecurityAlertsConfig,
-} from '../ppom/types';
-import {
-  LOADING_SECURITY_ALERT_RESPONSE,
-  SECURITY_PROVIDER_EXCLUDED_TRANSACTION_TYPES,
-} from '../../../../shared/constants/security-provider';
 import { endTrace, TraceName } from '../../../../shared/lib/trace';
-import { ORIGIN_METAMASK } from '../../../../shared/constants/app';
-import { scanAddressAndAddToCache } from '../trust-signals/security-alerts-api';
-import {
-  mapChainIdToSupportedEVMChain,
-  AddAddressSecurityAlertResponse,
-  GetAddressSecurityAlertResponse,
-  ScanAddressResponse,
-} from '../../../../shared/lib/trust-signals';
 import { getTransactionDataRecipient } from '../../../../shared/lib/transaction.utils';
 import { accountSupports7702 } from '../account-supports-7702';
 import {
@@ -56,17 +33,12 @@ export type AddTransactionOptions = NonNullable<
 type BaseAddTransactionRequest = {
   chainId: Hex;
   networkClientId: string;
-  ppomController: PPOMController;
-  securityAlertsEnabled: boolean;
   selectedAccount: InternalAccount;
   transactionParams: TransactionParams;
   transactionController: TransactionController;
   keyringController: KeyringController;
-  updateSecurityAlertResponse: UpdateSecurityAlertResponse;
   userOperationController: UserOperationController;
   internalAccounts: InternalAccount[];
-  getSecurityAlertResponse: GetAddressSecurityAlertResponse;
-  addSecurityAlertResponse: AddAddressSecurityAlertResponse;
 };
 
 export type FinalAddTransactionRequest = BaseAddTransactionRequest & {
@@ -75,7 +47,6 @@ export type FinalAddTransactionRequest = BaseAddTransactionRequest & {
 
 export type AddTransactionRequest = FinalAddTransactionRequest & {
   waitForSubmit: boolean;
-  getSecurityAlertsConfig?: GetSecurityAlertsConfig;
 };
 
 export type AddDappTransactionRequest = BaseAddTransactionRequest & {
@@ -103,9 +74,6 @@ export async function addDappTransaction(
 
   // TODO: Find a home for and define the appropriate MiddlewareContext type
   const origin = requestContext.assertGet('origin') as string;
-  const securityAlertResponse = requestContext.get('securityAlertResponse') as
-    | SecurityAlertResponse
-    | undefined;
   const traceContext = requestContext.get('traceContext');
 
   const transactionOptions: Partial<AddTransactionOptions> = {
@@ -115,7 +83,6 @@ export async function addDappTransaction(
     origin,
     // This is the default behaviour but specified here for clarity
     requireApproval: true,
-    securityAlertResponse,
   };
 
   endTrace({ name: TraceName.Middleware, id: actionId });
@@ -198,8 +165,6 @@ async function addTransactionOnTempo(
 export async function addTransaction(
   request: AddTransactionRequest,
 ): Promise<TransactionMeta> {
-  await validateSecurity(request);
-
   const { transactionMeta, waitForHash } =
     await addTransactionOrUserOperation(request);
 
@@ -339,134 +304,6 @@ function getTransactionByBatchId(
   return transactionController.state.transactions.find(
     (tx) => tx.batchId === batchId,
   );
-}
-
-function scanAddressForTrustSignals(request: AddTransactionRequest) {
-  const {
-    getSecurityAlertResponse,
-    addSecurityAlertResponse,
-    securityAlertsEnabled,
-    transactionOptions,
-    transactionParams,
-    chainId,
-  } = request;
-  const { origin } = transactionOptions;
-  if (origin !== ORIGIN_METAMASK || !securityAlertsEnabled) {
-    return;
-  }
-  const { to } = transactionParams;
-  if (typeof to !== 'string') {
-    return;
-  }
-
-  const supportedEVMChain = mapChainIdToSupportedEVMChain(chainId);
-  if (!supportedEVMChain) {
-    return;
-  }
-
-  const getAddressSecurityAlertResponseWithChain = (cacheKey: string) => {
-    return getSecurityAlertResponse(cacheKey);
-  };
-
-  const addAddressSecurityAlertResponseWithChain = (
-    cacheKey: string,
-    response: ScanAddressResponse,
-  ) => {
-    return addSecurityAlertResponse(cacheKey, response);
-  };
-
-  scanAddressAndAddToCache(
-    to,
-    getAddressSecurityAlertResponseWithChain,
-    addAddressSecurityAlertResponseWithChain,
-    supportedEVMChain,
-  ).catch((error) => {
-    console.error(
-      '[scanAddressForTrustSignals] error scanning address for trust signals:',
-      error,
-    );
-  });
-}
-
-async function validateSecurity(request: AddTransactionRequest) {
-  const {
-    chainId,
-    ppomController,
-    securityAlertsEnabled,
-    transactionOptions,
-    transactionParams,
-    updateSecurityAlertResponse,
-    internalAccounts,
-    getSecurityAlertsConfig,
-  } = request;
-
-  scanAddressForTrustSignals(request);
-  const { type } = transactionOptions;
-  const { data, value, to } = transactionParams;
-
-  const typeIsExcludedFromPPOM =
-    SECURITY_PROVIDER_EXCLUDED_TRANSACTION_TYPES.includes(
-      type as TransactionType,
-    );
-
-  if (!securityAlertsEnabled || typeIsExcludedFromPPOM) {
-    return;
-  }
-
-  const isTransfer =
-    value === '0x0' && TRANSFER_TYPES.includes(type as TransactionType);
-
-  const recipient =
-    isTransfer && data ? getTransactionDataRecipient(data) : undefined;
-
-  if (
-    isInternalAccount(internalAccounts, to) ||
-    isInternalAccount(internalAccounts, recipient)
-  ) {
-    return;
-  }
-
-  try {
-    const { from } = transactionParams;
-    const { actionId, origin } = transactionOptions;
-
-    const ppomRequest = {
-      method: 'eth_sendTransaction',
-      id: actionId ?? '',
-      origin: origin ?? '',
-      params: [
-        {
-          from,
-          to: to ?? '',
-          value: value ?? '',
-          data: data ?? '',
-        },
-      ],
-      jsonrpc: '2.0' as const,
-    };
-
-    const securityAlertId = generateSecurityAlertId();
-
-    // Intentionally not awaited to avoid blocking the confirmation process while the validation occurs.
-    validateRequestWithPPOM({
-      ppomController,
-      request: ppomRequest,
-      securityAlertId,
-      chainId,
-      updateSecurityAlertResponse,
-      getSecurityAlertsConfig,
-    });
-
-    const securityAlertResponseLoading: SecurityAlertResponse = {
-      ...LOADING_SECURITY_ALERT_RESPONSE,
-      securityAlertId,
-    };
-
-    request.transactionOptions.securityAlertResponse =
-      securityAlertResponseLoading;
-  } catch (error) {
-    handlePPOMError(error, 'Error validating JSON RPC using PPOM: ');
-  }
 }
 
 export function stripSingleLeadingZero(hex: string): string {

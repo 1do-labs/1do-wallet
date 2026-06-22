@@ -2,10 +2,6 @@ import { strict as assert } from 'assert';
 import { MockedEndpoint } from 'mockttp';
 import { getEventPayloads } from '../../../helpers';
 import { Driver } from '../../../webdriver/driver';
-import {
-  BlockaidReason,
-  BlockaidResultType,
-} from '../../../../../shared/constants/security-provider';
 import { ResultType } from '../../../../../shared/lib/trust-signals';
 
 type EventPayload = {
@@ -127,8 +123,8 @@ function getSignatureEventProperty(
   signatureType: string,
   primaryType: string,
   uiCustomizations: string[],
-  securityAlertReason: string = BlockaidReason.inProgress,
-  securityAlertResponse: string = BlockaidResultType.Loading,
+  securityAlertReason: string = 'in_progress',
+  securityAlertResponse: string = 'loading',
   securityAlertSource: string = 'api',
   decodingChangeTypes?: string[],
   decodingResponse?: string,

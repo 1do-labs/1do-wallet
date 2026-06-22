@@ -51,8 +51,8 @@ describe('ConnectionListItem', () => {
       id: 'https://metamask.github.io',
       origin: 'https://metamask.github.io',
       subjectType: 'website',
-      iconUrl: 'https://metamask.github.io/test-dapp/metamask-fox.svg',
-      networkIconUrl: 'https://metamask.github.io/test-dapp/metamask-fox.svg',
+      iconUrl: './images/logo/1do-mark.svg',
+      networkIconUrl: './images/logo/1do-mark.svg',
       networkName: 'Test Dapp Network',
       addresses: [
         '0xaaaF07C80ce267F3132cE7e6048B66E6E669365B',
@@ -110,8 +110,8 @@ describe('ConnectionListItem', () => {
       id: 'https://metamask.github.io',
       origin: 'https://metamask.github.io',
       subjectType: 'website',
-      iconUrl: 'https://metamask.github.io/test-dapp/metamask-fox.svg',
-      networkIconUrl: 'https://metamask.github.io/test-dapp/metamask-fox.svg',
+      iconUrl: './images/logo/1do-mark.svg',
+      networkIconUrl: './images/logo/1do-mark.svg',
       networkName: 'Test Dapp Network',
       addresses: [
         '0xaaaF07C80ce267F3132cE7e6048B66E6E669365B',
@@ -153,8 +153,8 @@ describe('ConnectionListItem', () => {
       id: 'https://metamask.github.io',
       origin: 'https://metamask.github.io',
       subjectType: 'website',
-      iconUrl: 'https://metamask.github.io/test-dapp/metamask-fox.svg',
-      networkIconUrl: 'https://metamask.github.io/test-dapp/metamask-fox.svg',
+      iconUrl: './images/logo/1do-mark.svg',
+      networkIconUrl: './images/logo/1do-mark.svg',
       networkName: 'Test Dapp Network',
       addresses: [
         '0xaaaF07C80ce267F3132cE7e6048B66E6E669365B',
@@ -177,7 +177,7 @@ describe('ConnectionListItem', () => {
       id: 'https://metamask.github.io',
       origin: 'https://metamask.github.io',
       subjectType: 'website',
-      iconUrl: 'https://metamask.github.io/test-dapp/metamask-fox.svg',
+      iconUrl: './images/logo/1do-mark.svg',
       addresses: [],
     };
     const { getByTestId } = renderWithProvider(

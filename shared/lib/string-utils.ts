@@ -32,8 +32,8 @@ export function prependZero(num: number, maxLength: number): string {
  * Converts a camelCase or PascalCase string to kebab-case.
  * Handles leading uppercase letters without creating a leading hyphen.
  *
- * @param str - Input string (e.g., "startupStandardHome" or "SwapPage").
- * @returns Kebab-case string (e.g., "startup-standard-home" or "swap-page").
+ * @param str - Input string (e.g., "startupStandardHome" or "SettingsPage").
+ * @returns Kebab-case string (e.g., "startup-standard-home" or "settings-page").
  */
 export function toKebabCase(str: string): string {
   return str

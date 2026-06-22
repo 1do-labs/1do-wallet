@@ -46,16 +46,6 @@ export type OnboardingControllerRegisterOnboardingAction = {
 };
 
 /**
- * Check if the user onboarding flow is Social login flow or not.
- *
- * @returns true if the user onboarding flow is Social loing flow, otherwise false.
- */
-export type OnboardingControllerGetIsSocialLoginFlowAction = {
-  type: `OnboardingController:getIsSocialLoginFlow`;
-  handler: OnboardingController['getIsSocialLoginFlow'];
-};
-
-/**
  * Reset the onboarding controller state.
  */
 export type OnboardingControllerResetOnboardingAction = {
@@ -71,5 +61,4 @@ export type OnboardingControllerMethodActions =
   | OnboardingControllerCompleteOnboardingAction
   | OnboardingControllerSetFirstTimeFlowTypeAction
   | OnboardingControllerRegisterOnboardingAction
-  | OnboardingControllerGetIsSocialLoginFlowAction
   | OnboardingControllerResetOnboardingAction;

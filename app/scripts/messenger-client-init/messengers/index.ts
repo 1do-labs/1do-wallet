@@ -1,16 +1,8 @@
 import { noop } from 'lodash';
 import {
-  getPPOMControllerMessenger,
-  getPPOMControllerInitMessenger,
-} from './ppom-controller-messenger';
-import {
   getTransactionControllerMessenger,
   getTransactionControllerInitMessenger,
 } from './transaction-controller-messenger';
-import {
-  getTransactionPayControllerMessenger,
-  getTransactionPayControllerInitMessenger,
-} from './transaction-pay-controller-messenger';
 import {
   getMultichainBalancesControllerMessenger,
   getMultichainAssetsControllerMessenger,
@@ -308,11 +300,6 @@ export {
   getTokensControllerMessenger,
   getTokensControllerInitMessenger,
 } from './tokens-controller-messenger';
-export type { TransactionPayControllerInitMessenger } from './transaction-pay-controller-messenger';
-export {
-  getTransactionPayControllerMessenger,
-  getTransactionPayControllerInitMessenger,
-} from './transaction-pay-controller-messenger';
 export type {
   UserOperationControllerMessenger,
   UserOperationControllerInitMessenger,
@@ -504,10 +491,6 @@ export const MESSENGER_FACTORIES = {
     getMessenger: getSubjectMetadataControllerMessenger,
     getInitMessenger: noop,
   },
-  PPOMController: {
-    getMessenger: getPPOMControllerMessenger,
-    getInitMessenger: getPPOMControllerInitMessenger,
-  },
   PreferencesController: {
     getMessenger: getPreferencesControllerMessenger,
     getInitMessenger: noop,
@@ -531,10 +514,6 @@ export const MESSENGER_FACTORIES = {
   TransactionController: {
     getMessenger: getTransactionControllerMessenger,
     getInitMessenger: getTransactionControllerInitMessenger,
-  },
-  TransactionPayController: {
-    getMessenger: getTransactionPayControllerMessenger,
-    getInitMessenger: getTransactionPayControllerInitMessenger,
   },
   UserOperationController: {
     getMessenger: getUserOperationControllerMessenger,

@@ -5,16 +5,12 @@ import classnames from 'clsx';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
-import {
-  TransactionStatus,
-  TransactionType,
-} from '@metamask/transaction-controller';
+import { TransactionStatus } from '@metamask/transaction-controller';
 import { Button, ButtonSize } from '@metamask/design-system-react';
 import { useTransactionDisplayData } from '../../../hooks/useTransactionDisplayData';
 import { useI18nContext } from '../../../hooks/useI18nContext';
 import { CancelSpeedup } from '../../../pages/confirmations/cancel-speedup/cancel-speedup';
 import TransactionListItemDetails from '../transaction-list-item-details';
-import { TransactionDetailsModal } from '../../../pages/confirmations/components/activity';
 import { CONFIRM_TRANSACTION_ROUTE } from '../../../helpers/constants/routes';
 import { useShouldShowSpeedUp } from '../../../hooks/useShouldShowSpeedUp';
 import TransactionStatusLabel from '../transaction-status-label/transaction-status-label';
@@ -46,7 +42,6 @@ import CancelButton from '../cancel-button';
 import { MetaMetricsContext } from '../../../contexts/metametrics';
 import { ActivityListItem } from '../../multichain/activity-list-item';
 import { abortTransactionSigning } from '../../../store/actions';
-import { PAY_TRANSACTION_TYPES } from '../../../pages/confirmations/constants/pay';
 import { ChainBadge } from '../chain-badge/chain-badge';
 import { mapTransactionTypeToCategory } from './helpers';
 
@@ -64,16 +59,11 @@ function TransactionListItemInner({
   const dispatch = useDispatch();
 
   const {
-    initialTransaction: { id, txParams, type, metamaskPay },
+    initialTransaction: { id, txParams, type },
     primaryTransaction: { error, status, selectedGasFeeToken },
   } = transactionGroup;
 
   const hasGasFeeTokenSelected = Boolean(selectedGasFeeToken);
-
-  const badgeChainId =
-    type === TransactionType.perpsDeposit && metamaskPay?.chainId
-      ? metamaskPay.chainId
-      : chainId;
 
   const senderAddress = txParams?.from;
 
@@ -146,12 +136,8 @@ function TransactionListItemInner({
    *
    * @see {@link https://github.com/MetaMask/metamask-extension/issues/28615}
    */
-  // const isSwap = [
-  //   TransactionGroupCategory.swap,
-  //   TransactionGroupCategory.swapAndSend,
-  // ].includes(category);
   // const showRetry =
-  //   status === TransactionStatus.failed && !isSwap && !isSmartTransaction;
+  //   status === TransactionStatus.failed && !isSmartTransaction;
 
   const isSigning = status === TransactionStatus.approved;
   const isSubmitting = status === TransactionStatus.signed;
@@ -243,7 +229,7 @@ function TransactionListItemInner({
         className={className}
         title={title}
         icon={
-          <ChainBadge chainId={badgeChainId}>
+          <ChainBadge chainId={chainId}>
             <TransactionIcon category={category} status={displayedStatusKey} />
           </ChainBadge>
         }
@@ -305,37 +291,31 @@ function TransactionListItemInner({
           </Box>
         )}
       </ActivityListItem>
-      {showDetails &&
-        (PAY_TRANSACTION_TYPES.includes(type) ? (
-          <TransactionDetailsModal
-            transactionMeta={transactionGroup.initialTransaction}
-            onClose={toggleShowDetails}
-          />
-        ) : (
-          <TransactionListItemDetails
-            title={title}
-            onClose={toggleShowDetails}
-            transactionGroup={transactionGroup}
-            primaryCurrency={primaryCurrency}
-            senderAddress={senderAddress}
-            recipientAddress={recipientAddress}
-            onRetry={retryTransaction}
-            // showRetry={showRetry}
-            showSpeedUp={isSpeedUpButtonVisible}
-            onCancel={cancelTransaction}
-            transactionStatus={() => (
-              <TransactionStatusLabel
-                isPending={isPending}
-                isEarliestNonce={isEarliestNonce}
-                error={error}
-                date={date}
-                status={displayedStatusKey}
-                statusOnly
-              />
-            )}
-            chainId={chainId}
-          />
-        ))}
+      {showDetails && (
+        <TransactionListItemDetails
+          title={title}
+          onClose={toggleShowDetails}
+          transactionGroup={transactionGroup}
+          primaryCurrency={primaryCurrency}
+          senderAddress={senderAddress}
+          recipientAddress={recipientAddress}
+          onRetry={retryTransaction}
+          // showRetry={showRetry}
+          showSpeedUp={isSpeedUpButtonVisible}
+          onCancel={cancelTransaction}
+          transactionStatus={() => (
+            <TransactionStatusLabel
+              isPending={isPending}
+              isEarliestNonce={isEarliestNonce}
+              error={error}
+              date={date}
+              status={displayedStatusKey}
+              statusOnly
+            />
+          )}
+          chainId={chainId}
+        />
+      )}
     </>
   );
 }

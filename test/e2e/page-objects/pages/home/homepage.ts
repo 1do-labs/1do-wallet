@@ -42,9 +42,6 @@ class HomePage {
     css: '.mm-banner-base',
   };
 
-  protected readonly bridgeButton: string =
-    '[data-testid="eth-overview-bridge"]';
-
   private readonly closeUseNetworkNotificationModalButton = {
     text: 'Got it',
     tag: 'h6',
@@ -81,8 +78,6 @@ class HomePage {
   };
 
   protected readonly sendButton: string = '[data-testid="eth-overview-send"]';
-
-  protected readonly swapButton: string = '[data-testid="eth-overview-swap"]';
 
   private readonly refreshErc20Tokens = {
     testId: 'refreshList',
@@ -480,19 +475,6 @@ class HomePage {
       return false;
     }
     console.log('Send button is clickable');
-    return true;
-  }
-
-  async checkIfSwapButtonIsClickable(): Promise<boolean> {
-    try {
-      await this.driver.findClickableElement(this.swapButton, {
-        timeout: 1000,
-      });
-    } catch (e) {
-      console.log('Swap button not clickable', e);
-      return false;
-    }
-    console.log('Swap button is clickable');
     return true;
   }
 

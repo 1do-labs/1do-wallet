@@ -14,15 +14,8 @@ import { TOKENS_API_MOCK_RESULT } from '../../../data/mock-data';
 import { createInternalTransaction } from '../../page-objects/flows/transaction';
 import { NETWORK_CLIENT_ID } from '../../constants';
 
-async function mockTokenList(mockServer: Mockttp) {
-  return await mockServer
-    .forGet('https://bridge.api.cx.metamask.io/networks/59144/tokens')
-    .thenCallback(() => {
-      return {
-        statusCode: 200,
-        json: TOKENS_API_MOCK_RESULT,
-      };
-    });
+async function mockTokenList(_mockServer: Mockttp) {
+  return [];
 }
 
 describe('Address Book', function (this: Suite) {

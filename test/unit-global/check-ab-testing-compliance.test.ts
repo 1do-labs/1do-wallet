@@ -136,7 +136,7 @@ describe('check-ab-testing-compliance.ts', () => {
     const repo = createRepo();
     appendFileSync(
       path.join(repo, 'app/sample.ts'),
-      "const payload = { active_ab_tests: [{ key: 'swapsSWAPS9999AbtestFoo' }] };\n",
+      "const payload = { active_ab_tests: [{ key: 'testTEST9999AbtestFoo' }] };\n",
     );
 
     const result = runChecker(repo, ['--staged']);
@@ -149,7 +149,7 @@ describe('check-ab-testing-compliance.ts', () => {
     const repo = createRepo();
     appendFileSync(
       path.join(repo, 'app/sample.ts'),
-      "const assignment = useABTest('swapsSWAPS9999AbtestFoo', { treatment: { label: 'x' } });\n",
+      "const assignment = useABTest('testTEST9999AbtestFoo', { treatment: { label: 'x' } });\n",
     );
 
     const result = runChecker(repo, ['--staged']);
@@ -165,7 +165,7 @@ describe('check-ab-testing-compliance.ts', () => {
     writeFileSync(
       path.join(repo, 'app/abTestConfig.ts'),
       [
-        "export const FLAG_KEY = 'swapsSWAPS9999AbtestFoo';",
+        "export const FLAG_KEY = 'testTEST9999AbtestFoo';",
         'export const VARIANTS = {',
         "  control: { label: 'control' },",
         "  treatment: { label: 'treatment' },",
@@ -199,8 +199,8 @@ describe('check-ab-testing-compliance.ts', () => {
       path.join(repo, 'app/sample.test.ts'),
       [
         "const payload = { ab_tests: { example: 'control' } };",
-        "const invalidActive = { active_ab_tests: [{ key: 'swapsSWAPS9999AbtestFoo' }] };",
-        "const assignment = useABTest('swapsSWAPS9999AbtestFoo', { treatment: { label: 'x' } });",
+        "const invalidActive = { active_ab_tests: [{ key: 'testTEST9999AbtestFoo' }] };",
+        "const assignment = useABTest('testTEST9999AbtestFoo', { treatment: { label: 'x' } });",
         '',
       ].join('\n'),
     );
@@ -220,8 +220,8 @@ describe('check-ab-testing-compliance.ts', () => {
       path.join(repo, 'app/sample.spec.ts'),
       [
         "const payload = { ab_tests: { example: 'control' } };",
-        "const invalidActive = { active_ab_tests: [{ key: 'swapsSWAPS9999AbtestFoo' }] };",
-        "const assignment = useABTest('swapsSWAPS9999AbtestFoo', { treatment: { label: 'x' } });",
+        "const invalidActive = { active_ab_tests: [{ key: 'testTEST9999AbtestFoo' }] };",
+        "const assignment = useABTest('testTEST9999AbtestFoo', { treatment: { label: 'x' } });",
         '',
       ].join('\n'),
     );
@@ -239,7 +239,7 @@ describe('check-ab-testing-compliance.ts', () => {
     const repo = createRepo();
     appendFileSync(
       path.join(repo, 'app/sample.ts'),
-      "const assignment = useABTest('swapsSWAPS9999AbtestFoo', { control: {}, treatment: {} });\n",
+      "const assignment = useABTest('testTEST9999AbtestFoo', { control: {}, treatment: {} });\n",
     );
     writeFileSync(
       path.join(repo, 'app/sample.spec.ts'),

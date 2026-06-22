@@ -1,4 +1,5 @@
-import { EthAccountType, EthScope } from '@metamask/keyring-api';
+import { EthAccountType } from '@metamask/keyring-api';
+import { AccountGroupType, AccountWalletType } from '@metamask/account-api';
 import { CHAIN_IDS, CURRENCY_SYMBOLS } from '../../shared/constants/network';
 import { KeyringType } from '../../shared/constants/keyring';
 import { ETH_EOA_METHODS } from '../../shared/constants/eth-methods';
@@ -105,41 +106,66 @@ const createGetSmartTransactionFeesApiResponse = () => {
   };
 };
 
-export const createSwapsMockStore = () => {
-  return {
+export const createSmartTransactionsMockStore = ({
+  metamaskStateOverrides = {},
+} = {}) => {
+  const state = {
     confirmTransaction: {
       txData: {},
     },
-    swaps: {
-      customGas: {
-        limit: '0x0',
-        fallBackPrice: 5,
-        priceEstimates: {
-          blockTime: 14.1,
-          safeLow: 2.5,
-          safeLowWait: 6.6,
-          average: 4,
-          avgWait: 5.3,
-          fast: 5,
-          fastWait: 3.3,
-          fastest: 10,
-          fastestWait: 0.5,
-        },
-      },
-      fromToken: 'ETH',
-      toToken: {
-        symbol: 'USDC',
-        address: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
-        occurances: 4,
-      },
-      swapsSTXLoading: false,
-    },
     metamask: {
-      accountTree: {},
-      remoteFeatureFlags: {
-        bridgeConfig: {
-          support: false,
+      accountTree: {
+        wallets: {
+          'entropy:01JKAF3DSGM3AB87EM9N0K41AJ': {
+            id: 'entropy:01JKAF3DSGM3AB87EM9N0K41AJ',
+            type: AccountWalletType.Entropy,
+            status: 'ready',
+            groups: {
+              'entropy:01JKAF3DSGM3AB87EM9N0K41AJ/0': {
+                id: 'entropy:01JKAF3DSGM3AB87EM9N0K41AJ/0',
+                type: AccountGroupType.MultichainAccount,
+                accounts: [
+                  'cf8dace4-9439-4bd4-b3a8-88c821c8fcb3',
+                  '07c2cfec-36c9-46c4-8115-3836d3ac9047',
+                  '15e69915-2a1a-4019-93b3-916e11fd432f',
+                  '784225f4-d30b-4e77-a900-c8bbce735b88',
+                ],
+                metadata: {
+                  name: 'Test Account Group',
+                  entropy: {
+                    groupIndex: 0,
+                  },
+                  pinned: false,
+                  hidden: false,
+                  lastSelected: 0,
+                },
+              },
+              'entropy:01JKAF3DSGM3AB87EM9N0K41AJ/1': {
+                id: 'entropy:01JKAF3DSGM3AB87EM9N0K41AJ/1',
+                type: AccountGroupType.MultichainAccount,
+                accounts: ['36eb02e0-7925-47f0-859f-076608f09b69'],
+                metadata: {
+                  name: 'Snap Account Group',
+                  entropy: {
+                    groupIndex: 1,
+                  },
+                  pinned: false,
+                  hidden: false,
+                  lastSelected: 0,
+                },
+              },
+            },
+            metadata: {
+              name: 'Test Wallet',
+              entropy: {
+                id: '01JKAF3DSGM3AB87EM9N0K41AJ',
+              },
+            },
+          },
         },
+      },
+      selectedAccountGroup: 'entropy:01JKAF3DSGM3AB87EM9N0K41AJ/0',
+      remoteFeatureFlags: {
         smartTransactionsNetworks: {
           default: {
             extensionActive: false,
@@ -158,7 +184,14 @@ export const createSwapsMockStore = () => {
         tokenNetworkFilter: {},
         showMultiRpcModal: false,
       },
-      enabledNetworkMap: {},
+      enabledNetworkMap: {
+        eip155: {
+          [CHAIN_IDS.MAINNET]: true,
+          [CHAIN_IDS.OPTIMISM]: true,
+          [CHAIN_IDS.LINEA_MAINNET]: true,
+        },
+      },
+      isEvmSelected: true,
       transactions: [
         {
           id: 6571648590592143,
@@ -181,7 +214,7 @@ export const createSwapsMockStore = () => {
           },
           origin: 'metamask',
           actionId: 1667403993358.877,
-          type: 'swap',
+          type: 'contractInteraction',
           userFeeLevel: 'medium',
           defaultGasEstimates: {
             estimateType: 'medium',
@@ -189,36 +222,6 @@ export const createSwapsMockStore = () => {
             maxFeePerGas: '0x19286f704d',
             maxPriorityFeePerGas: '0x77359400',
           },
-          sourceTokenSymbol: 'ETH',
-          destinationTokenSymbol: 'USDC',
-          destinationTokenDecimals: 6,
-          destinationTokenAddress: '0xdac17f958d2ee523a2206206994597c13d831ec7',
-          swapMetaData: {
-            token_from: 'ETH',
-            token_from_amount: '0.0001',
-            token_to: 'USDC',
-            token_to_amount: '0.15471500',
-            slippage: 2,
-            custom_slippage: false,
-            best_quote_source: 'pmm',
-            other_quote_selected: false,
-            other_quote_selected_source: '',
-            gas_fees: '3.016697',
-            estimated_gas: '30024',
-            used_gas_price: '0',
-            is_hardware_wallet: false,
-            stx_enabled: false,
-            current_stx_enabled: false,
-            stx_user_opt_in: false,
-            reg_tx_fee_in_usd: 3.02,
-            reg_tx_fee_in_eth: 0.00193,
-            reg_tx_max_fee_in_usd: 5.06,
-            reg_tx_max_fee_in_eth: 0.00324,
-            max_fee_per_gas: '19286f704d',
-            max_priority_fee_per_gas: '77359400',
-            base_and_priority_fee_per_gas: 'efd93d95a',
-          },
-          swapTokenValue: '0.0001',
           estimatedBaseFee: 'e865e455a',
           hash: '0x8216e3696e7deb7ca794703015f17d5114a09362ae98f6a1611203e4c9509243',
           submittedTime: 1667403996143,
@@ -232,11 +235,22 @@ export const createSwapsMockStore = () => {
       currentCurrency: 'usd',
       currencyRates: {
         ETH: {
+          conversionRate: 2524.25,
+        },
+        usd: {
           conversionRate: 1,
         },
       },
       marketData: {
         '0x1': {
+          '0x514910771AF9Ca656af840dff83E8264EcF986CA': {
+            price: 3029.1,
+            currency: 'usd',
+          },
+          '0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984': {
+            price: 5805.775,
+            currency: 'usd',
+          },
           '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48': {
             price: 2,
             contractPercentChange1d: 0.004,
@@ -246,6 +260,12 @@ export const createSwapsMockStore = () => {
             price: 0.1,
             contractPercentChange1d: 0.01,
             priceChange1d: 0.001,
+          },
+        },
+        [CHAIN_IDS.LINEA_MAINNET]: {
+          '0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984': {
+            price: 5805.775,
+            currency: 'usd',
           },
         },
       },
@@ -263,7 +283,7 @@ export const createSwapsMockStore = () => {
             options: {},
             methods: ETH_EOA_METHODS,
             type: EthAccountType.Eoa,
-            scopes: [EthScope.Eoa],
+            scopes: ['eip155:0', 'eip155:1'],
           },
           '07c2cfec-36c9-46c4-8115-3836d3ac9047': {
             address: '0xc5b8dbac4c1d3f152cdeb400e2313f309c410acb',
@@ -277,7 +297,7 @@ export const createSwapsMockStore = () => {
             options: {},
             methods: ETH_EOA_METHODS,
             type: EthAccountType.Eoa,
-            scopes: [EthScope.Eoa],
+            scopes: ['eip155:0', 'eip155:1'],
           },
           '15e69915-2a1a-4019-93b3-916e11fd432f': {
             address: '0x2f8d4a878cfa04a6e60d46362f5644deab66572d',
@@ -291,7 +311,7 @@ export const createSwapsMockStore = () => {
             options: {},
             methods: ETH_EOA_METHODS,
             type: EthAccountType.Eoa,
-            scopes: [EthScope.Eoa],
+            scopes: ['eip155:0', 'eip155:1'],
           },
           '784225f4-d30b-4e77-a900-c8bbce735b88': {
             address: '0x0dcd5d886577d5081b0c52e242ef29e70be3e7bc',
@@ -305,7 +325,7 @@ export const createSwapsMockStore = () => {
             options: {},
             methods: ETH_EOA_METHODS,
             type: EthAccountType.Eoa,
-            scopes: [EthScope.Eoa],
+            scopes: ['eip155:0', 'eip155:1'],
           },
           '36eb02e0-7925-47f0-859f-076608f09b69': {
             address: '0x95222290DD7278Aa3Ddd389Cc1E1d165CC4BAfe6',
@@ -323,18 +343,38 @@ export const createSwapsMockStore = () => {
             options: {},
             methods: ETH_EOA_METHODS,
             type: EthAccountType.Eoa,
-            scopes: [EthScope.Eoa],
+            scopes: ['eip155:0', 'eip155:1'],
           },
         },
         selectedAccount: 'cf8dace4-9439-4bd4-b3a8-88c821c8fcb3',
       },
+      accountIdByAddress: {
+        '0x0dcd5d886577d5081b0c52e242ef29e70be3e7bc':
+          'cf8dace4-9439-4bd4-b3a8-88c821c8fcb3',
+        '0xc5b8dbac4c1d3f152cdeb400e2313f309c410acb':
+          '07c2cfec-36c9-46c4-8115-3836d3ac9047',
+        '0x2f8d4a878cfa04a6e60d46362f5644deab66572d':
+          '15e69915-2a1a-4019-93b3-916e11fd432f',
+        '0x95222290dd7278aa3ddd389cc1e1d165cc4bafe6':
+          '36eb02e0-7925-47f0-859f-076608f09b69',
+      },
       accountsByChainId: {
         [CHAIN_IDS.MAINNET]: {
           '0x0DCD5D886577d5081B0c52e242Ef29E70Be3E7bc': {
-            balance: '0x0',
+            balance: '0x2386f26fc10000',
           },
           '0xEC1Adf982415D2Ef5ec55899b9Bfb8BC0f29251B': {
             balance: '0x0',
+          },
+        },
+        [CHAIN_IDS.LINEA_MAINNET]: {
+          '0x0DCD5D886577d5081B0c52e242Ef29E70Be3E7bc': {
+            balance: '0xde0bfcbf5d6a000',
+          },
+        },
+        [CHAIN_IDS.OPTIMISM]: {
+          '0x0DCD5D886577d5081B0c52e242Ef29E70Be3E7bc': {
+            balance: '0xde0bfcbf5d6a000',
           },
         },
       },
@@ -383,8 +423,44 @@ export const createSwapsMockStore = () => {
           address: '0xdAC17F958D2ee523a2206206994597C13D831ec7',
         },
       ],
-      swapsState: {
-        swapsFeatureFlags: {
+      allTokens: {
+        [CHAIN_IDS.MAINNET]: {
+          '0x0dcd5d886577d5081b0c52e242ef29e70be3e7bc': [
+            {
+              address: '0x514910771AF9Ca656af840dff83E8264EcF986CA',
+              symbol: 'LINK',
+              decimals: 18,
+            },
+            {
+              address: '0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984',
+              symbol: 'UNI',
+              decimals: 6,
+            },
+          ],
+        },
+        [CHAIN_IDS.LINEA_MAINNET]: {
+          '0x0dcd5d886577d5081b0c52e242ef29e70be3e7bc': [
+            {
+              address: '0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984',
+              symbol: 'UNI',
+              decimals: 18,
+            },
+          ],
+        },
+      },
+      tokenBalances: {
+        '0x0dcd5d886577d5081b0c52e242ef29e70be3e7bc': {
+          [CHAIN_IDS.MAINNET]: {
+            '0x514910771AF9Ca656af840dff83E8264EcF986CA': '0xde0b6b3a7640000',
+            '0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984': '0x730',
+          },
+          [CHAIN_IDS.LINEA_MAINNET]: {
+            '0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984': '0x0',
+          },
+        },
+      },
+      smartTransactionsFeatureFlagsState: {
+        smartTransactionsFeatureFlags: {
           ethereum: {
             extensionActive: true,
             mobileActive: false,
@@ -580,7 +656,7 @@ export const createSwapsMockStore = () => {
         errorKey: '',
         topAggId: 'TEST_AGG_BEST',
         routeState: '',
-        swapsFeatureIsLive: false,
+        smartTransactionsFeatureIsLive: false,
       },
       useTokenDetection: true,
       tokenList: {
@@ -708,6 +784,14 @@ export const createSwapsMockStore = () => {
         },
       },
       gasLoadingAnimationIsShowing: false,
+    },
+  };
+
+  return {
+    ...state,
+    metamask: {
+      ...state.metamask,
+      ...metamaskStateOverrides,
     },
   };
 };

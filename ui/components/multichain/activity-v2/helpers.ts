@@ -249,17 +249,6 @@ export function resolveTransactionType(
   if (transactionCategory === 'APPROVE') {
     return TransactionType.tokenMethodApprove;
   }
-  if (
-    transactionCategory === 'BRIDGE_OUT' ||
-    transactionCategory === 'BRIDGE_IN'
-  ) {
-    return TransactionType.bridge;
-  }
-
-  if (transactionCategory === 'SWAP' || transactionCategory === 'EXCHANGE') {
-    return TransactionType.swap;
-  }
-
   // Specifics from transactionType
   if (transactionType === 'DEPLOY_CONTRACT') {
     return TransactionType.deployContract;

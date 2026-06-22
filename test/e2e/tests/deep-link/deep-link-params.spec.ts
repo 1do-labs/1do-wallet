@@ -5,7 +5,6 @@ import { withFixtures } from '../../helpers';
 import { Driver } from '../../webdriver/driver';
 import DeepLink from '../../page-objects/pages/deep-link-page';
 import LoginPage from '../../page-objects/pages/login-page';
-import SwapPage from '../../page-objects/pages/swap/swap-page';
 import HomePage from '../../page-objects/pages/home/homepage';
 import type { Anvil } from '../../seeder/anvil';
 import type { Ganache } from '../../seeder/ganache';
@@ -31,71 +30,6 @@ describe('Deep Link - Parameter Handling & Security', function () {
     keyPair = await generateECDSAKeyPair();
     deepLinkPublicKey = bytesToB64(
       await crypto.subtle.exportKey('raw', keyPair.publicKey),
-    );
-  });
-
-  // this test is skipped because the swap route does not work correctly in
-  // the e2e environment. Once swaps/bridge flows are all fully migrated to the
-  // route page this test can be re-enabled.
-  // eslint-disable-next-line mocha/no-skipped-tests
-  it.skip("passes params to the deep link's component", async function () {
-    await withFixtures(
-      await getConfig({
-        title: this.test?.fullTitle(),
-        deepLinkPublicKey,
-      }),
-      async ({ driver }: { driver: Driver }) => {
-        await driver.navigate();
-        const loginPage = new LoginPage(driver);
-        await loginPage.checkPageIsLoaded();
-        await loginPage.loginToHomepage();
-        const homePage = new HomePage(driver);
-        await homePage.checkPageIsLoaded();
-
-        // params that are not related to the swap, and get filtered out
-        // (may or not be processed by the deep link router, but we aren't
-        // concerned with that in this test)
-        const extraParams = {
-          // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-          // eslint-disable-next-line @typescript-eslint/naming-convention
-          utm_medium: '123',
-          // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-          // eslint-disable-next-line @typescript-eslint/naming-convention
-          attribution_id: '456',
-          // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-          // eslint-disable-next-line @typescript-eslint/naming-convention
-          random_param: '789',
-        };
-        // these should all be forwarded to the swap page
-        const swapsParams = {
-          from: 'eip155:1/erc20:0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
-          to: 'eip155:1/erc20:0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
-          value: '0x38d7ea4c68000',
-        };
-        const params = new URLSearchParams({ ...extraParams, ...swapsParams });
-        const rawUrl = `https://link.metamask.io/swap?${params.toString()}`;
-
-        // test signed flow
-        await driver.openNewURL(rawUrl);
-
-        const deepLink = new DeepLink(driver);
-        await deepLink.checkPageIsLoaded();
-
-        await deepLink.clickContinueButton();
-        await new SwapPage(driver).checkPageIsLoaded();
-
-        const currentUrl = await driver.getCurrentUrl();
-
-        // the URL params is actually in the `hash`, e.g. #some/path?query=param
-        const hash = new URL(currentUrl).hash.slice(1);
-        const urlParams = new URLSearchParams(hash.split('?')[1]);
-
-        // ensure all of the params are all present in the URL
-        assert.deepStrictEqual(
-          Object.fromEntries(urlParams.entries()),
-          swapsParams,
-        );
-      },
     );
   });
 

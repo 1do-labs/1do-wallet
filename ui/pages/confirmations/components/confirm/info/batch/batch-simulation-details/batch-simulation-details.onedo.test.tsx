@@ -100,7 +100,7 @@ describe('BatchSimulationDetails 1Do wallet-native transfers', () => {
     });
   });
 
-  it('keeps generic simulation details metrics-only for 1Do wallet-native token claims', () => {
+  it('keeps generic simulation details visible for 1Do wallet-native token claims', () => {
     const transactionMeta = buildTransactionMeta(claimData);
     useConfirmContextMock.mockReturnValue({
       currentConfirmation: transactionMeta,
@@ -110,7 +110,7 @@ describe('BatchSimulationDetails 1Do wallet-native transfers', () => {
 
     expect(SimulationDetailsMock).toHaveBeenCalledWith(
       expect.objectContaining({
-        metricsOnly: true,
+        metricsOnly: false,
         transaction: transactionMeta,
       }),
       expect.anything(),

@@ -11,17 +11,6 @@ function getIconCategory(tx: TransactionViewModel) {
     return TransactionGroupCategory.approval;
   }
 
-  if (
-    transactionCategory === 'BRIDGE_OUT' ||
-    transactionCategory === 'BRIDGE_IN'
-  ) {
-    return TransactionGroupCategory.bridge;
-  }
-
-  if (transactionCategory === 'SWAP' || transactionCategory === 'EXCHANGE') {
-    return TransactionGroupCategory.swap;
-  }
-
   if (transactionCategory === 'TRANSFER') {
     if (tx.amounts?.to && !tx.amounts?.from) {
       return TransactionGroupCategory.receive;

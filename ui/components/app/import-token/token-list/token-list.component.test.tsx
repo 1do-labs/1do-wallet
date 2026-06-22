@@ -1,14 +1,14 @@
 import React from 'react';
 import configureMockStore from 'redux-mock-store';
 import { screen } from '@testing-library/react';
-import * as bridgeControllerModule from '@metamask/bridge-controller';
+import * as chainUtilsModule from '../../../../../shared/lib/chain-utils';
 import { renderWithProvider } from '../../../../../test/lib/render-helpers-navigate';
 import mockState from '../../../../../test/data/mock-state.json';
 import * as assetUtilsModule from '../../../../../shared/lib/asset-utils';
 import * as utilModule from '../../../../helpers/utils/util';
 import TokenList from './token-list.component';
 
-jest.mock('@metamask/bridge-controller');
+jest.mock('../../../../../shared/lib/chain-utils');
 jest.mock('../../../../../shared/lib/asset-utils');
 jest.mock('../../../../helpers/utils/util');
 
@@ -41,9 +41,7 @@ describe('TokenList Component', () => {
     };
 
     it('should use checkExistingAllTokens to determine if token is already added', () => {
-      jest
-        .spyOn(bridgeControllerModule, 'isNonEvmChainId')
-        .mockReturnValue(false);
+      jest.spyOn(chainUtilsModule, 'isNonEvmChainId').mockReturnValue(false);
       jest.spyOn(utilModule, 'checkExistingAllTokens').mockReturnValue(false);
 
       const props = {
@@ -53,7 +51,7 @@ describe('TokenList Component', () => {
 
       renderWithProvider(<TokenList {...props} />, mockStore);
 
-      expect(bridgeControllerModule.isNonEvmChainId).toHaveBeenCalledWith(
+      expect(chainUtilsModule.isNonEvmChainId).toHaveBeenCalledWith(
         mockEvmToken.chainId,
       );
       expect(utilModule.checkExistingAllTokens).toHaveBeenCalledWith(

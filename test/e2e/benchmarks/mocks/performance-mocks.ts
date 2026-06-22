@@ -3,15 +3,9 @@
  *
  * All response payloads live in mock-responses.ts and JSON fixture files.
  */
-import { Mockttp, MockedEndpoint, RequestRuleBuilder } from 'mockttp';
-import { AuthenticationController } from '@metamask/profile-sync-controller';
+import { Mockttp, MockedEndpoint } from 'mockttp';
 import { POWER_USER_PRICES } from './price-data';
-import bridgeNetworkTokens from './bridge-network-tokens.json';
-import bridgeTokens from './bridge-tokens.json';
-import bridgeTokensPopular from './bridge-tokens-popular.json';
-import bridgeTokensSearch from './bridge-tokens-search.json';
 import chainsList from './chains-list.json';
-import swapQuoteEthUsdc from './swap-quote-eth-usdc.json';
 import {
   jsonRpcResponse,
   buildSpotPricesResponse,
@@ -23,28 +17,12 @@ import {
   SUPPORTED_NETWORKS,
   CRYPTOCOMPARE_MULTI_PRICES,
   PHISHING_DETECTION,
-  SUBSCRIPTION_ELIGIBILITY,
-  BRIDGE_FEATURE_FLAGS,
   CLIENT_CONFIG_FLAGS,
-  SECURITY_ALERTS,
   SUGGESTED_GAS_FEES,
   GAS_PRICES,
-  TOP_ASSETS,
-  AGGREGATOR_METADATA,
   ACCOUNTS_TRANSACTIONS,
   ACCOUNTS_BALANCES,
 } from './mock-responses';
-
-const AuthMocks = AuthenticationController.Mocks;
-
-function buildSseResponseBody(events: unknown[]): string {
-  return events
-    .map(
-      (quote, i) =>
-        `event: quote\nid: ${Date.now()}-${i + 1}\ndata: ${JSON.stringify(quote)}\n\n`,
-    )
-    .join('');
-}
 
 /**
  * Mock Priority System for Performance Tests
@@ -91,72 +69,6 @@ function delayedCallback<TResponse>(
   };
 }
 
-type AuthMockResponse = {
-  url: string | RegExp;
-  requestMethod: 'GET' | 'POST' | 'PUT' | 'DELETE';
-  response: unknown;
-};
-
-async function mockAuthAPICall(
-  server: Mockttp,
-  mockResponse: AuthMockResponse,
-  delayMs = 0,
-): Promise<MockedEndpoint> {
-  let requestRuleBuilder: RequestRuleBuilder | undefined;
-
-  if (mockResponse.requestMethod === 'GET') {
-    requestRuleBuilder = server.forGet(mockResponse.url);
-  } else if (mockResponse.requestMethod === 'POST') {
-    requestRuleBuilder = server.forPost(mockResponse.url);
-  } else if (mockResponse.requestMethod === 'PUT') {
-    requestRuleBuilder = server.forPut(mockResponse.url);
-  } else if (mockResponse.requestMethod === 'DELETE') {
-    requestRuleBuilder = server.forDelete(mockResponse.url);
-  }
-
-  if (!requestRuleBuilder) {
-    throw new Error(
-      `Unsupported request method: ${mockResponse.requestMethod}`,
-    );
-  }
-
-  return requestRuleBuilder
-    .asPriority(150)
-    .always()
-    .thenCallback(async (request) => {
-      if (delayMs > 0) {
-        await new Promise((resolve) => setTimeout(resolve, delayMs));
-      }
-
-      const { path, body } = request;
-      const [requestBodyJson, requestBodyText] = await Promise.all([
-        body.getJson().catch(() => undefined),
-        body.getText().catch(() => ''),
-      ]);
-      const requestBody = requestBodyJson ?? requestBodyText;
-
-      const json = (
-        mockResponse.response as (
-          requestBody: object | string | undefined,
-          path: string,
-          getE2ESrpIdentifierForPublicKey: (
-            publicKey: string,
-          ) => string | undefined,
-        ) => unknown
-      )(requestBody, path, () => 'MOCK_SRP_IDENTIFIER_1');
-
-      return {
-        statusCode: 200,
-        json,
-      };
-    });
-}
-
-const MOCK_JWT =
-  'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0ZXN0IiwiaWF0IjoxNzA2MTEzMDYyLCJleHAiOjE5NjkxODUwNjN9.dGVzdA';
-const MOCK_ACCESS_TOKEN =
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0ZXN0IiwiaWF0IjoxNTE2MjM5MDIyfQ.dGVzdA';
-
 /**
  * Hostname/URL patterns that must be intercepted in pass-through mode.
  * Standard mockttp rules don't reliably catch all proxied requests in MV3
@@ -179,30 +91,7 @@ const INTERCEPTED_PATTERNS: {
     match: (url) => url.includes('chainid.network/chains.json'),
     response: { statusCode: 200, json: chainsList },
   },
-  {
-    match: (url) => url.includes('subscription') && url.includes('eligibility'),
-    response: {
-      statusCode: 200,
-      json: [
-        {
-          canSubscribe: true,
-          canViewEntryModal: true,
-          minBalanceUSD: 1000,
-          product: 'shield',
-        },
-      ],
-    },
-  },
-  {
-    match: (url) =>
-      /subscription\.(dev-)?api\.cx\.metamask\.io\/v1\/subscriptions$/u.test(
-        url,
-      ),
-    response: {
-      statusCode: 200,
-      json: { subscriptions: [], trialedProducts: [] },
-    },
-  },
+
   {
     match: (url) => url.includes('bitcoin-mainnet.infura.io'),
     response: { statusCode: 200, json: [] },
@@ -211,93 +100,7 @@ const INTERCEPTED_PATTERNS: {
     match: (url) => url.includes('tron-mainnet.infura.io'),
     response: { statusCode: 200, json: {} },
   },
-  /* eslint-disable @typescript-eslint/naming-convention */
-  {
-    match: (url) =>
-      url.includes('authentication.api.cx.metamask.io') &&
-      url.includes('/nonce'),
-    response: {
-      statusCode: 200,
-      json: {
-        nonce: 'mock-nonce-for-benchmark',
-        identifier: '0x0000000000000000000000000000000000000000',
-        expires_in: 300,
-      },
-    },
-  },
-  {
-    match: (url, method) =>
-      url.includes('authentication.api.cx.metamask.io') &&
-      url.includes('/srp/login') &&
-      method === 'POST',
-    response: {
-      statusCode: 200,
-      json: {
-        token: MOCK_JWT,
-        expires_in: 3600,
-        profile: {
-          profile_id: 'mock-profile-id',
-          metametrics_id: 'mock-metametrics-id',
-          identifier_id: 'mock-identifier-id',
-          identifier_type: 'SRP',
-          encrypted_storage_key: 'mock-storage-key',
-        },
-      },
-    },
-  },
-  {
-    match: (url) => url.includes('oidc.api.cx.metamask.io'),
-    response: {
-      statusCode: 200,
-      json: {
-        access_token: MOCK_ACCESS_TOKEN,
-        expires_in: 3600,
-      },
-    },
-  },
-  {
-    match: (url) =>
-      url.includes('authentication.api.cx.metamask.io') &&
-      url.includes('/profile/lineage'),
-    response: {
-      statusCode: 200,
-      json: {
-        lineage: [
-          {
-            agent: 'extension',
-            metametrics_id: 'mock-metametrics-id',
-            created_at: '2024-01-01',
-            updated_at: '2024-01-01',
-          },
-        ],
-      },
-    },
-  },
-  /* eslint-enable @typescript-eslint/naming-convention */
-  {
-    match: (url) =>
-      url.includes('authentication.api.cx.metamask.io') &&
-      url.includes('/profile/accounts'),
-    response: { statusCode: 200, json: [] },
-  },
-  {
-    match: (url) => url.includes('authentication.api.cx.metamask.io'),
-    response: { statusCode: 200, json: {} },
-  },
-  {
-    match: (url, method) =>
-      url.includes('user-storage.api.cx.metamask.io') &&
-      (method === 'PUT' || method === 'DELETE'),
-    response: { statusCode: 204 },
-  },
-  {
-    match: (url) => url.includes('user-storage.api.cx.metamask.io'),
-    response: { statusCode: 200, json: null },
-  },
-  {
-    match: (url) => url.includes('accounts.api.cx.metamask.io'),
-    response: { statusCode: 200, json: [] },
-  },
+
   {
     match: (url) =>
       url.includes('acl.execution.metamask.io') &&
@@ -357,41 +160,6 @@ export function getCommonMocks(server: Mockttp): Promise<MockedEndpoint>[] {
         return { statusCode: 200, json: { success: true } };
       }),
     server
-      .forPost(/^https:\/\/api\.segment\.io\/v1\//u)
-      .always()
-      .thenCallback(() => {
-        return { statusCode: 200 };
-      }),
-    server
-      .forGet(
-        /^https:\/\/subscription\.(dev-)?api\.cx\.metamask\.io\/v1\/subscriptions\/eligibility/u,
-      )
-      .always()
-      .thenCallback(() => {
-        return {
-          statusCode: 200,
-          json: [
-            {
-              canSubscribe: true,
-              canViewEntryModal: true,
-              minBalanceUSD: 1000,
-              product: 'shield',
-            },
-          ],
-        };
-      }),
-    server
-      .forGet(
-        /^https:\/\/subscription\.(dev-)?api\.cx\.metamask\.io\/v1\/subscriptions$/u,
-      )
-      .always()
-      .thenCallback(() => {
-        return {
-          statusCode: 200,
-          json: { subscriptions: [], trialedProducts: [] },
-        };
-      }),
-    server
       .forAnyRequest()
       .forHost('bitcoin-mainnet.infura.io')
       .always()
@@ -404,123 +172,6 @@ export function getCommonMocks(server: Mockttp): Promise<MockedEndpoint>[] {
       .always()
       .thenCallback(() => {
         return { statusCode: 200, json: {} };
-      }),
-    /* eslint-disable @typescript-eslint/naming-convention */
-    server
-      .forGet(
-        /^https:\/\/authentication\.api\.cx\.metamask\.io\/api\/v2\/nonce/u,
-      )
-      .always()
-      .thenCallback(() => {
-        return {
-          statusCode: 200,
-          json: {
-            nonce: 'mock-nonce-for-benchmark',
-            identifier: '0x0000000000000000000000000000000000000000',
-            expires_in: 300,
-          },
-        };
-      }),
-    server
-      .forPost(
-        /^https:\/\/authentication\.api\.cx\.metamask\.io\/api\/v2\/srp\/login/u,
-      )
-      .always()
-      .thenCallback(() => {
-        return {
-          statusCode: 200,
-          json: {
-            token: MOCK_JWT,
-            expires_in: 3600,
-            profile: {
-              profile_id: 'mock-profile-id',
-              metametrics_id: 'mock-metametrics-id',
-              identifier_id: 'mock-identifier-id',
-              identifier_type: 'SRP',
-              encrypted_storage_key: 'mock-storage-key',
-            },
-          },
-        };
-      }),
-    server
-      .forPost(/^https:\/\/oidc\.api\.cx\.metamask\.io\/oauth2\/token/u)
-      .always()
-      .thenCallback(() => {
-        return {
-          statusCode: 200,
-          json: {
-            access_token: MOCK_ACCESS_TOKEN,
-            expires_in: 3600,
-          },
-        };
-      }),
-    server
-      .forGet(
-        /^https:\/\/authentication\.api\.cx\.metamask\.io\/api\/v2\/profile\/lineage/u,
-      )
-      .always()
-      .thenCallback(() => {
-        return {
-          statusCode: 200,
-          json: {
-            lineage: [
-              {
-                agent: 'extension',
-                metametrics_id: 'mock-metametrics-id',
-                created_at: '2024-01-01',
-                updated_at: '2024-01-01',
-              },
-            ],
-          },
-        };
-      }),
-    /* eslint-enable @typescript-eslint/naming-convention */
-    server
-      .forGet(
-        /^https:\/\/authentication\.api\.cx\.metamask\.io\/api\/v2\/profile\/accounts/u,
-      )
-      .always()
-      .thenCallback(() => {
-        return { statusCode: 200, json: [] };
-      }),
-    server
-      .forAnyRequest()
-      .forHost('authentication.api.cx.metamask.io')
-      .always()
-      .thenCallback(() => {
-        return { statusCode: 200, json: {} };
-      }),
-    server
-      .forGet(/^https:\/\/user-storage\.api\.cx\.metamask\.io/u)
-      .always()
-      .thenCallback(() => {
-        return { statusCode: 200, json: null };
-      }),
-    server
-      .forPut(/^https:\/\/user-storage\.api\.cx\.metamask\.io/u)
-      .always()
-      .thenCallback(() => {
-        return { statusCode: 204 };
-      }),
-    server
-      .forDelete(/^https:\/\/user-storage\.api\.cx\.metamask\.io/u)
-      .always()
-      .thenCallback(() => {
-        return { statusCode: 204 };
-      }),
-    server
-      .forAnyRequest()
-      .forHost('user-storage.api.cx.metamask.io')
-      .always()
-      .thenCallback(() => {
-        return { statusCode: 200, json: null };
-      }),
-    server
-      .forAnyRequest()
-      .forHost('accounts.api.cx.metamask.io')
-      .always()
-      .thenCallback(() => {
-        return { statusCode: 200, json: [] };
       }),
     server
       .forGet('https://acl.execution.metamask.io/latest/registry.json')
@@ -611,58 +262,11 @@ export async function mockBenchmarkEndpoints(
   );
 
   endpoints.push(
-    await mockAuthAPICall(server, AuthMocks.getMockAuthNonceResponse(), 250),
-  );
-  endpoints.push(
-    await mockAuthAPICall(server, AuthMocks.getMockAuthLoginResponse(), 250),
-  );
-  endpoints.push(
-    await mockAuthAPICall(
-      server,
-      AuthMocks.getMockAuthAccessTokenResponse(),
-      300,
-    ),
-  );
-
-  endpoints.push(
-    await server
-      .forGet(/user-storage\.api\.cx\.metamask\.io/u)
-      .asPriority(MOCK_PRIORITIES.TEST_OVERRIDE)
-      .always()
-      .thenCallback(delayedResponse(500, { statusCode: 200, json: null })),
-  );
-
-  endpoints.push(
     await server
       .forPut(/user-storage\.api\.cx\.metamask\.io/u)
       .asPriority(MOCK_PRIORITIES.TEST_OVERRIDE)
       .always()
       .thenCallback(delayedResponse(500, { statusCode: 204, json: null })),
-  );
-
-  endpoints.push(
-    await server
-      .forGet(
-        /subscription\.(api|dev-api)\.cx\.metamask\.io\/v1\/subscriptions$/u,
-      )
-      .asPriority(MOCK_PRIORITIES.TEST_OVERRIDE)
-      .always()
-      .thenCallback(
-        delayedResponse(400, {
-          statusCode: 200,
-          json: { subscriptions: [], trialedProducts: [] },
-        }),
-      ),
-  );
-
-  endpoints.push(
-    await server
-      .forGet(
-        /subscription\.(api|dev-api)\.cx\.metamask\.io\/v1\/subscriptions\/eligibility/u,
-      )
-      .asPriority(MOCK_PRIORITIES.TEST_OVERRIDE)
-      .always()
-      .thenCallback(delayedResponse(400, SUBSCRIPTION_ELIGIBILITY)),
   );
 
   endpoints.push(
@@ -810,7 +414,7 @@ export async function mockBenchmarkEndpoints(
 
   endpoints.push(
     await server
-      .forGet(/tx-sentinel.*\.api\.cx\.metamask\.io/u)
+      .forGet(/tx-sentinel.*\.disabled\.1do\.local/u)
       .asPriority(MOCK_PRIORITIES.TEST_OVERRIDE)
       .always()
       .thenCallback(
@@ -1004,62 +608,10 @@ export async function mockBenchmarkEndpoints(
 
   endpoints.push(
     await server
-      .forGet(/getQuoteStream/u)
-      .asPriority(MOCK_PRIORITIES.TEST_OVERRIDE)
-      .always()
-      .thenCallback(
-        delayedCallback(2000, () => {
-          return {
-            statusCode: 200,
-            headers: { 'Content-Type': 'text/event-stream' },
-            body: buildSseResponseBody([swapQuoteEthUsdc]),
-          };
-        }),
-      ),
-  );
-
-  endpoints.push(
-    await server
-      .forGet(/getQuote(?!Stream)/u)
-      .asPriority(MOCK_PRIORITIES.TEST_OVERRIDE)
-      .always()
-      .thenCallback(
-        delayedCallback(2000, () => {
-          return { statusCode: 200, json: [quote] };
-        }),
-      ),
-  );
-
-  endpoints.push(
-    await server
-      .forGet(/bridge\.api\.cx\.metamask\.io/u)
-      .asPriority(50)
-      .always()
-      .thenCallback(delayedResponse(500, { statusCode: 200, json: [] })),
-  );
-
-  endpoints.push(
-    await server
-      .forGet(/bridge\.api\.cx\.metamask\.io\/featureFlags/u)
-      .asPriority(MOCK_PRIORITIES.TEST_OVERRIDE)
-      .always()
-      .thenCallback(delayedResponse(450, BRIDGE_FEATURE_FLAGS)),
-  );
-
-  endpoints.push(
-    await server
       .forGet(/client-config\.api\.cx\.metamask\.io\/v1\/flags/u)
       .asPriority(MOCK_PRIORITIES.TEST_OVERRIDE)
       .always()
       .thenCallback(delayedResponse(350, CLIENT_CONFIG_FLAGS)),
-  );
-
-  endpoints.push(
-    await server
-      .forPost(/https:\/\/security-alerts\.api\.cx\.metamask\.io/u)
-      .asPriority(MOCK_PRIORITIES.TEST_OVERRIDE)
-      .always()
-      .thenCallback(delayedResponse(400, SECURITY_ALERTS)),
   );
 
   endpoints.push(
@@ -1076,32 +628,6 @@ export async function mockBenchmarkEndpoints(
       .asPriority(MOCK_PRIORITIES.TEST_OVERRIDE)
       .always()
       .thenCallback(delayedResponse(600, GAS_PRICES)),
-  );
-
-  endpoints.push(
-    await server
-      .forGet(/\/topAssets/u)
-      .asPriority(MOCK_PRIORITIES.TEST_OVERRIDE)
-      .always()
-      .thenCallback(delayedResponse(400, TOP_ASSETS)),
-  );
-
-  endpoints.push(
-    await server
-      .forGet(/\/aggregatorMetadata/u)
-      .asPriority(MOCK_PRIORITIES.TEST_OVERRIDE)
-      .always()
-      .thenCallback(delayedResponse(500, AGGREGATOR_METADATA)),
-  );
-
-  endpoints.push(
-    await server
-      .forGet(/bridge\.api\.cx\.metamask\.io\/networks\/\d+\/tokens/u)
-      .asPriority(MOCK_PRIORITIES.TEST_OVERRIDE)
-      .always()
-      .thenCallback(
-        delayedResponse(300, { statusCode: 200, json: bridgeNetworkTokens }),
-      ),
   );
 
   return endpoints;

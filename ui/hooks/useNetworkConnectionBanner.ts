@@ -16,7 +16,7 @@ import { getNetworkConfigurationsByChainId } from '../../shared/lib/selectors/ne
 import { onlyKeepHost } from '../../shared/lib/only-keep-host';
 import { submitRequestToBackground } from '../store/background-connection';
 import { NetworkConnectionBanner } from '../../shared/constants/app-state';
-import { setShowInfuraSwitchToast } from '../components/app/toast-master/utils';
+import { setShowDefaultRpcSwitchToast } from '../components/app/toast-master/utils';
 
 type UseNetworkConnectionBannerResult = NetworkConnectionBanner & {
   trackNetworkBannerEvent: (event: {
@@ -25,11 +25,11 @@ type UseNetworkConnectionBannerResult = NetworkConnectionBanner & {
     networkClientId: string;
   }) => void;
   /**
-   * Switch the default RPC endpoint to Infura for the current unavailable network.
-   * Only available when the network has an Infura endpoint to switch to.
+   * Switch the current unavailable network to its built-in default RPC endpoint.
+   * Only available when the network has a default endpoint to switch to.
    * Returns a promise that resolves when the switch is complete (or rejects on error).
    */
-  switchToInfura: () => Promise<void>;
+  switchToDefaultRpc: () => Promise<void>;
 };
 
 const DEGRADED_BANNER_TIMEOUT = 5 * 1000;
@@ -152,9 +152,10 @@ export const useNetworkConnectionBanner =
               networkName: firstUnavailableEvmNetwork.networkName,
               networkClientId: firstUnavailableEvmNetwork.networkClientId,
               chainId: firstUnavailableEvmNetwork.chainId,
-              isInfuraEndpoint: firstUnavailableEvmNetwork.isInfuraEndpoint,
-              infuraEndpointIndex:
-                firstUnavailableEvmNetwork.infuraEndpointIndex,
+              isDefaultRpcEndpoint:
+                firstUnavailableEvmNetwork.isDefaultRpcEndpoint,
+              defaultRpcEndpointIndex:
+                firstUnavailableEvmNetwork.defaultRpcEndpointIndex,
             }),
           );
         }
@@ -182,9 +183,10 @@ export const useNetworkConnectionBanner =
               networkName: firstUnavailableEvmNetwork.networkName,
               networkClientId: firstUnavailableEvmNetwork.networkClientId,
               chainId: firstUnavailableEvmNetwork.chainId,
-              isInfuraEndpoint: firstUnavailableEvmNetwork.isInfuraEndpoint,
-              infuraEndpointIndex:
-                firstUnavailableEvmNetwork.infuraEndpointIndex,
+              isDefaultRpcEndpoint:
+                firstUnavailableEvmNetwork.isDefaultRpcEndpoint,
+              defaultRpcEndpointIndex:
+                firstUnavailableEvmNetwork.defaultRpcEndpointIndex,
             }),
           );
 
@@ -240,7 +242,7 @@ export const useNetworkConnectionBanner =
       startUnavailableTimer,
     ]);
 
-    const switchToInfura = useCallback(async () => {
+    const switchToDefaultRpc = useCallback(async () => {
       if (
         networkConnectionBannerState.status !== 'degraded' &&
         networkConnectionBannerState.status !== 'unavailable'
@@ -248,8 +250,8 @@ export const useNetworkConnectionBanner =
         return;
       }
 
-      const { chainId, infuraEndpointIndex } = networkConnectionBannerState;
-      if (infuraEndpointIndex === undefined) {
+      const { chainId, defaultRpcEndpointIndex } = networkConnectionBannerState;
+      if (defaultRpcEndpointIndex === undefined) {
         return;
       }
 
@@ -258,7 +260,7 @@ export const useNetworkConnectionBanner =
         return;
       }
 
-      // Update the network configuration to use the Infura endpoint as default
+      // Update the network configuration to use the built-in default endpoint.
       // Only show success toast if the update completes without error
       try {
         await dispatch(
@@ -271,12 +273,12 @@ export const useNetworkConnectionBanner =
               blockExplorerUrls: networkConfiguration.blockExplorerUrls,
               defaultBlockExplorerUrlIndex:
                 networkConfiguration.defaultBlockExplorerUrlIndex,
-              defaultRpcEndpointIndex: infuraEndpointIndex,
+              defaultRpcEndpointIndex,
             },
-            { replacementSelectedRpcEndpointIndex: infuraEndpointIndex },
+            { replacementSelectedRpcEndpointIndex: defaultRpcEndpointIndex },
           ),
         );
-        dispatch(setShowInfuraSwitchToast(true));
+        dispatch(setShowDefaultRpcSwitchToast(true));
       } catch {
         // Error is already handled by updateNetwork which shows a warning
         // Do not show success toast on failure
@@ -288,7 +290,7 @@ export const useNetworkConnectionBanner =
     ]);
 
     // When in degraded/unavailable status, use fresh selector data for network details
-    // to prevent stale "Switch to MetaMask default RPC" button after switching endpoints
+    // to prevent stale "Switch to 1do default RPC" button after switching endpoints
     if (
       (networkConnectionBannerState.status === 'degraded' ||
         networkConnectionBannerState.status === 'unavailable') &&
@@ -300,16 +302,17 @@ export const useNetworkConnectionBanner =
         networkClientId: firstUnavailableEvmNetwork.networkClientId,
         networkName: firstUnavailableEvmNetwork.networkName,
         chainId: firstUnavailableEvmNetwork.chainId,
-        isInfuraEndpoint: firstUnavailableEvmNetwork.isInfuraEndpoint,
-        infuraEndpointIndex: firstUnavailableEvmNetwork.infuraEndpointIndex,
+        isDefaultRpcEndpoint: firstUnavailableEvmNetwork.isDefaultRpcEndpoint,
+        defaultRpcEndpointIndex:
+          firstUnavailableEvmNetwork.defaultRpcEndpointIndex,
         trackNetworkBannerEvent,
-        switchToInfura,
+        switchToDefaultRpc,
       };
     }
 
     return {
       ...networkConnectionBannerState,
       trackNetworkBannerEvent,
-      switchToInfura,
+      switchToDefaultRpc,
     };
   };

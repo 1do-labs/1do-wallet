@@ -12,10 +12,6 @@ import {
   SmartTransactionsController,
   SmartTransactionStatuses,
 } from '@metamask/smart-transactions-controller';
-import {
-  TransactionPayControllerMessenger,
-  TransactionPayPublishHook,
-} from '@metamask/transaction-pay-controller';
 import { Hex } from '@metamask/utils';
 import { trace } from '../../../../shared/lib/trace';
 import { hasTransactionType } from '../../../../shared/lib/transactions.utils';
@@ -34,7 +30,6 @@ import {
 import { Delegation7702PublishHook } from '../../lib/transaction/hooks/delegation-7702-publish';
 import { EnforceSimulationHook } from '../../lib/transaction/hooks/enforce-simulation-hook';
 import {
-  handlePostTransactionBalanceUpdate,
   handleTransactionAdded,
   handleTransactionApproved,
   handleTransactionConfirmed,
@@ -55,12 +50,7 @@ import {
 } from '../types';
 
 const DISABLED_AUTOMATIC_GAS_FEE_UPDATE_TYPES = [
-  TransactionType.swap,
-  TransactionType.swapApproval,
-  TransactionType.bridge,
-  TransactionType.bridgeApproval,
   TransactionType.relayDeposit,
-  TransactionType.perpsRelayDeposit,
   TransactionType.predictRelayDeposit,
 ];
 
@@ -96,9 +86,12 @@ export const TransactionControllerInit: MessengerClientInitFunction<
   } = getControllers(request);
 
   const messengerClient: TransactionController = new TransactionController({
-    getCurrentNetworkEIP1559Compatibility: () =>
+    getCurrentNetworkEIP1559Compatibility: (networkClientId) =>
       // @ts-expect-error Controller type does not support undefined return value
-      initMessenger.call('NetworkController:getEIP1559Compatibility'),
+      initMessenger.call(
+        'NetworkController:getEIP1559Compatibility',
+        networkClientId,
+      ),
     getCurrentAccountEIP1559Compatibility: async () => true,
     // @ts-expect-error Mismatched types
     getExternalPendingTransactions: (address) =>
@@ -160,8 +153,7 @@ export const TransactionControllerInit: MessengerClientInitFunction<
         Boolean(isExternalSign)
       );
     },
-    isFirstTimeInteractionEnabled: () =>
-      preferencesController().state.securityAlertsEnabled,
+    isFirstTimeInteractionEnabled: () => false,
     isSimulationEnabled: () =>
       preferencesController().state.useTransactionSimulations,
     messenger: controllerMessenger,
@@ -308,13 +300,6 @@ function addTransactionControllerListeners(
   const transactionMetricsRequest = getTransactionMetricsRequest();
 
   initMessenger.subscribe(
-    'TransactionController:postTransactionBalanceUpdated',
-    // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31879
-    // eslint-disable-next-line @typescript-eslint/no-misused-promises
-    handlePostTransactionBalanceUpdate.bind(null, transactionMetricsRequest),
-  );
-
-  initMessenger.subscribe(
     'TransactionController:unapprovedTransactionAdded',
     // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31879
     // eslint-disable-next-line @typescript-eslint/no-misused-promises
@@ -403,18 +388,6 @@ export async function publishHook({
 
   if (isUpgradeOnly7702Transaction) {
     return { transactionHash: undefined };
-  }
-
-  const payResult = isMetaMaskGaslessEnabled
-    ? await new TransactionPayPublishHook({
-        isSmartTransaction: () => isSmartTransaction,
-        messenger:
-          initMessenger as unknown as TransactionPayControllerMessenger,
-      }).getHook()(transactionMeta, signedTx as Hex)
-    : undefined;
-
-  if (payResult?.transactionHash) {
-    return payResult;
   }
 
   const { isExternalSign } = transactionMeta;

@@ -101,16 +101,6 @@ export type PreferencesControllerSetOpenSeaEnabledAction = {
 };
 
 /**
- * Setter for the `securityAlertsEnabled` property
- *
- * @param securityAlertsEnabled - Whether or not the user prefers to use the security alerts.
- */
-export type PreferencesControllerSetSecurityAlertsEnabledAction = {
-  type: `PreferencesController:setSecurityAlertsEnabled`;
-  handler: PreferencesController['setSecurityAlertsEnabled'];
-};
-
-/**
  * Setter for the `useExternalNameSources` property
  *
  * @param useExternalNameSources - Whether or not to use external name providers in the name controller.

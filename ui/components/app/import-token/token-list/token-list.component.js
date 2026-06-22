@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'clsx';
-import { isNonEvmChainId } from '@metamask/bridge-controller';
+import { isNonEvmChainId } from '../../../../../shared/lib/chain-utils';
 import { checkExistingAllTokens } from '../../../../helpers/utils/util';
 import {
   Box,

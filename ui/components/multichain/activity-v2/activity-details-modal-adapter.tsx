@@ -39,8 +39,6 @@ function buildSyntheticTransactionGroup(
   const effectiveType = isIncoming
     ? TransactionType.incoming
     : resolveTransactionType(transaction);
-  // Enrich with sourceToken/destinationToken fields that the legacy
-  // bridge/swap display code reads from initialTransaction
   const fromAmount = transaction.amounts?.from;
   const toAmount = transaction.amounts?.to;
   const sourceTokenSymbol =
@@ -118,13 +116,7 @@ const TransactionDetailsWrapper = ({
 
   const { primaryCurrency, recipientAddress } = displayData;
 
-  let resolvedPrimaryCurrency = primaryCurrency;
-  if (effectiveType === TransactionType.swap && transaction.amounts?.from) {
-    const { token, amount } = transaction.amounts.from;
-    const abs = amount < 0n ? -amount : amount;
-    const formatted = formatUnits(abs, token.decimals);
-    resolvedPrimaryCurrency = `-${formatted} ${token.symbol}`;
-  }
+  const resolvedPrimaryCurrency = primaryCurrency;
 
   const senderAddress = transaction.txParams?.from ?? '';
   const displayedStatusKey = getStatusKey(

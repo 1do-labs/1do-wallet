@@ -19,13 +19,11 @@
     "app/scripts/lib/migrator/index.test.js": {
       "MetaMask: Migration skipped warnings": 2,
       "MetaMask: Migration state warnings": 1,
-      "error: Error: Migration #157: No INFURA_PROJECT_ID": 1,
       "error: Error: Migration 184: NetworkController missing": 1,
       "error: Error: Migration 186: Invalid NetworkController": 1,
       "error: Error: Migration 189: Invalid NetworkController": 1,
       "error: Error: Migration 193: SnapController not": 1,
       "error: Error: Migration 197: Invalid NetworkController": 1,
-      "error: Error: No INFURA_PROJECT_ID set!": 1,
       "warn: Migration 139: typeof state.SelectedNetworkController is": 1,
       "warn: Migration 183.1: currencyRates not found": 1,
       "warn: Migration 186: Missing or invalid": 1,
@@ -98,18 +96,6 @@
     "app/scripts/migrations/156.test.ts": {
       "warn: newState.NftController must be present": 1
     },
-    "app/scripts/migrations/157.test.ts": {
-      "error: Error: Expected state.NetworkController to be": 1,
-      "error: Error: Expected state.NetworkController.networkConfiguration...": 1,
-      "error: Error: Migration #157: Expected state.NetworkController": 1,
-      "error: Error: Migration #157: Expected state.NetworkController.netw...": 1,
-      "error: Error: Migration #157: Missing NetworkController": 1,
-      "error: Error: Migration #157: Missing state.NetworkController.netwo...": 1,
-      "error: Error: Migration #157: No INFURA_PROJECT_ID": 1,
-      "error: Error: Missing NetworkController state": 1,
-      "error: Error: Missing state.NetworkController.networkConfigurations...": 1,
-      "error: Error: No INFURA_PROJECT_ID set!": 1
-    },
     "app/scripts/migrations/163.test.ts": {
       "MetaMask: Migration state warnings": 2
     },
@@ -159,13 +145,6 @@
     "app/scripts/migrations/196.test.ts": {
       "error: Error: Migration 196: NetworkEnablementController is": 1,
       "error: Error: Migration 196: NetworkEnablementController.nativeAsse...": 1
-    },
-    "app/scripts/migrations/197.test.ts": {
-      "error: Error: Migration 197: Infura project": 1,
-      "error: Error: Migration 197: Invalid NetworkController": 6
-    },
-    "shared/lib/bridge-utils/security-alerts-api.util.test.ts": {
-      "warn: Missing token alert translation for": 1
     },
     "shared/lib/contract-utils.test.js": {
       "Third-party: Bindings failed, using pure JS": 1,
@@ -252,9 +231,6 @@
     "ui/components/app/modals/identity/turn-on-backup-and-sync-modal/turn-on-backup-and-sync-modal.test.tsx": {
       "error: Error: MetaMetrics context trackEvent was": 2
     },
-    "ui/components/app/modals/turn-on-metamask-notifications/turn-on-metamask-notifications.test.tsx": {
-      "Reselect: Input stability warnings": 2
-    },
     "ui/components/app/modals/visit-support-data-consent-modal/visit-support-data.test.tsx": {
       "React: Act warnings (component updates not wrapped)": 4
     },
@@ -263,21 +239,6 @@
     },
     "ui/components/app/name/name-details/name-details.test.tsx": {
       "React: Act warnings (component updates not wrapped)": 12
-    },
-    "ui/components/app/perps/cancel-order/cancel-order-modal.test.tsx": {
-      "React: Act warnings (component updates not wrapped)": 16
-    },
-    "ui/components/app/perps/close-position/close-position-modal.test.tsx": {
-      "React: Act warnings (component updates not wrapped)": 4
-    },
-    "ui/components/app/perps/order-entry/components/auto-close-section/auto-close-section.test.tsx": {
-      "React: componentWill* lifecycle deprecations": 1
-    },
-    "ui/components/app/perps/order-entry/order-entry.test.tsx": {
-      "React: componentWill* lifecycle deprecations": 1
-    },
-    "ui/components/app/perps/perps-tutorial-modal/PerpsTutorialModal.test.tsx": {
-      "MetaMask: Background connection not initialized": 4
     },
     "ui/components/app/qr-hardware-popover/base-reader.test.js": {
       "React: Component update warnings": 1
@@ -533,21 +494,7 @@
     "ui/contexts/metametrics.test.tsx": {
       "warn: ⚠️ React Router Future Flag": 1
     },
-    "ui/ducks/bridge/asset-selectors.test.ts": {
-      "Reselect: Input stability warnings": 1
-    },
-    "ui/ducks/bridge/selectors.test.ts": {
-      "Reselect: Identity function warnings": 1
-    },
     "ui/helpers/utils/tags.test.ts": {
-      "Reselect: Input stability warnings": 1
-    },
-    "ui/hooks/bridge/usePopularTokens.test.ts": {
-      "React: Act warnings (component updates not wrapped)": 16,
-      "Reselect: Input stability warnings": 1
-    },
-    "ui/hooks/bridge/useTokenSearchResults.test.ts": {
-      "React: Act warnings (component updates not wrapped)": 2,
       "Reselect: Input stability warnings": 1
     },
     "ui/hooks/gator-permissions/useGatorPermissionTokenInfo.test.tsx": {
@@ -629,7 +576,6 @@
       "error: React Router caught the following": 4
     },
     "ui/hooks/useTransactionDisplayData.test.js": {
-      "MetaMask: XChain Swaps warnings": 4,
       "Reselect: Identity function warnings": 1
     },
     "ui/hooks/useTrustSignals.test.ts": {
@@ -638,48 +584,6 @@
     "ui/pages/asset/components/asset-page.test.tsx": {
       "React: DOM nesting violations": 2,
       "Reselect: Identity function warnings": 2
-    },
-    "ui/pages/bridge/hooks/useEnableMissingNetwork.test.ts": {
-      "MetaMask: Background connection not initialized": 1
-    },
-    "ui/pages/bridge/hooks/useSubmitBridgeTransaction.test.tsx": {
-      "Reselect: Identity function warnings": 1,
-      "Reselect: Input stability warnings": 1
-    },
-    "ui/pages/bridge/index.test.tsx": {
-      "React: Act warnings (component updates not wrapped)": 4,
-      "Reselect: Identity function warnings": 1,
-      "Reselect: Input stability warnings": 1
-    },
-    "ui/pages/bridge/prepare/bridge-cta-button.test.tsx": {
-      "Reselect: Identity function warnings": 1
-    },
-    "ui/pages/bridge/prepare/bridge-input-group.test.tsx": {
-      "Reselect: Input stability warnings": 1
-    },
-    "ui/pages/bridge/prepare/bridge-transaction-settings-modal.test.tsx": {
-      "Reselect: Identity function warnings": 1,
-      "Reselect: Input stability warnings": 1
-    },
-    "ui/pages/bridge/prepare/components/destination-account-picker-modal.test.tsx": {
-      "Reselect: Input stability warnings": 1
-    },
-    "ui/pages/bridge/prepare/prepare-bridge-page-ensure-network.test.tsx": {
-      "Reselect: Identity function warnings": 1,
-      "Third-party: Bindings failed, using pure JS": 1,
-      "µWebSockets: Compatibility warnings": 1,
-      "µWebSockets: Fallback to Node implementation": 1
-    },
-    "ui/pages/bridge/prepare/prepare-bridge-page.test.tsx": {
-      "Reselect: Identity function warnings": 1,
-      "Reselect: Input stability warnings": 1,
-      "Third-party: Bindings failed, using pure JS": 1,
-      "error: Warning: A component is changing": 2,
-      "µWebSockets: Compatibility warnings": 1,
-      "µWebSockets: Fallback to Node implementation": 1
-    },
-    "ui/pages/bridge/quotes/multichain-bridge-quote-card.test.tsx": {
-      "Reselect: Identity function warnings": 1
     },
     "ui/pages/confirm-decrypt-message/confirm-decrypt-message.component.test.js": {
       "React: Act warnings (component updates not wrapped)": 16
@@ -696,9 +600,6 @@
     },
     "ui/pages/confirmations/components/activity/transaction-details/transaction-details.test.tsx": {
       "warn: No tokens found for chainId:": 1
-    },
-    "ui/pages/confirmations/components/confirm/blockaid-loading-indicator/blockaid-loading-indicator.test.tsx": {
-      "Reselect: Identity function warnings": 3
     },
     "ui/pages/confirmations/components/confirm/footer/footer.test.tsx": {
       "Reselect: Identity function warnings": 3
@@ -1016,22 +917,7 @@
     "ui/pages/confirmations/components/rows/account-flow-row/account-flow-row.test.tsx": {
       "Reselect: Identity function warnings": 3
     },
-    "ui/pages/confirmations/components/rows/bridge-fee-row/bridge-fee-row.test.tsx": {
-      "Reselect: Identity function warnings": 3
-    },
     "ui/pages/confirmations/components/rows/enforced-simulations-row/enforced-simulations-row.test.tsx": {
-      "Reselect: Identity function warnings": 3
-    },
-    "ui/pages/confirmations/components/rows/pay-with-row/pay-with-row.test.tsx": {
-      "warn: ⚠️ React Router Future Flag": 2
-    },
-    "ui/pages/confirmations/components/rows/required-tokens-row/required-tokens-row.test.tsx": {
-      "Reselect: Identity function warnings": 3
-    },
-    "ui/pages/confirmations/components/rows/total-row/total-row.test.tsx": {
-      "Reselect: Identity function warnings": 3
-    },
-    "ui/pages/confirmations/components/rows/transaction-pay-section/transaction-pay-section.test.tsx": {
       "Reselect: Identity function warnings": 3
     },
     "ui/pages/confirmations/components/send/amount-recipient/amount-recipient.test.tsx": {
@@ -1061,9 +947,6 @@
     },
     "ui/pages/confirmations/components/transactions/nested-transaction-tag/nested-transaction-tag.test.tsx": {
       "Reselect: Identity function warnings": 3
-    },
-    "ui/pages/confirmations/components/transactions/quote-swap-simulation-details/quote-swap-simulation-details.test.tsx": {
-      "Reselect: Identity function warnings": 4
     },
     "ui/pages/confirmations/confirm/confirm.test.tsx": {
       "MetaMask: Background connection not initialized": 235,
@@ -1113,16 +996,10 @@
       "MetaMask: Background connection not initialized": 90,
       "Reselect: Identity function warnings": 3
     },
-    "ui/pages/confirmations/hooks/alerts/transactions/useInsufficientPayTokenBalanceAlert.test.ts": {
-      "Reselect: Identity function warnings": 3
-    },
     "ui/pages/confirmations/hooks/alerts/transactions/useMultipleApprovalsAlerts.test.ts": {
       "Reselect: Identity function warnings": 3
     },
     "ui/pages/confirmations/hooks/alerts/transactions/useNoGasPriceAlerts.test.ts": {
-      "Reselect: Identity function warnings": 3
-    },
-    "ui/pages/confirmations/hooks/alerts/transactions/useNoPayTokenQuotesAlert.test.ts": {
       "Reselect: Identity function warnings": 3
     },
     "ui/pages/confirmations/hooks/alerts/transactions/useNonContractAddressAlerts.test.ts": {
@@ -1145,12 +1022,6 @@
     },
     "ui/pages/confirmations/hooks/alerts/transactions/useTokenContractAlert.test.ts": {
       "React: Act warnings (component updates not wrapped)": 7,
-      "Reselect: Identity function warnings": 3
-    },
-    "ui/pages/confirmations/hooks/alerts/useAddressTrustSignalAlerts.test.ts": {
-      "Reselect: Identity function warnings": 3
-    },
-    "ui/pages/confirmations/hooks/alerts/useBlockaidAlerts.test.ts": {
       "Reselect: Identity function warnings": 3
     },
     "ui/pages/confirmations/hooks/alerts/useConfirmationOriginAlerts.test.ts": {
@@ -1368,15 +1239,6 @@
     "ui/pages/permissions-connect/connect-page/connect-page.test.tsx": {
       "React: DOM nesting violations": 3
     },
-    "ui/pages/perps/perps-market-detail-page.test.tsx": {
-      "React: Act warnings (component updates not wrapped)": 9
-    },
-    "ui/pages/perps/perps-order-entry-page.test.tsx": {
-      "React: componentWill* lifecycle deprecations": 1
-    },
-    "ui/pages/perps/perps-withdraw-page.test.tsx": {
-      "React: Act warnings (component updates not wrapped)": 15
-    },
     "ui/pages/routes/routes.component.test.js": {
       "React: Act warnings (component updates not wrapped)": 10,
       "React: PropTypes validation failures": 1,
@@ -1476,26 +1338,6 @@
       "React: PropTypes validation failures": 3,
       "React: componentWill* lifecycle deprecations": 1,
       "Reselect: Input stability warnings": 1
-    },
-    "ui/pages/swaps/awaiting-signatures/awaiting-signatures.test.js": {
-      "Reselect: Identity function warnings": 1
-    },
-    "ui/pages/swaps/awaiting-swap/awaiting-swap.test.js": {
-      "React: PropTypes validation failures": 1,
-      "Reselect: Identity function warnings": 1
-    },
-    "ui/pages/swaps/loading-swaps-quotes/loading-swaps-quotes.test.js": {
-      "Reselect: Identity function warnings": 1
-    },
-    "ui/pages/swaps/notification-page/notification-page.test.js": {
-      "React: PropTypes validation failures": 1
-    },
-    "ui/pages/swaps/selected-token/selected-token.test.js": {
-      "React: PropTypes validation failures": 1
-    },
-    "ui/pages/swaps/smart-transaction-status/smart-transaction-status.test.js": {
-      "React: Act warnings (component updates not wrapped)": 1,
-      "Reselect: Identity function warnings": 1
     },
     "ui/pages/trust-signals/hooks/useTrustSignalMetrics.test.ts": {
       "Reselect: Identity function warnings": 3

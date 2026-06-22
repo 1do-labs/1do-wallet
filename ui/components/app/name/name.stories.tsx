@@ -5,21 +5,12 @@ import { Provider } from 'react-redux';
 import configureStore from '../../../store/store';
 import Name, { NameProps } from './name';
 import mockState from '../../../../test/data/mock-state.json';
-import {
-  EXPERIENCES_TYPE,
-  FIRST_PARTY_CONTRACT_NAMES,
-} from '../../../../shared/constants/first-party-contracts';
 import { cloneDeep } from 'lodash';
 
 const ADDRESS_MOCK = '0xc0ffee254729296a45a3885639ac7e10f9d54978';
 const ADDRESS_NFT_MOCK = '0xc0ffee254729296a45a3885639ac7e10f9d54979';
 const VARIATION_MOCK = '0x1';
 const NAME_MOCK = 'Saved Name';
-
-const ADDRESS_FIRST_PARTY_MOCK =
-  FIRST_PARTY_CONTRACT_NAMES[EXPERIENCES_TYPE.METAMASK_BRIDGE][
-    VARIATION_MOCK
-  ].toLowerCase();
 
 const PROPOSED_NAMES_MOCK = {
   ens: {
@@ -58,11 +49,6 @@ const STATE_MOCK = {
           },
         },
         [ADDRESS_NFT_MOCK]: {
-          [VARIATION_MOCK]: {
-            proposedNames: PROPOSED_NAMES_MOCK,
-          },
-        },
-        [ADDRESS_FIRST_PARTY_MOCK]: {
           [VARIATION_MOCK]: {
             proposedNames: PROPOSED_NAMES_MOCK,
           },

@@ -5,8 +5,7 @@ import { WebSocket, WebSocketServer } from 'ws';
  * A local WebSocket server for e2e tests.
  *
  * Each instance manages its own port, connections, and lifecycle.
- * Instances are created by the WebSocketRegistry — one per service
- * (AccountActivity, Perps, etc.).
+ * Instances are created by the WebSocketRegistry, one per service.
  */
 class LocalWebSocketServer {
   private readonly name: string;

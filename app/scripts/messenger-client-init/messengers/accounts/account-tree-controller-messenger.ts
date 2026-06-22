@@ -18,6 +18,10 @@ import type { AccountTreeControllerMessenger as AccountTreeControllerMessengerTy
 import { MetaMetricsControllerTrackEventAction } from '../../../controllers/metametrics-controller-method-action-types';
 import { RootMessenger } from '../../../lib/messenger';
 import { AccountOrderControllerGetStateAction } from '../../../controllers/account-order';
+import {
+  UserStorageControllerGetStateAction,
+  UserStorageControllerStateChangeEvent,
+} from '../../../lib/no-remote-user-storage';
 
 type Actions =
   | AccountsControllerGetAccountAction
@@ -26,13 +30,15 @@ type Actions =
   | AccountsControllerListMultichainAccountsAction
   | KeyringControllerGetStateAction
   | MultichainAccountServiceCreateMultichainAccountGroupAction
-  | MultichainAccountServiceCreateMultichainAccountGroupsAction;
+  | MultichainAccountServiceCreateMultichainAccountGroupsAction
+  | UserStorageControllerGetStateAction;
 
 type Events =
   | AccountsControllerAccountsAddedEvent
   | AccountsControllerAccountsRemovedEvent
   | AccountsControllerSelectedAccountChangeEvent
-  | MultichainAccountServiceWalletStatusChangeEvent;
+  | MultichainAccountServiceWalletStatusChangeEvent
+  | UserStorageControllerStateChangeEvent;
 
 export type AccountTreeControllerMessenger = AccountTreeControllerMessengerType;
 
@@ -61,6 +67,7 @@ export function getAccountTreeControllerMessenger(
       'AccountsController:accountsAdded',
       'AccountsController:accountsRemoved',
       'AccountsController:selectedAccountChange',
+      'UserStorageController:stateChange',
       'MultichainAccountService:walletStatusChange',
     ],
     actions: [
@@ -71,6 +78,7 @@ export function getAccountTreeControllerMessenger(
       'MultichainAccountService:createMultichainAccountGroup',
       'MultichainAccountService:createMultichainAccountGroups',
       'KeyringController:getState',
+      'UserStorageController:getState',
     ],
   });
   return accountTreeControllerMessenger as unknown as AccountTreeControllerMessengerType;

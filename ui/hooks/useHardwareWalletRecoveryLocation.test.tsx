@@ -7,10 +7,7 @@ import {
   Route,
   Routes,
 } from 'react-router-dom';
-import {
-  type TransactionMeta,
-  TransactionType,
-} from '@metamask/transaction-controller';
+import { type TransactionMeta } from '@metamask/transaction-controller';
 import configureStore from '../store/store';
 import {
   getMockContractInteractionConfirmState,
@@ -22,7 +19,6 @@ import { MetaMetricsHardwareWalletRecoveryLocation } from '../../shared/constant
 import {
   CONFIRMATION_V_NEXT_ROUTE,
   CONFIRM_TRANSACTION_ROUTE,
-  CROSS_CHAIN_SWAP_ROUTE,
   SIGNATURE_REQUEST_PATH,
 } from '../helpers/constants/routes';
 import { useHardwareWalletRecoveryLocation } from './useHardwareWalletRecoveryLocation';
@@ -64,30 +60,6 @@ function createHookWrapper(
 }
 
 describe('useHardwareWalletRecoveryLocation', () => {
-  it('returns Swaps for cross-chain route', () => {
-    const store = configureStore(getMockContractInteractionConfirmState());
-    const { result } = renderHook(() => useHardwareWalletRecoveryLocation(), {
-      wrapper: createHookWrapper(
-        store,
-        `${CROSS_CHAIN_SWAP_ROUTE}/prepare`,
-        `${CROSS_CHAIN_SWAP_ROUTE}/*`,
-      ),
-    });
-    expect(result.current).toBe(
-      MetaMetricsHardwareWalletRecoveryLocation.Swaps,
-    );
-  });
-
-  it('returns Swaps when pathname includes /swaps/', () => {
-    const store = configureStore(getMockContractInteractionConfirmState());
-    const { result } = renderHook(() => useHardwareWalletRecoveryLocation(), {
-      wrapper: createHookWrapper(store, '/foo/swaps/bar', '*'),
-    });
-    expect(result.current).toBe(
-      MetaMetricsHardwareWalletRecoveryLocation.Swaps,
-    );
-  });
-
   it('returns Message for signature request path', () => {
     const path = `/dapp${SIGNATURE_REQUEST_PATH}/1`;
     const store = configureStore(getMockContractInteractionConfirmState());
@@ -116,35 +88,6 @@ describe('useHardwareWalletRecoveryLocation', () => {
     expect(result.current).toBe(
       MetaMetricsHardwareWalletRecoveryLocation.Message,
     );
-  });
-
-  const swapFlowTypes = [
-    TransactionType.swap,
-    TransactionType.swapApproval,
-    TransactionType.bridge,
-  ] as const;
-  swapFlowTypes.forEach((txType) => {
-    it(`returns Swaps on confirm route when transaction type is ${txType}`, () => {
-      const base = getMockContractInteractionConfirmState();
-      const tx = getFirstTransactionMeta(base);
-      const store = configureStore({
-        ...base,
-        metamask: {
-          ...base.metamask,
-          transactions: [{ ...tx, type: txType }],
-        },
-      });
-      const { result } = renderHook(() => useHardwareWalletRecoveryLocation(), {
-        wrapper: createHookWrapper(
-          store,
-          `${CONFIRM_TRANSACTION_ROUTE}/${tx.id}`,
-          `${CONFIRM_TRANSACTION_ROUTE}/:id/*`,
-        ),
-      });
-      expect(result.current).toBe(
-        MetaMetricsHardwareWalletRecoveryLocation.Swaps,
-      );
-    });
   });
 
   it('returns Send on confirm route for non-swap transaction', () => {

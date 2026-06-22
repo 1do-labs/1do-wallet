@@ -59,7 +59,7 @@ exports[`UpdateModal renders correctly with required props 1`] = `
             >
               <img
                 height="160"
-                src="/images/logo/metamask-fox.svg"
+                src="/images/logo/1do-mark.svg"
                 width="160"
               />
             </div>

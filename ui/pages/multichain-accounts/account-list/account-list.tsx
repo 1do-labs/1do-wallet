@@ -83,10 +83,6 @@ export const AccountList = () => {
   // This ensures all account balances are visible without requiring user interaction
   useAssetsUpdateAllAccountBalances();
 
-  // Sync SRPs for social login flow
-  // TODO: Move this logic on the background side, so we don't trigger this sync
-  // every time the account list is being opened.
-  // See: https://github.com/MetaMask/metamask-extension/issues/36639
   const hasMultipleWallets = useMemo(
     () => Object.keys(wallets).length > 1,
     [wallets],

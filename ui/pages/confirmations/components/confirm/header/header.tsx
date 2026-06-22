@@ -18,13 +18,10 @@ import useConfirmationRecipientInfo from '../../../hooks/useConfirmationRecipien
 import { Confirmation } from '../../../types/confirm';
 import { DAppInitiatedHeader } from './dapp-initiated-header';
 import HeaderInfo from './header-info';
-import { SimpleConfirmationHeader } from './simple-confirmation-header';
 import { WalletInitiatedHeader } from './wallet-initiated-header';
 
 const CONFIRMATIONS_WITH_ALT_HEADER = [
-  TransactionType.perpsDeposit,
   TransactionType.simpleSend,
-  TransactionType.shieldSubscriptionApprove,
   TransactionType.tokenMethodSafeTransferFrom,
   TransactionType.tokenMethodTransfer,
   TransactionType.tokenMethodTransferFrom,
@@ -90,14 +87,6 @@ const Header = () => {
     CONFIRMATIONS_WITH_ALT_HEADER.includes(currentConfirmation.type);
   const isWalletInitiated =
     (currentConfirmation as TransactionMeta)?.origin === ORIGIN_METAMASK;
-
-  const isSimpleHeader =
-    currentConfirmation?.type &&
-    SIMPLE_HEADER_TYPES.includes(currentConfirmation.type);
-
-  if (isSimpleHeader && isWalletInitiated) {
-    return <SimpleConfirmationHeader />;
-  }
 
   if (isConfirmationWithNewHeader && isWalletInitiated) {
     return <WalletInitiatedHeader />;

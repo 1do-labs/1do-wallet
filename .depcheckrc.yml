@@ -108,8 +108,6 @@ ignores:
   - '@metamask/institutional-wallet-snap'
   - '@metamask/gator-permissions-snap'
   - '@metamask/permissions-kernel-snap'
-  # perps poc
-  - '@metamask/perps-controller'
 
 # files depcheck should not parse
 ignorePatterns:

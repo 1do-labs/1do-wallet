@@ -33,7 +33,6 @@ import {
 } from '../../../shared/constants/app';
 import { DEFAULT_AUTO_LOCK_TIME_LIMIT } from '../../../shared/constants/preferences';
 import { LastInteractedConfirmationInfo } from '../../../shared/types/confirm';
-import { SecurityAlertResponse } from '../lib/ppom/types';
 import {
   AccountOverviewTabKey,
   CarouselSlide,
@@ -44,12 +43,6 @@ import type {
   ThrottledOrigins,
   ThrottledOrigin,
 } from '../../../shared/types/origin-throttling';
-import {
-  ScanAddressResponse,
-  CachedScanAddressResponse,
-  GetAddressSecurityAlertResponse,
-  AddAddressSecurityAlertResponse,
-} from '../../../shared/lib/trust-signals';
 import { PendingRedirectRoute } from '../../../shared/lib/pending-redirect-state';
 import type { DeferredDeepLink } from '../../../shared/lib/deep-links/types';
 import type {
@@ -61,7 +54,6 @@ import { AppStateControllerMethodActions } from './app-state-controller-method-a
 
 export type AppStateControllerState = {
   activeQrCodeScanRequest: QrScanRequest | null;
-  addressSecurityAlertResponses: Record<string, CachedScanAddressResponse>;
   appActiveTab?: {
     id: number;
     title: string;
@@ -112,7 +104,6 @@ export type AppStateControllerState = {
   showNetworkBanner: boolean;
   showPermissionsTour: boolean;
   showTestnetMessageInDropdown: boolean;
-  signatureSecurityAlertResponses: Record<string, SecurityAlertResponse>;
   slides: CarouselSlide[];
   surveyLinkLastClickedOrClosed: number | null;
   termsOfUseLastAgreed?: number;
@@ -210,11 +201,7 @@ type PollingTokenType =
 type AppStateControllerInitState = Partial<
   Omit<
     AppStateControllerState,
-    | 'nftsDropdownState'
-    | 'signatureSecurityAlertResponses'
-    | 'addressSecurityAlertResponses'
-    | 'currentExtensionPopupId'
-    | 'networkConnectionBanner'
+    'nftsDropdownState' | 'currentExtensionPopupId' | 'networkConnectionBanner'
   >
 >;
 
@@ -281,10 +268,8 @@ const getDefaultAppStateControllerState = (): AppStateControllerState => ({
  */
 function getInitialStateOverrides() {
   return {
-    addressSecurityAlertResponses: {},
     currentExtensionPopupId: 0,
     nftsDropdownState: {},
-    signatureSecurityAlertResponses: {},
     networkConnectionBanner: {
       status: 'unknown' as const,
     },
@@ -294,12 +279,6 @@ function getInitialStateOverrides() {
 const controllerMetadata: StateMetadata<AppStateControllerState> = {
   activeQrCodeScanRequest: {
     includeInStateLogs: false,
-    persist: false,
-    includeInDebugSnapshot: true,
-    usedInUi: true,
-  },
-  addressSecurityAlertResponses: {
-    includeInStateLogs: true,
     persist: false,
     includeInDebugSnapshot: true,
     usedInUi: true,
@@ -516,12 +495,6 @@ const controllerMetadata: StateMetadata<AppStateControllerState> = {
     includeInDebugSnapshot: true,
     usedInUi: false,
   },
-  signatureSecurityAlertResponses: {
-    includeInStateLogs: true,
-    persist: false,
-    includeInDebugSnapshot: true,
-    usedInUi: true,
-  },
   slides: {
     includeInStateLogs: true,
     persist: true,
@@ -597,18 +570,14 @@ const controllerMetadata: StateMetadata<AppStateControllerState> = {
 };
 
 const MESSENGER_EXPOSED_METHODS = [
-  'addAddressSecurityAlertResponse',
   'addPollingToken',
-  'addSignatureSecurityAlertResponse',
   'cancelQrCodeScan',
   'clearAppActiveTab',
   'clearPollingTokens',
   'completeQrCodeScan',
-  'getAddressSecurityAlertResponse',
   'getCurrentPopupId',
   'getIsWalletResetInProgress',
   'getLastInteractedConfirmationInfo',
-  'getSignatureSecurityAlertResponse',
   'getThrottledOriginState',
   'getUnlockPromise',
   'removeDeferredDeepLink',
@@ -1287,61 +1256,6 @@ export class AppStateController extends BaseController<
       state.nftsDropdownState = nftsDropdownState;
     });
   }
-
-  getSignatureSecurityAlertResponse(
-    securityAlertId: string,
-  ): SecurityAlertResponse {
-    return this.state.signatureSecurityAlertResponses[securityAlertId];
-  }
-
-  addSignatureSecurityAlertResponse(
-    securityAlertResponse: SecurityAlertResponse,
-  ): void {
-    if (securityAlertResponse.securityAlertId) {
-      this.update((state) => {
-        state.signatureSecurityAlertResponses[
-          String(securityAlertResponse.securityAlertId)
-        ] = securityAlertResponse;
-      });
-    }
-  }
-
-  getAddressSecurityAlertResponse: GetAddressSecurityAlertResponse = (
-    cacheKey: string,
-  ): ScanAddressResponse | undefined => {
-    const cached = this.state.addressSecurityAlertResponses[cacheKey];
-
-    if (!cached) {
-      return undefined;
-    }
-
-    // Check if the cached response has expired (15 minute TTL)
-    const now = Date.now();
-    const ADDRESS_SECURITY_ALERT_TTL = 15 * MINUTE;
-    if (now - cached.timestamp > ADDRESS_SECURITY_ALERT_TTL) {
-      // Remove expired entry
-      this.update((state) => {
-        delete state.addressSecurityAlertResponses[cacheKey];
-      });
-      return undefined;
-    }
-
-    // Return the response without the timestamp
-    const { timestamp, ...response } = cached;
-    return response;
-  };
-
-  addAddressSecurityAlertResponse: AddAddressSecurityAlertResponse = (
-    cacheKey: string,
-    addressSecurityAlertResponse: ScanAddressResponse,
-  ): void => {
-    this.update((state) => {
-      state.addressSecurityAlertResponses[cacheKey] = {
-        ...addressSecurityAlertResponse,
-        timestamp: Date.now(),
-      };
-    });
-  };
 
   /**
    * A setter for the currentPopupId which indicates the id of popup window that's currently active

@@ -1,5 +1,4 @@
 import { ReactNode } from 'react';
-import { SecurityProvider } from '../../../shared/constants/security-provider';
 import {
   BackgroundColor,
   IconColor,
@@ -13,6 +12,11 @@ export type AlertSeverity =
   | Severity.Success
   | Severity.Warning
   | Severity.Disabled;
+
+export type AlertProviderInfo = {
+  name: string;
+  url?: string;
+};
 
 /**
  * A confirmable alert to be displayed in the UI.
@@ -88,7 +92,7 @@ export type Alert = {
   /**
    * The security provider associated with the alert.
    */
-  provider?: SecurityProvider;
+  provider?: AlertProviderInfo;
 
   /**
    * The reason for the alert.

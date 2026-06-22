@@ -3,15 +3,9 @@ import { debounce, type DebouncedFunc } from 'lodash';
 import { BigNumber } from 'bignumber.js';
 import type { TransactionMeta } from '@metamask/transaction-controller';
 import type { Hex } from '@metamask/utils';
-import { setIsMaxAmount } from '../../../../store/controller-actions/transaction-pay-controller';
 import { useTokenFiatRate } from '../tokens/useTokenFiatRates';
 import { useConfirmContext } from '../../context/confirm';
-import { useTransactionPayToken } from '../pay/useTransactionPayToken';
-import {
-  useTransactionPayIsMaxAmount,
-  useTransactionPayPrimaryRequiredToken,
-} from '../pay/useTransactionPayData';
-import { getTokenAddress } from '../../utils/transaction-pay';
+import { getTokenAddress } from '../../utils/token-transfer';
 import { useUpdateTokenAmount } from './useUpdateTokenAmount';
 
 export const MAX_LENGTH = 28;
@@ -27,13 +21,12 @@ export function useTransactionCustomAmount({
 
   const { currentConfirmation: transactionMeta } =
     useConfirmContext<TransactionMeta>();
-  const { chainId, id: transactionId } = transactionMeta ?? {};
+  const { chainId } = transactionMeta ?? {};
 
-  const isMaxAmount = useTransactionPayIsMaxAmount();
   const tokenAddress = getTokenAddress(transactionMeta);
   const tokenFiatRate =
     useTokenFiatRate(tokenAddress, chainId as Hex, currency) ?? 1;
-  const balanceUsd = useTokenBalance();
+  const balanceUsd = 0;
 
   const { updateTokenAmount: updateTokenAmountCallback } =
     useUpdateTokenAmount();
@@ -64,25 +57,7 @@ export function useTransactionCustomAmount({
     };
   }, [disableUpdate, updateTokenAmountCallback]);
 
-  const primaryRequiredToken = useTransactionPayPrimaryRequiredToken();
-
-  const [amountFiatState, setAmountFiat] = useState(
-    new BigNumber(primaryRequiredToken?.amountUsd ?? '0')
-      .round(2, BigNumber.ROUND_HALF_UP)
-      .toString(10),
-  );
-
-  const amountFiat = useMemo(() => {
-    const targetAmountUsd = primaryRequiredToken?.amountUsd;
-
-    if (isMaxAmount && targetAmountUsd && targetAmountUsd !== '0') {
-      return new BigNumber(targetAmountUsd)
-        .round(2, BigNumber.ROUND_HALF_UP)
-        .toString(10);
-    }
-
-    return amountFiatState;
-  }, [amountFiatState, isMaxAmount, primaryRequiredToken?.amountUsd]);
+  const [amountFiat, setAmountFiat] = useState('0');
 
   const amountHuman = useMemo(
     () =>
@@ -109,35 +84,19 @@ export function useTransactionCustomAmount({
     );
   }, [amountHumanDebounced]);
 
-  const setIsMax = useCallback(
-    (value: boolean) => {
-      if (transactionId) {
-        setIsMaxAmount(transactionId, value);
-      }
-    },
-    [transactionId],
-  );
+  const updatePendingAmount = useCallback((value: string) => {
+    let newAmount = value.replace(/^0+/u, '') || '0';
 
-  const updatePendingAmount = useCallback(
-    (value: string) => {
-      let newAmount = value.replace(/^0+/u, '') || '0';
+    if (newAmount.startsWith('.') || newAmount.startsWith(',')) {
+      newAmount = `0${newAmount}`;
+    }
 
-      if (newAmount.startsWith('.') || newAmount.startsWith(',')) {
-        newAmount = `0${newAmount}`;
-      }
+    if (newAmount.length >= MAX_LENGTH) {
+      return;
+    }
 
-      if (newAmount.length >= MAX_LENGTH) {
-        return;
-      }
-
-      if (isMaxAmount) {
-        setIsMax(false);
-      }
-
-      setAmountFiat(newAmount);
-    },
-    [isMaxAmount, setIsMax],
-  );
+    setAmountFiat(newAmount);
+  }, []);
 
   const updatePendingAmountPercentage = useCallback(
     (percentage: number) => {
@@ -151,12 +110,6 @@ export function useTransactionCustomAmount({
         .round(2, BigNumber.ROUND_DOWN)
         .toString(10);
 
-      if (percentage === 100) {
-        setIsMax(true);
-      } else if (isMaxAmount) {
-        setIsMax(false);
-      }
-
       setAmountFiat(newAmountFiat);
 
       const newAmountHuman = new BigNumber(newAmountFiat || '0')
@@ -168,14 +121,7 @@ export function useTransactionCustomAmount({
         updateTokenAmountCallback(newAmountHuman);
       }
     },
-    [
-      balanceUsd,
-      disableUpdate,
-      isMaxAmount,
-      setIsMax,
-      tokenFiatRate,
-      updateTokenAmountCallback,
-    ],
+    [balanceUsd, disableUpdate, tokenFiatRate, updateTokenAmountCallback],
   );
 
   return {
@@ -187,14 +133,4 @@ export function useTransactionCustomAmount({
     updatePendingAmount,
     updatePendingAmountPercentage,
   };
-}
-
-function useTokenBalance() {
-  const { payToken } = useTransactionPayToken();
-
-  const payTokenBalanceUsd = new BigNumber(
-    payToken?.balanceUsd ?? 0,
-  ).toNumber();
-
-  return payTokenBalanceUsd;
 }

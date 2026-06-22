@@ -18,7 +18,6 @@ import {
   handleTransactionConfirmed,
   handleTransactionDropped,
   handleTransactionFailed,
-  handlePostTransactionBalanceUpdate,
   handleTransactionRejected,
   handleTransactionSubmitted,
 } from './metrics';
@@ -242,40 +241,6 @@ describe('transaction metrics handlers', () => {
     );
   });
 
-  it('tracks SwapFailed in post transaction balance update', async () => {
-    const request = createRequest();
-    const transactionMeta = createTxMeta({
-      swapMetaData: { token_to_amount: '10' },
-      txReceipt: { status: '0x0' },
-    });
-
-    await handlePostTransactionBalanceUpdate(request, { transactionMeta });
-
-    const payload = (request.trackEvent as jest.Mock).mock.calls[0][0];
-    expect(payload.event).toBe(MetaMetricsEventName.SwapFailed);
-  });
-
-  it('tracks SwapCompleted in post transaction balance update', async () => {
-    const request = createRequest();
-    const transactionMeta = createTxMeta({
-      chainId: '0x1',
-      destinationTokenSymbol: 'USDC',
-      destinationTokenAddress: '0xabc',
-      destinationTokenDecimals: 6,
-      swapMetaData: { token_to_amount: '10', estimated_gas: '100' },
-      txReceipt: {
-        status: '0x1',
-        gasUsed: '0x64',
-        effectiveGasPrice: '0x3b9aca00',
-      },
-    });
-
-    await handlePostTransactionBalanceUpdate(request, { transactionMeta });
-
-    const payload = (request.trackEvent as jest.Mock).mock.calls[0][0];
-    expect(payload.event).toBe(MetaMetricsEventName.SwapCompleted);
-  });
-
   it('preserves batch arrays without index-based merge corruption', async () => {
     const request = createRequest();
     (request.getMethodData as jest.Mock)
@@ -315,31 +280,6 @@ describe('transaction metrics handlers', () => {
       'approve',
       'transfer',
     ]);
-  });
-
-  it('does not track post transaction balance update when metrics opted out', async () => {
-    const request = createRequest();
-    (request.getParticipateInMetrics as jest.Mock).mockReturnValue(false);
-    const transactionMeta = createTxMeta({
-      swapMetaData: { token_to_amount: '10' },
-      txReceipt: { status: '0x0' },
-    });
-
-    await handlePostTransactionBalanceUpdate(request, { transactionMeta });
-
-    expect(request.trackEvent).not.toHaveBeenCalled();
-  });
-
-  it('does not track post transaction balance update when no swap metadata', async () => {
-    const request = createRequest();
-    const transactionMeta = createTxMeta({
-      swapMetaData: undefined,
-      txReceipt: { status: '0x1' },
-    });
-
-    await handlePostTransactionBalanceUpdate(request, { transactionMeta });
-
-    expect(request.trackEvent).not.toHaveBeenCalled();
   });
 
   describe('does not include actionId in trackEvent payload', () => {

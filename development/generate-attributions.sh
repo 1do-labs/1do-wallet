@@ -24,6 +24,9 @@ main() {
   export PATH="${SCRIPT_DIRECTORY}/generate-attributions/node_modules/.bin:${PATH}"
 
   # Unset the root postinstall script to prevent it from installing devDependencies
+  ORIGINAL_POSTINSTALL_SCRIPT="$(
+    PROJECT_DIRECTORY="${PROJECT_DIRECTORY}" node -e "const { readFileSync } = require('node:fs'); const { join } = require('node:path'); const packageJson = JSON.parse(readFileSync(join(process.env.PROJECT_DIRECTORY, 'package.json'), 'utf8')); process.stdout.write(packageJson.scripts?.postinstall ?? '')"
+  )"
   node ./unset-postinstall.js
 
   # Switching to the project directory explicitly, so that we can use paths
@@ -50,7 +53,10 @@ main() {
   if [ -z "${CI:-}" ] || [ "${FORCE_CLEANUP:-}" = "true" ]; then
     # If not running in CI, restore the allow-scripts plugin and development dependencies.
     cd "${PROJECT_DIRECTORY}"
-    git checkout -- .yarnrc.yml .yarn package.json
+    git checkout -- .yarnrc.yml .yarn
+    if [ -n "${ORIGINAL_POSTINSTALL_SCRIPT}" ]; then
+      ORIGINAL_POSTINSTALL_SCRIPT="${ORIGINAL_POSTINSTALL_SCRIPT}" node -e "const { readFileSync, writeFileSync } = require('node:fs'); const packageJson = JSON.parse(readFileSync('package.json', 'utf8')); packageJson.scripts = packageJson.scripts ?? {}; packageJson.scripts.postinstall = process.env.ORIGINAL_POSTINSTALL_SCRIPT; writeFileSync('package.json', JSON.stringify(packageJson, null, 2) + '\n');"
+    fi
     yarn
   fi
 }

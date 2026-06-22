@@ -1,4 +1,3 @@
-import { TransactionType } from '@metamask/transaction-controller';
 import { useSelector } from 'react-redux';
 import { useLocation, useParams } from 'react-router-dom';
 import { MetaMetricsHardwareWalletRecoveryLocation } from '../../shared/constants/metametrics';
@@ -9,14 +8,6 @@ import {
 } from '../helpers/constants/routes';
 import { getUnapprovedTransaction } from '../selectors';
 import { selectUnapprovedMessage } from '../selectors/signatures';
-
-const SWAP_FLOW_TRANSACTION_TYPES: ReadonlySet<TransactionType> = new Set([
-  TransactionType.swap,
-  TransactionType.swapApproval,
-  TransactionType.swapAndSend,
-  TransactionType.bridge,
-  TransactionType.bridgeApproval,
-]);
 
 /**
  * Derives the Segment `location` property for hardware wallet recovery UI.
@@ -36,10 +27,6 @@ export function useHardwareWalletRecoveryLocation(): MetaMetricsHardwareWalletRe
     confirmationId ? selectUnapprovedMessage(state, confirmationId) : undefined,
   );
 
-  if (pathname.includes('/swaps/')) {
-    return MetaMetricsHardwareWalletRecoveryLocation.Swaps;
-  }
-
   if (pathname.includes(SIGNATURE_REQUEST_PATH)) {
     return MetaMetricsHardwareWalletRecoveryLocation.Message;
   }
@@ -50,12 +37,6 @@ export function useHardwareWalletRecoveryLocation(): MetaMetricsHardwareWalletRe
   ) {
     if (message) {
       return MetaMetricsHardwareWalletRecoveryLocation.Message;
-    }
-    if (
-      transaction?.type &&
-      SWAP_FLOW_TRANSACTION_TYPES.has(transaction.type as TransactionType)
-    ) {
-      return MetaMetricsHardwareWalletRecoveryLocation.Swaps;
     }
   }
 

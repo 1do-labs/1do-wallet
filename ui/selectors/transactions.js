@@ -166,18 +166,6 @@ export const smartTransactionsListSelector = createSelector(
   (state) => state.metamask.smartTransactionsState?.smartTransactions,
   getCurrentChainId,
   (selectedInternalAccount, smartTransactions, chainId) => {
-    // The statuses listed below are allowed in the Activity list for Smart Swaps.
-    // SUCCESS and REVERTED statuses are excluded because smart transactions with
-    // those statuses are already in the regular transaction list.
-    // TODO: When Swaps and non-Swaps transactions are treated the same,
-    // we will only allow the PENDING smart transaction status in the Activity list.
-    const allowedSwapsSmartTransactionStatusesForActivityList = [
-      SmartTransactionStatuses.PENDING,
-      SmartTransactionStatuses.UNKNOWN,
-      SmartTransactionStatuses.RESOLVED,
-      SmartTransactionStatuses.CANCELLED,
-    ];
-
     const selectedAddress = selectedInternalAccount?.address;
     const chainSmartTransactions = smartTransactions?.[chainId];
 
@@ -193,20 +181,10 @@ export const smartTransactionsListSelector = createSelector(
         ) {
           return false;
         }
-        // If a swap or non-swap smart transaction is pending, we want to show it in the Activity list.
         if (smartTransaction.status === SmartTransactionStatuses.PENDING) {
           return true;
         }
-        // In the future we should have the same behavior for Swaps and non-Swaps transactions.
-        // For that we need to submit Smart Swaps via the TransactionController as we do for
-        // non-Swaps Smart Transactions.
-        return (
-          (smartTransaction.type === TransactionType.swap ||
-            smartTransaction.type === TransactionType.swapApproval) &&
-          allowedSwapsSmartTransactionStatusesForActivityList.includes(
-            smartTransaction.status,
-          )
-        );
+        return false;
       })
       .map((stx) => ({
         ...stx,

@@ -124,11 +124,7 @@ describe('EthOverview', () => {
       tokenBalances: {
         [CHAIN_IDS.MAINNET]: {},
       },
-      remoteFeatureFlags: {
-        bridgeConfig: {
-          support: true,
-        },
-      },
+      remoteFeatureFlags: {},
       accountsByChainId: {
         [CHAIN_IDS.MAINNET]: {
           '0x1': { address: mockEvmAccount1.address, balance: '0x1F4' },
@@ -198,10 +194,7 @@ describe('EthOverview', () => {
   };
 
   const store = configureMockStore([thunk])(mockStore);
-  const ETH_OVERVIEW_BUY = 'eth-overview-buy';
-  const ETH_OVERVIEW_BRIDGE = 'eth-overview-bridge';
   const ETH_OVERVIEW_RECEIVE = 'eth-overview-receive';
-  const ETH_OVERVIEW_SWAP = 'eth-overview-swap';
   const ETH_OVERVIEW_SEND = 'eth-overview-send';
   const ETH_OVERVIEW_PRIMARY_CURRENCY = 'eth-overview__primary-currency';
 
@@ -285,48 +278,6 @@ describe('EthOverview', () => {
       expect(queryByText('*')).not.toBeInTheDocument();
     });
 
-    it('should always disable the Swap button', () => {
-      const mockedAvalancheStore = {
-        ...mockStore,
-        metamask: {
-          ...mockStore.metamask,
-          ...mockNetworkState({ chainId: '0xa86a' }),
-          accountsByChainId: {
-            [CHAIN_IDS.AVALANCHE]: {
-              '0x1': { address: '0x1', balance: '0x24da51d247e8b8' },
-            },
-          },
-        },
-      };
-      const mockedStore = configureMockStore([thunk])(mockedAvalancheStore);
-
-      const { queryByTestId } = renderWithProvider(
-        <EthOverview />,
-        mockedStore,
-      );
-      const bridgeButton = queryByTestId(ETH_OVERVIEW_SWAP);
-      expect(bridgeButton).toBeInTheDocument();
-      expect(bridgeButton).toBeDisabled();
-    });
-
-    it('should not render the Bridge button on testnet chains', () => {
-      const mockedFantomStore = {
-        ...mockStore,
-        metamask: {
-          ...mockStore.metamask,
-          ...mockNetworkState({ chainId: CHAIN_IDS.SEPOLIA }),
-        },
-      };
-      const mockedStore = configureMockStore([thunk])(mockedFantomStore);
-
-      const { queryByTestId } = renderWithProvider(
-        <EthOverview />,
-        mockedStore,
-      );
-      const bridgeButton = queryByTestId(ETH_OVERVIEW_BRIDGE);
-      expect(bridgeButton).not.toBeInTheDocument();
-    });
-
     it('should always show the Receive button', () => {
       const { queryByTestId } = renderWithProvider(<EthOverview />, store);
       const receiveButton = queryByTestId(ETH_OVERVIEW_RECEIVE);
@@ -338,168 +289,47 @@ describe('EthOverview', () => {
       const portfolioButton = queryByTestId('portfolio-link');
       expect(portfolioButton).toBeInTheDocument();
     });
-
-    it('should always show the Buy button regardless of current chain Id', () => {
-      const { queryByTestId } = renderWithProvider(<EthOverview />, store);
-      const buyButton = queryByTestId(ETH_OVERVIEW_BUY);
-      expect(buyButton).toBeInTheDocument();
-    });
-
-    it('should have the Buy native token button disabled if chain id is not part of supported buyable chains', () => {
-      const mockedStoreWithUnbuyableChainId = {
-        ...mockStore,
-        metamask: {
-          ...mockStore.metamask,
-          ...mockNetworkState({ chainId: CHAIN_IDS.GOERLI }),
-          accountsByChainId: {
-            [CHAIN_IDS.GOERLI]: {
-              '0x1': { address: '0x1', balance: '0x24da51d247e8b8' },
-            },
-          },
-        },
-      };
-      const mockedStore = configureMockStore([thunk])(
-        mockedStoreWithUnbuyableChainId,
-      );
-
-      const { queryByTestId } = renderWithProvider(
-        <EthOverview />,
-        mockedStore,
-      );
-      const buyButton = queryByTestId(ETH_OVERVIEW_BUY);
-      expect(buyButton).toBeInTheDocument();
-      expect(buyButton).toBeDisabled();
-    });
-
-    it('should have the Buy native token disabled if chain id is part of supported buyable chains', () => {
-      const mockedStoreWithUnbuyableChainId = {
-        ...mockStore,
-        metamask: {
-          ...mockStore.metamask,
-          ...mockNetworkState({ chainId: CHAIN_IDS.POLYGON }),
-          accountsByChainId: {
-            [CHAIN_IDS.POLYGON]: {
-              '0x1': { address: '0x1', balance: '0x24da51d247e8b8' },
-            },
-          },
-        },
-      };
-      const mockedStore = configureMockStore([thunk])(
-        mockedStoreWithUnbuyableChainId,
-      );
-
-      const { queryByTestId } = renderWithProvider(
-        <EthOverview />,
-        mockedStore,
-      );
-      const buyButton = queryByTestId(ETH_OVERVIEW_BUY);
-      expect(buyButton).toBeInTheDocument();
-      expect(buyButton).toBeDisabled();
-    });
-
-    it('should not open the Buy native token URI when clicking on Buy button for a buyable chain ID', async () => {
-      const mockedStoreWithBuyableChainId = {
-        ...mockStore,
-        metamask: {
-          ...mockStore.metamask,
-          ...mockNetworkState({ chainId: CHAIN_IDS.POLYGON }),
-          accountsByChainId: {
-            [CHAIN_IDS.POLYGON]: {
-              '0x1': { address: '0x1', balance: '0x24da51d247e8b8' },
-            },
-          },
-        },
-      };
-      const mockedStore = configureMockStore([thunk])(
-        mockedStoreWithBuyableChainId,
-      );
-
-      const { queryByTestId } = renderWithProvider(
-        <EthOverview />,
-        mockedStore,
-      );
-      const buyButton = queryByTestId(ETH_OVERVIEW_BUY);
-
-      expect(buyButton).toBeInTheDocument();
-      expect(buyButton).toBeDisabled();
-
-      fireEvent.click(buyButton);
-      expect(openTabSpy).not.toHaveBeenCalled();
-    });
-  });
-
-  it('does not send an event when clicking the disabled Buy button', () => {
-    const mockTrackEvent = jest.fn();
-    const mockMetaMetricsContext = {
-      trackEvent: mockTrackEvent,
-      bufferedTrace: jest.fn(),
-      bufferedEndTrace: jest.fn(),
-      onboardingParentContext: { current: null },
-    };
-
-    const mockedStore = configureMockStore([thunk])(mockStore);
-    const { queryByTestId } = renderWithProvider(
-      <MetaMetricsContext.Provider value={mockMetaMetricsContext}>
-        <EthOverview />
-      </MetaMetricsContext.Provider>,
-      mockedStore,
-    );
-
-    const buyButton = queryByTestId(ETH_OVERVIEW_BUY);
-    expect(buyButton).toBeInTheDocument();
-    expect(buyButton).toBeDisabled();
-    fireEvent.click(buyButton);
-
-    expect(mockTrackEvent).not.toHaveBeenCalled();
   });
 
   describe('Disabled buttons when an account cannot sign transactions', () => {
-    const buttonTestCases = [
-      { testId: ETH_OVERVIEW_SEND, buttonText: 'Send' },
-      { testId: ETH_OVERVIEW_SWAP, buttonText: 'Swap' },
-    ];
-
-    it.each(buttonTestCases)(
-      'should have the $buttonText button disabled when an account cannot sign transactions or user operations',
-      ({ testId }) => {
-        const mockedStoreWithoutSigningMethods = {
-          ...mockStore,
-          metamask: {
-            ...mockStore.metamask,
-            internalAccounts: {
-              ...mockStore.metamask.internalAccounts,
-              accounts: {
-                [mockEvmAccount1.id]: {
-                  ...mockEvmAccount1,
-                  // Filter out all methods used for signing transactions.
-                  methods: Object.values(EthMethod).filter(
-                    (method) =>
-                      method !== EthMethod.SignTransaction &&
-                      method !== EthMethod.SignUserOperation,
-                  ),
-                },
+    it('should have the Send button disabled when an account cannot sign transactions or user operations', () => {
+      const mockedStoreWithoutSigningMethods = {
+        ...mockStore,
+        metamask: {
+          ...mockStore.metamask,
+          internalAccounts: {
+            ...mockStore.metamask.internalAccounts,
+            accounts: {
+              [mockEvmAccount1.id]: {
+                ...mockEvmAccount1,
+                // Filter out all methods used for signing transactions.
+                methods: Object.values(EthMethod).filter(
+                  (method) =>
+                    method !== EthMethod.SignTransaction &&
+                    method !== EthMethod.SignUserOperation,
+                ),
               },
             },
           },
-        };
+        },
+      };
 
-        const mockedStore = configureMockStore([thunk])(
-          mockedStoreWithoutSigningMethods,
-        );
-        const { queryByTestId } = renderWithProvider(
-          <EthOverview />,
-          mockedStore,
-        );
+      const mockedStore = configureMockStore([thunk])(
+        mockedStoreWithoutSigningMethods,
+      );
+      const { queryByTestId } = renderWithProvider(
+        <EthOverview />,
+        mockedStore,
+      );
 
-        const button = queryByTestId(testId);
-        expect(button).toBeInTheDocument();
-        expect(button).toBeDisabled();
-        expect(button.parentElement).toHaveAttribute(
-          'data-original-title',
-          'Not supported with this account.',
-        );
-      },
-    );
+      const button = queryByTestId(ETH_OVERVIEW_SEND);
+      expect(button).toBeInTheDocument();
+      expect(button).toBeDisabled();
+      expect(button.parentElement).toHaveAttribute(
+        'data-original-title',
+        'Not supported with this account.',
+      );
+    });
   });
 
   it.each([

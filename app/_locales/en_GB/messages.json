@@ -1,11 +1,11 @@
 {
   "CSS_loadingTakingTooLongActionText": {
     "message": "Relaunch 1do if the problem persists.",
-    "description": "Second line of the message that is shown when the initial loading of the MetaMask UI takes a very long time."
+    "description": "Second line of the message that is shown when the initial loading of the 1do UI takes a very long time."
   },
   "CSS_loadingTakingTooLongMessageText": {
     "message": "Loading is taking longer than usual.",
-    "description": "First line of the message that is shown when the initial loading of the MetaMask UI takes a very long time."
+    "description": "First line of the message that is shown when the initial loading of the 1do UI takes a very long time."
   },
   "QRHardwareInvalidTransactionTitle": {
     "message": "Error"
@@ -458,16 +458,6 @@
   "alertDisableTooltip": {
     "message": "This can be changed in \"Settings > Alerts\""
   },
-  "alertInsufficientPayTokenBalance": {
-    "message": "Insufficient funds"
-  },
-  "alertInsufficientPayTokenBalanceFeesNoTarget": {
-    "message": "Add less or use a different token."
-  },
-  "alertInsufficientPayTokenNative": {
-    "message": "Not enough $1 to cover fees. Use a token on another network or add more $1 to continue.",
-    "description": "$1 is the native currency symbol (e.g. ETH)"
-  },
   "alertMessageAddressMismatchWarning": {
     "message": "Attackers sometimes mimic sites by making small changes to the site address. Make sure you're interacting with the intended site before you continue."
   },
@@ -530,12 +520,6 @@
   },
   "alertModalReviewAllAlerts": {
     "message": "Review all alerts"
-  },
-  "alertNoPayTokenQuotesMessage": {
-    "message": "This payment route isn't available right now. Try changing the amount, network, or token and we'll find the best option."
-  },
-  "alertNoPayTokenQuotesTitle": {
-    "message": "No quotes"
   },
   "alertPayHardwareAccountMessage": {
     "message": "Hardware wallets aren't supported.\nSwitch wallets to continue."
@@ -889,23 +873,8 @@
   "basicFunctionalityRequired_openDefiPage": {
     "message": "Open the DeFi page"
   },
-  "basicFunctionalityRequired_openMusdConversionPage": {
-    "message": "Open the mUSD Conversion page"
-  },
   "basicFunctionalityRequired_openNotificationsPage": {
     "message": "Open the Notifications page"
-  },
-  "basicFunctionalityRequired_openPerpsPage": {
-    "message": "Open the Perps page"
-  },
-  "basicFunctionalityRequired_openRewardsPage": {
-    "message": "Open the Rewards page"
-  },
-  "basicFunctionalityRequired_openSwapsPage": {
-    "message": "Open the Swap page"
-  },
-  "basicFunctionalityRequired_openTransactionShieldPage": {
-    "message": "Open the Transaction Shield page"
   },
   "basicFunctionalityRequired_reviewInSettings": {
     "message": "Review in settings"
@@ -952,60 +921,6 @@
   "blockExplorerView": {
     "message": "View account at $1",
     "description": "$1 replaced by URL for custom block explorer"
-  },
-  "blockaid": {
-    "message": "Blockaid"
-  },
-  "blockaidAlertDescriptionBlur": {
-    "message": "If you continue, all the assets you’ve listed on Blur could be at risk."
-  },
-  "blockaidAlertDescriptionMalicious": {
-    "message": "You’re interacting with a malicious site. If you continue, you will lose your assets."
-  },
-  "blockaidAlertDescriptionOpenSea": {
-    "message": "If you continue, all the assets you’ve listed on OpenSea could be at risk."
-  },
-  "blockaidAlertDescriptionOthers": {
-    "message": "If you confirm this request, you could lose your assets. We recommend that you cancel this request."
-  },
-  "blockaidAlertDescriptionTokenTransfer": {
-    "message": "You’re sending your assets to a scammer. If you continue, you’ll lose those assets."
-  },
-  "blockaidAlertDescriptionWithdraw": {
-    "message": "If you confirm this request, you’re allowing a scammer to withdraw and spend your assets. You won’t get them back."
-  },
-  "blockaidDescriptionApproveFarming": {
-    "message": "If you approve this request, a third party known for scams might take all your assets."
-  },
-  "blockaidDescriptionBlurFarming": {
-    "message": "If you approve this request, someone can steal your assets listed on Blur."
-  },
-  "blockaidDescriptionErrored": {
-    "message": "Because of an error, we couldn't check for security alerts. Only continue if you trust every address involved."
-  },
-  "blockaidDescriptionMaliciousDomain": {
-    "message": "You're interacting with a malicious domain. If you approve this request, you might lose your assets."
-  },
-  "blockaidDescriptionMightLoseAssets": {
-    "message": "If you approve this request, you might lose your assets."
-  },
-  "blockaidDescriptionSeaportFarming": {
-    "message": "If you approve this request, someone can steal your assets listed on OpenSea."
-  },
-  "blockaidDescriptionTransferFarming": {
-    "message": "If you approve this request, a third party known for scams will take all your assets."
-  },
-  "blockaidMessage": {
-    "message": "Privacy preserving - no data is shared with third parties. Available on Arbitrum, Avalanche, BNB chain, Ethereum Mainnet, Linea, Optimism, Polygon, Base and Sepolia."
-  },
-  "blockaidTitleDeceptive": {
-    "message": "This is a deceptive request"
-  },
-  "blockaidTitleMayNotBeSafe": {
-    "message": "Be careful"
-  },
-  "blockaidTitleSuspicious": {
-    "message": "This is a suspicious request"
   },
   "blockies": {
     "message": "Blockies"
@@ -1099,29 +1014,13 @@
     "message": "Est. points",
     "description": "Label for estimated points that can be earned from a bridge or swap"
   },
-  "bridgePoints_couldntLoad": {
-    "message": "Couldn't load",
-    "description": "Text shown in rewards badge when points couldn't be loaded"
-  },
   "bridgePoints_error": {
     "message": "Couldn't load points",
     "description": "Tooltip title when there's an error fetching estimated points"
   },
-  "bridgePoints_error_content": {
-    "message": "Don't worry, you're still earning points. They'll show up in your account soon, or you can check in the Rewards tab on 1do Mobile.",
-    "description": "Error message when points estimation fails"
-  },
   "bridgePoints_tooltip": {
     "message": "Points",
     "description": "Tooltip title for points"
-  },
-  "bridgePoints_tooltip_content_1": {
-    "message": "Points are how you earn 1do Rewards for completing transactions, like when you swap, bridge, or trade perps.",
-    "description": "First part of tooltip content explaining rewards points"
-  },
-  "bridgePoints_tooltip_content_2": {
-    "message": "Keep in mind this value is an estimate and will be finalized once the transaction is complete. Points can take up to 1 hour to be confirmed in your Rewards balance.",
-    "description": "Second part of tooltip content explaining how points are calculated"
   },
   "bridgePriceImpact": {
     "message": "Price impact"
@@ -1416,7 +1315,7 @@
     "message": "Choose your network"
   },
   "chooseYourNetworkDescription": {
-    "message": "When you use our default settings and configurations, we use Infura as our default remote procedure call (RPC) provider to offer the most reliable and private access to Ethereum data we can. In limited cases, we may use other RPC providers in order to provide the best experience for our users. You can choose your own RPC, but remember that any RPC will receive your IP address and Ethereum wallet to make transactions. To learn more about how Infura handles data for EVM accounts, read our $1, and for Solana accounts, $2.",
+    "message": "When you use our default settings and configurations, we use a default remote procedure call (RPC) provider to offer the most reliable and private access to Ethereum data we can. In limited cases, we may use other RPC providers in order to provide the best experience for our users. You can choose your own RPC, but remember that any RPC will receive your IP address and Ethereum wallet to make transactions. To learn more about how the default RPC provider handles data for EVM accounts, read our $1, and for Solana accounts, $2.",
     "description": "$1 is a link to the privacy policy, $2 is a link to Solana accounts support"
   },
   "chooseYourNetworkDescriptionCallToAction": {
@@ -1565,7 +1464,7 @@
   "confirmGasFeeTokenModalPayETH": {
     "message": "Pay with ETH"
   },
-  "confirmGasFeeTokenModalPayToken": {
+  "confirmGasFeeTokenModalToken": {
     "message": "Pay with other tokens"
   },
   "confirmGasFeeTokenModalTitle": {
@@ -1896,7 +1795,7 @@
   },
   "createPasswordDetailsSocial": {
     "message": "Losing this password means losing wallet access on all devices, $1",
-    "description": "$1 is the text 'MetaMask can't reset it.'"
+    "description": "$1 is the text '1do can't reset it.'"
   },
   "createPasswordDetailsSocialReset": {
     "message": "1do can't reset it."
@@ -2019,12 +1918,6 @@
   "dappSuggestedHigh": {
     "message": "Site suggested"
   },
-  "dappSwapAdvantage": {
-    "message": "Save and earn with 1do Swaps"
-  },
-  "dappSwapAdvantageSaveOnly": {
-    "message": "Save with 1do Swaps"
-  },
   "dappSwapBenefits": {
     "message": "Network fees refunded on failed swaps"
   },
@@ -2124,7 +2017,7 @@
   },
   "deepLink_Error404_CTA_LinkText": {
     "message": "Update to the latest version of 1do",
-    "description": "Part of `deepLink_Error404_CTA`. The text links to https://support.metamask.io/configure/wallet/how-to-update-the-version-of-metamask/"
+    "description": "Part of `deepLink_Error404_CTA`. The text links to https://support.1do.io/configure/wallet/how-to-update-the-version-of-1do/"
   },
   "deepLink_ErrorMissingUrl": {
     "message": "No url to navigate to was provided."
@@ -2157,9 +2050,6 @@
   "deepLink_theHomePage": {
     "message": "the home page"
   },
-  "deepLink_theMusdEducationPage": {
-    "message": "the MUSD conversion education page"
-  },
   "deepLink_theNFTsPage": {
     "message": "the NFTs page"
   },
@@ -2169,32 +2059,11 @@
   "deepLink_theOnboardingPage": {
     "message": "the onboarding page"
   },
-  "deepLink_thePerpsMarketDetailPage": {
-    "message": "the perps market page"
-  },
-  "deepLink_thePerpsMarketListPage": {
-    "message": "the perps market list page"
-  },
-  "deepLink_thePerpsPage": {
-    "message": "the perps page"
-  },
   "deepLink_thePredictPage": {
     "message": "the prediction markets page"
   },
-  "deepLink_theRewardsPage": {
-    "message": "the 1do Rewards page"
-  },
   "deepLink_theSellPage": {
     "message": "the sell page"
-  },
-  "deepLink_theSwapsPage": {
-    "message": "the swaps page"
-  },
-  "deepLink_theSwapsRampsPage": {
-    "message": "the Swaps/Ramps page"
-  },
-  "deepLink_theTransactionShieldPage": {
-    "message": "the transaction shield page"
   },
   "default": {
     "message": "Default"
@@ -2765,10 +2634,10 @@
     "message": "Proposed nicknames"
   },
   "externalNameSourcesSettingDescription": {
-    "message": "We’ll fetch proposed nicknames for addresses you interact with from third-party sources like Etherscan, Infura, and Lens Protocol. These sources will be able to see those addresses and your IP address. Your account address won’t be exposed to third parties."
+    "message": "We’ll fetch proposed nicknames for addresses you interact with from third-party sources like Etherscan and Lens Protocol. These sources will be able to see those addresses and your IP address. Your account address won’t be exposed to third parties."
   },
   "externalNameSourcesSettingDescriptionV2": {
-    "message": "Fetches proposed nicknames for addresses you interact with from third-party sources like Etherscan, Infura, and Lens protocol."
+    "message": "Fetches proposed nicknames for addresses you interact with from third-party sources like Etherscan and Lens protocol."
   },
   "failed": {
     "message": "Failed"
@@ -2815,7 +2684,7 @@
   },
   "flaskWelcomeWarning2": {
     "message": "We do not guarantee the safety or stability of this extension. The new APIs offered by Flask are not hardened against phishing attacks, meaning that any site that requires Flask might be a malicious attempt to steal your assets.",
-    "description": "This explains the risks of using MetaMask Flask"
+    "description": "This explains the risks of using 1do Flask"
   },
   "flaskWelcomeWarning3": {
     "message": "All Flask APIs are experimental. They may be changed or removed without notice, or they might stay on Flask indefinitely without ever being migrated to stable 1do. Use them at your own risk.",
@@ -2823,7 +2692,7 @@
   },
   "flaskWelcomeWarning4": {
     "message": "Make sure to disable your regular 1do extension when using Flask.",
-    "description": "This message calls to pay attention about multiple versions of MetaMask running on the same site (Flask + Prod)"
+    "description": "This message calls to pay attention about multiple versions of 1do running on the same site (Flask + Prod)"
   },
   "flaskWelcomeWarningAcceptButton": {
     "message": "I accept the risks",
@@ -3497,9 +3366,6 @@
   "isSigningOrSubmitting": {
     "message": "A previous transaction is still being signed or submitted"
   },
-  "isSigningOrSubmittingPayToken": {
-    "message": "You have a pending transaction on this network. Wait for it to complete or select a token on another network."
-  },
   "jazzicons": {
     "message": "Jazzicons"
   },
@@ -3816,26 +3682,6 @@
   "memo": {
     "message": "memo"
   },
-  "merklRewardsClaimBonus": {
-    "message": "Claim bonus",
-    "description": "Short label shown in token list for tokens with claimable Merkl rewards"
-  },
-  "merklRewardsToastFailed": {
-    "message": "Your mUSD bonus claim failed",
-    "description": "Toast message shown when a Merkl reward claim transaction fails or is dropped"
-  },
-  "merklRewardsToastInProgress": {
-    "message": "Your mUSD bonus is processing",
-    "description": "Toast message shown when a Merkl reward claim transaction is being processed"
-  },
-  "merklRewardsToastSuccess": {
-    "message": "Your mUSD bonus is here!",
-    "description": "Toast message shown when a Merkl reward claim transaction is confirmed"
-  },
-  "merklRewardsUnexpectedError": {
-    "message": "Unexpected error. Please try again.",
-    "description": "Error message shown when claiming Merkl rewards fails"
-  },
   "message": {
     "message": "Message"
   },
@@ -3856,12 +3702,6 @@
   },
   "metamaskNotificationsAreOff": {
     "message": "Wallet notifications are currently not active."
-  },
-  "metamaskSwap": {
-    "message": "1do Swap"
-  },
-  "metamaskSwapsOfflineDescription": {
-    "message": "1do Swaps is undergoing maintenance. Please check back later."
   },
   "metamaskVersion": {
     "message": "1do Version"
@@ -3988,213 +3828,6 @@
   },
   "multichainQuoteCardRateLabel": {
     "message": "Rate"
-  },
-  "musdAssetBonusAccruing": {
-    "message": "Accruing next bonus",
-    "description": "Disabled claim button label shown when user holds mUSD but has no claimable bonus yet"
-  },
-  "musdAssetBonusClaimAmount": {
-    "message": "Claim $1 bonus",
-    "description": "Label for the claim button in the mUSD asset details Your bonus section, where $1 is the formatted fiat amount (e.g., $10.27)"
-  },
-  "musdAssetBonusEstimatedAnnual": {
-    "message": "Estimated annual bonus",
-    "description": "Label in the mUSD asset details Your bonus section"
-  },
-  "musdAssetBonusInfoAria": {
-    "message": "Your bonus info",
-    "description": "Accessible name for the info icon that opens the Your bonus tooltip"
-  },
-  "musdAssetBonusInfoEstimatedAnnual": {
-    "message": "A projection of what you'd earn over a year based on your current balance and rate. Rate is variable and may change.",
-    "description": "Explanation for Estimated annual bonus in the Your bonus info tooltip"
-  },
-  "musdAssetBonusInfoLearnMore": {
-    "message": "Learn more.",
-    "description": "Link label at the bottom of the Your bonus info tooltip"
-  },
-  "musdAssetBonusInfoLifetimeClaimed": {
-    "message": "The total bonus you've claimed since you started.",
-    "description": "Explanation for Lifetime bonus claimed in the Your bonus info tooltip"
-  },
-  "musdAssetBonusInfoYourBonus": {
-    "message": "$1% annualized bonus you earn just for holding mUSD. You can claim it daily on Linea. $2",
-    "description": "$1 is the APY %, $2 is the 'Terms apply.' link"
-  },
-  "musdAssetBonusLifetimeClaimed": {
-    "message": "Lifetime bonus claimed",
-    "description": "Label in the mUSD asset details Your bonus section"
-  },
-  "musdAssetBonusNoAccruing": {
-    "message": "No accruing bonus",
-    "description": "Disabled claim button label shown when user holds no mUSD and has no bonus to claim"
-  },
-  "musdAssetBonusRate": {
-    "message": "$1% bonus",
-    "description": "Tag next to Your bonus on the mUSD asset details page, where $1 is the bonus APY percentage (e.g., 3)"
-  },
-  "musdAssetBonusTitle": {
-    "message": "Your bonus",
-    "description": "Section title on the mUSD asset details page"
-  },
-  "musdAssetConvertBenefitDailyBonus": {
-    "message": "Daily bonus",
-    "description": "Benefit tag on the mUSD asset details convert section"
-  },
-  "musdAssetConvertBenefitDollarBacked": {
-    "message": "Dollar-backed",
-    "description": "Benefit tag on the mUSD asset details convert section"
-  },
-  "musdAssetConvertBenefitNoLockups": {
-    "message": "No lockups",
-    "description": "Benefit tag on the mUSD asset details convert section"
-  },
-  "musdAssetConvertBenefitNoMetaMaskFee": {
-    "message": "No 1do fee",
-    "description": "Benefit tag on the mUSD asset details convert section"
-  },
-  "musdAssetConvertDescriptionHighlight": {
-    "message": "$1% annualized bonus",
-    "description": "Shown in Figma accent lime (#baf24a) inside the mUSD asset details convert section description. $1 is the APY percentage."
-  },
-  "musdAssetConvertDescriptionLead": {
-    "message": "Get a ",
-    "description": "Text before the green APY phrase on the mUSD asset details convert section"
-  },
-  "musdAssetConvertDescriptionTail": {
-    "message": " by converting USDC, USDT, and DAI to mUSD.",
-    "description": "Text after the green APY phrase on the mUSD asset details convert section"
-  },
-  "musdAssetConvertLearnMore": {
-    "message": "Learn more",
-    "description": "Button to open the mUSD support article from the asset details convert section"
-  },
-  "musdAssetConvertTitle": {
-    "message": "Convert your stablecoins",
-    "description": "Title of the convert section on the mUSD asset details page"
-  },
-  "musdAssetPositionBalance": {
-    "message": "Balance",
-    "description": "Label in the mUSD asset details Your position section"
-  },
-  "musdAssetPositionTitle": {
-    "message": "Your position",
-    "description": "Section title on the mUSD asset details page"
-  },
-  "musdAssetPositionValue": {
-    "message": "Value",
-    "description": "Label in the mUSD asset details Your position section (fiat value)"
-  },
-  "musdBonusExplanation": {
-    "message": "Convert your stablecoins to mUSD and earn\nup to a $1% annualized bonus that you can\nclaim daily. $2",
-    "description": "$1 is the bonus APY percentage, $2 is the 'Terms apply' link"
-  },
-  "musdBonusPoweredByRelay": {
-    "message": "Powered by Relay",
-    "description": "Attribution shown below mUSD bonus explanation on the conversion confirmation info popover"
-  },
-  "musdBoostDescription": {
-    "message": "Convert your stablecoins to mUSD and get a $1% annualized bonus.",
-    "description": "$1 is the bonus percentage (e.g., 3)"
-  },
-  "musdBoostTitle": {
-    "message": "Get $1% on your stablecoins",
-    "description": "$1 is the bonus percentage (e.g., 3)"
-  },
-  "musdBuyMusd": {
-    "message": "Buy mUSD"
-  },
-  "musdClaimSendingTo": {
-    "message": "Sending to",
-    "description": "Label for the account row in the mUSD claim confirmation screen when no wallet name is available"
-  },
-  "musdClaimSendingToWallet": {
-    "message": "Sending to $1",
-    "description": "Label for the account row in the mUSD claim confirmation screen, where $1 is the wallet name"
-  },
-  "musdClaimTitle": {
-    "message": "Claim bonus",
-    "description": "Title for the mUSD bonus claim confirmation screen"
-  },
-  "musdClaimableBonus": {
-    "message": "Claimable bonus",
-    "description": "Label for the claimable bonus row in the mUSD conversion confirmation screen"
-  },
-  "musdClaimableBonusTooltip": {
-    "message": "The annualized bonus you've earned for holding mUSD. Your bonus is claimable daily on Linea. $1",
-    "description": "$1 is the 'Terms apply' link"
-  },
-  "musdClaimableBonusTooltipAria": {
-    "message": "Claimable bonus details",
-    "description": "Accessible name for the info control that opens the claimable bonus explanation popover"
-  },
-  "musdConversionActivityTitle": {
-    "message": "Convert $1 to mUSD",
-    "description": "$1 is the source token symbol (e.g., USDC)"
-  },
-  "musdConversionBonusTooltipAria": {
-    "message": "Bonus details",
-    "description": "Accessible name for the info control that opens the mUSD conversion bonus explanation popover"
-  },
-  "musdConversionFeeTooltipDescription": {
-    "message": "mUSD conversion fees include network costs and may include provider fees. No 1do fee applies when you convert to mUSD.",
-    "description": "Body text shown above the fee breakdown in the transaction fee tooltip for mUSD conversion"
-  },
-  "musdConversionTitle": {
-    "message": "Converted to mUSD",
-    "description": "Title shown in the transaction details modal for mUSD conversion transactions"
-  },
-  "musdConversionToastFailed": {
-    "message": "mUSD conversion failed"
-  },
-  "musdConversionToastInProgress": {
-    "message": "Converting $1 → mUSD",
-    "description": "$1 is the source token symbol (e.g., USDC)"
-  },
-  "musdConversionToastSuccess": {
-    "message": "mUSD conversion successful"
-  },
-  "musdConversionToastSuccessDescription": {
-    "message": "Bonus will be claimable within a day."
-  },
-  "musdConvert": {
-    "message": "Convert"
-  },
-  "musdConvertAndGetBonus": {
-    "message": "Convert and get $1%",
-    "description": "$1 is the bonus percentage (e.g., 3)"
-  },
-  "musdEarnBonusPercentage": {
-    "message": "Earn a $1% bonus",
-    "description": "$1 is the bonus percentage (e.g., 3). Subtitle on the home token list mUSD Buy/Get CTA."
-  },
-  "musdEducationGetStarted": {
-    "message": "Get started"
-  },
-  "musdEducationHeadline": {
-    "message": "GET $1% ON\nSTABLECOINS",
-    "description": "$1 is the bonus APY percentage. Line break between ON and STABLECOINS matches splash layout."
-  },
-  "musdEducationNotNow": {
-    "message": "Not now"
-  },
-  "musdGetBonusPercentage": {
-    "message": "Get $1% mUSD bonus",
-    "description": "$1 is the bonus percentage (e.g., 3)"
-  },
-  "musdGetMusd": {
-    "message": "Get mUSD"
-  },
-  "musdMetaMaskUsd": {
-    "message": "1do USD",
-    "description": "Product name shown as the title line on the home token list mUSD Buy/Get CTA"
-  },
-  "musdSymbol": {
-    "message": "mUSD",
-    "description": "Token ticker for MetaMask USD (displayed next to balance on the mUSD asset details page)"
-  },
-  "musdTermsApply": {
-    "message": "Terms apply."
   },
   "mustSelectOne": {
     "message": "Must select at least 1 token."
@@ -4847,7 +4480,7 @@
     "message": "IPFS gateway URL is valid"
   },
   "onboardingAdvancedPrivacyNetworkDescription": {
-    "message": "When you use our default settings and configurations, we use Infura as our default remote procedure call (RPC) provider to offer the most reliable and private access to Ethereum data we can. In limited cases, we may use other RPC providers in order to provide the best experience for our users. You can choose your own RPC, but remember that any RPC will receive your IP address and Ethereum wallet to make transactions. To learn more about how Infura handles data for EVM accounts, read our $1; for Solana accounts, $2."
+    "message": "When you use our default settings and configurations, we use a default remote procedure call (RPC) provider to offer the most reliable and private access to Ethereum data we can. In limited cases, we may use other RPC providers in order to provide the best experience for our users. You can choose your own RPC, but remember that any RPC will receive your IP address and Ethereum wallet to make transactions. To learn more about how the default RPC provider handles data for EVM accounts, read our $1; for Solana accounts, $2."
   },
   "onboardingAdvancedPrivacyNetworkDescriptionCallToAction": {
     "message": "click here"
@@ -4943,7 +4576,7 @@
   },
   "openFullScreenForLedgerWebHid": {
     "message": "Go to full screen to connect your Ledger.",
-    "description": "Shown to the user on the confirm screen when they are viewing MetaMask in a popup window but need to connect their ledger via webhid."
+    "description": "Shown to the user on the confirm screen when they are viewing 1do in a popup window but need to connect their ledger via webhid."
   },
   "openInBlockExplorer": {
     "message": "Open in block explorer"
@@ -5143,14 +4776,6 @@
     "message": "$1 and $2",
     "description": "A list of allowed origins where $2 is the last origin of the list and $1 is the rest of the list separated by ','."
   },
-  "permission_signatureInsight": {
-    "message": "Display signature insights modal.",
-    "description": "The description for the `endowment:signature-insight` permission"
-  },
-  "permission_signatureInsightOrigin": {
-    "message": "See the origins of websites that initiate a signature request",
-    "description": "The description for the `signatureOrigin` caveat, to be used with the `endowment:signature-insight` permission"
-  },
   "permission_transactionInsight": {
     "message": "Fetch and display transaction insights.",
     "description": "The description for the `endowment:transaction-insight` permission"
@@ -5203,733 +4828,6 @@
   },
   "permittedChainToastUpdate": {
     "message": "$1 has access to $2."
-  },
-  "perps": {
-    "message": "Perps"
-  },
-  "perps24hVolume": {
-    "message": "24h Volume"
-  },
-  "perpsActivity": {
-    "message": "Activity"
-  },
-  "perpsAddExposure": {
-    "message": "Add exposure"
-  },
-  "perpsAddExposureDescriptionLong": {
-    "message": "Increase the size of your long position"
-  },
-  "perpsAddExposureDescriptionShort": {
-    "message": "Increase the size of your short position"
-  },
-  "perpsAddFunds": {
-    "message": "Add funds"
-  },
-  "perpsAddFundsDescription": {
-    "message": "Add funds to start trading perpetual contracts with leverage"
-  },
-  "perpsAddMargin": {
-    "message": "Add margin"
-  },
-  "perpsAddMarginDescription": {
-    "message": "Increase margin to reduce liquidation risk"
-  },
-  "perpsAddToFavorites": {
-    "message": "Add to favorites"
-  },
-  "perpsAutoClose": {
-    "message": "Auto close"
-  },
-  "perpsAvailable": {
-    "message": "available",
-    "description": "is the available balance amount"
-  },
-  "perpsAvailableBalance": {
-    "message": "Available Perps balance: "
-  },
-  "perpsAvailableToAdd": {
-    "message": "Available to add"
-  },
-  "perpsAvailableToClose": {
-    "message": "Available to close"
-  },
-  "perpsAvailableToSubtract": {
-    "message": "Available to subtract"
-  },
-  "perpsAvailableToTrade": {
-    "message": "Available to trade",
-    "description": "Label for the available balance that can be used for trading"
-  },
-  "perpsBatchCancelFailed": {
-    "message": "Failed to cancel one or more orders. Try again."
-  },
-  "perpsBatchCloseFailed": {
-    "message": "Failed to close one or more positions. Try again."
-  },
-  "perpsCancelAllOrders": {
-    "message": "Cancel all"
-  },
-  "perpsCancelOrder": {
-    "message": "Cancel order"
-  },
-  "perpsCandleIntervals": {
-    "message": "Candle intervals"
-  },
-  "perpsCandlePeriodDays": {
-    "message": "Days"
-  },
-  "perpsCandlePeriodHours": {
-    "message": "Hours"
-  },
-  "perpsCandlePeriodMinutes": {
-    "message": "Minutes"
-  },
-  "perpsCloseAll": {
-    "message": "Close all"
-  },
-  "perpsCloseAmount": {
-    "message": "Close Amount"
-  },
-  "perpsCloseLong": {
-    "message": "Close Long"
-  },
-  "perpsClosePartialMinNotional": {
-    "message": "Partial closes must be at least $1 in USD value. Increase the close amount or set the slider to 100%."
-  },
-  "perpsClosePosition": {
-    "message": "Close position"
-  },
-  "perpsCloseShort": {
-    "message": "Close Short"
-  },
-  "perpsConfirmCloseLong": {
-    "message": "Close Long"
-  },
-  "perpsConfirmCloseShort": {
-    "message": "Close Short"
-  },
-  "perpsConnectionTimeout": {
-    "message": "Connection timed out. Please try again."
-  },
-  "perpsContactSupport": {
-    "message": "Contact support"
-  },
-  "perpsCrossMarginNotSupportedDescription": {
-    "message": "1do Perps only support trading with isolated margin. You need to first close your cross margin position before you can trade on 1do."
-  },
-  "perpsCrossMarginNotSupportedTitle": {
-    "message": "Cross margin not supported"
-  },
-  "perpsDateToday": {
-    "message": "Today"
-  },
-  "perpsDateYesterday": {
-    "message": "Yesterday"
-  },
-  "perpsDepositActivityTitle": {
-    "message": "Funded Perps"
-  },
-  "perpsDepositFailed": {
-    "message": "Deposit could not be completed. Try again."
-  },
-  "perpsDepositFundsTitle": {
-    "message": "Deposit funds to Perps"
-  },
-  "perpsDepositTitle": {
-    "message": "Funded perps account"
-  },
-  "perpsDepositToastErrorDescription": {
-    "message": "Your funds were not added to Perps. Try again."
-  },
-  "perpsDepositToastErrorTitle": {
-    "message": "Perps deposit failed"
-  },
-  "perpsDepositToastPendingDescription": {
-    "message": "Your funds will be available to trade shortly."
-  },
-  "perpsDepositToastPendingTitle": {
-    "message": "Adding funds to Perps"
-  },
-  "perpsDepositToastSuccessDescription": {
-    "message": "Your funds are ready to trade."
-  },
-  "perpsDepositToastSuccessTitle": {
-    "message": "Funds added to Perps"
-  },
-  "perpsDeposits": {
-    "message": "Deposits"
-  },
-  "perpsDetails": {
-    "message": "Details"
-  },
-  "perpsDirection": {
-    "message": "Direction"
-  },
-  "perpsDisclaimer": {
-    "message": "Perpetual contracts are very risky, and you could suddenly and without notice lose your entire investment. You trade entirely at your own risk. Powered by Hyperliquid. Price chart powered by TradingView."
-  },
-  "perpsEmptyDescription": {
-    "message": "Trade perpetuals with leverage. Open your first position to get started."
-  },
-  "perpsEntryPrice": {
-    "message": "Entry price"
-  },
-  "perpsEstSize": {
-    "message": "Est. size"
-  },
-  "perpsEstimatedPnlAtStopLoss": {
-    "message": "Est. P&L at stop loss",
-    "description": "Label for estimated profit or loss when stop loss is hit"
-  },
-  "perpsEstimatedPnlAtTakeProfit": {
-    "message": "Est. P&L at take profit",
-    "description": "Label for estimated profit or loss when take profit is hit"
-  },
-  "perpsExploreMarkets": {
-    "message": "Explore markets"
-  },
-  "perpsFees": {
-    "message": "Fees"
-  },
-  "perpsFilterAll": {
-    "message": "All"
-  },
-  "perpsFilterCommodities": {
-    "message": "Commodities"
-  },
-  "perpsFilterCrypto": {
-    "message": "Crypto"
-  },
-  "perpsFilterForex": {
-    "message": "Forex"
-  },
-  "perpsFilterNew": {
-    "message": "New"
-  },
-  "perpsFilterStocks": {
-    "message": "Stocks"
-  },
-  "perpsFunding": {
-    "message": "Funding"
-  },
-  "perpsFundingPayments": {
-    "message": "Funding payments"
-  },
-  "perpsFundingRate": {
-    "message": "Funding Rate"
-  },
-  "perpsFundingRateTooltip": {
-    "message": "An hourly fee paid between traders to keep prices in line with the market. If the rate is positive, longs pay shorts. If negative, shorts pay longs."
-  },
-  "perpsGeoBlockedDescription": {
-    "message": "Perps trading isn't available in your location due to local restrictions or sanctions."
-  },
-  "perpsGeoBlockedTitle": {
-    "message": "Perps unavailable in your region"
-  },
-  "perpsGiveFeedback": {
-    "message": "Give us feedback"
-  },
-  "perpsIncludesPnl": {
-    "message": "includes P&L $1"
-  },
-  "perpsInsufficientMargin": {
-    "message": "Insufficient margin to place this order."
-  },
-  "perpsLearnBasics": {
-    "message": "Learn the basics of perps"
-  },
-  "perpsLearnMore": {
-    "message": "Learn more"
-  },
-  "perpsLeverage": {
-    "message": "Leverage"
-  },
-  "perpsLimit": {
-    "message": "Limit"
-  },
-  "perpsLimitPrice": {
-    "message": "Limit Price"
-  },
-  "perpsLimitPriceAboveCurrentPrice": {
-    "message": "Limit price is above current price"
-  },
-  "perpsLimitPriceBelowCurrentPrice": {
-    "message": "Limit price is below current price"
-  },
-  "perpsLimitPriceNearLiquidation": {
-    "message": "Current price is near the estimated liquidation price"
-  },
-  "perpsLiquidationDistance": {
-    "message": "Liquidation distance"
-  },
-  "perpsLiquidationPrice": {
-    "message": "Liquidation price"
-  },
-  "perpsLong": {
-    "message": "Long"
-  },
-  "perpsMargin": {
-    "message": "Margin"
-  },
-  "perpsMarginRiskWarning": {
-    "message": "Removing margin moves your liquidation price closer. Ensure you have sufficient buffer."
-  },
-  "perpsMarket": {
-    "message": "Market"
-  },
-  "perpsMarketNotFound": {
-    "message": "Market not found"
-  },
-  "perpsMarketNotFoundDescription": {
-    "message": "The market \"$1\" could not be found.",
-    "description": "$1 is the market symbol that was not found"
-  },
-  "perpsMarkets": {
-    "message": "Markets"
-  },
-  "perpsMid": {
-    "message": "Mid"
-  },
-  "perpsModify": {
-    "message": "Modify"
-  },
-  "perpsModifyPosition": {
-    "message": "Modify Position"
-  },
-  "perpsMore": {
-    "message": "More"
-  },
-  "perpsNetworkError": {
-    "message": "A network error occurred. Please try again."
-  },
-  "perpsNoMarketsFound": {
-    "message": "No markets found"
-  },
-  "perpsNoTransactions": {
-    "message": "No transactions yet"
-  },
-  "perpsOpenInterest": {
-    "message": "Open Interest"
-  },
-  "perpsOpenInterestTooltip": {
-    "message": "The combined value of all open positions for this perp"
-  },
-  "perpsOpenLong": {
-    "message": "Open Long $1",
-    "description": "$1 is the asset symbol (e.g., BTC, ETH)"
-  },
-  "perpsOpenOrders": {
-    "message": "Open Orders"
-  },
-  "perpsOpenShort": {
-    "message": "Open Short $1",
-    "description": "$1 is the asset symbol (e.g., BTC, ETH)"
-  },
-  "perpsOraclePrice": {
-    "message": "Oracle Price"
-  },
-  "perpsOraclePriceTooltip": {
-    "message": "The median of external prices reported by validators, used for computing funding rate"
-  },
-  "perpsOrderDate": {
-    "message": "Date"
-  },
-  "perpsOrderFailed": {
-    "message": "Order could not be placed. Try again."
-  },
-  "perpsOrderOriginalSize": {
-    "message": "Original size"
-  },
-  "perpsOrderRejected": {
-    "message": "Your order was rejected. Try again."
-  },
-  "perpsOrderStatus": {
-    "message": "Status"
-  },
-  "perpsOrderValue": {
-    "message": "Order value"
-  },
-  "perpsOrders": {
-    "message": "Orders"
-  },
-  "perpsPnl": {
-    "message": "P&L"
-  },
-  "perpsPosition": {
-    "message": "Position"
-  },
-  "perpsPositions": {
-    "message": "Positions"
-  },
-  "perpsRateLimitExceeded": {
-    "message": "Too many requests. Please wait and try again."
-  },
-  "perpsRecentActivity": {
-    "message": "Recent Activity"
-  },
-  "perpsReduceExposure": {
-    "message": "Reduce exposure"
-  },
-  "perpsReduceExposureDescriptionLong": {
-    "message": "Decrease the size of your long position"
-  },
-  "perpsReduceExposureDescriptionShort": {
-    "message": "Decrease the size of your short position"
-  },
-  "perpsReduceOnly": {
-    "message": "Reduce only"
-  },
-  "perpsRemoveFromFavorites": {
-    "message": "Remove from favorites"
-  },
-  "perpsRemoveMargin": {
-    "message": "Remove margin"
-  },
-  "perpsRemoveMarginDescription": {
-    "message": "Withdraw excess margin from position"
-  },
-  "perpsReturn": {
-    "message": "Return"
-  },
-  "perpsReversePosition": {
-    "message": "Reverse position"
-  },
-  "perpsReversePositionDescriptionLong": {
-    "message": "Flip your long position to a short"
-  },
-  "perpsReversePositionDescriptionShort": {
-    "message": "Flip your short position to a long"
-  },
-  "perpsSaveChanges": {
-    "message": "Save Changes",
-    "description": "Button text for saving TP/SL changes"
-  },
-  "perpsSearchMarkets": {
-    "message": "Search markets"
-  },
-  "perpsSeeAll": {
-    "message": "See All"
-  },
-  "perpsServiceUnavailable": {
-    "message": "Service temporarily unavailable. Please try again later."
-  },
-  "perpsShort": {
-    "message": "Short"
-  },
-  "perpsSize": {
-    "message": "Size"
-  },
-  "perpsSlippageExceeded": {
-    "message": "Slippage exceeded. Adjust your slippage tolerance and try again."
-  },
-  "perpsSortByFundingRate": {
-    "message": "Funding rate"
-  },
-  "perpsSortByHighToLow": {
-    "message": "High to low"
-  },
-  "perpsSortByLowToHigh": {
-    "message": "Low to high"
-  },
-  "perpsSortByOpenInterest": {
-    "message": "Open interest"
-  },
-  "perpsSortByPriceChange": {
-    "message": "Price change"
-  },
-  "perpsSortBySection": {
-    "message": "Sort by"
-  },
-  "perpsSortByTitle": {
-    "message": "Sort"
-  },
-  "perpsSortByVolume": {
-    "message": "Volume"
-  },
-  "perpsStartNewTrade": {
-    "message": "Start a new trade"
-  },
-  "perpsStartTrading": {
-    "message": "Start trading"
-  },
-  "perpsStats": {
-    "message": "Stats"
-  },
-  "perpsStatusCanceled": {
-    "message": "Canceled"
-  },
-  "perpsStatusCompleted": {
-    "message": "Completed"
-  },
-  "perpsStatusFilled": {
-    "message": "Filled"
-  },
-  "perpsStatusOpen": {
-    "message": "Open"
-  },
-  "perpsStatusQueued": {
-    "message": "Queued"
-  },
-  "perpsStatusRejected": {
-    "message": "Rejected"
-  },
-  "perpsStatusTriggered": {
-    "message": "Triggered"
-  },
-  "perpsStopLoss": {
-    "message": "Stop Loss",
-    "description": "Label for stop loss price input"
-  },
-  "perpsStopLossInvalidPrice": {
-    "message": "Stop loss must be $1 $2 price",
-    "description": "Validation error when stop loss price is on the wrong side of the reference price. $1 is above/below, $2 is current/entry."
-  },
-  "perpsSubmitting": {
-    "message": "Submitting...",
-    "description": "Loading text shown while an order is being submitted"
-  },
-  "perpsTakeProfit": {
-    "message": "Take Profit",
-    "description": "Label for take profit price input"
-  },
-  "perpsTakeProfitInvalidPrice": {
-    "message": "Take profit must be $1 $2 price",
-    "description": "Validation error when take profit price is on the wrong side of the reference price. $1 is above/below, $2 is current/entry."
-  },
-  "perpsToastCancelOrderFailed": {
-    "message": "Failed to cancel order",
-    "description": "Error toast text shown when cancelling a perps limit order fails"
-  },
-  "perpsToastCancelOrderSuccess": {
-    "message": "Order cancelled",
-    "description": "Success toast text shown when a perps limit order is successfully cancelled"
-  },
-  "perpsToastCloseFailed": {
-    "message": "Failed to close position",
-    "description": "Error toast text shown when closing a perps position fails"
-  },
-  "perpsToastCloseInProgress": {
-    "message": "Closing position",
-    "description": "In-progress toast text shown while closing a perps position"
-  },
-  "perpsToastClosePnlSubtitle": {
-    "message": "Your PnL is $1",
-    "description": "$1 is the formatted PnL percentage for a closed position"
-  },
-  "perpsToastMarginAddSuccess": {
-    "message": "Added $1 margin to $2 position",
-    "description": "$1 is the dollar-prefixed amount (e.g. $100) and $2 is the asset symbol for successful margin addition"
-  },
-  "perpsToastMarginAdjustmentFailed": {
-    "message": "Margin adjustment failed",
-    "description": "Error toast text shown when adding or removing margin fails"
-  },
-  "perpsToastMarginAdjustmentFailedDescriptionFallback": {
-    "message": "Unable to adjust margin. Please try again.",
-    "description": "Fallback description shown when margin adjustment fails without a usable error message."
-  },
-  "perpsToastMarginRemoveSuccess": {
-    "message": "Removed $1 margin from $2 position",
-    "description": "$1 is the dollar-prefixed amount (e.g. $100) and $2 is the asset symbol for successful margin removal"
-  },
-  "perpsToastOrderFailed": {
-    "message": "Order failed",
-    "description": "Error toast text shown when placing a perps order fails"
-  },
-  "perpsToastOrderFailedDescriptionFallback": {
-    "message": "Your funds have been returned to you",
-    "description": "Fallback order failure subtitle shown when no specific order error is available"
-  },
-  "perpsToastOrderFilled": {
-    "message": "Order filled",
-    "description": "Success toast text shown when a perps market order is filled"
-  },
-  "perpsToastOrderPlaced": {
-    "message": "Order placed",
-    "description": "Success toast text shown when a perps limit order is accepted"
-  },
-  "perpsToastOrderPlacementSubtitle": {
-    "message": "$1 $2 $3",
-    "description": "$1 is the order direction, $2 is the position size amount, and $3 is the asset symbol"
-  },
-  "perpsToastOrderSubmitted": {
-    "message": "Order submitted",
-    "description": "In-progress toast text shown while a perps order is being submitted"
-  },
-  "perpsToastPartialCloseFailed": {
-    "message": "Failed to partially close position",
-    "description": "Error toast text shown when a perps position is partially closed and fails"
-  },
-  "perpsToastPartialCloseInProgress": {
-    "message": "Partially closing position",
-    "description": "In-progress toast text shown while a perps position is being partially closed"
-  },
-  "perpsToastPartialCloseSuccess": {
-    "message": "Position partially closed",
-    "description": "Success toast text shown when a perps position is partially closed"
-  },
-  "perpsToastPositionStillActive": {
-    "message": "Your position is still active",
-    "description": "Subtitle shown in perps close failure toasts when the position remains open"
-  },
-  "perpsToastReverseFailed": {
-    "message": "Failed to reverse position",
-    "description": "Error toast text shown when reversing a perps position fails"
-  },
-  "perpsToastReverseInProgress": {
-    "message": "Reversing position",
-    "description": "In-progress toast text shown while reversing a perps position"
-  },
-  "perpsToastReverseSuccess": {
-    "message": "Position reversed",
-    "description": "Success toast text shown when a perps position is reversed"
-  },
-  "perpsToastSubmitInProgress": {
-    "message": "Submitting your trade",
-    "description": "In-progress toast text shown while a perps trade is being submitted"
-  },
-  "perpsToastTradeSuccess": {
-    "message": "Position closed",
-    "description": "Success toast text shown when a perps position is closed"
-  },
-  "perpsToastUpdateFailed": {
-    "message": "Failed to update TP/SL",
-    "description": "Error toast text shown when updating TP/SL settings fails"
-  },
-  "perpsToastUpdateInProgress": {
-    "message": "Updating TP/SL...",
-    "description": "In-progress toast text shown while updating TP/SL settings"
-  },
-  "perpsToastUpdateSuccess": {
-    "message": "TP/SL updated successfully",
-    "description": "Success toast text shown when TP/SL settings are updated"
-  },
-  "perpsTotalBalance": {
-    "message": "Total balance"
-  },
-  "perpsTradePerps": {
-    "message": "Trade perps"
-  },
-  "perpsTrades": {
-    "message": "Trades"
-  },
-  "perpsTriggerPrice": {
-    "message": "Trigger price"
-  },
-  "perpsTutorialChooseLeverageDescription": {
-    "message": "Leverage amplifies both gains and losses. With 40x leverage, a 1% price move equals a 40% gain or loss on your margin."
-  },
-  "perpsTutorialChooseLeverageTitle": {
-    "message": "Choose your leverage"
-  },
-  "perpsTutorialCloseAnytimeDescription": {
-    "message": "Exit whenever you want. You'll get back your margin, plus profits or minus losses."
-  },
-  "perpsTutorialCloseAnytimeTitle": {
-    "message": "Close any time"
-  },
-  "perpsTutorialContinue": {
-    "message": "Continue"
-  },
-  "perpsTutorialGoLongShortDescription": {
-    "message": "Pick a token to long or short, then set your order size."
-  },
-  "perpsTutorialGoLongShortSubtitle": {
-    "message": "Go long to profit if the price goes up. Go short to profit if the price goes down."
-  },
-  "perpsTutorialGoLongShortTitle": {
-    "message": "Go long or short on a token"
-  },
-  "perpsTutorialLetsGo": {
-    "message": "Let's go"
-  },
-  "perpsTutorialReadyToTradeDescription": {
-    "message": "Fund your perps account with any token and make your first trade in seconds."
-  },
-  "perpsTutorialReadyToTradeTitle": {
-    "message": "Ready to trade?"
-  },
-  "perpsTutorialSkip": {
-    "message": "Skip"
-  },
-  "perpsTutorialWatchLiquidationDescription": {
-    "message": "You'll lose your entire margin if the token hits your liquidation price. Higher leverage means less room to liquidation."
-  },
-  "perpsTutorialWatchLiquidationTitle": {
-    "message": "Watch out for liquidation"
-  },
-  "perpsTutorialWhatArePerpsDescription": {
-    "message": "1do now supports perpetual futures — aka perps — letting you trade on a token's price movement without buying it."
-  },
-  "perpsTutorialWhatArePerpsSubtitle": {
-    "message": "Here's how it works."
-  },
-  "perpsTutorialWhatArePerpsTitle": {
-    "message": "What are perps?"
-  },
-  "perpsUnrealizedPnl": {
-    "message": "Unrealized P&L"
-  },
-  "perpsWatchlist": {
-    "message": "Watchlist"
-  },
-  "perpsWithdraw": {
-    "message": "Withdraw"
-  },
-  "perpsWithdrawEstimatedTime": {
-    "message": "Estimated time"
-  },
-  "perpsWithdrawFailed": {
-    "message": "Withdrawal could not be completed. Try again."
-  },
-  "perpsWithdrawFee": {
-    "message": "Provider Fee"
-  },
-  "perpsWithdrawFundsTitle": {
-    "message": "Withdraw"
-  },
-  "perpsWithdrawInsufficient": {
-    "message": "Amount exceeds your available Perps balance."
-  },
-  "perpsWithdrawInvalidAddress": {
-    "message": "Enter a valid destination address."
-  },
-  "perpsWithdrawInvalidAmount": {
-    "message": "Enter a valid amount."
-  },
-  "perpsWithdrawMinNotice": {
-    "message": "Minimum withdrawal: $1 USDC",
-    "description": "$1 is the minimum amount (e.g. 1.01)"
-  },
-  "perpsWithdrawMinutesApprox": {
-    "message": "~$1 min",
-    "description": "$1 is the estimated number of minutes"
-  },
-  "perpsWithdrawNoAccount": {
-    "message": "No account selected. Select an account and try again."
-  },
-  "perpsWithdrawReceive": {
-    "message": "Receive"
-  },
-  "perpsWithdrawRoutesError": {
-    "message": "Could not load withdrawal limits. Try again later."
-  },
-  "perpsWithdrawToastErrorTitle": {
-    "message": "Withdrawal failed"
-  },
-  "perpsWithdrawToastSuccessDescription": {
-    "message": "We are processing $1. Funds typically arrive within a few minutes.",
-    "description": "$1 is the formatted withdrawal amount"
-  },
-  "perpsWithdrawToastSuccessTitle": {
-    "message": "Withdrawal submitted"
-  },
-  "perpsYouReceive": {
-    "message": "You receive"
-  },
-  "perpsYouWillReceive": {
-    "message": "You'll receive"
   },
   "personalAddressDetected": {
     "message": "Personal address detected. Input the token contract address."
@@ -6074,33 +4972,6 @@
   },
   "pushNotificationPositionLiquidatedTitle": {
     "message": "Position liquidated"
-  },
-  "pushNotificationShieldClaimCreatedDescriptionShort": {
-    "message": "Your claim has been created"
-  },
-  "pushNotificationShieldClaimCreatedTitle": {
-    "message": "Claim created"
-  },
-  "pushNotificationShieldClaimStatusUpdatedDescriptionShort": {
-    "message": "Your claim has been updated"
-  },
-  "pushNotificationShieldClaimStatusUpdatedTitle": {
-    "message": "Claim updated"
-  },
-  "pushNotificationShieldLearnMoreCta": {
-    "message": "Learn more"
-  },
-  "pushNotificationShieldSubscriptionCreatedDescriptionShort": {
-    "message": "Your plan is now active."
-  },
-  "pushNotificationShieldSubscriptionPaymentFailedDescriptionShort": {
-    "message": "Your plan has been paused due to payment failure."
-  },
-  "pushNotificationShieldSubscriptionTitle": {
-    "message": "1do Transaction Shield"
-  },
-  "pushNotificationShieldUpdatePaymentCta": {
-    "message": "Update payment"
   },
   "pushNotificationStopLossTriggeredDescriptionLong": {
     "message": "Your $1 long closed at your stop loss.",
@@ -6495,164 +5366,6 @@
   "reward": {
     "message": "Reward"
   },
-  "rewardsAuthFailDescription": {
-    "message": "An unknown error occurred while authenticating this account with the rewards program. Please try again later."
-  },
-  "rewardsAuthFailTitle": {
-    "message": "Unknown error."
-  },
-  "rewardsErrorMessagesAccountAlreadyRegistered": {
-    "message": "This account is already registered with another Rewards profile. Please switch account to continue."
-  },
-  "rewardsErrorMessagesFailedToClaimReward": {
-    "message": "Failed to claim reward. Please try again shortly."
-  },
-  "rewardsErrorMessagesRequestRejected": {
-    "message": "You rejected the request."
-  },
-  "rewardsErrorMessagesServiceNotAvailable": {
-    "message": "Service is not available at the moment. Please try again shortly."
-  },
-  "rewardsErrorMessagesSomethingWentWrong": {
-    "message": "Something went wrong. Please try again shortly."
-  },
-  "rewardsLinkAccount": {
-    "message": "Add account"
-  },
-  "rewardsLinkAccountError": {
-    "message": "Failed to add account"
-  },
-  "rewardsOnboardingIntroDescription": {
-    "message": "Earn points for your activity. \nAdvance through levels to unlock rewards."
-  },
-  "rewardsOnboardingIntroGeoCheckFailedDescription": {
-    "message": "We cannot determine if your country allows opting into the rewards program. Please check your connection and try again."
-  },
-  "rewardsOnboardingIntroGeoCheckFailedTitle": {
-    "message": "Cannot determine opt-in eligibility"
-  },
-  "rewardsOnboardingIntroGeoCheckRetry": {
-    "message": "Retry"
-  },
-  "rewardsOnboardingIntroRewardsAuthFailRetry": {
-    "message": "Retry"
-  },
-  "rewardsOnboardingIntroStepConfirm": {
-    "message": "Claim 250 points"
-  },
-  "rewardsOnboardingIntroStepConfirmLoadingEligibility": {
-    "message": "Checking eligiblity..."
-  },
-  "rewardsOnboardingIntroStepConfirmLoadingRegion": {
-    "message": "Checking region.."
-  },
-  "rewardsOnboardingIntroStepSkip": {
-    "message": "Not now"
-  },
-  "rewardsOnboardingIntroTitle": {
-    "message": "Rewards are here"
-  },
-  "rewardsOnboardingIntroUnsupportedRegionDescription": {
-    "message": "Rewards are not supported in your region yet. We are working on expanding access, so check back later."
-  },
-  "rewardsOnboardingIntroUnsupportedRegionTitle": {
-    "message": "Region not supported"
-  },
-  "rewardsOnboardingStep1Description": {
-    "message": "Every swap and perps trade you make in 1do gets you closer to rewards. Add your accounts and watch your points add up."
-  },
-  "rewardsOnboardingStep1Title": {
-    "message": "Earn points on every trade"
-  },
-  "rewardsOnboardingStep2Description": {
-    "message": "Hit points milestones to get perks like 50% off perps fees, exclusive tokens, and a free 1do Metal Card."
-  },
-  "rewardsOnboardingStep2Title": {
-    "message": "Level up for bigger perks"
-  },
-  "rewardsOnboardingStep3Description": {
-    "message": "You can earn points in the extension, but you’ll need the mobile app to trade perps, track your progress, and redeem rewards."
-  },
-  "rewardsOnboardingStep3Title": {
-    "message": "Unlock rewards on mobile"
-  },
-  "rewardsOnboardingStep4LegalDisclaimer": {
-    "message": "By clicking \"Claim points\", you're agreeing to our $1. We'll track your on-chain activity to reward you automatically. $2",
-    "description": "$1 is the Terms and Privacy Notice link, $2 is the Learn more link"
-  },
-  "rewardsOnboardingStep4LegalDisclaimerLearnMoreLink": {
-    "message": "Learn more"
-  },
-  "rewardsOnboardingStep4LegalDisclaimerTermsLink": {
-    "message": "Terms and Privacy Notice"
-  },
-  "rewardsOnboardingStep4OptInError": {
-    "message": "Opt-in failed"
-  },
-  "rewardsOnboardingStep4ReferralCodeError": {
-    "message": "Invalid referral code"
-  },
-  "rewardsOnboardingStep4ReferralCodeInput": {
-    "message": "Use a referral code to earn 250 points"
-  },
-  "rewardsOnboardingStep4ReferralCodePlaceholder": {
-    "message": "Referral code (optional)"
-  },
-  "rewardsOnboardingStep4ReferralCodeUnknownError": {
-    "message": "Referral code couldn’t be validated."
-  },
-  "rewardsOnboardingStep4ReferralCodeUnknownErrorDescription": {
-    "message": "Check your connection and try again."
-  },
-  "rewardsOnboardingStep4Title": {
-    "message": "You'll earn 250 points when you sign up!"
-  },
-  "rewardsOnboardingStep4TitleWithReferralCode": {
-    "message": "You'll earn 500 points when you sign up with a code!"
-  },
-  "rewardsOnboardingStepConfirm": {
-    "message": "Next"
-  },
-  "rewardsOnboardingStepOptIn": {
-    "message": "Claim points"
-  },
-  "rewardsOptInVerifyingReferralCode": {
-    "message": "Verifying referral code...",
-    "description": "Text shown while verifying a referral code during rewards opt-in"
-  },
-  "rewardsPointsBalance": {
-    "message": "$1 points",
-    "description": "$1 is the formatted number of rewards points"
-  },
-  "rewardsPointsBalance_couldntLoad": {
-    "message": "Couldn't load",
-    "description": "Text shown when points balance couldn't be loaded"
-  },
-  "rewardsPointsIcon": {
-    "message": "Rewards points",
-    "description": "Alt text for the rewards points icon"
-  },
-  "rewardsQRCodeDescription": {
-    "message": "You'll need the app to track your progress and redeem rewards. Scan this QR code and we'll help you import your accounts."
-  },
-  "rewardsQRCodeTitle": {
-    "message": "Get the mobile app"
-  },
-  "rewardsSignInFailed": {
-    "message": "Failed to sign in",
-    "description": "Text shown when the opt-in sign attempt failed, with a retry affordance"
-  },
-  "rewardsSignInToViewPoints": {
-    "message": "Sign in to view points",
-    "description": "Text shown when user needs to sign in to view their rewards points"
-  },
-  "rewardsSignUp": {
-    "message": "Sign up for Rewards"
-  },
-  "rewardsSigningIn": {
-    "message": "Signing in...",
-    "description": "Text shown while the user is signing in to view their rewards points"
-  },
   "rpcNameOptional": {
     "message": "RPC Name (Optional)"
   },
@@ -6720,16 +5433,6 @@
   },
   "securityAlert": {
     "message": "Security alert from $1 and $2"
-  },
-  "securityAlerts": {
-    "message": "Security alerts"
-  },
-  "securityAlertsDescription": {
-    "message": "This feature alerts you to malicious or unusual activity by actively reviewing transaction and signature requests. $1",
-    "description": "Link to learn more about security alerts"
-  },
-  "securityAlertsDescriptionV2": {
-    "message": "This feature alerts you to malicious activity by actively reviewing transaction and signature requests. $1"
   },
   "securityAndPassword": {
     "message": "Security and password"
@@ -6926,615 +5629,6 @@
   "settingsSearchRequestHere": {
     "message": "Request here"
   },
-  "shieldClaim": {
-    "message": "Submit a claim"
-  },
-  "shieldClaimChainNotSupported": {
-    "message": "This chain is not supported."
-  },
-  "shieldClaimDeleteDraft": {
-    "message": "Delete draft"
-  },
-  "shieldClaimDeleteDraftDescription": {
-    "message": "Your claim draft has been deleted."
-  },
-  "shieldClaimDeletedDraft": {
-    "message": "Draft deleted"
-  },
-  "shieldClaimDescription": {
-    "message": "Description of case"
-  },
-  "shieldClaimDescriptionPlaceholder": {
-    "message": "Provide a brief summary of the incident"
-  },
-  "shieldClaimDetails": {
-    "message": "You may file a single claim per incident within $1 days of the incident. $2",
-    "description": "The $1 is the number of days and $2 is a link to the full coverage policy"
-  },
-  "shieldClaimDetailsViewClaims": {
-    "message": "This claim is being reviewed by our team. We will notify you when it has been approved by email. View the full coverage policy $1.",
-    "description": "The $1 is a link to the full coverage policy"
-  },
-  "shieldClaimDraftDeleteFailed": {
-    "message": "Deleting draft failed"
-  },
-  "shieldClaimDraftDeleteFailedDescription": {
-    "message": "Unable to delete your claim draft. Please try again."
-  },
-  "shieldClaimDraftSaveFailed": {
-    "message": "Saving draft failed"
-  },
-  "shieldClaimDraftSaveFailedDescription": {
-    "message": "Unable to save your claim draft. Please try again."
-  },
-  "shieldClaimDraftSaved": {
-    "message": "Draft saved"
-  },
-  "shieldClaimDraftSavedDescription": {
-    "message": "Your claim draft has been saved."
-  },
-  "shieldClaimDuplicateClaimExists": {
-    "message": "A claim has already been submitted for this transaction hash."
-  },
-  "shieldClaimEmail": {
-    "message": "Email"
-  },
-  "shieldClaimEmailHelpText": {
-    "message": "We'll use this email to keep you informed with updates."
-  },
-  "shieldClaimFileErrorCountExceeded": {
-    "message": "Number of files exceeds the maximum allowed count."
-  },
-  "shieldClaimFileErrorInvalidType": {
-    "message": "Invalid file type."
-  },
-  "shieldClaimFileErrorSizeExceeded": {
-    "message": "Total file size exceeds the maximum allowed size."
-  },
-  "shieldClaimFileUploader": {
-    "message": "Image upload"
-  },
-  "shieldClaimFileUploaderAcceptText": {
-    "message": "PDF, PNG, JPG (Max $1MB)",
-    "description": "The $1 is the maximum file size in MB"
-  },
-  "shieldClaimFileUploaderHelpText": {
-    "message": "If you have any additional evidence, please upload it here."
-  },
-  "shieldClaimGroupActive": {
-    "message": "Active claims"
-  },
-  "shieldClaimGroupActiveNote": {
-    "message": "Note: You can have a maximum of $1 drafts and $2 active claims at a single time.",
-    "description": "The $1 is the maximum number of drafts and $2 is the maximum number of active claims"
-  },
-  "shieldClaimGroupCompleted": {
-    "message": "Completed claims"
-  },
-  "shieldClaimGroupDrafts": {
-    "message": "Drafts"
-  },
-  "shieldClaimGroupNoCompletedClaims": {
-    "message": "No completed claims"
-  },
-  "shieldClaimGroupNoCompletedClaimsDescription": {
-    "message": "Track your completed claims here."
-  },
-  "shieldClaimGroupNoOpenClaims": {
-    "message": "No open claims"
-  },
-  "shieldClaimGroupNoOpenClaimsDescription": {
-    "message": "Track the status of your claims here."
-  },
-  "shieldClaimGroupRejected": {
-    "message": "Rejected claims"
-  },
-  "shieldClaimImpactedTxHash": {
-    "message": "Impacted transaction hash"
-  },
-  "shieldClaimImpactedTxHashHelpText": {
-    "message": "Also known as TXID, hash ID, or transaction ID."
-  },
-  "shieldClaimImpactedTxHashHelpTextLink": {
-    "message": "Need help finding it?"
-  },
-  "shieldClaimImpactedTxHashNotEligible": {
-    "message": "This transaction is not done within 1do, hence it is not eligible for claims"
-  },
-  "shieldClaimImpactedWalletAddress": {
-    "message": "Impacted wallet address"
-  },
-  "shieldClaimIncidentDetails": {
-    "message": "Incident details"
-  },
-  "shieldClaimInvalidChainId": {
-    "message": "Please enter a valid chain ID"
-  },
-  "shieldClaimInvalidEmail": {
-    "message": "Please enter a valid email address"
-  },
-  "shieldClaimInvalidRequired": {
-    "message": "This field is required"
-  },
-  "shieldClaimInvalidTxHash": {
-    "message": "Please enter a valid transaction hash"
-  },
-  "shieldClaimInvalidWalletAddress": {
-    "message": "Please enter a valid wallet address"
-  },
-  "shieldClaimMaxClaimsLimitExceeded": {
-    "message": "You have reached the maximum limit of open claims. Please contact support if you need to submit additional claims."
-  },
-  "shieldClaimMaxDraftsReached": {
-    "message": "You have reached the maximum number of drafts. Please delete a draft to save a new one."
-  },
-  "shieldClaimNetwork": {
-    "message": "Select network"
-  },
-  "shieldClaimPersonalDetails": {
-    "message": "Personal details"
-  },
-  "shieldClaimReimbursementWalletAddress": {
-    "message": "Wallet address for reimbursement"
-  },
-  "shieldClaimReimbursementWalletAddressHelpText": {
-    "message": "Please ensure this is not a compromised wallet."
-  },
-  "shieldClaimSameWalletAddressesError": {
-    "message": "Impacted wallet address and reimbursement wallet address must be different."
-  },
-  "shieldClaimSaveAsDraft": {
-    "message": "Save as draft"
-  },
-  "shieldClaimSelectAccount": {
-    "message": "Select an account"
-  },
-  "shieldClaimSelectNetwork": {
-    "message": "Select a network"
-  },
-  "shieldClaimSignatureCoverageNotCovered": {
-    "message": "Signature coverage not found for the given transaction hash."
-  },
-  "shieldClaimSubmissionWindowExpired": {
-    "message": "Submission window expired. Claims must be filed within $1 days of the incident.",
-    "description": "The $1 is the number of days"
-  },
-  "shieldClaimSubmit": {
-    "message": "Submit a claim"
-  },
-  "shieldClaimSubmitError": {
-    "message": "Claim submission failed"
-  },
-  "shieldClaimSubmitSuccess": {
-    "message": "Claim submission received"
-  },
-  "shieldClaimSubmitSuccessDescription": {
-    "message": "Your claim has been submitted. We'll review it and provide updates by email."
-  },
-  "shieldClaimTransactionNotFound": {
-    "message": "Transaction not found on chain."
-  },
-  "shieldClaimTransactionNotFromWalletAddress": {
-    "message": "Transaction hash not from wallet address."
-  },
-  "shieldClaimTransactionNotSuccessful": {
-    "message": "Transaction not successful on chain."
-  },
-  "shieldClaimViewGuidelines": {
-    "message": "View guide"
-  },
-  "shieldClaimWalletOwnershipValidationFailed": {
-    "message": "Wallet ownership validation failed."
-  },
-  "shieldClaimsLastEdited": {
-    "message": "Last edited: $1",
-    "description": "The $1 is the date"
-  },
-  "shieldClaimsListTitle": {
-    "message": "Claims"
-  },
-  "shieldClaimsNumber": {
-    "message": "Claim #$1",
-    "description": "The $1 is the claim number"
-  },
-  "shieldClaimsTabHistory": {
-    "message": "Claim history"
-  },
-  "shieldClaimsTabPending": {
-    "message": "Claims"
-  },
-  "shieldConfirmMembership": {
-    "message": "Confirm plan"
-  },
-  "shieldCoverageAlertCovered": {
-    "message": "You're protected up to $2 with 1do Transaction Shield. $1."
-  },
-  "shieldCoverageAlertHighRiskTransaction": {
-    "message": "This is a high risk transaction, so it isn't protected by 1do Transaction Shield. $1."
-  },
-  "shieldCoverageAlertMessageChainNotSupported": {
-    "message": "This chain is not supported, so it isn't protected by 1do Transaction Shield. $1"
-  },
-  "shieldCoverageAlertMessageLearnHowCoverageWorks": {
-    "message": "See what's covered"
-  },
-  "shieldCoverageAlertMessagePaused": {
-    "message": "There was an issue with your 1do Transaction Shield plan payment. Please update your payment method to resume coverage."
-  },
-  "shieldCoverageAlertMessagePausedAcknowledgeButton": {
-    "message": "Update payment method"
-  },
-  "shieldCoverageAlertMessagePotentialRisks": {
-    "message": "This transaction has potential risks, so it isn't protected by 1do Transaction Shield. $1"
-  },
-  "shieldCoverageAlertMessageSignatureNotSupported": {
-    "message": "This signature isn't supported, so it isn't protected by 1do Transaction Shield. $1"
-  },
-  "shieldCoverageAlertMessageTitle": {
-    "message": "This transaction isn't covered"
-  },
-  "shieldCoverageAlertMessageTitleCovered": {
-    "message": "This transaction is covered"
-  },
-  "shieldCoverageAlertMessageTitlePaused": {
-    "message": "Transaction Shield paused"
-  },
-  "shieldCoverageAlertMessageTitleSignatureRequest": {
-    "message": "This signature request isn't covered"
-  },
-  "shieldCoverageAlertMessageTitleSignatureRequestCovered": {
-    "message": "This signature request is covered"
-  },
-  "shieldCoverageAlertMessageTokenTrustSignalWarning": {
-    "message": "This token shows strong signs of malicious behavior. Continuing may result in loss of funds. $1."
-  },
-  "shieldCoverageAlertMessageTxTypeNotSupported": {
-    "message": "This transaction type is not supported, so it isn't protected by 1do Transaction Shield. $1"
-  },
-  "shieldCoverageAlertMessageUnknown": {
-    "message": "This request can't be verified, so it isn't protected by 1do Transaction Shield. $1."
-  },
-  "shieldCoverageEnding": {
-    "message": "Shield coverage ends soon"
-  },
-  "shieldCoverageEndingAction": {
-    "message": "Renew"
-  },
-  "shieldCoverageEndingDescription": {
-    "message": "Plan ends on $1.",
-    "description": "The $1 is the date"
-  },
-  "shieldCovered": {
-    "message": "Covered"
-  },
-  "shieldEntryModalGetStarted": {
-    "message": "Start 14-day free trial"
-  },
-  "shieldEntryModalSubtitleA": {
-    "message": "Transaction Shield provides protection up to $1 and 24/7 priority support.",
-    "description": "The $1 is the amount of transaction protection"
-  },
-  "shieldEntryModalSubtitleB": {
-    "message": "Transact with added confidence with up to $1 in protection and 24/7 priority support.",
-    "description": "The $1 is the amount of transaction protection"
-  },
-  "shieldEntryModalTitleA": {
-    "message": "Transact with added confidence"
-  },
-  "shieldEntryModalTitleB": {
-    "message": "Introducing Transaction Shield"
-  },
-  "shieldErrorPayerAddressAlreadyUsed": {
-    "message": "This address is already linked to another account. Use a different address to subscribe."
-  },
-  "shieldEstimatedChangesMonthlyTooltipText": {
-    "message": "Authorize $1/month for 12 months ($2 total). You'll be billed monthly, not the full amount now."
-  },
-  "shieldFooterAgreement": {
-    "message": "By continuing, I agree to Transaction Shield $1"
-  },
-  "shieldManagePlan": {
-    "message": "Manage plan"
-  },
-  "shieldNotCovered": {
-    "message": "Not covered"
-  },
-  "shieldPastPlansTitle": {
-    "message": "Past details"
-  },
-  "shieldPaused": {
-    "message": "Paused"
-  },
-  "shieldPaymentPaused": {
-    "message": "Transaction Shield paused"
-  },
-  "shieldPaymentPausedActionCardPayment": {
-    "message": "Update"
-  },
-  "shieldPaymentPausedActionCryptoPayment": {
-    "message": "Update"
-  },
-  "shieldPaymentPausedActionUnexpectedError": {
-    "message": "View"
-  },
-  "shieldPaymentPausedDescriptionCardPayment": {
-    "message": "Card payment failed."
-  },
-  "shieldPaymentPausedDescriptionCryptoPayment": {
-    "message": "Insufficient token balance."
-  },
-  "shieldPaymentPausedDescriptionUnexpectedError": {
-    "message": "An unexpected error occurred."
-  },
-  "shieldPlanAnnual": {
-    "message": "Annual"
-  },
-  "shieldPlanAnnualPrice": {
-    "message": "$1/year",
-    "description": "The $1 is the price of the annual plan"
-  },
-  "shieldPlanBillingDate": {
-    "message": "Billing date"
-  },
-  "shieldPlanCard": {
-    "message": "Card"
-  },
-  "shieldPlanCryptoMonthlyNote": {
-    "message": "Total monthly fees pre-approved for a year"
-  },
-  "shieldPlanDetails": {
-    "message": "What you get"
-  },
-  "shieldPlanDetails1": {
-    "message": "Free $1-day trial",
-    "description": "The $1 is the number of days"
-  },
-  "shieldPlanDetails2": {
-    "message": "Up to $1 in transaction protection",
-    "description": "The $1 is the amount of transaction protection"
-  },
-  "shieldPlanDetails3": {
-    "message": "24/7 access to priority live chat support"
-  },
-  "shieldPlanDetailsRewards": {
-    "message": "Earn $1 points per $2",
-    "description": "The $1 is the number of points and $2 plan interval (month or year)"
-  },
-  "shieldPlanDetailsRewardsDescription": {
-    "message": "This offer is only available during Rewards seasons. Points are given when free trial ends to users signed up for Rewards."
-  },
-  "shieldPlanDetailsRewardsTitle": {
-    "message": "Rewards"
-  },
-  "shieldPlanErrorText": {
-    "message": "Couldn’t connect to Transaction Shield"
-  },
-  "shieldPlanFooterNoteMonthly": {
-    "message": "Billed monthly, cancel anytime"
-  },
-  "shieldPlanFooterNoteYearly": {
-    "message": "Billed yearly, cancel anytime"
-  },
-  "shieldPlanMonthly": {
-    "message": "Monthly"
-  },
-  "shieldPlanMonthlyPrice": {
-    "message": "$1/month",
-    "description": "The $1 is the price of the monthly plan"
-  },
-  "shieldPlanPayWith": {
-    "message": "Pay with"
-  },
-  "shieldPlanPayWithCard": {
-    "message": "Pay with card"
-  },
-  "shieldPlanPayWithToken": {
-    "message": "Pay with $1",
-    "description": "The $1 is token"
-  },
-  "shieldPlanPaymentTitle": {
-    "message": "Change payment method"
-  },
-  "shieldPlanSave": {
-    "message": "Save 17%"
-  },
-  "shieldPlanSelectToken": {
-    "message": "Select a token"
-  },
-  "shieldPlanTitle": {
-    "message": "Choose your plan"
-  },
-  "shieldPlanYearly": {
-    "message": "Yearly"
-  },
-  "shieldStartNowCTA": {
-    "message": "Start now"
-  },
-  "shieldStartNowCTAWithTrial": {
-    "message": "Start free trial"
-  },
-  "shieldTx": {
-    "message": "Transaction Shield"
-  },
-  "shieldTxBillingAccount": {
-    "message": "Billing account"
-  },
-  "shieldTxCancelDetails": {
-    "message": "If you cancel, your wallet and transactions will not be covered starting $1.",
-    "description": "The $1 is the date subscription ends"
-  },
-  "shieldTxCancelImmediateDetails": {
-    "message": "If you cancel, your wallet and transactions will not be covered."
-  },
-  "shieldTxCancelNotAllowed": {
-    "message": "Your subscription cannot be cancelled at the moment."
-  },
-  "shieldTxCancelNotAllowedPendingVerification": {
-    "message": "Your subscription cannot be cancelled due to pending verification."
-  },
-  "shieldTxCancelWhenPausedDetails": {
-    "message": "Your plan isn't active while paused. If you cancel, your plan will immediately end."
-  },
-  "shieldTxDetails1DescriptionTrial": {
-    "message": "Free for $1 days, then $2",
-    "description": "The $1 is the number of days and the $2 is the price of the plan"
-  },
-  "shieldTxDetails1Title": {
-    "message": "1do Transaction Shield"
-  },
-  "shieldTxDetails2Description": {
-    "message": "$1, next billing on $2",
-    "description": "The $1 is interval and the $2 is the date of next billing"
-  },
-  "shieldTxDetails2Title": {
-    "message": "Billing cycle"
-  },
-  "shieldTxDetails3DescriptionCrypto": {
-    "message": "Crypto ($1)",
-    "description": "The $1 is the token symbol"
-  },
-  "shieldTxDetails3DescriptionCryptoWithAccount": {
-    "message": "Crypto ($1), $2",
-    "description": "The $1 is the token symbol and the $2 is the account"
-  },
-  "shieldTxDetails3Title": {
-    "message": "Payment method"
-  },
-  "shieldTxDetailsManage": {
-    "message": "Manage"
-  },
-  "shieldTxDetailsTitle": {
-    "message": "Plan details"
-  },
-  "shieldTxMembershipActive": {
-    "message": "Active plan"
-  },
-  "shieldTxMembershipBenefits": {
-    "message": "Your benefits"
-  },
-  "shieldTxMembershipBenefits1Description": {
-    "message": "Secures assets on covered transactions"
-  },
-  "shieldTxMembershipBenefits1Title": {
-    "message": "Up to $1 protection",
-    "description": "The $1 is the amount of transaction protection"
-  },
-  "shieldTxMembershipBenefits2Description": {
-    "message": "Get faster, dedicated support anytime"
-  },
-  "shieldTxMembershipBenefits2Title": {
-    "message": "Priority support"
-  },
-  "shieldTxMembershipBenefits3Description": {
-    "message": "Get $1 points/$2",
-    "description": "The $1 is the number of points and the $2 is the interval"
-  },
-  "shieldTxMembershipBenefits3DescriptionInactive": {
-    "message": "Get $1 points/$2",
-    "description": "The $1 is the number of points and the $2 is the interval"
-  },
-  "shieldTxMembershipBenefits3LinkRewards": {
-    "message": "Link"
-  },
-  "shieldTxMembershipBenefits3SignUp": {
-    "message": "Sign up"
-  },
-  "shieldTxMembershipBenefits3Title": {
-    "message": "Earn season rewards"
-  },
-  "shieldTxMembershipBenefitsInactive": {
-    "message": "What you get"
-  },
-  "shieldTxMembershipBenefitsViewAll": {
-    "message": "View all"
-  },
-  "shieldTxMembershipBillingDetailsViewBillingHistory": {
-    "message": "Manage billing"
-  },
-  "shieldTxMembershipCancel": {
-    "message": "Cancel plan"
-  },
-  "shieldTxMembershipCancelNotification": {
-    "message": "Your plan will be cancelled on $1.",
-    "description": "The $1 is the date"
-  },
-  "shieldTxMembershipCancelledDate": {
-    "message": "You cancelled your plan on $1",
-    "description": "The $1 is the date"
-  },
-  "shieldTxMembershipErrorInsufficientFunds": {
-    "message": "Your plan ends on $1. Renew now to continue your benefits.",
-    "description": "The $1 is the date subscription ends"
-  },
-  "shieldTxMembershipErrorPausedCard": {
-    "message": "Your plan has been paused due to a failed card payment."
-  },
-  "shieldTxMembershipErrorPausedCardAction": {
-    "message": "Update card details"
-  },
-  "shieldTxMembershipErrorPausedCardTooltip": {
-    "message": "Your payment was declined. Please update your payment method to continue your coverage."
-  },
-  "shieldTxMembershipErrorPausedCryptoInsufficientFunds": {
-    "message": "Plan paused due to insufficient funds. Payment updates may take up to $1 hours.",
-    "description": "The $1 is the number of hours"
-  },
-  "shieldTxMembershipErrorPausedCryptoInsufficientFundsAction": {
-    "message": "Add funds"
-  },
-  "shieldTxMembershipErrorPausedCryptoTooltip": {
-    "message": "Insufficient token balance in your wallet. Click retry after funding your wallet."
-  },
-  "shieldTxMembershipErrorPausedUnexpected": {
-    "message": "Plan paused due to an unexpected error."
-  },
-  "shieldTxMembershipErrorPausedUnexpectedAction": {
-    "message": "Contact support"
-  },
-  "shieldTxMembershipFreeTrial": {
-    "message": "Free trial"
-  },
-  "shieldTxMembershipFreeTrialDaysLeft": {
-    "message": "You have $1 days left on your trial",
-    "description": "The $1 is the number of days left"
-  },
-  "shieldTxMembershipId": {
-    "message": "Member ID"
-  },
-  "shieldTxMembershipInactive": {
-    "message": "Inactive plan"
-  },
-  "shieldTxMembershipMakeClaim": {
-    "message": "Make a claim"
-  },
-  "shieldTxMembershipPaused": {
-    "message": "Paused"
-  },
-  "shieldTxMembershipRenew": {
-    "message": "Renew plan"
-  },
-  "shieldTxMembershipRenewDescription": {
-    "message": "Reactivate for $1",
-    "description": "The $1 is the price of the plan"
-  },
-  "shieldTxMembershipResubscribe": {
-    "message": "Restart plan"
-  },
-  "shieldTxMembershipSubmitCase": {
-    "message": "Submit a claim"
-  },
-  "shieldTxPastPlans": {
-    "message": "Past plans"
-  },
-  "shieldTxPastPlansMonthly": {
-    "message": "Monthly plan"
-  },
-  "shieldTxPastPlansYearly": {
-    "message": "Yearly plan"
-  },
-  "shieldTxViewPastInvoice": {
-    "message": "View past invoice"
-  },
   "show": {
     "message": "Show"
   },
@@ -7728,7 +5822,7 @@
     "message": "Don't show interstitial screen when opening deep links"
   },
   "skipDeepLinkInterstitialDescription": {
-    "message": "Enabling this option will skip the interstitial screen that is shown when opening deep links in 1do. A \"deep link\" is a link like https://link.metamask.io/home that will cause 1do to open; these links can be obfuscated by others. The interstitial screen is designed to protect you from accidentally opening pages within 1do that might display your accounts, tokens, history, balances, settings, or other potentially sensitive information. This setting only applies to links signed by 1do."
+    "message": "Enabling this option will skip the interstitial screen that is shown when opening deep links in 1do. A \"deep link\" is a link like https://link.1do.io/home that will cause 1do to open; these links can be obfuscated by others. The interstitial screen is designed to protect you from accidentally opening pages within 1do that might display your accounts, tokens, history, balances, settings, or other potentially sensitive information. This setting only applies to links signed by 1do."
   },
   "skipLinkConfirmationScreens": {
     "message": "Skip link confirmation screens"
@@ -7780,12 +5874,6 @@
   },
   "smartContracts": {
     "message": "Smart contracts"
-  },
-  "smartSwapsErrorNotEnoughFunds": {
-    "message": "Not enough funds for a smart swap."
-  },
-  "smartSwapsErrorUnavailable": {
-    "message": "Smart Swaps are temporarily unavailable."
   },
   "smartTransactionCancelled": {
     "message": "Your transaction was canceled"
@@ -8165,7 +6253,7 @@
   },
   "stxFailureDescription": {
     "message": "Sudden market changes can cause failures. If the problem persists, please reach out to $1.",
-    "description": "This message is shown to a user if their swap fails. The $1 will be replaced by support.metamask.io"
+    "description": "This message is shown to a user if their swap fails. The $1 will be replaced by support.1do.io"
   },
   "stxOptInDescriptionV2": {
     "message": "Turn on Smart Transactions for more reliable and secure transactions. $1"
@@ -8234,7 +6322,7 @@
   },
   "supportedLanguagesSectionTitle": {
     "message": "Supported languages",
-    "description": "Section heading on the language settings screen for locales actively maintained by MetaMask."
+    "description": "Section heading on the language settings screen for locales actively maintained by 1do."
   },
   "surveyConversion": {
     "message": "Take our survey"
@@ -8315,7 +6403,7 @@
   },
   "swapFailedErrorDescriptionWithSupportLink": {
     "message": "Transaction failures happen and we are here to help. If this issue persists, you can reach our customer support at $1 for further assistance.",
-    "description": "This message is shown to a user if their swap fails. The $1 will be replaced by support.metamask.io"
+    "description": "This message is shown to a user if their swap fails. The $1 will be replaced by support.1do.io"
   },
   "swapFailedErrorTitle": {
     "message": "Swap failed"
@@ -8359,7 +6447,7 @@
   },
   "swapIncludesMMFee": {
     "message": "Includes a $1% 1do fee.",
-    "description": "Provides information about the fee that MetaMask takes for swaps. $1 is a decimal number."
+    "description": "Provides information about the fee that 1do takes for swaps. $1 is a decimal number."
   },
   "swapLearnMore": {
     "message": "Learn more about Swaps"
@@ -8369,13 +6457,6 @@
   },
   "swapMaxSlippage": {
     "message": "Max slippage"
-  },
-  "swapMetaMaskFee": {
-    "message": "1do fee"
-  },
-  "swapMetaMaskFeeDescription": {
-    "message": "The fee of $1% is automatically factored into this quote. You pay it in exchange for a license to use 1do's liquidity provider information aggregation software.",
-    "description": "Provides information about the fee that MetaMask takes for swaps. $1 is a decimal number."
   },
   "swapNQuotesWithDot": {
     "message": "$1 quotes.",
@@ -8545,7 +6626,7 @@
   },
   "switchToMetaMaskDefaultRpc": {
     "message": "Switch to 1do default RPC",
-    "description": "Button text to switch the default RPC endpoint to MetaMask default RPC"
+    "description": "Button text to switch the default RPC endpoint to 1do default RPC"
   },
   "switchToPopup": {
     "message": "Switch to popup"
@@ -8771,9 +6852,6 @@
   "transactionSettings": {
     "message": "Transaction settings"
   },
-  "transactionShield": {
-    "message": "Transaction Shield"
-  },
   "transactionSubmitted": {
     "message": "Transaction submitted"
   },
@@ -8915,7 +6993,7 @@
   },
   "u2f": {
     "message": "U2F",
-    "description": "A name on an API for the browser to interact with devices that support the U2F protocol. On some browsers we use it to connect MetaMask to Ledger devices."
+    "description": "A name on an API for the browser to interact with devices that support the U2F protocol. On some browsers we use it to connect 1do to Ledger devices."
   },
   "unableToConnectTo": {
     "message": "Unable to connect to $1.",
@@ -9020,7 +7098,7 @@
   },
   "updatedToMetaMaskDefault": {
     "message": "Updated to 1do default",
-    "description": "Toast message confirming that the default RPC endpoint has been updated to MetaMask default"
+    "description": "Toast message confirming that the default RPC endpoint has been updated to 1do default"
   },
   "uploadDropFile": {
     "message": "Drop your file here"
@@ -9284,5 +7362,13 @@
   },
   "noHardwareWalletSupport": {
     "message": "Most hardware wallets will not work with your current browser version."
+  },
+  "permission_signatureInsight": {
+    "message": "Display signature insights modal.",
+    "description": "The description for the `endowment:signature-insight` permission"
+  },
+  "permission_signatureInsightOrigin": {
+    "message": "See the origins of websites that initiate a signature request",
+    "description": "The description for the `signatureOrigin` caveat, to be used with the `endowment:signature-insight` permission"
   }
 }

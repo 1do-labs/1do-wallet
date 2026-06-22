@@ -1,5 +1,5 @@
 import { NftController } from '@metamask/assets-controllers';
-import { AssetType } from '@metamask/bridge-controller';
+import { AssetType } from '../../../../shared/constants/transaction';
 import { MessengerClientInitFunction } from '../types';
 import {
   NftControllerMessenger,

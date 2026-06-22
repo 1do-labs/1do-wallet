@@ -15,10 +15,7 @@ import {
   getSelectedAccountGroupName,
 } from '../../helpers';
 import { tEn } from '../../../lib/i18n-helpers';
-import {
-  getMetamaskStateWithMaliciousPermit,
-  getMetaMaskStateWithUnapprovedPermitSign,
-} from './signature-helpers';
+import { getMetaMaskStateWithUnapprovedPermitSign } from './signature-helpers';
 
 jest.mock('../../../../ui/store/background-connection', () => ({
   ...jest.requireActual('../../../../ui/store/background-connection'),
@@ -253,65 +250,5 @@ describe('Permit Confirmation', () => {
 
     scope.done();
     expect(scope.isDone()).toBe(true);
-  });
-
-  it('displays the malicious banner', async () => {
-    const [account] = getSelectedAccountGroupAccounts(mockMetaMaskState);
-
-    const mockedMetaMaskState = getMetamaskStateWithMaliciousPermit(
-      account.address,
-    );
-
-    await act(async () => {
-      await integrationTestRender({
-        preloadedState: mockedMetaMaskState,
-        backgroundConnection: backgroundConnectionMocked,
-      });
-    });
-
-    const headingText = tEn('blockaidTitleDeceptive');
-    const bodyText = tEn('blockaidDescriptionApproveFarming');
-    expect(await screen.findByText(headingText)).toBeInTheDocument();
-    expect(await screen.findByText(bodyText)).toBeInTheDocument();
-  });
-
-  it('tracks external link clicked property in signature rejected event', async () => {
-    const [account] = getSelectedAccountGroupAccounts(mockMetaMaskState);
-
-    const mockedMetaMaskState = getMetamaskStateWithMaliciousPermit(
-      account.address,
-    );
-
-    await act(async () => {
-      await integrationTestRender({
-        preloadedState: mockedMetaMaskState,
-        backgroundConnection: backgroundConnectionMocked,
-      });
-    });
-
-    fireEvent.click(await screen.findByTestId('disclosure'));
-    expect(
-      await screen.findByTestId('alert-provider-report-link'),
-    ).toBeInTheDocument();
-
-    fireEvent.click(await screen.findByTestId('alert-provider-report-link'));
-
-    fireEvent.click(await screen.findByTestId('confirm-footer-cancel-button'));
-
-    expect(
-      mockedBackgroundConnection.submitRequestToBackground,
-    ).toHaveBeenCalledWith(
-      'upsertTransactionUIMetricsFragment',
-      expect.arrayContaining([
-        expect.any(String),
-        expect.objectContaining({
-          properties: expect.objectContaining({
-            // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-            // eslint-disable-next-line @typescript-eslint/naming-convention
-            external_link_clicked: 'security_alert_support_link',
-          }),
-        }),
-      ]),
-    );
   });
 });

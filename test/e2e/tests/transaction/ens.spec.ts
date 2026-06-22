@@ -6,7 +6,7 @@ import { NETWORK_CLIENT_ID } from '../../constants';
 import FixtureBuilderV2 from '../../fixtures/fixture-builder-v2';
 import { login } from '../../page-objects/flows/login.flow';
 import HomePage from '../../page-objects/pages/home/homepage';
-import { mockServerJsonRpc } from '../ppom/mocks/mock-server-json-rpc';
+import { mockServerJsonRpc } from '../../helpers/mock-json-rpc';
 import { mockMultiNetworkBalancePolling } from '../../mock-balance-polling/mock-balance-polling';
 import SendPage from '../../page-objects/pages/send/send-page';
 

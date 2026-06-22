@@ -181,234 +181,6 @@ export const FEATURE_FLAG_REGISTRY: Record<string, FeatureFlagRegistryEntry> = {
     },
     status: FeatureFlagStatus.Active,
   },
-  bridgeConfig: {
-    name: 'bridgeConfig',
-    type: FeatureFlagType.Remote,
-    inProd: true,
-    productionDefault: {
-      bip44DefaultPairs: {
-        eip155: {
-          other: {},
-          standard: {
-            'eip155:1/slip44:60':
-              'eip155:1/erc20:0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
-          },
-        },
-      },
-      priceImpactThreshold: {
-        gasless: 0.2,
-        normal: 0.05,
-      },
-      chains: {
-        '1': {
-          topAssets: ['0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48'],
-          isActiveDest: true,
-          isActiveSrc: true,
-          isGaslessSwapEnabled: true,
-          isSingleSwapBridgeButtonEnabled: true,
-          noFeeAssets: [],
-          stablecoins: [
-            '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
-            '0xdac17f958d2ee523a2206206994597c13d831ec7',
-          ],
-        },
-        '10': {
-          stablecoins: [
-            '0x0b2C639c533813f4Aa9D7837CAf62653d097Ff85',
-            '0x7F5c764cBc14f9669B88837ca1490cCa17c31607',
-            '0x94b008aA00579c1307B0EF2c499aD98a8ce58e58',
-          ],
-          isActiveDest: true,
-          isActiveSrc: true,
-          isSingleSwapBridgeButtonEnabled: true,
-        },
-        '56': {
-          isSingleSwapBridgeButtonEnabled: true,
-          stablecoins: [
-            '0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d',
-            '0x55d398326f99059ff775485246999027b3197955',
-          ],
-          isActiveDest: true,
-          isActiveSrc: true,
-          isGaslessSwapEnabled: true,
-        },
-        '137': {
-          isActiveSrc: true,
-          isSingleSwapBridgeButtonEnabled: true,
-          stablecoins: [
-            '0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359',
-            '0x2791bca1f2de4661ed88a30c99a7a9449aa84174',
-            '0xc2132d05d31c914a87c6611c10748aeb04b58e8f',
-          ],
-          isActiveDest: true,
-        },
-        '143': {
-          isActiveDest: true,
-          isActiveSrc: true,
-          isSingleSwapBridgeButtonEnabled: true,
-        },
-        '324': {
-          isActiveSrc: true,
-          isSingleSwapBridgeButtonEnabled: true,
-          stablecoins: [
-            '0x1d17CBcF0D6D143135aE902365D2E5e2A16538D4',
-            '0x3355df6D4c9C3035724Fd0e3914dE96A5a83aaf4',
-            '0x493257fD37EDB34451f62EDf8D2a0C418852bA4C',
-          ],
-          isActiveDest: true,
-        },
-        '999': {
-          stablecoins: ['0xb88339CB7199b77E23DB6E890353E22632Ba630f'],
-          isActiveDest: true,
-          isActiveSrc: true,
-          isSingleSwapBridgeButtonEnabled: true,
-        },
-        '1329': {
-          stablecoins: ['0x3894085Ef7Ff0f0aeDf52E2A2704928d1Ec074F1'],
-          isActiveDest: true,
-          isActiveSrc: true,
-          isSingleSwapBridgeButtonEnabled: true,
-        },
-        '4326': {
-          isSingleSwapBridgeButtonEnabled: true,
-          stablecoins: ['0xB8CE59FC3717ada4C02eaDF9682A9e934F625ebb'],
-          isActiveDest: true,
-          isActiveSrc: true,
-        },
-        '8453': {
-          stablecoins: ['0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913'],
-          isActiveDest: true,
-          isActiveSrc: true,
-          isGaslessSwapEnabled: true,
-          isSingleSwapBridgeButtonEnabled: true,
-        },
-        '42161': {
-          isSingleSwapBridgeButtonEnabled: true,
-          stablecoins: [
-            '0xaf88d065e77c8cC2239327C5EDb3A432268e5831',
-            '0xFF970A61A04b1cA14834A43f5dE4533eBDDB5CC8',
-            '0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9',
-          ],
-          isActiveDest: true,
-          isActiveSrc: true,
-        },
-        '43114': {
-          stablecoins: [
-            '0xb97ef9ef8734c71904d8002f8b6bc66dd9c48a6e',
-            '0xa7d7079b0fead91f3e65f86e8915cb59c1a4c664',
-            '0x9702230a8ea53601f5cd2dc00fdbc13d4df4a8c7',
-            '0xc7198437980c041c805a1edcba50c1ce5db95118',
-          ],
-          isActiveDest: true,
-          isActiveSrc: true,
-          isSingleSwapBridgeButtonEnabled: true,
-        },
-        '59144': {
-          stablecoins: [
-            '0x176211869cA2b568f2A7D4EE941E073a821EE1ff',
-            '0xA219439258ca9da29E9Cc4cE5596924745e12B93',
-          ],
-          topAssets: ['0x176211869ca2b568f2a7d4ee941e073a821ee1ff'],
-          isActiveDest: true,
-          isActiveSrc: true,
-          isGaslessSwapEnabled: true,
-          isSingleSwapBridgeButtonEnabled: true,
-          noFeeAssets: [],
-        },
-      },
-      sse: {
-        enabled: true,
-        minimumVersion: '13.9.0',
-      },
-      support: true,
-      stablecoins: [
-        'eip155:1/erc20:0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
-        'eip155:1/erc20:0xdac17f958d2ee523a2206206994597c13d831ec7',
-        'eip155:59144/erc20:0x176211869ca2b568f2a7d4ee941e073a821ee1ff',
-        'eip155:59144/erc20:0xa219439258ca9da29e9cc4ce5596924745e12b93',
-        'eip155:137/erc20:0x3c499c542cef5e3811e1192ce70d8cc03d5c3359',
-        'eip155:137/erc20:0x2791bca1f2de4661ed88a30c99a7a9449aa84174',
-        'eip155:137/erc20:0xc2132d05d31c914a87c6611c10748aeb04b58e8f',
-        'eip155:42161/erc20:0xaf88d065e77c8cc2239327c5edb3a432268e5831',
-        'eip155:42161/erc20:0xff970a61a04b1ca14834a43f5de4533ebddb5cc8',
-        'eip155:42161/erc20:0xfd086bc7cd5c481dcc9c85ebe478a1c0b69fcbb9',
-        'eip155:8453/erc20:0x833589fcd6edb6e08f4c7c32d4f71b54bda02913',
-        'eip155:10/erc20:0x0b2c639c533813f4aa9d7837caf62653d097ff85',
-        'eip155:10/erc20:0x7f5c764cbc14f9669b88837ca1490cca17c31607',
-        'eip155:10/erc20:0x94b008aa00579c1307b0ef2c499ad98a8ce58e58',
-        'eip155:56/erc20:0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d',
-        'eip155:56/erc20:0x55d398326f99059ff775485246999027b3197955',
-        'eip155:43114/erc20:0xb97ef9ef8734c71904d8002f8b6bc66dd9c48a6e',
-        'eip155:43114/erc20:0xa7d7079b0fead91f3e65f86e8915cb59c1a4c664',
-        'eip155:43114/erc20:0x9702230a8ea53601f5cd2dc00fdbc13d4df4a8c7',
-        'eip155:43114/erc20:0xc7198437980c041c805a1edcba50c1ce5db95118',
-        'eip155:324/erc20:0x1d17cbcf0d6d143135ae902365d2e5e2a16538d4',
-        'eip155:324/erc20:0x3355df6d4c9c3035724fd0e3914de96a5a83aaf4',
-        'eip155:324/erc20:0x493257fd37edb34451f62edf8d2a0c418852ba4c',
-        'eip155:1329/erc20:0x3894085ef7ff0f0aedf52e2a2704928d1ec074f1',
-        'eip155:4326/erc20:0xb8ce59fc3717ada4c02eadf9682a9e934f625ebb',
-        'eip155:999/erc20:0xb88339cb7199b77e23db6e890353e22632ba630f',
-      ],
-      chainRanking: [
-        {
-          chainId: 'eip155:1',
-          name: 'Ethereum',
-        },
-        {
-          name: 'BNB Chain',
-          chainId: 'eip155:56',
-        },
-        {
-          name: 'Base',
-          chainId: 'eip155:8453',
-        },
-        {
-          name: 'Arbitrum',
-          chainId: 'eip155:42161',
-        },
-        {
-          chainId: 'eip155:59144',
-          name: 'Linea',
-        },
-        {
-          chainId: 'eip155:137',
-          name: 'Polygon',
-        },
-        {
-          name: 'Avalanche',
-          chainId: 'eip155:43114',
-        },
-        {
-          chainId: 'eip155:10',
-          name: 'Optimism',
-        },
-        {
-          chainId: 'eip155:143',
-          name: 'Monad',
-        },
-        {
-          chainId: 'eip155:1329',
-          name: 'Sei',
-        },
-        {
-          chainId: 'eip155:4326',
-          name: 'MegaETH',
-        },
-        {
-          chainId: 'eip155:999',
-          name: 'HyperEVM',
-        },
-        {
-          chainId: 'eip155:324',
-          name: 'zkSync Era',
-        },
-      ],
-      maxRefreshCount: 5,
-      refreshRate: 30000,
-      minimumVersion: '0.0.0',
-    },
-    status: FeatureFlagStatus.Active,
-  },
 
   // eslint-disable-next-line @typescript-eslint/naming-convention
   confirmations_eip_7702: {
@@ -1758,37 +1530,6 @@ export const FEATURE_FLAG_REGISTRY: Record<string, FeatureFlagRegistryEntry> = {
     type: FeatureFlagType.Remote,
     inProd: true,
     productionDefault: {
-      '0xa86a': {
-        extensionActive: false,
-        sentinelUrl: 'https://tx-sentinel-avalanche-mainnet.api.cx.metamask.io',
-      },
-      '0x2105': {
-        extensionActive: true,
-        gaslessBridgeWith7702Enabled: true,
-        sentinelUrl: 'https://tx-sentinel-base-mainnet.api.cx.metamask.io',
-      },
-      '0xe708': {
-        sentinelUrl: 'https://tx-sentinel-linea-mainnet.api.cx.metamask.io',
-        extensionActive: true,
-        gaslessBridgeWith7702Enabled: false,
-      },
-      '0x89': {
-        extensionActive: true,
-        gaslessBridgeWith7702Enabled: true,
-        sentinelUrl: 'https://tx-sentinel-polygon-mainnet.api.cx.metamask.io',
-      },
-      '0x1': {
-        maxDeadline: 160,
-        sentinelUrl: 'https://tx-sentinel-ethereum-mainnet.api.cx.metamask.io',
-        expectedDeadline: 45,
-        extensionActive: true,
-        gaslessBridgeWith7702Enabled: false,
-      },
-      '0xa4b1': {
-        gaslessBridgeWith7702Enabled: true,
-        sentinelUrl: 'https://tx-sentinel-arbitrum-mainnet.api.cx.metamask.io',
-        extensionActive: true,
-      },
       default: {
         maxDeadline: 150,
         batchStatusPollingInterval: 1000,
@@ -1797,28 +1538,6 @@ export const FEATURE_FLAG_REGISTRY: Record<string, FeatureFlagRegistryEntry> = {
         extensionReturnTxHashAsap: true,
         extensionReturnTxHashAsapBatch: true,
         extensionSkipSmartTransactionStatusPage: false,
-        gaslessBridgeWith7702Enabled: false,
-      },
-      '0x531': {
-        sentinelUrl: 'https://tx-sentinel-sei-mainnet.api.cx.metamask.io',
-        extensionActive: false,
-      },
-      '0x144': {
-        sentinelUrl: 'https://tx-sentinel-zksync-mainnet.api.cx.metamask.io',
-        extensionActive: false,
-      },
-      '0xa': {
-        extensionActive: false,
-        sentinelUrl: 'https://tx-sentinel-optimism-mainnet.api.cx.metamask.io',
-      },
-      '0x38': {
-        extensionActive: true,
-        gaslessBridgeWith7702Enabled: false,
-        sentinelUrl: 'https://tx-sentinel-bsc-mainnet.api.cx.metamask.io',
-      },
-      '0x8f': {
-        extensionActive: false,
-        sentinelUrl: 'https://tx-sentinel-monad-mainnet.api.cx.metamask.io',
       },
     },
     status: FeatureFlagStatus.Active,
@@ -2045,7 +1764,7 @@ export const FEATURE_FLAG_REGISTRY: Record<string, FeatureFlagRegistryEntry> = {
       'https://app.spark.fi',
       'https://app.tea-fi.com',
       'https://app.uniswap.org',
-      'https://bridge.gravity.xyz',
+      'https://example-dapp.invalid',
       'https://dev-relay-sdk.vercel.app',
       'https://evm.ekubo.org',
       'https://flaunch.gg',
@@ -2060,7 +1779,7 @@ export const FEATURE_FLAG_REGISTRY: Record<string, FeatureFlagRegistryEntry> = {
       'https://revoke.cash',
       'https://staging.relay.link',
       'https://superbridge.app',
-      'https://swap.defillama.com',
+      'https://portfolio.example-dapp.invalid',
       'https://toros.finance',
       'https://velodrome.finance',
       'https://walletstats.io',

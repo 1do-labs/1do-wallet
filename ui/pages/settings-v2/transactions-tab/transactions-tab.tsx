@@ -1,9 +1,6 @@
 import React from 'react';
 import { SMART_TRANSACTIONS_LEARN_MORE_URL } from '../../../../shared/constants/smartTransactions';
-import {
-  SECURITY_ALERTS_LEARN_MORE_LINK,
-  TRANSACTION_SIMULATIONS_LEARN_MORE_LINK,
-} from '../../../../shared/lib/ui-utils';
+import { TRANSACTION_SIMULATIONS_LEARN_MORE_LINK } from '../../../../shared/lib/ui-utils';
 import { getSmartTransactionsPreferenceEnabled } from '../../../../shared/lib/selectors/smart-transactions';
 import { SettingItemConfig } from '../types';
 import {
@@ -11,15 +8,10 @@ import {
   createToggleItem,
   createDescriptionWithLearnMore,
 } from '../shared';
-import {
-  getIsSecurityAlertsEnabled,
-  getPreferences,
-  getUseExternalNameSources,
-} from '../../../selectors';
+import { getPreferences, getUseExternalNameSources } from '../../../selectors';
 import {
   setDismissSmartAccountSuggestionEnabled,
   setFeatureFlag,
-  setSecurityAlertsEnabled,
   setSmartTransactionsPreferenceEnabled,
   setUseExternalNameSources,
   setUseTransactionSimulations,
@@ -39,20 +31,6 @@ const TransactionSimulationsItem = createToggleItem({
   action: setUseTransactionSimulations,
   dataTestId: 'transactions-simulations-toggle',
   trackEventProperty: 'use_transaction_simulations',
-});
-
-const SecurityAlertsItem = createToggleItem({
-  name: 'SecurityAlertsItem',
-  titleKey: TRANSACTION_ITEMS['security-alerts'],
-  formatDescription: createDescriptionWithLearnMore(
-    'securityAlertsDescriptionV2',
-    SECURITY_ALERTS_LEARN_MORE_LINK,
-  ),
-  selector: getIsSecurityAlertsEnabled,
-  action: setSecurityAlertsEnabled,
-  dataTestId: 'transactions-security-alerts-toggle',
-  containerDataTestId: 'securityAlert',
-  trackEventProperty: 'blockaid_alerts_enabled',
 });
 
 const SmartTransactionsItem = createToggleItem({
@@ -102,7 +80,6 @@ const ShowHexDataItem = createToggleItem({
 
 const TRANSACTION_SETTING_ITEMS: SettingItemConfig[] = [
   { id: 'estimate-balance-changes', component: TransactionSimulationsItem },
-  { id: 'security-alerts', component: SecurityAlertsItem },
   { id: 'smart-transactions', component: SmartTransactionsItem },
   {
     id: 'smart-account-requests-from-dapps',

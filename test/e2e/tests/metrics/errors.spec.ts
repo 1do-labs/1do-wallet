@@ -102,10 +102,6 @@ const removedBackgroundFields = [
   'AppStateController.timeoutMinutes',
   'AppStateController.lastInteractedConfirmationInfo',
   'AppStateController.lastUpdatedFromVersion',
-  'BridgeController.quoteRequest.walletAddress',
-  'BridgeController.quoteRequest.slippage',
-  'PPOMController.chainStatus.0x539.lastVisited',
-  'PPOMController.versionInfo',
   // This property is timing-dependent
   'MetaMetricsController.latestNonAnonymousEventTimestamp',
   // PhishingController properties (except urlScanCache which is masked)

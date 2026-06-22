@@ -11,7 +11,6 @@ import { persistenceManager } from './lib/setup-initial-state-hooks';
 
 // Import these before network constants are evaluated.
 import '../../shared/constants/alchemy-api-key';
-import '../../shared/constants/infura-project-id';
 
 import { lightTheme } from '@metamask/design-tokens';
 import { finished } from 'readable-stream';
@@ -1404,7 +1403,7 @@ export function setupController(
   // MetaMask Controller
   //
   controller = new MetamaskController({
-    infuraProjectId: globalThis.INFURA_PROJECT_ID,
+    infuraProjectId: undefined,
     // User confirmation callbacks:
     showUserConfirmation: triggerUi,
     // initial state

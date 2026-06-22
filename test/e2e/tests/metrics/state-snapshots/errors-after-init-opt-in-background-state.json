@@ -242,9 +242,6 @@
     "onboardingTabs": "object",
     "seedPhraseBackedUp": null
   },
-  "PPOMController": {
-    "storageMetadata": "object"
-  },
   "PermissionController": {
     "subjects": "object"
   },
@@ -252,7 +249,6 @@
     "permissionActivityLog": "object",
     "permissionHistory": "object"
   },
-  "PerpsController": "object",
   "PhishingController": {
     "addressScanCache": "object",
     "tokenScanCache": "object",
@@ -297,7 +293,6 @@
       "useSidePanelAsDefault": "boolean"
     },
     "referrals": "object",
-    "securityAlertsEnabled": "boolean",
     "showSidePanelMigrationToast": "boolean",
     "snapRegistryList": "object",
     "theme": "os",
@@ -378,9 +373,6 @@
     "allDetectedTokens": {},
     "allIgnoredTokens": {},
     "allTokens": {}
-  },
-  "TransactionPayController": {
-    "transactionData": "object"
   },
   "TxController": {
     "lastFetchedBlockNumbers": "object",

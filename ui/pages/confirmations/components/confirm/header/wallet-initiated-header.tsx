@@ -37,14 +37,6 @@ export const WalletInitiatedHeader = () => {
     SEND_TRANSACTION_TYPES.includes(currentConfirmation.type);
 
   const handleBackButtonClick = useCallback(() => {
-    if (currentConfirmation.type === TransactionType.perpsDeposit) {
-      onCancel({
-        location: MetaMetricsEventLocation.Confirmation,
-        navigateBackToPreviousPage: true,
-      });
-      return;
-    }
-
     const isNativeSend =
       currentConfirmation.type === TransactionType.simpleSend;
     const isERC20TokenSend =
@@ -64,9 +56,6 @@ export const WalletInitiatedHeader = () => {
   const getHeaderTitle = () => {
     if (isSendTransaction) {
       return null;
-    }
-    if (currentConfirmation?.type === TransactionType.perpsDeposit) {
-      return t('perpsDepositFundsTitle');
     }
     return t('review');
   };

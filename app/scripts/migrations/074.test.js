@@ -1,5 +1,7 @@
 import migration74 from './074';
 
+const LEGACY_RPC_PROJECT_ID = 'legacy-rpc-project-id';
+
 describe('migration #74', () => {
   it('should update the version metadata', async () => {
     const oldStorage = {
@@ -40,7 +42,7 @@ describe('migration #74', () => {
           provider: {
             chainId: '0x4',
             type: 'rpc',
-            rpcUrl: `https://rinkeby.infura.io/v3/${process.env.INFURA_PROJECT_ID}`,
+            rpcUrl: `https://rinkeby.infura.io/v3/${LEGACY_RPC_PROJECT_ID}`,
             nickname: 'Rinkeby',
             ticker: 'RinkebyETH',
           },
@@ -48,7 +50,7 @@ describe('migration #74', () => {
         PreferencesController: {
           frequentRpcListDetail: [
             {
-              rpcUrl: `https://rinkeby.infura.io/v3/${process.env.INFURA_PROJECT_ID}`,
+              rpcUrl: `https://rinkeby.infura.io/v3/${LEGACY_RPC_PROJECT_ID}`,
               chainId: '0x4',
               nickname: 'Rinkeby',
               ticker: 'RinkebyETH',
@@ -145,14 +147,14 @@ describe('migration #74', () => {
         PreferencesController: {
           frequentRpcListDetail: [
             {
-              rpcUrl: `https://rinkeby.infura.io/v3/${process.env.INFURA_PROJECT_ID}`,
+              rpcUrl: `https://rinkeby.infura.io/v3/${LEGACY_RPC_PROJECT_ID}`,
               chainId: '0x4',
               nickname: 'Rinkeby',
               ticker: 'RinkebyETH',
               rpcPrefs: {},
             },
             {
-              rpcUrl: `https://ropsten.infura.io/v3/${process.env.INFURA_PROJECT_ID}`,
+              rpcUrl: `https://ropsten.infura.io/v3/${LEGACY_RPC_PROJECT_ID}`,
               chainId: '0x3',
               nickname: 'Ropsten',
               ticker: 'RopstenETH',
@@ -220,7 +222,7 @@ describe('migration #74', () => {
         PreferencesController: {
           frequentRpcListDetail: [
             {
-              rpcUrl: `https://kovan.infura.io/v3/${process.env.INFURA_PROJECT_ID}`,
+              rpcUrl: `https://kovan.infura.io/v3/${LEGACY_RPC_PROJECT_ID}`,
               chainId: '0x2a',
               nickname: 'Kovan',
               ticker: 'KovanETH',
@@ -283,7 +285,7 @@ describe('migration #74', () => {
       data: {
         NetworkController: {
           provider: {
-            rpcUrl: `https://kovan.infura.io/v3/${process.env.INFURA_PROJECT_ID}`,
+            rpcUrl: `https://kovan.infura.io/v3/${LEGACY_RPC_PROJECT_ID}`,
             chainId: '0x2a',
             nickname: 'Kovan',
             ticker: 'KovanETH',
@@ -293,21 +295,21 @@ describe('migration #74', () => {
         PreferencesController: {
           frequentRpcListDetail: [
             {
-              rpcUrl: `https://kovan.infura.io/v3/${process.env.INFURA_PROJECT_ID}`,
+              rpcUrl: `https://kovan.infura.io/v3/${LEGACY_RPC_PROJECT_ID}`,
               chainId: '0x2a',
               nickname: 'Kovan',
               ticker: 'KovanETH',
               rpcPrefs: {},
             },
             {
-              rpcUrl: `https://ropsten.infura.io/v3/${process.env.INFURA_PROJECT_ID}`,
+              rpcUrl: `https://ropsten.infura.io/v3/${LEGACY_RPC_PROJECT_ID}`,
               chainId: '0x3',
               nickname: 'Ropsten',
               ticker: 'RopstenETH',
               rpcPrefs: {},
             },
             {
-              rpcUrl: `https://rinkeby.infura.io/v3/${process.env.INFURA_PROJECT_ID}`,
+              rpcUrl: `https://rinkeby.infura.io/v3/${LEGACY_RPC_PROJECT_ID}`,
               chainId: '0x4',
               nickname: 'Rinkeby',
               ticker: 'RinkebyETH',

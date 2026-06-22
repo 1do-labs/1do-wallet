@@ -38,7 +38,6 @@ export const ASSET_ITEMS = {
 
 export const TRANSACTION_ITEMS = {
   'estimate-balance-changes': 'simulationsSettingSubHeader',
-  'security-alerts': 'securityAlerts',
   'smart-transactions': 'smartTransactions',
   'smart-account-requests-from-dapps': 'smartAccountRequestsFromDapps',
   'proposed-nicknames': 'externalNameSourcesSetting',

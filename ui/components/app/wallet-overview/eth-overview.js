@@ -6,22 +6,18 @@ import { isEqual } from 'lodash';
 import { getCurrentChainId } from '../../../../shared/lib/selectors/networks';
 import {
   isBalanceCached,
-  getIsSwapsChain,
   getSelectedInternalAccount,
   getSelectedAccountCachedBalance,
-  getIsBridgeChain,
 } from '../../../selectors';
 import { CoinOverview } from './coin-overview';
 
 const EthOverview = ({ className }) => {
-  const isBridgeChain = useSelector(getIsBridgeChain);
   const balanceIsCached = useSelector(isBalanceCached);
   const chainId = useSelector(getCurrentChainId);
   const balance = useSelector(getSelectedAccountCachedBalance);
 
   // FIXME: This causes re-renders, so use isEqual to avoid this
   const account = useSelector(getSelectedInternalAccount, isEqual);
-  const isSwapsChain = useSelector(getIsSwapsChain);
   const isSigningEnabled =
     account.methods.includes(EthMethod.SignTransaction) ||
     account.methods.includes(EthMethod.SignUserOperation);
@@ -35,8 +31,6 @@ const EthOverview = ({ className }) => {
       classPrefix="eth"
       chainId={chainId}
       isSigningEnabled={isSigningEnabled}
-      isSwapsChain={isSwapsChain}
-      isBridgeChain={isBridgeChain}
     />
   );
 };

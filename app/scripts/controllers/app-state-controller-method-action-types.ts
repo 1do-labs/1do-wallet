@@ -342,16 +342,6 @@ export type AppStateControllerUpdateNftDropDownStateAction = {
   handler: AppStateController['updateNftDropDownState'];
 };
 
-export type AppStateControllerGetSignatureSecurityAlertResponseAction = {
-  type: `AppStateController:getSignatureSecurityAlertResponse`;
-  handler: AppStateController['getSignatureSecurityAlertResponse'];
-};
-
-export type AppStateControllerAddSignatureSecurityAlertResponseAction = {
-  type: `AppStateController:addSignatureSecurityAlertResponse`;
-  handler: AppStateController['addSignatureSecurityAlertResponse'];
-};
-
 /**
  * A setter for the currentPopupId which indicates the id of popup window that's currently active
  *
@@ -494,16 +484,6 @@ export type AppStateControllerRemoveDeferredDeepLinkAction = {
   handler: AppStateController['removeDeferredDeepLink'];
 };
 
-export type AppStateControllerAddAddressSecurityAlertResponseAction = {
-  type: `AppStateController:addAddressSecurityAlertResponse`;
-  handler: AppStateController['addAddressSecurityAlertResponse'];
-};
-
-export type AppStateControllerGetAddressSecurityAlertResponseAction = {
-  type: `AppStateController:getAddressSecurityAlertResponse`;
-  handler: AppStateController['getAddressSecurityAlertResponse'];
-};
-
 /**
  * Union of all AppStateController action types.
  */
@@ -545,8 +525,6 @@ export type AppStateControllerMethodActions =
   | AppStateControllerSetCurrentExtensionPopupIdAction
   | AppStateControllerSetTrezorModelAction
   | AppStateControllerUpdateNftDropDownStateAction
-  | AppStateControllerGetSignatureSecurityAlertResponseAction
-  | AppStateControllerAddSignatureSecurityAlertResponseAction
   | AppStateControllerSetCurrentPopupIdAction
   | AppStateControllerGetLastInteractedConfirmationInfoAction
   | AppStateControllerSetLastInteractedConfirmationInfoAction
@@ -563,6 +541,4 @@ export type AppStateControllerMethodActions =
   | AppStateControllerSetIsWalletResetInProgressAction
   | AppStateControllerGetIsWalletResetInProgressAction
   | AppStateControllerSetDeferredDeepLinkAction
-  | AppStateControllerRemoveDeferredDeepLinkAction
-  | AppStateControllerAddAddressSecurityAlertResponseAction
-  | AppStateControllerGetAddressSecurityAlertResponseAction;
+  | AppStateControllerRemoveDeferredDeepLinkAction;

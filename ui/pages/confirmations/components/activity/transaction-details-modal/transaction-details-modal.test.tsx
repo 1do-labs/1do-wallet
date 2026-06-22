@@ -82,13 +82,6 @@ describe('TransactionDetailsModal', () => {
     ).toBeInTheDocument();
   });
 
-  it('renders Funded Perps title for perpsDeposit transactions', () => {
-    const { getByRole } = render(TransactionType.perpsDeposit);
-    expect(
-      getByRole('heading', { name: messages.perpsDepositTitle.message }),
-    ).toBeInTheDocument();
-  });
-
   it('renders TransactionDetails component', () => {
     const { getByTestId } = render();
     expect(getByTestId('transaction-details')).toBeInTheDocument();

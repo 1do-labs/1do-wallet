@@ -45,9 +45,7 @@ export type MessengerClientsToInitialize =
   | 'MultichainNetworkController'
   | 'GeolocationApiService'
   | 'GeolocationController'
-  | 'PPOMController'
-  | 'TransactionController'
-  | 'TransactionPayController';
+  | 'TransactionController';
 
 type InitFunction<Name extends MessengerClientsToInitialize> =
   MessengerClientInitFunction<

@@ -185,7 +185,7 @@ describe('Setup Sentry', () => {
     it('should return true for other local extension file fetches', () => {
       expect(
         shouldCreateSpanForRequest(
-          'chrome-extension://abcdefg/scripts/ppom-validator.wasm',
+          'chrome-extension://abcdefg/scripts/crypto-worker.wasm',
         ),
       ).toStrictEqual(true);
       expect(

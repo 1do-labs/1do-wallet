@@ -1,6 +1,6 @@
-import { getNativeAssetForChainId } from '@metamask/bridge-controller';
 import { toChecksumHexAddress } from '@metamask/controller-utils';
 import type { CaipAssetType, Hex } from '@metamask/utils';
+import { getNativeAssetForChainId } from '../chain-utils';
 import {
   ASSETS_UNIFY_STATE_FLAG,
   ASSETS_UNIFY_STATE_VERSION_1,

@@ -113,12 +113,9 @@ describe('sentinel-api', () => {
   });
 
   describe('buildUrl', () => {
-    it('builds the correct sentinel API URL for a subdomain', () => {
-      expect(buildUrl('my-chain')).toBe(
-        'https://tx-sentinel-my-chain.api.cx.metamask.io/',
-      );
-      expect(buildUrl(NETWORK_ETHEREUM_MOCK)).toBe(
-        'https://tx-sentinel-ethereum-mainnet.api.cx.metamask.io/',
+    it('throws because MetaMask Sentinel is disabled', () => {
+      expect(() => buildUrl('my-chain')).toThrow(
+        'MetaMask Sentinel is disabled in 1do',
       );
     });
   });

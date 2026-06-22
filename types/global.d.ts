@@ -332,7 +332,6 @@ type StateHooks = {
     method: string,
     args?: unknown[],
   ) => Promise<unknown>;
-  getPerpsStreamManager?: () => unknown;
 };
 
 export declare global {

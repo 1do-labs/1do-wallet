@@ -12,7 +12,7 @@ function setupAutoDetectMocking(
             '15045599024596508941101550399035548037687903197647023388282056880789326977958',
           kind: 'erc721',
           name: '959555.eth',
-          image: 'https://metamask.github.io/test-dapp/metamask-fox.svg',
+          image: './images/logo/1do-mark.svg',
           imageSmall:
             'https://img.reservoir.tools/images/v2/mainnet/28SsxFrHoAzyiyUIVmrVwlczOlntRxQAii%2B%2F%2BYY7DijjjuiqO6zAjmtHp7iBI3QVnN3esZGCdUn46Xw0Rd4g6Uwm%2BgVVgHquI3sR%2FQkm1Lo%3D?width=250',
           imageLarge:
@@ -34,7 +34,7 @@ function setupAutoDetectMocking(
             name: 'ENS: Ethereum Name Service',
             slug: 'ens',
             symbol: null,
-            imageUrl: 'https://metamask.github.io/test-dapp/metamask-fox.svg',
+            imageUrl: './images/logo/1do-mark.svg',
             isSpam: false,
             isNsfw: false,
             metadataDisabled: false,

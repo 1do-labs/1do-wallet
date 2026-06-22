@@ -21,6 +21,7 @@ import {
 import { createSelector } from 'reselect';
 import {
   CHAIN_ID_TO_NETWORK_IMAGE_URL_MAP,
+  getRpcUrl,
   infuraProjectId,
 } from '../../../shared/constants/network';
 import {
@@ -35,7 +36,7 @@ import {
 } from '../../../shared/lib/selectors/networks';
 import { createDeepEqualSelector } from '../../../shared/lib/selectors/selector-creators';
 import { getEnabledNetworks } from '../../../shared/lib/selectors/multichain';
-import { getIsMetaMaskInfuraEndpointUrl } from '../../../shared/lib/network-utils';
+import { getIsLegacyInfuraEndpointUrl } from '../../../shared/lib/network-utils';
 import { type RemoteFeatureFlagsState } from '../remote-feature-flags';
 import {
   getInternalAccounts,
@@ -60,6 +61,15 @@ type SelectedNetworkChainIdState = {
 type IsEvmSelectedState = {
   metamask: Pick<InternalMultichainNetworkState, 'isEvmSelected'>;
 };
+
+function getIsDefaultRpcEndpointUrl(endpointUrl: string): boolean {
+  return (
+    getIsLegacyInfuraEndpointUrl(endpointUrl, infuraProjectId ?? '') ||
+    endpointUrl === getRpcUrl({ network: 'mainnet' }) ||
+    endpointUrl.endsWith('.g.alchemy.com/v2/{alchemyApiKey}') ||
+    /^https:\/\/[^/]+\.g\.alchemy\.com\/v2\/[^/?#]+$/u.test(endpointUrl)
+  );
+}
 
 type NetworksWithTransactionActivityByAccountsState = {
   metamask: {
@@ -347,26 +357,21 @@ export const selectFirstUnavailableEvmNetwork = createSelector(
             metadata !== undefined &&
             metadata.status !== NetworkStatus.Available
           ) {
-            const isInfuraEndpoint = getIsMetaMaskInfuraEndpointUrl(
+            const isDefaultRpcEndpoint = getIsDefaultRpcEndpointUrl(
               rpcEndpoint.url,
-              infuraProjectId ?? '',
             );
 
-            // For custom endpoints (non-Infura), check if there's an Infura
-            // endpoint available for this network that we can switch to
-            let infuraEndpointIndex: number | undefined;
-            if (!isInfuraEndpoint) {
-              infuraEndpointIndex = rpcEndpoints.findIndex(
+            // For custom endpoints, check if there's a built-in default
+            // endpoint available for this network that we can switch to.
+            let fallbackDefaultRpcEndpointIndex: number | undefined;
+            if (!isDefaultRpcEndpoint) {
+              fallbackDefaultRpcEndpointIndex = rpcEndpoints.findIndex(
                 (endpoint, index) =>
                   index !== defaultRpcEndpointIndex &&
-                  getIsMetaMaskInfuraEndpointUrl(
-                    endpoint.url,
-                    infuraProjectId ?? '',
-                  ),
+                  getIsDefaultRpcEndpointUrl(endpoint.url),
               );
-              // If no Infura endpoint found, set to undefined
-              if (infuraEndpointIndex === -1) {
-                infuraEndpointIndex = undefined;
+              if (fallbackDefaultRpcEndpointIndex === -1) {
+                fallbackDefaultRpcEndpointIndex = undefined;
               }
             }
 
@@ -374,13 +379,11 @@ export const selectFirstUnavailableEvmNetwork = createSelector(
               networkClientId: rpcEndpoint.networkClientId,
               chainId,
               networkName: name,
-              // We have to use this function to check whether the endpoint is
-              // an Infura endpoint because some Infura endpoint URLs use the
-              // wrong type.
-              isInfuraEndpoint,
-              // Index of an available Infura endpoint (for custom networks that
-              // have one) that can be used to switch to Infura
-              infuraEndpointIndex,
+              // We check by URL because legacy endpoints may have stale types.
+              isDefaultRpcEndpoint,
+              // Index of an available built-in default endpoint that can be
+              // used when the current custom endpoint is unavailable.
+              defaultRpcEndpointIndex: fallbackDefaultRpcEndpointIndex,
             };
           }
         }

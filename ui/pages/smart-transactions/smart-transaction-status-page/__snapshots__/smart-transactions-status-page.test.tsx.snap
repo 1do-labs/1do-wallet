@@ -27,7 +27,7 @@ exports[`SmartTransactionStatusPage renders the "failed" STX status: smart-trans
           <p
             class="mm-box mm-text mm-text--body-sm mm-box--margin-top-2 mm-box--color-text-alternative"
           >
-            Sudden market changes can cause failures. If the problem continues, reach out to MetaMask customer support.
+            Sudden market changes can cause failures. If the problem continues, reach out to 1do customer support.
           </p>
         </div>
         <div

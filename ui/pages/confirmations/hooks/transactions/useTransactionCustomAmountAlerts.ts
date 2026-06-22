@@ -7,7 +7,6 @@ import { useConfirmContext } from '../../context/confirm';
 import { AlertsName } from '../alerts/constants';
 
 const ALERTS_HIDE_RESULTS: string[] = [
-  AlertsName.InsufficientPayTokenBalance,
   AlertsName.PayHardwareAccount,
   AlertsName.SigningOrSubmitting,
 ];

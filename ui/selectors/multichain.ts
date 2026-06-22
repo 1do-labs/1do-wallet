@@ -168,7 +168,7 @@ export function getMultichainDefaultToken(
   _account?: InternalAccount,
 ) {
   const symbol =
-    // We fallback to 'ETH' to keep original behavior of `getSwapsDefaultToken`
+    // We fallback to 'ETH' to keep the original native token behavior.
     getProviderConfig(state)?.ticker ?? 'ETH';
 
   return { symbol };

@@ -2,7 +2,7 @@ import React from 'react';
 import { act, cleanup, fireEvent, waitFor } from '@testing-library/react';
 import { CHAIN_IDS } from '@metamask/transaction-controller';
 import { ERC20 } from '@metamask/controller-utils';
-import * as bridgeControllerModule from '@metamask/bridge-controller';
+import * as chainUtilsModule from '../../../../shared/lib/chain-utils';
 import { renderWithProvider } from '../../../../test/lib/render-helpers-navigate';
 import configureStore from '../../../store/store';
 import {
@@ -29,7 +29,7 @@ jest.mock('../../../../shared/lib/assets-unify-state/remote-feature-flag', () =>
   ),
 );
 
-jest.mock('@metamask/bridge-controller');
+jest.mock('../../../../shared/lib/chain-utils');
 jest.mock('../../../../shared/lib/asset-utils');
 
 jest.mock('../../../store/actions', () => ({
@@ -114,7 +114,7 @@ describe('ImportTokensModal', () => {
       });
 
     jest
-      .spyOn(bridgeControllerModule, 'formatChainIdToHex')
+      .spyOn(chainUtilsModule, 'formatChainIdToHex')
       .mockImplementation((chainId) => {
         if (chainId?.startsWith('eip155:')) {
           return `0x${parseInt(chainId.split(':')[1], 10).toString(16)}`;

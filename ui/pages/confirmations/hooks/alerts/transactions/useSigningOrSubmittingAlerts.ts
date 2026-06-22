@@ -17,7 +17,6 @@ import { Alert } from '../../../../../ducks/confirm-alerts/confirm-alerts';
 import { useConfirmContext } from '../../../context/confirm';
 import { isCorrectDeveloperTransactionType } from '../../../../../../shared/lib/confirmation.utils';
 import { AlertsName } from '../constants';
-import { useTransactionPayToken } from '../../pay/useTransactionPayToken';
 
 const PENDING_STATUSES = [
   TransactionStatus.approved,
@@ -28,45 +27,21 @@ const PENDING_STATUSES = [
 export function useSigningOrSubmittingAlerts(): Alert[] {
   const t = useI18nContext();
   const { currentConfirmation } = useConfirmContext();
-  const { type, chainId, txParams } = (currentConfirmation ?? {}) as
+  const { type } = (currentConfirmation ?? {}) as
     | TransactionMeta
     | Record<string, never>;
-  const from = txParams?.from;
-
-  const { payToken } = useTransactionPayToken();
 
   const signingOrSubmittingTransactions = useSelector(
     getApprovedAndSignedTransactions,
   );
-
-  const allTransactions = useSelector(getTransactions);
 
   const isValidType = isCorrectDeveloperTransactionType(type);
 
   const isSigningOrSubmitting =
     isValidType && signingOrSubmittingTransactions.length > 0;
 
-  const payTokenChainId = payToken?.chainId;
-  const isPayTokenOnDifferentChain =
-    payTokenChainId && payTokenChainId !== chainId;
-
-  const hasPendingTransactionOnPayChain = useMemo(() => {
-    if (!isPayTokenOnDifferentChain || !from) {
-      return false;
-    }
-
-    return allTransactions.some(
-      (tx: TransactionMeta) =>
-        tx.chainId === payTokenChainId &&
-        tx.txParams?.from?.toLowerCase() === from.toLowerCase() &&
-        PENDING_STATUSES.includes(tx.status),
-    );
-  }, [allTransactions, payTokenChainId, isPayTokenOnDifferentChain, from]);
-
-  const showAlert = isSigningOrSubmitting || hasPendingTransactionOnPayChain;
-
   return useMemo(() => {
-    if (!showAlert) {
+    if (!isSigningOrSubmitting) {
       return [];
     }
 
@@ -74,11 +49,9 @@ export function useSigningOrSubmittingAlerts(): Alert[] {
       {
         isBlocking: true,
         key: AlertsName.SigningOrSubmitting,
-        message: hasPendingTransactionOnPayChain
-          ? t('isSigningOrSubmittingPayToken')
-          : t('isSigningOrSubmitting'),
+        message: t('isSigningOrSubmitting'),
         severity: Severity.Danger,
       },
     ];
-  }, [showAlert, hasPendingTransactionOnPayChain, t]);
+  }, [isSigningOrSubmitting, t]);
 }

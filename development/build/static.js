@@ -3,7 +3,6 @@ const fs = require('fs-extra');
 const watch = require('gulp-watch');
 const glob = require('fast-glob');
 
-const { isManifestV3 } = require('../../shared/lib/mv3.utils');
 const { loadBuildTypesConfig } = require('../lib/build-type');
 const { getActiveFeatures } = require('./config');
 const { TASKS } = require('./constants');
@@ -191,11 +190,6 @@ function getCopyTargets(shouldIncludeLockdown, shouldIncludeSnow) {
       dest: `scripts/runtime-lavamoat.js`,
       pattern: '',
     },
-    {
-      src: getPathInsideNodeModules('@blockaid/ppom_release', '/'),
-      pattern: '*.wasm',
-      dest: isManifestV3 ? 'scripts/' : '',
-    },
   ];
 
   const copyTargetsDev = [
@@ -216,14 +210,7 @@ function getCopyTargets(shouldIncludeLockdown, shouldIncludeSnow) {
     },
   ];
 
-  const copyTargetsProd = [
-    ...allCopyTargets,
-    // empty files to suppress missing file errors
-    {
-      src: EMPTY_JS_FILE,
-      dest: `chromereload.js`,
-    },
-  ];
+  const copyTargetsProd = [...allCopyTargets];
 
   return [copyTargetsProd, copyTargetsDev];
 }

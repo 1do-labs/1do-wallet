@@ -79,7 +79,6 @@ describe('Feature Flag Registry', () => {
       );
 
       expect(flagNames).toContain('enableMultichainAccounts');
-      expect(flagNames).toContain('bridgeConfig');
       expect(flagNames).toContain('smartTransactionsNetworks');
     });
   });

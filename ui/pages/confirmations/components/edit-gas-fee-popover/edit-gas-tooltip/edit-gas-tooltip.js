@@ -1,9 +1,6 @@
 import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
-import {
-  EditGasModes,
-  PriorityLevels,
-} from '../../../../../../shared/constants/gas';
+import { PriorityLevels } from '../../../../../../shared/constants/gas';
 import {
   FontWeight,
   TextColor,
@@ -14,7 +11,6 @@ import { roundToDecimalPlacesRemovingExtraZeroes } from '../../../../../helpers/
 import { Text } from '../../../../../components/component-library';
 
 const EditGasToolTip = ({
-  editGasMode,
   estimateGreaterThanGasUse,
   gasLimit,
   priorityLevel,
@@ -55,9 +51,6 @@ const EditGasToolTip = ({
             </span>,
           ]);
         }
-        if (editGasMode === EditGasModes.swaps) {
-          return t('swapSuggestedGasSettingToolTipMessage');
-        }
         return t('highGasSettingToolTipMessage', [
           <span key={priorityLevel}>
             <b>{t('high')}</b>
@@ -78,7 +71,7 @@ const EditGasToolTip = ({
       default:
         return '';
     }
-  }, [editGasMode, estimateGreaterThanGasUse, priorityLevel, transaction, t]);
+  }, [estimateGreaterThanGasUse, priorityLevel, transaction, t]);
 
   let imgAltText;
   if (priorityLevel === PriorityLevels.low) {
@@ -90,15 +83,9 @@ const EditGasToolTip = ({
   }
 
   // Gas estimate curve is visible for low/medium/high gas estimates
-  // the curve is not visible for high estimates for swaps
   // also it is not visible in case of cancel/speedup if the medium/high option is disabled
   const showGasEstimateCurve =
-    isMetamaskSuggestedGasEstimate(priorityLevel) &&
-    !(
-      priorityLevel === PriorityLevels.high &&
-      editGasMode === EditGasModes.swaps
-    ) &&
-    !estimateGreaterThanGasUse;
+    isMetamaskSuggestedGasEstimate(priorityLevel) && !estimateGreaterThanGasUse;
 
   return (
     <div className="edit-gas-tooltip__container">
@@ -193,7 +180,6 @@ EditGasToolTip.propTypes = {
     PropTypes.string,
   ]),
   t: PropTypes.func,
-  editGasMode: PropTypes.string,
   gasLimit: PropTypes.number,
   transaction: PropTypes.object,
 };

@@ -32,23 +32,16 @@ import {
   TransactionControllerGetNonceLockAction,
   TransactionControllerGetStateAction,
   TransactionControllerMessenger,
-  TransactionControllerPostTransactionBalanceUpdatedEvent,
   TransactionControllerStateChangeEvent,
   TransactionControllerTransactionApprovedEvent,
   TransactionControllerTransactionConfirmedEvent,
   TransactionControllerTransactionDroppedEvent,
   TransactionControllerTransactionFailedEvent,
-  TransactionControllerTransactionNewSwapApprovalEvent,
-  TransactionControllerTransactionNewSwapEvent,
   TransactionControllerTransactionRejectedEvent,
   TransactionControllerTransactionSubmittedEvent,
   TransactionControllerUnapprovedTransactionAddedEvent,
   TransactionControllerUpdateTransactionAction,
 } from '@metamask/transaction-controller';
-import {
-  TransactionPayControllerGetStateAction,
-  TransactionPayControllerGetStrategyAction,
-} from '@metamask/transaction-pay-controller';
 import { RootMessenger } from '../../lib/messenger';
 import { AppStateControllerGetStateAction } from '../../controllers/app-state-controller';
 
@@ -110,21 +103,16 @@ type InitMessengerActions =
   | TransactionControllerEstimateGasAction
   | TransactionControllerGetNonceLockAction
   | TransactionControllerGetStateAction
-  | TransactionControllerUpdateTransactionAction
-  | TransactionPayControllerGetStateAction
-  | TransactionPayControllerGetStrategyAction;
+  | TransactionControllerUpdateTransactionAction;
 
 type InitMessengerEvents =
   | NetworkControllerStateChangeEvent
   | SmartTransactionsControllerSmartTransactionEvent
-  | TransactionControllerPostTransactionBalanceUpdatedEvent
   | TransactionControllerStateChangeEvent
   | TransactionControllerTransactionApprovedEvent
   | TransactionControllerTransactionConfirmedEvent
   | TransactionControllerTransactionDroppedEvent
   | TransactionControllerTransactionFailedEvent
-  | TransactionControllerTransactionNewSwapApprovalEvent
-  | TransactionControllerTransactionNewSwapEvent
   | TransactionControllerTransactionRejectedEvent
   | TransactionControllerTransactionSubmittedEvent
   | TransactionControllerUnapprovedTransactionAddedEvent;
@@ -145,14 +133,11 @@ export function getTransactionControllerInitMessenger(
     messenger: controllerInitMessenger,
     events: [
       'SmartTransactionsController:smartTransaction',
-      'TransactionController:postTransactionBalanceUpdated',
       'TransactionController:stateChange',
       'TransactionController:transactionApproved',
       'TransactionController:transactionConfirmed',
       'TransactionController:transactionDropped',
       'TransactionController:transactionFailed',
-      'TransactionController:transactionNewSwapApproval',
-      'TransactionController:transactionNewSwap',
       'TransactionController:transactionRejected',
       'TransactionController:transactionSubmitted',
       'TransactionController:unapprovedTransactionAdded',
@@ -179,8 +164,6 @@ export function getTransactionControllerInitMessenger(
       'TransactionController:getNonceLock',
       'TransactionController:getState',
       'TransactionController:updateTransaction',
-      'TransactionPayController:getState',
-      'TransactionPayController:getStrategy',
     ],
   });
   return controllerInitMessenger;

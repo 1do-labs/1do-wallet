@@ -21,8 +21,6 @@ import { useI18nContext } from '../../../../../hooks/useI18nContext';
 import { useTransactionDetails } from '../transaction-details-context';
 import { formatTransactionDateTime } from '../utils';
 import { getTransactions } from '../../../../../selectors/transactions';
-import { getTokenByAccountAndAddressAndChainId } from '../../../../../selectors/assets';
-import { selectNetworkConfigurationByChainId } from '../../../../../selectors';
 import { useTokenWithBalance } from '../../../hooks/tokens/useTokenWithBalance';
 import { BlockExplorerLink } from '../block-explorer-link';
 import { TransactionStatusIcon } from '../transaction-status-icon';
@@ -30,7 +28,6 @@ import { hasTransactionType } from '../../../../../../shared/lib/transactions.ut
 
 const RELAY_DEPOSIT_TYPES = [
   TransactionType.relayDeposit,
-  TransactionType.perpsRelayDeposit,
   TransactionType.predictRelayDeposit,
 ];
 
@@ -123,16 +120,6 @@ function TransactionSummaryLine({
     );
   }
 
-  if (type === TransactionType.perpsDeposit) {
-    return (
-      <ReceiveSummaryLine
-        transactionMeta={transactionMeta}
-        relatedTransactions={relatedTransactions}
-        isLast={isLast}
-      />
-    );
-  }
-
   return (
     <DefaultSummaryLine transactionMeta={transactionMeta} isLast={isLast} />
   );
@@ -155,17 +142,10 @@ function RelayDepositSummaryLine({
     tokenChainId ?? chainId,
   );
 
-  const networkConfig = useSelector((state) =>
-    selectNetworkConfigurationByChainId(state, chainId),
-  );
-
   const tokenSymbol = token?.symbol;
-  const networkName = networkConfig?.name;
-
-  const title =
-    tokenSymbol && networkName
-      ? t('bridgeSend', [tokenSymbol, networkName])
-      : t('bridgeSendLoading');
+  const title = tokenSymbol
+    ? t('sentSpecifiedTokens', [tokenSymbol])
+    : t('sent');
 
   return (
     <SummaryLine
@@ -211,68 +191,6 @@ function ApprovalSummaryLine({
   );
 }
 
-const HYPERLIQUID_NETWORK_NAME = 'Hyperliquid';
-
-function ReceiveSummaryLine({
-  transactionMeta,
-  relatedTransactions,
-  isLast,
-}: {
-  transactionMeta: TransactionMeta;
-  relatedTransactions: TransactionMeta[];
-  isLast: boolean;
-}) {
-  const t = useI18nContext() as TranslateFunction;
-  const { type, chainId, txParams } = transactionMeta;
-  const isPerpsDeposit = type === TransactionType.perpsDeposit;
-
-  const targetTokenAddress = txParams?.to as Hex | undefined;
-
-  const token = useSelector((state) =>
-    targetTokenAddress && chainId
-      ? getTokenByAccountAndAddressAndChainId(
-          state,
-          undefined,
-          targetTokenAddress,
-          chainId,
-        )
-      : null,
-  );
-
-  const networkConfig = useSelector((state) =>
-    selectNetworkConfigurationByChainId(state, chainId),
-  );
-
-  const tokenSymbol = token?.symbol;
-
-  let networkName: string | undefined;
-  if (isPerpsDeposit) {
-    networkName = HYPERLIQUID_NETWORK_NAME;
-  } else {
-    networkName = networkConfig?.name;
-  }
-
-  const title =
-    tokenSymbol && networkName
-      ? t('bridgeReceive', [tokenSymbol, networkName])
-      : t('bridgeReceiveLoading');
-
-  const hash: string | undefined =
-    transactionMeta?.hash === '0x0' ? undefined : transactionMeta?.hash;
-
-  return (
-    <SummaryLine
-      chainId={chainId}
-      hash={hash}
-      isHyperliquid={isPerpsDeposit}
-      status={transactionMeta.status}
-      time={transactionMeta.submittedTime ?? transactionMeta.time}
-      title={title}
-      isLast={isLast}
-    />
-  );
-}
-
 function DefaultSummaryLine({
   transactionMeta,
   isLast,
@@ -283,23 +201,7 @@ function DefaultSummaryLine({
   const t = useI18nContext() as TranslateFunction;
   const { type, chainId } = transactionMeta;
 
-  let title: string;
-  switch (type) {
-    case TransactionType.bridge:
-      title = t('bridge');
-      break;
-    case TransactionType.bridgeApproval:
-      title = t('bridgeApproval');
-      break;
-    case TransactionType.swap:
-      title = t('swap');
-      break;
-    case TransactionType.swapApproval:
-      title = t('swapApproval');
-      break;
-    default:
-      title = t('transaction');
-  }
+  const title = t('transaction');
 
   return (
     <SummaryLine

@@ -716,7 +716,7 @@
         "origin": "tmashuang.github.io"
       }
     ],
-    "swapsState": {}
+    "smartTransactionsFeatureFlagsState": {}
   },
   "swaps": {
     "aggregatorMetadata": null,
@@ -741,7 +741,6 @@
       "fallBackPrice": null
     },
     "currentSmartTransactionsError": "",
-    "swapsSTXLoading": false,
     "transactionSettingsOpened": false,
     "latestAddedTokenTo": ""
   },

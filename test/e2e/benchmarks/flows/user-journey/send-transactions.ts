@@ -50,7 +50,6 @@ export async function runSendTransactionsBenchmark(): Promise<BenchmarkRunResult
         manifestFlags: {
           testing: {
             disableSync: true,
-            infuraProjectId: process.env.INFURA_PROJECT_ID,
           },
         },
         useMockingPassThrough: !shouldUseMockedRequests(),

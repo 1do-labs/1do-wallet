@@ -5,7 +5,7 @@ import { CHAIN_IDS } from '../../constants/network';
 import * as featureFlags from '../feature-flags';
 import {
   getFeatureFlagsByChainId,
-  type SwapsFeatureFlags,
+  type SmartTransactionsFeatureFlags,
   type SmartTransactionsNetworks,
   type FeatureFlagsMetaMaskState,
 } from './feature-flags';
@@ -34,8 +34,8 @@ type MockState = ProviderConfigState &
       networksMetadata: {
         [clientId: string]: { status: string };
       };
-      swapsState: {
-        swapsFeatureFlags: SwapsFeatureFlags;
+      smartTransactionsFeatureFlagsState: {
+        smartTransactionsFeatureFlags: SmartTransactionsFeatureFlags;
       };
       remoteFeatureFlags?: {
         smartTransactionsNetworks?: SmartTransactionsNetworks;
@@ -73,8 +73,8 @@ describe('Feature Flags Selectors', () => {
         networksMetadata: {
           'test-client-id': { status: 'available' },
         },
-        swapsState: {
-          swapsFeatureFlags: {
+        smartTransactionsFeatureFlagsState: {
+          smartTransactionsFeatureFlags: {
             ethereum: {
               extensionActive: true,
               mobileActive: false,
@@ -96,7 +96,7 @@ describe('Feature Flags Selectors', () => {
               extensionActive: true,
               extensionReturnTxHashAsap: false,
             },
-          } as SwapsFeatureFlags,
+          } as SmartTransactionsFeatureFlags,
         },
         remoteFeatureFlags: remoteFeatureFlagsOverride
           ? {

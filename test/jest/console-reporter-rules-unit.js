@@ -69,11 +69,6 @@ module.exports = [
     group: 'MetaMask: Chain processing errors',
   },
 
-  {
-    match: /No XChain Swaps native asset found for chainId/u,
-    group: 'MetaMask: XChain Swaps warnings',
-  },
-
   // MetaMetrics warnings
   {
     match: /MetaMetricsController:.*value is not a valid trait type/u,

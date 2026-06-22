@@ -56,7 +56,7 @@ This is the smallest complete pattern for a new extension A/B test.
 
 Keep the flag key, variants, and analytics mapping together in one
 background-safe shared module, for example
-`shared/lib/ab-testing/configs/swaps-button-color.ts`. This is the standard
+`shared/lib/ab-testing/configs/settings-button-color.ts`. This is the standard
 pattern for extension A/B tests because the same config must be safe to import
 from both UI code and background analytics code.
 

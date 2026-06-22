@@ -71,11 +71,11 @@ export type NetworkConnectionBanner =
       networkName: string;
       networkClientId: NetworkClientId;
       chainId: Hex;
-      isInfuraEndpoint: boolean;
+      isDefaultRpcEndpoint: boolean;
       /**
-       * The index of an available Infura RPC endpoint in the network's
-       * rpcEndpoints array. Only set for custom networks that have an
-       * Infura endpoint available to switch to.
+       * The index of an available built-in default RPC endpoint in the
+       * network's rpcEndpoints array. Only set for custom networks that have
+       * a default endpoint available to switch to.
        */
-      infuraEndpointIndex?: number;
+      defaultRpcEndpointIndex?: number;
     };

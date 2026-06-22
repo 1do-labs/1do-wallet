@@ -70,8 +70,7 @@ function transformState(state: Record<string, unknown>) {
     delete state.PreferencesController.eip1559V2Enabled;
     // Removed in 699ddccc76302df6130835dc6655077806bf6335
     delete state.PreferencesController.hasDismissedOpenSeaToBlockaidBanner;
-    // I could find references to this in the commit history, but don't know
-    // where it was removed
+    // Legacy migration flag removed from preferences.
     delete state.PreferencesController.hasMigratedFromOpenSeaToBlockaid;
     // Removed in f988dc1c5ef98ec72212d1f58e736556273b68f7
     delete state.PreferencesController.improvedTokenAllowanceEnabled;

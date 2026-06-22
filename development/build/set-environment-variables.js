@@ -22,24 +22,6 @@ function setEnvironmentVariables({
   variables,
   version,
 }) {
-  const isSeedlessOnboardingEnabled =
-    variables.get('SEEDLESS_ONBOARDING_ENABLED')?.toString() === 'true';
-  const oauthClientIdOptions = {
-    buildType,
-    variables,
-    environment,
-    testing: isTestBuild,
-    development: isDevBuild,
-  };
-
-  const APPLE_CLIENT_ID = isSeedlessOnboardingEnabled
-    ? getOAuthClientId({ ...oauthClientIdOptions, provider: 'APPLE' })
-    : '';
-
-  const GOOGLE_CLIENT_ID = isSeedlessOnboardingEnabled
-    ? getOAuthClientId({ ...oauthClientIdOptions, provider: 'GOOGLE' })
-    : '';
-
   variables.set({
     DEBUG: isDevBuild || isTestBuild ? variables.getMaybe('DEBUG') : undefined,
     EIP_4337_ENTRYPOINT: isTestBuild
@@ -69,7 +51,6 @@ function setEnvironmentVariables({
       testing: isTestBuild,
     }),
     SEGMENT_WRITE_KEY: getSegmentWriteKey({
-      buildType,
       variables,
       environment,
     }),
@@ -77,16 +58,9 @@ function setEnvironmentVariables({
       isDevBuild && variables.getMaybe('TEST_GAS_FEE_FLOWS') === true,
     DEEP_LINK_HOST: variables.getMaybe('DEEP_LINK_HOST'),
     DEEP_LINK_PUBLIC_KEY: variables.getMaybe('DEEP_LINK_PUBLIC_KEY'),
-    SEEDLESS_ONBOARDING_ENABLED: isTestBuild
-      ? 'true'
-      : variables.getMaybe('SEEDLESS_ONBOARDING_ENABLED'),
-    METAMASK_SHIELD_ENABLED: variables.getMaybe('METAMASK_SHIELD_ENABLED'),
-    PERPS_ENABLED: variables.getMaybe('PERPS_ENABLED'),
     ASSETS_UNIFIED_STATE_ENABLED: variables.getMaybe(
       'ASSETS_UNIFIED_STATE_ENABLED',
     ),
-    GOOGLE_CLIENT_ID,
-    APPLE_CLIENT_ID,
   });
 }
 
@@ -123,15 +97,6 @@ function getBuildAppId({ buildType }) {
   // labels like `1do` are rejected and the wallet won't appear as a connector.
   const baseDomain = 'io.onedo.wallet';
   return buildType === 'main' ? baseDomain : `${baseDomain}.${buildType}`;
-}
-
-function assertAndLoadEnvVar(envVarName, buildType, variables) {
-  const envVarValue = variables.get(envVarName);
-  assert(
-    typeof envVarValue === 'string' && envVarValue.length > 0,
-    `Build type "${buildType}" has improperly set ${envVarName} in builds.yml. Current value: "${envVarValue}"`,
-  );
-  return envVarValue;
 }
 
 /**
@@ -175,79 +140,34 @@ function getAlchemyApiKey({ buildType, variables, environment, testing }) {
 }
 
 /**
- * Get the OAuth client ID for the current build.
- *
- * @param {object} options - The OAuth client ID options.
- * @param {'APPLE' | 'GOOGLE'} options.provider - The OAuth provider.
- * @param {string} options.buildType - The current build type.
- * @param {ENVIRONMENT[keyof ENVIRONMENT]} options.environment - The current build environment.
- * @param {boolean} options.testing - Whether this is a test build or not.
- * @param {boolean} options.development - Whether this is a development build or not.
- * @param {import('../lib/variables').Variables} options.variables - Object containing all variables that modify the build pipeline.
- * @returns {string} The OAuth client ID.
- */
-function getOAuthClientId({
-  provider,
-  buildType,
-  variables,
-  environment,
-  testing,
-  development,
-}) {
-  const clientIdEnv = `${provider}_CLIENT_ID`;
-
-  if (
-    environment === ENVIRONMENT.PRODUCTION ||
-    environment === ENVIRONMENT.RELEASE_CANDIDATE
-  ) {
-    // Production and release-candidate builds resolve the client ID indirectly so
-    // each build can point at the right secret without changing code.
-    const clientIdRef = assertAndLoadEnvVar(
-      `${clientIdEnv}_REF`,
-      buildType,
-      variables,
-    );
-    return assertAndLoadEnvVar(clientIdRef, buildType, variables);
-  }
-
-  if (testing || development) {
-    if (!variables.isDefined(clientIdEnv)) {
-      throw new Error(
-        `${clientIdEnv} is not set for seedless onboarding enabled build`,
-      );
-    }
-    return variables.get(clientIdEnv);
-  }
-
-  const envToLoad =
-    buildType === 'flask' ? `${clientIdEnv}_FLASK_UAT` : `${clientIdEnv}_UAT`;
-  return variables.get(envToLoad);
-}
-
-/**
  * Get the appropriate Segment write key.
  *
  * @param {object} options - The Segment write key options.
- * @param {string} options.buildType - The current build type.
  * @param {keyof ENVIRONMENT} options.environment - The current build environment.
  * @param {import('../lib/variables').Variables} options.variables - Object containing all variables that modify the build pipeline
  * @returns {string} The Segment write key.
  */
-function getSegmentWriteKey({ buildType, variables, environment }) {
+function getSegmentWriteKey({ variables, environment }) {
   if (environment !== ENVIRONMENT.PRODUCTION) {
     // Skip validation because this is unset on PRs from forks, and isn't necessary for development builds.
     return variables.get('SEGMENT_WRITE_KEY');
   }
 
   const segmentKeyReference = variables.get('SEGMENT_WRITE_KEY_REF');
-  assert(
-    typeof segmentKeyReference === 'string' && segmentKeyReference.length > 0,
-    `Build type "${buildType}" has improperly set SEGMENT_WRITE_KEY_REF in builds.yml. Current value: "${segmentKeyReference}"`,
-  );
+  if (!segmentKeyReference) {
+    return variables.get('SEGMENT_WRITE_KEY');
+  }
+
+  if (!variables.isDefined(segmentKeyReference)) {
+    return variables.get('SEGMENT_WRITE_KEY');
+  }
 
   const segmentWriteKey = variables.get(segmentKeyReference);
+  if (!segmentWriteKey) {
+    return variables.get('SEGMENT_WRITE_KEY');
+  }
   assert(
-    typeof segmentWriteKey === 'string' && segmentWriteKey.length > 0,
+    typeof segmentWriteKey === 'string',
     `Segment Write Key environmental variable "${segmentKeyReference}" is set improperly.`,
   );
   return segmentWriteKey;
@@ -301,5 +221,4 @@ function getPhishingWarningPageUrl({ variables, testing }) {
 
 module.exports = {
   setEnvironmentVariables,
-  getOAuthClientId,
 };

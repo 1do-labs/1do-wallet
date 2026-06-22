@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux';
 import { isEqualCaseInsensitive } from '@metamask/controller-utils';
-import { formatChainIdToCaip } from '@metamask/bridge-controller';
 import { isCaipChainId } from '@metamask/utils';
+import { formatChainIdToCaip } from '../../../../../shared/lib/chain-utils';
 import {
   getEnabledNetworksByNamespace,
   getShowFiatInTestnets,

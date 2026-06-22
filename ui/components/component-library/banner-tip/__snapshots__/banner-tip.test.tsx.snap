@@ -12,7 +12,7 @@ exports[`BannerTip should render BannerTip element correctly 1`] = `
       <img
         alt="Fox"
         class="mm-box mm-banner-tip--logo"
-        src="images/fox.png"
+        src="images/logo/1do-mark.svg"
       />
     </div>
     <div

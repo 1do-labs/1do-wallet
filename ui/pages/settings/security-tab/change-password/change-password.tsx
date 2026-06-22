@@ -1,6 +1,6 @@
 import EventEmitter from 'events';
-import React, { useContext, useEffect, useRef, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useContext, useRef, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import {
   Box,
@@ -24,15 +24,10 @@ import { isBeta, isFlask } from '../../../../../shared/lib/build-types';
 import Mascot from '../../../../components/ui/mascot';
 import Spinner from '../../../../components/ui/spinner';
 import { useI18nContext } from '../../../../hooks/useI18nContext';
-import {
-  changePassword,
-  checkIsSeedlessPasswordOutdated,
-  verifyPassword,
-} from '../../../../store/actions';
+import { changePassword, verifyPassword } from '../../../../store/actions';
 import PasswordForm from '../../../../components/app/password-form/password-form';
 import { SECURITY_ROUTE } from '../../../../helpers/constants/routes';
 import { toast, ToastContent } from '../../../../components/ui/toast/toast';
-import { getIsSocialLoginFlow } from '../../../../selectors';
 import ZENDESK_URLS from '../../../../helpers/constants/zendesk-url';
 import { MetaMetricsContext } from '../../../../contexts/metametrics';
 import {
@@ -62,7 +57,6 @@ const ChangePassword = ({
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { trackEvent } = useContext(MetaMetricsContext);
-  const isSocialLoginFlow = useSelector(getIsSocialLoginFlow);
   const animationEventEmitter = useRef(new EventEmitter());
   const [step, setStep] = useState(ChangePasswordSteps.VerifyCurrentPassword);
 
@@ -77,14 +71,10 @@ const ChangePassword = ({
 
   const renderMascot = () => {
     if (isFlask()) {
-      return (
-        <img src="./images/logo/1do-mark.svg" width="100" height="100" />
-      );
+      return <img src="./images/logo/1do-mark.svg" width="100" height="100" />;
     }
     if (isBeta()) {
-      return (
-        <img src="./images/logo/1do-mark.svg" width="100" height="100" />
-      );
+      return <img src="./images/logo/1do-mark.svg" width="100" height="100" />;
     }
     return (
       <Mascot
@@ -165,15 +155,6 @@ const ChangePassword = ({
     </a>
   );
 
-  useEffect(() => {
-    (async () => {
-      // check if the seedless password is outdated as long as the user land on the change password page
-      if (isSocialLoginFlow) {
-        await dispatch(checkIsSeedlessPasswordOutdated());
-      }
-    })();
-  }, [dispatch, isSocialLoginFlow]);
-
   return (
     <Box padding={4} className="change-password">
       {step === ChangePasswordSteps.VerifyCurrentPassword && (
@@ -238,11 +219,7 @@ const ChangePassword = ({
           <form
             onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
               e.preventDefault();
-              if (isSocialLoginFlow) {
-                setShowChangePasswordWarning(true);
-              } else {
-                onChangePassword();
-              }
+              onChangePassword();
             }}
           >
             <Box>
@@ -251,9 +228,7 @@ const ChangePassword = ({
                 color={TextColor.TextAlternative}
                 className="mb-4"
               >
-                {isSocialLoginFlow
-                  ? t('changePasswordDetailsSocial')
-                  : t('createPasswordDetails')}
+                {t('createPasswordDetails')}
               </Text>
               <PasswordForm
                 onChange={(password) => setNewPassword(password)}
@@ -274,9 +249,7 @@ const ChangePassword = ({
                   onChange={toggle}
                   label={
                     <>
-                      {isSocialLoginFlow
-                        ? t('passwordTermsWarningSocial')
-                        : t('passwordTermsWarning')}
+                      {t('passwordTermsWarning')}
                       &nbsp;
                       {createPasswordLink}
                     </>

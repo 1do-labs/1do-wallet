@@ -20,7 +20,6 @@ import ReceiveIcon from './receive-icon.component';
 import SendIcon from './send-icon.component';
 import Sign from './sign-icon.component';
 import SunCheck from './sun-check-icon.component';
-import Swap from './swap-icon-for-list.component';
 import IconEye from './icon-eye';
 import IconEyeSlash from './icon-eye-slash';
 import IconTokenSearch from './icon-token-search';
@@ -123,7 +122,6 @@ export const DefaultStory = (args) => (
       >
         <IconItem Component={<Approve {...args} />} />
         <IconItem Component={<Sign {...args} />} />
-        <IconItem Component={<Swap {...args} />} />
         <IconItem Component={<SendIcon {...args} />} />
         <IconItem Component={<ReceiveIcon {...args} />} />
         <IconItem Component={<Interaction {...args} />} />
@@ -188,13 +186,6 @@ SignStory.args = {
   color: 'var(--color-icon-default)',
 };
 SignStory.storyName = 'Sign';
-
-export const SwapStory = (args) => <Swap {...args} />;
-SwapStory.args = {
-  size: 40,
-  color: 'var(--color-icon-default)',
-};
-SwapStory.storyName = 'Swap';
 
 export const SendIconStory = (args) => <SendIcon {...args} />;
 SendIconStory.args = {

@@ -70,10 +70,7 @@ describe('AboutInfo', () => {
       const contactUsLink = getByRole('link', {
         name: messages.contactUs.message,
       });
-      expect(contactUsLink).toHaveAttribute(
-        'href',
-        'https://support.metamask.io/?utm_source=extension',
-      );
+      expect(contactUsLink).toHaveAttribute('href', 'https://www.1do.io/');
     });
   });
 });

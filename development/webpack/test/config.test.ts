@@ -59,44 +59,6 @@ describe('./utils/config.ts', () => {
       assert.strictEqual(variables.get('IN_TEST'), args.test);
       assert.strictEqual(variables.get('METAMASK_BUILD_TYPE'), args.type);
       assert.strictEqual(variables.get('NODE_ENV'), args.mode);
-
-      // PPOM_URI is unique in that it is code, and has not been JSON.stringified, so we check it separately:
-      assert.strictEqual(
-        safeVariables.PPOM_URI,
-        `new URL('@blockaid/ppom_release/ppom_bg.wasm', import.meta.url)`,
-      );
-    });
-
-    it('should prefer .metamaskprodrc over .metamaskrc', () => {
-      const buildTypes = loadBuildTypesConfig();
-      const { args } = parseArgv([], buildTypes);
-      const defaultVars = config.getVariables(args, buildTypes);
-
-      // verify the default value of the main build is false
-      assert.strictEqual(defaultVars.variables.get('ALLOW_LOCAL_SNAPS'), false);
-
-      mockRc({ ALLOW_LOCAL_SNAPS: 'false' }, { ALLOW_LOCAL_SNAPS: 'true' });
-
-      const overrides = config.getVariables(args, buildTypes);
-
-      // verify the value of the main build is set to the value in .metamaskprodrc
-      assert.strictEqual(overrides.variables.get('ALLOW_LOCAL_SNAPS'), true);
-    });
-
-    it('should prefer .metamaskrc variables over builds.yml', () => {
-      const buildTypes = loadBuildTypesConfig();
-      const { args } = parseArgv([], buildTypes);
-      const defaultVars = config.getVariables(args, buildTypes);
-
-      // verify the default value of the main build is false
-      assert.strictEqual(defaultVars.variables.get('ALLOW_LOCAL_SNAPS'), false);
-
-      mockRc({ ALLOW_LOCAL_SNAPS: 'true' });
-
-      const overrides = config.getVariables(args, buildTypes);
-
-      // verify the value of the main build is set to the value in .metamaskrc
-      assert.strictEqual(overrides.variables.get('ALLOW_LOCAL_SNAPS'), true);
     });
 
     it('should return valid build variables for a non-default build', () => {
@@ -169,9 +131,9 @@ describe('./utils/config.ts', () => {
       const { args } = parseArgv([], buildTypes);
       const { buildEnvVarDeclarations } = config.getVariables(args, buildTypes);
 
-      // Verify it includes keys from the main build type's env (e.g., INFURA_PROD_PROJECT_ID)
+      // Verify it includes keys from the main build type's env (e.g., ALCHEMY_PROD_API_KEY)
       assert.ok(
-        buildEnvVarDeclarations.has('INFURA_PROD_PROJECT_ID'),
+        buildEnvVarDeclarations.has('ALCHEMY_PROD_API_KEY'),
         'should include build type specific env vars',
       );
 
@@ -188,8 +150,8 @@ describe('./utils/config.ts', () => {
       // Some variables require more specific values because
       // setEnvironmentVariables resolves them before webpack's generic
       // production validation runs.
-      rcVars.INFURA_PROD_PROJECT_ID = 'dd98248f370d4063b81c0299f919dc11';
-      rcVars.INFURA_ENV_KEY_REF = 'INFURA_PROD_PROJECT_ID';
+      rcVars.ALCHEMY_PROD_API_KEY = 'dd98248f370d4063b81c0299f919dc11';
+      rcVars.ALCHEMY_ENV_KEY_REF = 'ALCHEMY_PROD_API_KEY';
       rcVars.SEGMENT_WRITE_KEY_REF = 'SEGMENT_PROD_WRITE_KEY';
       rcVars.SEGMENT_PROD_WRITE_KEY = 'SEGMENT_PROD_WRITE_KEY';
       rcVars.APPLE_PROD_CLIENT_ID = 'APPLE_PROD_CLIENT_ID';
@@ -217,11 +179,8 @@ describe('./utils/config.ts', () => {
     it('should not throw when production environment is missing required variables if --validateEnv is false', () => {
       const rcVars: Record<string, string> = {};
       mockRc(rcVars);
-      // Some variables require definitions because of additional validation
-      // happening in setEnvironmentVariables
-      rcVars.SEEDLESS_ONBOARDING_ENABLED = 'false';
-      rcVars.INFURA_PROD_PROJECT_ID = 'dd98248f370d4063b81c0299f919dc11';
-      rcVars.INFURA_ENV_KEY_REF = 'INFURA_PROD_PROJECT_ID';
+      rcVars.ALCHEMY_PROD_API_KEY = 'dd98248f370d4063b81c0299f919dc11';
+      rcVars.ALCHEMY_ENV_KEY_REF = 'ALCHEMY_PROD_API_KEY';
       rcVars.SEGMENT_WRITE_KEY_REF = 'SEGMENT_PROD_WRITE_KEY';
       rcVars.SEGMENT_PROD_WRITE_KEY = 'SEGMENT_PROD_WRITE_KEY';
 

@@ -34,9 +34,11 @@ import { getNetworkConfigurationsByChainId } from '../../../../../shared/lib/sel
 import { getCurrentCurrency } from '../../../../ducks/metamask/metamask';
 import { formatCurrency } from '../../../../helpers/utils/confirm-tx.util';
 import { useMultichainBalances } from '../../../../hooks/useMultichainBalances';
-import { NETWORK_TO_SHORT_NETWORK_NAME_MAP } from '../../../../../shared/constants/bridge';
 import { getImageForChainId } from '../../../../selectors/multichain';
-import { TEST_CHAINS } from '../../../../../shared/constants/network';
+import {
+  NETWORK_TO_NAME_MAP,
+  TEST_CHAINS,
+} from '../../../../../shared/constants/network';
 import { getShowTestNetworks } from '../../../../selectors/selectors';
 
 // TODO use MultichainNetworkConfiguration type
@@ -100,10 +102,12 @@ export const AssetPickerModalNetwork = ({
   // Sort the networks by balance in descending order
   const networksList = useMemo(
     () =>
-      (networks ?? Object.values(allNetworks) ?? []).sort(
-        (a, b) => balanceByChainId[b.chainId] - balanceByChainId[a.chainId],
+      [...(networks ?? Object.values(allNetworks) ?? [])].sort(
+        (a, b) =>
+          (balanceByChainId[b.chainId] ?? 0) -
+          (balanceByChainId[a.chainId] ?? 0),
       ),
-    [],
+    [allNetworks, balanceByChainId, networks],
   );
 
   const [nonTestNetworks, testNetworks] = useMemo(
@@ -204,7 +208,7 @@ export const AssetPickerModalNetwork = ({
             ) : undefined
           }
         >
-          {header ?? t('bridgeSelectNetwork')}
+          {header ?? t('selectNetwork')}
         </ModalHeader>
         {isMultiselectEnabled && (
           <Box display={Display.Flex} padding={4}>
@@ -261,8 +265,8 @@ export const AssetPickerModalNetwork = ({
                 <NetworkListItem
                   key={chainId}
                   name={
-                    NETWORK_TO_SHORT_NETWORK_NAME_MAP[
-                      chainId as keyof typeof NETWORK_TO_SHORT_NETWORK_NAME_MAP
+                    NETWORK_TO_NAME_MAP[
+                      chainId as keyof typeof NETWORK_TO_NAME_MAP
                     ] ?? name
                   }
                   selected={
@@ -332,8 +336,8 @@ export const AssetPickerModalNetwork = ({
                   <NetworkListItem
                     key={chainId}
                     name={
-                      NETWORK_TO_SHORT_NETWORK_NAME_MAP[
-                        chainId as keyof typeof NETWORK_TO_SHORT_NETWORK_NAME_MAP
+                      NETWORK_TO_NAME_MAP[
+                        chainId as keyof typeof NETWORK_TO_NAME_MAP
                       ] ?? name
                     }
                     selected={

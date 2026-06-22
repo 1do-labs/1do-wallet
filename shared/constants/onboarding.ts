@@ -22,18 +22,4 @@ export enum FirstTimeFlowType {
   // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
   // eslint-disable-next-line @typescript-eslint/naming-convention
   restore = 'restore',
-  /**
-   * When a user logins with Social Login and creates a new wallet,
-   * they will have the 'socialCreate' firstTimeFlowType.
-   */
-  // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-  // eslint-disable-next-line @typescript-eslint/naming-convention
-  socialCreate = 'socialCreate',
-  /**
-   * When a user logins with Social Login and imports their wallet,
-   * they will have the 'socialImport' firstTimeFlowType.
-   */
-  // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-  // eslint-disable-next-line @typescript-eslint/naming-convention
-  socialImport = 'socialImport',
 }

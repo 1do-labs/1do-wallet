@@ -72,7 +72,7 @@ export const verifySrp = async (
 
 export async function mockActiveNetworks(mockServer: Mockttp) {
   return await mockServer
-    .forGet('https://accounts.api.cx.metamask.io/v2/activeNetworks')
+    .forGet('https://accounts.disabled.1do.local/v2/activeNetworks')
     .thenCallback(() => {
       return {
         statusCode: 200,

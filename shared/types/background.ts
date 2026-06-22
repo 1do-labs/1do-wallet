@@ -33,7 +33,6 @@ import type { LoggingControllerState } from '@metamask/logging-controller';
 import type { PermissionLogControllerState } from '@metamask/permission-log-controller';
 import type { AccountsControllerState } from '@metamask/accounts-controller';
 import type { SignatureControllerState } from '@metamask/signature-controller';
-import type { PPOMState } from '@metamask/ppom-validator';
 import type { NameControllerState } from '@metamask/name-controller';
 import type { UserOperationControllerState } from '@metamask/user-operation-controller';
 import type { TransactionControllerState } from '@metamask/transaction-controller';
@@ -181,14 +180,11 @@ export type ControllerStatePropertiesEnumerated = {
   subjects: PermissionControllerState<PermissionConstraint>['subjects'];
   permissionActivityLog: PermissionLogControllerState['permissionActivityLog'];
   permissionHistory: PermissionLogControllerState['permissionHistory'];
-  storageMetadata: PPOMState['storageMetadata'];
-  versionInfo: PPOMState['versionInfo'];
   featureFlags: PreferencesControllerState['featureFlags'];
   ipfsGateway: PreferencesControllerState['ipfsGateway'];
   isIpfsGatewayEnabled: PreferencesControllerState['isIpfsGatewayEnabled'];
   isMultiAccountBalancesEnabled: PreferencesControllerState['isMultiAccountBalancesEnabled'];
   openSeaEnabled: PreferencesControllerState['openSeaEnabled'];
-  securityAlertsEnabled: PreferencesControllerState['securityAlertsEnabled'];
   showSidePanelMigrationToast: PreferencesControllerState['showSidePanelMigrationToast'];
   useNftDetection: PreferencesControllerState['useNftDetection'];
   useTokenDetection: PreferencesControllerState['useTokenDetection'];
@@ -272,7 +268,6 @@ type ControllerStateTypesMerged = AccountsControllerState &
   OnboardingControllerState &
   PermissionControllerState<PermissionConstraint> &
   PermissionLogControllerState &
-  PPOMState &
   PreferencesControllerState &
   RemoteFeatureFlagControllerState &
   RatesControllerState &

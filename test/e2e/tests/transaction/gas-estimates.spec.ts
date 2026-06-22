@@ -5,7 +5,7 @@ import { withFixtures } from '../../helpers';
 import FixtureBuilderV2 from '../../fixtures/fixture-builder-v2';
 import { CHAIN_IDS } from '../../../../shared/constants/network';
 import { NETWORK_CLIENT_ID } from '../../constants';
-import { GAS_API_BASE_URL } from '../../../../shared/constants/swaps';
+import { GAS_API_BASE_URL } from '../../../../shared/constants/gas';
 import { mockSpotPrices } from '../tokens/utils/mocks';
 import { Driver } from '../../webdriver/driver';
 import TransactionConfirmation from '../../page-objects/pages/confirmations/transaction-confirmation';
@@ -47,67 +47,11 @@ async function mockBinanceRelatedRequests(
 ): Promise<unknown[]> {
   return [
     mockServer
-      .forGet('https://bridge.api.cx.metamask.io/networks/56/topAssets')
-      .thenCallback(() => {
-        return {
-          statusCode: 200,
-          json: [
-            {
-              address: '0x0000000000000000000000000000000000000000',
-              symbol: 'BNB',
-            },
-          ],
-        };
-      }),
-    mockServer
-      .forGet(
-        'https://bridge.api.cx.metamask.io/networks/56/aggregatorMetadata',
-      )
-      .thenCallback(() => {
-        return {
-          statusCode: 200,
-          json: {
-            airswapLight: {
-              color: '#2B71FF',
-              title: 'AirSwap',
-              icon: "data:image/svg+xml,%3csvg width='75' height='31' viewBox='0 0 75 31' fill='none' xmlns='http://www.w3.org/2000/svg'%3e %3cpath fill-rule='evenodd' clip-rule='evenodd' d='M31.4038 12.231H30.1152V19.3099H31.4038V12.231Z' fill='%23FDFDFD'/%3e %3cpath fill-rule='evenodd' clip-rule='evenodd'",
-              iconPng: '',
-            },
-          },
-        };
-      }),
-    mockServer
       .forGet('https://tokens.api.cx.metamask.io/blocklist')
       .thenCallback(() => {
         return {
           statusCode: 200,
           json: [],
-        };
-      }),
-    mockServer
-      .forGet('https://bridge.api.cx.metamask.io/networks/56/tokens')
-      .thenCallback(() => {
-        return {
-          statusCode: 200,
-          json: [
-            {
-              address: '0x7e8bae727abc245181f7abad0a4445114c0ca987',
-              symbol: '7',
-              decimals: 9,
-              name: 'Lucky7',
-              iconUrl:
-                'https://static.cx.metamask.io/api/v1/tokenIcons/56/0x7e8bae727abc245181f7abad0a4445114c0ca987.png',
-              type: 'erc20',
-              aggregators: ['pancakeCoinGecko'],
-              occurrences: 4,
-              erc20Permit: false,
-              storage: {
-                balance: 5,
-                approval: 3,
-              },
-              blocked: false,
-            },
-          ],
         };
       }),
   ];

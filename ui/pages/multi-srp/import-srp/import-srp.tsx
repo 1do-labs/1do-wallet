@@ -11,20 +11,11 @@ import {
   TextVariant,
 } from '@metamask/design-system-react';
 import { useI18nContext } from '../../../hooks/useI18nContext';
-import {
-  hideWarning,
-  checkIsSeedlessPasswordOutdated,
-  importMnemonicToVault,
-} from '../../../store/actions';
+import { hideWarning, importMnemonicToVault } from '../../../store/actions';
 import { setShowNewSrpAddedToast } from '../../../components/app/toast-master/utils';
 import { DEFAULT_ROUTE } from '../../../helpers/constants/routes';
 import { Header, Page } from '../../../components/multichain/pages/page';
-import {
-  getIsSocialLoginFlow,
-  getMetaMaskHdKeyrings,
-} from '../../../selectors';
-import { getIsSeedlessPasswordOutdated } from '../../../ducks/metamask/metamask';
-import PasswordOutdatedModal from '../../../components/app/password-outdated-modal';
+import { getMetaMaskHdKeyrings } from '../../../selectors';
 import { MetaMaskReduxDispatch } from '../../../store/store';
 import SrpInputForm from '../../srp-input-form';
 import { MetaMetricsContext } from '../../../contexts/metametrics';
@@ -36,8 +27,6 @@ export const ImportSrp = () => {
   const dispatch = useDispatch<MetaMaskReduxDispatch>();
   const [srpError, setSrpError] = useState('');
   const [secretRecoveryPhrase, setSecretRecoveryPhrase] = useState('');
-  const isSocialLoginEnabled = useSelector(getIsSocialLoginFlow);
-  const isSeedlessPasswordOutdated = useSelector(getIsSeedlessPasswordOutdated);
   const hdKeyrings = useSelector(getMetaMaskHdKeyrings);
   const { trackEvent } = useContext(MetaMetricsContext);
 
@@ -53,15 +42,6 @@ export const ImportSrp = () => {
     try {
       if (!secretRecoveryPhrase) {
         return;
-      }
-
-      if (isSocialLoginEnabled) {
-        const isPasswordOutdated = await dispatch(
-          checkIsSeedlessPasswordOutdated(true),
-        );
-        if (isPasswordOutdated) {
-          return;
-        }
       }
 
       trackEvent({
@@ -114,7 +94,6 @@ export const ImportSrp = () => {
       >
         {t('importSecretRecoveryPhrase')}
       </Header>
-      {isSeedlessPasswordOutdated && <PasswordOutdatedModal />}
       <Box className="text-left" marginBottom={2}>
         <Text variant={TextVariant.HeadingLg}>{t('importAWallet')}</Text>
       </Box>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { CaipChainId, KnownCaipNamespace } from '@metamask/utils';
-import { formatChainIdToCaip } from '@metamask/bridge-controller';
+import { formatChainIdToCaip } from '../../../../shared/lib/chain-utils';
 import {
   AlignItems,
   BlockSize,

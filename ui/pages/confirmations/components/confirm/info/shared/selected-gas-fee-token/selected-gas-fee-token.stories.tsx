@@ -32,8 +32,8 @@ function getStore({
           smartTransactionsFeatureFlags: {
             enabled: true,
           },
-          swapsState: {
-            swapsFeatureFlags: {
+          smartTransactionsFeatureFlagsState: {
+            smartTransactionsFeatureFlags: {
               ethereum: {
                 extensionActive: true,
                 mobileActive: false,

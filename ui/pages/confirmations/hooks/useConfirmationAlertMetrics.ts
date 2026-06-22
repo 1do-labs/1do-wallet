@@ -1,7 +1,6 @@
 // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
 /* eslint-disable @typescript-eslint/naming-convention */
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { validate as isUuid } from 'uuid';
 
 import useAlerts from '../../../hooks/useAlerts';
 import { isSignatureTransactionType } from '../utils';
@@ -27,7 +26,6 @@ export const ALERTS_NAME_METRICS: Record<AlertsName | string, string> = {
   [AlertsName.NoGasPrice]: 'no_gas_price',
   [AlertsName.PendingTransaction]: 'pending_transaction',
   [AlertsName.SigningOrSubmitting]: 'signing_or_submitting',
-  [AlertsName.Blockaid]: 'blockaid',
 };
 
 function uniqueFreshArrayPush<T>(array: T[], value: T): T[] {
@@ -39,9 +37,7 @@ function getAlertNames(alerts: Alert[]): string[] {
 }
 
 function getAlertName(alertKey: string): string {
-  return isUuid(alertKey)
-    ? ALERTS_NAME_METRICS[AlertsName.Blockaid]
-    : (ALERTS_NAME_METRICS[alertKey] ?? alertKey);
+  return ALERTS_NAME_METRICS[alertKey] ?? alertKey;
 }
 
 export function useConfirmationAlertMetrics() {

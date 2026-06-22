@@ -298,29 +298,29 @@ describe('resolveTransactionType', () => {
     expect(result).toBe(TransactionType.tokenMethodApprove);
   });
 
-  it('returns the correct transaction type for a bridge transaction', () => {
+  it('returns contract interaction for unknown transfer transaction categories', () => {
     const result = resolveTransactionType(
-      makeApiTx({ time: Date.now(), transactionCategory: 'BRIDGE_OUT' }),
+      makeApiTx({ time: Date.now(), transactionCategory: 'TRANSFER_OUT' }),
     );
-    expect(result).toBe(TransactionType.bridge);
+    expect(result).toBe(TransactionType.contractInteraction);
     expect(
       resolveTransactionType(
-        makeApiTx({ time: Date.now(), transactionCategory: 'BRIDGE_IN' }),
+        makeApiTx({ time: Date.now(), transactionCategory: 'TRANSFER_IN' }),
       ),
-    ).toBe(TransactionType.bridge);
+    ).toBe(TransactionType.contractInteraction);
   });
 
-  it('returns the correct transaction type for a swap transaction', () => {
+  it('returns contract interaction for exchange transaction categories', () => {
     const result = resolveTransactionType(
-      makeApiTx({ time: Date.now(), transactionCategory: 'SWAP' }),
+      makeApiTx({ time: Date.now(), transactionCategory: 'TRADE' }),
     );
-    expect(result).toBe(TransactionType.swap);
+    expect(result).toBe(TransactionType.contractInteraction);
 
     expect(
       resolveTransactionType(
         makeApiTx({ time: Date.now(), transactionCategory: 'EXCHANGE' }),
       ),
-    ).toBe(TransactionType.swap);
+    ).toBe(TransactionType.contractInteraction);
   });
 
   it('returns the correct transaction type for a contract interaction transaction', () => {

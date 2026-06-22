@@ -13,7 +13,7 @@ DefaultStory.storyName = 'Default';
 DefaultStory.args = {
   title: 'E2E Test Dapp',
   origin: 'https://metamask.github.io',
-  iconUrl: 'https://metamask.github.io/test-dapp/metamask-fox.svg',
+  iconUrl: './images/logo/1do-mark.svg',
 };
 
 export const HeaderWithFallbackIcon = (args) => (

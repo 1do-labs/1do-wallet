@@ -196,16 +196,12 @@
       "firstTimeFlowType": "import",
       "seedPhraseBackedUp": null
     },
-    "PPOMController": {
-      "storageMetadata": "object"
-    },
     "PermissionController": {
       "subjects": "object"
     },
     "PermissionLogController": {
       "permissionHistory": "object"
     },
-    "PerpsController": "object",
     "PhishingController": {
       "addressScanCache": "object",
       "tokenScanCache": "object",
@@ -250,7 +246,6 @@
         "useSidePanelAsDefault": "boolean"
       },
       "referrals": "object",
-      "securityAlertsEnabled": "boolean",
       "showSidePanelMigrationToast": "boolean",
       "snapRegistryList": "object",
       "theme": "os",

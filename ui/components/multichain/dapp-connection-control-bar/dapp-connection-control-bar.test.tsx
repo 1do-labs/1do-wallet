@@ -73,7 +73,7 @@ const sharedMetamaskOverrides = {
     ...mockState.metamask.subjectMetadata,
     [DAPP_ORIGIN]: {
       name: 'E2E Test Dapp',
-      iconUrl: 'https://metamask.github.io/test-dapp/metamask-fox.svg',
+      iconUrl: './images/logo/1do-mark.svg',
       subjectType: 'website',
       origin: DAPP_ORIGIN,
     },

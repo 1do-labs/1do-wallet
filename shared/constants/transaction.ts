@@ -117,7 +117,7 @@ export enum TransactionGroupCategory {
   // eslint-disable-next-line @typescript-eslint/naming-convention
   signatureRequest = 'signature-request',
   /**
-   * Transaction group representing a token swap through MetaMask Swaps. This
+   * Transaction group representing a token swap. This
    * transaction group's primary currency changes depending on context. If the
    * user is viewing an asset page for a token received from a swap, the
    * primary currency will be the received token. Otherwise the token exchanged
@@ -127,13 +127,13 @@ export enum TransactionGroupCategory {
   // eslint-disable-next-line @typescript-eslint/naming-convention
   swap = 'swap',
   /**
-   * Transaction group representing a token swap through MetaMask Swaps, where the final token is sent to another address.
+   * Transaction group representing a token swap where the final token is sent to another address.
    */
   // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
   // eslint-disable-next-line @typescript-eslint/naming-convention
   swapAndSend = 'swapAndSend',
   /**
-   * Transaction group representing a token bridge through MetaMask Bridge,
+   * Transaction group representing a token bridge,
    * where the final token is sent to another chain.
    */
   // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
@@ -260,13 +260,6 @@ export enum TokenStandard {
   // eslint-disable-next-line @typescript-eslint/naming-convention
   none = 'NONE',
 }
-
-/**
- * The hostname used for Ethereum Mainnet transaction simulations, and for
- * retrieving metadata for transaction simulation supported networks.
- */
-export const TX_SENTINEL_URL =
-  'https://tx-sentinel-ethereum-mainnet.api.cx.metamask.io';
 
 // To be moved to @metamask/rpc-errors in future.
 export enum EIP5792ErrorCode {

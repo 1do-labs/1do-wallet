@@ -56,9 +56,7 @@ describe('PermitSimulation', () => {
         mockStore,
       );
 
-      expect(
-        await findByText(messages.perpsWithdraw.message),
-      ).toBeInTheDocument();
+      expect(await findByText(messages.approve.message)).toBeInTheDocument();
       expect(await findByText('#3606393')).toBeInTheDocument();
       expect(container).toMatchSnapshot();
     });

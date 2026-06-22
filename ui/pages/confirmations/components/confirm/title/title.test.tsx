@@ -288,42 +288,41 @@ describe('ConfirmTitle', () => {
     });
 
     // @ts-expect-error This is missing from the Mocha type definitions
-    it.each([
-      TransactionType.perpsDeposit,
-      TransactionType.predictDeposit,
-      TransactionType.predictWithdraw,
-    ])('hides alert banner for %s transaction type', (type: string) => {
-      const txId = `${type}-tx-id`;
-      const transaction = {
-        id: txId,
-        type: type as TransactionType,
-        chainId: '0x5',
-        txParams: { from: '0x123' },
-        status: 'unapproved',
-        time: Date.now(),
-      } as Confirmation;
+    it.each([TransactionType.predictDeposit, TransactionType.predictWithdraw])(
+      'hides alert banner for %s transaction type',
+      (type: string) => {
+        const txId = `${type}-tx-id`;
+        const transaction = {
+          id: txId,
+          type: type as TransactionType,
+          chainId: '0x5',
+          txParams: { from: '0x123' },
+          status: 'unapproved',
+          time: Date.now(),
+        } as Confirmation;
 
-      const stateWithAlert = getMockConfirmStateForTransaction(transaction, {
-        metamask: {},
-        confirmAlerts: {
-          alerts: {
-            [txId]: [alertMock as Alert],
-          },
-          confirmed: {
-            [txId]: {
-              [alertMock.key]: false,
+        const stateWithAlert = getMockConfirmStateForTransaction(transaction, {
+          metamask: {},
+          confirmAlerts: {
+            alerts: {
+              [txId]: [alertMock as Alert],
+            },
+            confirmed: {
+              [txId]: {
+                [alertMock.key]: false,
+              },
             },
           },
-        },
-      });
+        });
 
-      const mockStore = configureMockStore([])(stateWithAlert);
-      const { queryByText } = renderWithConfirmContextProvider(
-        <ConfirmTitle />,
-        mockStore,
-      );
+        const mockStore = configureMockStore([])(stateWithAlert);
+        const { queryByText } = renderWithConfirmContextProvider(
+          <ConfirmTitle />,
+          mockStore,
+        );
 
-      expect(queryByText(alertMock.reason)).not.toBeInTheDocument();
-    });
+        expect(queryByText(alertMock.reason)).not.toBeInTheDocument();
+      },
+    );
   });
 });

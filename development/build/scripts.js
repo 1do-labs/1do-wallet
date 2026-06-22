@@ -660,6 +660,7 @@ function createFactoredBuild({
         const isTest =
           buildTarget === BUILD_TARGETS.TEST ||
           buildTarget === BUILD_TARGETS.TEST_DEV;
+        const shouldIncludeLiveReload = isDevBuild(buildTarget);
         const scripts = getScriptTags({
           applyLavaMoat,
           commonSet,
@@ -673,6 +674,7 @@ function createFactoredBuild({
               browserPlatforms,
               shouldIncludeSnow,
               applyLavaMoat,
+              shouldIncludeLiveReload,
               scripts,
             });
             renderHtmlFile({
@@ -680,6 +682,7 @@ function createFactoredBuild({
               browserPlatforms,
               shouldIncludeSnow,
               applyLavaMoat,
+              shouldIncludeLiveReload,
               scripts,
             });
             renderHtmlFile({
@@ -687,6 +690,7 @@ function createFactoredBuild({
               browserPlatforms,
               shouldIncludeSnow,
               applyLavaMoat,
+              shouldIncludeLiveReload,
               scripts,
             });
             renderHtmlFile({
@@ -694,6 +698,7 @@ function createFactoredBuild({
               browserPlatforms,
               applyLavaMoat,
               shouldIncludeSnow,
+              shouldIncludeLiveReload,
               scripts,
             });
             renderHtmlFile({
@@ -701,6 +706,7 @@ function createFactoredBuild({
               browserPlatforms,
               shouldIncludeSnow,
               applyLavaMoat,
+              shouldIncludeLiveReload,
               isTest,
               scripts,
             });
@@ -709,6 +715,7 @@ function createFactoredBuild({
               browserPlatforms,
               shouldIncludeSnow,
               applyLavaMoat,
+              shouldIncludeLiveReload,
               isTest,
               scripts,
             });
@@ -722,6 +729,7 @@ function createFactoredBuild({
               browserPlatforms,
               shouldIncludeSnow,
               applyLavaMoat,
+              shouldIncludeLiveReload,
               scripts,
             });
             if (isManifestV3) {
@@ -752,6 +760,7 @@ function createFactoredBuild({
               browserPlatforms,
               shouldIncludeSnow,
               applyLavaMoat: false,
+              shouldIncludeLiveReload,
               scripts,
             });
             break;
@@ -764,6 +773,7 @@ function createFactoredBuild({
               browserPlatforms,
               shouldIncludeSnow,
               applyLavaMoat,
+              shouldIncludeLiveReload,
               scripts,
             });
             break;
@@ -959,7 +969,6 @@ function setupBundlerDefaults(
             './**/node_modules/fancy-canvas',
             // Web Vitals (ESM — "type": "module" in package.json)
             './**/node_modules/web-vitals',
-            // Perps controller ESM dependencies
             './**/node_modules/valibot',
             './**/node_modules/@nktkas',
             './**/node_modules/@noble/hashes',
@@ -967,8 +976,6 @@ function setupBundlerDefaults(
             './**/node_modules/@scure',
             './**/node_modules/micro-eth-signer',
             './**/node_modules/micro-packed',
-            // MYX SDK and its ESM-only transitive dependencies
-            './**/node_modules/@myx-trade',
             './**/node_modules/lodash-es',
             './**/node_modules/wretch',
             './**/node_modules/crypto-es',
@@ -1231,6 +1238,7 @@ function renderHtmlFile({
   browserPlatforms,
   shouldIncludeSnow,
   applyLavaMoat,
+  shouldIncludeLiveReload = false,
   isTest,
   scripts = [],
 }) {
@@ -1246,6 +1254,9 @@ function renderHtmlFile({
   }
 
   const scriptTags = scripts.join('\n    ');
+  const backgroundScriptTags = shouldIncludeLiveReload
+    ? `${scriptTags}\n    <script src="./chromereload.js" async></script>`
+    : scriptTags;
 
   const htmlFilePath = `./app/html/pages/${htmlName}.html`;
   const htmlTemplate = readFileSync(htmlFilePath, 'utf8');
@@ -1258,7 +1269,7 @@ function renderHtmlFile({
     .replace('../../scripts/load/background.ts', './load-background.js')
     .replace(
       '<script src="./load-background.js" defer></script>',
-      `${scriptTags}\n    <script src="./chromereload.js" async></script>`,
+      backgroundScriptTags,
     )
     .replace(
       '<script src="../../scripts/load/ui.ts" defer></script>',

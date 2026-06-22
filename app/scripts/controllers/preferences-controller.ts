@@ -195,7 +195,6 @@ export const getDefaultPreferencesControllerState =
       useNativeCurrencyAsPrimaryCurrency: true,
       useSidePanelAsDefault: true,
     },
-    securityAlertsEnabled: true,
     showSidePanelMigrationToast: false,
     theme: ThemeType.os,
     use4ByteResolution: true,
@@ -308,12 +307,6 @@ const controllerMetadata: StateMetadata<PreferencesControllerState> = {
     includeInDebugSnapshot: true,
     usedInUi: true,
   },
-  securityAlertsEnabled: {
-    includeInStateLogs: true,
-    persist: true,
-    includeInDebugSnapshot: false,
-    usedInUi: true,
-  },
   showSidePanelMigrationToast: {
     includeInStateLogs: false,
     persist: true,
@@ -423,7 +416,6 @@ const MESSENGER_EXPOSED_METHODS = [
   'setUse4ByteResolution',
   'setUseCurrencyRateCheck',
   'setOpenSeaEnabled',
-  'setSecurityAlertsEnabled',
   'setUseExternalNameSources',
   'setUseTransactionSimulations',
   'setAdvancedGasFee',
@@ -615,17 +607,6 @@ export class PreferencesController extends BaseController<
   setOpenSeaEnabled(openSeaEnabled: boolean): void {
     this.update((state) => {
       state.openSeaEnabled = openSeaEnabled;
-    });
-  }
-
-  /**
-   * Setter for the `securityAlertsEnabled` property
-   *
-   * @param securityAlertsEnabled - Whether or not the user prefers to use the security alerts.
-   */
-  setSecurityAlertsEnabled(securityAlertsEnabled: boolean): void {
-    this.update((state) => {
-      state.securityAlertsEnabled = securityAlertsEnabled;
     });
   }
 

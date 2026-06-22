@@ -645,9 +645,6 @@
   "metaMaskConnectStatusParagraphTwo": {
     "message": "連線狀態按鈕會顯示您正在造訪的網站是否已經連結到您目前選擇的帳戶。"
   },
-  "metamaskSwapsOfflineDescription": {
-    "message": "1do Swaps 正在維護。請晚點再來看看。"
-  },
   "metamaskVersion": {
     "message": "1do 版本"
   },
@@ -1107,5 +1104,13 @@
   },
   "youNeedToAllowCameraAccess": {
     "message": "需要准許存取攝影鏡頭才能啟用此功能"
+  },
+  "permission_signatureInsight": {
+    "message": "Display signature insights modal.",
+    "description": "The description for the `endowment:signature-insight` permission"
+  },
+  "permission_signatureInsightOrigin": {
+    "message": "See the origins of websites that initiate a signature request",
+    "description": "The description for the `signatureOrigin` caveat, to be used with the `endowment:signature-insight` permission"
   }
 }

@@ -14,12 +14,9 @@ import {
   tryUnlockMetamask,
   markPasswordForgotten,
   forceUpdateMetamaskState,
-  checkIsSeedlessPasswordOutdated,
-  resetOnboarding,
   resetWallet,
-  getIsSeedlessOnboardingUserAuthenticated,
 } from '../../store/actions';
-import { getIsSocialLoginFlow, getFirstTimeFlowType } from '../../selectors';
+import { getFirstTimeFlowType } from '../../selectors';
 import {
   getCompletedOnboarding,
   getIsWalletResetInProgress,
@@ -40,7 +37,6 @@ const mapStateToProps = (state: MetaMaskReduxState) => {
   } = state;
   return {
     isUnlocked,
-    isSocialLoginFlow: getIsSocialLoginFlow(state),
     isOnboardingCompleted: getCompletedOnboarding(state),
     firstTimeFlowType: getFirstTimeFlowType(state),
     isWalletResetInProgress: getIsWalletResetInProgress(state),
@@ -53,12 +49,7 @@ const mapDispatchToProps = (dispatch: MetaMaskReduxDispatch) => {
       dispatch(tryUnlockMetamask(password)),
     markPasswordForgotten: () => dispatch(markPasswordForgotten()),
     forceUpdateMetamaskState: () => forceUpdateMetamaskState(dispatch),
-    loginWithDifferentMethod: () => dispatch(resetOnboarding()),
-    checkIsSeedlessPasswordOutdated: () =>
-      dispatch(checkIsSeedlessPasswordOutdated()),
     resetWallet: () => dispatch(resetWallet()),
-    getIsSeedlessOnboardingUserAuthenticated: () =>
-      dispatch(getIsSeedlessOnboardingUserAuthenticated()),
   };
 };
 

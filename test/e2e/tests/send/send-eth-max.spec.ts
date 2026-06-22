@@ -11,7 +11,7 @@ import { MockttpServer } from 'mockttp';
 import { withFixtures } from '../../helpers';
 import { createInternalTransactionWithMaxAmount } from '../../page-objects/flows/transaction';
 import FixtureBuilderV2 from '../../fixtures/fixture-builder-v2';
-import { GAS_API_BASE_URL } from '../../../../shared/constants/swaps';
+import { GAS_API_BASE_URL } from '../../../../shared/constants/gas';
 import { login } from '../../page-objects/flows/login.flow';
 import { validateTransaction } from '../../page-objects/flows/send-transaction.flow';
 import { mockSpotPrices } from '../tokens/utils/mocks';

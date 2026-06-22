@@ -1,7 +1,4 @@
-import {
-  TransactionMeta,
-  TransactionType,
-} from '@metamask/transaction-controller';
+import { TransactionMeta } from '@metamask/transaction-controller';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -43,9 +40,6 @@ import {
   useHardwareWalletError,
 } from '../../../../../contexts/hardware-wallets';
 import OriginThrottleModal from './origin-throttle-modal';
-import { SingleActionFooter } from './single-action-footer';
-
-const SINGLE_ACTION_FOOTER_TYPES = [TransactionType.perpsDeposit];
 
 export type OnCancelHandler = ({
   location,
@@ -400,18 +394,6 @@ const Footer = () => {
 
   if (!currentConfirmation) {
     return null;
-  }
-
-  if (
-    currentConfirmation.type &&
-    SINGLE_ACTION_FOOTER_TYPES.includes(currentConfirmation.type)
-  ) {
-    return (
-      <SingleActionFooter
-        onSubmit={onSubmit}
-        isGaslessLoading={isGaslessLoading}
-      />
-    );
   }
 
   return (

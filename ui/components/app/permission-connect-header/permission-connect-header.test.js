@@ -19,7 +19,7 @@ jest.mock('react-router-dom', () => {
 describe('Permission Connect Header', () => {
   const mockOriginData = {
     origin: 'https://metamask.github.io',
-    iconUrl: 'https://metamask.github.io/test-dapp/metamask-fox.svg',
+    iconUrl: './images/logo/1do-mark.svg',
   };
   const expectedTitle = 'metamask.github.io';
   const expectedAltImageText = 'metamask.github.io logo';

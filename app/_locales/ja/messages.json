@@ -1,11 +1,11 @@
 {
   "CSS_loadingTakingTooLongActionText": {
     "message": "問題が解決しない場合は、1doを再起動してください。",
-    "description": "Second line of the message that is shown when the initial loading of the MetaMask UI takes a very long time."
+    "description": "Second line of the message that is shown when the initial loading of the 1do UI takes a very long time."
   },
   "CSS_loadingTakingTooLongMessageText": {
     "message": "読み込みに通常より時間がかかっています。",
-    "description": "First line of the message that is shown when the initial loading of the MetaMask UI takes a very long time."
+    "description": "First line of the message that is shown when the initial loading of the 1do UI takes a very long time."
   },
   "QRHardwareInvalidTransactionTitle": {
     "message": "エラー"
@@ -458,16 +458,6 @@
   "alertDisableTooltip": {
     "message": "これは「設定」>「アラート」で変更できます"
   },
-  "alertInsufficientPayTokenBalance": {
-    "message": "資金不足"
-  },
-  "alertInsufficientPayTokenBalanceFeesNoTarget": {
-    "message": "追加する額を減らすか、別のトークンを使用してください。"
-  },
-  "alertInsufficientPayTokenNative": {
-    "message": "手数料の支払いに十分な$1がありません。続行するには、別のネットワークのトークンを使用するか、$1をさらに追加してください。",
-    "description": "$1 is the native currency symbol (e.g. ETH)"
-  },
   "alertMessageAddressMismatchWarning": {
     "message": "攻撃者は、サイトのアドレスに若干の変更を加えてサイトを模倣することがあります。続行する前に、意図したサイトとやり取りしていることを確認してください。"
   },
@@ -530,12 +520,6 @@
   },
   "alertModalReviewAllAlerts": {
     "message": "すべてのアラートを確認"
-  },
-  "alertNoPayTokenQuotesMessage": {
-    "message": "この決済ルートは現在使用できません。金額、ネットワーク、またはトークンを変更してみてください。最善のオプションを探します。"
-  },
-  "alertNoPayTokenQuotesTitle": {
-    "message": "クォートがありません"
   },
   "alertPayHardwareAccountMessage": {
     "message": "ハードウェアウォレットには対応していません。\n続行するにはウォレットを切り替えてください。"
@@ -889,23 +873,8 @@
   "basicFunctionalityRequired_openDefiPage": {
     "message": "DeFiページを開く"
   },
-  "basicFunctionalityRequired_openMusdConversionPage": {
-    "message": "mUSDの変換ページを開く"
-  },
   "basicFunctionalityRequired_openNotificationsPage": {
     "message": "通知ページを開く"
-  },
-  "basicFunctionalityRequired_openPerpsPage": {
-    "message": "パーペチュアルページを開く"
-  },
-  "basicFunctionalityRequired_openRewardsPage": {
-    "message": "リワードページを開く"
-  },
-  "basicFunctionalityRequired_openSwapsPage": {
-    "message": "スワップページを開く"
-  },
-  "basicFunctionalityRequired_openTransactionShieldPage": {
-    "message": "トランザクションシールドページを開く"
   },
   "basicFunctionalityRequired_reviewInSettings": {
     "message": "設定で確認"
@@ -952,60 +921,6 @@
   "blockExplorerView": {
     "message": "$1でアカウントを表示",
     "description": "$1 replaced by URL for custom block explorer"
-  },
-  "blockaid": {
-    "message": "Blockaid"
-  },
-  "blockaidAlertDescriptionBlur": {
-    "message": "続行すると、Blurに出品しているすべての資産がリスクにさらされる可能性があります。"
-  },
-  "blockaidAlertDescriptionMalicious": {
-    "message": "悪意のあるサイトとやり取りしています。続行すると、資産を失うことになります。"
-  },
-  "blockaidAlertDescriptionOpenSea": {
-    "message": "続行すると、OpenSeaに出品しているすべての資産がリスクにさらされる可能性があります。"
-  },
-  "blockaidAlertDescriptionOthers": {
-    "message": "この要求を確定すると、資産が失われる可能性があります。この要求はキャンセルすることをお勧めします。"
-  },
-  "blockaidAlertDescriptionTokenTransfer": {
-    "message": "資産を詐欺師に送ろうとしています。続行すると、これらの資産が失われます。"
-  },
-  "blockaidAlertDescriptionWithdraw": {
-    "message": "この要求を確定すると、詐欺師に資産の引き出しと使用を許可することになります。失った資産を取り戻すことはできません。"
-  },
-  "blockaidDescriptionApproveFarming": {
-    "message": "このリクエストを承認すると、詐欺が判明しているサードパーティに資産をすべて奪われる可能性があります。"
-  },
-  "blockaidDescriptionBlurFarming": {
-    "message": "このリクエストを承認すると、Blurに登録されている資産を誰かに盗まれる可能性があります。"
-  },
-  "blockaidDescriptionErrored": {
-    "message": "エラーが発生したため、セキュリティアラートをチェックできませんでした。関連するすべてのアドレスが信頼できる場合のみ続行してください。"
-  },
-  "blockaidDescriptionMaliciousDomain": {
-    "message": "悪質なドメインとやり取りしています。このリクエストを承認すると、資産を失う可能性があります。"
-  },
-  "blockaidDescriptionMightLoseAssets": {
-    "message": "このリクエストを承認すると、資産を失う可能性があります。"
-  },
-  "blockaidDescriptionSeaportFarming": {
-    "message": "このリクエストを承認すると、OpenSeaに登録されている資産を誰かに盗まれる可能性があります。"
-  },
-  "blockaidDescriptionTransferFarming": {
-    "message": "このリクエストを承認すると、詐欺が判明しているサードパーティに資産をすべて奪われます。"
-  },
-  "blockaidMessage": {
-    "message": "プライバシーを保護 - サードパーティとデータが一切共有されません。Arbitrum、Avalanche、BNB Chain、イーサリアムメインネット、Linea、Optimism、Polygon、Base、Sepoliaで利用可能。"
-  },
-  "blockaidTitleDeceptive": {
-    "message": "これは虚偽のリクエストです"
-  },
-  "blockaidTitleMayNotBeSafe": {
-    "message": "ご注意ください"
-  },
-  "blockaidTitleSuspicious": {
-    "message": "これは不審なリクエストです"
   },
   "blockies": {
     "message": "Blockie"
@@ -1099,10 +1014,6 @@
     "message": "推定ポイント数",
     "description": "Label for estimated points that can be earned from a bridge or swap"
   },
-  "bridgePoints_couldntLoad": {
-    "message": "読み込ませんでした",
-    "description": "Text shown in rewards badge when points couldn't be loaded"
-  },
   "bridgePoints_error": {
     "message": "ポイントを読み込めませんでした",
     "description": "Tooltip title when there's an error fetching estimated points"
@@ -1114,10 +1025,6 @@
   "bridgePoints_tooltip": {
     "message": "ポイント",
     "description": "Tooltip title for points"
-  },
-  "bridgePoints_tooltip_content_1": {
-    "message": "ポイントは、スワップ、ブリッジ、パーペチュアル取引など、トランザクションを完了したことによる1doリワードの獲得状況を示します。",
-    "description": "First part of tooltip content explaining rewards points"
   },
   "bridgePoints_tooltip_content_2": {
     "message": "この金額は見積もりであり、トランザクション完了後に確定されることをご留意ください。ポイントがリワード残高で確定されるまでに最長1時間かかる場合があります。",
@@ -1565,7 +1472,7 @@
   "confirmGasFeeTokenModalPayETH": {
     "message": "ETHで支払う"
   },
-  "confirmGasFeeTokenModalPayToken": {
+  "confirmGasFeeTokenModalToken": {
     "message": "他のトークンで支払う"
   },
   "confirmGasFeeTokenModalTitle": {
@@ -1896,7 +1803,7 @@
   },
   "createPasswordDetailsSocial": {
     "message": "このパスワードを失うと、すべてのデバイスでウォレットにアクセスできなくなります。$1",
-    "description": "$1 is the text 'MetaMask can't reset it.'"
+    "description": "$1 is the text '1do can't reset it.'"
   },
   "createPasswordDetailsSocialReset": {
     "message": "1do側でリセットすることはできません。"
@@ -2124,7 +2031,7 @@
   },
   "deepLink_Error404_CTA_LinkText": {
     "message": "1doを最新バージョンにアップデートしてください。",
-    "description": "Part of `deepLink_Error404_CTA`. The text links to https://support.metamask.io/configure/wallet/how-to-update-the-version-of-metamask/"
+    "description": "Part of `deepLink_Error404_CTA`. The text links to https://support.1do.io/configure/wallet/how-to-update-the-version-of-1do/"
   },
   "deepLink_ErrorMissingUrl": {
     "message": "アクセス先のURLが提供されていません。 "
@@ -2157,9 +2064,6 @@
   "deepLink_theHomePage": {
     "message": "ホームページ"
   },
-  "deepLink_theMusdEducationPage": {
-    "message": "mUSDの変換に関する学習ページ"
-  },
   "deepLink_theNFTsPage": {
     "message": "NFTページ"
   },
@@ -2169,32 +2073,11 @@
   "deepLink_theOnboardingPage": {
     "message": "オンボーディングページ"
   },
-  "deepLink_thePerpsMarketDetailPage": {
-    "message": "パーペチュアル市場ページ"
-  },
-  "deepLink_thePerpsMarketListPage": {
-    "message": "パーペチュアル市場一覧ページ"
-  },
-  "deepLink_thePerpsPage": {
-    "message": "パーペチュアルのページ"
-  },
   "deepLink_thePredictPage": {
     "message": "予測市場ページ"
   },
-  "deepLink_theRewardsPage": {
-    "message": "1doリワードページ"
-  },
   "deepLink_theSellPage": {
     "message": "売却ページ"
-  },
-  "deepLink_theSwapsPage": {
-    "message": "スワップページ"
-  },
-  "deepLink_theSwapsRampsPage": {
-    "message": "スワップ/ランプのページ"
-  },
-  "deepLink_theTransactionShieldPage": {
-    "message": "トランザクションシールドページ"
   },
   "default": {
     "message": "デフォルト"
@@ -2815,7 +2698,7 @@
   },
   "flaskWelcomeWarning2": {
     "message": "We do not guarantee the safety or stability of this extension. The new APIs offered by Flask are not hardened against phishing attacks, meaning that any site that requires Flask might be a malicious attempt to steal your assets.",
-    "description": "This explains the risks of using MetaMask Flask"
+    "description": "This explains the risks of using 1do Flask"
   },
   "flaskWelcomeWarning3": {
     "message": "Flask APIはすべて実験的なもので、通知なく変更または削除されたり、安定した1doに移行されずに、Flask上にずっと残る可能性もあります。自己責任でご利用ください。",
@@ -2823,7 +2706,7 @@
   },
   "flaskWelcomeWarning4": {
     "message": "Flaskの使用中は、通常の1do拡張機能を無効にしてください。",
-    "description": "This message calls to pay attention about multiple versions of MetaMask running on the same site (Flask + Prod)"
+    "description": "This message calls to pay attention about multiple versions of 1do running on the same site (Flask + Prod)"
   },
   "flaskWelcomeWarningAcceptButton": {
     "message": "リスクを受け入れます",
@@ -3494,9 +3377,6 @@
   "isSigningOrSubmitting": {
     "message": "以前のトランザクションがまだ署名中または送信中です"
   },
-  "isSigningOrSubmittingPayToken": {
-    "message": "このネットワークに保留中のトランザクションがあります。完了するまで待つか、別のネットワークのトークンを選択してください。"
-  },
   "jazzicons": {
     "message": "Jazzicons"
   },
@@ -3813,26 +3693,6 @@
   "memo": {
     "message": "メモ"
   },
-  "merklRewardsClaimBonus": {
-    "message": "ボーナスを請求する",
-    "description": "Short label shown in token list for tokens with claimable Merkl rewards"
-  },
-  "merklRewardsToastFailed": {
-    "message": "mUSDボーナスの請求に失敗しました",
-    "description": "Toast message shown when a Merkl reward claim transaction fails or is dropped"
-  },
-  "merklRewardsToastInProgress": {
-    "message": "mUSDのボーナスを処理しています",
-    "description": "Toast message shown when a Merkl reward claim transaction is being processed"
-  },
-  "merklRewardsToastSuccess": {
-    "message": "mUSDのボーナスを獲得しました！",
-    "description": "Toast message shown when a Merkl reward claim transaction is confirmed"
-  },
-  "merklRewardsUnexpectedError": {
-    "message": "予期せぬエラーが発生しました。もう一度お試しください。",
-    "description": "Error message shown when claiming Merkl rewards fails"
-  },
   "message": {
     "message": "メッセージ"
   },
@@ -3853,12 +3713,6 @@
   },
   "metamaskNotificationsAreOff": {
     "message": "ウォレットの通知は現在無効になっています"
-  },
-  "metamaskSwap": {
-    "message": "1doスワップ"
-  },
-  "metamaskSwapsOfflineDescription": {
-    "message": "1do Swapsはメンテナンス中です。後ほどご確認ください。"
   },
   "metamaskVersion": {
     "message": "1doのバージョン"
@@ -3985,113 +3839,6 @@
   },
   "multichainQuoteCardRateLabel": {
     "message": "レート"
-  },
-  "musdBonusExplanation": {
-    "message": "お持ちのステーブルコインをmUSDに換えて、\n年換算で最大$1%のボーナスを獲得しましょう。\nこのボーナスは毎日請求できます。$2",
-    "description": "$1 is the bonus APY percentage, $2 is the 'Terms apply' link"
-  },
-  "musdBonusPoweredByRelay": {
-    "message": "Powered by Relay",
-    "description": "Attribution shown below mUSD bonus explanation on the conversion confirmation info popover"
-  },
-  "musdBoostDescription": {
-    "message": "お持ちのステーブルコインをmUSDに換えて、年換算$1%のボーナスを獲得しましょう。",
-    "description": "$1 is the bonus percentage (e.g., 3)"
-  },
-  "musdBoostTitle": {
-    "message": "ステーブルコインで$1%をゲット",
-    "description": "$1 is the bonus percentage (e.g., 3)"
-  },
-  "musdBuyMusd": {
-    "message": "mUSDを購入"
-  },
-  "musdClaimSendingTo": {
-    "message": "送金先: ",
-    "description": "Label for the account row in the mUSD claim confirmation screen when no wallet name is available"
-  },
-  "musdClaimSendingToWallet": {
-    "message": "送金先: $1",
-    "description": "Label for the account row in the mUSD claim confirmation screen, where $1 is the wallet name"
-  },
-  "musdClaimTitle": {
-    "message": "ボーナスを請求する",
-    "description": "Title for the mUSD bonus claim confirmation screen"
-  },
-  "musdClaimableBonus": {
-    "message": "獲得できるボーナス",
-    "description": "Label for the claimable bonus row in the mUSD conversion confirmation screen"
-  },
-  "musdClaimableBonusTooltip": {
-    "message": "mUSDを保有することで獲得した年換算のボーナスです。ボーナスはLineaで毎日請求できます。$1",
-    "description": "$1 is the 'Terms apply' link"
-  },
-  "musdClaimableBonusTooltipAria": {
-    "message": "請求可能なボーナスの詳細",
-    "description": "Accessible name for the info control that opens the claimable bonus explanation popover"
-  },
-  "musdConversionActivityTitle": {
-    "message": "$1をmUSDに変換",
-    "description": "$1 is the source token symbol (e.g., USDC)"
-  },
-  "musdConversionBonusTooltipAria": {
-    "message": "ボーナスの詳細",
-    "description": "Accessible name for the info control that opens the mUSD conversion bonus explanation popover"
-  },
-  "musdConversionFeeTooltipDescription": {
-    "message": "mUSD換算手数料にはネットワークコストが含まれるほか、プロバイダー手数料も含まれる場合があります。なお、mUSDへの換算時に1doの手数料は発生しません。",
-    "description": "Body text shown above the fee breakdown in the transaction fee tooltip for mUSD conversion"
-  },
-  "musdConversionTitle": {
-    "message": "mUSDへの変換完了",
-    "description": "Title shown in the transaction details modal for mUSD conversion transactions"
-  },
-  "musdConversionToastFailed": {
-    "message": "mUSDへの変換に失敗しました"
-  },
-  "musdConversionToastInProgress": {
-    "message": "$1 → mUSDに変換中",
-    "description": "$1 is the source token symbol (e.g., USDC)"
-  },
-  "musdConversionToastSuccess": {
-    "message": "mUSDへの換算が完了しました"
-  },
-  "musdConversionToastSuccessDescription": {
-    "message": "ボーナスは1日以内に請求できます。"
-  },
-  "musdConvert": {
-    "message": "変換"
-  },
-  "musdConvertAndGetBonus": {
-    "message": "換金して$1%獲得",
-    "description": "$1 is the bonus percentage (e.g., 3)"
-  },
-  "musdEarnBonusPercentage": {
-    "message": "$1%のボーナスを獲得",
-    "description": "$1 is the bonus percentage (e.g., 3). Subtitle on the home token list mUSD Buy/Get CTA."
-  },
-  "musdEducationGetStarted": {
-    "message": "利用を開始する"
-  },
-  "musdEducationHeadline": {
-    "message": "ステーブルコインで\n$1%をゲット",
-    "description": "$1 is the bonus APY percentage. Line break between ON and STABLECOINS matches splash layout."
-  },
-  "musdEducationNotNow": {
-    "message": "後で"
-  },
-  "musdGetBonusPercentage": {
-    "message": "$1%のmUSDボーナスを獲得",
-    "description": "$1 is the bonus percentage (e.g., 3)"
-  },
-  "musdGetMusd": {
-    "message": "mUSDを入手"
-  },
-  "musdMetaMaskUsd": {
-    "message": "1do USD",
-    "description": "Product name shown as the title line on the home token list mUSD Buy/Get CTA"
-  },
-  "musdTermsApply": {
-    "message": "諸条件が適用されます。"
   },
   "mustSelectOne": {
     "message": "トークンを1つ以上選択する必要があります。"
@@ -4840,7 +4587,7 @@
   },
   "openFullScreenForLedgerWebHid": {
     "message": "全画面モードにしてLedgerを接続します。",
-    "description": "Shown to the user on the confirm screen when they are viewing MetaMask in a popup window but need to connect their ledger via webhid."
+    "description": "Shown to the user on the confirm screen when they are viewing 1do in a popup window but need to connect their ledger via webhid."
   },
   "openInBlockExplorer": {
     "message": "ブロックエクスプローラーで開く"
@@ -5040,14 +4787,6 @@
     "message": "$1および$2",
     "description": "A list of allowed origins where $2 is the last origin of the list and $1 is the rest of the list separated by ','."
   },
-  "permission_signatureInsight": {
-    "message": "署名情報モーダルを表示.",
-    "description": "The description for the `endowment:signature-insight` permission"
-  },
-  "permission_signatureInsightOrigin": {
-    "message": "署名要求を開始したWebサイトの出所を表示する",
-    "description": "The description for the `signatureOrigin` caveat, to be used with the `endowment:signature-insight` permission"
-  },
   "permission_transactionInsight": {
     "message": "トランザクションインサイトの取得と表示.",
     "description": "The description for the `endowment:transaction-insight` permission"
@@ -5100,720 +4839,6 @@
   },
   "permittedChainToastUpdate": {
     "message": "$1は$2にアクセスできます。"
-  },
-  "perps": {
-    "message": "パーペチュアル"
-  },
-  "perps24hVolume": {
-    "message": "24時間の取引高"
-  },
-  "perpsActivity": {
-    "message": "アクティビティ"
-  },
-  "perpsAddExposure": {
-    "message": "エクスポージャーを追加"
-  },
-  "perpsAddExposureDescriptionLong": {
-    "message": "ロングポジションのサイズを増やします"
-  },
-  "perpsAddExposureDescriptionShort": {
-    "message": "ショートポジションのサイズを増やします"
-  },
-  "perpsAddFunds": {
-    "message": "資金を追加"
-  },
-  "perpsAddFundsDescription": {
-    "message": "レバレッジを利用したパーペチュアル契約の取引を開始するには、資金を追加してください"
-  },
-  "perpsAddMargin": {
-    "message": "証拠金を追加"
-  },
-  "perpsAddMarginDescription": {
-    "message": "証拠金を増やして清算のリスクを減らします"
-  },
-  "perpsAddToFavorites": {
-    "message": "お気に入りに追加"
-  },
-  "perpsAutoClose": {
-    "message": "自動クローズ"
-  },
-  "perpsAvailable": {
-    "message": "使用可能",
-    "description": "is the available balance amount"
-  },
-  "perpsAvailableBalance": {
-    "message": "使用可能なパーペチュアル残高: "
-  },
-  "perpsAvailableToAdd": {
-    "message": "追加可能"
-  },
-  "perpsAvailableToClose": {
-    "message": "クローズに利用可能"
-  },
-  "perpsAvailableToSubtract": {
-    "message": "引き出し可能"
-  },
-  "perpsAvailableToTrade": {
-    "message": "取引に利用可能",
-    "description": "Label for the available balance that can be used for trading"
-  },
-  "perpsBatchCancelFailed": {
-    "message": "1つまたは複数の注文のキャンセルに失敗しました。もう一度お試しください。"
-  },
-  "perpsBatchCloseFailed": {
-    "message": "1つまたは複数のポジションのクローズに失敗しました。もう一度お試しください。"
-  },
-  "perpsCancelAllOrders": {
-    "message": "すべてキャンセル"
-  },
-  "perpsCancelOrder": {
-    "message": "注文取消"
-  },
-  "perpsCandleIntervals": {
-    "message": "ローソク足の間隔"
-  },
-  "perpsCandlePeriodDays": {
-    "message": "日"
-  },
-  "perpsCandlePeriodHours": {
-    "message": "時間"
-  },
-  "perpsCandlePeriodMinutes": {
-    "message": "分"
-  },
-  "perpsCloseAll": {
-    "message": "すべてクローズ"
-  },
-  "perpsCloseAmount": {
-    "message": "クローズ金額"
-  },
-  "perpsCloseLong": {
-    "message": "ロングをクローズ"
-  },
-  "perpsClosePartialMinNotional": {
-    "message": "一部クローズはUSDで$1以上の価値である必要があります。クローズ金額を増やすか、スライダーを100%に設定してください。"
-  },
-  "perpsClosePosition": {
-    "message": "ポジションのクローズ"
-  },
-  "perpsCloseShort": {
-    "message": "ショートをクローズ"
-  },
-  "perpsConfirmCloseLong": {
-    "message": "ロングをクローズ"
-  },
-  "perpsConfirmCloseShort": {
-    "message": "ショートをクローズ"
-  },
-  "perpsConnectionTimeout": {
-    "message": "接続がタイムアウトしました。もう一度お試しください。"
-  },
-  "perpsContactSupport": {
-    "message": "サポートへのお問い合わせ"
-  },
-  "perpsDateToday": {
-    "message": "今日"
-  },
-  "perpsDateYesterday": {
-    "message": "昨日"
-  },
-  "perpsDepositActivityTitle": {
-    "message": "パーペチュアルに入金しました"
-  },
-  "perpsDepositFailed": {
-    "message": "デポジットを完了できませんでした。もう一度お試しください。"
-  },
-  "perpsDepositFundsTitle": {
-    "message": "パーペチュアルに資金をデポジット"
-  },
-  "perpsDepositTitle": {
-    "message": "パーペチュアルアカウントに入金しました"
-  },
-  "perpsDepositToastErrorDescription": {
-    "message": "パーペチュアルに資金が追加されませんでした。もう一度お試しください。"
-  },
-  "perpsDepositToastErrorTitle": {
-    "message": "パーペチュアルへの入金に失敗しました"
-  },
-  "perpsDepositToastPendingDescription": {
-    "message": "資金はまもなく取引に利用できます。"
-  },
-  "perpsDepositToastPendingTitle": {
-    "message": "パーペチュアルに入金中"
-  },
-  "perpsDepositToastSuccessDescription": {
-    "message": "資金を取引に利用できます。"
-  },
-  "perpsDepositToastSuccessTitle": {
-    "message": "パーペチュアルに資金が追加されました"
-  },
-  "perpsDeposits": {
-    "message": "デポジット"
-  },
-  "perpsDetails": {
-    "message": "詳細"
-  },
-  "perpsDirection": {
-    "message": "方向"
-  },
-  "perpsDisclaimer": {
-    "message": "パーペチュアル契約は大きなリスクを伴い、予告なく突然、投資額全額を失う可能性があります。取引はすべてお客様の責任で行ってください。このサービスはHyperliquid、価格チャートはTradingViewにより提供されています。"
-  },
-  "perpsEmptyDescription": {
-    "message": "レバレッジをかけたパーペチュアル取引が可能です。最初のポジションをオープンして始めましょう。"
-  },
-  "perpsEntryPrice": {
-    "message": "エントリー価格"
-  },
-  "perpsEstSize": {
-    "message": "推定サイズ"
-  },
-  "perpsEstimatedPnlAtStopLoss": {
-    "message": "ストップロスでの予想損益",
-    "description": "Label for estimated profit or loss when stop loss is hit"
-  },
-  "perpsEstimatedPnlAtTakeProfit": {
-    "message": "利益確定での予想損益",
-    "description": "Label for estimated profit or loss when take profit is hit"
-  },
-  "perpsExploreMarkets": {
-    "message": "市場を探索"
-  },
-  "perpsFees": {
-    "message": "手数料"
-  },
-  "perpsFilterAll": {
-    "message": "すべて"
-  },
-  "perpsFilterCommodities": {
-    "message": "商品"
-  },
-  "perpsFilterCrypto": {
-    "message": "仮想通貨"
-  },
-  "perpsFilterForex": {
-    "message": "FX"
-  },
-  "perpsFilterNew": {
-    "message": "新登場"
-  },
-  "perpsFilterStocks": {
-    "message": "株式"
-  },
-  "perpsFunding": {
-    "message": "入金"
-  },
-  "perpsFundingPayments": {
-    "message": "資金調達率の支払い"
-  },
-  "perpsFundingRate": {
-    "message": "資金調達率"
-  },
-  "perpsFundingRateTooltip": {
-    "message": "価格を市場に合わせるためにトレーダー間で支払われる、1時間あたりの手数料です。資金調達率がプラスの場合はロングがショートに支払い、マイナスの場合はショートがロングに支払います。"
-  },
-  "perpsGeoBlockedDescription": {
-    "message": "お住まいの地域では、現地の制限または制裁により、パーペチュアル取引をご利用いただけません。"
-  },
-  "perpsGeoBlockedTitle": {
-    "message": "お客様の地域ではパーペチュアルが利用できません"
-  },
-  "perpsGiveFeedback": {
-    "message": "ご意見をお聞かせください"
-  },
-  "perpsIncludesPnl": {
-    "message": "損益込み $1"
-  },
-  "perpsInsufficientMargin": {
-    "message": "この注文に十分な証拠金がありません。"
-  },
-  "perpsLearnBasics": {
-    "message": "パーペチュアルの基本"
-  },
-  "perpsLearnMore": {
-    "message": "詳細。"
-  },
-  "perpsLeverage": {
-    "message": "レバレッジ"
-  },
-  "perpsLimit": {
-    "message": "リミット"
-  },
-  "perpsLimitPrice": {
-    "message": "リミット価格"
-  },
-  "perpsLimitPriceAboveCurrentPrice": {
-    "message": "リミット価格が現在の価格を上回っています"
-  },
-  "perpsLimitPriceBelowCurrentPrice": {
-    "message": "リミット価格が現在の価格を下回っています"
-  },
-  "perpsLimitPriceNearLiquidation": {
-    "message": "現在の価格が予想清算価格に近づいています"
-  },
-  "perpsLiquidationDistance": {
-    "message": "清算価格との距離"
-  },
-  "perpsLiquidationPrice": {
-    "message": "清算価格"
-  },
-  "perpsLong": {
-    "message": "ロング"
-  },
-  "perpsMargin": {
-    "message": "証拠金"
-  },
-  "perpsMarginRiskWarning": {
-    "message": "証拠金を減額すると、清算価格が近づきます。十分な余裕を確保するようにしてください。"
-  },
-  "perpsMarket": {
-    "message": "マーケット"
-  },
-  "perpsMarketNotFound": {
-    "message": "市場が見つかりません"
-  },
-  "perpsMarketNotFoundDescription": {
-    "message": "市場「$1」が見つかりませんでした",
-    "description": "$1 is the market symbol that was not found"
-  },
-  "perpsMarkets": {
-    "message": "市場"
-  },
-  "perpsMid": {
-    "message": "中間値"
-  },
-  "perpsModify": {
-    "message": "変更"
-  },
-  "perpsModifyPosition": {
-    "message": "ポジションを調整"
-  },
-  "perpsMore": {
-    "message": "さらに表示"
-  },
-  "perpsNetworkError": {
-    "message": "ネットワークエラーが発生しました。もう一度お試しください。"
-  },
-  "perpsNoMarketsFound": {
-    "message": "市場が見つかりませんでした"
-  },
-  "perpsNoTransactions": {
-    "message": "まだトランザクションがありません"
-  },
-  "perpsOpenInterest": {
-    "message": "取組高"
-  },
-  "perpsOpenInterestTooltip": {
-    "message": "このパーペチュアルのすべての未決済ポジションを組み合わせた評価額"
-  },
-  "perpsOpenLong": {
-    "message": "$1のロングをオープン",
-    "description": "$1 is the asset symbol (e.g., BTC, ETH)"
-  },
-  "perpsOpenOrders": {
-    "message": "未決済の注文"
-  },
-  "perpsOpenShort": {
-    "message": "$1のショートをオープン",
-    "description": "$1 is the asset symbol (e.g., BTC, ETH)"
-  },
-  "perpsOraclePrice": {
-    "message": "オラクル価格"
-  },
-  "perpsOraclePriceTooltip": {
-    "message": "バリデーターにより報告された外部価格の中央値で、資金調達率の計算に使用されます"
-  },
-  "perpsOrderDate": {
-    "message": "日付"
-  },
-  "perpsOrderFailed": {
-    "message": "注文できませんでした。もう一度お試しください。"
-  },
-  "perpsOrderOriginalSize": {
-    "message": "元のサイズ"
-  },
-  "perpsOrderRejected": {
-    "message": "注文が拒否されました。もう一度お試しください。"
-  },
-  "perpsOrderStatus": {
-    "message": "ステータス"
-  },
-  "perpsOrderValue": {
-    "message": "注文額"
-  },
-  "perpsOrders": {
-    "message": "注文"
-  },
-  "perpsPnl": {
-    "message": "損益額"
-  },
-  "perpsPosition": {
-    "message": "ポジション"
-  },
-  "perpsPositions": {
-    "message": "ポジション"
-  },
-  "perpsRateLimitExceeded": {
-    "message": "リクエストが多すぎます。時間をおいて、もう一度お試しください。"
-  },
-  "perpsRecentActivity": {
-    "message": "最近のアクティビティ"
-  },
-  "perpsReduceExposure": {
-    "message": "エクスポージャーを減らす"
-  },
-  "perpsReduceExposureDescriptionLong": {
-    "message": "ロングポジションのサイズを減らします"
-  },
-  "perpsReduceExposureDescriptionShort": {
-    "message": "ショートポジションのサイズを減らします"
-  },
-  "perpsReduceOnly": {
-    "message": "リデュースオンリー"
-  },
-  "perpsRemoveFromFavorites": {
-    "message": "お気に入りから削除"
-  },
-  "perpsRemoveMargin": {
-    "message": "証拠金を減額"
-  },
-  "perpsRemoveMarginDescription": {
-    "message": "ポジションから余分な証拠金を引き出します"
-  },
-  "perpsReturn": {
-    "message": "損益率"
-  },
-  "perpsReversePosition": {
-    "message": "ポジションを反転"
-  },
-  "perpsReversePositionDescriptionLong": {
-    "message": "ロングポジションを反転してショートにします"
-  },
-  "perpsReversePositionDescriptionShort": {
-    "message": "ショートポジションを反転してロングにします"
-  },
-  "perpsSaveChanges": {
-    "message": "変更を保存",
-    "description": "Button text for saving TP/SL changes"
-  },
-  "perpsSearchMarkets": {
-    "message": "市場を検索"
-  },
-  "perpsSeeAll": {
-    "message": "すべて表示"
-  },
-  "perpsServiceUnavailable": {
-    "message": "現在サービスが一時的にご利用いただけません。後ほどもう一度お試しください。"
-  },
-  "perpsShort": {
-    "message": "ショート"
-  },
-  "perpsSize": {
-    "message": "サイズ"
-  },
-  "perpsSlippageExceeded": {
-    "message": "スリッページが超過しました。スリッページ許容範囲を調整してもう一度お試しください。"
-  },
-  "perpsSortByFundingRate": {
-    "message": "資金調達率"
-  },
-  "perpsSortByHighToLow": {
-    "message": "高い順"
-  },
-  "perpsSortByLowToHigh": {
-    "message": "低い順"
-  },
-  "perpsSortByOpenInterest": {
-    "message": "取組高"
-  },
-  "perpsSortByPriceChange": {
-    "message": "価格変動"
-  },
-  "perpsSortBySection": {
-    "message": "並べ替え基準"
-  },
-  "perpsSortByTitle": {
-    "message": "並べ替え"
-  },
-  "perpsSortByVolume": {
-    "message": "取引量"
-  },
-  "perpsStartNewTrade": {
-    "message": "新規取引を開始"
-  },
-  "perpsStartTrading": {
-    "message": "取引を開始"
-  },
-  "perpsStats": {
-    "message": "統計"
-  },
-  "perpsStatusCanceled": {
-    "message": "取消済"
-  },
-  "perpsStatusCompleted": {
-    "message": "完了"
-  },
-  "perpsStatusFilled": {
-    "message": "約定済"
-  },
-  "perpsStatusOpen": {
-    "message": "未約定"
-  },
-  "perpsStatusQueued": {
-    "message": "キュー待ち"
-  },
-  "perpsStatusRejected": {
-    "message": "拒否されました"
-  },
-  "perpsStatusTriggered": {
-    "message": "トリガー済み"
-  },
-  "perpsStopLoss": {
-    "message": "損切り",
-    "description": "Label for stop loss price input"
-  },
-  "perpsStopLossInvalidPrice": {
-    "message": "ストップロスは$2価格よりも$1に設定する必要があります",
-    "description": "Validation error when stop loss price is on the wrong side of the reference price. $1 is above/below, $2 is current/entry."
-  },
-  "perpsSubmitting": {
-    "message": "送信中...",
-    "description": "Loading text shown while an order is being submitted"
-  },
-  "perpsTakeProfit": {
-    "message": "利益確定",
-    "description": "Label for take profit price input"
-  },
-  "perpsTakeProfitInvalidPrice": {
-    "message": "利益確定は$2価格よりも$1に設定する必要があります",
-    "description": "Validation error when take profit price is on the wrong side of the reference price. $1 is above/below, $2 is current/entry."
-  },
-  "perpsToastCancelOrderFailed": {
-    "message": "注文を取り消すことができませんでした",
-    "description": "Error toast text shown when cancelling a perps limit order fails"
-  },
-  "perpsToastCancelOrderSuccess": {
-    "message": "注文がキャンセルされました",
-    "description": "Success toast text shown when a perps limit order is successfully cancelled"
-  },
-  "perpsToastCloseFailed": {
-    "message": "ポジションをクローズできませんでした",
-    "description": "Error toast text shown when closing a perps position fails"
-  },
-  "perpsToastCloseInProgress": {
-    "message": "ポジションをクローズ中",
-    "description": "In-progress toast text shown while closing a perps position"
-  },
-  "perpsToastClosePnlSubtitle": {
-    "message": "損益は$1です",
-    "description": "$1 is the formatted PnL percentage for a closed position"
-  },
-  "perpsToastMarginAddSuccess": {
-    "message": "$1の証拠金を$2のポジションに追加しました",
-    "description": "$1 is the dollar-prefixed amount (e.g. $100) and $2 is the asset symbol for successful margin addition"
-  },
-  "perpsToastMarginAdjustmentFailed": {
-    "message": "証拠金の調整に失敗しました",
-    "description": "Error toast text shown when adding or removing margin fails"
-  },
-  "perpsToastMarginAdjustmentFailedDescriptionFallback": {
-    "message": "証拠金を調整できませんでした。もう一度お試しください。",
-    "description": "Fallback description shown when margin adjustment fails without a usable error message."
-  },
-  "perpsToastMarginRemoveSuccess": {
-    "message": "$1の証拠金を$2のポジションから引き出しました",
-    "description": "$1 is the dollar-prefixed amount (e.g. $100) and $2 is the asset symbol for successful margin removal"
-  },
-  "perpsToastOrderFailed": {
-    "message": "注文に失敗しました",
-    "description": "Error toast text shown when placing a perps order fails"
-  },
-  "perpsToastOrderFailedDescriptionFallback": {
-    "message": "資金が返金されました",
-    "description": "Fallback order failure subtitle shown when no specific order error is available"
-  },
-  "perpsToastOrderFilled": {
-    "message": "注文が約定しました",
-    "description": "Success toast text shown when a perps market order is filled"
-  },
-  "perpsToastOrderPlaced": {
-    "message": "注文が発注されました",
-    "description": "Success toast text shown when a perps limit order is accepted"
-  },
-  "perpsToastOrderSubmitted": {
-    "message": "注文が送信されました",
-    "description": "In-progress toast text shown while a perps order is being submitted"
-  },
-  "perpsToastPartialCloseFailed": {
-    "message": "ポジションを部分的にクローズできませんでした",
-    "description": "Error toast text shown when a perps position is partially closed and fails"
-  },
-  "perpsToastPartialCloseInProgress": {
-    "message": "ポジションを一部クローズしています",
-    "description": "In-progress toast text shown while a perps position is being partially closed"
-  },
-  "perpsToastPartialCloseSuccess": {
-    "message": "ポジションが一部クローズされました",
-    "description": "Success toast text shown when a perps position is partially closed"
-  },
-  "perpsToastPositionStillActive": {
-    "message": "ポジションは引き続き有効です",
-    "description": "Subtitle shown in perps close failure toasts when the position remains open"
-  },
-  "perpsToastReverseFailed": {
-    "message": "ポジションの反転に失敗しました",
-    "description": "Error toast text shown when reversing a perps position fails"
-  },
-  "perpsToastReverseInProgress": {
-    "message": "ポジションを反転しています",
-    "description": "In-progress toast text shown while reversing a perps position"
-  },
-  "perpsToastReverseSuccess": {
-    "message": "ポジションが反転されました",
-    "description": "Success toast text shown when a perps position is reversed"
-  },
-  "perpsToastSubmitInProgress": {
-    "message": "取引を送信中",
-    "description": "In-progress toast text shown while a perps trade is being submitted"
-  },
-  "perpsToastTradeSuccess": {
-    "message": "ポジションがクローズされました",
-    "description": "Success toast text shown when a perps position is closed"
-  },
-  "perpsToastUpdateFailed": {
-    "message": "TP/SLを更新できませんでした",
-    "description": "Error toast text shown when updating TP/SL settings fails"
-  },
-  "perpsToastUpdateInProgress": {
-    "message": "TP/SLを更新中...",
-    "description": "In-progress toast text shown while updating TP/SL settings"
-  },
-  "perpsToastUpdateSuccess": {
-    "message": "TP/SLが更新されました",
-    "description": "Success toast text shown when TP/SL settings are updated"
-  },
-  "perpsTotalBalance": {
-    "message": "合計残高"
-  },
-  "perpsTradePerps": {
-    "message": "パーペチュアルを取引"
-  },
-  "perpsTrades": {
-    "message": "取引"
-  },
-  "perpsTutorialChooseLeverageDescription": {
-    "message": "レバレッジを利用すると、利益も損失も大きくなります。レバレッジが40倍の場合、価格が1%変動すると、証拠金に対して40%の利益または損失が生まれます。"
-  },
-  "perpsTutorialChooseLeverageTitle": {
-    "message": "レバレッジの選択"
-  },
-  "perpsTutorialCloseAnytimeDescription": {
-    "message": "いつでも好きなときに取引を終了でき、証拠金に利益を足した額、または損失を引いた額が返金されます。"
-  },
-  "perpsTutorialCloseAnytimeTitle": {
-    "message": "いつでもクローズ可能"
-  },
-  "perpsTutorialContinue": {
-    "message": "続行"
-  },
-  "perpsTutorialGoLongShortDescription": {
-    "message": "ロングまたはショートするトークンを選び、注文数量を設定します。"
-  },
-  "perpsTutorialGoLongShortSubtitle": {
-    "message": "価格が上がる場合はロングで利益を生み、下がる場合はショートで利益を得ます。"
-  },
-  "perpsTutorialGoLongShortTitle": {
-    "message": "トークンのロングまたはショート"
-  },
-  "perpsTutorialLetsGo": {
-    "message": "さあ始めましょう"
-  },
-  "perpsTutorialReadyToTradeDescription": {
-    "message": "任意のトークンでパーペチュアルアカウントに入金すれば、数秒で最初の取引ができます。"
-  },
-  "perpsTutorialReadyToTradeTitle": {
-    "message": "取引の準備はできましたか？"
-  },
-  "perpsTutorialSkip": {
-    "message": "スキップ"
-  },
-  "perpsTutorialWatchLiquidationDescription": {
-    "message": "トークンが清算価格に達すると、証拠金がすべて失われます。レバレッジが高ければ高いほど、清算までの余裕が少なくなります。"
-  },
-  "perpsTutorialWatchLiquidationTitle": {
-    "message": "清算に注意"
-  },
-  "perpsTutorialWhatArePerpsDescription": {
-    "message": "1doはパーペチュアル先物、略してパーペチュアルをサポートするようになりました。これにより、トークン自体を購入することなく、トークンの価格変動を対象に取引できます。"
-  },
-  "perpsTutorialWhatArePerpsSubtitle": {
-    "message": "仕組みは次のとおりです。"
-  },
-  "perpsTutorialWhatArePerpsTitle": {
-    "message": "パーペチュアルとは"
-  },
-  "perpsUnrealizedPnl": {
-    "message": "含み損益"
-  },
-  "perpsWatchlist": {
-    "message": "ウォッチリスト"
-  },
-  "perpsWithdraw": {
-    "message": "出金"
-  },
-  "perpsWithdrawEstimatedTime": {
-    "message": "推定所要時間"
-  },
-  "perpsWithdrawFailed": {
-    "message": "出金を完了できませんでした。もう一度お試しください。"
-  },
-  "perpsWithdrawFee": {
-    "message": "プロバイダーの手数料"
-  },
-  "perpsWithdrawFundsTitle": {
-    "message": "出金"
-  },
-  "perpsWithdrawInsufficient": {
-    "message": "金額が利用可能なパーペチュアル残高を超えています。"
-  },
-  "perpsWithdrawInvalidAddress": {
-    "message": "有効な送金先アドレスを入力してください。"
-  },
-  "perpsWithdrawInvalidAmount": {
-    "message": "有効な金額を入力してください。"
-  },
-  "perpsWithdrawMinNotice": {
-    "message": "最低出金額: $1 USDC",
-    "description": "$1 is the minimum amount (e.g. 1.01)"
-  },
-  "perpsWithdrawMinutesApprox": {
-    "message": "~$1分",
-    "description": "$1 is the estimated number of minutes"
-  },
-  "perpsWithdrawNoAccount": {
-    "message": "アカウントが選択されていません。アカウントを選択してもう一度お試しください。"
-  },
-  "perpsWithdrawReceive": {
-    "message": "受取"
-  },
-  "perpsWithdrawRoutesError": {
-    "message": "出金限度額を読み込めませんでした。後ほどもう一度お試しください。"
-  },
-  "perpsWithdrawToastErrorTitle": {
-    "message": "出金失敗"
-  },
-  "perpsWithdrawToastSuccessDescription": {
-    "message": "$1を処理中です。資金は通常数分以内に着金します。",
-    "description": "$1 is the formatted withdrawal amount"
-  },
-  "perpsWithdrawToastSuccessTitle": {
-    "message": "出金が送信されました"
-  },
-  "perpsYouReceive": {
-    "message": "受け取る"
-  },
-  "perpsYouWillReceive": {
-    "message": "受取額"
   },
   "personalAddressDetected": {
     "message": "個人アドレスが検出されました。トークンコントラクトアドレスを入力してください。"
@@ -5958,33 +4983,6 @@
   },
   "pushNotificationPositionLiquidatedTitle": {
     "message": "ポジションが清算されました"
-  },
-  "pushNotificationShieldClaimCreatedDescriptionShort": {
-    "message": "請求が作成されました"
-  },
-  "pushNotificationShieldClaimCreatedTitle": {
-    "message": "請求作成済み"
-  },
-  "pushNotificationShieldClaimStatusUpdatedDescriptionShort": {
-    "message": "請求が更新されました"
-  },
-  "pushNotificationShieldClaimStatusUpdatedTitle": {
-    "message": "請求更新済み"
-  },
-  "pushNotificationShieldLearnMoreCta": {
-    "message": "詳細を表示"
-  },
-  "pushNotificationShieldSubscriptionCreatedDescriptionShort": {
-    "message": "プランが有効になりました。"
-  },
-  "pushNotificationShieldSubscriptionPaymentFailedDescriptionShort": {
-    "message": "お支払いに失敗したため、プランが一時停止されています。"
-  },
-  "pushNotificationShieldSubscriptionTitle": {
-    "message": "1doトランザクションシールド"
-  },
-  "pushNotificationShieldUpdatePaymentCta": {
-    "message": "支払情報を更新"
   },
   "pushNotificationStopLossTriggeredDescriptionLong": {
     "message": "$1のロングがストップロスでクローズされました。",
@@ -6379,164 +5377,6 @@
   "reward": {
     "message": "報酬"
   },
-  "rewardsAuthFailDescription": {
-    "message": "このアカウントをリワードプログラムで認証中に不明なエラーが発生しました。後でもう一度お試しください。"
-  },
-  "rewardsAuthFailTitle": {
-    "message": "不明なエラーです。"
-  },
-  "rewardsErrorMessagesAccountAlreadyRegistered": {
-    "message": "このアカウントは別のリワードプロファイルにすでに登録されています。続行するにはアカウントを切り替えてください。"
-  },
-  "rewardsErrorMessagesFailedToClaimReward": {
-    "message": "リワードの請求に失敗しました。しばらくしてからもう一度お試しください。"
-  },
-  "rewardsErrorMessagesRequestRejected": {
-    "message": "リクエストを拒否しました。"
-  },
-  "rewardsErrorMessagesServiceNotAvailable": {
-    "message": "現在サービスをご利用いただけません。しばらくしてからもう一度お試しください。"
-  },
-  "rewardsErrorMessagesSomethingWentWrong": {
-    "message": "問題が発生しました。しばらくしてからもう一度お試しください。"
-  },
-  "rewardsLinkAccount": {
-    "message": "アカウントを追加"
-  },
-  "rewardsLinkAccountError": {
-    "message": "アカウントの追加に失敗しました"
-  },
-  "rewardsOnboardingIntroDescription": {
-    "message": "アクティビティに対してポイントを獲得できます。\nレベルを上げてリワードのロックを解除しましょう。"
-  },
-  "rewardsOnboardingIntroGeoCheckFailedDescription": {
-    "message": "お住いの国でリワードプログラムへのオプトインが許可されているかを確認できません。接続を確認して、もう一度お試しください。"
-  },
-  "rewardsOnboardingIntroGeoCheckFailedTitle": {
-    "message": "オプトインの資格を確認できません"
-  },
-  "rewardsOnboardingIntroGeoCheckRetry": {
-    "message": "再試行"
-  },
-  "rewardsOnboardingIntroRewardsAuthFailRetry": {
-    "message": "再試行"
-  },
-  "rewardsOnboardingIntroStepConfirm": {
-    "message": "250ポイントを請求する"
-  },
-  "rewardsOnboardingIntroStepConfirmLoadingEligibility": {
-    "message": "資格の有無を確認中..."
-  },
-  "rewardsOnboardingIntroStepConfirmLoadingRegion": {
-    "message": "地域を確認中…"
-  },
-  "rewardsOnboardingIntroStepSkip": {
-    "message": "後で"
-  },
-  "rewardsOnboardingIntroTitle": {
-    "message": "リワードのご紹介"
-  },
-  "rewardsOnboardingIntroUnsupportedRegionDescription": {
-    "message": "現在、お住まいの地域ではリワードをご利用いただけません。対象地域を拡大中ですので、後日再度ご確認ください。"
-  },
-  "rewardsOnboardingIntroUnsupportedRegionTitle": {
-    "message": "未対応の地域です"
-  },
-  "rewardsOnboardingStep1Description": {
-    "message": "1doでスワップやパーペチュアル取引を行うたびに、リワード獲得のチャンスが近づきます。アカウントを追加して、ポイントが貯まる様子をご覧ください。"
-  },
-  "rewardsOnboardingStep1Title": {
-    "message": "すべての取引でポイントを獲得"
-  },
-  "rewardsOnboardingStep2Description": {
-    "message": "ポイント数のマイルストーンに達すると、パーペチュアル手数料50%オフ、限定トークン、無料の1doメタルカードといった特典を獲得できます。"
-  },
-  "rewardsOnboardingStep2Title": {
-    "message": "レベルアップして特典を増やそう"
-  },
-  "rewardsOnboardingStep3Description": {
-    "message": "拡張機能でポイントを獲得できますが、パーペチュアルの取引、進捗状況の追跡、リワードの引き換えにはモバイルアプリが必要です。"
-  },
-  "rewardsOnboardingStep3Title": {
-    "message": "モバイルでリワードをアンロック"
-  },
-  "rewardsOnboardingStep4LegalDisclaimer": {
-    "message": "「ポイントを請求」をクリックすることで、当社の$1に同意したものとみなされます。当社は報酬を自動的に付与できるよう、お客様のオンチェーンアクティビティを追跡します。$2",
-    "description": "$1 is the Terms and Privacy Notice link, $2 is the Learn more link"
-  },
-  "rewardsOnboardingStep4LegalDisclaimerLearnMoreLink": {
-    "message": "詳細"
-  },
-  "rewardsOnboardingStep4LegalDisclaimerTermsLink": {
-    "message": "規約およびプライバシー通知"
-  },
-  "rewardsOnboardingStep4OptInError": {
-    "message": "オプトインに失敗しました"
-  },
-  "rewardsOnboardingStep4ReferralCodeError": {
-    "message": "無効な紹介コード"
-  },
-  "rewardsOnboardingStep4ReferralCodeInput": {
-    "message": "紹介コードを使って250ポイントを獲得"
-  },
-  "rewardsOnboardingStep4ReferralCodePlaceholder": {
-    "message": "紹介コード（オプション）"
-  },
-  "rewardsOnboardingStep4ReferralCodeUnknownError": {
-    "message": "紹介コードを検証できませんでした."
-  },
-  "rewardsOnboardingStep4ReferralCodeUnknownErrorDescription": {
-    "message": "接続を確認して、もう一度お試しください。"
-  },
-  "rewardsOnboardingStep4Title": {
-    "message": "サインアップすると250ポイントを獲得できます！"
-  },
-  "rewardsOnboardingStep4TitleWithReferralCode": {
-    "message": "コードを使ってサインアップすると500ポイントを獲得できます！"
-  },
-  "rewardsOnboardingStepConfirm": {
-    "message": "次へ"
-  },
-  "rewardsOnboardingStepOptIn": {
-    "message": "ポイントを請求する"
-  },
-  "rewardsOptInVerifyingReferralCode": {
-    "message": "紹介コードを検証中...",
-    "description": "Text shown while verifying a referral code during rewards opt-in"
-  },
-  "rewardsPointsBalance": {
-    "message": "$1ポイント",
-    "description": "$1 is the formatted number of rewards points"
-  },
-  "rewardsPointsBalance_couldntLoad": {
-    "message": "読み込ませんでした",
-    "description": "Text shown when points balance couldn't be loaded"
-  },
-  "rewardsPointsIcon": {
-    "message": "リワードポイント",
-    "description": "Alt text for the rewards points icon"
-  },
-  "rewardsQRCodeDescription": {
-    "message": "進捗状況の追跡とリワードの引き換えにはアプリが必要です。このQRコードをスキャンしてください。アカウントのインポートをお手伝いします。"
-  },
-  "rewardsQRCodeTitle": {
-    "message": "モバイルアプリを入手"
-  },
-  "rewardsSignInFailed": {
-    "message": "サインインできませんでした",
-    "description": "Text shown when the opt-in sign attempt failed, with a retry affordance"
-  },
-  "rewardsSignInToViewPoints": {
-    "message": "サインインしてポイントを確認",
-    "description": "Text shown when user needs to sign in to view their rewards points"
-  },
-  "rewardsSignUp": {
-    "message": "リワードにサインアップ"
-  },
-  "rewardsSigningIn": {
-    "message": "サインインしています...",
-    "description": "Text shown while the user is signing in to view their rewards points"
-  },
   "rpcNameOptional": {
     "message": "RPC名 (オプション)"
   },
@@ -6604,16 +5444,6 @@
   },
   "securityAlert": {
     "message": "$1と$2からのセキュリティアラート"
-  },
-  "securityAlerts": {
-    "message": "セキュリティアラート"
-  },
-  "securityAlertsDescription": {
-    "message": "この機能は、トランザクションと署名要求を能動的に確認し、悪質または異常なアクティビティに関するアラートを発します。$1",
-    "description": "Link to learn more about security alerts"
-  },
-  "securityAlertsDescriptionV2": {
-    "message": "この機能は、トランザクションと署名要求を能動的に確認し、悪質なアクティビティに関するアラートを発します。$1"
   },
   "securityAndPassword": {
     "message": "セキュリティとパスワード"
@@ -6810,615 +5640,6 @@
   "settingsSearchRequestHere": {
     "message": "ここでリクエスト"
   },
-  "shieldClaim": {
-    "message": "請求を送信"
-  },
-  "shieldClaimChainNotSupported": {
-    "message": "このチェーンはサポートされていません。"
-  },
-  "shieldClaimDeleteDraft": {
-    "message": "下書きを削除"
-  },
-  "shieldClaimDeleteDraftDescription": {
-    "message": "請求の下書きが削除されました。"
-  },
-  "shieldClaimDeletedDraft": {
-    "message": "下書きが削除されました"
-  },
-  "shieldClaimDescription": {
-    "message": "事案の詳細"
-  },
-  "shieldClaimDescriptionPlaceholder": {
-    "message": "インシデントの概要を簡単にご説明ください"
-  },
-  "shieldClaimDetails": {
-    "message": "補償請求は、各事案につき、発生から$1日以内に1回のみ行うことができます。$2",
-    "description": "The $1 is the number of days and $2 is a link to the full coverage policy"
-  },
-  "shieldClaimDetailsViewClaims": {
-    "message": "この請求は当社のチームが確認中です。承認され次第、メールでお知らせいたします。完全な保護対象ポリシーはこちら：$1。",
-    "description": "The $1 is a link to the full coverage policy"
-  },
-  "shieldClaimDraftDeleteFailed": {
-    "message": "下書きを削除できませんでした"
-  },
-  "shieldClaimDraftDeleteFailedDescription": {
-    "message": "請求の下書きを削除できませんでした。もう一度お試しください。"
-  },
-  "shieldClaimDraftSaveFailed": {
-    "message": "下書きを保存できませんでした"
-  },
-  "shieldClaimDraftSaveFailedDescription": {
-    "message": "請求の下書きを保存できませんでした。もう一度お試しください。"
-  },
-  "shieldClaimDraftSaved": {
-    "message": "下書きが保存されました"
-  },
-  "shieldClaimDraftSavedDescription": {
-    "message": "請求の下書きが保存されました。"
-  },
-  "shieldClaimDuplicateClaimExists": {
-    "message": "このトランザクションハッシュにはすでに請求が提出されています。"
-  },
-  "shieldClaimEmail": {
-    "message": "メールアドレス"
-  },
-  "shieldClaimEmailHelpText": {
-    "message": "最新情報をこちらのメールアドレスに送信します。"
-  },
-  "shieldClaimFileErrorCountExceeded": {
-    "message": "ファイル数が最大許容数を超えています。"
-  },
-  "shieldClaimFileErrorInvalidType": {
-    "message": "無効なファイル形式です。"
-  },
-  "shieldClaimFileErrorSizeExceeded": {
-    "message": "ファイルの合計サイズが最大許容サイズを超えています。"
-  },
-  "shieldClaimFileUploader": {
-    "message": "画像のアップロード"
-  },
-  "shieldClaimFileUploaderAcceptText": {
-    "message": "PDF、PNG、JPG（最大$1MB）",
-    "description": "The $1 is the maximum file size in MB"
-  },
-  "shieldClaimFileUploaderHelpText": {
-    "message": "追加の証拠がある場合は、こちらにアップロードしてください。"
-  },
-  "shieldClaimGroupActive": {
-    "message": "審査中の請求"
-  },
-  "shieldClaimGroupActiveNote": {
-    "message": "注: 同時に審査を受けられるのは$$2件まで、下書きは$1件までとなります。",
-    "description": "The $1 is the maximum number of drafts and $2 is the maximum number of active claims"
-  },
-  "shieldClaimGroupCompleted": {
-    "message": "審査が完了した請求"
-  },
-  "shieldClaimGroupDrafts": {
-    "message": "下書き"
-  },
-  "shieldClaimGroupNoCompletedClaims": {
-    "message": "審査が完了した請求はありません"
-  },
-  "shieldClaimGroupNoCompletedClaimsDescription": {
-    "message": "審査が完了した請求はここで確認できます。"
-  },
-  "shieldClaimGroupNoOpenClaims": {
-    "message": "受付済みの請求はありません"
-  },
-  "shieldClaimGroupNoOpenClaimsDescription": {
-    "message": "請求のステータスはここで確認できます。"
-  },
-  "shieldClaimGroupRejected": {
-    "message": "却下された請求"
-  },
-  "shieldClaimImpactedTxHash": {
-    "message": "影響を受けたトランザクションハッシュ"
-  },
-  "shieldClaimImpactedTxHashHelpText": {
-    "message": "TXID、ハッシュID、トランザクションIDとも呼ばれます。"
-  },
-  "shieldClaimImpactedTxHashHelpTextLink": {
-    "message": "見つけるお手伝いが必要ですか？"
-  },
-  "shieldClaimImpactedTxHashNotEligible": {
-    "message": "このトランザクションは1do内で行われていないため、請求の対象外です"
-  },
-  "shieldClaimImpactedWalletAddress": {
-    "message": "影響を受けたウォレットアドレス"
-  },
-  "shieldClaimIncidentDetails": {
-    "message": "インシデントの詳細"
-  },
-  "shieldClaimInvalidChainId": {
-    "message": "有効なチェーンIDを入力してください"
-  },
-  "shieldClaimInvalidEmail": {
-    "message": "有効なメールアドレスを入力してください"
-  },
-  "shieldClaimInvalidRequired": {
-    "message": "この項目は必須です"
-  },
-  "shieldClaimInvalidTxHash": {
-    "message": "有効なトランザクションハッシュを入力してください"
-  },
-  "shieldClaimInvalidWalletAddress": {
-    "message": "有効なウォレットアドレスを入力してください"
-  },
-  "shieldClaimMaxClaimsLimitExceeded": {
-    "message": "未解決の請求件数が上限に達しました。追加の請求を提出する必要がある場合は、サポートにお問い合わせください。"
-  },
-  "shieldClaimMaxDraftsReached": {
-    "message": "下書きの上限数に達しました。新しい下書きを保存するには、既存の下書きを1件削除してください。"
-  },
-  "shieldClaimNetwork": {
-    "message": "ネットワークを選択"
-  },
-  "shieldClaimPersonalDetails": {
-    "message": "個人情報"
-  },
-  "shieldClaimReimbursementWalletAddress": {
-    "message": "返金用ウォレットアドレス"
-  },
-  "shieldClaimReimbursementWalletAddressHelpText": {
-    "message": "このウォレットが侵害されていないことをご確認ください。"
-  },
-  "shieldClaimSameWalletAddressesError": {
-    "message": "影響を受けたウォレットアドレスと払い戻し用ウォレットアドレスは異なるものでなければなりません。"
-  },
-  "shieldClaimSaveAsDraft": {
-    "message": "下書きとして保存"
-  },
-  "shieldClaimSelectAccount": {
-    "message": "アカウントを選択します"
-  },
-  "shieldClaimSelectNetwork": {
-    "message": "ネットワークを選択"
-  },
-  "shieldClaimSignatureCoverageNotCovered": {
-    "message": "指定されたトランザクションハッシュの署名カバレッジが見つかりません。"
-  },
-  "shieldClaimSubmissionWindowExpired": {
-    "message": "提出期限が切れました。請求は、インシデント発生後$1日以内に提出する必要があります。",
-    "description": "The $1 is the number of days"
-  },
-  "shieldClaimSubmit": {
-    "message": "請求を送信"
-  },
-  "shieldClaimSubmitError": {
-    "message": "請求の提出に失敗しました"
-  },
-  "shieldClaimSubmitSuccess": {
-    "message": "請求を受理しました"
-  },
-  "shieldClaimSubmitSuccessDescription": {
-    "message": "請求が提出されました。内容を確認の上、メールでご連絡いたします。"
-  },
-  "shieldClaimTransactionNotFound": {
-    "message": "チェーン上でトランザクションが見つかりません。"
-  },
-  "shieldClaimTransactionNotFromWalletAddress": {
-    "message": "トランザクションハッシュがウォレットアドレスのものではありません。"
-  },
-  "shieldClaimTransactionNotSuccessful": {
-    "message": "チェーン上でトランザクションがうまく行われませんでした。"
-  },
-  "shieldClaimViewGuidelines": {
-    "message": "ガイドラインを表示"
-  },
-  "shieldClaimWalletOwnershipValidationFailed": {
-    "message": "ウォレットの所有権の検証に失敗しました。"
-  },
-  "shieldClaimsLastEdited": {
-    "message": "最終編集日: $1",
-    "description": "The $1 is the date"
-  },
-  "shieldClaimsListTitle": {
-    "message": "請求"
-  },
-  "shieldClaimsNumber": {
-    "message": "請求番号$1",
-    "description": "The $1 is the claim number"
-  },
-  "shieldClaimsTabHistory": {
-    "message": "請求履歴"
-  },
-  "shieldClaimsTabPending": {
-    "message": "請求"
-  },
-  "shieldConfirmMembership": {
-    "message": "プランを確定"
-  },
-  "shieldCoverageAlertCovered": {
-    "message": "1doトランザクションシールドで最大$2まで保護されています。$1。"
-  },
-  "shieldCoverageAlertHighRiskTransaction": {
-    "message": "これは高リスクトランザクションであるため、1doトランザクションシールドの保護対象外です。$1。"
-  },
-  "shieldCoverageAlertMessageChainNotSupported": {
-    "message": "このチェーンはサポートされていないため、1doトランザクションシールドの保護対象外です。$1"
-  },
-  "shieldCoverageAlertMessageLearnHowCoverageWorks": {
-    "message": "補償内容を確認"
-  },
-  "shieldCoverageAlertMessagePaused": {
-    "message": "1doトランザクションシールドプランのお支払いに問題が発生しました。サービスを再開するには、お支払い方法を更新してください。"
-  },
-  "shieldCoverageAlertMessagePausedAcknowledgeButton": {
-    "message": "支払方法を更新"
-  },
-  "shieldCoverageAlertMessagePotentialRisks": {
-    "message": "このトランザクションには潜在的なリスクがあるため、1doトランザクションシールドの保護対象外です。$1"
-  },
-  "shieldCoverageAlertMessageSignatureNotSupported": {
-    "message": "この署名はサポートされていないため、1doトランザクションシールドの保護対象外です。$1"
-  },
-  "shieldCoverageAlertMessageTitle": {
-    "message": "このトランザクションは保護対象外です"
-  },
-  "shieldCoverageAlertMessageTitleCovered": {
-    "message": "このトランザクションは保護対象です"
-  },
-  "shieldCoverageAlertMessageTitlePaused": {
-    "message": "トランザクションシールドが一時停止中"
-  },
-  "shieldCoverageAlertMessageTitleSignatureRequest": {
-    "message": "この署名リクエストは保護対象外です"
-  },
-  "shieldCoverageAlertMessageTitleSignatureRequestCovered": {
-    "message": "この署名リクエストは保護対象です"
-  },
-  "shieldCoverageAlertMessageTokenTrustSignalWarning": {
-    "message": "このトークンには悪意のある動作の兆候が強く見られます。続行すると資金を失う可能性があります。$1。"
-  },
-  "shieldCoverageAlertMessageTxTypeNotSupported": {
-    "message": "このトランザクションタイプはサポートされていないため、1doトランザクションシールドの保護対象外です。$1"
-  },
-  "shieldCoverageAlertMessageUnknown": {
-    "message": "このリクエストは検証できないため、1doトランザクションシールドの保護対象外です。$1。"
-  },
-  "shieldCoverageEnding": {
-    "message": "シールドの保護期間がまもなく終了します"
-  },
-  "shieldCoverageEndingAction": {
-    "message": "更新"
-  },
-  "shieldCoverageEndingDescription": {
-    "message": "プランは$1に終了します。",
-    "description": "The $1 is the date"
-  },
-  "shieldCovered": {
-    "message": "保護対象"
-  },
-  "shieldEntryModalGetStarted": {
-    "message": "14日間の無料トライアルを開始"
-  },
-  "shieldEntryModalSubtitleA": {
-    "message": "トランザクションシールドは、最大$1の保護と24時間年中無休の優先サポートを提供します。",
-    "description": "The $1 is the amount of transaction protection"
-  },
-  "shieldEntryModalSubtitleB": {
-    "message": "最大$1の保護と24時間年中無休の優先サポートで、さらに安心して取引できます。",
-    "description": "The $1 is the amount of transaction protection"
-  },
-  "shieldEntryModalTitleA": {
-    "message": "さらに安心して取引"
-  },
-  "shieldEntryModalTitleB": {
-    "message": "トランザクションシールドのご紹介"
-  },
-  "shieldErrorPayerAddressAlreadyUsed": {
-    "message": "このアドレスはすでに別のアカウントにリンクされています。登録するには別のアドレスを使用してください。"
-  },
-  "shieldEstimatedChangesMonthlyTooltipText": {
-    "message": "12か月間、毎月$1（合計$2）を承認します。一括ではなく、毎月請求されます。"
-  },
-  "shieldFooterAgreement": {
-    "message": "続行することにより、トランザクションシールド$1に同意します"
-  },
-  "shieldManagePlan": {
-    "message": "プランの管理"
-  },
-  "shieldNotCovered": {
-    "message": "対象外"
-  },
-  "shieldPastPlansTitle": {
-    "message": "過去の情報"
-  },
-  "shieldPaused": {
-    "message": "一時停止中"
-  },
-  "shieldPaymentPaused": {
-    "message": "トランザクションシールドが一時停止中"
-  },
-  "shieldPaymentPausedActionCardPayment": {
-    "message": "更新"
-  },
-  "shieldPaymentPausedActionCryptoPayment": {
-    "message": "更新"
-  },
-  "shieldPaymentPausedActionUnexpectedError": {
-    "message": "表示"
-  },
-  "shieldPaymentPausedDescriptionCardPayment": {
-    "message": "カード決済に失敗しました。"
-  },
-  "shieldPaymentPausedDescriptionCryptoPayment": {
-    "message": "トークン残高が不十分です。"
-  },
-  "shieldPaymentPausedDescriptionUnexpectedError": {
-    "message": "予期せぬエラーが発生しました。"
-  },
-  "shieldPlanAnnual": {
-    "message": "年間"
-  },
-  "shieldPlanAnnualPrice": {
-    "message": "年額$1",
-    "description": "The $1 is the price of the annual plan"
-  },
-  "shieldPlanBillingDate": {
-    "message": "課金日"
-  },
-  "shieldPlanCard": {
-    "message": "カード"
-  },
-  "shieldPlanCryptoMonthlyNote": {
-    "message": "1年間の事前承認済み月額手数料総額"
-  },
-  "shieldPlanDetails": {
-    "message": "特典"
-  },
-  "shieldPlanDetails1": {
-    "message": "$1日間の無料トライアル",
-    "description": "The $1 is the number of days"
-  },
-  "shieldPlanDetails2": {
-    "message": "最大$1のトランザクション保護",
-    "description": "The $1 is the amount of transaction protection"
-  },
-  "shieldPlanDetails3": {
-    "message": "24時間年中無休で優先ライブチャットサポートにアクセス可能"
-  },
-  "shieldPlanDetailsRewards": {
-    "message": "$2ごとに$1ポイント獲得",
-    "description": "The $1 is the number of points and $2 plan interval (month or year)"
-  },
-  "shieldPlanDetailsRewardsDescription": {
-    "message": "このオファーはリワードシーズン中のみご利用いただけます。ポイントは、無料トライアル終了時に、リワードに参加したユーザーに付与されます。"
-  },
-  "shieldPlanDetailsRewardsTitle": {
-    "message": "報酬"
-  },
-  "shieldPlanErrorText": {
-    "message": "トランザクションシールドに接続できませんでした"
-  },
-  "shieldPlanFooterNoteMonthly": {
-    "message": "月額課金でいつでもキャンセル可能"
-  },
-  "shieldPlanFooterNoteYearly": {
-    "message": "年額課金でいつでもキャンセル可能"
-  },
-  "shieldPlanMonthly": {
-    "message": "月次"
-  },
-  "shieldPlanMonthlyPrice": {
-    "message": "月額$1",
-    "description": "The $1 is the price of the monthly plan"
-  },
-  "shieldPlanPayWith": {
-    "message": "支払方法:"
-  },
-  "shieldPlanPayWithCard": {
-    "message": "カードで支払う"
-  },
-  "shieldPlanPayWithToken": {
-    "message": "$1で支払う",
-    "description": "The $1 is token"
-  },
-  "shieldPlanPaymentTitle": {
-    "message": "支払方法を変更"
-  },
-  "shieldPlanSave": {
-    "message": "17％割引"
-  },
-  "shieldPlanSelectToken": {
-    "message": "トークンの選択"
-  },
-  "shieldPlanTitle": {
-    "message": "プランを選択してください"
-  },
-  "shieldPlanYearly": {
-    "message": "年次"
-  },
-  "shieldStartNowCTA": {
-    "message": "今すぐ開始"
-  },
-  "shieldStartNowCTAWithTrial": {
-    "message": "無料トライアルを開始"
-  },
-  "shieldTx": {
-    "message": "Transaction Shield"
-  },
-  "shieldTxBillingAccount": {
-    "message": "請求アカウント\n\nCharges"
-  },
-  "shieldTxCancelDetails": {
-    "message": "キャンセルすると、$1からウォレットおよび取引が補償対象外となります。",
-    "description": "The $1 is the date subscription ends"
-  },
-  "shieldTxCancelImmediateDetails": {
-    "message": "キャンセルすると、ウォレットとトランザクションが対象外となります。"
-  },
-  "shieldTxCancelNotAllowed": {
-    "message": "現在サブスクリプションをキャンセルできません。"
-  },
-  "shieldTxCancelNotAllowedPendingVerification": {
-    "message": "検証が保留中のため、サブスクリプションをキャンセルできません。"
-  },
-  "shieldTxCancelWhenPausedDetails": {
-    "message": "一時停止中、プランはご利用いただけません。キャンセルすると、プランは直ちに終了します。"
-  },
-  "shieldTxDetails1DescriptionTrial": {
-    "message": "$1日間は無料、その後$2",
-    "description": "The $1 is the number of days and the $2 is the price of the plan"
-  },
-  "shieldTxDetails1Title": {
-    "message": "1doトランザクションシールド"
-  },
-  "shieldTxDetails2Description": {
-    "message": "$1、次回請求は$2",
-    "description": "The $1 is interval and the $2 is the date of next billing"
-  },
-  "shieldTxDetails2Title": {
-    "message": "請求サイクル"
-  },
-  "shieldTxDetails3DescriptionCrypto": {
-    "message": "仮想通貨 ($1)",
-    "description": "The $1 is the token symbol"
-  },
-  "shieldTxDetails3DescriptionCryptoWithAccount": {
-    "message": "仮想通貨 ($1)、$2",
-    "description": "The $1 is the token symbol and the $2 is the account"
-  },
-  "shieldTxDetails3Title": {
-    "message": "支払方法"
-  },
-  "shieldTxDetailsManage": {
-    "message": "管理"
-  },
-  "shieldTxDetailsTitle": {
-    "message": "プランの詳細"
-  },
-  "shieldTxMembershipActive": {
-    "message": "有効なプラン"
-  },
-  "shieldTxMembershipBenefits": {
-    "message": "お客様のメリット"
-  },
-  "shieldTxMembershipBenefits1Description": {
-    "message": "対象となるトランザクションの資産を保護します"
-  },
-  "shieldTxMembershipBenefits1Title": {
-    "message": "最大$1まで保護",
-    "description": "The $1 is the amount of transaction protection"
-  },
-  "shieldTxMembershipBenefits2Description": {
-    "message": "いつでもすぐに専任のサポートを受けられます"
-  },
-  "shieldTxMembershipBenefits2Title": {
-    "message": "優先サポート"
-  },
-  "shieldTxMembershipBenefits3Description": {
-    "message": "$1ポイント/$2をゲット",
-    "description": "The $1 is the number of points and the $2 is the interval"
-  },
-  "shieldTxMembershipBenefits3DescriptionInactive": {
-    "message": "$1ポイント/$2をゲット",
-    "description": "The $1 is the number of points and the $2 is the interval"
-  },
-  "shieldTxMembershipBenefits3LinkRewards": {
-    "message": "リンク"
-  },
-  "shieldTxMembershipBenefits3SignUp": {
-    "message": "サインアップ"
-  },
-  "shieldTxMembershipBenefits3Title": {
-    "message": "季節ごとの報酬を獲得"
-  },
-  "shieldTxMembershipBenefitsInactive": {
-    "message": "特典"
-  },
-  "shieldTxMembershipBenefitsViewAll": {
-    "message": "すべて表示"
-  },
-  "shieldTxMembershipBillingDetailsViewBillingHistory": {
-    "message": "請求を管理"
-  },
-  "shieldTxMembershipCancel": {
-    "message": "プランをキャンセル"
-  },
-  "shieldTxMembershipCancelNotification": {
-    "message": "プランは$1にキャンセルされます。",
-    "description": "The $1 is the date"
-  },
-  "shieldTxMembershipCancelledDate": {
-    "message": "$1にプランがキャンセルされました",
-    "description": "The $1 is the date"
-  },
-  "shieldTxMembershipErrorInsufficientFunds": {
-    "message": "プランは$1に終了します。特典を継続するには、今すぐ更新してください。",
-    "description": "The $1 is the date subscription ends"
-  },
-  "shieldTxMembershipErrorPausedCard": {
-    "message": "カード決済が失敗したため、プランが一時停止されています。"
-  },
-  "shieldTxMembershipErrorPausedCardAction": {
-    "message": "カード情報を更新"
-  },
-  "shieldTxMembershipErrorPausedCardTooltip": {
-    "message": "支払いが拒否されました。補償を継続するには、支払方法を更新してください。"
-  },
-  "shieldTxMembershipErrorPausedCryptoInsufficientFunds": {
-    "message": "残高不足のため、プランが一時停止されています。支払いの更新には最大$1時間かかる場合があります。",
-    "description": "The $1 is the number of hours"
-  },
-  "shieldTxMembershipErrorPausedCryptoInsufficientFundsAction": {
-    "message": "資金を追加"
-  },
-  "shieldTxMembershipErrorPausedCryptoTooltip": {
-    "message": "ウォレットのトークン残高が不足しています。ウォレットに入金した後、「再試行」をクリックしてください。"
-  },
-  "shieldTxMembershipErrorPausedUnexpected": {
-    "message": "予期せぬエラーのため、プランが一時停止されています。"
-  },
-  "shieldTxMembershipErrorPausedUnexpectedAction": {
-    "message": "サポートへのお問い合わせ"
-  },
-  "shieldTxMembershipFreeTrial": {
-    "message": "無料トライアル"
-  },
-  "shieldTxMembershipFreeTrialDaysLeft": {
-    "message": "トライアルの残り日数はあと$1日です",
-    "description": "The $1 is the number of days left"
-  },
-  "shieldTxMembershipId": {
-    "message": "メンバーID"
-  },
-  "shieldTxMembershipInactive": {
-    "message": "休止中のプラン"
-  },
-  "shieldTxMembershipMakeClaim": {
-    "message": "請求を行う"
-  },
-  "shieldTxMembershipPaused": {
-    "message": "一時停止中"
-  },
-  "shieldTxMembershipRenew": {
-    "message": "プランを更新"
-  },
-  "shieldTxMembershipRenewDescription": {
-    "message": "$1で再度有効にできます",
-    "description": "The $1 is the price of the plan"
-  },
-  "shieldTxMembershipResubscribe": {
-    "message": "プランを再開"
-  },
-  "shieldTxMembershipSubmitCase": {
-    "message": "請求を送信"
-  },
-  "shieldTxPastPlans": {
-    "message": "過去のプラン"
-  },
-  "shieldTxPastPlansMonthly": {
-    "message": "月間プラン"
-  },
-  "shieldTxPastPlansYearly": {
-    "message": "年間プラン"
-  },
-  "shieldTxViewPastInvoice": {
-    "message": "過去の取引明細書を見る"
-  },
   "show": {
     "message": "表示"
   },
@@ -7612,7 +5833,7 @@
     "message": "ディープリンクを開く際にインタースティシャル画面を表示しない"
   },
   "skipDeepLinkInterstitialDescription": {
-    "message": "このオプションを有効にすると、1doでディープリンクを開く際に表示されるインタースティシャル画面がスキップされます。「ディープリンク」とは、https://link.metamask.io/homeなど、1doが開くようになっているリンクのことです。これらのリンクは、第三者によって偽装されている場合があります。インタースティシャル画面は、1do内でユーザーのアカウント、トークン、履歴、残高、設定、その他機微情報に該当する可能性のある情報を表示する恐れのあるページを誤って開かないように、ユーザーを保護するものです。この設定は、1doによって署名されたリンクにのみ適用されます。"
+    "message": "このオプションを有効にすると、1doでディープリンクを開く際に表示されるインタースティシャル画面がスキップされます。「ディープリンク」とは、https://link.1do.io/homeなど、1doが開くようになっているリンクのことです。これらのリンクは、第三者によって偽装されている場合があります。インタースティシャル画面は、1do内でユーザーのアカウント、トークン、履歴、残高、設定、その他機微情報に該当する可能性のある情報を表示する恐れのあるページを誤って開かないように、ユーザーを保護するものです。この設定は、1doによって署名されたリンクにのみ適用されます。"
   },
   "skipLinkConfirmationScreens": {
     "message": "リンクの確認画面をスキップ"
@@ -7664,12 +5885,6 @@
   },
   "smartContracts": {
     "message": "スマートコントラクト"
-  },
-  "smartSwapsErrorNotEnoughFunds": {
-    "message": "スマートスワップに必要な資金が不足しています。"
-  },
-  "smartSwapsErrorUnavailable": {
-    "message": "スマートスワップは一時的にご利用いただけません。"
   },
   "smartTransactionCancelled": {
     "message": "トランザクションがキャンセルされました"
@@ -8049,7 +6264,7 @@
   },
   "stxFailureDescription": {
     "message": "急激な市場の変化により、障害が発生することがあります。問題が解決しない場合は$1にご連絡ください。",
-    "description": "This message is shown to a user if their swap fails. The $1 will be replaced by support.metamask.io"
+    "description": "This message is shown to a user if their swap fails. The $1 will be replaced by support.1do.io"
   },
   "stxOptInDescriptionV2": {
     "message": "スマートトランザクションをオンにして、トランザクションの信頼性と安全性を高めましょう。$1"
@@ -8118,7 +6333,7 @@
   },
   "supportedLanguagesSectionTitle": {
     "message": "サポートされている言語",
-    "description": "Section heading on the language settings screen for locales actively maintained by MetaMask."
+    "description": "Section heading on the language settings screen for locales actively maintained by 1do."
   },
   "surveyConversion": {
     "message": "アンケートに回答する"
@@ -8199,7 +6414,7 @@
   },
   "swapFailedErrorDescriptionWithSupportLink": {
     "message": "トランザクション障害が発生した場合は、いつでもお手伝いいたします。この問題が解決しない場合は、$1でカスタマーサポートにお問い合わせください。",
-    "description": "This message is shown to a user if their swap fails. The $1 will be replaced by support.metamask.io"
+    "description": "This message is shown to a user if their swap fails. The $1 will be replaced by support.1do.io"
   },
   "swapFailedErrorTitle": {
     "message": "スワップに失敗しました"
@@ -8243,7 +6458,7 @@
   },
   "swapIncludesMMFee": {
     "message": "$1%の1do手数料が含まれています.",
-    "description": "Provides information about the fee that MetaMask takes for swaps. $1 is a decimal number."
+    "description": "Provides information about the fee that 1do takes for swaps. $1 is a decimal number."
   },
   "swapLearnMore": {
     "message": "Swapsの詳細"
@@ -8253,13 +6468,6 @@
   },
   "swapMaxSlippage": {
     "message": "最大スリッページ"
-  },
-  "swapMetaMaskFee": {
-    "message": "1doの手数料"
-  },
-  "swapMetaMaskFeeDescription": {
-    "message": "このクォートには、$1%の手数料が自動的に含まれています。この手数料は、1doの流動性プロバイダーの情報集積ソフトウェアの使用ライセンスの代金として支払うものです。",
-    "description": "Provides information about the fee that MetaMask takes for swaps. $1 is a decimal number."
   },
   "swapNQuotesWithDot": {
     "message": "$1 の見積もり.",
@@ -8429,7 +6637,7 @@
   },
   "switchToMetaMaskDefaultRpc": {
     "message": "1doのデフォルトRPCに切り替える",
-    "description": "Button text to switch the default RPC endpoint to MetaMask default RPC"
+    "description": "Button text to switch the default RPC endpoint to 1do default RPC"
   },
   "switchToPopup": {
     "message": "ポップアップに切り替える"
@@ -8655,9 +6863,6 @@
   "transactionSettings": {
     "message": "トランザクション設定"
   },
-  "transactionShield": {
-    "message": "Transaction Shield"
-  },
   "transactionSubmitted": {
     "message": "トランザクションが送信されました"
   },
@@ -8799,7 +7004,7 @@
   },
   "u2f": {
     "message": "U2F",
-    "description": "A name on an API for the browser to interact with devices that support the U2F protocol. On some browsers we use it to connect MetaMask to Ledger devices."
+    "description": "A name on an API for the browser to interact with devices that support the U2F protocol. On some browsers we use it to connect 1do to Ledger devices."
   },
   "unableToConnectTo": {
     "message": "$1に接続できません。",
@@ -8904,7 +7109,7 @@
   },
   "updatedToMetaMaskDefault": {
     "message": "1doのデフォルトに更新されました",
-    "description": "Toast message confirming that the default RPC endpoint has been updated to MetaMask default"
+    "description": "Toast message confirming that the default RPC endpoint has been updated to 1do default"
   },
   "uploadDropFile": {
     "message": "ここにファイルをドロップします"
@@ -9168,5 +7373,13 @@
   },
   "noHardwareWalletSupport": {
     "message": "Most hardware wallets will not work with your current browser version."
+  },
+  "permission_signatureInsight": {
+    "message": "Display signature insights modal.",
+    "description": "The description for the `endowment:signature-insight` permission"
+  },
+  "permission_signatureInsightOrigin": {
+    "message": "See the origins of websites that initiate a signature request",
+    "description": "The description for the `signatureOrigin` caveat, to be used with the `endowment:signature-insight` permission"
   }
 }

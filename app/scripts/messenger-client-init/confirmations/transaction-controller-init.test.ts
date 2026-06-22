@@ -9,11 +9,9 @@ import {
   TransactionControllerMessenger,
   TransactionControllerOptions,
   TransactionStatus,
-  PublishHook,
   PublishBatchHookRequest,
   PublishBatchHookTransaction,
 } from '@metamask/transaction-controller';
-import { TransactionPayPublishHook } from '@metamask/transaction-pay-controller';
 import {
   getTransactionControllerInitMessenger,
   getTransactionControllerMessenger,
@@ -34,7 +32,6 @@ import {
 } from './transaction-controller-init';
 
 jest.mock('@metamask/transaction-controller');
-jest.mock('@metamask/transaction-pay-controller');
 jest.mock('../../lib/smart-transaction/smart-transactions');
 jest.mock('../../lib/transaction/sentinel-api');
 jest.mock('../../lib/transaction/hooks/delegation-7702-publish');
@@ -86,10 +83,6 @@ function buildInitRequestMock(): jest.Mocked<
 
 describe('Transaction Controller Init', () => {
   const transactionControllerClassMock = jest.mocked(TransactionController);
-  const transactionPayPublishHookClassMock = jest.mocked(
-    TransactionPayPublishHook,
-  );
-  const payHookMock: jest.MockedFn<PublishHook> = jest.fn();
 
   /**
    * Extract a constructor option passed to the controller.
@@ -117,14 +110,6 @@ describe('Transaction Controller Init', () => {
 
   beforeEach(() => {
     jest.resetAllMocks();
-
-    transactionPayPublishHookClassMock.mockReturnValue({
-      getHook: () => payHookMock,
-    } as unknown as TransactionPayPublishHook);
-
-    payHookMock.mockResolvedValue({
-      transactionHash: undefined,
-    });
 
     jest
       .mocked(smartTransactionsModule.getSmartTransactionCommonParams)
@@ -179,6 +164,23 @@ describe('Transaction Controller Init', () => {
     });
   });
 
+  it('checks EIP-1559 compatibility for the transaction network client', async () => {
+    const requestMock = buildInitRequestMock();
+    const initMessengerCallMock = jest.fn().mockReturnValue(true);
+    requestMock.initMessenger.call = initMessengerCallMock;
+
+    TransactionControllerInit(requestMock);
+
+    const { getCurrentNetworkEIP1559Compatibility } =
+      transactionControllerClassMock.mock.calls[0][0];
+
+    expect(await getCurrentNetworkEIP1559Compatibility?.('sepolia')).toBe(true);
+    expect(initMessengerCallMock).toHaveBeenCalledWith(
+      'NetworkController:getEIP1559Compatibility',
+      'sepolia',
+    );
+  });
+
   describe('determines incoming transactions is enabled', () => {
     it('when useExternalServices is enabled in preferences and onboarding complete', () => {
       const incomingTransactionsIsEnabled = testConstructorOption(
@@ -223,17 +225,13 @@ describe('Transaction Controller Init', () => {
     });
   });
 
-  it('determines if first time interaction enabled using preference', () => {
+  it('disables first time interaction tracking', () => {
     const isFirstTimeInteractionEnabled = testConstructorOption(
       'isFirstTimeInteractionEnabled',
-      {
-        state: {
-          securityAlertsEnabled: true,
-        },
-      },
+      { state: {} },
     );
 
-    expect(isFirstTimeInteractionEnabled?.()).toBe(true);
+    expect(isFirstTimeInteractionEnabled?.()).toBe(false);
   });
 
   it('determines if simulation enabled using preference', () => {
@@ -277,12 +275,7 @@ describe('Transaction Controller Init', () => {
     }
 
     jestIt.each([
-      ['swap', TransactionType.swap, false],
-      ['swapApproval', TransactionType.swapApproval, false],
-      ['bridge', TransactionType.bridge, false],
-      ['bridgeApproval', TransactionType.bridgeApproval, false],
       ['relayDeposit', TransactionType.relayDeposit, false],
-      ['perpsRelayDeposit', TransactionType.perpsRelayDeposit, false],
       ['predictRelayDeposit', TransactionType.predictRelayDeposit, false],
       ['contractInteraction', TransactionType.contractInteraction, true],
     ])('returns %s for %s transactions', (_label, type, expected) => {
@@ -427,25 +420,12 @@ describe('Transaction Controller Init', () => {
       networkClientId: 'test-network',
     };
 
-    it('skips TransactionPayPublishHook when MetaMask gasless is disabled', async () => {
-      const hooks = testConstructorOption('hooks');
-
-      await hooks?.publish?.(mockTransactionMeta);
-
-      expect(payHookMock).not.toHaveBeenCalled();
-    });
-
-    it('uses default submission when MetaMask gasless is disabled even if pay hook could return a hash', async () => {
-      payHookMock.mockResolvedValue({
-        transactionHash: '0xpayHash',
-      });
-
+    it('uses default submission when MetaMask gasless is disabled', async () => {
       const hooks = testConstructorOption('hooks');
 
       const result = await hooks?.publish?.(mockTransactionMeta);
 
       expect(result).toStrictEqual({ transactionHash: undefined });
-      expect(payHookMock).not.toHaveBeenCalled();
     });
 
     it('skips Delegation7702PublishHook for hardware wallet accounts', async () => {

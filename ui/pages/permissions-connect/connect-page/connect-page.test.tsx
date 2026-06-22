@@ -14,7 +14,7 @@ const mockTestDappUrl = 'https://test.dapp';
 
 const mockTargetSubjectMetadata = {
   extensionId: null,
-  iconUrl: 'https://metamask.github.io/test-dapp/metamask-fox.svg',
+  iconUrl: './images/logo/1do-mark.svg',
   name: 'E2E Test Dapp',
   origin: 'https://metamask.github.io',
   subjectType: 'website',
@@ -90,10 +90,7 @@ describe('ConnectPage', () => {
     const { getByAltText } = render();
 
     const image = getByAltText('metamask.github.io logo');
-    expect(image).toHaveAttribute(
-      'src',
-      'https://metamask.github.io/test-dapp/metamask-fox.svg',
-    );
+    expect(image).toHaveAttribute('src', './images/logo/1do-mark.svg');
   });
 
   it('should render fallback icon correctly', () => {

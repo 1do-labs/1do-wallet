@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { formatChainIdToCaip } from '@metamask/bridge-controller';
 import { AvatarToken, AvatarTokenSize } from '@metamask/design-system-react';
+import { formatChainIdToCaip } from '../../../../../shared/lib/chain-utils';
 import * as actions from '../../../../store/actions';
 import { Button, ButtonVariant, Box } from '../../../component-library';
 import {

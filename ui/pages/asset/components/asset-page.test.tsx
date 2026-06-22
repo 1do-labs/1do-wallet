@@ -144,11 +144,7 @@ describe('AssetPage', () => {
     metamask: {
       ...mockMultichainNetworkState(),
       txHistory: {},
-      remoteFeatureFlags: {
-        bridgeConfig: {
-          support: true,
-        },
-      },
+      remoteFeatureFlags: {},
       tokenList: {},
       tokenBalances: {
         [selectedAccountAddress]: {

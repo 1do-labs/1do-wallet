@@ -46,7 +46,6 @@ export async function runAssetDetailsBenchmark(): Promise<BenchmarkRunResult> {
         manifestFlags: {
           testing: {
             disableSync: true,
-            infuraProjectId: process.env.INFURA_PROJECT_ID,
           },
         },
         useMockingPassThrough: !shouldUseMockedRequests(),

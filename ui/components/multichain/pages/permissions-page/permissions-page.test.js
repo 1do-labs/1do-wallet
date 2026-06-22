@@ -11,7 +11,7 @@ import PermissionsPage from './permissions-page';
 
 mockState.metamask.subjectMetadata = {
   'https://metamask.github.io': {
-    iconUrl: 'https://metamask.github.io/test-dapp/metamask-fox.svg',
+    iconUrl: './images/logo/1do-mark.svg',
     name: 'E2E Test Dapp',
     subjectType: 'website',
     origin: 'https://metamask.github.io',
@@ -117,7 +117,7 @@ describe('All Connections', () => {
           ...mockNetworkState({ chainId: CHAIN_IDS.MAINNET, id: 'mainnet' }),
           subjectMetadata: {
             'https://metamask.github.io': {
-              iconUrl: 'https://metamask.github.io/test-dapp/metamask-fox.svg',
+              iconUrl: './images/logo/1do-mark.svg',
               name: 'E2E Test Dapp',
               subjectType: 'website',
               origin: 'https://metamask.github.io',

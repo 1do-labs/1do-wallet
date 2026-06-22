@@ -4,7 +4,7 @@ import { SMART_TRANSACTION_CONFIRMATION_TYPES } from '../../shared/constants/app
 import type { MetaMaskReduxState } from '../store/store';
 import { TOAST_EXCLUDED_TRANSACTION_TYPES } from '../helpers/constants/transactions';
 import { getPendingApprovals } from './approvals';
-import { EMPTY_ARRAY, EMPTY_OBJECT } from './shared';
+import { EMPTY_ARRAY } from './shared';
 import {
   selectRequiredTransactionHashes,
   selectRequiredTransactionIds,
@@ -13,38 +13,9 @@ import {
 const selectTransactions = (state: MetaMaskReduxState) =>
   state.metamask?.transactions ?? EMPTY_ARRAY;
 
-const selectTxHistory = (state: MetaMaskReduxState) =>
-  state.metamask?.txHistory ?? EMPTY_OBJECT;
-
 export const selectTransactionIds = createSelector(
   selectTransactions,
   (transactions) => new Set<string>(transactions.map((tx) => tx.id)),
-);
-
-export const selectBridgeApprovalTxIds = createSelector(
-  selectTxHistory,
-  (txHistory) => {
-    const ids = new Set<string>();
-    for (const item of Object.values(txHistory)) {
-      if (item.approvalTxId) {
-        ids.add(item.approvalTxId.toLowerCase());
-      }
-    }
-    return ids;
-  },
-);
-
-export const selectCrossChainBridgeSourceTxIds = createSelector(
-  selectTxHistory,
-  (txHistory) => {
-    const ids = new Set<string>();
-    for (const [key, item] of Object.entries(txHistory)) {
-      if (item.quote && item.quote.srcChainId !== item.quote.destChainId) {
-        ids.add(key);
-      }
-    }
-    return ids;
-  },
 );
 
 /**
@@ -55,17 +26,9 @@ export const selectCrossChainBridgeSourceTxIds = createSelector(
  */
 export const selectEvmTransactionsForToast = createSelector(
   selectTransactions,
-  selectBridgeApprovalTxIds,
-  selectCrossChainBridgeSourceTxIds,
   selectRequiredTransactionIds,
   selectRequiredTransactionHashes,
-  (
-    rawTransactions,
-    bridgeApprovalIds,
-    crossChainBridgeIds,
-    requiredTransactionIds,
-    requiredTransactionHashes,
-  ) => {
+  (rawTransactions, requiredTransactionIds, requiredTransactionHashes) => {
     if (!rawTransactions?.length) {
       return EMPTY_ARRAY;
     }
@@ -86,8 +49,6 @@ export const selectEvmTransactionsForToast = createSelector(
       return (
         Boolean(type) &&
         !TOAST_EXCLUDED_TRANSACTION_TYPES.has(type) &&
-        !bridgeApprovalIds.has(transaction.id?.toLowerCase()) &&
-        !crossChainBridgeIds.has(transaction.id) &&
         !requiredTransactionIds.has(transaction.id) &&
         !(
           transaction.hash &&
