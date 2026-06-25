@@ -76,9 +76,7 @@
     "unlimitedStorage",
     "webRequest",
     "offscreen",
-    "identity",
-    "sidePanel",
-    "cookies"
+    "sidePanel"
   ],
   "short_name": "__MSG_appName__"
 }

@@ -18,7 +18,7 @@ const {
   MANIFEST_RELEASE_CANDIDATE_KEY,
 } = require('./constants');
 const { createTask, composeSeries } = require('./task');
-const { getEnvironment, getBuildName } = require('./utils');
+const { getEnvironment } = require('./utils');
 const { fromIniFile } = require('./config');
 
 module.exports = createManifestTasks;
@@ -49,12 +49,10 @@ async function loadManifestFlags() {
 }
 
 function createManifestTasks({
-  applyLavaMoat,
   browserPlatforms,
   browserVersionMap,
   buildType,
   entryTask,
-  shouldIncludeSnow,
 }) {
   const environment = getEnvironment({ buildTarget: entryTask });
 
@@ -100,9 +98,10 @@ function createManifestTasks({
 
   // dev: add perms
   const envDev = createTaskForModifyManifestForEnvironment((manifest) => {
-    manifest.permissions = [
-      ...new Set([...manifest.permissions, 'webRequestBlocking']),
-    ];
+    manifest.permissions = [...new Set([...manifest.permissions])];
+    if (!isManifestV3) {
+      manifest.permissions.push('webRequestBlocking');
+    }
     loadManifestKey(manifest);
   });
 
@@ -112,11 +111,13 @@ function createManifestTasks({
       manifest.permissions = [
         ...new Set([
           ...manifest.permissions,
-          'webRequestBlocking',
           'http://localhost/*',
           'tabs', // test builds need tabs permission for switchToWindowWithTitle
         ]),
       ];
+      if (!isManifestV3) {
+        manifest.permissions.push('webRequestBlocking');
+      }
       loadManifestKey(manifest);
     },
     { setBuildId: true, watch: true },
@@ -128,11 +129,13 @@ function createManifestTasks({
       manifest.permissions = [
         ...new Set([
           ...manifest.permissions,
-          'webRequestBlocking',
           'http://localhost/*',
           'tabs', // test builds need tabs permission for switchToWindowWithTitle
         ]),
       ];
+      if (!isManifestV3) {
+        manifest.permissions.push('webRequestBlocking');
+      }
       loadManifestKey(manifest);
     },
     { setBuildId: true },

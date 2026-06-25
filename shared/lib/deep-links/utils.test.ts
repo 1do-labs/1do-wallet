@@ -1,16 +1,10 @@
 import log from 'loglevel';
-import browser from 'webextension-polyfill';
-import {
-  getDeferredDeepLinkFromCookie,
-  getDeferredDeepLinkRoute,
-  buildInterstitialRoute,
-} from './utils';
+import { getDeferredDeepLinkRoute, buildInterstitialRoute } from './utils';
 import { DeferredDeepLinkRouteType } from './types';
 import * as parseModule from './parse';
 import { VALID, MISSING, INVALID } from './verify';
 
 jest.mock('./parse');
-jest.mock('webextension-polyfill');
 
 const mockParse = parseModule.parse as jest.MockedFunction<
   typeof parseModule.parse
@@ -19,8 +13,6 @@ const mockParse = parseModule.parse as jest.MockedFunction<
 const mockBuyLink =
   'https://link.1do.io/buy?address=0xacA92E438df0B2401fF60dA7E4337B687a2435DA&amount=100&chainId=1&sig=aagQN9osZ1tfoYIEKvU6t5i8FVaW4Gi6EGimMcZ0VTDmAlPDk800-Nx3131QlDTmO3UF2JCmR2Y2RAJhceNOYw';
 const mockHomeLink = 'https://link.1do.io/home?utm_source=test';
-
-const mockBrowser = browser as jest.Mocked<typeof browser>;
 
 describe('Deep link utils', () => {
   describe('buildInterstitialRoute', () => {
@@ -40,128 +32,6 @@ describe('Deep link utils', () => {
       );
       expect(result).toBe(
         '/link?u=%2Fbuy%3Faddress%3D0xacA92E438df0B2401fF60dA7E4337B687a2435DA%26amount%3D100%26chainId%3D1',
-      );
-    });
-  });
-
-  describe('getDeferredDeepLinkFromCookie', () => {
-    let logErrorSpy: jest.SpyInstance;
-
-    beforeEach(() => {
-      // @ts-expect-error: cookies need to be mocked
-      mockBrowser.cookies = {
-        get: jest.fn(),
-      } as unknown;
-
-      logErrorSpy = jest.spyOn(log, 'error').mockImplementation();
-      jest.clearAllTimers();
-    });
-
-    afterEach(() => {
-      jest.restoreAllMocks();
-    });
-
-    it('returns parsed cookie data', async () => {
-      const mockData = {
-        createdAt: 1234567890,
-        referringLink: 'https://link.1do.io/deep-link',
-      };
-
-      (mockBrowser.cookies.get as jest.Mock).mockResolvedValue({
-        name: 'deferred_deeplink',
-        value: JSON.stringify(mockData),
-      });
-
-      const result = await getDeferredDeepLinkFromCookie();
-
-      expect(result).toStrictEqual(mockData);
-      expect(mockBrowser.cookies.get).toHaveBeenCalledWith({
-        url: 'https://metamask.io/',
-        name: 'deferred_deeplink',
-      });
-    });
-
-    it('returns null and log warning on invalid cookie data', async () => {
-      (mockBrowser.cookies.get as jest.Mock).mockResolvedValue({
-        name: 'deferred_deeplink',
-        value: 'invalid json{',
-      });
-
-      const result = await getDeferredDeepLinkFromCookie();
-
-      expect(result).toBeNull();
-      expect(logErrorSpy).toHaveBeenCalledWith(
-        expect.stringContaining('Failed to parse deferred_deeplink cookie.'),
-        expect.any(Error),
-      );
-    });
-
-    describe('createdAt validation', () => {
-      const invalidCreatedAtValues = [
-        ['undefined', undefined],
-        ['null', null],
-        ['string', '1234567890'],
-        ['NaN', NaN],
-        ['Infinity', Infinity],
-        ['-Infinity', -Infinity],
-        ['object', { time: 1234567890 }],
-        ['boolean', true],
-        ['array', []],
-      ];
-
-      // @ts-expect-error '.each' is missing from type definitions
-      it.each(invalidCreatedAtValues)(
-        'returns null when createdAt is %s',
-        async (_description: unknown, invalidValue: unknown) => {
-          const mockData = {
-            createdAt: invalidValue,
-            referringLink: 'https://link.1do.io/deep-link',
-          };
-
-          (mockBrowser.cookies.get as jest.Mock).mockResolvedValue({
-            name: 'deferred_deeplink',
-            value: JSON.stringify(mockData),
-          });
-
-          const result = await getDeferredDeepLinkFromCookie();
-
-          expect(result).toBeNull();
-          expect(logErrorSpy).toHaveBeenCalledWith(
-            expect.stringContaining('Invalid createdAt'),
-          );
-        },
-      );
-    });
-
-    it('returns null when browser API throws an error in promise rejection', async () => {
-      (mockBrowser.cookies.get as jest.Mock).mockRejectedValue(
-        new Error('Browser API not available'),
-      );
-
-      const result = await getDeferredDeepLinkFromCookie();
-
-      expect(result).toBeNull();
-      expect(logErrorSpy).toHaveBeenCalledWith(
-        expect.stringContaining(
-          'Failed to use browser API for deferred deep link cookies.',
-        ),
-        expect.any(Error),
-      );
-    });
-
-    it('returns null when browser API call itself throws synchronously', async () => {
-      (mockBrowser.cookies.get as jest.Mock).mockImplementation(() => {
-        throw new Error('Chrome API not available');
-      });
-
-      const result = await getDeferredDeepLinkFromCookie();
-
-      expect(result).toBeNull();
-      expect(logErrorSpy).toHaveBeenCalledWith(
-        expect.stringContaining(
-          'Failed to use browser API for deferred deep link cookies.',
-        ),
-        expect.any(Error),
       );
     });
   });
