@@ -26,7 +26,7 @@ jest.mock('../../../pages/confirmations/hooks/useEIP7702Account', () => ({
 }));
 
 jest.mock('../../../hooks/accounts/useOneDoSmartAccountStatus', () => ({
-  ONE_DO_7702_DELEGATE: '0x79f8bF31B4FeBE7C827DF1EB528C18c5920450A1',
+  ONE_DO_7702_DELEGATE: '0x90B7a4042238509789279546f4bB9886933Ae5a7',
   useOneDoSmartAccountStatus: () => mockUseOneDoSmartAccountStatus(),
 }));
 

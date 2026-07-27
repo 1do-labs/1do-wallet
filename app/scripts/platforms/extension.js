@@ -221,21 +221,12 @@ export default class ExtensionPlatform {
     await this._showNotification(title, message);
   }
 
-  async _showNotification(title, message, url) {
-    const iconUrl = await browser.runtime.getURL('../../images/icon-64.png');
-
-    await browser.notifications.create(url, {
-      type: 'basic',
-      title,
-      iconUrl,
-      message,
-    });
+  async _showNotification() {
+    // 1Do does not create browser-level notifications.
   }
 
   _subscribeToNotificationClicked() {
-    if (!browser.notifications.onClicked.hasListener(this._viewOnEtherscan)) {
-      browser.notifications.onClicked.addListener(this._viewOnEtherscan);
-    }
+    // 1Do does not register browser-level notification click handlers.
   }
 
   _viewOnEtherscan(url) {

@@ -569,7 +569,7 @@
     "message": "年度"
   },
   "appDescription": {
-    "message": "1Do 加密钱包",
+    "message": "用于支付和资产 app 的自托管智能合约钱包 runtime。",
     "description": "The description of the application"
   },
   "apply": {

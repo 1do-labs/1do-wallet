@@ -1,7 +1,6 @@
 const nodeCrypto = require('node:crypto');
 const { promises: fs } = require('fs');
 const path = require('path');
-const childProcess = require('node:child_process');
 const watch = require('gulp-watch');
 const { mergeWith, cloneDeep } = require('lodash');
 const { isManifestV3 } = require('../../shared/lib/mv3.utils');
@@ -11,12 +10,7 @@ const baseManifest = isManifestV3
   : require('../../app/manifest/v2/_base.json');
 const { loadBuildTypesConfig } = require('../lib/build-type');
 
-const {
-  TASKS,
-  ENVIRONMENT,
-  MANIFEST_DEV_KEY,
-  MANIFEST_RELEASE_CANDIDATE_KEY,
-} = require('./constants');
+const { TASKS, ENVIRONMENT } = require('./constants');
 const { createTask, composeSeries } = require('./task');
 const { getEnvironment } = require('./utils');
 const { fromIniFile } = require('./config');
@@ -143,8 +137,7 @@ function createManifestTasks({
 
   const envScriptDist = createTaskForModifyManifestForEnvironment(
     (manifest) => {
-      const isReleaseCandidate = environment === ENVIRONMENT.RELEASE_CANDIDATE;
-      loadManifestKey(manifest, isReleaseCandidate);
+      loadManifestKey(manifest);
     },
   );
 
@@ -226,19 +219,11 @@ function createManifestTasks({
       return;
     }
 
-    // Get the first 8 characters of the git revision id
-    const gitRevisionStr = childProcess
-      .execSync('git rev-parse HEAD')
-      .toString()
-      .trim()
-      .substring(0, 8);
-
     // Keep the public-facing brand stable for 1Do builds instead of exposing
     // internal build suffixes like "MV3 lavamoat snow" in Chrome Extensions.
     manifest.name = '1Do';
     manifest.short_name = '1Do';
-
-    manifest.description = `${environment} build from git id: ${gitRevisionStr}`;
+    manifest.description = '__MSG_appDescription__';
   }
 
   // helper for merging obj value
@@ -324,25 +309,10 @@ async function getBuildModifications(buildType, platform) {
 }
 
 /**
- * Load the manifest key for the given manifest (for chrome).
- *
- * For Firefox, we don't need a key because we can assign the id to the extension via `applications.gecko.id`.
+ * Remove the manifest key before packaging for store upload.
  *
  * @param {object} manifest - The manifest to load the key for.
- * @param {boolean} isReleaseCandidate - Whether the build is for a release candidate.
  */
-function loadManifestKey(manifest, isReleaseCandidate = false) {
-  // to assert the platform is firefox,
-  // we check if the manifest_version is 2 and if the applications.gecko.id exists.
-  const isFirefox =
-    manifest.manifest_version === 2 && manifest?.applications?.gecko?.id;
-  if (isFirefox) {
-    // delete the key if it exists for firefox
-    delete manifest.key;
-  } else {
-    // assign the key for chrome
-    manifest.key = isReleaseCandidate
-      ? MANIFEST_RELEASE_CANDIDATE_KEY
-      : MANIFEST_DEV_KEY;
-  }
+function loadManifestKey(manifest) {
+  delete manifest.key;
 }

@@ -203,7 +203,7 @@ export const ONEDO_CLEAR_SIGNING_TRUST_POLICY = {
 export const DESCRIPTORS: Record<string, TrustedDescriptor> = {
   accountRuntime: {
     id: 'account-runtime',
-    sha256: '34dcacd3da585da19edd55daac95deccc150f6d2a898f9522a12305ed4409c79',
+    sha256: 'b01b5f1cc8261d085cb2856054a1750bd8b323c7c1e4a4e68e1e98f2e94cfa21',
     source: 'onedo-registry-mirror',
     trust: 'pinned-cache',
   },

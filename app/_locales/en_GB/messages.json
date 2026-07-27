@@ -639,19 +639,19 @@
     "message": "Annual"
   },
   "appDescription": {
-    "message": "The world's most trusted crypto wallet",
+    "message": "A self-custody smart contract wallet runtime for payments and asset apps.",
     "description": "The description of the application"
   },
   "appName": {
-    "message": "1do",
+    "message": "1Do",
     "description": "The name of the application"
   },
   "appNameBeta": {
-    "message": "1do Beta",
+    "message": "1Do Beta",
     "description": "The name of the application (Beta)"
   },
   "appNameFlask": {
-    "message": "1do Flask",
+    "message": "1Do Flask",
     "description": "The name of the application (Flask)"
   },
   "apply": {
@@ -705,7 +705,7 @@
     "message": "Autodetect tokens in your wallet, display NFTs, and get batched account balance updates"
   },
   "asterdexReferralSubtitle": {
-    "message": "Get 4% back on trades with a 1do referral code.",
+    "message": "Review this transaction before continuing.",
     "description": "The subtitle of the AsterDEX referral confirmation screen"
   },
   "attemptToCancelSwapForFree": {
@@ -1801,7 +1801,7 @@
     "message": "1do can't reset it."
   },
   "createPasswordMarketing": {
-    "message": "Get product updates, tips, and news including by email. We may use your interactions to improve what we share."
+    "message": "1Do does not send marketing emails from this extension."
   },
   "createSolanaAccount": {
     "message": "Create Solana account"
@@ -1925,7 +1925,7 @@
     "message": "Save $1"
   },
   "dappSwapRewardText": {
-    "message": "Earn $1 points"
+    "message": "$1 points"
   },
   "darkTheme": {
     "message": "Dark"
@@ -1934,13 +1934,13 @@
     "message": "Data"
   },
   "dataCollectionForMarketing": {
-    "message": "Data collection for marketing"
+    "message": "Optional usage data"
   },
   "dataCollectionForMarketingDescription": {
-    "message": "We'll use 1do Metrics to learn how you interact with our marketing communications. We may share relevant news (like product features and other materials)."
+    "message": "1Do does not use extension activity for external outreach."
   },
   "dataCollectionForMarketingDescriptionSocialLogin": {
-    "message": "Get product updates, tips, and news - including by email. We may use your interactions to improve what we share."
+    "message": "1Do does not send marketing emails from this extension."
   },
   "dataCollectionWarningPopoverButton": {
     "message": "Okay"
@@ -2081,10 +2081,10 @@
     "message": "DeFi"
   },
   "defiEmptyDescription": {
-    "message": "Lend, borrow, and trade, right in your wallet."
+    "message": "No supported account apps to show yet."
   },
   "defiReferralCheckboxLabel": {
-    "message": "Allow 1do to add a referral code. This is permanent. The site offers discounts per their terms. 1do earns a fee.",
+    "message": "Review this request before continuing.",
     "description": "The text for the checkbox label in the DeFi referral confirmation screen"
   },
   "defiReferralTitle": {
@@ -2325,7 +2325,7 @@
     "description": "Shortened form of 'year'"
   },
   "earn": {
-    "message": "Earn"
+    "message": "Apps"
   },
   "edit": {
     "message": "Edit"
@@ -2913,7 +2913,7 @@
     "description": "Subtitle text for the balance empty state component explaining the purpose of adding funds"
   },
   "gmxReferralSubtitle": {
-    "message": "Save up to 5% on trades with a 1do referral code.",
+    "message": "Review this transaction before continuing.",
     "description": "The subtitle of the GMX referral confirmation screen"
   },
   "goToSite": {
@@ -3139,7 +3139,7 @@
     "message": "Honey pot"
   },
   "hyperliquidReferralSubtitle": {
-    "message": "Save up to 4% on trades with a 1do referral code.",
+    "message": "Review this transaction before continuing.",
     "description": "The subtitle of the Hyperliquid referral confirmation screen"
   },
   "iUnderstand": {
@@ -4301,10 +4301,10 @@
     "message": "Withdrawal ready"
   },
   "notificationItemLidoStakeReadyToBeWithdrawnMessage": {
-    "message": "You can now withdraw your unstaked $1"
+    "message": "You can now review your transaction for $1"
   },
   "notificationItemLidoWithdrawalRequestedMessage": {
-    "message": "Your request to unstake $1 has been sent"
+    "message": "Your request for $1 has been sent"
   },
   "notificationItemNFTReceivedFrom": {
     "message": "Received NFT from"
@@ -4331,13 +4331,13 @@
     "message": "Sent to"
   },
   "notificationItemStakeCompleted": {
-    "message": "Stake completed"
+    "message": "Transaction completed"
   },
   "notificationItemStaked": {
-    "message": "Staked"
+    "message": "Submitted"
   },
   "notificationItemStakingProvider": {
-    "message": "Staking provider"
+    "message": "Provider"
   },
   "notificationItemStatus": {
     "message": "Status"
@@ -4355,13 +4355,13 @@
     "message": "Transaction ID"
   },
   "notificationItemUnStakeCompleted": {
-    "message": "UnStaking complete"
+    "message": "Transaction complete"
   },
   "notificationItemUnStaked": {
-    "message": "Unstaked"
+    "message": "Completed"
   },
   "notificationItemUnStakingRequested": {
-    "message": "Unstaking requested"
+    "message": "Transaction requested"
   },
   "notificationTransactionFailedMessage": {
     "message": "Transaction $1 failed! $2",
@@ -4387,11 +4387,11 @@
     "message": "Notifications"
   },
   "notificationsFeatureToggle": {
-    "message": "Enable wallet notifications",
+    "message": "Wallet notifications",
     "description": "Experimental feature title"
   },
   "notificationsFeatureToggleDescription": {
-    "message": "This enables wallet notifications like send/receive funds or nfts and feature announcements.",
+    "message": "Browser-level wallet notifications are disabled in this build.",
     "description": "Description of the experimental notifications feature"
   },
   "notificationsMarkAllAsRead": {
@@ -4455,7 +4455,7 @@
     "message": "1do Metrics"
   },
   "onboardedMetametricsParagraph1": {
-    "message": "In addition to $1, we'd like to use data to understand how you interact with marketing communications.",
+    "message": "In addition to $1, 1Do does not use extension activity for external outreach.",
     "description": "$1 represents the 'onboardedMetametricsLink' locale string"
   },
   "onboardedMetametricsParagraph2": {
@@ -4514,13 +4514,13 @@
     "message": "We’ll collect basic product usage data. We may associate this information with on-chain data."
   },
   "onboardingMetametricCheckboxDescriptionTwo": {
-    "message": "We’ll use this data to learn how you interact with our marketing communications. We may share relevant news (like product features)."
+    "message": "1Do does not use extension activity for external outreach."
   },
   "onboardingMetametricCheckboxTitleOne": {
     "message": "Gather basic usage data"
   },
   "onboardingMetametricCheckboxTitleTwo": {
-    "message": "Product updates"
+    "message": "Usage data"
   },
   "onboardingMetametricsContinue": {
     "message": "Continue"
@@ -4864,7 +4864,7 @@
     "message": "You can read more about what we collect, how we protect it, and why we’re making this change in our latest"
   },
   "pna25ModalTitle": {
-    "message": "Privacy and product updates"
+    "message": "Privacy settings"
   },
   "popularNetworkAddToolTip": {
     "message": "Some of these networks rely on third parties. The connections may be less reliable or enable third-parties to track activity.",
@@ -5026,16 +5026,16 @@
     "message": "NFT sent"
   },
   "pushPlatformNotificationsStakingLidoStakeCompletedDescription": {
-    "message": "Your Lido stake was successful"
+    "message": "Your transaction was successful"
   },
   "pushPlatformNotificationsStakingLidoStakeCompletedTitle": {
-    "message": "Stake complete"
+    "message": "Transaction complete"
   },
   "pushPlatformNotificationsStakingLidoStakeReadyToBeWithdrawnDescription": {
-    "message": "Your Lido stake is now ready to be withdrawn"
+    "message": "Your transaction is ready for review"
   },
   "pushPlatformNotificationsStakingLidoStakeReadyToBeWithdrawnTitle": {
-    "message": "Stake ready for withdrawal"
+    "message": "Transaction ready"
   },
   "pushPlatformNotificationsStakingLidoWithdrawalCompletedDescription": {
     "message": "Your Lido withdrawal was successful"
@@ -5050,16 +5050,16 @@
     "message": "Withdrawal requested"
   },
   "pushPlatformNotificationsStakingRocketpoolStakeCompletedDescription": {
-    "message": "Your RocketPool stake was successful"
+    "message": "Your transaction was successful"
   },
   "pushPlatformNotificationsStakingRocketpoolStakeCompletedTitle": {
-    "message": "Stake complete"
+    "message": "Transaction complete"
   },
   "pushPlatformNotificationsStakingRocketpoolUnstakeCompletedDescription": {
-    "message": "Your RocketPool unstake was successful"
+    "message": "Your transaction was successful"
   },
   "pushPlatformNotificationsStakingRocketpoolUnstakeCompletedTitle": {
-    "message": "Unstake complete"
+    "message": "Transaction complete"
   },
   "pushPlatformNotificationsSwapCompletedDescription": {
     "message": "Your 1do Swap was successful"
@@ -5364,7 +5364,7 @@
     "message": "Revoke token approvals"
   },
   "reward": {
-    "message": "Reward"
+    "message": "Status"
   },
   "rpcNameOptional": {
     "message": "RPC Name (Optional)"
@@ -5770,7 +5770,7 @@
     "message": "Estimated changes are what might happen if you go through with this transaction. This is just a prediction, not a guarantee."
   },
   "simulationDetailsTitleTooltipEnforced": {
-    "message": "Balance changes are guaranteed. If this outcome isn't possible, the transaction will be stopped."
+    "message": "Balance changes are enforced. If this outcome isn't possible, the transaction will be stopped."
   },
   "simulationDetailsTotalFiat": {
     "message": "Total = $1",
@@ -5989,7 +5989,7 @@
     "message": "This Secret Recovery Phrase has already been imported."
   },
   "srpDetailsDescription": {
-    "message": "A Secret Recovery Phrase, also called a seed phrase or mnemonic, is a set of words that lets you access and control your crypto wallet. To move your wallet to 1do, you need this phrase."
+    "message": "A Secret Recovery Phrase, also called a seed phrase or mnemonic, is a set of words that lets you access and control your wallet. To move your wallet to 1do, you need this phrase."
   },
   "srpDetailsOwnsAccessListItemOne": {
     "message": "Take all your money"
@@ -6115,16 +6115,16 @@
     "message": "stable"
   },
   "stake": {
-    "message": "Stake"
+    "message": "Submit"
   },
   "staked": {
-    "message": "Staked"
+    "message": "Submitted"
   },
   "stakingDeposit": {
-    "message": "Staking deposit"
+    "message": "Transaction deposit"
   },
   "stakingWithdrawal": {
-    "message": "Staking withdrawal"
+    "message": "Transaction withdrawal"
   },
   "standardAccountLabel": {
     "message": "Standard account"
@@ -6325,10 +6325,10 @@
     "description": "Section heading on the language settings screen for locales actively maintained by 1do."
   },
   "surveyConversion": {
-    "message": "Take our survey"
+    "message": "Send feedback"
   },
   "surveyTitle": {
-    "message": "Shape the future of 1do"
+    "message": "Help improve 1Do"
   },
   "swap": {
     "message": "Swap"
@@ -6344,7 +6344,7 @@
     "description": "Shows a user that they need to allow a token for swapping on their hardware wallet"
   },
   "swapAmountReceived": {
-    "message": "Guaranteed amount"
+    "message": "Estimated amount"
   },
   "swapAmountReceivedInfo": {
     "message": "This is the minimum amount you will receive. You may receive more depending on slippage."
@@ -6895,7 +6895,7 @@
     "message": "Daily resource"
   },
   "tronDailyResourcesDescription": {
-    "message": "This is your daily allowance based on your staked TRX. You get $1 bandwidth for free daily.",
+    "message": "This is your daily network resource allowance. You get $1 bandwidth for free daily.",
     "description": "$1 is the maximum bandwidth value"
   },
   "tronEnergy": {

@@ -66,8 +66,7 @@
     "activeTab",
     "webRequest",
     "webRequestBlocking",
-    "*://*.eth/",
-    "notifications"
+    "*://*.eth/"
   ],
   "short_name": "__MSG_appName__"
 }
