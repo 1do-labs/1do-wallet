@@ -70,11 +70,32 @@ const mockNetworkConfig = {
       },
     ],
   },
+  '0x14a34': {
+    blockExplorerUrls: ['https://sepolia.basescan.org'],
+    chainId: '0x14a34',
+    defaultBlockExplorerUrlIndex: 0,
+    defaultRpcEndpointIndex: 0,
+    name: 'Base Sepolia',
+    nativeCurrency: 'ETH',
+    rpcEndpoints: [
+      {
+        failoverUrls: [],
+        networkClientId: 'base-sepolia',
+        type: 'custom',
+        url: 'https://sepolia.base.org',
+      },
+    ],
+  },
 };
 
 const MOCK_ADDRESS = '0x8a0bbcd42cf79e7cee834e7808eb2fef1cebdb87';
 
 const mockNetworkBatchSupport = [
+  {
+    chainId: '0x14a34',
+    isSupported: true,
+    upgradeContractAddress: '0x63c0c19a282a1B52b07dD5a65b58948A07DAE32B',
+  },
   {
     chainId: '0xaa36a7',
     isSupported: true,
@@ -148,16 +169,16 @@ describe('useEIP7702Networks', () => {
 
     await waitFor(() => expect(result.current.pending).toBe(false));
 
-    expect(result.current.network7702List).toHaveLength(4);
+    expect(result.current.network7702List).toHaveLength(5);
     const chainIds =
       result.current.network7702List?.map(
         (network: EIP7702NetworkConfiguration) => network.chainIdHex,
       ) || [];
-    expect(chainIds).toEqual(['0x1', '0x5', '0x18c7', '0xaa36a7']);
+    expect(chainIds).toEqual(['0x1', '0x5', '0x18c7', '0x14a34', '0xaa36a7']);
 
     // Verify the corresponding decimal values are in ascending order
     const decimalChainIds = chainIds.map((id: string) => parseInt(id, 16));
-    expect(decimalChainIds).toEqual([1, 5, 6343, 11155111]);
+    expect(decimalChainIds).toEqual([1, 5, 6343, 84532, 11155111]);
   });
 
   it('returns the correct values for non-EVM accounts', () => {

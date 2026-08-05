@@ -14,9 +14,13 @@ import { showImportNftsModal } from '../../../../../store/actions';
 
 export type NftEmptyStateProps = {
   className?: string;
+  showImportButton?: boolean;
 };
 
-export const NftEmptyState = ({ className }: NftEmptyStateProps) => {
+export const NftEmptyState = ({
+  className,
+  showImportButton = true,
+}: NftEmptyStateProps) => {
   const t = useI18nContext();
   const theme = useSelector(getTheme);
   const { trackEvent } = useContext(MetaMetricsContext);
@@ -43,8 +47,8 @@ export const NftEmptyState = ({ className }: NftEmptyStateProps) => {
     <TabEmptyState
       icon={<img src={nftIcon} alt={t('nfts')} width={72} height={72} />}
       description={t('nftEmptyDescription')}
-      actionButtonText={t('importNFT')}
-      onAction={handleImportNfts}
+      actionButtonText={showImportButton ? t('importNFT') : undefined}
+      onAction={showImportButton ? handleImportNfts : undefined}
       data-testid="nft-tab-empty-state"
       className={twMerge('max-w-64', className)}
     />

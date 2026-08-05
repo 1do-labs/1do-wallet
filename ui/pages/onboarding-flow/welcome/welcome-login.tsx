@@ -2,15 +2,24 @@ import React, { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import {
   Box,
+  BoxAlignItems,
   BoxFlexDirection,
   Button,
   ButtonSize,
   ButtonVariant,
+  Text,
+  TextAlign,
+  TextButton,
+  TextButtonSize,
+  TextColor,
+  TextVariant,
 } from '@metamask/design-system-react';
 import { useI18nContext } from '../../../hooks/useI18nContext';
-import { ThemeType } from '../../../../shared/constants/preferences';
 import { setTermsOfUseLastAgreed } from '../../../store/actions';
-import { useTheme } from '../../../hooks/useTheme';
+import {
+  ONEDO_TERMS_LINK,
+  PRIVACY_POLICY_LINK,
+} from '../../../../shared/lib/ui-utils';
 import { LOGIN_OPTION, LOGIN_TYPE, LoginOptionType, LoginType } from './types';
 
 // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
@@ -26,7 +35,6 @@ export default function WelcomeLogin({
 }) {
   const t = useI18nContext();
   const dispatch = useDispatch();
-  const theme = useTheme();
 
   const handleButtonClick = useCallback(
     async (option: LoginOptionType, loginType: LoginType) => {
@@ -42,40 +50,73 @@ export default function WelcomeLogin({
         data-testid="get-started"
         style={{
           opacity: isAnimationComplete ? 1 : 0,
-          transform: isAnimationComplete
-            ? 'translateY(0) scale(1)'
-            : 'translateY(80px) scale(0.8)',
+          transform: isAnimationComplete ? 'translateY(0)' : 'translateY(8px)',
           // Skip transition when returning from another page
           transition: skipTransition
             ? 'none'
-            : 'opacity 0.6s ease-out, transform 0.6s ease-out',
+            : 'opacity 0.35s ease-out, transform 0.35s ease-out',
         }}
         className={'welcome-login'}
       >
-        <Box flexDirection={BoxFlexDirection.Column} gap={4} className="w-full">
+        <Text
+          variant={TextVariant.BodyMd}
+          color={TextColor.TextAlternative}
+          textAlign={TextAlign.Center}
+          className="welcome-login__description"
+        >
+          {t('appDescription')}
+        </Text>
+        <Box
+          flexDirection={BoxFlexDirection.Column}
+          gap={3}
+          className="welcome-login__actions w-full"
+        >
           <Button
             data-testid="onboarding-create-wallet"
             variant={ButtonVariant.Primary}
             size={ButtonSize.Lg}
-            className="w-full"
+            className="welcome-login__button welcome-login__button--primary w-full"
             onClick={() => handleButtonClick(LOGIN_OPTION.NEW, LOGIN_TYPE.SRP)}
           >
             {t('onboardingCreateWallet')}
           </Button>
           <Button
-            data-theme={
-              theme === ThemeType.dark ? ThemeType.light : ThemeType.dark
-            }
             data-testid="onboarding-import-wallet"
-            variant={ButtonVariant.Primary}
+            variant={ButtonVariant.Secondary}
             size={ButtonSize.Lg}
-            className="w-full"
+            className="welcome-login__button welcome-login__button--secondary w-full"
             onClick={() =>
               handleButtonClick(LOGIN_OPTION.EXISTING, LOGIN_TYPE.SRP)
             }
           >
-            {t('onboardingSrpImport')}
+            {t('onboardingImportWallet')}
           </Button>
+        </Box>
+        <Box
+          flexDirection={BoxFlexDirection.Row}
+          alignItems={BoxAlignItems.Center}
+          gap={2}
+          className="welcome-login__footer"
+        >
+          <TextButton size={TextButtonSize.BodyXs} asChild>
+            <a
+              href={ONEDO_TERMS_LINK}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {t('onboardingLoginFooterTermsOfUse')}
+            </a>
+          </TextButton>
+          <Box className="welcome-login__footer-divider" aria-hidden="true" />
+          <TextButton size={TextButtonSize.BodyXs} asChild>
+            <a
+              href={PRIVACY_POLICY_LINK}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {t('onboardingLoginFooterPrivacyNotice')}
+            </a>
+          </TextButton>
         </Box>
       </Box>
     </>

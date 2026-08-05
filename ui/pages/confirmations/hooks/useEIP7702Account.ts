@@ -10,6 +10,7 @@ import {
   isAccountUpgraded,
   EIP_7702_REVOKE_ADDRESS,
   getAccountDelegationAddress,
+  getOneDo7702Delegate,
 } from '../../../../shared/lib/eip7702-utils';
 import {
   addTransactionAndRouteToConfirmationPage,
@@ -68,6 +69,23 @@ export function useEIP7702Account(
 
   const upgradeAccount = useCallback(
     async (address: Hex, upgradeContractAddress: Hex) => {
+      const configuredDelegate = getOneDo7702Delegate(chainId);
+      if (
+        !configuredDelegate ||
+        configuredDelegate.toLowerCase() !==
+          upgradeContractAddress.toLowerCase()
+      ) {
+        throw new Error('1Do smart accounts are not available on this network');
+      }
+
+      const runtimeCode = await getCode(
+        upgradeContractAddress,
+        networkClientId,
+      );
+      if (!runtimeCode || runtimeCode === '0x') {
+        throw new Error('1Do runtime is not deployed on this network');
+      }
+
       const transactionMeta = (await dispatch(
         addTransactionAndRouteToConfirmationPage(
           {
@@ -94,7 +112,7 @@ export function useEIP7702Account(
 
       setTransactionId(transactionMeta.id);
     },
-    [dispatch, networkClientId],
+    [chainId, dispatch, networkClientId],
   );
 
   const isUpgraded = useCallback(

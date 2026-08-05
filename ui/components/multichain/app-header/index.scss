@@ -34,6 +34,52 @@
     }
   }
 
+  &__network-picker {
+    width: 28px;
+    min-width: 28px;
+    height: 28px;
+    padding: 0;
+    gap: 0;
+    border-radius: 50%;
+    background: transparent;
+
+    > p.mm-text {
+      display: none;
+    }
+
+    .mm-picker-network__arrow-down-icon {
+      display: none;
+    }
+
+    .mm-picker-network__avatar-network {
+      --size: 24px;
+      width: 24px;
+      height: 24px;
+      max-width: 24px;
+      flex-basis: 24px;
+      border-radius: 50%;
+    }
+
+    .multichain-avatar-group {
+      width: 24px;
+      height: 24px;
+      justify-content: center;
+      gap: 0;
+    }
+
+    &:not([disabled]):hover {
+      background: var(--color-background-default-hover);
+    }
+  }
+
+  &__contents__network-picker {
+    width: 28px;
+    min-width: 28px;
+    padding: 0;
+    gap: 0;
+    border-radius: 50%;
+  }
+
   &__lock-contents {
     flex-flow: row nowrap;
     height: var(--header-height);
@@ -132,7 +178,7 @@
   box-shadow: 0 8px 18px rgba(235, 154, 188, 0.18);
   cursor: pointer;
   flex: 0 0 auto;
-  min-height: 28px;
+  min-height: 32px;
   font: inherit;
   transition:
     transform 160ms ease,
@@ -152,6 +198,70 @@
     );
 }
 
+.smart-account-header-button--runtime {
+  width: 100%;
+  min-height: 56px;
+  justify-content: flex-start;
+  gap: 10px;
+  padding: 8px 12px;
+  border: 0;
+  border-radius: 4px;
+  background: var(--color-background-muted);
+  box-shadow: none;
+  transition: background 120ms ease;
+}
+
+.smart-account-header-button--runtime:hover {
+  transform: none;
+  box-shadow: none;
+  background: var(--color-background-default-hover);
+}
+
+.smart-account-header-button--runtime:disabled {
+  opacity: 1;
+}
+
+.smart-account-header-button__runtime-icon {
+  display: flex;
+  width: 28px;
+  height: 28px;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 28px;
+}
+
+.smart-account-header-button--runtime .smart-account-header-logo__avatar {
+  width: 28px;
+  height: 28px;
+}
+
+.smart-account-header-button__runtime-content {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+}
+
+.smart-account-header-button--runtime .smart-account-header-button__runtime-content .mm-text {
+  color: var(--color-text-default);
+}
+
+.smart-account-header-button--runtime .smart-account-header-button__runtime-content .mm-text:last-child {
+  color: var(--color-text-alternative);
+}
+
+.smart-account-header-button__runtime-arrow {
+  flex: 0 0 auto;
+}
+
+.smart-account-header-button:focus-visible,
+.smart-account-header-logo:focus-visible {
+  outline: 2px solid var(--color-primary-default);
+  outline-offset: 2px;
+}
+
 .smart-account-header-button:disabled {
   cursor: default;
   opacity: 0.72;
@@ -167,8 +277,8 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 28px;
-  height: 28px;
+  width: 32px;
+  height: 32px;
   padding: 4px;
   border: 1px solid rgba(26, 140, 87, 0.42);
   border-radius: 999px;

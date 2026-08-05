@@ -27,6 +27,7 @@ const MAX_NETWORK_AVATARS = 4;
 
 export type MultichainAccountNetworkGroupWithCopyIconProps = {
   groupId: AccountGroupId;
+  alwaysDisplayAddress?: boolean;
 };
 
 /**
@@ -36,9 +37,11 @@ export type MultichainAccountNetworkGroupWithCopyIconProps = {
  *
  * @param options0
  * @param options0.groupId
+ * @param options0.alwaysDisplayAddress
  */
 export const MultichainAccountNetworkGroupWithCopyIcon = ({
   groupId,
+  alwaysDisplayAddress = false,
 }: MultichainAccountNetworkGroupWithCopyIconProps) => {
   const t = useI18nContext();
   const {
@@ -47,7 +50,7 @@ export const MultichainAccountNetworkGroupWithCopyIcon = ({
     displayDefaultAddress,
     addressCopied,
     handleDefaultAddressClick,
-  } = useDefaultAddress(groupId);
+  } = useDefaultAddress(groupId, alwaysDisplayAddress);
 
   return (
     <Box

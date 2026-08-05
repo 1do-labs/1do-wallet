@@ -13,6 +13,7 @@ import type {
 import {
   AVALANCHE_DISPLAY_NAME,
   BNB_DISPLAY_NAME,
+  ETH_TOKEN_IMAGE_URL,
   LINEA_SEPOLIA_DISPLAY_NAME,
   MAINNET_DISPLAY_NAME,
   MAX_SAFE_CHAIN_ID,
@@ -29,9 +30,22 @@ import {
   getRpcDataByChainId,
   sortNetworksByPrioity,
   getFilteredFeaturedNetworks,
+  getNetworkIcon,
 } from './network.utils';
 
 describe('network utils', () => {
+  describe('getNetworkIcon', () => {
+    it('returns the Ethereum logo for Sepolia', () => {
+      const sepolia = {
+        chainId: toEvmCaipChainId(ChainId.sepolia),
+        isEvm: true,
+        name: SEPOLIA_DISPLAY_NAME,
+      } as MultichainNetworkConfiguration;
+
+      expect(getNetworkIcon(sepolia)).toBe(ETH_TOKEN_IMAGE_URL);
+    });
+  });
+
   describe('isSafeChainId', () => {
     it('returns true given an integer greater than 0 and less than or equal to the max safe chain ID', () => {
       expect(isSafeChainId(3)).toBe(true);

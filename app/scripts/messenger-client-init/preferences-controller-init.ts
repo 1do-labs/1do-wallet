@@ -22,6 +22,10 @@ export const PreferencesControllerInit: MessengerClientInitFunction<
     state: {
       currentLocale: initLangCode ?? '',
       ...persistedPreferences,
+      preferences: {
+        ...persistedPreferences.preferences,
+        showTestNetworks: true,
+      },
     },
     messenger: controllerMessenger,
   });

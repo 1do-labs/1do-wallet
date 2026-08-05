@@ -130,7 +130,7 @@ const render = (balance = ETH_BALANCE, chainId = CHAIN_IDS.MAINNET) => {
   };
   const store = configureMockStore([thunk])(state);
   return renderWithProvider(
-    <AssetList onClickAsset={() => undefined} showTokensLinks />,
+    <AssetList onClickAsset={() => undefined} />,
     store,
   );
 };
@@ -167,15 +167,21 @@ describe('AssetList', () => {
     return null;
   });
 
-  it('renders AssetList component and shows AssetList control bar', async () => {
+  it('renders only the bottom import action above the token list controls', async () => {
     await act(async () => {
       render();
     });
 
     await waitFor(() => {
-      expect(screen.getByTestId('sort-by-popover-toggle')).toBeInTheDocument();
+      expect(screen.queryByTestId('sort-by-networks')).not.toBeInTheDocument();
       expect(
-        screen.getByTestId('asset-list-control-bar-action-button'),
+        screen.queryByTestId('sort-by-popover-toggle'),
+      ).not.toBeInTheDocument();
+      expect(
+        screen.queryByTestId('asset-list-control-bar-action-button'),
+      ).not.toBeInTheDocument();
+      expect(
+        screen.getByTestId('importTokens-button-bottom'),
       ).toBeInTheDocument();
     });
   });

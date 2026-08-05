@@ -56,7 +56,7 @@ describe('AccountOverviewEth', () => {
       tokenBalancesStartPolling: jest.fn(),
     } as never);
   });
-  it('shows all tabs', () => {
+  it('shows Runtime tools outside of the account tabs', () => {
     const { queryByTestId } = render({
       setBasicFunctionalityModalOpen: jest.fn(),
       onSupportLinkClick: jest.fn(),
@@ -65,7 +65,9 @@ describe('AccountOverviewEth', () => {
     expect(queryByTestId('account-overview__asset-tab')).toBeInTheDocument();
     expect(queryByTestId('account-overview__nfts-tab')).toBeInTheDocument();
     expect(queryByTestId('account-overview__activity-tab')).toBeInTheDocument();
-    expect(queryByTestId('account-overview__defi-tab')).toBeInTheDocument();
-    expect(queryByTestId('account-overview__runtime-tab')).toBeInTheDocument();
+    expect(queryByTestId('runtime-tools')).toBeInTheDocument();
+    expect(
+      queryByTestId('account-overview__runtime-tab'),
+    ).not.toBeInTheDocument();
   });
 });

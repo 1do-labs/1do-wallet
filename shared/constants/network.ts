@@ -419,6 +419,7 @@ const ALCHEMY_NETWORK_SLUGS = {
   'optimism-mainnet': 'opt-mainnet',
   'polygon-mainnet': 'polygon-mainnet',
   'base-mainnet': 'base-mainnet',
+  'base-sepolia': 'base-sepolia',
   'sei-mainnet': 'sei-mainnet',
   'monad-mainnet': 'monad-mainnet',
   'hyperevm-mainnet': 'hyperliquid-mainnet',
@@ -749,6 +750,7 @@ export const DEFAULT_PROVIDER_TYPES = [
 
 export const TEST_CHAINS: Hex[] = [
   CHAIN_IDS.SEPOLIA,
+  CHAIN_IDS.BASE_SEPOLIA,
   CHAIN_IDS.LINEA_SEPOLIA,
   CHAIN_IDS.LOCALHOST,
   CHAIN_IDS.MEGAETH_TESTNET,
@@ -1146,6 +1148,10 @@ export const CHAIN_ID_TO_RPC_URL_MAP = {
 
 export const CHAIN_ID_TO_NETWORK_IMAGE_URL_MAP: Record<string, string> = {
   [CHAIN_IDS.MAINNET]: ETH_TOKEN_IMAGE_URL,
+  [CHAIN_IDS.GOERLI]: ETH_TOKEN_IMAGE_URL,
+  [CHAIN_IDS.SEPOLIA]: ETH_TOKEN_IMAGE_URL,
+  [CHAIN_IDS.HOLESKY]: ETH_TOKEN_IMAGE_URL,
+  [CHAIN_IDS.BASE_SEPOLIA]: BASE_TOKEN_IMAGE_URL,
   [CHAIN_IDS.LINEA_GOERLI]: LINEA_GOERLI_TOKEN_IMAGE_URL,
   [CHAIN_IDS.LINEA_SEPOLIA]: LINEA_SEPOLIA_TOKEN_IMAGE_URL,
   [CHAIN_IDS.LINEA_MAINNET]: LINEA_MAINNET_TOKEN_IMAGE_URL,

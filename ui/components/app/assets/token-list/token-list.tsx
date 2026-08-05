@@ -6,7 +6,6 @@ import { ASSET_CELL_HEIGHT } from '../constants';
 import {
   getPreferences,
   getShouldHideZeroBalanceTokens,
-  getTokenSortConfig,
   getUseExternalServices,
 } from '../../../../selectors';
 import { endTrace, TraceName } from '../../../../../shared/lib/trace';
@@ -35,13 +34,18 @@ type TokenListProps = {
   safeChains?: SafeChain[];
 };
 
+const tokenValueSortConfig = {
+  key: 'tokenFiatAmount',
+  order: 'dsc',
+  sortCallback: 'stringNumeric',
+} as const;
+
 // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
 // eslint-disable-next-line @typescript-eslint/naming-convention
 function TokenList({ onTokenClick, safeChains }: TokenListProps) {
   const isEvm = useSelector(getIsEvmMultichainNetworkSelected);
   const currentNetwork = useSelector(getSelectedMultichainNetworkConfiguration);
   const { privacyMode } = useSelector(getPreferences);
-  const tokenSortConfig = useSelector(getTokenSortConfig);
   const shouldHideZeroBalanceTokens = useSelector(
     getShouldHideZeroBalanceTokens,
   );
@@ -75,7 +79,7 @@ function TokenList({ onTokenClick, safeChains }: TokenListProps) {
 
     const accountAssets = sortAssetsWithPriority(
       accountAssetsPreSort,
-      tokenSortConfig,
+      tokenValueSortConfig,
     );
 
     // Filter out non-EVM assets when basic functionality toggle is OFF
@@ -103,7 +107,6 @@ function TokenList({ onTokenClick, safeChains }: TokenListProps) {
   }, [
     isEvm,
     currentNetwork.chainId,
-    tokenSortConfig,
     accountGroupIdAssets,
     allEnabledNetworksForAllNamespaces,
     shouldHideZeroBalanceTokens,

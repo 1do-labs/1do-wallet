@@ -1,5 +1,5 @@
 import React from 'react';
-import { fireEvent, screen } from '@testing-library/react';
+import { fireEvent, screen, waitFor } from '@testing-library/react';
 import configureStore from '../../../store/store';
 import { renderWithProvider } from '../../../../test/lib/render-helpers-navigate';
 import { CONFIRM_TRANSACTION_ROUTE } from '../../../helpers/constants/routes';
@@ -30,10 +30,13 @@ jest.mock('../../../hooks/accounts/useOneDoSmartAccountStatus', () => ({
   useOneDoSmartAccountStatus: () => mockUseOneDoSmartAccountStatus(),
 }));
 
-function renderComponent() {
+function renderComponent(
+  chainId = MOCK_CHAIN_ID,
+  props: React.ComponentProps<typeof SmartAccountHeaderButton> = {},
+) {
   const store = configureStore({
     metamask: {
-      selectedNetworkClientId: 'sepolia',
+      selectedNetworkClientId: chainId === '0x1' ? 'mainnet' : 'sepolia',
       networkConfigurationsByChainId: {
         [MOCK_CHAIN_ID]: {
           chainId: MOCK_CHAIN_ID,
@@ -45,6 +48,20 @@ function renderComponent() {
               type: 'custom',
               url: 'https://sepolia.example',
               networkClientId: 'sepolia',
+            },
+          ],
+          blockExplorerUrls: [],
+        },
+        '0x1': {
+          chainId: '0x1',
+          name: 'Ethereum',
+          nativeCurrency: 'ETH',
+          defaultRpcEndpointIndex: 0,
+          rpcEndpoints: [
+            {
+              type: 'custom',
+              url: 'https://mainnet.example',
+              networkClientId: 'mainnet',
             },
           ],
           blockExplorerUrls: [],
@@ -67,7 +84,7 @@ function renderComponent() {
     },
   });
 
-  return renderWithProvider(<SmartAccountHeaderButton />, store);
+  return renderWithProvider(<SmartAccountHeaderButton {...props} />, store);
 }
 
 describe('SmartAccountHeaderButton', () => {
@@ -75,6 +92,8 @@ describe('SmartAccountHeaderButton', () => {
     jest.clearAllMocks();
     mockUseOneDoSmartAccountStatus.mockReturnValue({
       isActive: false,
+      isChecking: false,
+      hasError: false,
       pendingUpgradeTransaction: undefined,
       refresh: mockRefreshSmartAccountStatus,
       setActive: mockSetSmartAccountActive,
@@ -85,6 +104,8 @@ describe('SmartAccountHeaderButton', () => {
   it('renders the active 1Do logo when the current chain smart account is active', () => {
     mockUseOneDoSmartAccountStatus.mockReturnValue({
       isActive: true,
+      isChecking: false,
+      hasError: false,
       pendingUpgradeTransaction: undefined,
       refresh: mockRefreshSmartAccountStatus,
       setActive: mockSetSmartAccountActive,
@@ -92,15 +113,15 @@ describe('SmartAccountHeaderButton', () => {
 
     renderComponent();
 
-    expect(
-      screen.getByLabelText('Smart account active on this network'),
-    ).toBeInTheDocument();
-    expect(screen.queryByText('Smart')).not.toBeInTheDocument();
+    expect(screen.getByLabelText('Smart account: Active')).toBeInTheDocument();
+    expect(screen.queryByText('Smart account')).not.toBeInTheDocument();
   });
 
   it('navigates to the pending upgrade transaction instead of starting a new upgrade', () => {
     mockUseOneDoSmartAccountStatus.mockReturnValue({
       isActive: false,
+      isChecking: false,
+      hasError: false,
       pendingUpgradeTransaction: { id: 'pending-upgrade' },
       refresh: mockRefreshSmartAccountStatus,
       setActive: mockSetSmartAccountActive,
@@ -119,6 +140,8 @@ describe('SmartAccountHeaderButton', () => {
   it('does not start an upgrade when the account is already active', () => {
     mockUseOneDoSmartAccountStatus.mockReturnValue({
       isActive: true,
+      isChecking: false,
+      hasError: false,
       pendingUpgradeTransaction: undefined,
       refresh: mockRefreshSmartAccountStatus,
       setActive: mockSetSmartAccountActive,
@@ -129,5 +152,73 @@ describe('SmartAccountHeaderButton', () => {
     fireEvent.click(screen.getByTestId('smart-account-header-button'));
 
     expect(mockUpgradeAccount).not.toHaveBeenCalled();
+  });
+
+  it('shows a loading state while checking the current network', () => {
+    mockUseOneDoSmartAccountStatus.mockReturnValue({
+      isActive: false,
+      isChecking: true,
+      hasError: false,
+      pendingUpgradeTransaction: undefined,
+      refresh: mockRefreshSmartAccountStatus,
+      setActive: mockSetSmartAccountActive,
+    });
+
+    renderComponent();
+
+    expect(screen.getByText('Loading...')).toBeInTheDocument();
+    expect(screen.getByTestId('smart-account-header-button')).toBeDisabled();
+  });
+
+  it('offers a retry when smart account status detection fails', () => {
+    mockUseOneDoSmartAccountStatus.mockReturnValue({
+      isActive: false,
+      isChecking: false,
+      hasError: true,
+      pendingUpgradeTransaction: undefined,
+      refresh: mockRefreshSmartAccountStatus,
+      setActive: mockSetSmartAccountActive,
+    });
+
+    renderComponent();
+
+    expect(screen.getByText('Try again')).toBeInTheDocument();
+  });
+
+  it('renders Runtime setup in the Runtime section and reports inactive status', () => {
+    const onStatusChange = jest.fn();
+
+    renderComponent(MOCK_CHAIN_ID, {
+      placement: 'runtime',
+      onStatusChange,
+    });
+
+    expect(screen.getByText('Set up')).toBeInTheDocument();
+    expect(screen.getByText('Smart account')).toBeInTheDocument();
+    expect(screen.getByTestId('smart-account-header-button')).toHaveClass(
+      'smart-account-header-button--runtime',
+    );
+    expect(onStatusChange).toHaveBeenCalledWith({
+      isActive: false,
+      isChecking: false,
+    });
+  });
+
+  it('activates the Smart account on mainnet', async () => {
+    renderComponent('0x1');
+
+    expect(
+      screen.getByTestId('smart-account-header-button'),
+    ).toBeInTheDocument();
+    expect(screen.getByText('Smart')).toBeInTheDocument();
+
+    fireEvent.click(screen.getByTestId('smart-account-header-button'));
+
+    await waitFor(() => {
+      expect(mockUpgradeAccount).toHaveBeenCalledWith(
+        MOCK_ADDRESS,
+        '0x90B7a4042238509789279546f4bB9886933Ae5a7',
+      );
+    });
   });
 });

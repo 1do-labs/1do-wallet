@@ -41,6 +41,14 @@ describe('NftEmptyState', () => {
     ).toBeInTheDocument();
   });
 
+  it('hides the import button when requested', () => {
+    renderComponent({ showImportButton: false });
+
+    expect(
+      screen.queryByRole('button', { name: messages.importNFT.message }),
+    ).not.toBeInTheDocument();
+  });
+
   it('should apply custom className when provided', () => {
     const customClassName = 'custom-test-class';
     renderComponent({ className: customClassName });

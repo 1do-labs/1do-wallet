@@ -39,6 +39,9 @@ describe('PreferencesControllerInit', () => {
       messenger: expect.any(Object),
       state: {
         currentLocale: 'en-US',
+        preferences: {
+          showTestNetworks: true,
+        },
       },
     });
   });
@@ -56,8 +59,28 @@ describe('PreferencesControllerInit', () => {
       messenger: expect.any(Object),
       state: {
         currentLocale: 'en-US',
+        preferences: {
+          showTestNetworks: true,
+        },
         useExternalServices: true,
       },
     });
+  });
+
+  it('enables test networks for persisted wallets', () => {
+    const requestMock = getInitRequestMock();
+    requestMock.persistedState.PreferencesController = {
+      preferences: {
+        showTestNetworks: false,
+      },
+    };
+
+    PreferencesControllerInit(requestMock);
+
+    const controllerMock = jest.mocked(PreferencesController);
+    expect(
+      controllerMock.mock.calls.at(-1)?.[0].state?.preferences
+        ?.showTestNetworks,
+    ).toBe(true);
   });
 });

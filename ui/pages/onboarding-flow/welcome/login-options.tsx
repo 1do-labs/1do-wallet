@@ -26,7 +26,10 @@ import { PolymorphicRef } from '../../../components/component-library';
 import { useI18nContext } from '../../../hooks/useI18nContext';
 import { ThemeType } from '../../../../shared/constants/preferences';
 import { useTheme } from '../../../hooks/useTheme';
-import { ONEDO_WEBSITE_LINK } from '../../../../shared/lib/ui-utils';
+import {
+  ONEDO_TERMS_LINK,
+  PRIVACY_POLICY_LINK,
+} from '../../../../shared/lib/ui-utils';
 import { LOGIN_TYPE, LoginType, LoginOptionType, LOGIN_OPTION } from './types';
 
 export const SocialButton = React.forwardRef(
@@ -177,7 +180,7 @@ export default function LoginOptions({
             asChild
           >
             <a
-              href={ONEDO_WEBSITE_LINK}
+              href={ONEDO_TERMS_LINK}
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -190,7 +193,7 @@ export default function LoginOptions({
             asChild
           >
             <a
-              href={ONEDO_WEBSITE_LINK}
+              href={PRIVACY_POLICY_LINK}
               target="_blank"
               rel="noopener noreferrer"
             >

@@ -8,7 +8,10 @@ import {
   addTransactionAndRouteToConfirmationPage,
   getCode,
 } from '../../../store/actions';
-import { EIP_7702_REVOKE_ADDRESS } from '../../../../shared/lib/eip7702-utils';
+import {
+  EIP_7702_REVOKE_ADDRESS,
+  ONE_DO_7702_DELEGATE,
+} from '../../../../shared/lib/eip7702-utils';
 import { renderHookWithProvider } from '../../../../test/lib/render-helpers-navigate';
 import { useConfirmationNavigation } from './useConfirmationNavigation';
 import { useEIP7702Account } from './useEIP7702Account';
@@ -29,14 +32,17 @@ jest.mock('./useConfirmationNavigation', () => ({
 }));
 
 const ADDRESS_MOCK = '0x1234';
-const UPGRADE_CONTRACT_ADDRESS_MOCK = '0x5678';
+const UPGRADE_CONTRACT_ADDRESS_MOCK = ONE_DO_7702_DELEGATE;
 const CODE_MOCK = '0xabcd';
 const TRANSACTION_ID_MOCK = '1234-5678';
 const SEPOLIA_CHAINID = '0xaa36a7';
 
-function runHook({ onRedirect }: { onRedirect?: () => void } = {}) {
+function runHook({
+  onRedirect,
+  chainId = SEPOLIA_CHAINID,
+}: { onRedirect?: () => void; chainId?: string } = {}) {
   const { result } = renderHookWithProvider(
-    () => useEIP7702Account({ onRedirect, chainId: SEPOLIA_CHAINID }),
+    () => useEIP7702Account({ onRedirect, chainId: chainId as `0x${string}` }),
     {
       metamask: {
         networkConfigurationsByChainId: {
@@ -47,6 +53,10 @@ function runHook({ onRedirect }: { onRedirect?: () => void } = {}) {
                 networkClientId: 'sepolia',
               },
             ],
+          },
+          '0x1': {
+            defaultRpcEndpointIndex: 0,
+            rpcEndpoints: [{ networkClientId: 'mainnet' }],
           },
         },
       },
@@ -78,6 +88,7 @@ describe('useEIP7702Account', () => {
       confirmations: [],
       navigateToId: jest.fn(),
     } as unknown as ReturnType<typeof useConfirmationNavigationMock>);
+    getCodeMock.mockResolvedValue(CODE_MOCK);
   });
 
   describe('isUpgraded', () => {
@@ -245,6 +256,32 @@ describe('useEIP7702Account', () => {
       });
 
       expect(onRedirect).toHaveBeenCalledTimes(1);
+    });
+
+    it('activates the 1Do runtime on mainnet', async () => {
+      const { upgradeAccount } = runHook({ chainId: '0x1' });
+
+      await act(async () => {
+        await upgradeAccount(ADDRESS_MOCK, UPGRADE_CONTRACT_ADDRESS_MOCK);
+      });
+
+      expect(getCodeMock).toHaveBeenCalledWith(
+        UPGRADE_CONTRACT_ADDRESS_MOCK,
+        'mainnet',
+      );
+      expect(addTransactionAndRouteToConfirmationPageMock).toHaveBeenCalled();
+    });
+
+    it('rejects activation when the runtime has no code', async () => {
+      getCodeMock.mockResolvedValueOnce('0x');
+      const { upgradeAccount } = runHook();
+
+      await expect(
+        upgradeAccount(ADDRESS_MOCK, UPGRADE_CONTRACT_ADDRESS_MOCK),
+      ).rejects.toThrow('1Do runtime is not deployed on this network');
+      expect(
+        addTransactionAndRouteToConfirmationPageMock,
+      ).not.toHaveBeenCalled();
     });
   });
 });

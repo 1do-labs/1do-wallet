@@ -1,12 +1,24 @@
 import React from 'react';
-import { fireEvent, waitFor, act } from '@testing-library/react';
+import { fireEvent, waitFor } from '@testing-library/react';
 import { renderWithProvider } from '../../../../test/lib/render-helpers-navigate';
 import { enLocale as messages } from '../../../../test/lib/i18n-helpers';
 import configureStore from '../../../store/store';
+import { setBackgroundConnection } from '../../../store/background-connection';
 import WelcomeLogin from './welcome-login';
 
 describe('Welcome login', () => {
-  it('should render', () => {
+  beforeEach(() => {
+    setBackgroundConnection(
+      new Proxy(
+        {},
+        {
+          get: () => jest.fn().mockResolvedValue(undefined),
+        },
+      ) as never,
+    );
+  });
+
+  it('renders the product message and wallet actions', () => {
     const mockOnLogin = jest.fn();
     const store = configureStore({});
     const { getByTestId, getByText } = renderWithProvider(
@@ -20,9 +32,29 @@ describe('Welcome login', () => {
 
     const createButton = getByText(messages.onboardingCreateWallet.message);
     expect(createButton).toBeInTheDocument();
+    expect(getByText(messages.appDescription.message)).toBeInTheDocument();
   });
 
-  it('should display Login Options modal when seedless onboarding feature is enabled', async () => {
+  it('links to the 1Do terms and privacy pages', () => {
+    const store = configureStore({});
+    const { getByRole } = renderWithProvider(
+      <WelcomeLogin onLogin={jest.fn()} isAnimationComplete={true} />,
+      store,
+    );
+
+    expect(
+      getByRole('link', {
+        name: messages.onboardingLoginFooterTermsOfUse.message,
+      }),
+    ).toHaveAttribute('href', 'https://www.1do.io/terms');
+    expect(
+      getByRole('link', {
+        name: messages.onboardingLoginFooterPrivacyNotice.message,
+      }),
+    ).toHaveAttribute('href', 'https://www.1do.io/privacy');
+  });
+
+  it('starts the existing wallet SRP flow', async () => {
     const mockOnLogin = jest.fn();
 
     const store = configureStore({});
@@ -35,16 +67,10 @@ describe('Welcome login', () => {
     const importButton = getByText(messages.onboardingImportWallet.message);
     expect(importButton).toBeInTheDocument();
 
-    await act(async () => {
-      fireEvent.click(importButton);
-      await new Promise((resolve) => setTimeout(resolve, 500));
-    });
+    fireEvent.click(importButton);
 
     await waitFor(() => {
-      expect(mockOnLogin).not.toHaveBeenCalled();
-      expect(
-        getByTestId('onboarding-import-with-srp-button'),
-      ).toBeInTheDocument();
+      expect(mockOnLogin).toHaveBeenCalledWith('srp', 'existing');
     });
   });
 });

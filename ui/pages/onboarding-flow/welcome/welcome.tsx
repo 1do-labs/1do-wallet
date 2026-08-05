@@ -238,12 +238,6 @@ export default function OnboardingWelcome() {
             skipTransition={shouldSkipAnimation}
           />
 
-          {isAnimationComplete && (
-            <Suspense fallback={<Box />}>
-              <FoxAppearAnimation skipTransition={shouldSkipAnimation} />
-            </Suspense>
-          )}
-
           {loginError !== null && (
             <LoginErrorModal
               onDone={() => setLoginError(null)}

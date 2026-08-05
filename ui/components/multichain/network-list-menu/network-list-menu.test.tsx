@@ -31,6 +31,7 @@ const mockDetectNfts = jest.fn();
 const mockAddPermittedChain = jest.fn();
 const mockShowPermittedNetworkToast = jest.fn();
 const mockSetEnabledNetworks = jest.fn();
+const mockSetEnabledAllPopularNetworks = jest.fn();
 
 jest.mock('../../../store/actions.ts', () => ({
   setShowTestNetworks: () => {
@@ -76,6 +77,10 @@ jest.mock('../../../store/actions.ts', () => ({
   setEnabledNetworks: () => {
     mockSetEnabledNetworks();
     return { type: 'SET_ENABLED_NETWORKS' };
+  },
+  setEnabledAllPopularNetworks: () => {
+    mockSetEnabledAllPopularNetworks();
+    return { type: 'SET_ENABLED_ALL_POPULAR_NETWORKS' };
   },
 }));
 
@@ -187,6 +192,19 @@ const render = ({
               url: 'http://localhost/rpc',
               type: RpcEndpointType.Custom,
               networkClientId: 'linea-sepolia',
+            },
+          ],
+        },
+        '0x14a34': {
+          nativeCurrency: 'ETH',
+          chainId: '0x14a34',
+          name: 'Base Sepolia',
+          defaultRpcEndpointIndex: 0,
+          rpcEndpoints: [
+            {
+              url: 'http://localhost/rpc',
+              type: RpcEndpointType.Custom,
+              networkClientId: 'base-sepolia-alchemy',
             },
           ],
         },
@@ -544,6 +562,7 @@ describe('NetworkListMenu', () => {
       // Check if all testNets are available
       expect(queryByText('Linea Sepolia')).toBeInTheDocument();
       expect(queryByText('Sepolia')).toBeInTheDocument();
+      expect(queryByText('Base Sepolia')).toBeInTheDocument();
 
       // Simulate typing "Linea Sepolia" into the search box
       const searchBox = getByPlaceholderText(messages.search.message);
@@ -557,12 +576,25 @@ describe('NetworkListMenu', () => {
   });
 
   describe('NetworkListMenu network switching behavior', () => {
+    it('enables all networks from the header menu', async () => {
+      const { getByText } = render({ selectedTabOriginInDomainsState: false });
+
+      fireEvent.click(getByText(messages.allNetworks.message));
+
+      await waitFor(() =>
+        expect(mockSetEnabledAllPopularNetworks).toHaveBeenCalled(),
+      );
+      expect(mockSetTokenNetworkFilter).toHaveBeenCalled();
+      expect(mockDetectNfts).toHaveBeenCalled();
+    });
+
     it('should switch networks when clicking network items in wallet view', async () => {
       const { getByText } = render({ selectedTabOriginInDomainsState: false });
       fireEvent.click(getByText(MAINNET_DISPLAY_NAME));
 
       await waitFor(() => expect(mockToggleNetworkMenu).toHaveBeenCalled());
       await waitFor(() => expect(mockSetActiveNetwork).toHaveBeenCalled());
+      await waitFor(() => expect(mockSetEnabledNetworks).toHaveBeenCalled());
       await waitFor(() => expect(mockUpdateCustomNonce).toHaveBeenCalled());
       await waitFor(() => expect(mockSetNextNonce).toHaveBeenCalled());
       await waitFor(() => expect(mockDetectNfts).toHaveBeenCalled());

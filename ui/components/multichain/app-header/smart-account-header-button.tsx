@@ -24,10 +24,17 @@ import {
   ONE_DO_7702_DELEGATE,
   useOneDoSmartAccountStatus,
 } from '../../../hooks/accounts/useOneDoSmartAccountStatus';
+import { isOneDo7702SupportedChain } from '../../../../shared/lib/eip7702-utils';
+import { useI18nContext } from '../../../hooks/useI18nContext';
 
 /* eslint-disable @metamask/design-tokens/color-no-hex */
 
 const ONE_DO_WALLET_AVATAR_MASK_ID = 'one-do-wallet-avatar-mask';
+
+type SmartAccountHeaderButtonProps = {
+  placement?: 'header' | 'runtime';
+  onStatusChange?: (status: { isActive: boolean; isChecking: boolean }) => void;
+};
 
 const OneDoWalletAvatar = () => {
   return (
@@ -110,7 +117,11 @@ const OneDoWalletAvatar = () => {
   );
 };
 
-export const SmartAccountHeaderButton = () => {
+export const SmartAccountHeaderButton = ({
+  placement = 'header',
+  onStatusChange,
+}: SmartAccountHeaderButtonProps) => {
+  const t = useI18nContext();
   const navigate = useNavigate();
   const selectedAccount = useSelector(getSelectedInternalAccount);
   const currentChainId = useSelector(getCurrentChainId);
@@ -121,6 +132,7 @@ export const SmartAccountHeaderButton = () => {
     keyringType &&
       KEYRING_TYPES_SUPPORTING_7702.includes(keyringType as KeyringTypes),
   );
+  const isSupportedNetwork = isOneDo7702SupportedChain(currentChainId);
 
   const { upgradeAccount } = useEIP7702Account({
     chainId: currentChainId,
@@ -128,13 +140,15 @@ export const SmartAccountHeaderButton = () => {
   const [pending, setPending] = useState(false);
   const {
     isActive,
+    isChecking,
+    hasError,
     pendingUpgradeTransaction,
     refresh: refreshSmartAccountStatus,
     setActive: setSmartAccountActive,
   } = useOneDoSmartAccountStatus({
     address: address as Hex | undefined,
     chainId: currentChainId,
-    enabled: isSupportedKeyring,
+    enabled: isSupportedKeyring && isSupportedNetwork,
   });
 
   useEffect(() => {
@@ -143,8 +157,18 @@ export const SmartAccountHeaderButton = () => {
     }
   }, [pendingUpgradeTransaction]);
 
+  useEffect(() => {
+    onStatusChange?.({ isActive, isChecking });
+  }, [isActive, isChecking, onStatusChange]);
+
   const onClick = useCallback(async () => {
-    if (!address || !isSupportedKeyring || pending) {
+    if (
+      !address ||
+      !isSupportedKeyring ||
+      !isSupportedNetwork ||
+      pending ||
+      isChecking
+    ) {
       return;
     }
 
@@ -171,14 +195,16 @@ export const SmartAccountHeaderButton = () => {
         );
         return;
       }
-      await upgradeAccount(address, ONE_DO_7702_DELEGATE);
+      await upgradeAccount(address as Hex, ONE_DO_7702_DELEGATE);
     } finally {
       setPending(false);
     }
   }, [
     address,
     isSupportedKeyring,
+    isSupportedNetwork,
     pending,
+    isChecking,
     pendingUpgradeTransaction?.id,
     isActive,
     navigate,
@@ -189,16 +215,75 @@ export const SmartAccountHeaderButton = () => {
 
   const content = useMemo(() => {
     if (isActive && address) {
+      if (placement === 'runtime') {
+        return null;
+      }
+      const activeLabel = `${t('smartAccount')}: ${t('active')}`;
       return (
         <button
           type="button"
           className="smart-account-header-logo"
           onClick={onClick}
           data-testid="smart-account-header-button"
-          aria-label="Smart account active on this network"
-          title="Smart account active on this network"
+          aria-label={activeLabel}
+          title={activeLabel}
         >
           <OneDoWalletAvatar />
+        </button>
+      );
+    }
+
+    const isPending = pending || Boolean(pendingUpgradeTransaction);
+    let visibleLabel = placement === 'runtime' ? t('setUp') : 'Smart';
+    if (isPending) {
+      visibleLabel = t('pending');
+    } else if (isChecking) {
+      visibleLabel = t('loading');
+    } else if (hasError) {
+      visibleLabel = t('tryAgain');
+    }
+    const accessibleLabel = hasError ? visibleLabel : t('smartAccount');
+
+    if (placement === 'runtime') {
+      return (
+        <button
+          type="button"
+          className="smart-account-header-button smart-account-header-button--runtime"
+          onClick={onClick}
+          data-testid="smart-account-header-button"
+          aria-label={accessibleLabel}
+          aria-busy={isPending || isChecking}
+          title={accessibleLabel}
+          disabled={pending || isChecking}
+        >
+          <span className="smart-account-header-button__runtime-icon">
+            {isPending || isChecking ? (
+              <Icon
+                name={IconName.Loading}
+                size={IconSize.Md}
+                color={IconColor.PrimaryDefault}
+              />
+            ) : (
+              <OneDoWalletAvatar />
+            )}
+          </span>
+          <span className="smart-account-header-button__runtime-content">
+            <Text variant={TextVariant.BodyMd} color={TextColor.TextDefault}>
+              {visibleLabel}
+            </Text>
+            <Text
+              variant={TextVariant.BodySm}
+              color={TextColor.TextAlternative}
+            >
+              {t('smartAccount')}
+            </Text>
+          </span>
+          <Icon
+            className="smart-account-header-button__runtime-arrow"
+            name={IconName.ArrowRight}
+            size={IconSize.Sm}
+            color={IconColor.IconAlternative}
+          />
         </button>
       );
     }
@@ -206,15 +291,15 @@ export const SmartAccountHeaderButton = () => {
     return (
       <button
         type="button"
-        className="smart-account-header-button"
+        className={`smart-account-header-button smart-account-header-button--${placement}`}
         onClick={onClick}
         data-testid="smart-account-header-button"
-        aria-label="Activate smart account on this network"
-        aria-busy={pending || Boolean(pendingUpgradeTransaction)}
-        title="Activate smart account on this network"
-        disabled={pending}
+        aria-label={accessibleLabel}
+        aria-busy={isPending || isChecking}
+        title={accessibleLabel}
+        disabled={pending || isChecking}
       >
-        {pending || pendingUpgradeTransaction ? (
+        {isPending || isChecking ? (
           <Icon
             name={IconName.Loading}
             size={IconSize.Md}
@@ -222,13 +307,23 @@ export const SmartAccountHeaderButton = () => {
           />
         ) : null}
         <Text variant={TextVariant.BodySm} color={TextColor.TextDefault}>
-          Smart
+          {visibleLabel}
         </Text>
       </button>
     );
-  }, [address, isActive, onClick, pending, pendingUpgradeTransaction]);
+  }, [
+    address,
+    hasError,
+    isActive,
+    isChecking,
+    onClick,
+    pending,
+    pendingUpgradeTransaction,
+    placement,
+    t,
+  ]);
 
-  if (!address || !isSupportedKeyring) {
+  if (!address || !isSupportedKeyring || !isSupportedNetwork) {
     return null;
   }
 

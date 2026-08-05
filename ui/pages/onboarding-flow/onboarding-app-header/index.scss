@@ -26,7 +26,7 @@
 
 
   &--welcome {
-    background-color: transparent;
+    background-color: var(--color-background-default);
   }
 
   @include design-system.screen-sm-max {

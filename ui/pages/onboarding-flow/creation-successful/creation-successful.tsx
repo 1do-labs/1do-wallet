@@ -69,7 +69,7 @@ import {
   DeferredDeepLinkRoute,
   DeferredDeepLinkRouteType,
 } from '../../../../shared/lib/deep-links/types';
-import ZENDESK_URLS from '../../../helpers/constants/zendesk-url';
+import { ONEDO_WEBSITE_LINK } from '../../../../shared/lib/ui-utils';
 import WalletReadyAnimation from './wallet-ready-animation';
 
 // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
@@ -93,7 +93,7 @@ export default function CreationSuccessful() {
 
   const isInitialized = useSelector(getIsInitialized);
 
-  const learnMoreLink = ZENDESK_URLS.BASIC_SAFETY_TIPS;
+  const learnMoreLink = ONEDO_WEBSITE_LINK;
 
   const searchParams = new URLSearchParams(search);
   const isFromReminder = searchParams.get('isFromReminder');

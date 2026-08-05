@@ -432,7 +432,7 @@ describe('preferences controller', () => {
         showExtensionInFullSizeView: false,
         privacyMode: false,
         showFiatInTestnets: false,
-        showTestNetworks: false,
+        showTestNetworks: true,
         smartTransactionsMigrationApplied: false,
         smartTransactionsOptInStatus: true,
         useNativeCurrencyAsPrimaryCurrency: true,
@@ -463,7 +463,7 @@ describe('preferences controller', () => {
         avatarType: 'maskicon',
         showExtensionInFullSizeView: false,
         showFiatInTestnets: false,
-        showTestNetworks: false,
+        showTestNetworks: true,
         smartTransactionsMigrationApplied: false,
         smartTransactionsOptInStatus: true,
         useNativeCurrencyAsPrimaryCurrency: true,
@@ -636,7 +636,7 @@ describe('preferences controller', () => {
             "showFiatInTestnets": false,
             "showMultiRpcModal": false,
             "showNativeTokenAsMainBalance": false,
-            "showTestNetworks": false,
+            "showTestNetworks": true,
             "skipDeepLinkInterstitial": false,
             "smartTransactionsMigrationApplied": false,
             "smartTransactionsOptInStatus": true,
@@ -703,7 +703,7 @@ describe('preferences controller', () => {
             "showFiatInTestnets": false,
             "showMultiRpcModal": false,
             "showNativeTokenAsMainBalance": false,
-            "showTestNetworks": false,
+            "showTestNetworks": true,
             "skipDeepLinkInterstitial": false,
             "smartTransactionsMigrationApplied": false,
             "smartTransactionsOptInStatus": true,
@@ -779,7 +779,7 @@ describe('preferences controller', () => {
             "showFiatInTestnets": false,
             "showMultiRpcModal": false,
             "showNativeTokenAsMainBalance": false,
-            "showTestNetworks": false,
+            "showTestNetworks": true,
             "skipDeepLinkInterstitial": false,
             "smartTransactionsMigrationApplied": false,
             "smartTransactionsOptInStatus": true,
@@ -856,7 +856,7 @@ describe('preferences controller', () => {
             "showFiatInTestnets": false,
             "showMultiRpcModal": false,
             "showNativeTokenAsMainBalance": false,
-            "showTestNetworks": false,
+            "showTestNetworks": true,
             "skipDeepLinkInterstitial": false,
             "smartTransactionsMigrationApplied": false,
             "smartTransactionsOptInStatus": true,
@@ -1198,7 +1198,7 @@ describe('preferences controller', () => {
       expect(controller.state.preferences.avatarType).toBe('maskicon');
       expect(controller.state.preferences.privacyMode).toBe(false);
       expect(controller.state.preferences.showFiatInTestnets).toBe(false);
-      expect(controller.state.preferences.showTestNetworks).toBe(false);
+      expect(controller.state.preferences.showTestNetworks).toBe(true);
       expect(controller.state.preferences.hideZeroBalanceTokens).toBe(false);
       expect(controller.state.preferences.featureNotificationsEnabled).toBe(
         false,

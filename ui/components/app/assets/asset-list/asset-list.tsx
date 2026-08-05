@@ -1,20 +1,20 @@
 import React, { useCallback, useContext } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import {
   MetaMetricsEventCategory,
   MetaMetricsEventName,
 } from '../../../../../shared/constants/metametrics';
 import { trace, TraceName } from '../../../../../shared/lib/trace';
 import { MetaMetricsContext } from '../../../../contexts/metametrics';
-import { getMultichainIsEvm } from '../../../../selectors/multichain';
+import { showImportTokensModal } from '../../../../store/actions';
+import { useI18nContext } from '../../../../hooks/useI18nContext';
+import { Icon, IconName, IconSize } from '../../../component-library';
 import { type SafeChain } from '../../../../pages/settings/networks-tab/networks-form/use-safe-chains';
 import { usePrimaryCurrencyProperties } from '../hooks';
 import TokenList from '../token-list';
-import AssetListControlBar from './asset-list-control-bar';
 
 export type AssetListProps = {
   onClickAsset: (chainId: string, address: string) => void;
-  showTokensLinks?: boolean;
   safeChains?: SafeChain[];
 };
 
@@ -41,27 +41,42 @@ const TokenListContainer = React.memo(
           },
         });
       },
-      [],
+      [onClickAsset, primaryCurrencyProperties.suffix, trackEvent],
     );
 
     return <TokenList onTokenClick={onTokenClick} safeChains={safeChains} />;
   },
 );
 
-const AssetList = ({
-  onClickAsset,
-  showTokensLinks,
-  safeChains,
-}: AssetListProps) => {
-  const isEvm = useSelector(getMultichainIsEvm);
-  // NOTE: Since we can parametrize it now, we keep the original behavior
-  // for EVM assets
-  const shouldShowTokensLinks = showTokensLinks ?? isEvm;
+const AssetList = ({ onClickAsset, safeChains }: AssetListProps) => {
+  const dispatch = useDispatch();
+  const t = useI18nContext();
+  const { trackEvent } = useContext(MetaMetricsContext);
+  const handleImportTokens = useCallback(() => {
+    dispatch(showImportTokensModal());
+    trackEvent({
+      category: MetaMetricsEventCategory.Navigation,
+      event: MetaMetricsEventName.TokenImportButtonClicked,
+      properties: {
+        location: 'HOME',
+      },
+    });
+  }, [dispatch, trackEvent]);
 
   return (
     <>
-      <AssetListControlBar showTokensLinks={shouldShowTokensLinks} />
       <TokenListContainer onClickAsset={onClickAsset} safeChains={safeChains} />
+      <div className="asset-import-footer">
+        <button
+          type="button"
+          className="asset-import-footer__button"
+          data-testid="importTokens-button-bottom"
+          onClick={handleImportTokens}
+        >
+          <Icon name={IconName.Add} size={IconSize.Sm} />
+          <span>{t('importTokensCamelCase')}</span>
+        </button>
+      </div>
     </>
   );
 };

@@ -19,6 +19,7 @@ type UseOneDoSmartAccountStatusParams = {
 type OneDoSmartAccountStatus = {
   isActive: boolean;
   isChecking: boolean;
+  hasError: boolean;
   pendingUpgradeTransaction?: TransactionMeta;
   refresh: () => Promise<boolean>;
   setActive: (isActive: boolean) => void;
@@ -96,7 +97,13 @@ export function useOneDoSmartAccountStatus({
   });
   const [isActive, setIsActive] = useState(false);
   const [isChecking, setIsChecking] = useState(false);
+  const [hasError, setHasError] = useState(false);
+  const [checkedIdentity, setCheckedIdentity] = useState<string>();
   const hadPendingUpgradeTransaction = useRef(false);
+  const identity =
+    enabled && address && chainId
+      ? `${address.toLowerCase()}:${chainId.toLowerCase()}`
+      : undefined;
 
   const pendingUpgradeTransaction = useMemo(
     () =>
@@ -126,18 +133,23 @@ export function useOneDoSmartAccountStatus({
     const check = async () => {
       if (!enabled || !address || !chainId) {
         setIsActive(false);
+        setHasError(false);
+        setCheckedIdentity(undefined);
         return;
       }
 
       setIsChecking(true);
+      setHasError(false);
       try {
         const result = await refresh();
         if (!cancelled) {
           setIsActive(result);
+          setCheckedIdentity(identity);
         }
       } catch {
         if (!cancelled) {
-          setIsActive(false);
+          setHasError(true);
+          setCheckedIdentity(identity);
         }
       } finally {
         if (!cancelled) {
@@ -151,7 +163,7 @@ export function useOneDoSmartAccountStatus({
     return () => {
       cancelled = true;
     };
-  }, [address, chainId, enabled, refresh]);
+  }, [address, chainId, enabled, identity, refresh]);
 
   useEffect(() => {
     if (!pendingUpgradeTransaction || isActive) {
@@ -243,8 +255,10 @@ export function useOneDoSmartAccountStatus({
   }, [isActive, pendingUpgradeTransaction, refresh]);
 
   return {
-    isActive,
-    isChecking,
+    isActive: checkedIdentity === identity && isActive,
+    isChecking:
+      Boolean(identity) && (isChecking || checkedIdentity !== identity),
+    hasError,
     pendingUpgradeTransaction,
     refresh,
     setActive: setIsActive,

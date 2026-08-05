@@ -364,15 +364,33 @@ class UnlockPage extends Component<UnlockPageProps, UnlockPageState> {
                   flexDirection={BoxFlexDirection.Column}
                   alignItems={BoxAlignItems.Center}
                 >
+                  <OneDoUnlockLogo isPopup={this.props.isPopup ?? false} />
                   <Text
                     data-testid="unlock-page-brand-title"
-                    variant={TextVariant.DisplayMd}
+                    variant={TextVariant.HeadingSm}
                     fontWeight={FontWeight.Medium}
                     color={TextColor.TextDefault}
                     textAlign={TextAlign.Center}
                     className="unlock-page__brand-title"
                   >
                     1Do
+                  </Text>
+                  <Text
+                    variant={TextVariant.HeadingLg}
+                    fontWeight={FontWeight.Medium}
+                    color={TextColor.TextDefault}
+                    textAlign={TextAlign.Center}
+                    className="unlock-page__welcome-title"
+                  >
+                    {t('welcomeBack')}
+                  </Text>
+                  <Text
+                    variant={TextVariant.BodySm}
+                    color={TextColor.TextAlternative}
+                    textAlign={TextAlign.Center}
+                    className="unlock-page__welcome-description"
+                  >
+                    {t('enterYourPasswordContinue')}
                   </Text>
                 </Box>
                 {isBeta() ? (
@@ -412,7 +430,7 @@ class UnlockPage extends Component<UnlockPageProps, UnlockPageState> {
               <Button
                 variant={ButtonVariant.Primary}
                 size={ButtonSize.Lg}
-                className="w-full mb-6"
+                className="unlock-page__submit-button w-full mb-6"
                 type="submit"
                 data-testid="unlock-submit"
                 disabled={!password || isLocked}
@@ -431,9 +449,6 @@ class UnlockPage extends Component<UnlockPageProps, UnlockPageState> {
               </TextButton>
             </Box>
           </form>
-        </Box>
-        <Box className="unlock-page__bottom-logo">
-          <OneDoUnlockLogo isPopup={this.props.isPopup ?? false} />
         </Box>
       </Box>
     );

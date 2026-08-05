@@ -5,12 +5,26 @@ import {
   TransactionMeta,
 } from '@metamask/transaction-controller';
 import { Hex } from '@metamask/utils';
+import { CHAIN_IDS } from '../constants/network';
 
 export const EIP_7702_REVOKE_ADDRESS =
   '0x0000000000000000000000000000000000000000';
 
 export const ONE_DO_7702_DELEGATE =
   '0x90B7a4042238509789279546f4bB9886933Ae5a7' as Hex;
+
+export const ONE_DO_7702_DEPLOYMENTS: Readonly<Record<string, Hex>> = {
+  [CHAIN_IDS.SEPOLIA]: ONE_DO_7702_DELEGATE,
+  [CHAIN_IDS.BASE_SEPOLIA]: ONE_DO_7702_DELEGATE,
+};
+
+export const getOneDo7702Delegate = (chainId?: string) =>
+  chainId && /^0x[0-9a-f]+$/iu.test(chainId)
+    ? (ONE_DO_7702_DEPLOYMENTS[chainId.toLowerCase()] ?? ONE_DO_7702_DELEGATE)
+    : undefined;
+
+export const isOneDo7702SupportedChain = (chainId?: string) =>
+  Boolean(getOneDo7702Delegate(chainId));
 
 export const EIP_7702_DELEGATION_PREFIX = '0xef0100';
 

@@ -38,11 +38,6 @@ jest.mock('../../app/transaction-activity-empty-state', () => ({
   ),
 }));
 
-jest.mock(
-  '../../app/assets/asset-list/asset-list-control-bar',
-  () => () => null,
-);
-
 jest.mock('./activity-list-item', () => ({
   ActivityListItem: () => <div data-testid="evm-item">evm-item</div>,
 }));

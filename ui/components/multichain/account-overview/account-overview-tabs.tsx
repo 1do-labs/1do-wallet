@@ -38,7 +38,6 @@ import { RuntimeTab } from './runtime-tab';
 
 export type AccountOverviewTabsProps = AccountOverviewCommonProps & {
   showTokens: boolean;
-  showTokensLinks?: boolean;
   showNfts: boolean;
   showActivity: boolean;
   showRuntime?: boolean;
@@ -46,7 +45,6 @@ export type AccountOverviewTabsProps = AccountOverviewCommonProps & {
 
 export const AccountOverviewTabs = ({
   showTokens,
-  showTokensLinks,
   showNfts,
   showActivity,
   showRuntime,
@@ -142,7 +140,7 @@ export const AccountOverviewTabs = ({
       activeTab={activeTabKey}
       onTabClick={handleTabClick}
       tabListProps={{
-        className: 'px-4',
+        className: 'account-overview__tabs-list px-4',
       }}
     >
       {showTokens && (
@@ -152,11 +150,7 @@ export const AccountOverviewTabs = ({
           data-testid="account-overview__asset-tab"
         >
           <ErrorBoundary key="tokens">
-            <AssetList
-              showTokensLinks={showTokensLinks ?? true}
-              onClickAsset={onClickAsset}
-              safeChains={safeChains}
-            />
+            <AssetList onClickAsset={onClickAsset} safeChains={safeChains} />
           </ErrorBoundary>
         </Tab>
       )}

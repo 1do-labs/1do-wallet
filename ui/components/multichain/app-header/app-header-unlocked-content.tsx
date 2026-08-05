@@ -1,5 +1,6 @@
 import React, { useCallback, useContext, useEffect, useMemo } from 'react';
 
+import { type MultichainNetworkConfiguration } from '@metamask/multichain-network-controller';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import {
@@ -14,6 +15,7 @@ import {
   ButtonIcon,
   ButtonIconSize,
   IconName as IconNameDeprecated,
+  PickerNetwork,
   Text,
 } from '../../component-library';
 import { MultichainTriggeredAddressRowsList } from '../../multichain-accounts/multichain-address-rows-triggered-list';
@@ -28,6 +30,7 @@ import { GlobalMenuDrawerWithList } from '../global-menu-drawer';
 import {
   getSelectedInternalAccount,
   getIsDefaultAddressEnabled,
+  getTestNetworkBackgroundColor,
 } from '../../../selectors';
 // TODO: Remove restricted import
 // eslint-disable-next-line import-x/no-restricted-paths
@@ -48,14 +51,26 @@ import {
 } from '../../../selectors/multichain-accounts/account-tree';
 import { trace, TraceName, TraceOperation } from '../../../../shared/lib/trace';
 import { MultichainAccountNetworkGroupWithCopyIcon } from '../../multichain-accounts/multichain-account-network-group-with-copy-icon';
-import { SmartAccountHeaderButton } from './smart-account-header-button';
+import type { AvatarGroupProps } from '../avatar-group/avatar-group.types';
 
 type AppHeaderUnlockedContentProps = {
+  currentNetwork?: MultichainNetworkConfiguration;
+  networkIconSrc?: string;
+  networkPickerLabel?: string;
+  networkPickerAvatarGroupProps?: AvatarGroupProps;
+  networkOpenCallback?: () => void;
+  disableNetworkPicker?: boolean;
   disableAccountPicker: boolean;
   menuRef: React.RefObject<HTMLButtonElement>;
 };
 
 export const AppHeaderUnlockedContent = ({
+  currentNetwork,
+  networkIconSrc,
+  networkPickerLabel,
+  networkPickerAvatarGroupProps,
+  networkOpenCallback,
+  disableNetworkPicker,
   disableAccountPicker,
   menuRef,
 }: AppHeaderUnlockedContentProps) => {
@@ -72,6 +87,7 @@ export const AppHeaderUnlockedContent = ({
   );
   const accountListStats = useSelector(getAccountListStats);
   const isDefaultAddressEnabled = useSelector(getIsDefaultAddressEnabled);
+  const testNetworkBackgroundColor = useSelector(getTestNetworkBackgroundColor);
 
   // Used for account picker
   const internalAccount = useSelector(getSelectedInternalAccount);
@@ -81,7 +97,9 @@ export const AppHeaderUnlockedContent = ({
   const currentAddress = internalAccount?.address;
 
   // Passing non-evm address to checksum function will throw an error
-  const normalizedCurrentAddress = normalizeSafeAddress(currentAddress);
+  const normalizedCurrentAddress = currentAddress
+    ? normalizeSafeAddress(currentAddress)
+    : '';
 
   // useCopyToClipboard analysis: Copies a public address
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -149,7 +167,7 @@ export const AppHeaderUnlockedContent = ({
           ellipsis
         >
           <AccountPicker
-            address={''} // No address shown in multichain mode
+            address={''}
             name={accountName}
             showAvatarAccount={false}
             onClick={() => {
@@ -200,6 +218,7 @@ export const AppHeaderUnlockedContent = ({
             >
               <MultichainAccountNetworkGroupWithCopyIcon
                 groupId={selectedMultichainAccountId}
+                alwaysDisplayAddress
               />
             </MultichainTriggeredAddressRowsList>
           </BoxDeprecated>
@@ -233,7 +252,6 @@ export const AppHeaderUnlockedContent = ({
         gap={2}
         style={{ marginLeft: 'auto' }}
       >
-        <SmartAccountHeaderButton />
         <BoxDeprecated display={Display.Flex} gap={2}>
           <BoxDeprecated
             display={Display.Flex}
@@ -251,6 +269,29 @@ export const AppHeaderUnlockedContent = ({
             />
           </BoxDeprecated>
         </BoxDeprecated>
+        {currentNetwork && networkOpenCallback ? (
+          <PickerNetwork
+            avatarGroupProps={networkPickerAvatarGroupProps}
+            avatarNetworkProps={{
+              backgroundColor: testNetworkBackgroundColor,
+              role: 'img',
+              name: networkPickerLabel ?? currentNetwork.name,
+            }}
+            aria-label={`${t('networkMenu')} ${
+              networkPickerLabel ?? currentNetwork.name
+            }`}
+            label={networkPickerLabel ?? currentNetwork.name}
+            src={networkPickerAvatarGroupProps ? undefined : networkIconSrc}
+            onClick={(event: React.MouseEvent<HTMLElement>) => {
+              event.stopPropagation();
+              event.preventDefault();
+              networkOpenCallback();
+            }}
+            className="multichain-app-header__network-picker"
+            data-testid="network-display"
+            disabled={disableNetworkPicker}
+          />
+        ) : null}
         <GlobalMenuDrawerWithList
           anchorElement={menuRef.current}
           isOpen={accountOptionsMenuOpen}

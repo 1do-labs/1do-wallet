@@ -1,17 +1,5 @@
 @use "design-system";
 
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(5px) scale(0.8);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-}
-
 @keyframes fadeInUpSmooth {
   from {
     opacity: 0;
@@ -24,34 +12,34 @@
   }
 }
 
-@keyframes slideUpSmooth {
+@keyframes welcomeBrandIn {
   from {
-    transform: translateY(90px);
+    opacity: 0;
+    transform: translateY(8px);
   }
 
   to {
-    transform: translateY(-60px);
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
 .riv-animation {
   &__wordmark-container {
-    height: 200px;
-    width: 200px;
-    min-height: 200px;
+    width: min(360px, calc(100% - 32px));
     display: flex;
     justify-content: center;
     align-items: center;
-    will-change: transform;
-    transform: translateY(90px);
-
+    margin-bottom: 28px;
+    opacity: 0;
 
     &--complete {
-      animation: slideUpSmooth 0.6s ease-out forwards;
+      animation: welcomeBrandIn 0.35s ease-out forwards;
     }
 
     &--skip-transition {
-      transform: translateY(-60px);
+      opacity: 1;
+      transform: none;
       animation: none;
       transition: none;
     }
@@ -95,16 +83,27 @@
     object-fit: contain;
   }
 
+  &__brand-lockup {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  &__brand-logo {
+    width: 44px;
+    height: 44px;
+  }
+
   &__canvas {
     height: 100%;
     width: 100%;
   }
 
   &__wordmark-text {
-    font-size: 56px;
-    font-weight: 700;
+    font-size: 34px;
+    font-weight: 650;
     line-height: 1;
-    letter-spacing: -0.06em;
+    letter-spacing: -0.05em;
     color: var(--color-text-default);
   }
 
@@ -117,6 +116,9 @@
 
 .welcome-container {
   position: relative;
+  min-height: 100%;
+  padding: 40px 16px;
+  background: var(--color-background-default);
 
   &__wordmark-container {
     display: flex;
@@ -124,9 +126,6 @@
     justify-content: center;
     align-items: center;
 
-    &--complete {
-      animation: slideUpSmooth 1s ease-out forwards;
-    }
   }
 }
 
@@ -155,16 +154,59 @@
 }
 
 .welcome-login {
-  width: 343px;
-  min-height: 300px;
+  width: min(360px, calc(100% - 32px));
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
-  margin-top: -40px;
-  overflow: hidden;
+  justify-content: center;
   position: relative;
+  overflow: visible;
 
+  &__description {
+    max-width: 340px;
+    margin-bottom: 28px;
+    line-height: 1.5;
+  }
+
+  &__actions {
+    margin-bottom: 24px;
+  }
+
+  &__button {
+    border-radius: 6px;
+    box-shadow: none;
+  }
+
+  &__button--secondary {
+    border-color: var(--color-border-muted);
+  }
+
+  &__footer {
+    width: 100%;
+    max-width: 360px;
+    justify-content: center;
+    margin-top: 2px;
+    padding-top: 18px;
+    border-top: 1px solid var(--color-border-muted);
+    line-height: 1.5;
+
+    a {
+      color: var(--color-text-alternative);
+      text-decoration: none;
+      text-underline-offset: 3px;
+
+      &:hover {
+        color: var(--color-text-default);
+        text-decoration: underline;
+      }
+    }
+  }
+
+  &__footer-divider {
+    width: 1px;
+    height: 12px;
+    background: var(--color-border-default);
+  }
 
   &__cta {
     &--fade-out {
@@ -187,18 +229,6 @@
     }
   }
 
-  &__title {
-    font-family: var(--font-family-accent);
-    font-size: 40px;
-    color: var(--color-accent02-dark);
-    line-height: 1em;
-  }
-
-  &__mascot {
-    &--image {
-      margin-bottom: 60px;
-    }
-  }
 }
 
 .options-modal {

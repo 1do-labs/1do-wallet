@@ -64,8 +64,6 @@ import { FirstTimeFlowType } from '../../../shared/constants/onboarding';
 import { TraceName, TraceOperation } from '../../../shared/lib/trace';
 import LoadingScreen from '../../components/ui/loading-screen';
 import type { MetaMaskReduxDispatch } from '../../store/store';
-import { useTheme } from '../../hooks/useTheme';
-import { ThemeType } from '../../../shared/constants/preferences';
 import { isFlask } from '../../../shared/lib/build-types';
 import { mmLazy } from '../../helpers/utils/mm-lazy';
 import { useSidePanelEnabled } from '../../hooks/useSidePanelEnabled';
@@ -102,7 +100,6 @@ export default function OnboardingFlow() {
   const location = useLocation();
   const { pathname, search } = location;
   const navigate = useNavigate();
-  const theme = useTheme();
   const isSidePanelEnabled = useSidePanelEnabled();
   const completedOnboarding: boolean = useSelector(getCompletedOnboarding);
   const openedWithSidepanel = useSelector(getOpenedWithSidepanel);
@@ -262,14 +259,10 @@ export default function OnboardingFlow() {
     pathname === ONBOARDING_UNLOCK_ROUTE ||
     (isFlask() && pathname === ONBOARDING_EXPERIMENTAL_AREA);
 
-  const backgroundColorForWelcomePage = useMemo(() => {
-    if (isWelcomePage) {
-      return theme === ThemeType.light
-        ? 'var(--welcome-bg-light)'
-        : 'var(--color-accent02-dark)';
-    }
-    return 'var(--color-background-default)';
-  }, [isWelcomePage, theme]);
+  const backgroundColorForWelcomePage = useMemo(
+    () => 'var(--color-background-default)',
+    [],
+  );
 
   return (
     <Box

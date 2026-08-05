@@ -35,6 +35,39 @@
     max-width: calc(490px - 32px); // 490px (sidepanel max-width) - 32px (side padding)
   }
 
+  &__primary-actions {
+    overflow: hidden;
+    padding: 3px;
+    background: var(--color-background-muted);
+    border-radius: 4px;
+  }
+
+  &__primary-action {
+    min-height: 38px;
+    border: 0;
+    border-radius: 2px;
+    background: transparent;
+    flex-direction: row !important;
+    gap: 6px;
+
+    &:last-child {
+      border-left: 1px solid var(--color-border-muted);
+    }
+
+    > span {
+      margin-top: 0 !important;
+    }
+
+    &:hover:not([disabled]) {
+      background-color: var(--color-background-default);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--color-primary-default);
+      outline-offset: 2px;
+    }
+  }
+
   &__currency-wrapper {
     display: flex;
     flex-direction: row;

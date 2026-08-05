@@ -22,6 +22,7 @@ type UseDefaultAddressReturn = {
 
 export const useDefaultAddress = (
   groupId: AccountGroupId,
+  alwaysDisplayAddress = false,
 ): UseDefaultAddressReturn => {
   const isDefaultAddressEnabled = useSelector(getIsDefaultAddressEnabled);
   const showDefaultAddressPreference = useSelector(
@@ -35,7 +36,9 @@ export const useDefaultAddress = (
   );
 
   const displayDefaultAddress =
-    isDefaultAddressEnabled && showDefaultAddressPreference && defaultAddress;
+    (alwaysDisplayAddress ||
+      (isDefaultAddressEnabled && showDefaultAddressPreference)) &&
+    defaultAddress;
 
   const [addressCopied, handleCopy] = useCopyToClipboard({
     clearDelayMs: null,

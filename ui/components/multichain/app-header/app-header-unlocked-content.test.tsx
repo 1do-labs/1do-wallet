@@ -50,6 +50,55 @@ describe('AppHeaderUnlockedContent trace', () => {
     expect(mockNavigate).toHaveBeenCalledWith('/account-list');
   });
 
+  it('shows the selected account address in the account picker', async () => {
+    const store = configureStore(mockDefaultState);
+    const menuRef = { current: null } as React.RefObject<HTMLButtonElement>;
+    renderWithProvider(
+      <AppHeaderUnlockedContent
+        disableAccountPicker={false}
+        menuRef={menuRef}
+      />,
+      store,
+    );
+
+    expect(await screen.findByText('0x0DCD5...3E7bc')).toBeInTheDocument();
+  });
+
+  it('shows the current network picker to the right of the menu button', () => {
+    const store = configureStore(mockDefaultState);
+    const menuRef = { current: null } as React.RefObject<HTMLButtonElement>;
+    const networkOpenCallback = jest.fn();
+    const currentNetwork = {
+      chainId: '0xaa36a7',
+      name: 'Sepolia',
+      isEvm: true,
+    } as never;
+
+    renderWithProvider(
+      <AppHeaderUnlockedContent
+        currentNetwork={currentNetwork}
+        networkIconSrc="./images/eth_logo.svg"
+        networkOpenCallback={networkOpenCallback}
+        disableNetworkPicker={false}
+        disableAccountPicker={false}
+        menuRef={menuRef}
+      />,
+      store,
+    );
+
+    const menuButton = screen.getByTestId('account-options-menu-button');
+    const networkPicker = screen.getByTestId('network-display');
+    const networkLogo = screen.getByRole('img', { name: 'Sepolia logo' });
+
+    expect(menuButton.compareDocumentPosition(networkPicker)).toBe(
+      Node.DOCUMENT_POSITION_FOLLOWING,
+    );
+    expect(networkLogo).toHaveAttribute('src', './images/eth_logo.svg');
+
+    fireEvent.click(networkPicker);
+    expect(networkOpenCallback).toHaveBeenCalledTimes(1);
+  });
+
   it('calls trace ShowAccountAddressList when View All button is clicked in address popover', async () => {
     const store = configureStore(mockDefaultState);
     const menuRef = { current: null } as React.RefObject<HTMLButtonElement>;
@@ -116,7 +165,7 @@ describe('Default address section', () => {
     });
   });
 
-  it('does not render the default address text when preference is off', async () => {
+  it('keeps the header address visible when preference is off', async () => {
     const stateWithPreferenceOff = {
       ...mockDefaultState,
       metamask: {
@@ -141,7 +190,7 @@ describe('Default address section', () => {
     await waitFor(() => {
       expect(
         screen.queryByTestId('default-address-container'),
-      ).not.toBeInTheDocument();
+      ).toBeInTheDocument();
     });
   });
 });

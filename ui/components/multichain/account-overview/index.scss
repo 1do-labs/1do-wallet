@@ -6,6 +6,107 @@
   }
 }
 
+.account-overview__tabs-list {
+  padding-top: 8px;
+}
+
+.runtime-tools {
+  width: 100%;
+  max-width: calc(490px - 32px);
+  align-self: center;
+  padding: 4px 0 8px;
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 6px;
+  }
+
+  &__toggle {
+    min-height: 32px;
+    padding: 4px;
+    border: 0;
+    background: transparent;
+    color: var(--color-text-alternative);
+    font: inherit;
+    cursor: pointer;
+
+    &:hover {
+      color: var(--color-text-default);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--color-primary-default);
+      outline-offset: 2px;
+    }
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 2px;
+    padding: 4px;
+    border-radius: 4px;
+    background: var(--color-background-muted);
+
+  }
+
+  &__item {
+    min-width: 0;
+    min-height: 54px;
+    padding: 6px 4px;
+    border: 0;
+    border-radius: 4px;
+    background: transparent;
+    color: var(--color-text-default);
+    cursor: pointer;
+
+    &:hover {
+      background: var(--color-background-default);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--color-primary-default);
+      outline-offset: 2px;
+    }
+  }
+
+  &__icon-frame {
+    display: flex;
+    width: 32px;
+    height: 32px;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 4px;
+  }
+
+  &__icon {
+    display: block;
+    width: 30px;
+    height: 30px;
+    transform-origin: center;
+
+    &--pay {
+      transform: scale(1.22);
+    }
+
+    &--redpacket,
+    &--gift {
+      transform: scale(1.14);
+    }
+  }
+
+  &__label {
+    display: block;
+    overflow: hidden;
+    font-size: 12px;
+    line-height: 16px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
 .runtime-app-card-button {
   width: 100%;
 }

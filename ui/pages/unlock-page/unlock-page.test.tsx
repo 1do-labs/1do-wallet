@@ -80,10 +80,17 @@ describe('Unlock Page', () => {
   });
 
   it('renders centered 1Do branding on the unlock page', () => {
-    const { getByTestId } = renderWithProvider(<UnlockPage />, mockStore);
+    const { getByTestId, getByText } = renderWithProvider(
+      <UnlockPage />,
+      mockStore,
+    );
 
     expect(getByTestId('unlock-page-brand-title')).toHaveTextContent('1Do');
     expect(getByTestId('unlock-page-brand-logo')).toBeInTheDocument();
+    expect(getByText(messages.welcomeBack.message)).toBeInTheDocument();
+    expect(
+      getByText(messages.enterYourPasswordContinue.message),
+    ).toBeInTheDocument();
   });
 
   it('changes password and submits', async () => {

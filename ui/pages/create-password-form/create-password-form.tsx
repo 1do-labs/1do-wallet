@@ -23,7 +23,7 @@ import {
   MetaMetricsEventCategory,
   MetaMetricsEventName,
 } from '../../../shared/constants/metametrics';
-import ZENDESK_URLS from '../../helpers/constants/zendesk-url';
+import { ONEDO_WEBSITE_LINK } from '../../../shared/lib/ui-utils';
 import { useBoolean } from '../../hooks/useBoolean';
 
 type CreatePasswordFormProps = {
@@ -58,7 +58,7 @@ const CreatePasswordForm = ({
       properties: {
         text: 'Learn More',
         location: 'create_password',
-        url: ZENDESK_URLS.PASSWORD_ARTICLE,
+        url: ONEDO_WEBSITE_LINK,
       },
     });
   };
@@ -67,7 +67,7 @@ const CreatePasswordForm = ({
     <a
       onClick={handleLearnMoreClick}
       key="create-password__link-text"
-      href={ZENDESK_URLS.PASSWORD_ARTICLE}
+      href={ONEDO_WEBSITE_LINK}
       target="_blank"
       rel="noopener noreferrer"
     >

@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux';
 
 import { KEYRING_TYPES_SUPPORTING_7702 } from '../../../../shared/constants/keyring';
 import { TEST_CHAINS } from '../../../../shared/constants/network';
-import { ONE_DO_7702_DELEGATE } from '../../../../shared/lib/eip7702-utils';
+import { getOneDo7702Delegate } from '../../../../shared/lib/eip7702-utils';
 import { convertCaipToHexChainId } from '../../../../shared/lib/network.utils';
 import {
   AccountsState,
@@ -63,7 +63,12 @@ export const useEIP7702Networks = (address: string) => {
   }, [isSupportedKeyringType, multichainNetworks]);
 
   const networkList = useMemo(
-    () => ({ ...nonTestNetworks, ...testNetworks }),
+    () =>
+      Object.fromEntries(
+        Object.entries({ ...nonTestNetworks, ...testNetworks }).filter(
+          ([chainId]) => Boolean(getOneDo7702Delegate(chainId)),
+        ),
+      ),
     [nonTestNetworks, testNetworks],
   );
 
@@ -93,12 +98,13 @@ export const useEIP7702Networks = (address: string) => {
           const atomicBatchResult = value.find(
             ({ chainId }) => chainId === chainIdHex,
           );
-          if (atomicBatchResult) {
+          const upgradeContractAddress = getOneDo7702Delegate(chainIdHex);
+          if (atomicBatchResult?.isSupported && upgradeContractAddress) {
             networksSupporting7702.push({
               ...atomicBatchResult,
               ...network,
               chainIdHex,
-              upgradeContractAddress: ONE_DO_7702_DELEGATE,
+              upgradeContractAddress,
             });
           }
         } catch (err: unknown) {

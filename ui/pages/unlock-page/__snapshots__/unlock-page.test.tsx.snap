@@ -18,82 +18,29 @@ exports[`Unlock Page should match snapshot 1`] = `
           <div
             class="flex flex-col items-center unlock-page__brand"
           >
-            <h1
-              class="text-default text-s-display-md leading-s-display-md tracking-s-display-md md:text-l-display-md md:leading-l-display-md md:tracking-l-display-md font-medium font-default text-center unlock-page__brand-title"
-              data-testid="unlock-page-brand-title"
-            >
-              1Do
-            </h1>
-            <svg
+            <img
+              alt=""
               aria-hidden="true"
               class="unlock-page__brand-logo "
               data-testid="unlock-page-brand-logo"
-              focusable="false"
-              height="72"
-              viewBox="0 0 40 40"
-              width="72"
-              xmlns="http://www.w3.org/2000/svg"
+              src="./images/logo/1do-mark.svg"
+            />
+            <h4
+              class="text-default text-s-heading-sm leading-s-heading-sm tracking-s-heading-sm md:text-l-heading-sm md:leading-l-heading-sm md:tracking-l-heading-sm font-medium font-default text-center unlock-page__brand-title"
+              data-testid="unlock-page-brand-title"
             >
-              <defs>
-                <lineargradient
-                  gradientUnits="userSpaceOnUse"
-                  id="unlock-page-brand-logo-gradient"
-                  x1="0"
-                  x2="40"
-                  y1="0"
-                  y2="40"
-                >
-                  <stop
-                    offset="0%"
-                    stop-color="#FFFFFF"
-                  />
-                  <stop
-                    offset="100%"
-                    stop-color="#121212"
-                  />
-                </lineargradient>
-                <mask
-                  id="unlock-page-brand-logo-mask"
-                >
-                  <rect
-                    fill="white"
-                    height="40"
-                    rx="8"
-                    ry="8"
-                    width="40"
-                    x="0"
-                    y="0"
-                  />
-                  <ellipse
-                    cx="13"
-                    cy="13"
-                    fill="black"
-                    rx="6"
-                    ry="6"
-                  >
-                    <animate
-                      attributeName="ry"
-                      dur="4s"
-                      keyTimes="0;0.9;0.92;0.96;1"
-                      repeatCount="indefinite"
-                      values="6;6;0.5;6;6"
-                    />
-                  </ellipse>
-                </mask>
-              </defs>
-              <rect
-                fill="#121212"
-                height="40"
-                mask="url(#unlock-page-brand-logo-mask)"
-                rx="8"
-                ry="8"
-                stroke="url(#unlock-page-brand-logo-gradient)"
-                stroke-width="4"
-                width="40"
-                x="0"
-                y="0"
-              />
-            </svg>
+              1Do
+            </h4>
+            <h2
+              class="text-default text-s-heading-lg leading-s-heading-lg tracking-s-heading-lg md:text-l-heading-lg md:leading-l-heading-lg md:tracking-l-heading-lg font-medium font-default text-center unlock-page__welcome-title"
+            >
+              Welcome back
+            </h2>
+            <p
+              class="text-alternative text-s-body-sm leading-s-body-sm tracking-s-body-sm md:text-l-body-sm md:leading-l-body-sm md:tracking-l-body-sm font-regular font-default text-center unlock-page__welcome-description"
+            >
+              Enter password to continue
+            </p>
           </div>
         </div>
         <div
@@ -116,7 +63,7 @@ exports[`Unlock Page should match snapshot 1`] = `
           </div>
         </div>
         <button
-          class="inline-flex items-center justify-center rounded-xl px-4 font-medium min-w-20 overflow-hidden relative h-12 transition-all duration-100 ease-linear active:scale-[0.97] active:ease-[cubic-bezier(0.3,0.8,0.3,1)] bg-icon-default text-primary-inverse hover:bg-icon-default-hover active:bg-icon-default-pressed focus-visible:ring-0 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-default w-full mb-6"
+          class="inline-flex items-center justify-center rounded-xl px-4 font-medium min-w-20 overflow-hidden relative h-12 transition-all duration-100 ease-linear active:scale-[0.97] active:ease-[cubic-bezier(0.3,0.8,0.3,1)] bg-icon-default text-primary-inverse hover:bg-icon-default-hover active:bg-icon-default-pressed focus-visible:ring-0 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-default unlock-page__submit-button w-full mb-6"
           data-testid="unlock-submit"
           disabled=""
           role="button"
@@ -143,9 +90,6 @@ exports[`Unlock Page should match snapshot 1`] = `
         </button>
       </div>
     </form>
-    <div
-      class=""
-    />
   </div>
 </div>
 `;

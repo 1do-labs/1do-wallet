@@ -61,6 +61,10 @@ const ALCHEMY_NETWORKS = {
     legacyNetworkClientId: 'base-mainnet',
     network: 'base-mainnet',
   },
+  [CHAIN_IDS.BASE_SEPOLIA]: {
+    legacyNetworkClientId: 'base-sepolia',
+    network: 'base-sepolia',
+  },
   [CHAIN_IDS.SEPOLIA]: {
     legacyNetworkClientId: 'sepolia',
     network: 'sepolia',
@@ -77,6 +81,31 @@ const ALCHEMY_NETWORKS = {
 
 const NETWORK_CONTROLLER_PROJECT_ID_COMPATIBILITY_PLACEHOLDER =
   '1do-alchemy-rpc-only';
+
+function addBaseSepoliaNetwork(
+  networks: NetworkController['state']['networkConfigurationsByChainId'],
+) {
+  if (!networks || networks[CHAIN_IDS.BASE_SEPOLIA]) {
+    return;
+  }
+
+  networks[CHAIN_IDS.BASE_SEPOLIA] = {
+    chainId: CHAIN_IDS.BASE_SEPOLIA,
+    name: 'Base Sepolia',
+    nativeCurrency: 'ETH',
+    blockExplorerUrls: ['https://sepolia.basescan.org'],
+    defaultBlockExplorerUrlIndex: 0,
+    defaultRpcEndpointIndex: 0,
+    rpcEndpoints: [
+      {
+        networkClientId: 'base-sepolia',
+        url: getRpcUrl({ network: 'base-sepolia' }),
+        type: RpcEndpointType.Custom,
+        failoverUrls: [],
+      },
+    ],
+  };
+}
 
 function normalizeAlchemyRpcEndpoints(
   networks: NetworkController['state']['networkConfigurationsByChainId'],
@@ -115,6 +144,9 @@ function getInitialState(initialState?: Partial<NetworkController['state']>) {
   let initialNetworkControllerState = initialState;
 
   if (initialNetworkControllerState) {
+    addBaseSepoliaNetwork(
+      initialNetworkControllerState.networkConfigurationsByChainId,
+    );
     initialNetworkControllerState.selectedNetworkClientId =
       normalizeAlchemyRpcEndpoints(
         initialNetworkControllerState.networkConfigurationsByChainId,
@@ -127,6 +159,8 @@ function getInitialState(initialState?: Partial<NetworkController['state']>) {
 
     const networks =
       initialNetworkControllerState.networkConfigurationsByChainId ?? {};
+
+    addBaseSepoliaNetwork(networks);
 
     // TODO: Consider changing `getDefaultNetworkControllerState` on the
     // controller side to include some of these tweaks.

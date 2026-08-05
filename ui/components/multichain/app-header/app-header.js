@@ -32,14 +32,21 @@ import {
   ENVIRONMENT_TYPE_SIDEPANEL,
 } from '../../../../shared/constants/app';
 import { getIsUnlocked } from '../../../ducks/metamask/metamask';
-import { getSelectedMultichainNetworkConfiguration } from '../../../selectors/multichain/networks';
+import {
+  getAllEnabledNetworksForAllNamespaces,
+  getSelectedMultichainNetworkConfiguration,
+} from '../../../selectors/multichain/networks';
 import { getNetworkIcon } from '../../../../shared/lib/network.utils';
+import { CHAIN_ID_TO_NETWORK_IMAGE_URL_MAP } from '../../../../shared/constants/network';
+import { AvatarType } from '../avatar-group/avatar-group.types';
+import { useI18nContext } from '../../../hooks/useI18nContext';
 import { MultichainMetaFoxLogo } from './multichain-meta-fox-logo';
 import { AppHeaderContainer } from './app-header-container';
 import { AppHeaderUnlockedContent } from './app-header-unlocked-content';
 import { AppHeaderLockedContent } from './app-header-locked-content';
 
 export const AppHeader = ({ location }) => {
+  const t = useI18nContext();
   const { trackEvent } = useContext(MetaMetricsContext);
   const menuRef = useRef(null);
   const isUnlocked = useSelector(getIsUnlocked);
@@ -48,8 +55,14 @@ export const AppHeader = ({ location }) => {
     getSelectedMultichainNetworkConfiguration,
   );
 
-  const { chainId, isEvm } = multichainNetwork;
-  const networkIconSrc = getNetworkIcon(chainId, isEvm);
+  const { chainId } = multichainNetwork;
+  const networkIconSrc = getNetworkIcon(multichainNetwork);
+  const enabledChainIds = useSelector(getAllEnabledNetworksForAllNamespaces);
+  const allNetworksSelected = enabledChainIds.length > 1;
+  const enabledNetworkMembers = enabledChainIds.flatMap((enabledChainId) => {
+    const avatarValue = CHAIN_ID_TO_NETWORK_IMAGE_URL_MAP[enabledChainId];
+    return avatarValue ? [{ avatarValue }] : [];
+  });
 
   const dispatch = useDispatch();
 
@@ -135,6 +148,20 @@ export const AppHeader = ({ location }) => {
                 popupStatus={popupStatus}
                 currentNetwork={multichainNetwork}
                 networkIconSrc={networkIconSrc}
+                networkPickerLabel={
+                  allNetworksSelected
+                    ? t('allNetworks')
+                    : multichainNetwork.name
+                }
+                networkPickerAvatarGroupProps={
+                  allNetworksSelected
+                    ? {
+                        avatarType: AvatarType.NETWORK,
+                        members: enabledNetworkMembers,
+                        limit: 2,
+                      }
+                    : undefined
+                }
                 networkOpenCallback={networkOpenCallback}
                 disableNetworkPicker={disableNetworkPicker}
                 disableAccountPicker={disableAccountPicker}

@@ -192,13 +192,13 @@ const CoinButtons = ({
 
   return (
     <Box
+      className="wallet-overview__primary-actions"
       display={Display.Flex}
       justifyContent={JustifyContent.spaceBetween}
       width={BlockSize.Full}
-      gap={3}
     >
       <IconButton
-        className={`${classPrefix}-overview__button`}
+        className={`${classPrefix}-overview__button wallet-overview__primary-action`}
         data-testid={`${classPrefix}-overview-send`}
         Icon={
           <Icon
@@ -222,7 +222,7 @@ const CoinButtons = ({
         />
       )}
       <IconButton
-        className={`${classPrefix}-overview__button`}
+        className={`${classPrefix}-overview__button wallet-overview__primary-action`}
         data-testid={`${classPrefix}-overview-receive`}
         Icon={
           <Icon

@@ -27,7 +27,14 @@ export default function MetamaskWordMarkAnimation({
         'riv-animation__wordmark-container--skip-transition': skipTransition,
       })}
     >
-      <span className="riv-animation__wordmark-text">1do</span>
+      <Box className="riv-animation__brand-lockup">
+        <img
+          className="riv-animation__brand-logo"
+          src="./images/logo/1do-mark.svg"
+          alt=""
+        />
+        <span className="riv-animation__wordmark-text">1Do</span>
+      </Box>
     </Box>
   );
 }

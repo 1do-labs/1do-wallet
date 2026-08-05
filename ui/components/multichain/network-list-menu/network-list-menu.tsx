@@ -42,12 +42,15 @@ import {
   addPermittedChain,
   setTokenNetworkFilter,
   detectNfts,
+  setEnabledNetworks,
+  setEnabledAllPopularNetworks,
 } from '../../../store/actions';
 import {
   FEATURED_RPCS,
   TEST_CHAINS,
   BUILT_IN_NETWORKS,
   CAIP_FORMATTED_TEST_CHAINS,
+  CHAIN_IDS,
 } from '../../../../shared/constants/network';
 import {
   getShowTestNetworks,
@@ -59,10 +62,10 @@ import {
   getIsAccessedFromDappConnectedSitePopover,
   getAllDomains,
   getPermittedEVMChainsForSelectedTab,
-  getPreferences,
   getMultichainNetworkConfigurationsByChainId,
   getSelectedMultichainNetworkChainId,
   getAllChainsToPoll,
+  getEnabledChainIds,
 } from '../../../selectors';
 import { selectAdditionalNetworksBlacklistFeatureFlag } from '../../../selectors/network-blacklist/network-blacklist';
 import ToggleButton from '../../ui/toggle-button';
@@ -145,7 +148,6 @@ export const NetworkListMenu = ({ onClose }: NetworkListMenuProps) => {
   const { trackEvent } = useContext(MetaMetricsContext);
   const { hasAnyAccountsInNetwork } = useAccountCreationOnNetworkChange();
 
-  const { tokenNetworkFilter } = useSelector(getPreferences);
   const showTestnets = useSelector(getShowTestNetworks);
   const selectedTabOrigin = useSelector(getOriginOfCurrentTab);
   const isUnlocked = useSelector(getIsUnlocked);
@@ -177,6 +179,7 @@ export const NetworkListMenu = ({ onClose }: NetworkListMenuProps) => {
   );
 
   const allChainIds = useSelector(getAllChainsToPoll);
+  const enabledChainIds = useSelector(getEnabledChainIds);
   // Get blacklisted chain IDs from feature flag
   const blacklistedChainIds = useSelector(
     selectAdditionalNetworksBlacklistFeatureFlag,
@@ -304,11 +307,11 @@ export const NetworkListMenu = ({ onClose }: NetworkListMenuProps) => {
     Object.values(testNetworks),
     searchQuery,
   );
-  // A sorted list of test networks that put Sepolia first then Linea Sepolia at the top
-  // and the rest of the test networks in alphabetical order.
+  // Keep the primary 1Do test networks at the top, then sort the rest.
   const sortedTestNetworks = useMemo(() => {
     return sortNetworksByPrioity(searchedTestNetworks, [
       toEvmCaipChainId(ChainId.sepolia),
+      toEvmCaipChainId(CHAIN_IDS.BASE_SEPOLIA),
       toEvmCaipChainId(ChainId['linea-sepolia']),
     ]);
   }, [searchedTestNetworks]);
@@ -348,25 +351,32 @@ export const NetworkListMenu = ({ onClose }: NetworkListMenuProps) => {
       }
 
       dispatch(setActiveNetwork(finalNetworkClientId));
+      if (!isAccessedFromDappConnectedSitePopover) {
+        await dispatch(setEnabledNetworks(hexChainId));
+      }
       dispatch(updateCustomNonce(''));
       dispatch(setNextNonce(''));
       dispatch(detectNfts(allChainIds));
 
-      if (Object.keys(tokenNetworkFilter || {}).length <= 1) {
-        dispatch(setTokenNetworkFilter({ [hexChainId]: true }));
-      } else {
-        const allOpts = Object.keys(evmNetworks).reduce(
-          (acc, id) => {
-            acc[id] = true;
-            return acc;
-          },
-          {} as Record<string, boolean>,
-        );
-        dispatch(setTokenNetworkFilter(allOpts));
-      }
+      dispatch(setTokenNetworkFilter({ [hexChainId]: true }));
     } finally {
       dispatch(toggleNetworkMenu());
     }
+  };
+
+  const handleAllNetworksChange = async () => {
+    const allNetworkFilter = Object.keys(evmNetworks).reduce(
+      (filter, chainId) => {
+        filter[chainId] = true;
+        return filter;
+      },
+      {} as Record<string, boolean>,
+    );
+
+    await dispatch(setEnabledAllPopularNetworks());
+    dispatch(setTokenNetworkFilter(allNetworkFilter));
+    dispatch(detectNfts(Object.keys(evmNetworks)));
+    dispatch(toggleNetworkMenu());
   };
 
   const handleNetworkChange = async (chainId: CaipChainId) => {
@@ -508,7 +518,8 @@ export const NetworkListMenu = ({ onClose }: NetworkListMenuProps) => {
   const generateMultichainNetworkListItem = (
     network: MultichainNetworkConfiguration,
   ) => {
-    const isCurrentNetwork = network.chainId === currentChainId;
+    const isCurrentNetwork =
+      enabledChainIds.length <= 1 && network.chainId === currentChainId;
     const { onDelete, onEdit, onDiscoverClick, onRpcSelect } =
       getItemCallbacks(network);
     const iconSrc = getNetworkIcon(network);
@@ -556,6 +567,17 @@ export const NetworkListMenu = ({ onClose }: NetworkListMenuProps) => {
               setFocusSearch={setFocusSearch}
             />
             <Box>
+              {!isAccessedFromDappConnectedSitePopover && !searchQuery ? (
+                <NetworkListItem
+                  chainId="all-networks"
+                  name={t('allNetworks')}
+                  iconSrc={IconName.Global}
+                  iconSize={AvatarNetworkSize.Sm}
+                  selected={enabledChainIds.length > 1}
+                  focus={false}
+                  onClick={handleAllNetworksChange}
+                />
+              ) : null}
               {searchedEnabledNetworks.length > 0 && (
                 <Box
                   padding={4}

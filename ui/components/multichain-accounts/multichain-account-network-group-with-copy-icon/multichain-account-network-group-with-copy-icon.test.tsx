@@ -112,6 +112,20 @@ describe('MultichainAccountNetworkGroupWithCopyIcon', () => {
       ).not.toBeInTheDocument();
     });
 
+    it('shows address text when alwaysDisplayAddress is true', () => {
+      renderWithProvider(
+        <MultichainAccountNetworkGroupWithCopyIcon
+          {...defaultProps}
+          alwaysDisplayAddress={true}
+        />,
+        createStoreWithPrefOff(),
+      );
+
+      expect(
+        screen.getByTestId('default-address-container'),
+      ).toBeInTheDocument();
+    });
+
     it('does not call copy handler when container is clicked', () => {
       renderWithProvider(
         <MultichainAccountNetworkGroupWithCopyIcon {...defaultProps} />,

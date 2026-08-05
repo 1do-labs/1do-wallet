@@ -182,7 +182,7 @@ export const getDefaultPreferencesControllerState =
       showFiatInTestnets: false,
       showMultiRpcModal: false,
       showNativeTokenAsMainBalance: false,
-      showTestNetworks: false,
+      showTestNetworks: true,
       skipDeepLinkInterstitial: false,
       smartTransactionsOptInStatus: true,
       smartTransactionsMigrationApplied: false,

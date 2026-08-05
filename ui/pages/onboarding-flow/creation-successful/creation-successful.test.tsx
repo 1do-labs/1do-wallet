@@ -15,7 +15,7 @@ import { DeferredDeepLinkRouteType } from '../../../../shared/lib/deep-links/typ
 import * as deepLinkUtils from '../../../../shared/lib/deep-links/utils';
 import * as useSidePanelEnabledHook from '../../../hooks/useSidePanelEnabled';
 import { setBackgroundConnection } from '../../../store/background-connection';
-import ZENDESK_URLS from '../../../helpers/constants/zendesk-url';
+import { ONEDO_WEBSITE_LINK } from '../../../../shared/lib/ui-utils';
 import CreationSuccessful from './creation-successful';
 
 const mockUseNavigate = jest.fn();
@@ -161,7 +161,7 @@ describe('Wallet Ready Page', () => {
       fireEvent.click(learnHowButton);
       expect(openTabMock).toHaveBeenCalledTimes(1);
       expect(openTabMock).toHaveBeenCalledWith({
-        url: ZENDESK_URLS.BASIC_SAFETY_TIPS,
+        url: ONEDO_WEBSITE_LINK,
       });
     } finally {
       mockUseLocationSearch = previousSearch;

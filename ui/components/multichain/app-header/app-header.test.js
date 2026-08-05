@@ -67,6 +67,42 @@ describe('App Header', () => {
       expect(accountPickerButton).toBeInTheDocument();
     });
 
+    it('displays the selected network logo', () => {
+      const { getByTestId } = render();
+      const networkPicker = getByTestId('network-display');
+      const networkLogo = networkPicker.querySelector(
+        '.mm-picker-network__avatar-network img',
+      );
+
+      expect(networkLogo).toHaveAttribute('src', './images/eth_logo.svg');
+    });
+
+    it('displays a network group when all networks are selected', () => {
+      const { getByTestId } = render({
+        stateChanges: {
+          metamask: {
+            ...mockState.metamask,
+            isUnlocked: true,
+            enabledNetworkMap: {
+              eip155: {
+                '0x1': true,
+                '0xe708': true,
+              },
+            },
+          },
+        },
+      });
+
+      const networkPicker = getByTestId('network-display');
+      expect(networkPicker).toHaveAttribute(
+        'aria-label',
+        expect.stringContaining('All networks'),
+      );
+      expect(
+        networkPicker.querySelector('[data-testid="avatar-group"]'),
+      ).toBeInTheDocument();
+    });
+
     it('can open the settings', async () => {
       const { container } = render();
       const settingsButton = container.querySelector(

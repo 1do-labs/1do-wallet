@@ -14,7 +14,6 @@ import { selectEnabledNetworksAsCaipChainIds } from '../../../selectors/multicha
 import { useEarliestNonceByChain } from '../../../hooks/useEarliestNonceByChain';
 import type { TransactionViewModel } from '../../../../shared/lib/multichain/types';
 import { formatDateWithYearContext } from '../../../helpers/utils/util';
-import AssetListControlBar from '../../app/assets/asset-list/asset-list-control-bar';
 import { noAdjustmentsScroll } from '../../ui/virtualized-list/virtualized-list';
 import {
   mergeAllTransactionsByTime,
@@ -196,13 +195,6 @@ export const ActivityList = ({ filter }: Props) => {
 
   return (
     <Box>
-      {!filter?.chainId && (
-        <AssetListControlBar
-          showSortControl={false}
-          showImportTokenButton={false}
-        />
-      )}
-
       {!isInitialLoading && flattenedItems.length > 0 && (
         <>
           <div
