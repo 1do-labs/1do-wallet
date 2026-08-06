@@ -9,7 +9,7 @@
       "128": "images/icon-128.png",
       "512": "images/icon-512.png"
     },
-    "default_title": "1do",
+    "default_title": "1Do",
     "default_popup": "popup-init.html"
   },
   "author": "1do",
@@ -67,10 +67,8 @@
   "name": "__MSG_appName__",
   "optional_permissions": ["clipboardRead"],
   "permissions": [
-    "activeTab",
     "alarms",
     "clipboardWrite",
-    "scripting",
     "storage",
     "unlimitedStorage",
     "webRequest",

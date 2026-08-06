@@ -63,6 +63,19 @@ describe('getOneDoSmartAccountIsActive', () => {
 
     expect(isActive).toBe(false);
   });
+
+  it('returns false when the Core deployment is not trusted', async () => {
+    const isActive = await getOneDoSmartAccountIsActive({
+      address: MOCK_ADDRESS,
+      chainId: MOCK_CHAIN_ID,
+      getDelegationAddress: jest.fn().mockResolvedValue(ONE_DO_7702_DELEGATE),
+      getRuntimeDeploymentStatus: jest
+        .fn()
+        .mockResolvedValue({ status: 'untrusted' }),
+    });
+
+    expect(isActive).toBe(false);
+  });
 });
 
 describe('getPendingOneDoUpgradeTransaction', () => {

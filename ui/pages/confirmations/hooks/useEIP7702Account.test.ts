@@ -7,6 +7,7 @@ import { useDispatch } from 'react-redux';
 import {
   addTransactionAndRouteToConfirmationPage,
   getCode,
+  verifyOneDoRuntimeDeployment,
 } from '../../../store/actions';
 import {
   EIP_7702_REVOKE_ADDRESS,
@@ -25,6 +26,7 @@ jest.mock('../../../store/actions', () => ({
   ...jest.requireActual('../../../store/actions'),
   addTransactionAndRouteToConfirmationPage: jest.fn(),
   getCode: jest.fn(),
+  verifyOneDoRuntimeDeployment: jest.fn(),
 }));
 
 jest.mock('./useConfirmationNavigation', () => ({
@@ -72,6 +74,9 @@ describe('useEIP7702Account', () => {
 
   const useDispatchMock = jest.mocked(useDispatch);
   const getCodeMock = jest.mocked(getCode);
+  const verifyOneDoRuntimeDeploymentMock = jest.mocked(
+    verifyOneDoRuntimeDeployment,
+  );
   const useConfirmationNavigationMock = jest.mocked(useConfirmationNavigation);
 
   beforeEach(() => {
@@ -89,6 +94,7 @@ describe('useEIP7702Account', () => {
       navigateToId: jest.fn(),
     } as unknown as ReturnType<typeof useConfirmationNavigationMock>);
     getCodeMock.mockResolvedValue(CODE_MOCK);
+    verifyOneDoRuntimeDeploymentMock.mockResolvedValue({ status: 'trusted' });
   });
 
   describe('isUpgraded', () => {

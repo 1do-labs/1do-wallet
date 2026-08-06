@@ -3,11 +3,7 @@ const { promises: fs } = require('fs');
 const path = require('path');
 const watch = require('gulp-watch');
 const { mergeWith, cloneDeep } = require('lodash');
-const { isManifestV3 } = require('../../shared/lib/mv3.utils');
-
-const baseManifest = isManifestV3
-  ? require('../../app/manifest/v3/_base.json')
-  : require('../../app/manifest/v2/_base.json');
+const baseManifest = require('../../app/manifest/v3/_base.json');
 const { loadBuildTypesConfig } = require('../lib/build-type');
 
 const { TASKS, ENVIRONMENT } = require('./constants');
@@ -62,7 +58,7 @@ function createManifestTasks({
             '..',
             '..',
             'app',
-            isManifestV3 ? 'manifest/v3' : 'manifest/v2',
+            'manifest/v3',
             `${platform}.json`,
           ),
         );
@@ -79,9 +75,7 @@ function createManifestTasks({
 
         applyLockdownContentScripts(result);
 
-        if (isManifestV3) {
-          applyServiceWorkerScript(result);
-        }
+        applyServiceWorkerScript(result);
 
         const dir = path.join('.', 'dist', platform);
         await fs.mkdir(dir, { recursive: true });
@@ -93,9 +87,6 @@ function createManifestTasks({
   // dev: add perms
   const envDev = createTaskForModifyManifestForEnvironment((manifest) => {
     manifest.permissions = [...new Set([...manifest.permissions])];
-    if (!isManifestV3) {
-      manifest.permissions.push('webRequestBlocking');
-    }
     loadManifestKey(manifest);
   });
 
@@ -109,9 +100,6 @@ function createManifestTasks({
           'tabs', // test builds need tabs permission for switchToWindowWithTitle
         ]),
       ];
-      if (!isManifestV3) {
-        manifest.permissions.push('webRequestBlocking');
-      }
       loadManifestKey(manifest);
     },
     { setBuildId: true, watch: true },
@@ -127,9 +115,6 @@ function createManifestTasks({
           'tabs', // test builds need tabs permission for switchToWindowWithTitle
         ]),
       ];
-      if (!isManifestV3) {
-        manifest.permissions.push('webRequestBlocking');
-      }
       loadManifestKey(manifest);
     },
     { setBuildId: true },

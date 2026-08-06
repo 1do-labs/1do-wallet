@@ -20,70 +20,13 @@ buildTypes:
     # Additional env variables that are specific to this build
     env:
       - ALCHEMY_PROD_API_KEY
-      - SEGMENT_PROD_WRITE_KEY
       - ALCHEMY_ENV_KEY_REF: ALCHEMY_PROD_API_KEY
-      - SEGMENT_WRITE_KEY_REF: SEGMENT_PROD_WRITE_KEY
       - EXTENSION_UX_PNA25: true
     # Main build uses the default browser manifest
     manifestOverrides: false
     # Build name used in multiple user-readable places
     # eg. eip6963
     buildNameOverride: 1Do
-
-  beta:
-    id: 11
-    features:
-      - build-beta
-      - multi-srp
-    env:
-      - ALCHEMY_BETA_API_KEY
-      - SEGMENT_BETA_WRITE_KEY
-      - ALCHEMY_ENV_KEY_REF: ALCHEMY_BETA_API_KEY
-      - SEGMENT_WRITE_KEY_REF: SEGMENT_BETA_WRITE_KEY
-      - SUPPORT_LINK: https://intercom.help/internal-beta-testing/
-      - EXTENSION_UX_PNA25: true
-    # Modifies how the version is displayed.
-    # eg. instead of 10.25.0 -> 10.25.0-beta.2
-    isPrerelease: true
-    # Folder which contains overrides to browser manifests
-    manifestOverrides: ./app/build-types/beta/manifest/
-    buildNameOverride: 1Do Beta
-
-  experimental:
-    id: 12
-    features:
-      - build-experimental
-      - multi-srp
-    env:
-      - ALCHEMY_EXPERIMENTAL_API_KEY
-      - SEGMENT_EXPERIMENTAL_WRITE_KEY
-      - ALCHEMY_ENV_KEY_REF: ALCHEMY_EXPERIMENTAL_API_KEY
-      - SEGMENT_WRITE_KEY_REF: SEGMENT_EXPERIMENTAL_WRITE_KEY
-      - EXTENSION_UX_PNA25: true
-      - ENABLE_SETTINGS_PAGE_DEV_OPTIONS: true
-    isPrerelease: true
-    manifestOverrides: app/build-types/experimental/manifest
-    buildNameOverride: 1Do Experimental
-
-  flask:
-    id: 15
-    # Code surrounded using code fences for that feature
-    # will not be removed
-    features:
-      - build-flask
-      - multi-srp
-    env:
-      - ALCHEMY_FLASK_API_KEY
-      - SEGMENT_FLASK_WRITE_KEY
-      - SUPPORT_LINK: ''
-      - ALCHEMY_ENV_KEY_REF: ALCHEMY_FLASK_API_KEY
-      - SEGMENT_WRITE_KEY_REF: SEGMENT_FLASK_WRITE_KEY
-      - EIP_4337_ENTRYPOINT: '0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789'
-      - EXTENSION_UX_PNA25: true
-
-    isPrerelease: true
-    manifestOverrides: ./app/build-types/flask/manifest/
-    buildNameOverride: 1Do Flask
 
 # Build types are composed of a set of features.
 # Each feature can have code fences that add new code
@@ -93,32 +36,16 @@ features:
   # Build Type code extensions. Things like different support links, warning pages, banners
   ###
 
-  build-beta:
-    assets:
-      # Assets that will be copied
-      - src: ./app/build-types/beta/images/
-        dest: images
-      # Assets that are exclusively included in this feature and ignored in others
-      # Supports globs
-      - ./{app,shared,ui}/**/beta/**
-  build-flask:
-    assets:
-      - src: ./app/build-types/flask/images/
-        dest: images
-      - ./{app,shared,ui}/**/flask/**
   multi-srp:
     assets:
       # srp-list is a special case and is used in the srp recovery flow now.
       - ./{app,shared,ui}/**/multi-srp/(?!.*srp-list)/**
-  build-experimental:
-    assets: []
-
 # Env variables that are required for all types of builds
 #
 # env object supports both declarations (- FOO), and definitions (- FOO: BAR).
 # Variables that were declared have to be defined somewhere in the load chain before usage
 env:
-  - ENABLE_SENTRY: true
+  - ENABLE_SENTRY: false
   - PORTFOLIO_URL: https://www.1do.io/
   - TOKEN_ALLOWANCE_IMPROVEMENTS: false
   # The unlock password

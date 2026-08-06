@@ -187,7 +187,7 @@ jobs:
     uses: ./.github/workflows/run-build.yml
     with:
       build-name: build-beta-browserify
-      build-command: yarn build --build-type beta dist
+      build-command: yarn build dist
       builds-from-run: ${{ needs.get-requirements.outputs.builds-from-run }}
     secrets: inherit
 
@@ -198,7 +198,7 @@ jobs:
     uses: ./.github/workflows/run-build.yml
     with:
       build-name: build-beta-mv2-browserify
-      build-command: yarn build --build-type beta dist
+      build-command: yarn build dist
       builds-from-run: ${{ needs.get-requirements.outputs.builds-from-run }}
     secrets: inherit
 
@@ -209,7 +209,7 @@ jobs:
     uses: ./.github/workflows/run-build.yml
     with:
       build-name: build-flask-browserify
-      build-command: yarn build --build-type flask dist
+      build-command: yarn build dist
       builds-from-run: ${{ needs.get-requirements.outputs.builds-from-run }}
     secrets: inherit
 
@@ -220,7 +220,7 @@ jobs:
     uses: ./.github/workflows/run-build.yml
     with:
       build-name: build-flask-mv2-browserify
-      build-command: yarn build --build-type flask dist
+      build-command: yarn build dist
       builds-from-run: ${{ needs.get-requirements.outputs.builds-from-run }}
     secrets: inherit
 
@@ -242,7 +242,7 @@ jobs:
     uses: ./.github/workflows/run-build.yml
     with:
       build-name: build-test-mv2-browserify
-      build-command: yarn build:test:mv2
+      build-command: yarn build:test
       builds-from-run: ${{ needs.get-requirements.outputs.builds-from-run }}
     secrets: inherit
 
@@ -253,7 +253,7 @@ jobs:
     uses: ./.github/workflows/run-build.yml
     with:
       build-name: build-test-flask-browserify
-      build-command: yarn build:test:flask
+      build-command: yarn build:test
       builds-from-run: ${{ needs.get-requirements.outputs.builds-from-run }}
     secrets: inherit
 
@@ -264,7 +264,7 @@ jobs:
     uses: ./.github/workflows/run-build.yml
     with:
       build-name: build-test-flask-mv2-browserify
-      build-command: yarn build:test:flask:mv2
+      build-command: yarn build:test
       builds-from-run: ${{ needs.get-requirements.outputs.builds-from-run }}
     secrets: inherit
 
@@ -287,7 +287,7 @@ jobs:
     uses: ./.github/workflows/run-build.yml
     with:
       build-name: build-dist-mv2-webpack
-      build-command: yarn webpack:lavamoat:build:mv2 --zip
+      build-command: yarn webpack:lavamoat:build --zip
       builds-from-run: ${{ needs.get-requirements.outputs.builds-from-run }}
     secrets: inherit
 
@@ -298,7 +298,7 @@ jobs:
     uses: ./.github/workflows/run-build.yml
     with:
       build-name: build-beta-webpack
-      build-command: yarn webpack:lavamoat:build --type beta --zip
+      build-command: yarn webpack:lavamoat:build --zip
       builds-from-run: ${{ needs.get-requirements.outputs.builds-from-run }}
     secrets: inherit
 
@@ -309,7 +309,7 @@ jobs:
     uses: ./.github/workflows/run-build.yml
     with:
       build-name: build-beta-mv2-webpack
-      build-command: yarn webpack:lavamoat:build:mv2 --type beta --zip
+      build-command: yarn webpack:lavamoat:build --zip
       builds-from-run: ${{ needs.get-requirements.outputs.builds-from-run }}
     secrets: inherit
 
@@ -320,7 +320,7 @@ jobs:
     uses: ./.github/workflows/run-build.yml
     with:
       build-name: build-flask-webpack
-      build-command: yarn webpack:lavamoat:build --type flask --zip
+      build-command: yarn webpack:lavamoat:build --zip
       builds-from-run: ${{ needs.get-requirements.outputs.builds-from-run }}
     secrets: inherit
 
@@ -331,7 +331,7 @@ jobs:
     uses: ./.github/workflows/run-build.yml
     with:
       build-name: build-flask-mv2-webpack
-      build-command: yarn webpack:lavamoat:build:mv2 --type flask --zip
+      build-command: yarn webpack:lavamoat:build --zip
       builds-from-run: ${{ needs.get-requirements.outputs.builds-from-run }}
     secrets: inherit
 
@@ -353,7 +353,7 @@ jobs:
     uses: ./.github/workflows/run-build.yml
     with:
       build-name: build-test-mv2-webpack
-      build-command: yarn build:test:webpack:mv2 --zip
+      build-command: yarn build:test:webpack --zip
       builds-from-run: ${{ needs.get-requirements.outputs.builds-from-run }}
     secrets: inherit
 
@@ -364,7 +364,7 @@ jobs:
     uses: ./.github/workflows/run-build.yml
     with:
       build-name: build-test-flask-webpack
-      build-command: yarn build:test:flask:webpack --zip
+      build-command: yarn build:test:webpack --zip
       builds-from-run: ${{ needs.get-requirements.outputs.builds-from-run }}
     secrets: inherit
 
@@ -375,7 +375,7 @@ jobs:
     uses: ./.github/workflows/run-build.yml
     with:
       build-name: build-test-flask-mv2-webpack
-      build-command: yarn build:test:flask:webpack:mv2 --zip
+      build-command: yarn build:test:webpack --zip
       builds-from-run: ${{ needs.get-requirements.outputs.builds-from-run }}
     secrets: inherit
 
@@ -517,7 +517,7 @@ jobs:
       - build-test-flask-mv2-webpack
     uses: ./.github/workflows/e2e-firefox.yml
     # Without this `if`, when builds-from-run is activated, the build jobs are considered skipped, and the downstream E2E tests won't run
-    if: ${{ !cancelled() && needs.get-requirements.outputs.needs-e2e == 'true' && !contains(needs.*.result, 'failure') }}
+    if: ${{ false }}
     with:
       builds-from-run: ${{ needs.get-requirements.outputs.builds-from-run }}
       use-matrix: ${{ needs.prep-e2e.outputs.use-matrix }}

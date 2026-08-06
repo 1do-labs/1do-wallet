@@ -64,6 +64,7 @@ import { toHardwareWalletError } from '../contexts/hardware-wallets/rpcErrorUtil
 import { HardwareWalletType } from '../contexts/hardware-wallets/types';
 import { captureException } from '../../shared/lib/sentry';
 import { switchDirection } from '../../shared/lib/switch-direction';
+import type { RuntimeDeploymentStatus } from '../../shared/lib/onedo-runtime/verify-deployment';
 import {
   ENVIRONMENT_TYPE_NOTIFICATION,
   ENVIRONMENT_TYPE_POPUP,
@@ -6127,6 +6128,15 @@ export async function getCode(address: Hex, networkClientId: string) {
     address,
     networkClientId,
   ]);
+}
+
+export async function verifyOneDoRuntimeDeployment(
+  networkClientId: string,
+): Promise<RuntimeDeploymentStatus> {
+  return await submitRequestToBackground<RuntimeDeploymentStatus>(
+    'verifyOneDoRuntimeDeployment',
+    [networkClientId],
+  );
 }
 
 export function setTransactionActive(

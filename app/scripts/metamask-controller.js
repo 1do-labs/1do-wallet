@@ -84,11 +84,6 @@ import {
 } from '@metamask/eip-5792-middleware';
 
 import {
-  walletUpgradeAccount,
-  walletGetAccountUpgradeStatus,
-} from '@metamask/eip-7702-internal-rpc-middleware';
-
-import {
   Caip25CaveatMutators,
   Caip25CaveatType,
   Caip25EndowmentPermissionName,
@@ -105,6 +100,7 @@ import {
   checkEip7702Support,
 } from '../../shared/lib/eip7702-support-utils';
 import { createEIP7702UpgradeTransaction } from '../../shared/lib/eip7702-utils';
+import { verifyOneDoRuntimeDeployment } from '../../shared/lib/onedo-runtime/verify-deployment';
 import { captureException } from '../../shared/lib/sentry';
 import {
   CHAIN_IDS,
@@ -813,35 +809,6 @@ export default class MetamaskController extends EventEmitter {
     });
 
     this.eip7715BlockingMiddleware = eip7715BlockingMiddleware;
-
-    this.eip7702Middleware = createScaffoldMiddleware({
-      wallet_upgradeAccount: createAsyncMiddleware(async (req, res) => {
-        await walletUpgradeAccount(req, res, {
-          upgradeAccount: this.upgradeAccount.bind(this),
-          getCurrentChainIdForDomain:
-            this.getCurrentChainIdForDomain.bind(this),
-          isEip7702Supported: this.isEip7702Supported.bind(this),
-          getPermittedAccountsForOrigin: async () => {
-            return getAccounts({ origin: req.origin });
-          },
-        });
-      }),
-      wallet_getAccountUpgradeStatus: createAsyncMiddleware(
-        async (req, res) => {
-          await walletGetAccountUpgradeStatus(req, res, {
-            getCurrentChainIdForDomain:
-              this.getCurrentChainIdForDomain.bind(this),
-            getCode: this.getCode.bind(this),
-            getSelectedNetworkClientIdForChain:
-              this.getSelectedNetworkClientIdForChain.bind(this),
-            getPermittedAccountsForOrigin: async () => {
-              return getAccounts({ origin: req.origin });
-            },
-            isEip7702Supported: this.isEip7702Supported.bind(this),
-          });
-        },
-      ),
-    });
 
     this.metamaskMiddleware = createMetamaskMiddleware({
       static: {
@@ -1780,6 +1747,8 @@ export default class MetamaskController extends EventEmitter {
       markNotificationPopupAsAutomaticallyClosed: () =>
         this.notificationManager.markAsAutomaticallyClosed(),
       getCode: this.getCode.bind(this),
+      verifyOneDoRuntimeDeployment:
+        this.verifyOneDoRuntimeDeployment.bind(this),
       isAppEnabled: this.isAppEnabled.bind(this),
 
       // primary keyring management
@@ -6250,6 +6219,13 @@ export default class MetamaskController extends EventEmitter {
       method: 'eth_getCode',
       params: [address],
     });
+  }
+
+  async verifyOneDoRuntimeDeployment(networkClientId) {
+    const { provider } =
+      this.networkController.getNetworkClientById(networkClientId);
+
+    return await verifyOneDoRuntimeDeployment(provider);
   }
 
   async isAppEnabled(address, app, networkClientId) {

@@ -7,6 +7,7 @@ import { ONE_DO_7702_DELEGATE } from '../../../shared/lib/eip7702-utils';
 import { getTransactions } from '../../selectors';
 import { isAtomicBatchSupported } from '../../store/controller-actions/transaction-controller';
 import { useEIP7702Account } from '../../pages/confirmations/hooks/useEIP7702Account';
+import type { RuntimeDeploymentStatus } from '../../../shared/lib/onedo-runtime/verify-deployment';
 
 export { ONE_DO_7702_DELEGATE };
 
@@ -65,11 +66,20 @@ export async function getOneDoSmartAccountIsActive({
   address,
   chainId,
   getDelegationAddress,
+  getRuntimeDeploymentStatus,
 }: {
   address: Hex;
   chainId: Hex;
   getDelegationAddress: (address: Hex) => Promise<Hex | undefined>;
+  getRuntimeDeploymentStatus?: () => Promise<RuntimeDeploymentStatus>;
 }) {
+  if (getRuntimeDeploymentStatus) {
+    const deployment = await getRuntimeDeploymentStatus();
+    if (deployment.status !== 'trusted') {
+      return false;
+    }
+  }
+
   const support = await isAtomicBatchSupported({
     address,
     chainIds: [chainId],
@@ -92,9 +102,10 @@ export function useOneDoSmartAccountStatus({
   enabled = true,
 }: UseOneDoSmartAccountStatusParams): OneDoSmartAccountStatus {
   const transactions = useSelector(getTransactions) as TransactionMeta[];
-  const { getDelegationAddress } = useEIP7702Account({
-    chainId: chainId ?? ('0x' as Hex),
-  });
+  const { getDelegationAddress, getRuntimeDeploymentStatus } =
+    useEIP7702Account({
+      chainId: chainId ?? ('0x' as Hex),
+    });
   const [isActive, setIsActive] = useState(false);
   const [isChecking, setIsChecking] = useState(false);
   const [hasError, setHasError] = useState(false);
@@ -124,8 +135,15 @@ export function useOneDoSmartAccountStatus({
       address,
       chainId,
       getDelegationAddress,
+      getRuntimeDeploymentStatus,
     });
-  }, [address, chainId, enabled, getDelegationAddress]);
+  }, [
+    address,
+    chainId,
+    enabled,
+    getDelegationAddress,
+    getRuntimeDeploymentStatus,
+  ]);
 
   useEffect(() => {
     let cancelled = false;

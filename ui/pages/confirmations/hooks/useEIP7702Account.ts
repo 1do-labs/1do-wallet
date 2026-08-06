@@ -15,6 +15,7 @@ import {
 import {
   addTransactionAndRouteToConfirmationPage,
   getCode,
+  verifyOneDoRuntimeDeployment,
 } from '../../../store/actions';
 import { selectDefaultRpcEndpointByChainId } from '../../../selectors';
 import { useConfirmationNavigation } from './useConfirmationNavigation';
@@ -78,6 +79,15 @@ export function useEIP7702Account(
         throw new Error('1Do smart accounts are not available on this network');
       }
 
+      const deployment = await verifyOneDoRuntimeDeployment(networkClientId);
+      if (deployment.status !== 'trusted') {
+        throw new Error(
+          deployment.status === 'unavailable'
+            ? 'Unable to verify 1Do Runtime deployment'
+            : '1Do Runtime deployment is not trusted on this network',
+        );
+      }
+
       const runtimeCode = await getCode(
         upgradeContractAddress,
         networkClientId,
@@ -129,6 +139,10 @@ export function useEIP7702Account(
     [networkClientId],
   );
 
+  const getRuntimeDeploymentStatus = useCallback(async () => {
+    return await verifyOneDoRuntimeDeployment(networkClientId);
+  }, [networkClientId]);
+
   useEffect(() => {
     if (isRedirectPending) {
       navigateToId(transactionId);
@@ -136,7 +150,13 @@ export function useEIP7702Account(
     }
   }, [isRedirectPending, navigateToId, transactionId, onRedirect]);
 
-  return { isUpgraded, getDelegationAddress, downgradeAccount, upgradeAccount };
+  return {
+    isUpgraded,
+    getDelegationAddress,
+    getRuntimeDeploymentStatus,
+    downgradeAccount,
+    upgradeAccount,
+  };
 }
 
 export { EIP_7702_REVOKE_ADDRESS };

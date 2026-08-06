@@ -101,10 +101,10 @@ if (shouldInjectProvider()) {
     console.warn(warningMsg);
   });
 
-  initializeProvider({
+  const oneDoProvider = initializeProvider({
     connectionStream: mux.createStream(METAMASK_EIP_1193_PROVIDER),
     logger: log,
-    shouldShimWeb3: true,
+    shouldShimWeb3: false,
     shouldSendMetadata: false,
     providerInfo: {
       uuid: uuid(),
@@ -113,4 +113,9 @@ if (shouldInjectProvider()) {
       rdns: process.env.METAMASK_BUILD_APP_ID,
     },
   });
+
+  // The upstream provider class exposes `isMetaMask` for compatibility. 1Do
+  // deliberately identifies itself as a separate wallet provider.
+  oneDoProvider.isMetaMask = false;
+  oneDoProvider.isOneDo = true;
 }
