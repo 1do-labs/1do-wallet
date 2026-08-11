@@ -1,12 +1,6 @@
 import { cloneDeep } from 'lodash';
 import { migrate, version } from './120.4';
 
-const sentryCaptureExceptionMock = jest.fn();
-
-global.sentry = {
-  captureException: sentryCaptureExceptionMock,
-};
-
 const oldVersion = 120.3;
 
 describe('migration #120.4', () => {
@@ -50,11 +44,6 @@ describe('migration #120.4', () => {
       });
 
       expect(transformedState.data).toEqual(oldState);
-      expect(sentryCaptureExceptionMock).toHaveBeenCalledWith(
-        new Error(
-          `Migration ${version}: Invalid CurrencyController state of type 'string'`,
-        ),
-      );
     });
 
     it('deletes obsolete properties from the CurrencyController state', async () => {
@@ -121,11 +110,6 @@ describe('migration #120.4', () => {
       });
 
       expect(transformedState.data).toEqual(oldState);
-      expect(sentryCaptureExceptionMock).toHaveBeenCalledWith(
-        new Error(
-          `Migration ${version}: Invalid PhishingController state of type 'string'`,
-        ),
-      );
     });
 
     it('deletes obsolete properties from the PhishingController state', async () => {
@@ -188,11 +172,6 @@ describe('migration #120.4', () => {
       });
 
       expect(transformedState.data).toEqual(oldState);
-      expect(sentryCaptureExceptionMock).toHaveBeenCalledWith(
-        new Error(
-          `Migration ${version}: Invalid NetworkController state of type 'string'`,
-        ),
-      );
     });
 
     it('deletes obsolete properties from the NetworkController state', async () => {

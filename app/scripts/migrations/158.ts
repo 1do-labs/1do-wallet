@@ -24,11 +24,6 @@ function transformState(state: VersionedData['data']) {
     !hasProperty(state, 'UserStorageController') ||
     !isObject(state.UserStorageController)
   ) {
-    global.sentry?.captureException?.(
-      new Error(
-        `Invalid UserStorageController state: ${typeof state.UserStorageController}`,
-      ),
-    );
     return state;
   }
 

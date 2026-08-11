@@ -145,35 +145,3 @@ Benchmark results are output as JSON, either to stdout or to a file via `--out`:
   }
 }
 ```
-
-Results are sent to Sentry in CI via `send-to-sentry.ts` for monitoring and analysis.
-
-Each benchmark entry becomes a **Sentry Structured Log** (`Sentry.logger.info`):
-
-- **Message:** `<benchmarkType>.<presetName>` — e.g. `performance.userJourneyOnboardingImport`, `userAction.interactionUserActions`, `benchmark.startupStandardHome`
-- **Attributes:**
-  - `ci.branch`, `ci.commitHash`, `ci.prNumber` — Git/CI context
-  - `ci.browser`, `ci.buildType` — e.g. `chrome` / `browserify`
-  - `ci.persona` — `standard` or `powerUser`
-  - `ci.testTitle` — human-readable test name from the benchmark file
-  - Metric values, namespaced by stat type:
-    - Statistical benchmarks (startup / user journey): `<type>.mean.<metric>`, `<type>.p75.<metric>`, `<type>.p95.<metric>` — e.g. `performance.mean.uiStartup`
-    - Interaction benchmarks: flat numeric keys — e.g. `loadNewAccount`, `confirmTx`
-
-Example Sentry log for a startup benchmark:
-
-```
-message:    "benchmark.startupStandardHome"
-attributes: {
-  "ci.branch":      "main",
-  "ci.commitHash":  "abc1234",
-  "ci.browser":     "chrome",
-  "ci.buildType":   "browserify",
-  "ci.persona":     "standard",
-  "ci.testTitle":   "benchmark-standard-home",
-  "benchmark.mean.uiStartup":          1443,
-  "benchmark.mean.backgroundConnect":  210,
-  "benchmark.p75.uiStartup":           1530,
-  "benchmark.p95.uiStartup":           1620
-}
-```

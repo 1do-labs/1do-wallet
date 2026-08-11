@@ -66,40 +66,20 @@ function transformState(
   const networkControllerState = state.NetworkController;
 
   if (!isObject(permissionControllerState)) {
-    global.sentry?.captureException?.(
-      new Error(
-        `Migration ${version}: PermissionController is type '${typeof permissionControllerState}', expected object.`,
-      ),
-    );
     return state;
   }
 
   if (!isObject(networkControllerState)) {
-    global.sentry?.captureException?.(
-      new Error(
-        `Migration ${version}: NetworkController is type '${typeof networkControllerState}', expected object.`,
-      ),
-    );
     return state;
   }
 
   if (!hasProperty(networkControllerState, 'networkConfigurationsByChainId')) {
-    global.sentry?.captureException?.(
-      new Error(
-        `Migration ${version}: NetworkController.networkConfigurationsByChainId not found.`,
-      ),
-    );
     return state;
   }
 
   const { networkConfigurationsByChainId } = networkControllerState;
 
   if (!isObject(networkConfigurationsByChainId)) {
-    global.sentry?.captureException?.(
-      new Error(
-        `Migration ${version}: NetworkController.networkConfigurationsByChainId is type '${typeof networkConfigurationsByChainId}', expected object.`,
-      ),
-    );
     return state;
   }
 
@@ -120,11 +100,6 @@ function transformState(
   const { subjects } = permissionControllerState;
 
   if (!isObject(subjects)) {
-    global.sentry?.captureException?.(
-      new Error(
-        `Migration ${version}: PermissionController.subjects is type '${typeof subjects}', expected object.`,
-      ),
-    );
     return state;
   }
 

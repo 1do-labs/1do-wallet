@@ -38,21 +38,12 @@ function transformState(state: Record<string, unknown>) {
     };
   }
   if (!isObject(state.NetworkController)) {
-    global.sentry?.captureException?.(
-      new Error(
-        `typeof state.NetworkController is ${typeof state.NetworkController}`,
-      ),
-    );
+    // Leave invalid legacy state unchanged.
   } else if (!hasProperty(state.NetworkController, 'provider')) {
     const thePost077SupplementFor086HasNotModifiedState =
       state.NetworkController.providerConfig === undefined;
     if (thePost077SupplementFor086HasNotModifiedState) {
-      global.sentry?.captureException?.(
-        new Error(
-          `typeof state.NetworkController.provider is ${typeof state
-            .NetworkController.provider}`,
-        ),
-      );
+      // Leave invalid legacy state unchanged.
     }
   }
 

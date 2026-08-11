@@ -1,11 +1,5 @@
 import { migrate, version } from './117';
 
-const sentryCaptureExceptionMock = jest.fn();
-
-global.sentry = {
-  captureException: sentryCaptureExceptionMock,
-};
-
 describe('migration #117', () => {
   afterEach(() => {
     jest.resetAllMocks();
@@ -87,45 +81,5 @@ describe('migration #117', () => {
     });
 
     expect(transformedState.data).toEqual(expectedState);
-  });
-
-  it('should capture an exception if SelectedNetworkController is in state but is not an object', async () => {
-    const oldData = {
-      SelectedNetworkController: 'not an object',
-    };
-    const oldStorage = {
-      meta: {
-        version: 116,
-      },
-      data: oldData,
-    };
-
-    await migrate(oldStorage);
-
-    expect(sentryCaptureExceptionMock).toHaveBeenCalledTimes(1);
-    expect(sentryCaptureExceptionMock).toHaveBeenCalledWith(
-      new Error('SelectedNetworkController is not an object.'),
-    );
-  });
-
-  it('should capture an exception if SelectedNetworkController has domains but it is not an object', async () => {
-    const oldData = {
-      SelectedNetworkController: {
-        domains: 'not an object',
-      },
-    };
-    const oldStorage = {
-      meta: {
-        version: 116,
-      },
-      data: oldData,
-    };
-
-    await migrate(oldStorage);
-
-    expect(sentryCaptureExceptionMock).toHaveBeenCalledTimes(1);
-    expect(sentryCaptureExceptionMock).toHaveBeenCalledWith(
-      new Error('Domains state is not an object.'),
-    );
   });
 });

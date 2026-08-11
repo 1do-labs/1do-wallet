@@ -32,31 +32,18 @@ export async function migrate(
 
 function transformState(state: Record<string, unknown>) {
   if (!hasProperty(state, 'CurrencyController')) {
-    global.sentry?.captureException?.(
-      new Error(`Migration ${version}: Missing CurrencyController in state`),
-    );
     return;
   }
 
   const currencyController = state.CurrencyController as CurrencyController;
 
   if (!isObject(currencyController)) {
-    global.sentry?.captureException?.(
-      new Error(
-        `Migration ${version}: Invalid CurrencyController state type '${typeof currencyController}'`,
-      ),
-    );
     return;
   }
 
   const { currentCurrency } = currencyController;
 
   if (!currentCurrency) {
-    global.sentry?.captureException?.(
-      new Error(
-        `Migration ${version}: Missing currentCurrency in CurrencyController, defaulting to ${DEFAULT_CURRENCY}`,
-      ),
-    );
     currencyController.currentCurrency = DEFAULT_CURRENCY;
     return;
   }

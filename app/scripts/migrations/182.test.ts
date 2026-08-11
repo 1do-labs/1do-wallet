@@ -19,15 +19,6 @@ const networksToAdd: string[] = [
 ];
 
 describe(`migration #${version}`, () => {
-  beforeEach(() => {
-    global.sentry = { captureException: jest.fn() };
-    // Mock process.env to allow migration logic to run
-  });
-
-  afterEach(() => {
-    global.sentry = undefined;
-  });
-
   it('updates the version metadata', async () => {
     const oldStorage = {
       meta: { version: oldVersion },
@@ -69,11 +60,6 @@ describe(`migration #${version}`, () => {
 
     const newStorage = await migrate(oldStorage);
 
-    expect(global.sentry.captureException).toHaveBeenCalledWith(
-      new Error(
-        `Migration ${version}: NetworkController is not an object: string`,
-      ),
-    );
     expect(newStorage.data).toStrictEqual(oldStorage.data);
   });
 
@@ -87,11 +73,6 @@ describe(`migration #${version}`, () => {
 
     const newStorage = await migrate(oldStorage);
 
-    expect(global.sentry.captureException).toHaveBeenCalledWith(
-      new Error(
-        `Migration ${version}: NetworkController missing property networkConfigurationsByChainId.`,
-      ),
-    );
     expect(newStorage.data).toStrictEqual(oldStorage.data);
   });
 
@@ -107,11 +88,6 @@ describe(`migration #${version}`, () => {
 
     const newStorage = await migrate(oldStorage);
 
-    expect(global.sentry.captureException).toHaveBeenCalledWith(
-      new Error(
-        `Migration ${version}: NetworkController.networkConfigurationsByChainId is not an object: string.`,
-      ),
-    );
     expect(newStorage.data).toStrictEqual(oldStorage.data);
   });
 

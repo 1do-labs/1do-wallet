@@ -46,11 +46,6 @@ function removeObsoleteCurrencyControllerState(
   if (!hasProperty(state, 'CurrencyController')) {
     return;
   } else if (!isObject(state.CurrencyController)) {
-    global.sentry?.captureException?.(
-      new Error(
-        `Migration ${version}: Invalid CurrencyController state of type '${typeof state.CurrencyController}'`,
-      ),
-    );
     return;
   }
 
@@ -73,11 +68,6 @@ function removeObsoletePhishingControllerState(
   if (!hasProperty(state, 'PhishingController')) {
     return;
   } else if (!isObject(state.PhishingController)) {
-    global.sentry?.captureException?.(
-      new Error(
-        `Migration ${version}: Invalid PhishingController state of type '${typeof state.PhishingController}'`,
-      ),
-    );
     return;
   }
 
@@ -96,11 +86,6 @@ function removeObsoleteNetworkControllerState(
   if (!hasProperty(state, 'NetworkController')) {
     return;
   } else if (!isObject(state.NetworkController)) {
-    global.sentry?.captureException?.(
-      new Error(
-        `Migration ${version}: Invalid NetworkController state of type '${typeof state.NetworkController}'`,
-      ),
-    );
     return;
   }
 

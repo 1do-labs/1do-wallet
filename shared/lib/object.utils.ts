@@ -17,7 +17,7 @@ export type ObjectMask = {
  *
  * The mask is an object that mirrors the structure of the given object, except
  * the only values are `true`, `false`, a sub-mask, an array mask (treated like
- * `false` for that key; e.g. empty `[]` in Sentry state), or the `AllProperties`
+ * `false` for that key; e.g. an empty `[]` mask), or the `AllProperties`
  * symbol. `true` implies the property should be included, and `false` will
  * exclude it. A sub-mask implies the property should be further masked
  * according to that sub-mask. The "AllProperties" symbol is used for objects
@@ -53,7 +53,7 @@ export function maskObject(
     if (maskKey === true) {
       state[key] = obj[key];
     } else if (Array.isArray(maskKey)) {
-      // Array masks (e.g. empty `[]` in Sentry state) — surface typeof only, like `false`.
+      // Array masks surface typeof only, like `false`.
       state[key] = obj[key] === null ? null : typeof obj[key];
     } else if (maskKey && typeof maskKey === 'object') {
       state[key] = maskObject(obj[key], maskKey as ObjectMask);

@@ -36,22 +36,12 @@ function transformState(state: VersionedData['data']) {
   }
 
   if (!isObject(state.PermissionController)) {
-    global.sentry?.captureException?.(
-      new Error(
-        `Migration ${version}: typeof state.PermissionController is ${typeof state.PermissionController}`,
-      ),
-    );
     return state;
   }
 
   const { subjects } = state.PermissionController;
 
   if (!isObject(subjects)) {
-    global.sentry?.captureException?.(
-      new Error(
-        `Migration ${version}: typeof state.PermissionController.subjects is ${typeof subjects}`,
-      ),
-    );
     return state;
   }
 

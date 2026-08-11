@@ -75,11 +75,7 @@ function migrateData(state: Record<string, unknown>): void {
         });
       }
     } else if (hasProperty(nftControllerState, 'allNftContracts')) {
-      global.sentry?.captureException?.(
-        new Error(
-          `typeof state.NftController.allNftContracts is ${typeof nftControllerState.allNftContracts}`,
-        ),
-      );
+      // Leave invalid legacy state unchanged.
     } else {
       log.warn(
         `typeof state.NftController.allNftContracts is ${typeof nftControllerState.allNftContracts}`,
@@ -115,11 +111,7 @@ function migrateData(state: Record<string, unknown>): void {
         });
       }
     } else if (hasProperty(nftControllerState, 'allNfts')) {
-      global.sentry?.captureException?.(
-        new Error(
-          `typeof state.NftController.allNfts is ${typeof nftControllerState.allNfts}`,
-        ),
-      );
+      // Leave invalid legacy state unchanged.
     } else {
       log.warn(
         `typeof state.NftController.allNfts is ${typeof nftControllerState.allNfts}`,
@@ -128,9 +120,7 @@ function migrateData(state: Record<string, unknown>): void {
 
     state.NftController = nftControllerState;
   } else if (hasProperty(state, 'NftController')) {
-    global.sentry?.captureException?.(
-      new Error(`typeof state.NftController is ${typeof state.NftController}`),
-    );
+    // Leave invalid legacy state unchanged.
   } else {
     log.warn(`typeof state.NftController is undefined`);
   }
@@ -163,12 +153,7 @@ function migrateData(state: Record<string, unknown>): void {
         (_, chainId: string) => toHex(chainId),
       );
     } else if (hasProperty(tokenListControllerState, 'tokensChainsCache')) {
-      global.sentry?.captureException?.(
-        new Error(
-          `typeof state.TokenListController.tokensChainsCache is ${typeof state
-            .TokenListController.tokensChainsCache}`,
-        ),
-      );
+      // Leave invalid legacy state unchanged.
     } else {
       log.warn(
         `typeof state.TokenListController.tokensChainsCache is undefined`,
@@ -208,11 +193,7 @@ function migrateData(state: Record<string, unknown>): void {
         (_, chainId: string) => toHex(chainId),
       );
     } else if (hasProperty(tokensControllerState, 'allTokens')) {
-      global.sentry?.captureException?.(
-        new Error(
-          `typeof state.TokensController.allTokens is ${typeof tokensControllerState.allTokens}`,
-        ),
-      );
+      // Leave invalid legacy state unchanged.
     } else {
       log.warn(
         `typeof state.TokensController.allTokens is ${typeof tokensControllerState.allTokens}`,
@@ -241,11 +222,7 @@ function migrateData(state: Record<string, unknown>): void {
         (_, chainId: string) => toHex(chainId),
       );
     } else if (hasProperty(tokensControllerState, 'allIgnoredTokens')) {
-      global.sentry?.captureException?.(
-        new Error(
-          `typeof state.TokensController.allIgnoredTokens is ${typeof tokensControllerState.allIgnoredTokens}`,
-        ),
-      );
+      // Leave invalid legacy state unchanged.
     } else {
       log.warn(
         `typeof state.TokensController.allIgnoredTokens is ${typeof tokensControllerState.allIgnoredTokens}`,
@@ -274,11 +251,7 @@ function migrateData(state: Record<string, unknown>): void {
         (_, chainId: string) => toHex(chainId),
       );
     } else if (hasProperty(tokensControllerState, 'allDetectedTokens')) {
-      global.sentry?.captureException?.(
-        new Error(
-          `typeof state.TokensController.allDetectedTokens is ${typeof tokensControllerState.allDetectedTokens}`,
-        ),
-      );
+      // Leave invalid legacy state unchanged.
     } else {
       log.warn(
         `typeof state.TokensController.allDetectedTokens is ${typeof tokensControllerState.allDetectedTokens}`,
@@ -287,11 +260,7 @@ function migrateData(state: Record<string, unknown>): void {
 
     state.TokensController = tokensControllerState;
   } else {
-    global.sentry?.captureException?.(
-      new Error(
-        `typeof state.TokensController is ${typeof state.TokensController}`,
-      ),
-    );
+    // Leave invalid legacy state unchanged.
   }
 }
 

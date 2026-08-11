@@ -38,61 +38,24 @@ function transformState(state: Record<string, unknown>): void {
   const accountsControllerState = state.AccountsController;
 
   if (!isObject(accountsControllerState)) {
-    global.sentry?.captureException(
-      new Error(
-        `Migration ${version}: Invalid AccountsController state of type '${typeof accountsControllerState}'`,
-      ),
-    );
     return;
   } else if (!hasProperty(accountsControllerState, 'internalAccounts')) {
-    global.sentry?.captureException(
-      new Error(
-        `Migration ${version}: Invalid AccountsController state, missing internalAccounts`,
-      ),
-    );
     return;
   } else if (!isObject(accountsControllerState.internalAccounts)) {
-    global.sentry?.captureException(
-      new Error(
-        `Migration ${version}: Invalid AccountsController internalAccounts state of type '${typeof accountsControllerState.internalAccounts}'`,
-      ),
-    );
     return;
   } else if (
     !hasProperty(accountsControllerState.internalAccounts, 'selectedAccount')
   ) {
-    global.sentry?.captureException(
-      new Error(
-        `Migration ${version}: Invalid AccountsController internalAccounts state, missing selectedAccount`,
-      ),
-    );
     return;
   } else if (
     typeof accountsControllerState.internalAccounts.selectedAccount !== 'string'
   ) {
-    global.sentry?.captureException(
-      new Error(
-        `Migration ${version}: Invalid AccountsController internalAccounts.selectedAccount state of type '${typeof accountsControllerState
-          .internalAccounts.selectedAccount}'`,
-      ),
-    );
     return;
   } else if (
     !hasProperty(accountsControllerState.internalAccounts, 'accounts')
   ) {
-    global.sentry?.captureException(
-      new Error(
-        `Migration ${version}: Invalid AccountsController internalAccounts state, missing accounts`,
-      ),
-    );
     return;
   } else if (!isObject(accountsControllerState.internalAccounts.accounts)) {
-    global.sentry?.captureException(
-      new Error(
-        `Migration ${version}: Invalid AccountsController internalAccounts.accounts state of type '${typeof accountsControllerState
-          .internalAccounts.accounts}'`,
-      ),
-    );
     return;
   }
 
@@ -110,25 +73,10 @@ function transformState(state: Record<string, unknown>): void {
     accountsControllerState.internalAccounts.accounts,
   )[0];
   if (!isObject(firstAccount)) {
-    global.sentry?.captureException(
-      new Error(
-        `Migration ${version}: Invalid AccountsController internalAccounts.accounts state, entry found of type '${typeof firstAccount}'`,
-      ),
-    );
     return;
   } else if (!hasProperty(firstAccount, 'id')) {
-    global.sentry?.captureException(
-      new Error(
-        `Migration ${version}: Invalid AccountsController internalAccounts.accounts state, entry found that is missing an id`,
-      ),
-    );
     return;
   } else if (typeof firstAccount.id !== 'string') {
-    global.sentry?.captureException(
-      new Error(
-        `Migration ${version}: Invalid AccountsController internalAccounts.accounts state, entry found with an id of type '${typeof firstAccount.id}'`,
-      ),
-    );
     return;
   }
 

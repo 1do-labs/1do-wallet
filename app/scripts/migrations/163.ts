@@ -39,13 +39,7 @@ function transformState(
 
   const tokensControllerState = state.TokensController;
 
-  // If property tokensControllerState is there but not an object, capture a sentry error and return state
   if (!isObject(tokensControllerState)) {
-    global.sentry?.captureException?.(
-      new Error(
-        `Migration ${version}: TokensController is type '${typeof tokensControllerState}', expected object.`,
-      ),
-    );
     return state;
   }
 

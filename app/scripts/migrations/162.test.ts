@@ -4,14 +4,6 @@ import { migrate, version } from './162';
 const oldVersion = 161;
 
 describe(`migration #${version}`, () => {
-  beforeEach(() => {
-    global.sentry = { captureException: jest.fn() };
-  });
-
-  afterEach(() => {
-    global.sentry = undefined;
-  });
-
   it('updates the version metadata', async () => {
     const oldStorage = {
       meta: { version: oldVersion },
@@ -32,7 +24,6 @@ describe(`migration #${version}`, () => {
 
       const newStorage = await migrate(oldStorage);
 
-      expect(global.sentry.captureException).not.toHaveBeenCalled();
       expect(newStorage.data).toStrictEqual(oldStorage.data);
     });
 
@@ -46,7 +37,6 @@ describe(`migration #${version}`, () => {
 
       const newStorage = await migrate(oldStorage);
 
-      expect(global.sentry.captureException).not.toHaveBeenCalled();
       expect(newStorage.data).toStrictEqual(oldStorage.data);
     });
 
@@ -61,7 +51,6 @@ describe(`migration #${version}`, () => {
 
       const newStorage = await migrate(oldStorage);
 
-      expect(global.sentry.captureException).not.toHaveBeenCalled();
       expect(newStorage.data).toStrictEqual(oldStorage.data);
     });
 
@@ -77,11 +66,6 @@ describe(`migration #${version}`, () => {
 
       const newStorage = await migrate(oldStorage);
 
-      expect(global.sentry.captureException).toHaveBeenCalledWith(
-        new Error(
-          `Migration ${version}: TokensController is type 'string', expected object.`,
-        ),
-      );
       expect(newStorage.data).toStrictEqual(oldStorage.data);
     });
 
@@ -97,11 +81,6 @@ describe(`migration #${version}`, () => {
 
       const newStorage = await migrate(oldStorage);
 
-      expect(global.sentry.captureException).toHaveBeenCalledWith(
-        new Error(
-          `Migration ${version}: AccountsController is type 'string', expected object.`,
-        ),
-      );
       expect(newStorage.data).toStrictEqual(oldStorage.data);
     });
 

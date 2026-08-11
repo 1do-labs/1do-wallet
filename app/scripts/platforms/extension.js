@@ -53,7 +53,7 @@ export default class ExtensionPlatform {
   getVersion() {
     // return the "live" version of the extension, as the bundle of code running
     // might be from a different version of the application than the manifest.
-    // This isn't supposed to happen, but we've seen it before in Sentry.
+    // This isn't supposed to happen, but it has occurred in production.
     // This should *not* be updated to the static `process.env.METAMASK_VERSION`
     return browser.runtime.getManifest().version;
   }

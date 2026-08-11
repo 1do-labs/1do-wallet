@@ -115,7 +115,7 @@ export class OperationSafener<O extends Op = Op> {
       // ensure that `evacuate` always resolves successfully, AND that a
       // rejection from running `this.#bouncer.flush()` *is* an unhandled
       // rejection; we want it to bubble up to the process/window's
-      // `unhandledRejection` listener, i.e., Sentry.
+      // `unhandledRejection` listener.
       const { promise, resolve } = withResolvers<void>();
       finalInvocation.finally(resolve);
       this.#evacuating = promise;

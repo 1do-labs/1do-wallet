@@ -39,11 +39,6 @@ function transformState(
   const tokensControllerState = state.TokensController;
 
   if (!isObject(tokensControllerState)) {
-    global.sentry?.captureException?.(
-      new Error(
-        `Migration ${version}: TokensController is type '${typeof tokensControllerState}', expected object.`,
-      ),
-    );
     return state;
   }
 
@@ -55,11 +50,6 @@ function transformState(
   const tokenListControllerState = state.TokenListController;
 
   if (!isObject(tokenListControllerState)) {
-    global.sentry?.captureException?.(
-      new Error(
-        `Migration ${version}: TokenListController is type '${typeof tokenListControllerState}', expected object.`,
-      ),
-    );
     return state;
   }
 

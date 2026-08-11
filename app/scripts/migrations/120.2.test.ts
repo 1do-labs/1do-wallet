@@ -1,12 +1,6 @@
 import { cloneDeep } from 'lodash';
 import { migrate, version } from './120.2';
 
-const sentryCaptureExceptionMock = jest.fn();
-
-global.sentry = {
-  captureException: sentryCaptureExceptionMock,
-};
-
 const oldVersion = 120.1;
 
 describe('migration #120.2', () => {
@@ -145,11 +139,6 @@ describe('migration #120.2', () => {
       });
 
       expect(transformedState.data).toEqual(oldState);
-      expect(sentryCaptureExceptionMock).toHaveBeenCalledWith(
-        new Error(
-          `Migration ${version}: Invalid SnapController state of type 'string'`,
-        ),
-      );
     });
 
     it('strips SnapController.snapErrors if it exists', async () => {
@@ -243,11 +232,6 @@ describe('migration #120.2', () => {
       });
 
       expect(transformedState.data).toEqual(oldState);
-      expect(sentryCaptureExceptionMock).toHaveBeenCalledWith(
-        new Error(
-          `Migration ${version}: Invalid NetworkController state of type 'string'`,
-        ),
-      );
     });
 
     it('captures an error and leaves state unchanged if providerConfig state is corrupted', async () => {
@@ -263,11 +247,6 @@ describe('migration #120.2', () => {
       });
 
       expect(transformedState.data).toEqual(oldState);
-      expect(sentryCaptureExceptionMock).toHaveBeenCalledWith(
-        new Error(
-          `Migration ${version}: Invalid NetworkController providerConfig state of type 'string'`,
-        ),
-      );
     });
 
     it('captures an error and leaves state unchanged if networkConfigurations state is corrupted', async () => {
@@ -284,11 +263,6 @@ describe('migration #120.2', () => {
       });
 
       expect(transformedState.data).toEqual(oldState);
-      expect(sentryCaptureExceptionMock).toHaveBeenCalledWith(
-        new Error(
-          `Migration ${version}: Invalid NetworkController networkConfigurations state of type 'string'`,
-        ),
-      );
     });
 
     it('does nothing if obsolete properties and providerConfig are not set', async () => {
@@ -510,11 +484,6 @@ describe('migration #120.2', () => {
       });
 
       expect(transformedState.data).toEqual(oldState);
-      expect(sentryCaptureExceptionMock).toHaveBeenCalledWith(
-        new Error(
-          `Migration ${version}: Invalid PhishingController state of type 'string'`,
-        ),
-      );
     });
 
     it('does nothing if obsolete properties are not set', async () => {

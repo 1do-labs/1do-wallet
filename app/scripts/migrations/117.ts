@@ -40,23 +40,14 @@ function transformState(state: Record<string, unknown>) {
   }
 
   if (!isObject(selectedNetworkControllerState)) {
-    global.sentry?.captureException?.(
-      new Error('SelectedNetworkController is not an object.'),
-    );
     return;
   }
 
   if (!hasProperty(selectedNetworkControllerState, 'domains')) {
-    global.sentry?.captureException?.(
-      new Error('Domains key is missing in SelectedNetworkController state.'),
-    );
     return;
   }
 
   if (!isObject(selectedNetworkControllerState.domains)) {
-    global.sentry?.captureException?.(
-      new Error('Domains state is not an object.'),
-    );
     return;
   }
 

@@ -14,16 +14,6 @@ const VERSION = version;
 const oldVersion = VERSION - 1;
 
 describe(`migration #${VERSION}`, () => {
-  let mockedCaptureException: jest.Mock;
-  beforeEach(() => {
-    mockedCaptureException = jest.fn();
-    global.sentry = { captureException: mockedCaptureException };
-  });
-
-  afterEach(() => {
-    global.sentry = undefined;
-  });
-
   it('updates the version metadata', async () => {
     const oldStorage = {
       meta: { version: oldVersion },
@@ -152,7 +142,7 @@ describe(`migration #${VERSION}`, () => {
 
   // @ts-expect-error 'each' function is not recognized by TypeScript types
   it.each(invalidStates)(
-    'should capture exception if $scenario',
+    'leaves state unchanged for $scenario',
     async ({ state }: { errorMessage: string; state: VersionedData }) => {
       const orgState = cloneDeep(state);
 
@@ -160,7 +150,6 @@ describe(`migration #${VERSION}`, () => {
 
       // State should be unchanged
       expect(migratedState).toStrictEqual(orgState);
-      expect(mockedCaptureException).toHaveBeenCalledWith(expect.any(Error));
     },
   );
 

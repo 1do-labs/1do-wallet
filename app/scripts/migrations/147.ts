@@ -33,11 +33,6 @@ function transformState(state: VersionedData['data']) {
     !hasProperty(state, 'AuthenticationController') ||
     !isObject(state.AuthenticationController)
   ) {
-    global.sentry?.captureException?.(
-      new Error(
-        `Invalid AuthenticationController state: ${typeof state.AuthenticationController}`,
-      ),
-    );
     return state;
   }
 

@@ -1,12 +1,6 @@
 import { v4 } from 'uuid';
 import { migrate, version } from './082';
 
-const sentryCaptureExceptionMock = jest.fn();
-
-global.sentry = {
-  captureException: sentryCaptureExceptionMock,
-};
-
 jest.mock('uuid', () => {
   const actual = jest.requireActual('uuid');
 
@@ -437,69 +431,7 @@ describe('migration #82', () => {
       },
     };
     const newStorage = await migrate(oldStorage);
-    expect(sentryCaptureExceptionMock).toHaveBeenCalled();
     expect(newStorage.data).toStrictEqual(oldStorage.data);
-  });
-
-  it('should capture an exception if any PreferencesController.frequentRpcListDetail entries are not objects', async () => {
-    const oldStorage = {
-      meta: {
-        version: 81,
-      },
-      data: {
-        PreferencesController: {
-          transactionSecurityCheckEnabled: false,
-          useBlockie: false,
-          useCurrencyRateCheck: true,
-          useMultiAccountBalanceChecker: true,
-          useNftDetection: false,
-          useNonceField: false,
-          frequentRpcListDetail: [
-            {
-              chainId: '0x539',
-              nickname: 'Localhost 8545',
-              rpcPrefs: {},
-              rpcUrl: 'http://localhost:8545',
-              ticker: 'ETH',
-            },
-            'invalid entry type',
-            1,
-          ],
-        },
-        NetworkController: {
-          network: '1',
-          networkDetails: {
-            EIPS: {
-              1559: true,
-            },
-          },
-          previousProviderStore: {
-            chainId: '0x89',
-            nickname: 'Polygon Mainnet',
-            rpcPrefs: {},
-            rpcUrl:
-              'https://polygon-mainnet.infura.io/v3/373266a93aab4acda48f89d4fe77c748',
-            ticker: 'MATIC',
-            type: 'rpc',
-          },
-          provider: {
-            chainId: '0x1',
-            nickname: '',
-            rpcPrefs: {},
-            rpcUrl: '',
-            ticker: 'ETH',
-            type: 'mainnet',
-          },
-        },
-      },
-    };
-    await migrate(oldStorage);
-    expect(sentryCaptureExceptionMock).toHaveBeenCalledTimes(1);
-    expect(sentryCaptureExceptionMock).toHaveBeenCalledWith(
-      new Error(
-        `state.PreferencesController.frequentRpcListDetail contains an element of type string`,
-      ),
-    );
   });
 
   it('should not change anything, and not capture an exception, if there is no frequentRpcListDetail property on PreferencesController but there is a networkConfigurations object', async () => {
@@ -573,58 +505,7 @@ describe('migration #82', () => {
       },
     };
     const newStorage = await migrate(oldStorage);
-    expect(sentryCaptureExceptionMock).not.toHaveBeenCalled();
     expect(newStorage.data).toStrictEqual(oldStorage.data);
-  });
-
-  it('should capture an exception if there is no frequentRpcListDetail property on PreferencesController and no networkConfiguration object', async () => {
-    const oldStorage = {
-      meta: {
-        version: 81,
-      },
-      data: {
-        PreferencesController: {
-          transactionSecurityCheckEnabled: false,
-          useBlockie: false,
-          useCurrencyRateCheck: true,
-          useMultiAccountBalanceChecker: true,
-          useNftDetection: false,
-          useNonceField: false,
-        },
-        NetworkController: {
-          network: '1',
-          networkDetails: {
-            EIPS: {
-              1559: true,
-            },
-          },
-          previousProviderStore: {
-            chainId: '0x89',
-            nickname: 'Polygon Mainnet',
-            rpcPrefs: {},
-            rpcUrl:
-              'https://polygon-mainnet.infura.io/v3/373266a93aab4acda48f89d4fe77c748',
-            ticker: 'MATIC',
-            type: 'rpc',
-          },
-          provider: {
-            chainId: '0x1',
-            nickname: '',
-            rpcPrefs: {},
-            rpcUrl: '',
-            ticker: 'ETH',
-            type: 'mainnet',
-          },
-        },
-      },
-    };
-    await migrate(oldStorage);
-    expect(sentryCaptureExceptionMock).toHaveBeenCalledTimes(1);
-    expect(sentryCaptureExceptionMock).toHaveBeenCalledWith(
-      new Error(
-        `typeof state.PreferencesController.frequentRpcListDetail is undefined`,
-      ),
-    );
   });
 
   it('should change nothing if PreferencesController is undefined', async () => {
@@ -662,62 +543,5 @@ describe('migration #82', () => {
     };
     const newStorage = await migrate(oldStorage);
     expect(newStorage.data).toStrictEqual(oldStorage.data);
-  });
-
-  it('should capture an exception if PreferencesController is not an object', async () => {
-    const oldStorage = {
-      meta: {
-        version: 81,
-      },
-      data: {
-        NetworkController: {
-          network: '1',
-          networkDetails: {
-            EIPS: {
-              1559: true,
-            },
-          },
-          previousProviderStore: {
-            chainId: '0x89',
-            nickname: 'Polygon Mainnet',
-            rpcPrefs: {},
-            rpcUrl:
-              'https://polygon-mainnet.infura.io/v3/373266a93aab4acda48f89d4fe77c748',
-            ticker: 'MATIC',
-            type: 'rpc',
-          },
-          provider: {
-            chainId: '0x1',
-            nickname: '',
-            rpcPrefs: {},
-            rpcUrl: '',
-            ticker: 'ETH',
-            type: 'mainnet',
-          },
-        },
-        PreferencesController: false,
-      },
-    };
-    await migrate(oldStorage);
-    expect(sentryCaptureExceptionMock).toHaveBeenCalledTimes(1);
-    expect(sentryCaptureExceptionMock).toHaveBeenCalledWith(
-      new Error(`typeof state.PreferencesController is boolean`),
-    );
-  });
-
-  it('should capture an exception if NetworkController is undefined', async () => {
-    const oldStorage = {
-      meta: {
-        version: 81,
-      },
-      data: {
-        PreferencesController: {},
-      },
-    };
-    await migrate(oldStorage);
-    expect(sentryCaptureExceptionMock).toHaveBeenCalledTimes(1);
-    expect(sentryCaptureExceptionMock).toHaveBeenCalledWith(
-      new Error(`typeof state.NetworkController is undefined`),
-    );
   });
 });

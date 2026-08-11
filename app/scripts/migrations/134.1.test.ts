@@ -2,25 +2,6 @@ import { NetworkConfiguration } from '@metamask/network-controller';
 import { migrate, version } from './134.1';
 
 describe(`Migration ${version}`, () => {
-  let originalSentry: typeof global.sentry;
-  let sentryCaptureExceptionMock: jest.Mock;
-
-  beforeAll(() => {
-    originalSentry = global.sentry;
-    sentryCaptureExceptionMock = jest.fn();
-    global.sentry = {
-      captureException: sentryCaptureExceptionMock,
-    };
-  });
-
-  afterAll(() => {
-    global.sentry = originalSentry;
-  });
-
-  afterEach(() => {
-    sentryCaptureExceptionMock.mockClear();
-  });
-
   it('updates the meta version to 134.1 regardless of state content', async () => {
     const dummyState = {
       meta: { version: 0 },
@@ -68,7 +49,6 @@ describe(`Migration ${version}`, () => {
       },
     };
     const result = await migrate(originalState);
-    expect(sentryCaptureExceptionMock).toHaveBeenCalled();
     expect(result.data).toEqual(originalState.data);
   });
 
@@ -100,7 +80,6 @@ describe(`Migration ${version}`, () => {
     };
 
     const result = await migrate(originalState);
-    expect(sentryCaptureExceptionMock).toHaveBeenCalled();
     expect(result.data).toEqual(originalState.data);
   });
 
@@ -117,7 +96,6 @@ describe(`Migration ${version}`, () => {
     };
 
     const result = await migrate(originalState);
-    expect(sentryCaptureExceptionMock).toHaveBeenCalled();
     expect(result.data).toEqual(originalState.data);
   });
 
@@ -136,7 +114,6 @@ describe(`Migration ${version}`, () => {
     };
 
     const result = await migrate(originalState);
-    expect(sentryCaptureExceptionMock).toHaveBeenCalled();
     expect(result.data).toEqual(originalState.data);
   });
 
@@ -164,7 +141,6 @@ describe(`Migration ${version}`, () => {
     };
 
     const result = await migrate(originalState);
-    expect(sentryCaptureExceptionMock).toHaveBeenCalled();
     expect(result.data).toEqual(originalState.data);
   });
 
@@ -187,7 +163,6 @@ describe(`Migration ${version}`, () => {
     };
 
     const result = await migrate(originalState);
-    expect(sentryCaptureExceptionMock).toHaveBeenCalled();
     expect(result.data).toEqual(originalState.data);
   });
 
@@ -211,7 +186,6 @@ describe(`Migration ${version}`, () => {
     };
 
     const result = await migrate(originalState);
-    expect(sentryCaptureExceptionMock).toHaveBeenCalled();
     expect(result.data).toEqual(originalState.data);
   });
 
@@ -275,7 +249,6 @@ describe(`Migration ${version}`, () => {
     };
 
     const result = await migrate(originalState);
-    expect(sentryCaptureExceptionMock).not.toHaveBeenCalled();
     expect(result.data).toEqual(originalState.data);
   });
 
@@ -310,8 +283,6 @@ describe(`Migration ${version}`, () => {
     };
 
     const result = await migrate(originalState);
-
-    expect(sentryCaptureExceptionMock).not.toHaveBeenCalled();
 
     const tokensControllerState = result.data.TokensController as Record<
       string,
@@ -351,14 +322,6 @@ describe(`Migration ${version}`, () => {
 
     const result = await migrate(originalState);
 
-    expect(sentryCaptureExceptionMock).toHaveBeenCalledWith(
-      expect.objectContaining({
-        message: expect.stringContaining(
-          `Migration ${version}: tokens is not an empty array, but allTokensForChain is not an object.`,
-        ),
-      }),
-    );
-
     expect(result.data).toEqual(originalState.data);
   });
 
@@ -394,14 +357,6 @@ describe(`Migration ${version}`, () => {
     };
 
     const result = await migrate(originalState);
-
-    expect(sentryCaptureExceptionMock).toHaveBeenCalledWith(
-      expect.objectContaining({
-        message: expect.stringContaining(
-          `Migration ${version}: tokens is not an empty array, but allTokensForChain is not an object.`,
-        ),
-      }),
-    );
 
     expect(result.data).toEqual(originalState.data);
   });

@@ -34,14 +34,11 @@ function transformState(state: Record<string, unknown>) {
     hasProperty(state, 'AppStateController') &&
     isObject(state.AppStateController)
   ) {
-    // See: https://metamask.sentry.io/issues/5975849508/events/7b2c1e15e40b4b94b08030f8b5470f36/
     delete state.AppStateController.enableEIP1559V2NoticeDismissed;
   }
 
   if (hasProperty(state, 'NftController') && isObject(state.NftController)) {
-    // See: https://metamask.sentry.io/issues/5975849508/events/7b2c1e15e40b4b94b08030f8b5470f36/
     delete state.NftController.collectibles;
-    // See: https://metamask.sentry.io/issues/5975849508/events/7b2c1e15e40b4b94b08030f8b5470f36/
     delete state.NftController.collectibleContracts;
   }
 
@@ -52,11 +49,9 @@ function transformState(state: Record<string, unknown>) {
     isObject(state.PreferencesController.preferences)
   ) {
     // Removed in https://github.com/MetaMask/metamask-extension/pull/23460
-    // See: https://metamask.sentry.io/issues/6312710272/events/e9f738648e874c7ab7bc974a79c0a048/
     delete state.PreferencesController.preferences
       .transactionSecurityCheckEnabled;
     // Removed in https://github.com/MetaMask/metamask-extension/pull/29301
-    // See: https://metamask.sentry.io/issues/6043753318/events/b610fbc6125d439190845caeba805eb1/
     delete state.PreferencesController.preferences.useRequestQueue;
   }
 

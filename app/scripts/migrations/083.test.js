@@ -1,12 +1,6 @@
 import { v4 } from 'uuid';
 import { migrate, version } from './083';
 
-const sentryCaptureExceptionMock = jest.fn();
-
-global.sentry = {
-  captureException: sentryCaptureExceptionMock,
-};
-
 jest.mock('uuid', () => {
   const actual = jest.requireActual('uuid');
 
@@ -149,24 +143,6 @@ describe('migration #83', () => {
     expect(newStorage).toStrictEqual(expectedNewStorage);
   });
 
-  it('should capture an exception if state.NetworkController is undefined', async () => {
-    const oldStorage = {
-      meta: {
-        version,
-      },
-      data: {
-        testProperty: 'testValue',
-      },
-    };
-
-    await migrate(oldStorage);
-
-    expect(sentryCaptureExceptionMock).toHaveBeenCalledTimes(1);
-    expect(sentryCaptureExceptionMock).toHaveBeenCalledWith(
-      new Error(`typeof state.NetworkController is undefined`),
-    );
-  });
-
   it('should not modify state if state.NetworkController is not an object', async () => {
     const oldStorage = {
       meta: {
@@ -190,25 +166,6 @@ describe('migration #83', () => {
       },
     };
     expect(newStorage).toStrictEqual(expectedNewStorage);
-  });
-
-  it('should capture an exception if state.NetworkController is not an object', async () => {
-    const oldStorage = {
-      meta: {
-        version,
-      },
-      data: {
-        NetworkController: false,
-        testProperty: 'testValue',
-      },
-    };
-
-    await migrate(oldStorage);
-
-    expect(sentryCaptureExceptionMock).toHaveBeenCalledTimes(1);
-    expect(sentryCaptureExceptionMock).toHaveBeenCalledWith(
-      new Error(`typeof state.NetworkController is boolean`),
-    );
   });
 
   it('should not modify state if state.NetworkController.networkConfigurations is undefined', async () => {
@@ -240,28 +197,6 @@ describe('migration #83', () => {
       },
     };
     expect(newStorage).toStrictEqual(expectedNewStorage);
-  });
-
-  it('should capture an exception if state.NetworkController.networkConfigurations is undefined', async () => {
-    const oldStorage = {
-      meta: {
-        version,
-      },
-      data: {
-        NetworkController: {
-          testNetworkControllerProperty: 'testNetworkControllerValue',
-          networkConfigurations: undefined,
-        },
-        testProperty: 'testValue',
-      },
-    };
-
-    await migrate(oldStorage);
-
-    expect(sentryCaptureExceptionMock).toHaveBeenCalledTimes(1);
-    expect(sentryCaptureExceptionMock).toHaveBeenCalledWith(
-      new Error(`typeof NetworkController.networkConfigurations is undefined`),
-    );
   });
 
   it('should not modify state if state.NetworkController.networkConfigurations is an empty object', async () => {

@@ -39,29 +39,14 @@ function transformState(state: Record<string, unknown>) {
 
   const networkState = state.NetworkController;
   if (!isObject(networkState)) {
-    global.sentry?.captureException?.(
-      new Error(
-        `Migration ${version}: NetworkController is not an object: ${typeof networkState}`,
-      ),
-    );
     return state;
   }
 
   if (!hasProperty(networkState, 'networkConfigurationsByChainId')) {
-    global.sentry?.captureException?.(
-      new Error(
-        `Migration ${version}: NetworkController missing property networkConfigurationsByChainId.`,
-      ),
-    );
     return state;
   }
 
   if (!isObject(networkState.networkConfigurationsByChainId)) {
-    global.sentry?.captureException?.(
-      new Error(
-        `Migration ${version}: NetworkController.networkConfigurationsByChainId is not an object: ${typeof networkState.networkConfigurationsByChainId}.`,
-      ),
-    );
     return state;
   }
 

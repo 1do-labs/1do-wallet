@@ -3,11 +3,6 @@ import { migrate, version } from './187';
 const VERSION = version;
 const oldVersion = VERSION - 1;
 
-const sentryCaptureExceptionMock = jest.fn();
-global.sentry = {
-  captureException: sentryCaptureExceptionMock,
-};
-
 describe(`migration #${VERSION} - remove transaction history`, () => {
   afterEach(() => jest.resetAllMocks());
 
@@ -110,29 +105,5 @@ describe(`migration #${VERSION} - remove transaction history`, () => {
     expect(oldState.data.TransactionController).toStrictEqual(
       oldState.data.TransactionController,
     );
-  });
-
-  it('captures exception when TransactionController is not an object', async () => {
-    const oldState = {
-      meta: { version: oldVersion },
-      data: {
-        TransactionController: 99,
-      },
-    };
-
-    await migrate(oldState, new Set());
-    expect(sentryCaptureExceptionMock).toHaveBeenCalled();
-  });
-
-  it('captures exception when transactions is not an array', async () => {
-    const oldState = {
-      meta: { version: oldVersion },
-      data: {
-        TransactionController: { transactions: 'oops' },
-      },
-    };
-
-    await migrate(oldState, new Set());
-    expect(sentryCaptureExceptionMock).toHaveBeenCalled();
   });
 });

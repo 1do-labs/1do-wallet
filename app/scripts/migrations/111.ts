@@ -36,25 +36,11 @@ function transformState(state: Record<string, any>) {
   }
 
   if (!isObject(state.SelectedNetworkController)) {
-    global.sentry?.captureException?.(
-      new Error(
-        `state.SelectedNetworkController is type: ${typeof state.SelectedNetworkController}`,
-      ),
-    );
     state.SelectedNetworkController = {};
   } else if (!hasProperty(state.SelectedNetworkController, 'domains')) {
-    global.sentry?.captureException?.(
-      new Error(
-        `state.SelectedNetworkController.domains is missing from SelectedNetworkController state`,
-      ),
-    );
+    // Leave invalid legacy state unchanged.
   } else if (!isObject(state.SelectedNetworkController.domains)) {
-    global.sentry?.captureException?.(
-      new Error(
-        `state.SelectedNetworkController.domains is type: ${typeof state
-          .SelectedNetworkController.domains}`,
-      ),
-    );
+    // Leave invalid legacy state unchanged.
   }
 
   state.SelectedNetworkController.domains = {};

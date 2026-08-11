@@ -40,13 +40,7 @@ function transformState(
 
   const userStorageControllerState = state.UserStorageController;
 
-  // If property userStorageControllerState is there but not an object, capture a sentry error and return state
   if (!isObject(userStorageControllerState)) {
-    global.sentry?.captureException?.(
-      new Error(
-        `Migration ${version}: UserStorageController is type '${typeof userStorageControllerState}', expected object.`,
-      ),
-    );
     return state;
   }
 

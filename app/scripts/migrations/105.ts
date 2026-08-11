@@ -151,12 +151,6 @@ function createSelectedAccountForAccountsController(
     let selectedAddress = state.PreferencesController?.selectedAddress;
 
     if (typeof selectedAddress !== 'string') {
-      global.sentry?.captureException?.(
-        new Error(
-          `state.PreferencesController?.selectedAddress is ${selectedAddress}`,
-        ),
-      );
-
       // Get the first account if selectedAddress is not a string
       selectedAddress = getFirstAddress(state);
     }

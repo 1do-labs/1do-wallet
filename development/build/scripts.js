@@ -292,7 +292,7 @@ function createScriptTasks({
         // delete the scripts/inpage.js source map, as it no longer represents
         // scripts/inpage.js and so `yarn source-map-explorer` can't handle it.
         // It's also not useful anyway, as scripts/inpage.js is injected as a
-        // `script.textContent`, and not tracked in Sentry or browsers devtools
+        // `script.textContent`, and not tracked in browser developer tools
         // anyway.
         unlinkSync(
           path.join(

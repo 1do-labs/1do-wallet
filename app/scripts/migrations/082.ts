@@ -31,22 +31,12 @@ function transformState(state: Record<string, unknown>) {
     return state;
   }
   if (!isObject(state.PreferencesController)) {
-    global.sentry?.captureException?.(
-      new Error(
-        `typeof state.PreferencesController is ${typeof state.PreferencesController}`,
-      ),
-    );
     return state;
   }
   if (
     !hasProperty(state, 'NetworkController') ||
     !isObject(state.NetworkController)
   ) {
-    global.sentry?.captureException?.(
-      new Error(
-        `typeof state.NetworkController is ${typeof state.NetworkController}`,
-      ),
-    );
     return state;
   }
   if (
@@ -57,12 +47,7 @@ function transformState(state: Record<string, unknown>) {
       state.NetworkController.networkConfigurations &&
       state.PreferencesController.frequentRpcListDetail === undefined;
     if (!inPost077SupplementFor082State) {
-      global.sentry?.captureException?.(
-        new Error(
-          `typeof state.PreferencesController.frequentRpcListDetail is ${typeof state
-            .PreferencesController.frequentRpcListDetail}`,
-        ),
-      );
+      // Leave invalid legacy state unchanged.
     }
     return state;
   }
@@ -71,11 +56,6 @@ function transformState(state: Record<string, unknown>) {
       state.PreferencesController.frequentRpcListDetail.find(
         (element) => !isObject(element),
       );
-    global.sentry?.captureException?.(
-      new Error(
-        `state.PreferencesController.frequentRpcListDetail contains an element of type ${typeof erroneousElement}`,
-      ),
-    );
     return state;
   }
   const { PreferencesController, NetworkController } = state;

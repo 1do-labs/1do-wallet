@@ -4,17 +4,6 @@ const VERSION = version;
 const oldVersion = 183;
 
 describe(`migration #${VERSION}`, () => {
-  let mockedCaptureException: jest.Mock;
-
-  beforeEach(() => {
-    mockedCaptureException = jest.fn();
-    global.sentry = { captureException: mockedCaptureException };
-  });
-
-  afterEach(() => {
-    global.sentry = undefined;
-  });
-
   it('updates the version metadata', async () => {
     const oldStorage = {
       meta: { version: oldVersion },
@@ -57,11 +46,6 @@ describe(`migration #${VERSION}`, () => {
     const newStorage = await migrate(oldStorage);
 
     expect(newStorage.data).toStrictEqual(oldStorage.data);
-    expect(mockedCaptureException).toHaveBeenCalledWith(
-      new Error(
-        `Migration ${VERSION}: CurrencyController is not an object: string`,
-      ),
-    );
   });
 
   it('does nothing if currencyRates is missing', async () => {
@@ -95,9 +79,6 @@ describe(`migration #${VERSION}`, () => {
     const newStorage = await migrate(oldStorage);
 
     expect(newStorage.data).toStrictEqual(oldStorage.data);
-    expect(mockedCaptureException).toHaveBeenCalledWith(
-      new Error(`Migration ${VERSION}: currencyRates is not an object: string`),
-    );
   });
 
   it('rounds conversionRate with more than 9 decimal places', async () => {

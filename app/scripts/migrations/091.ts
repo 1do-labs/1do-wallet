@@ -51,18 +51,9 @@ function transformState(state: Record<string, unknown>) {
       NetworkController: state.NetworkController,
     };
   } else if (!isObject(state.NetworkController)) {
-    global.sentry?.captureException?.(
-      new Error(
-        `typeof state.NetworkController is ${typeof state.NetworkController}`,
-      ),
-    );
+    // Leave invalid legacy state unchanged.
   } else if (!isObject(state.NetworkController.networkConfigurations)) {
-    global.sentry?.captureException?.(
-      new Error(
-        `typeof state.NetworkController.networkConfigurations is ${typeof state
-          .NetworkController.networkConfigurations}`,
-      ),
-    );
+    // Leave invalid legacy state unchanged.
   }
   return state;
 }

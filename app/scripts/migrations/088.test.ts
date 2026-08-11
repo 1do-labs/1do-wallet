@@ -3,12 +3,6 @@ import { migrate } from './088';
 
 jest.mock('loglevel');
 
-const sentryCaptureExceptionMock = jest.fn();
-
-global.sentry = {
-  captureException: sentryCaptureExceptionMock,
-};
-
 const invalidKeys = ['null', 'undefined'];
 
 describe('migration #88', () => {
@@ -41,24 +35,6 @@ describe('migration #88', () => {
     expect(newStorage.data).toStrictEqual(oldData);
   });
 
-  it('captures an exception if the NftController property is not an object', async () => {
-    const oldData = {
-      TokenListController: {},
-      TokensController: {},
-      NftController: false,
-    };
-    const oldStorage = {
-      meta: { version: 87 },
-      data: oldData,
-    };
-
-    await migrate(oldStorage);
-    expect(sentryCaptureExceptionMock).toHaveBeenCalledTimes(1);
-    expect(sentryCaptureExceptionMock).toHaveBeenCalledWith(
-      new Error(`typeof state.NftController is boolean`),
-    );
-  });
-
   it('returns the state unaltered if the NftController object has no allNftContracts property', async () => {
     const oldData = {
       NftController: {
@@ -89,26 +65,6 @@ describe('migration #88', () => {
     const newStorage = await migrate(oldStorage);
 
     expect(newStorage.data).toStrictEqual(oldData);
-  });
-
-  it('captures an exception if it NftController.allNftContracts is not an object', async () => {
-    const oldData = {
-      TokenListController: {},
-      TokensController: {},
-      NftController: {
-        allNftContracts: 'foo',
-      },
-    };
-    const oldStorage = {
-      meta: { version: 87 },
-      data: oldData,
-    };
-
-    await migrate(oldStorage);
-    expect(sentryCaptureExceptionMock).toHaveBeenCalledTimes(1);
-    expect(sentryCaptureExceptionMock).toHaveBeenCalledWith(
-      new Error(`typeof state.NftController.allNftContracts is string`),
-    );
   });
 
   it('returns the state unaltered if any value of the NftController.allNftContracts object is not an object itself', async () => {
@@ -377,26 +333,6 @@ describe('migration #88', () => {
     const newStorage = await migrate(oldStorage);
 
     expect(newStorage.data).toStrictEqual(oldData);
-  });
-
-  it('captures an exception if it NftController.allNfts is not an object', async () => {
-    const oldData = {
-      TokenListController: {},
-      TokensController: {},
-      NftController: {
-        allNfts: 'foo',
-      },
-    };
-    const oldStorage = {
-      meta: { version: 87 },
-      data: oldData,
-    };
-
-    await migrate(oldStorage);
-    expect(sentryCaptureExceptionMock).toHaveBeenCalledTimes(1);
-    expect(sentryCaptureExceptionMock).toHaveBeenCalledWith(
-      new Error(`typeof state.NftController.allNfts is string`),
-    );
   });
 
   it('returns the state unaltered if any value of the NftController.allNfts object is not an object itself', async () => {
@@ -856,25 +792,6 @@ describe('migration #88', () => {
     expect(newStorage.data).toStrictEqual(oldData);
   });
 
-  it('captures an exception if the TokenListController.tokensChainsCache property is not an object', async () => {
-    const oldData = {
-      TokenListController: {
-        tokensChainsCache: 'foo',
-      },
-      TokensController: {},
-    };
-    const oldStorage = {
-      meta: { version: 87 },
-      data: oldData,
-    };
-
-    await migrate(oldStorage);
-    expect(sentryCaptureExceptionMock).toHaveBeenCalledTimes(1);
-    expect(sentryCaptureExceptionMock).toHaveBeenCalledWith(
-      new Error(`typeof state.TokenListController.tokensChainsCache is string`),
-    );
-  });
-
   it('rewrites TokenListController.tokensChainsCache so that decimal chain IDs are converted to hex strings', async () => {
     const oldStorage = {
       meta: { version: 87 },
@@ -1108,39 +1025,6 @@ describe('migration #88', () => {
     expect(newStorage.data).toStrictEqual(oldData);
   });
 
-  it('captures an exception if it has no TokensController property', async () => {
-    const oldData = {
-      TokenListController: {},
-    };
-    const oldStorage = {
-      meta: { version: 87 },
-      data: oldData,
-    };
-
-    await migrate(oldStorage);
-    expect(sentryCaptureExceptionMock).toHaveBeenCalledTimes(1);
-    expect(sentryCaptureExceptionMock).toHaveBeenCalledWith(
-      new Error(`typeof state.TokensController is undefined`),
-    );
-  });
-
-  it('captures an exception if the TokensController property is not an object', async () => {
-    const oldData = {
-      TokenListController: {},
-      TokensController: false,
-    };
-    const oldStorage = {
-      meta: { version: 87 },
-      data: oldData,
-    };
-
-    await migrate(oldStorage);
-    expect(sentryCaptureExceptionMock).toHaveBeenCalledTimes(1);
-    expect(sentryCaptureExceptionMock).toHaveBeenCalledWith(
-      new Error(`typeof state.TokensController is boolean`),
-    );
-  });
-
   it('returns the state unaltered if the TokensController object has no allTokens property', async () => {
     const oldData = {
       TokensController: {
@@ -1171,25 +1055,6 @@ describe('migration #88', () => {
     const newStorage = await migrate(oldStorage);
 
     expect(newStorage.data).toStrictEqual(oldData);
-  });
-
-  it('captures an exception if the TokensController.allTokens property is not an object', async () => {
-    const oldData = {
-      TokenListController: {},
-      TokensController: {
-        allTokens: 'foo',
-      },
-    };
-    const oldStorage = {
-      meta: { version: 87 },
-      data: oldData,
-    };
-
-    await migrate(oldStorage);
-    expect(sentryCaptureExceptionMock).toHaveBeenCalledTimes(1);
-    expect(sentryCaptureExceptionMock).toHaveBeenCalledWith(
-      new Error(`typeof state.TokensController.allTokens is string`),
-    );
   });
 
   it('rewrites TokensController.allTokens so that decimal chain IDs are converted to hex strings', async () => {
@@ -1406,25 +1271,6 @@ describe('migration #88', () => {
     expect(newStorage.data).toStrictEqual(oldData);
   });
 
-  it('captures an exception if the TokensController.allIgnoredTokens property is not an object', async () => {
-    const oldData = {
-      TokenListController: {},
-      TokensController: {
-        allIgnoredTokens: 'foo',
-      },
-    };
-    const oldStorage = {
-      meta: { version: 87 },
-      data: oldData,
-    };
-
-    await migrate(oldStorage);
-    expect(sentryCaptureExceptionMock).toHaveBeenCalledTimes(1);
-    expect(sentryCaptureExceptionMock).toHaveBeenCalledWith(
-      new Error(`typeof state.TokensController.allIgnoredTokens is string`),
-    );
-  });
-
   it('rewrites TokensController.allIgnoredTokens so that decimal chain IDs are converted to hex strings', async () => {
     const oldStorage = {
       meta: { version: 87 },
@@ -1585,25 +1431,6 @@ describe('migration #88', () => {
     const newStorage = await migrate(oldStorage);
 
     expect(newStorage.data).toStrictEqual(oldData);
-  });
-
-  it('captures an exception if the TokensController.allDetectedTokens property is not an object', async () => {
-    const oldData = {
-      TokenListController: {},
-      TokensController: {
-        allDetectedTokens: 'foo',
-      },
-    };
-    const oldStorage = {
-      meta: { version: 87 },
-      data: oldData,
-    };
-
-    await migrate(oldStorage);
-    expect(sentryCaptureExceptionMock).toHaveBeenCalledTimes(1);
-    expect(sentryCaptureExceptionMock).toHaveBeenCalledWith(
-      new Error(`typeof state.TokensController.allDetectedTokens is string`),
-    );
   });
 
   it('rewrites TokensController.allDetectedTokens so that decimal chain IDs are converted to hex strings', async () => {

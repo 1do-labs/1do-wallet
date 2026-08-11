@@ -1,10 +1,6 @@
 import sinon from 'sinon';
 import configureStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-import {
-  USER_STORAGE_GROUPS_FEATURE_KEY,
-  USER_STORAGE_WALLETS_FEATURE_KEY,
-} from '@metamask/account-tree-controller';
 import { EthAccountType } from '@metamask/keyring-api';
 import { TransactionStatus } from '@metamask/transaction-controller';
 // TODO: Remove restricted import
@@ -23,11 +19,6 @@ import { stripWalletTypePrefixFromWalletId } from '../hooks/multichain-accounts/
 import * as actions from './actions';
 import * as actionConstants from './actionConstants';
 import { setBackgroundConnection } from './background-connection';
-import { getStatePatches } from './patch-store-substream-connection';
-
-jest.mock('./patch-store-substream-connection');
-
-const getStatePatchesMock = jest.mocked(getStatePatches);
 
 const mockUlid = '01JMPHQSH1A4DQAAS6ES7NDJ38';
 
@@ -139,101 +130,6 @@ describe('Actions', () => {
     sinon.restore();
   });
 
-  describe('createAndBackupSeedPhrase', () => {
-    afterEach(() => {
-      sinon.restore();
-    });
-
-    it('should create KeyChain, vault and Backup in the background', async () => {
-      const store = mockStore();
-      const mockKeyrings = [{ metadata: { id: 'mock-keyring-id' } }];
-      const mockSeedPhrase = 'mock seed phrase';
-      const mockEncodedSeedPhrase = Array.from(
-        Buffer.from(mockSeedPhrase).values(),
-      );
-
-      const createSeedPhraseBackupStub =
-        background.createSeedPhraseBackup.resolves();
-      const createNewVaultAndKeychainStub =
-        background.createNewVaultAndKeychain.resolves(mockKeyrings[0]);
-      const getSeedPhraseStub = background.getSeedPhrase.resolves(
-        mockEncodedSeedPhrase,
-      );
-
-      setBackgroundConnection(background);
-
-      await store.dispatch(actions.createNewVaultAndSyncWithSocial('password'));
-
-      expect(getSeedPhraseStub.callCount).toStrictEqual(1);
-      expect(createNewVaultAndKeychainStub.callCount).toStrictEqual(1);
-      expect(
-        createSeedPhraseBackupStub.calledOnceWith(
-          'password',
-          mockEncodedSeedPhrase,
-          mockKeyrings[0].metadata.id,
-        ),
-      ).toStrictEqual(true);
-    });
-  });
-
-  describe('#restoreSocialBackupAndGetSeedPhrase', () => {
-    afterEach(() => {
-      sinon.restore();
-    });
-
-    it('returns the seed phrase and syncs marketing consent', async () => {
-      const store = mockStore();
-      const mnemonic = 'seed phrase';
-
-      const restoreSocialBackupAndGetSeedPhraseStub =
-        background.restoreSocialBackupAndGetSeedPhrase.resolves(mnemonic);
-      background.getMarketingConsent = sinon.stub().resolves(true);
-      background.setDataCollectionForMarketing = sinon.stub().resolves();
-
-      setBackgroundConnection(background);
-
-      const result = await store.dispatch(
-        actions.restoreSocialBackupAndGetSeedPhrase('password'),
-      );
-
-      expect(result).toStrictEqual(mnemonic);
-      expect(
-        restoreSocialBackupAndGetSeedPhraseStub.calledOnceWith('password'),
-      ).toStrictEqual(true);
-      expect(background.getMarketingConsent.calledOnce).toStrictEqual(true);
-      expect(
-        background.setDataCollectionForMarketing.calledOnceWith(true),
-      ).toStrictEqual(true);
-      expect(getStatePatchesMock).toHaveBeenCalled();
-      expect(store.getActions()).toStrictEqual([
-        {
-          type: actionConstants.SET_DATA_COLLECTION_FOR_MARKETING,
-          value: true,
-        },
-        {
-          type: actionConstants.HIDE_WARNING,
-        },
-      ]);
-    });
-
-    it('displays a warning when restoring the social backup fails', async () => {
-      const store = mockStore();
-
-      background.restoreSocialBackupAndGetSeedPhrase.rejects(
-        new Error('error'),
-      );
-
-      setBackgroundConnection(background);
-
-      const expectedActions = [{ type: 'DISPLAY_WARNING', payload: 'error' }];
-
-      await expect(
-        store.dispatch(actions.restoreSocialBackupAndGetSeedPhrase('password')),
-      ).rejects.toThrow('error');
-      expect(store.getActions()).toStrictEqual(expectedActions);
-    });
-  });
-
   describe('#changePassword', () => {
     afterEach(() => {
       sinon.restore();
@@ -257,109 +153,6 @@ describe('Actions', () => {
       expect(
         background.changePassword.calledOnceWith(newPassword, oldPassword),
       ).toStrictEqual(true);
-    });
-  });
-
-  describe('#checkIsSeedlessPasswordOutdated', () => {
-    afterEach(() => {
-      sinon.restore();
-    });
-
-    it('should return true if the password is outdated', async () => {
-      const store = mockStore({
-        ...defaultState,
-        metamask: {
-          ...defaultState.metamask,
-          firstTimeFlowType: FirstTimeFlowType.socialCreate,
-        },
-      });
-
-      const checkIsSeedlessPasswordOutdated =
-        background.checkIsSeedlessPasswordOutdated.resolves(true);
-
-      setBackgroundConnection(background);
-
-      const result = await store.dispatch(
-        actions.checkIsSeedlessPasswordOutdated(),
-      );
-      expect(result).toStrictEqual(true);
-      expect(checkIsSeedlessPasswordOutdated.callCount).toStrictEqual(1);
-      expect(checkIsSeedlessPasswordOutdated.firstCall.args).toStrictEqual([
-        {
-          skipCache: true,
-          captureSentryError: true,
-        },
-      ]);
-    });
-
-    it('should return false if the password is not outdated', async () => {
-      const store = mockStore({
-        ...defaultState,
-        metamask: {
-          ...defaultState.metamask,
-          firstTimeFlowType: FirstTimeFlowType.socialCreate,
-        },
-      });
-
-      const checkIsSeedlessPasswordOutdated =
-        background.checkIsSeedlessPasswordOutdated.resolves(false);
-
-      setBackgroundConnection(background);
-
-      const result = await store.dispatch(
-        actions.checkIsSeedlessPasswordOutdated(),
-      );
-      expect(result).toStrictEqual(false);
-      expect(checkIsSeedlessPasswordOutdated.callCount).toStrictEqual(1);
-    });
-
-    it('passes skipCache and captureSentryError to the background check', async () => {
-      const store = mockStore({
-        ...defaultState,
-        metamask: {
-          ...defaultState.metamask,
-          firstTimeFlowType: FirstTimeFlowType.socialCreate,
-        },
-      });
-
-      const checkIsSeedlessPasswordOutdated =
-        background.checkIsSeedlessPasswordOutdated.resolves(true);
-
-      setBackgroundConnection(background);
-
-      const result = await store.dispatch(
-        actions.checkIsSeedlessPasswordOutdated(false, false),
-      );
-
-      expect(result).toStrictEqual(true);
-      expect(checkIsSeedlessPasswordOutdated.callCount).toStrictEqual(1);
-      expect(checkIsSeedlessPasswordOutdated.firstCall.args).toStrictEqual([
-        {
-          skipCache: false,
-          captureSentryError: false,
-        },
-      ]);
-    });
-
-    it('should not throw an error if the checkIsSeedlessPasswordOutdated fails', async () => {
-      const store = mockStore({
-        ...defaultState,
-        metamask: {
-          ...defaultState.metamask,
-          firstTimeFlowType: FirstTimeFlowType.socialCreate,
-        },
-      });
-
-      const checkIsSeedlessPasswordOutdated =
-        background.checkIsSeedlessPasswordOutdated.rejects(new Error('error'));
-
-      setBackgroundConnection(background);
-
-      const result = await store.dispatch(
-        actions.checkIsSeedlessPasswordOutdated(),
-      );
-      expect(result).toStrictEqual(false);
-      expect(checkIsSeedlessPasswordOutdated.callCount).toStrictEqual(1);
     });
   });
 
@@ -3276,55 +3069,6 @@ describe('Actions', () => {
     });
   });
 
-  describe('#updateDataDeletionTaskStatus', () => {
-    afterEach(() => {
-      sinon.restore();
-    });
-
-    it('calls updateDataDeletionTaskStatus in background', async () => {
-      const updateDataDeletionTaskStatusStub = sinon.stub().resolves();
-      background.getApi.returns({
-        updateDataDeletionTaskStatus: updateDataDeletionTaskStatusStub,
-      });
-
-      setBackgroundConnection(background.getApi());
-
-      await actions.updateDataDeletionTaskStatus();
-      expect(updateDataDeletionTaskStatusStub.callCount).toStrictEqual(1);
-    });
-  });
-
-  describe('deleteAccountSyncingDataFromUserStorage', () => {
-    afterEach(() => {
-      sinon.restore();
-    });
-
-    it('calls deleteAccountSyncingDataFromUserStorage in the background', async () => {
-      const store = mockStore();
-
-      const deleteAccountSyncingDataFromUserStorageStub = sinon
-        .stub()
-        .resolves();
-      background.getApi.returns({
-        deleteAccountSyncingDataFromUserStorage:
-          deleteAccountSyncingDataFromUserStorageStub,
-      });
-      setBackgroundConnection(background.getApi());
-
-      await store.dispatch(actions.deleteAccountSyncingDataFromUserStorage());
-      expect(
-        deleteAccountSyncingDataFromUserStorageStub.calledWith(
-          USER_STORAGE_GROUPS_FEATURE_KEY,
-        ),
-      ).toBe(true);
-      expect(
-        deleteAccountSyncingDataFromUserStorageStub.calledWith(
-          USER_STORAGE_WALLETS_FEATURE_KEY,
-        ),
-      ).toBe(true);
-    });
-  });
-
   describe('removePermittedChain', () => {
     afterEach(() => {
       sinon.restore();
@@ -3366,58 +3110,6 @@ describe('Actions', () => {
         ),
       ).toBe(true);
       expect(store.getActions()).toStrictEqual([]);
-    });
-  });
-
-  describe('setSmartTransactionsRefreshInterval', () => {
-    afterEach(() => {
-      sinon.restore();
-    });
-
-    it('calls setStatusRefreshInterval in the background with provided interval', async () => {
-      const store = mockStore();
-      const refreshInterval = 1000;
-
-      background = {
-        setStatusRefreshInterval: sinon.stub().resolves(),
-      };
-      setBackgroundConnection(background);
-
-      await store.dispatch(
-        actions.setSmartTransactionsRefreshInterval(refreshInterval),
-      );
-
-      expect(
-        background.setStatusRefreshInterval.calledWith(refreshInterval),
-      ).toBe(true);
-    });
-
-    it('does not call background if refresh interval is undefined', async () => {
-      const store = mockStore();
-
-      background = {
-        setStatusRefreshInterval: sinon.stub().resolves(),
-      };
-      setBackgroundConnection(background);
-
-      await store.dispatch(
-        actions.setSmartTransactionsRefreshInterval(undefined),
-      );
-
-      expect(background.setStatusRefreshInterval.called).toBe(false);
-    });
-
-    it('does not call background if refresh interval is null', async () => {
-      const store = mockStore();
-
-      background = {
-        setStatusRefreshInterval: sinon.stub().resolves(),
-      };
-      setBackgroundConnection(background);
-
-      await store.dispatch(actions.setSmartTransactionsRefreshInterval(null));
-
-      expect(background.setStatusRefreshInterval.called).toBe(false);
     });
   });
 

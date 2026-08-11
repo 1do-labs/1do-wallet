@@ -10,7 +10,6 @@ export const version = 133.1;
 
 /**
  * Removes tokens with `decimals === null` from `allTokens`, `allDetectedTokens`, `tokens`, and `detectedTokens`.
- * Captures exceptions for invalid states using Sentry and logs tokens with `decimals === null`.
  *
  * @param originalVersionedData - Versioned MetaMask extension state, exactly
  * what we persist to disk.
@@ -38,11 +37,6 @@ function transformState(state: Record<string, unknown>): void {
   const tokensControllerState = state.TokensController;
 
   if (!isObject(tokensControllerState)) {
-    global.sentry?.captureException(
-      new Error(
-        `Migration ${version}: Invalid TokensController state of type '${typeof tokensControllerState}'`,
-      ),
-    );
     return;
   }
 
@@ -54,11 +48,7 @@ function transformState(state: Record<string, unknown>): void {
         'allTokens',
       );
     } else {
-      global.sentry?.captureException(
-        new Error(
-          `Migration ${version}: Invalid allTokens state of type '${typeof tokensControllerState.allTokens}'`,
-        ),
-      );
+      // Leave invalid legacy state unchanged.
     }
   }
 
@@ -70,11 +60,7 @@ function transformState(state: Record<string, unknown>): void {
         'allDetectedTokens',
       );
     } else {
-      global.sentry?.captureException(
-        new Error(
-          `Migration ${version}: Invalid allDetectedTokens state of type '${typeof tokensControllerState.allDetectedTokens}'`,
-        ),
-      );
+      // Leave invalid legacy state unchanged.
     }
   }
 
@@ -91,22 +77,13 @@ function transformState(state: Record<string, unknown>): void {
           token.decimals === null &&
           hasProperty(token, 'address')
         ) {
-          global.sentry?.captureMessage(
-            // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31893
-            // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-            `Migration ${version}: Removed token with decimals === null in tokens. Address: ${token.address}`,
-          );
           return false;
         }
         return true;
       },
     );
   } else if (hasProperty(tokensControllerState, 'tokens')) {
-    global.sentry?.captureException(
-      new Error(
-        `Migration ${version}: Invalid tokens state of type '${typeof tokensControllerState.tokens}'`,
-      ),
-    );
+    // Leave invalid legacy state unchanged.
   }
 
   // Transform `detectedTokens` array
@@ -122,21 +99,12 @@ function transformState(state: Record<string, unknown>): void {
           token.decimals === null &&
           hasProperty(token, 'address')
         ) {
-          global.sentry?.captureMessage(
-            // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31893
-            // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-            `Migration ${version}: Removed token with decimals === null in detectedTokens. Address: ${token.address}`,
-          );
           return false;
         }
         return true;
       });
   } else if (hasProperty(tokensControllerState, 'detectedTokens')) {
-    global.sentry?.captureException(
-      new Error(
-        `Migration ${version}: Invalid detectedTokens state of type '${typeof tokensControllerState.detectedTokens}'`,
-      ),
-    );
+    // Leave invalid legacy state unchanged.
   }
 }
 
@@ -167,11 +135,6 @@ function transformTokenCollection(
               token.decimals === null &&
               hasProperty(token, 'address')
             ) {
-              global.sentry?.captureMessage(
-                // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31893
-                // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-                `Migration ${version}: Removed token with decimals === null in ${propertyName}. Address: ${token.address}`,
-              );
               return false; // Exclude token
             }
             return (

@@ -32,11 +32,6 @@ function transformState(state: Record<string, unknown>) {
     log.warn('Skipping migration, TokenListController state is missing');
     return state;
   } else if (!isObject(state.TokenListController)) {
-    global.sentry?.captureException?.(
-      new Error(
-        `typeof state.TokenListController is ${typeof state.TokenListController}`,
-      ),
-    );
     return state;
   } else if (!hasProperty(state.TokenListController, 'tokensChainsCache')) {
     log.warn(

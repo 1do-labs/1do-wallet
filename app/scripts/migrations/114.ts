@@ -25,11 +25,6 @@ function transformState(state: Record<string, any>) {
   }
 
   if (!isObject(state.PreferencesController)) {
-    global.sentry?.captureException?.(
-      new Error(
-        `state.PreferencesController is type: ${typeof state.PreferencesController}`,
-      ),
-    );
     state.PreferencesController = {};
   } else if (
     hasProperty(state.PreferencesController, 'transactionSecurityCheckEnabled')

@@ -71,7 +71,7 @@ const setupPageStreams = () => {
    * from propagating through the stream chain.
    *
    * HIGH IMPACT:
-   * These "Premature close" errors are the #1 error in Sentry (3.8M/month). They occur
+   * These "Premature close" errors occur
    * during normal operations: page navigation, tab closure, etc. Graceful shutdown
    * significantly reduces error noise in production.
    *

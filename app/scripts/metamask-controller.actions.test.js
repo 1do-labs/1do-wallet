@@ -642,7 +642,7 @@ describe('MetaMaskController', function () {
       ).toHaveBeenCalled();
     });
 
-    it('captures the error when password check fails and captureSentryError is true', async function () {
+    it('captures the error when the password check fails', async function () {
       const error = new Error('Network error');
 
       jest
@@ -664,7 +664,6 @@ describe('MetaMaskController', function () {
       await expect(
         metamaskController.checkIsSeedlessPasswordOutdated({
           skipCache: false,
-          captureSentryError: true,
         }),
       ).rejects.toThrow(error);
 
@@ -673,7 +672,7 @@ describe('MetaMaskController', function () {
       ).toHaveBeenCalledTimes(1);
     });
 
-    it('does not capture the error when password check fails and captureSentryError is false', async function () {
+    it('does not capture the error when reporting is disabled', async function () {
       const error = new Error('Network error');
 
       jest
@@ -695,7 +694,6 @@ describe('MetaMaskController', function () {
       await expect(
         metamaskController.checkIsSeedlessPasswordOutdated({
           skipCache: false,
-          captureSentryError: false,
         }),
       ).rejects.toThrow(error);
 
@@ -902,13 +900,11 @@ describe('MetaMaskController', function () {
           metamaskController.checkIsSeedlessPasswordOutdated,
         ).toHaveBeenNthCalledWith(1, {
           skipCache: false,
-          captureSentryError: true,
         });
         expect(
           metamaskController.checkIsSeedlessPasswordOutdated,
         ).toHaveBeenNthCalledWith(2, {
           skipCache: true,
-          captureSentryError: true,
         });
         expect(releaseLock).toHaveBeenCalled();
       });

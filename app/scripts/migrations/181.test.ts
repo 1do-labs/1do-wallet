@@ -1,11 +1,5 @@
 import { migrate, version } from './181';
 
-const sentryCaptureExceptionMock = jest.fn();
-
-global.sentry = {
-  captureException: sentryCaptureExceptionMock,
-};
-
 describe('migration #180', () => {
   afterEach(() => {
     jest.resetAllMocks();

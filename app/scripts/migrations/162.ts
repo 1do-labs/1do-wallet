@@ -54,29 +54,14 @@ function transformState(
     state.AccountsController as AccountsControllerState;
 
   if (!isObject(tokensControllerState)) {
-    global.sentry?.captureException?.(
-      new Error(
-        `Migration ${version}: TokensController is type '${typeof tokensControllerState}', expected object.`,
-      ),
-    );
     return state;
   }
 
   if (!isObject(tokenBalancesControllerState)) {
-    global.sentry?.captureException?.(
-      new Error(
-        `Migration ${version}: TokenBalancesController is type '${typeof tokenBalancesControllerState}', expected object.`,
-      ),
-    );
     return state;
   }
 
   if (!isObject(accountsControllerState)) {
-    global.sentry?.captureException?.(
-      new Error(
-        `Migration ${version}: AccountsController is type '${typeof accountsControllerState}', expected object.`,
-      ),
-    );
     return state;
   }
 

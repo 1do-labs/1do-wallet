@@ -32,20 +32,12 @@ function transformState(
   state: Record<string, unknown>,
 ): Record<string, unknown> {
   if (!hasProperty(state, 'PreferencesController')) {
-    global.sentry?.captureException?.(
-      new Error(`Migration ${version}: PreferencesController not found.`),
-    );
     return state;
   }
 
   const preferencesControllerState = state.PreferencesController;
 
   if (!isObject(preferencesControllerState)) {
-    global.sentry?.captureException?.(
-      new Error(
-        `Migration ${version}: PreferencesController is type '${typeof preferencesControllerState}', expected object.`,
-      ),
-    );
     return state;
   }
 

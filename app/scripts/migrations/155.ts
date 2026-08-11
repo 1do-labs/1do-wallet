@@ -38,11 +38,6 @@ function transformState(
   const bridgeStatusControllerState = state.BridgeStatusController;
 
   if (!isObject(bridgeStatusControllerState)) {
-    global.sentry?.captureException?.(
-      new Error(
-        `Migration ${version}: BridgeStatusController is type '${typeof bridgeStatusControllerState}', expected object.`,
-      ),
-    );
     return state;
   }
 

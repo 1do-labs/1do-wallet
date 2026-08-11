@@ -37,9 +37,6 @@ function transformState(state: Record<string, any>) {
 
   if (!isObject(state.PreferencesController)) {
     const controllerType = typeof state.PreferencesController;
-    global.sentry?.captureException?.(
-      new Error(`state.PreferencesController is type: ${controllerType}`),
-    );
     state.PreferencesController = {};
   }
 

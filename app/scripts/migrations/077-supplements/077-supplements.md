@@ -23,7 +23,7 @@ will return undefined if the network call failed)
 For users who were in that situation, where a `TokenListController.tokensChainsCache[chainId].data` property was undefined, some significant problems would occur after updating to v10.24.0, which is the
 release where migration 77 was shipped. In particular, migration 77 would fail, and all subsequent migrations would not run. The most plain case of this would be a user who was on v10.23.0
 with `TokenListController.tokensChainsCache[chainId].data === undefined`. Then suppose they didn't update until v10.34.0. None of migrations 77-89 would run. Leaving their state in a form that doesn't match
-with assumptions throughout our codebase. Various bugs could be caused, but the sentry error describe above is the worst case, where MetaMask simply could not be opened and users would hit the error screen.
+with assumptions throughout our codebase. Various bugs could be caused, including a worst case where MetaMask simply could not be opened and users would hit the error screen.
 
 To correct this situation we had to fix migration 77. Once we do that, all users who were in this situation (and then upgraded to the version which included the fixes for migration 77) would have all migrations
 from 77 upwards run for the first time. This could be problematic for users who had used the wallet on versions 10.24.0-10.34.0, where our controllers would be writing data to state under the assumption that

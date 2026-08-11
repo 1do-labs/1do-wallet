@@ -17,7 +17,6 @@ export const version = 134.1;
  * chain's RPC endpoints in `networkConfigurationsByChainId`.
  *
  * If any step fails (missing or invalid state), the migration is skipped, and
- * the original state is returned as-is (after logging an error to Sentry).
  *
  * @param originalVersionedData - Versioned MetaMask extension state, exactly
  * what we persist to disk.
@@ -38,20 +37,12 @@ function transformState(
   state: Record<string, unknown>,
 ): Record<string, unknown> {
   if (!hasProperty(state, 'AccountsController')) {
-    global.sentry?.captureException?.(
-      new Error(`Migration ${version}: Missing AccountsController.`),
-    );
     return state;
   }
 
   const accountsControllerState =
     state.AccountsController as unknown as AccountsControllerState;
   if (!isObject(accountsControllerState)) {
-    global.sentry?.captureException?.(
-      new Error(
-        `Migration ${version}: AccountsController is type '${typeof accountsControllerState}', expected object.`,
-      ),
-    );
     return state;
   }
 
@@ -59,11 +50,6 @@ function transformState(
     !hasProperty(accountsControllerState, 'internalAccounts') ||
     !isObject(accountsControllerState.internalAccounts)
   ) {
-    global.sentry?.captureException?.(
-      new Error(
-        `Migration ${version}: Missing or invalid AccountsController.internalAccounts.`,
-      ),
-    );
     return state;
   }
 
@@ -81,11 +67,6 @@ function transformState(
     !hasProperty(internalAccounts, 'accounts') ||
     !isObject(internalAccounts.accounts)
   ) {
-    global.sentry?.captureException?.(
-      new Error(
-        `Migration ${version}: Missing or invalid internalAccounts.accounts.`,
-      ),
-    );
     return state;
   }
   const { accounts } = internalAccounts;
@@ -94,11 +75,6 @@ function transformState(
     !hasProperty(accounts, selectedAccountKey) ||
     !isObject(accounts[selectedAccountKey])
   ) {
-    global.sentry?.captureException?.(
-      new Error(
-        `Migration ${version}: Selected account entry not found in internalAccounts.accounts.`,
-      ),
-    );
     return state;
   }
   const selectedAccountEntry = accounts[selectedAccountKey];
@@ -107,29 +83,16 @@ function transformState(
     typeof selectedAccountEntry.address !== 'string' ||
     selectedAccountEntry.address === ''
   ) {
-    global.sentry?.captureException?.(
-      new Error(
-        `Migration ${version}: Invalid or missing address in selected account entry.`,
-      ),
-    );
     return state;
   }
   const selectedAccountAddress = selectedAccountEntry.address;
 
   if (!hasProperty(state, 'NetworkController')) {
-    global.sentry?.captureException?.(
-      new Error(`Migration ${version}: Missing NetworkController.`),
-    );
     return state;
   }
 
   const networkControllerState = state.NetworkController;
   if (!isObject(networkControllerState)) {
-    global.sentry?.captureException?.(
-      new Error(
-        `Migration ${version}: NetworkController is type '${typeof networkControllerState}', expected object.`,
-      ),
-    );
     return state;
   }
 
@@ -138,11 +101,6 @@ function transformState(
     typeof networkControllerState.selectedNetworkClientId !== 'string' ||
     !networkControllerState.selectedNetworkClientId
   ) {
-    global.sentry?.captureException?.(
-      new Error(
-        `Migration ${version}: Invalid or missing selectedNetworkClientId.`,
-      ),
-    );
     return state;
   }
 
@@ -152,11 +110,6 @@ function transformState(
     !hasProperty(networkControllerState, 'networkConfigurationsByChainId') ||
     !isObject(networkControllerState.networkConfigurationsByChainId)
   ) {
-    global.sentry?.captureException?.(
-      new Error(
-        `Migration ${version}: Missing or invalid networkConfigurationsByChainId.`,
-      ),
-    );
     return state;
   }
 
@@ -168,28 +121,15 @@ function transformState(
   );
 
   if (!currentChainId) {
-    global.sentry?.captureException?.(
-      new Error(
-        `Migration ${version}: Could not find chainId for networkClientId '${selectedNetworkClientId}'.`,
-      ),
-    );
     return state;
   }
 
   if (!hasProperty(state, 'TokensController')) {
-    global.sentry?.captureException?.(
-      new Error(`Migration ${version}: Missing TokensController.`),
-    );
     return state;
   }
 
   const tokensControllerState = state.TokensController;
   if (!isObject(tokensControllerState)) {
-    global.sentry?.captureException?.(
-      new Error(
-        `Migration ${version}: TokensController is type '${typeof tokensControllerState}', expected object.`,
-      ),
-    );
     return state;
   }
 
@@ -197,11 +137,6 @@ function transformState(
     !hasProperty(tokensControllerState, 'allTokens') ||
     !isObject(tokensControllerState.allTokens)
   ) {
-    global.sentry?.captureException?.(
-      new Error(
-        `Migration ${version}: Missing or invalid TokensController.allTokens.`,
-      ),
-    );
     return state;
   }
 
@@ -214,11 +149,6 @@ function transformState(
     tokens.length > 0 &&
     !isObject(allTokensForChain)
   ) {
-    global.sentry?.captureException?.(
-      new Error(
-        `Migration ${version}: tokens is not an empty array, but allTokensForChain is not an object.`,
-      ),
-    );
     return state;
   }
 
@@ -250,10 +180,5 @@ function getChainIdForNetworkClientId(
       }
     }
   }
-  global.sentry?.captureException?.(
-    new Error(
-      `Migration ${version}: No chainId found for "${networkClientId}".`,
-    ),
-  );
   return undefined;
 }

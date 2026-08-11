@@ -27,23 +27,13 @@ function transformState(state: Record<string, unknown>) {
     !hasProperty(state, 'NetworkController') ||
     !isObject(state.NetworkController)
   ) {
-    global.sentry?.captureException?.(
-      new Error(
-        `typeof state.NetworkController is ${typeof state.NetworkController}`,
-      ),
-    );
     return state;
   }
   if (!hasProperty(state.NetworkController, 'network')) {
     const thePost077SupplementFor084HasNotModifiedState =
       state.NetworkController.networkId === undefined;
     if (thePost077SupplementFor084HasNotModifiedState) {
-      global.sentry?.captureException?.(
-        new Error(
-          `typeof state.NetworkController.network is ${typeof state
-            .NetworkController.network}`,
-        ),
-      );
+      // Leave invalid legacy state unchanged.
     }
     return state;
   }

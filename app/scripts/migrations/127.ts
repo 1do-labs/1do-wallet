@@ -53,28 +53,12 @@ function transformState(
   state: Record<string, unknown>,
 ): Record<string, unknown> {
   if (!hasProperty(state, 'NetworkController')) {
-    global.sentry?.captureException?.(
-      new Error(`state.NetworkController is not defined`),
-    );
     return state;
   } else if (!isObject(state.NetworkController)) {
-    global.sentry?.captureException?.(
-      new Error(
-        `typeof state.NetworkController is ${typeof state.NetworkController}`,
-      ),
-    );
     return state;
   } else if (!hasProperty(state, 'TransactionController')) {
-    global.sentry?.captureException?.(
-      new Error(`state.TransactionController is not defined`),
-    );
     return state;
   } else if (!isObject(state.TransactionController)) {
-    global.sentry?.captureException?.(
-      new Error(
-        `typeof state.TransactionController is ${typeof state.TransactionController}`,
-      ),
-    );
     return state;
   }
 

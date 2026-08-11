@@ -3,16 +3,6 @@ import { migrate, version } from './163';
 const oldVersion = 162;
 
 describe(`migration #${version}`, () => {
-  // Set up a global sentry mock before each test.
-  beforeEach(() => {
-    global.sentry = { captureException: jest.fn() };
-  });
-
-  afterEach(() => {
-    // Clean up the global sentry after each test.
-    global.sentry = undefined;
-  });
-
   it('updates the version metadata', async () => {
     const oldStorage = {
       meta: { version: oldVersion },
@@ -25,7 +15,7 @@ describe(`migration #${version}`, () => {
   });
 
   describe(`migration #${version}`, () => {
-    it('does not capture sentry error and returns the original state if TokensController is missing', async () => {
+    it('returns the original state if TokensController is missing', async () => {
       const oldStorage = {
         meta: { version: oldVersion },
         data: {
@@ -35,11 +25,10 @@ describe(`migration #${version}`, () => {
 
       const newStorage = await migrate(oldStorage);
 
-      expect(global.sentry.captureException).not.toHaveBeenCalled();
       expect(newStorage.data).toStrictEqual(oldStorage.data);
     });
 
-    it('Captures sentry error and returns the original state if TokensController exists but is not an object', async () => {
+    it('returns the original state if TokensController exists but is not an object', async () => {
       const oldStorage = {
         meta: { version: oldVersion },
         data: {
@@ -49,11 +38,6 @@ describe(`migration #${version}`, () => {
 
       const newStorage = await migrate(oldStorage);
 
-      expect(global.sentry.captureException).toHaveBeenCalledWith(
-        new Error(
-          `Migration ${version}: TokensController is type 'string', expected object.`,
-        ),
-      );
       expect(newStorage.data).toStrictEqual(oldStorage.data);
     });
     it('does nothing when both TokenListController and TokensController are present', async () => {
@@ -96,7 +80,6 @@ describe(`migration #${version}`, () => {
       };
 
       const newStorage = await migrate(oldStorage);
-      expect(global.sentry.captureException).not.toHaveBeenCalled();
       expect(newStorage.meta).toStrictEqual({ version });
       expect(newStorage.data).toStrictEqual(expectedData);
     });

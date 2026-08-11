@@ -32,11 +32,7 @@ function transformState(state: Record<string, unknown>) {
     delete state.PhishingController.stalelistLastFetched;
     delete state.PhishingController.hotlistLastFetched;
   } else if (hasProperty(state, 'PhishingController')) {
-    global.sentry?.captureException?.(
-      new Error(
-        `typeof state.PhishingController is ${typeof state.PhishingController}`,
-      ),
-    );
+    // Leave invalid legacy state unchanged.
   } else {
     log.warn(`typeof state.PhishingController is undefined`);
   }

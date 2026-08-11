@@ -3,16 +3,6 @@ import { migrate, version } from './155';
 const oldVersion = 151;
 
 describe(`migration #${version}`, () => {
-  // Set up a global sentry mock before each test.
-  beforeEach(() => {
-    global.sentry = { captureException: jest.fn() };
-  });
-
-  afterEach(() => {
-    // Clean up the global sentry after each test.
-    global.sentry = undefined;
-  });
-
   it('updates the version metadata', async () => {
     const oldStorage = {
       meta: { version: oldVersion },

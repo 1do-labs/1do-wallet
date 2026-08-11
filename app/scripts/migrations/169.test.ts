@@ -3,14 +3,6 @@ import { migrate, version } from './169';
 const oldVersion = 166;
 
 describe(`migration #${version}`, () => {
-  beforeEach(() => {
-    global.sentry = { captureException: jest.fn() };
-  });
-
-  afterEach(() => {
-    global.sentry = undefined;
-  });
-
   it('updates the version metadata', async () => {
     const oldStorage = {
       meta: { version: oldVersion },

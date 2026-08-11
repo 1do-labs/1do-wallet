@@ -86,7 +86,7 @@ if (shouldInjectProvider()) {
    * 4. DIFFERENT ERROR SOURCE:
    *    - "Premature close" errors in page context are typically harmless - they occur
    *      during normal page navigation and don't indicate a real problem
-   *    - The critical "Premature close" issues (3.8M/month in Sentry) come from the
+   *    - Critical "Premature close" issues come from the
    *      BACKGROUND streams that persist across page loads
    *
    * For context on the "Premature close" issue, see:

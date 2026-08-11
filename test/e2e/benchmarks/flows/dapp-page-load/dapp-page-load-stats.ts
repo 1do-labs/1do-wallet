@@ -60,7 +60,7 @@ export function aggregateDappPageLoadStatistics(
 }
 
 /**
- * Converts aggregated dapp page-load stats to the JSON shape used by CI and Sentry.
+ * Converts aggregated dapp page-load stats to the JSON shape used by CI.
  *
  * Currently only a single page is benchmarked. An assertion guards against
  * silent data loss if multiple pages are ever added without updating the

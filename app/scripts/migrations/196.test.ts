@@ -5,17 +5,6 @@ const VERSION = version;
 const OLD_VERSION = VERSION - 1;
 
 describe(`migration #${VERSION}`, () => {
-  let mockedCaptureException: jest.Mock;
-
-  beforeEach(() => {
-    mockedCaptureException = jest.fn();
-    global.sentry = { captureException: mockedCaptureException };
-  });
-
-  afterEach(() => {
-    global.sentry = undefined;
-  });
-
   it('DOES NOT modify the controller (with no exception thrown) if NetworkEnablementController is missing', async () => {
     const oldStorage = {
       meta: { version: OLD_VERSION },
@@ -34,7 +23,6 @@ describe(`migration #${VERSION}`, () => {
       OtherRandomController: {},
     });
     expect(changedControllers).toStrictEqual(new Set([]));
-    expect(mockedCaptureException).not.toHaveBeenCalled();
   });
 
   it('DOES NOT modify the controller + exception if NetworkEnablementController has changed type', async () => {
@@ -63,11 +51,6 @@ describe(`migration #${VERSION}`, () => {
       ],
     });
     expect(changedControllers).toStrictEqual(new Set([]));
-    expect(mockedCaptureException).toHaveBeenCalledWith(
-      new Error(
-        `Migration ${VERSION}: NetworkEnablementController is not an object: object`,
-      ),
-    );
   });
 
   it('DOES NOT modify the controller (with no exception thrown) if NetworkEnablementController.nativeAssetIdentifiers is missing', async () => {
@@ -92,7 +75,6 @@ describe(`migration #${VERSION}`, () => {
       },
     });
     expect(changedControllers).toStrictEqual(new Set([]));
-    expect(mockedCaptureException).not.toHaveBeenCalled();
   });
 
   it('DOES NOT modify the controller + exception if NetworkEnablementController.nativeAssetIdentifiers has changed type', async () => {
@@ -124,11 +106,6 @@ describe(`migration #${VERSION}`, () => {
       },
     });
     expect(changedControllers).toStrictEqual(new Set([]));
-    expect(mockedCaptureException).toHaveBeenCalledWith(
-      new Error(
-        `Migration ${VERSION}: NetworkEnablementController.nativeAssetIdentifiers is not an object: object.`,
-      ),
-    );
   });
 
   it('DOES NOT modify the controller if a HYPE entry with correct value already exists', async () => {

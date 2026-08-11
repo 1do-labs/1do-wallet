@@ -38,11 +38,6 @@ function transformState(state: Record<string, unknown>): boolean {
   const txController = state.TransactionController;
 
   if (!isObject(txController)) {
-    global.sentry?.captureException?.(
-      new Error(
-        `Migration ${version}: typeof state.TransactionController is ${typeof txController}`,
-      ),
-    );
     return false;
   }
 
@@ -57,11 +52,6 @@ function transformState(state: Record<string, unknown>): boolean {
   }
 
   if (!Array.isArray(txController.transactions)) {
-    global.sentry?.captureException?.(
-      new Error(
-        `Migration ${version}: state.TransactionController.transactions is not an array: ${typeof txController.transactions}`,
-      ),
-    );
     return false;
   }
 

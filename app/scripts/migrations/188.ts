@@ -147,7 +147,6 @@ function transformState(
   }
 
   if (!isValidNetworkConfiguration(monadNetworkConfiguration)) {
-    // Invalid network configuration structure - log to Sentry as this is unexpected
     captureException(
       new Error(
         `Migration ${version}: Monad network configuration has invalid rpcEndpoints structure.`,

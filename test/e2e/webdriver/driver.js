@@ -1743,12 +1743,8 @@ class Driver {
     const ignoredConsoleErrors = _ignoredConsoleErrors.concat([
       // Third-party Favicon 404s show up as errors
       'favicon.ico - Failed to load resource: the server responded with a status of 404',
-      // Sentry rate limiting
-      'Failed to load resource: the server responded with a status of 429',
       // 4Byte
       'Failed to load resource: the server responded with a status of 502 (Bad Gateway)',
-      // Sentry error that is not actually a problem
-      'Event fragment with id transaction-added-',
       // Sidepanel
       'GL Context was lost',
       // Null/empty URLs that Chrome blocks before reaching the proxy

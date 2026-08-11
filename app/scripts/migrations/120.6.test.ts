@@ -1,12 +1,6 @@
 import { cloneDeep } from 'lodash';
 import { migrate, version } from './120.6';
 
-const sentryCaptureExceptionMock = jest.fn();
-
-global.sentry = {
-  captureException: sentryCaptureExceptionMock,
-};
-
 const oldVersion = 120.5;
 
 describe('migration #120.6', () => {
@@ -51,9 +45,6 @@ describe('migration #120.6', () => {
 
     const newStorage = await migrate(oldStorage);
 
-    expect(sentryCaptureExceptionMock).toHaveBeenCalledWith(
-      `Migration ${version}: Invalid TransactionController state of type 'string'`,
-    );
     expect(newStorage.data).toStrictEqual(oldStorageDataClone);
   });
 
@@ -109,9 +100,6 @@ describe('migration #120.6', () => {
 
     const newStorage = await migrate(oldStorage);
 
-    expect(sentryCaptureExceptionMock).toHaveBeenCalledWith(
-      `Migration ${version}: Invalid transaction of type 'string'`,
-    );
     expect(newStorage.data).toStrictEqual(oldStorageDataClone);
   });
 
@@ -135,9 +123,6 @@ describe('migration #120.6', () => {
 
     const newStorage = await migrate(oldStorage);
 
-    expect(sentryCaptureExceptionMock).toHaveBeenCalledWith(
-      `Migration ${version}: Invalid transaction history of type 'string'`,
-    );
     expect(newStorage.data).toStrictEqual(oldStorageDataClone);
   });
 

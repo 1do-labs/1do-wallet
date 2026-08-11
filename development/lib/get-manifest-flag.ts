@@ -47,7 +47,7 @@ function regexSearchForFlags(str: string, errorType: string): ManifestFlags {
  * Get flags from the GitHub PR body if they are set
  *
  * To use this feature, add a line to your PR body like:
- * `flags = {"sentry": {"tracesSampleRate": 0.1}}`
+ * `flags = {"exampleFeature": {"enabled": true}}`
  * (must be valid JSON)
  *
  * @returns Any manifest flags found in the PR body
@@ -74,7 +74,7 @@ async function getFlagsFromPrBody(): Promise<ManifestFlags> {
  * Get flags from the Git message if they are set
  *
  * To use this feature, add a line to your commit message like:
- * `flags = {"sentry": {"tracesSampleRate": 0.1}}`
+ * `flags = {"exampleFeature": {"enabled": true}}`
  * (must be valid JSON)
  *
  * @returns Any manifest flags found in the commit message

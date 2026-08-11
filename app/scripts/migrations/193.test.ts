@@ -5,17 +5,6 @@ const VERSION = version;
 const oldVersion = VERSION - 1;
 
 describe(`migration #${VERSION}`, () => {
-  let mockedCaptureException: jest.Mock;
-
-  beforeEach(() => {
-    mockedCaptureException = jest.fn();
-    global.sentry = { captureException: mockedCaptureException };
-  });
-
-  afterEach(() => {
-    global.sentry = undefined;
-  });
-
   it('updates the version metadata', async () => {
     const oldState = {
       meta: { version: oldVersion },
@@ -41,9 +30,6 @@ describe(`migration #${VERSION}`, () => {
 
     await migrate(oldState, new Set());
 
-    expect(mockedCaptureException).toHaveBeenCalledWith(
-      new Error(`Migration ${version}: SnapController not found.`),
-    );
     expect(oldState.data).toEqual(originalData);
   });
 
@@ -59,11 +45,6 @@ describe(`migration #${VERSION}`, () => {
 
     await migrate(oldState, new Set());
 
-    expect(mockedCaptureException).toHaveBeenCalledWith(
-      new Error(
-        `Migration ${version}: SnapController is not an object: string`,
-      ),
-    );
     expect(oldState.data).toEqual(originalData);
   });
 
@@ -79,9 +60,6 @@ describe(`migration #${VERSION}`, () => {
 
     await migrate(oldState, new Set());
 
-    expect(mockedCaptureException).toHaveBeenCalledWith(
-      new Error(`Migration ${version}: SnapController missing property snaps.`),
-    );
     expect(oldState.data).toEqual(originalData);
   });
 
@@ -97,11 +75,6 @@ describe(`migration #${VERSION}`, () => {
 
     await migrate(oldState, new Set());
 
-    expect(mockedCaptureException).toHaveBeenCalledWith(
-      new Error(
-        `Migration ${version}: SnapController.snaps is not an object: string`,
-      ),
-    );
     expect(oldState.data).toEqual(originalData);
   });
 

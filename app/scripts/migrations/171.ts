@@ -52,13 +52,6 @@ function validateObjectProperty(
   }
 
   if (!isObject(obj[propertyName])) {
-    global.sentry?.captureException?.(
-      new Error(
-        `Migration ${version}: ${propertyName} is type '${typeof obj[
-          propertyName
-        ]}', expected object in ${context}.`,
-      ),
-    );
     return false;
   }
 
@@ -126,11 +119,6 @@ function transformState(
 
   // Validate tokenNetworkFilter
   if (!isObject(tokenNetworkFilter)) {
-    global.sentry?.captureException?.(
-      new Error(
-        `Migration ${version}: tokenNetworkFilter is type '${typeof tokenNetworkFilter}', expected object.`,
-      ),
-    );
     return state;
   }
 

@@ -29,11 +29,6 @@ function transformState(state: Record<string, unknown>) {
     return state;
   }
   if (!isObject(state.PhishingController)) {
-    global.sentry?.captureException?.(
-      new Error(
-        `typeof state.PhishingController is ${typeof state.PhishingController}`,
-      ),
-    );
     return state;
   }
   if (!hasProperty(state.PhishingController, 'listState')) {

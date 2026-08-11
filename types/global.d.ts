@@ -319,9 +319,6 @@ type StateHooks = {
 
 export declare global {
   var platform: ExtensionPlatform;
-  // Legacy migrations may still probe this removed integration.
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  var sentry: any;
   var chrome: Chrome;
 
   var ethereumProvider: Provider;

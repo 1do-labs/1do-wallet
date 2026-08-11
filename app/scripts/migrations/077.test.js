@@ -1,15 +1,6 @@
 import { cloneDeep } from 'lodash';
 import migration77 from './077';
 
-const sentryCaptureExceptionMock = jest.fn();
-
-global.sentry = {
-  startSession: jest.fn(),
-  endSession: jest.fn(),
-  toggleSession: jest.fn(),
-  captureException: sentryCaptureExceptionMock,
-};
-
 describe('migration #77', () => {
   it('should update the version metadata', async () => {
     const oldStorage = {
@@ -40,24 +31,6 @@ describe('migration #77', () => {
     const newStorage = await migration77.migrate(cloneDeep(oldStorage));
 
     expect(newStorage.data).toStrictEqual(oldStorage.data);
-  });
-
-  it('should capture an exception if the TokenListController state is invalid', async () => {
-    const oldStorage = {
-      meta: {
-        version: 76,
-      },
-      data: {
-        TokenListController: 'test',
-      },
-    };
-
-    await migration77.migrate(oldStorage);
-
-    expect(sentryCaptureExceptionMock).toHaveBeenCalledTimes(1);
-    expect(sentryCaptureExceptionMock).toHaveBeenCalledWith(
-      new Error(`typeof state.TokenListController is string`),
-    );
   });
 
   it('should return state unchanged if tokenChainsCache is missing', async () => {

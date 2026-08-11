@@ -118,11 +118,6 @@ function transformState(oldState: Record<string, unknown>) {
   }
 
   if (!isObject(newState.PermissionController)) {
-    global.sentry?.captureException?.(
-      new Error(
-        `Migration ${version}: typeof state.PermissionController is ${typeof newState.PermissionController}`,
-      ),
-    );
     return oldState;
   }
 
@@ -130,11 +125,6 @@ function transformState(oldState: Record<string, unknown>) {
     !hasProperty(newState, 'NetworkController') ||
     !isObject(newState.NetworkController)
   ) {
-    global.sentry?.captureException?.(
-      new Error(
-        `Migration ${version}: typeof state.NetworkController is ${typeof newState.NetworkController}`,
-      ),
-    );
     return oldState;
   }
 
@@ -150,11 +140,6 @@ function transformState(oldState: Record<string, unknown>) {
   }
 
   if (!isObject(newState.SelectedNetworkController)) {
-    global.sentry?.captureException?.(
-      new Error(
-        `Migration ${version}: typeof state.SelectedNetworkController is ${typeof newState.SelectedNetworkController}`,
-      ),
-    );
     return oldState;
   }
 
@@ -167,30 +152,14 @@ function transformState(oldState: Record<string, unknown>) {
   } = newState;
 
   if (!isObject(subjects)) {
-    global.sentry?.captureException?.(
-      new Error(
-        `Migration ${version}: typeof state.PermissionController.subjects is ${typeof subjects}`,
-      ),
-    );
     return oldState;
   }
 
   if (!selectedNetworkClientId || typeof selectedNetworkClientId !== 'string') {
-    global.sentry?.captureException?.(
-      new Error(
-        `Migration ${version}: typeof state.NetworkController.selectedNetworkClientId is ${typeof selectedNetworkClientId}`,
-      ),
-    );
     return oldState;
   }
 
   if (!isObject(networkConfigurationsByChainId)) {
-    global.sentry?.captureException?.(
-      new Error(
-        `Migration ${version}: typeof state.NetworkController.networkConfigurationsByChainId is ${typeof newState
-          .NetworkController.networkConfigurationsByChainId}`,
-      ),
-    );
     return oldState;
   }
 
@@ -199,11 +168,6 @@ function transformState(oldState: Record<string, unknown>) {
     !isObject(newState.SelectedNetworkController.domains)
   ) {
     const { domains } = newState.SelectedNetworkController;
-    global.sentry?.captureException?.(
-      new Error(
-        `Migration ${version}: typeof state.SelectedNetworkController.domains is ${typeof domains}`,
-      ),
-    );
     return oldState;
   }
 
@@ -219,31 +183,16 @@ function transformState(oldState: Record<string, unknown>) {
       networkConfigurationsByChainId,
     )) {
       if (!isObject(networkConfiguration)) {
-        global.sentry?.captureException(
-          new Error(
-            `Migration ${version}: typeof state.NetworkController.networkConfigurationsByChainId["${chainId}"] is ${typeof networkConfiguration}`,
-          ),
-        );
         malformedDataErrorFound = true;
         continue;
       }
       if (!Array.isArray(networkConfiguration.rpcEndpoints)) {
-        global.sentry?.captureException(
-          new Error(
-            `Migration ${version}: typeof state.NetworkController.networkConfigurationsByChainId["${chainId}"].rpcEndpoints is ${typeof networkConfiguration.rpcEndpoints}`,
-          ),
-        );
         malformedDataErrorFound = true;
         continue;
       }
 
       for (const rpcEndpoint of networkConfiguration.rpcEndpoints) {
         if (!isObject(rpcEndpoint)) {
-          global.sentry?.captureException(
-            new Error(
-              `Migration ${version}: typeof state.NetworkController.networkConfigurationsByChainId["${chainId}"].rpcEndpoints[] is ${typeof rpcEndpoint}`,
-            ),
-          );
           malformedDataErrorFound = true;
           continue;
         }
@@ -263,11 +212,7 @@ function transformState(oldState: Record<string, unknown>) {
 
     const builtInChainId = BUILT_IN_NETWORKS.get(networkClientId);
     if (!builtInChainId) {
-      global.sentry?.captureException(
-        new Error(
-          `Migration ${version}: No chainId found for ${propertyName} "${networkClientId}"`,
-        ),
-      );
+      // Leave invalid legacy state unchanged.
     }
     return builtInChainId;
   };
@@ -283,11 +228,6 @@ function transformState(oldState: Record<string, unknown>) {
   // perform mutations on the cloned state
   for (const [origin, subject] of Object.entries(subjects)) {
     if (!isObject(subject)) {
-      global.sentry?.captureException?.(
-        new Error(
-          `Migration ${version}: Invalid subject for origin "${origin}" of type ${typeof subject}`,
-        ),
-      );
       return oldState;
     }
 
@@ -295,11 +235,6 @@ function transformState(oldState: Record<string, unknown>) {
       !hasProperty(subject, 'permissions') ||
       !isObject(subject.permissions)
     ) {
-      global.sentry?.captureException?.(
-        new Error(
-          `Migration ${version}: Invalid permissions for origin "${origin}" of type ${typeof subject.permissions}`,
-        ),
-      );
       return oldState;
     }
 
@@ -319,25 +254,10 @@ function transformState(oldState: Record<string, unknown>) {
       continue;
     }
     if (!isPermissionConstraint(ethAccountsPermission)) {
-      global.sentry?.captureException?.(
-        new Error(
-          `Migration ${version}: Invalid state.PermissionController.subjects[${origin}].permissions[${
-            PermissionNames.eth_accounts
-          }]: ${JSON.stringify(ethAccountsPermission)}`,
-        ),
-      );
       return oldState;
     }
     const accountsCaveatValue = ethAccountsPermission.caveats?.[0]?.value;
     if (!isNonEmptyArrayOfStrings(accountsCaveatValue)) {
-      global.sentry?.captureException?.(
-        new Error(
-          `Migration ${version}: Invalid state.PermissionController.subjects[${origin}].permissions[${
-            PermissionNames.eth_accounts
-          }].caveats[0].value of type ${typeof ethAccountsPermission
-            .caveats?.[0]?.value}`,
-        ),
-      );
       return oldState;
     }
     ethAccounts = accountsCaveatValue;
@@ -349,25 +269,10 @@ function transformState(oldState: Record<string, unknown>) {
     // this permission is new so it may not exist
     if (permittedChainsPermission) {
       if (!isPermissionConstraint(permittedChainsPermission)) {
-        global.sentry?.captureException?.(
-          new Error(
-            `Migration ${version}: Invalid state.PermissionController.subjects[${origin}].permissions[${
-              PermissionNames.permittedChains
-            }]: ${JSON.stringify(permittedChainsPermission)}`,
-          ),
-        );
         return oldState;
       }
       const chainsCaveatValue = permittedChainsPermission.caveats?.[0]?.value;
       if (!isNonEmptyArrayOfStrings(chainsCaveatValue)) {
-        global.sentry?.captureException?.(
-          new Error(
-            `Migration ${version}: Invalid state.PermissionController.subjects[${origin}].permissions[${
-              PermissionNames.permittedChains
-            }].caveats[0].value of type ${typeof permittedChainsPermission
-              .caveats?.[0]?.value}`,
-          ),
-        );
         return oldState;
       }
       chainIds = chainsCaveatValue;

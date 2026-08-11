@@ -2,14 +2,6 @@ import { cloneDeep } from 'lodash';
 import { Token, TokensControllerState } from '@metamask/assets-controllers';
 import { migrate, version } from './133.1';
 
-const sentryCaptureExceptionMock = jest.fn();
-const sentryCaptureMessageMock = jest.fn();
-
-global.sentry = {
-  captureException: sentryCaptureExceptionMock,
-  captureMessage: sentryCaptureMessageMock,
-};
-
 const oldVersion = 133;
 
 const mockStateWithNullDecimals = {
@@ -121,26 +113,6 @@ describe(`migration #${version}`, () => {
     ]);
   });
 
-  it('logs tokens with null decimals before removing them', async () => {
-    const oldStorage = cloneDeep(mockStateWithNullDecimals);
-
-    await migrate(oldStorage);
-
-    expect(sentryCaptureMessageMock).toHaveBeenCalledTimes(4);
-    expect(sentryCaptureMessageMock).toHaveBeenCalledWith(
-      `Migration ${version}: Removed token with decimals === null in allTokens. Address: 0x1`,
-    );
-    expect(sentryCaptureMessageMock).toHaveBeenCalledWith(
-      `Migration ${version}: Removed token with decimals === null in allDetectedTokens. Address: 0x5`,
-    );
-    expect(sentryCaptureMessageMock).toHaveBeenCalledWith(
-      `Migration ${version}: Removed token with decimals === null in tokens. Address: 0x7`,
-    );
-    expect(sentryCaptureMessageMock).toHaveBeenCalledWith(
-      `Migration ${version}: Removed token with decimals === null in detectedTokens. Address: 0x9`,
-    );
-  });
-
   it('does nothing if all tokens have valid decimals', async () => {
     const validState = {
       meta: { version: oldVersion },
@@ -166,7 +138,6 @@ describe(`migration #${version}`, () => {
     const newStorage = await migrate(oldStorage);
 
     expect(newStorage.data).toStrictEqual(oldStorage.data);
-    expect(sentryCaptureMessageMock).not.toHaveBeenCalled();
   });
 
   it('does nothing if TokensController is missing', async () => {
@@ -178,7 +149,6 @@ describe(`migration #${version}`, () => {
     const newStorage = await migrate(cloneDeep(oldStorage));
 
     expect(newStorage.data).toStrictEqual(oldStorage.data);
-    expect(sentryCaptureMessageMock).not.toHaveBeenCalled();
   });
 
   const invalidState = [
@@ -221,9 +191,6 @@ describe(`migration #${version}`, () => {
 
       const newStorage = await migrate(cloneDeep(oldStorage));
 
-      expect(sentryCaptureExceptionMock).toHaveBeenCalledWith(
-        new Error(errorMessage),
-      );
       expect(newStorage.data).toStrictEqual(oldStorage.data);
     },
   );

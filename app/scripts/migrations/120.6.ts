@@ -38,9 +38,6 @@ function transformState(state: Record<string, unknown>): void {
     log.warn(`Migration ${version}: Missing TransactionController state`);
     return;
   } else if (!isObject(state.TransactionController)) {
-    global.sentry?.captureException(
-      `Migration ${version}: Invalid TransactionController state of type '${typeof state.TransactionController}'`,
-    );
     return;
   }
 
@@ -67,9 +64,6 @@ function transformState(state: Record<string, unknown>): void {
     const invalidTransaction = transactions.find(
       (transaction) => !isObject(transaction),
     );
-    global.sentry?.captureException(
-      `Migration ${version}: Invalid transaction of type '${typeof invalidTransaction}'`,
-    );
     return;
   }
 
@@ -79,9 +73,6 @@ function transformState(state: Record<string, unknown>): void {
   if (validHistoryTransactions.length !== validTransactions.length) {
     const invalidTransaction = validTransactions.find(
       (transaction) => !hasValidTransactionHistory(transaction),
-    );
-    global.sentry?.captureException(
-      `Migration ${version}: Invalid transaction history of type '${typeof invalidTransaction?.history}'`,
     );
     return;
   }

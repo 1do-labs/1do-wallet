@@ -71,16 +71,6 @@ const megaEthTestnetV1Configuration = {
 };
 
 describe(`migration #${VERSION}`, () => {
-  let mockedCaptureException: jest.Mock;
-  beforeEach(() => {
-    mockedCaptureException = jest.fn();
-    global.sentry = { captureException: mockedCaptureException };
-  });
-
-  afterEach(() => {
-    global.sentry = undefined;
-  });
-
   it('updates the version metadata', async () => {
     const oldStorage = {
       meta: { version: oldVersion },
@@ -162,7 +152,7 @@ describe(`migration #${VERSION}`, () => {
 
   // @ts-expect-error 'each' function is not recognized by TypeScript types
   it.each(invalidStates)(
-    'should capture exception if $scenario',
+    'leaves state unchanged for $scenario',
     async ({ state }: { errorMessage: string; state: VersionedData }) => {
       const orgState = cloneDeep(state);
       const localChangedControllers = new Set<string>();
@@ -175,7 +165,6 @@ describe(`migration #${VERSION}`, () => {
       expect(localChangedControllers.has('NetworkEnablementController')).toBe(
         false,
       );
-      expect(mockedCaptureException).toHaveBeenCalledWith(expect.any(Error));
     },
   );
 

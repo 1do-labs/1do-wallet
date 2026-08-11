@@ -3,12 +3,7 @@ import { migrate, version } from './164';
 const oldVersion = 163;
 
 describe(`migration #${version}`, () => {
-  beforeEach(() => {
-    global.sentry = { captureException: jest.fn() };
-  });
-
   afterEach(() => {
-    global.sentry = undefined;
     jest.resetAllMocks();
   });
 

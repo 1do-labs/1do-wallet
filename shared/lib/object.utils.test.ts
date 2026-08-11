@@ -26,7 +26,7 @@ describe('object.utils', () => {
       expect(result).toStrictEqual({ arr: [1, 'hello', null] });
     });
 
-    it('treats an array mask like false: surfaces typeof only (e.g. empty Sentry `[]`)', () => {
+    it('treats an array mask like false and surfaces typeof only', () => {
       const obj = { a: 1, b: 'x', c: null, d: [1, 2] };
       const result = maskObject(obj, {
         a: [],

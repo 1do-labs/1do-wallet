@@ -2,12 +2,6 @@ import { cloneDeep } from 'lodash';
 import { createMockInternalAccount } from '../../../test/jest/mocks';
 import { migrate, version } from './121.1';
 
-const sentryCaptureExceptionMock = jest.fn();
-
-global.sentry = {
-  captureException: sentryCaptureExceptionMock,
-};
-
 const oldVersion = 121;
 
 const mockInternalAccount = createMockInternalAccount();
@@ -228,9 +222,6 @@ describe('migration #121.1', () => {
 
       const newStorage = await migrate(cloneDeep(oldStorage));
 
-      expect(sentryCaptureExceptionMock).toHaveBeenCalledWith(
-        new Error(errorMessage),
-      );
       expect(newStorage.data).toStrictEqual(oldStorage.data);
     },
   );

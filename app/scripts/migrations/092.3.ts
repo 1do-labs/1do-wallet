@@ -74,17 +74,9 @@ function changeShapeAndRemoveOldAdvancedGasFeePreference(
       state.PreferencesController.advancedGasFee = {};
     }
   } else if (isObject(state.AppStateController) === false) {
-    global.sentry?.captureException?.(
-      new Error(
-        `typeof state.AppStateController is ${typeof state.AppStateController}`,
-      ),
-    );
+    // Leave invalid legacy state unchanged.
   } else if (isObject(state.PreferencesController) === false) {
-    global.sentry?.captureException?.(
-      new Error(
-        `typeof state.PreferencesController is ${typeof state.PreferencesController}`,
-      ),
-    );
+    // Leave invalid legacy state unchanged.
   }
 }
 

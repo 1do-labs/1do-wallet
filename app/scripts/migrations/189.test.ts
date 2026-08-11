@@ -59,15 +59,8 @@ const MEGAETH_MAINNET_CLEAN_CONFIG = {
 };
 
 describe(`migration #${VERSION}`, () => {
-  let mockedCaptureException: jest.Mock;
   beforeEach(() => {
-    mockedCaptureException = jest.fn();
-    global.sentry = { captureException: mockedCaptureException };
     mockUnitTestInfuraId = mockUnitTestInfuraIdInitialValue;
-  });
-
-  afterEach(() => {
-    global.sentry = undefined;
   });
 
   it('updates the version metadata', async () => {
@@ -151,7 +144,7 @@ describe(`migration #${VERSION}`, () => {
 
   // @ts-expect-error 'each' function is not recognized by TypeScript types
   it.each(invalidStates)(
-    'should capture exception if $scenario',
+    'leaves state unchanged for $scenario',
     async ({ state }: { errorMessage: string; state: VersionedData }) => {
       const orgState = cloneDeep(state);
       const localChangedControllers = new Set<string>();
@@ -161,7 +154,6 @@ describe(`migration #${VERSION}`, () => {
       // State should be unchanged
       expect(state).toStrictEqual(orgState);
       expect(localChangedControllers.has('NetworkController')).toBe(false);
-      expect(mockedCaptureException).toHaveBeenCalledWith(expect.any(Error));
     },
   );
 
@@ -178,7 +170,6 @@ describe(`migration #${VERSION}`, () => {
 
     const localChangedControllers = new Set<string>();
     await migrate(oldStorage, localChangedControllers);
-    expect(mockedCaptureException).not.toHaveBeenCalled();
 
     expect(
       oldStorage.data.NetworkController.networkConfigurationsByChainId,
@@ -203,7 +194,6 @@ describe(`migration #${VERSION}`, () => {
 
     const localChangedControllers = new Set<string>();
     await migrate(oldStorage, localChangedControllers);
-    expect(mockedCaptureException).not.toHaveBeenCalled();
 
     const migratedConfig =
       oldStorage.data.NetworkController.networkConfigurationsByChainId[
@@ -264,13 +254,6 @@ describe(`migration #${VERSION}`, () => {
     const localChangedControllers = new Set<string>();
     await migrate(oldStorage, localChangedControllers);
 
-    expect(mockedCaptureException).toHaveBeenCalledWith(
-      expect.objectContaining({
-        message: expect.stringContaining(
-          'Infura project ID is not set, skip the MegaETH RPC part of the migration',
-        ),
-      }),
-    );
     // After migration, the name and nativeCurrency should be updated
     // and the new RPC endpoint should be added
     const migratedConfig =
