@@ -29,6 +29,14 @@ const localStore = createLocalStore();
 // Single PersistenceManager per context: one in background, one per UI context.
 export const persistenceManager = new PersistenceManager({ localStore });
 
+// The UI bundle can initialize before the bootstrap script's root-compartment
+// hooks are visible. Keep this module self-contained instead of relying on the
+// former Sentry installation script to create the container. Reflect avoids
+// narrowing the globally declared StateHooks type to only the hooks below.
+if (!globalThis.stateHooks) {
+  Reflect.set(globalThis, 'stateHooks', {});
+}
+
 /**
  * Get the persisted wallet state.
  *

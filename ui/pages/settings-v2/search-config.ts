@@ -29,6 +29,7 @@ function createSearchItemMeta(
 
 export const ASSET_ITEMS = {
   'local-currency': 'localCurrency',
+  'show-balance-and-token-prices': 'currencyRateCheckToggle',
   'show-network-token': 'showNativeTokenAsMainBalance',
   'hide-zero-balance-tokens': 'hideZeroBalanceTokens',
   'display-nft-media': 'displayNftMedia',

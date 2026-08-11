@@ -5,8 +5,8 @@ export const ONEDO_WEBSITE_LINK = 'https://www.1do.io/';
 export const ONEDO_PRIVACY_LINK = 'https://www.1do.io/privacy';
 export const ONEDO_TERMS_LINK = 'https://www.1do.io/terms';
 
-export const COINGECKO_LINK = 'https://www.coingecko.com/';
-export const CRYPTOCOMPARE_LINK = 'https://www.cryptocompare.com/';
+export const ALCHEMY_PRICES_LINK = 'https://www.alchemy.com/prices';
+export const EXCHANGE_RATE_API_LINK = 'https://www.exchangerate-api.com/';
 export const PRIVACY_POLICY_LINK = ONEDO_PRIVACY_LINK;
 export const METAMETRICS_SETTINGS_LINK = ONEDO_WEBSITE_LINK;
 

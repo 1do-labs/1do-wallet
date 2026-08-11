@@ -1,7 +1,4 @@
-import {
-  CodefiTokenPricesServiceV2,
-  CurrencyRateController,
-} from '@metamask/assets-controllers';
+import { CurrencyRateController } from '@metamask/assets-controllers';
 import { getRootMessenger } from '../lib/messenger';
 import { MessengerClientInitRequest } from './types';
 import { buildControllerInitRequestMock } from './test/utils';
@@ -18,15 +15,6 @@ jest.mock('@metamask/assets-controllers', () => ({
     // This is needed since the controller init tries to override this function.
     fetchMultiExchangeRate = jest.fn();
   },
-  CodefiTokenPricesServiceV2: class {
-    fetchTokenPrices = jest.fn();
-
-    fetchExchangeRates = jest.fn();
-
-    validateChainIdSupported = jest.fn();
-
-    validateCurrencySupported = jest.fn();
-  },
 }));
 
 function getInitRequestMock(): jest.Mocked<
@@ -41,7 +29,6 @@ function getInitRequestMock(): jest.Mocked<
     ...buildControllerInitRequestMock(),
     controllerMessenger: getCurrencyRateControllerMessenger(baseMessenger),
     initMessenger: getCurrencyRateControllerInitMessenger(baseMessenger),
-    tokenPricesService: new CodefiTokenPricesServiceV2(),
   };
 
   return requestMock;

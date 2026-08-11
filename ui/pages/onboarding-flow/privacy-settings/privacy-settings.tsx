@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useLocation } from 'react-router-dom';
 import classnames from 'clsx';
@@ -19,18 +19,10 @@ import {
   FontWeight,
   TextButton,
 } from '@metamask/design-system-react';
-// eslint-disable-next-line import-x/no-restricted-paths
-import { addUrlProtocolPrefix } from '../../../../app/scripts/lib/util';
-import { TextField } from '../../../components/component-library';
 import {
-  COINGECKO_LINK,
-  CRYPTOCOMPARE_LINK,
-  ONEDO_WEBSITE_LINK,
   PRIVACY_POLICY_LINK,
   TRANSACTION_SIMULATIONS_LEARN_MORE_LINK,
 } from '../../../../shared/lib/ui-utils';
-import ZENDESK_URLS from '../../../helpers/constants/zendesk-url';
-
 import { ONBOARDING_COMPLETION_ROUTE } from '../../../helpers/constants/routes';
 import { useI18nContext } from '../../../hooks/useI18nContext';
 import {
@@ -39,12 +31,8 @@ import {
 } from '../../../selectors';
 import { getNetworkConfigurationsByChainId } from '../../../../shared/lib/selectors/networks';
 import {
-  setIpfsGateway,
-  setUseCurrencyRateCheck,
   setUseMultiAccountBalanceChecker,
-  setUse4ByteResolution,
   setUseTokenDetection,
-  setUseAddressBarEnsResolution,
   toggleNetworkMenu,
   setUseTransactionSimulations,
   setUseExternalNameSources,
@@ -56,7 +44,6 @@ import {
 } from '../../../ducks/app/app';
 import {
   CHAIN_ID_TO_NETWORK_IMAGE_URL_MAP,
-  IPFS_FORBIDDEN_GATEWAY,
   TEST_CHAINS,
 } from '../../../../shared/constants/network';
 import { MetaMaskReduxState } from '../../../store/store';
@@ -83,21 +70,13 @@ export default function PrivacySettings() {
     (state: MetaMaskReduxState) => state.metamask,
   );
   const {
-    use4ByteResolution,
     useTokenDetection,
-    useCurrencyRateCheck,
     useMultiAccountBalanceChecker,
-    ipfsGateway,
-    useAddressBarEnsResolution,
     useTransactionSimulations,
   } = defaultState;
   const useExternalNameSources = useSelector(getUseExternalNameSources);
-  const [turnOn4ByteResolution, setTurnOn4ByteResolution] =
-    useState(use4ByteResolution);
   const [turnOnTokenDetection, setTurnOnTokenDetection] =
     useState(useTokenDetection);
-  const [turnOnCurrencyRateCheck, setTurnOnCurrencyRateCheck] =
-    useState(useCurrencyRateCheck);
 
   const [
     isMultiAccountBalanceCheckerEnabled,
@@ -105,11 +84,6 @@ export default function PrivacySettings() {
   ] = useState(useMultiAccountBalanceChecker);
   const [isTransactionSimulationsEnabled, setTransactionSimulationsEnabled] =
     useState(useTransactionSimulations);
-  const [ipfsURL, setIPFSURL] = useState(ipfsGateway);
-  const [ipfsError, setIPFSError] = useState(null);
-  const [addressBarResolution, setAddressBarResolution] = useState(
-    useAddressBarEnsResolution,
-  );
   const [turnOnExternalNameSources, setTurnOnExternalNameSources] = useState(
     useExternalNameSources,
   );
@@ -125,20 +99,12 @@ export default function PrivacySettings() {
   const isFromReminder = searchParams.get('isFromReminder');
 
   const handleSubmit = () => {
-    dispatch(setUse4ByteResolution(turnOn4ByteResolution));
     dispatch(setUseTokenDetection(turnOnTokenDetection));
     dispatch(
       setUseMultiAccountBalanceChecker(isMultiAccountBalanceCheckerEnabled),
     );
-    dispatch(setUseCurrencyRateCheck(turnOnCurrencyRateCheck));
-    dispatch(setUseAddressBarEnsResolution(addressBarResolution));
     setUseTransactionSimulations(isTransactionSimulationsEnabled);
     setUseExternalNameSources(turnOnExternalNameSources);
-
-    if (ipfsURL && !ipfsError) {
-      const { host } = new URL(addUrlProtocolPrefix(ipfsURL) as string);
-      dispatch(setIpfsGateway(host));
-    }
 
     if (isFromReminder) {
       navigate(`${ONBOARDING_COMPLETION_ROUTE}?isFromReminder=true`, {
@@ -146,19 +112,6 @@ export default function PrivacySettings() {
       });
     } else {
       navigate(ONBOARDING_COMPLETION_ROUTE, { replace: true });
-    }
-  };
-
-  const handleIPFSChange = (url: string) => {
-    setIPFSURL(url);
-    try {
-      const { host } = new URL(addUrlProtocolPrefix(url) as string);
-      if (!host || host === IPFS_FORBIDDEN_GATEWAY) {
-        throw new Error();
-      }
-      setIPFSError(null);
-    } catch (error) {
-      setIPFSError(t('onboardingAdvancedPrivacyIPFSInvalid'));
     }
   };
 
@@ -183,12 +136,20 @@ export default function PrivacySettings() {
   };
 
   const items = [
-    { id: 1, title: t('general'), subtitle: t('generalDescription') },
-    { id: 2, title: t('assets'), subtitle: t('assetsDescription') },
+    {
+      id: 1,
+      title: t('privacyNetworkAndServicesTitle'),
+      subtitle: t('privacyNetworkAndServicesDescription'),
+    },
+    {
+      id: 2,
+      title: t('privacyAssetsAndSimulationsTitle'),
+      subtitle: t('privacyAssetsAndSimulationsDescription'),
+    },
     {
       id: 3,
-      title: t('security'),
-      subtitle: t('securityDescription'),
+      title: t('privacyAddressInformationTitle'),
+      subtitle: t('privacyAddressInformationDescription'),
     },
   ];
 
@@ -241,7 +202,7 @@ export default function PrivacySettings() {
                 {t('defaultSettingsSubTitle')}
               </Text>
               <a
-                href={ONEDO_WEBSITE_LINK}
+                href={PRIVACY_POLICY_LINK}
                 target="_blank"
                 rel="noreferrer"
                 key="learnMoreAboutPrivacy"
@@ -377,16 +338,6 @@ export default function PrivacySettings() {
                           >
                             {t('privacyMsg')}
                           </a>,
-                          <a
-                            href={ZENDESK_URLS.ADD_SOLANA_ACCOUNTS}
-                            key="link"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                          >
-                            {t(
-                              'onboardingAdvancedPrivacyNetworkDescriptionCallToAction',
-                            )}
-                          </a>,
                         ])}
 
                         <Box paddingTop={4}>
@@ -503,115 +454,6 @@ export default function PrivacySettings() {
                     ])}
                   />
                   <Setting
-                    title={t('onboardingAdvancedPrivacyIPFSTitle')}
-                    showToggle={false}
-                    description={
-                      <>
-                        {t('onboardingAdvancedPrivacyIPFSDescription')}
-                        <Box paddingTop={2}>
-                          <TextField
-                            value={ipfsURL}
-                            style={{ width: '100%' }}
-                            inputProps={{ 'data-testid': 'ipfs-input' }}
-                            onChange={(e) => {
-                              handleIPFSChange(e.target.value);
-                            }}
-                          />
-                          {ipfsURL ? (
-                            <Text
-                              variant={TextVariant.BodySm}
-                              color={
-                                ipfsError
-                                  ? TextColor.ErrorDefault
-                                  : TextColor.SuccessDefault
-                              }
-                            >
-                              {ipfsError ||
-                                t('onboardingAdvancedPrivacyIPFSValid')}
-                            </Text>
-                          ) : null}
-                        </Box>
-                      </>
-                    }
-                  />
-                  <Setting
-                    value={turnOnCurrencyRateCheck}
-                    setValue={setTurnOnCurrencyRateCheck}
-                    title={t('currencyRateCheckToggle')}
-                    dataTestId="currency-rate-check-toggle"
-                    description={t('currencyRateCheckToggleDescription', [
-                      <a
-                        key="coingecko_link"
-                        href={COINGECKO_LINK}
-                        rel="noreferrer"
-                        target="_blank"
-                      >
-                        {t('coingecko')}
-                      </a>,
-                      <a
-                        key="cryptocompare_link"
-                        href={CRYPTOCOMPARE_LINK}
-                        rel="noreferrer"
-                        target="_blank"
-                      >
-                        {t('cryptoCompare')}
-                      </a>,
-                      <a
-                        key="privacy_policy_link"
-                        href={PRIVACY_POLICY_LINK}
-                        rel="noreferrer"
-                        target="_blank"
-                      >
-                        {t('privacyMsg')}
-                      </a>,
-                    ])}
-                  />
-                  <Setting
-                    value={addressBarResolution}
-                    setValue={setAddressBarResolution}
-                    title={t('ensDomainsSettingTitle')}
-                    description={
-                      <>
-                        <Text
-                          variant={TextVariant.BodySm}
-                          color={TextColor.TextAlternative}
-                        >
-                          {t('ensDomainsSettingDescriptionIntroduction')}
-                        </Text>
-                        <Box
-                          marginTop={4}
-                          marginBottom={4}
-                          className="pl-4"
-                          style={{ listStyleType: 'circle' }}
-                          asChild
-                        >
-                          <ul>
-                            <Text
-                              variant={TextVariant.BodySm}
-                              asChild
-                              color={TextColor.TextAlternative}
-                            >
-                              <li>{t('ensDomainsSettingDescriptionPart1')}</li>
-                            </Text>
-                            <Text
-                              variant={TextVariant.BodySm}
-                              asChild
-                              color={TextColor.TextAlternative}
-                            >
-                              <li>{t('ensDomainsSettingDescriptionPart2')}</li>
-                            </Text>
-                          </ul>
-                        </Box>
-                        <Text
-                          variant={TextVariant.BodySm}
-                          color={TextColor.TextAlternative}
-                        >
-                          {t('ensDomainsSettingDescriptionOutroduction')}
-                        </Text>
-                      </>
-                    }
-                  />
-                  <Setting
                     value={isMultiAccountBalanceCheckerEnabled}
                     setValue={setMultiAccountBalanceCheckerEnabled}
                     title={t('useMultiAccountBalanceChecker')}
@@ -622,20 +464,12 @@ export default function PrivacySettings() {
                 </>
               ) : null}
               {selectedItem?.id === 3 ? (
-                <>
-                  <Setting
-                    value={turnOn4ByteResolution}
-                    setValue={setTurnOn4ByteResolution}
-                    title={t('use4ByteResolution')}
-                    description={t('toggleDecodeDescription')}
-                  />
-                  <Setting
-                    value={turnOnExternalNameSources}
-                    setValue={setTurnOnExternalNameSources}
-                    title={t('externalNameSourcesSetting')}
-                    description={t('externalNameSourcesSettingDescription')}
-                  />
-                </>
+                <Setting
+                  value={turnOnExternalNameSources}
+                  setValue={setTurnOnExternalNameSources}
+                  title={t('externalNameSourcesSetting')}
+                  description={t('externalNameSourcesSettingDescription')}
+                />
               ) : null}
             </Box>
           </Box>

@@ -14,9 +14,9 @@ import {
 } from '../../../../shared/constants/network';
 import {
   AUTO_DETECT_TOKEN_LEARN_MORE_LINK,
-  COINGECKO_LINK,
+  ALCHEMY_PRICES_LINK,
   CONSENSYS_PRIVACY_LINK,
-  CRYPTOCOMPARE_LINK,
+  EXCHANGE_RATE_API_LINK,
   PRIVACY_POLICY_LINK,
   TRANSACTION_SIMULATIONS_LEARN_MORE_LINK,
 } from '../../../../shared/lib/ui-utils';
@@ -48,7 +48,6 @@ import {
   getNumberOfSettingRoutesInTab,
   handleSettingsRefs,
 } from '../../../helpers/utils/settings-search';
-import ZENDESK_URLS from '../../../helpers/constants/zendesk-url';
 
 export default class SecurityTab extends PureComponent {
   static contextTypes = {
@@ -296,14 +295,6 @@ export default class SecurityTab extends PureComponent {
                 key="cyn-consensys-privacy-link"
               >
                 {t('privacyMsg')}
-              </a>,
-              <a
-                href={ZENDESK_URLS.SOLANA_ACCOUNTS}
-                target="_blank"
-                rel="noopener noreferrer"
-                key="cyn-consensys-privacy-link-solana"
-              >
-                {t('chooseYourNetworkDescriptionCallToAction')}
               </a>,
             ])}
           </div>
@@ -647,20 +638,20 @@ export default class SecurityTab extends PureComponent {
           <div className="settings-page__content-description">
             {t('currencyRateCheckToggleDescription', [
               <a
-                key="coingecko_link"
-                href={COINGECKO_LINK}
+                key="alchemy_prices_link"
+                href={ALCHEMY_PRICES_LINK}
                 rel="noreferrer"
                 target="_blank"
               >
-                {t('coingecko')}
+                {t('alchemyPrices')}
               </a>,
               <a
-                key="cryptocompare_link"
-                href={CRYPTOCOMPARE_LINK}
+                key="exchange_rate_api_link"
+                href={EXCHANGE_RATE_API_LINK}
                 rel="noreferrer"
                 target="_blank"
               >
-                {t('cryptoCompare')}
+                {t('exchangeRateApi')}
               </a>,
               <a
                 key="privacy_policy_link"

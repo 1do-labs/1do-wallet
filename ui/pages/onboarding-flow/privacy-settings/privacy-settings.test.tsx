@@ -1,5 +1,5 @@
 import React from 'react';
-import { fireEvent } from '@testing-library/react';
+import { fireEvent, screen } from '@testing-library/react';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { setBackgroundConnection } from '../../../store/background-connection';
@@ -7,229 +7,108 @@ import { renderWithProvider } from '../../../../test/lib/render-helpers-navigate
 import { CHAIN_IDS } from '../../../../shared/constants/network';
 import { SHOW_BASIC_FUNCTIONALITY_MODAL_OPEN } from '../../../store/actionConstants';
 import { mockNetworkState } from '../../../../test/stub/networks';
-import { FirstTimeFlowType } from '../../../../shared/constants/onboarding';
-import { enLocale as messages } from '../../../../test/lib/i18n-helpers';
 import PrivacySettings from './privacy-settings';
 
-const mockOpenBasicFunctionalityModal = jest.fn().mockImplementation(() => {
-  return {
-    type: SHOW_BASIC_FUNCTIONALITY_MODAL_OPEN,
-  };
-});
+const mockOpenBasicFunctionalityModal = jest.fn(() => ({
+  type: SHOW_BASIC_FUNCTIONALITY_MODAL_OPEN,
+}));
 
-jest.mock('../../../ducks/app/app.ts', () => {
-  return {
-    openBasicFunctionalityModal: () => {
-      return mockOpenBasicFunctionalityModal();
-    },
-  };
-});
+jest.mock('../../../ducks/app/app.ts', () => ({
+  onboardingToggleBasicFunctionalityOn: () => ({ type: 'MOCK_ENABLE' }),
+  openBasicFunctionalityModal: () => mockOpenBasicFunctionalityModal(),
+}));
 
 describe('Privacy Settings Onboarding View', () => {
-  const mockStore = {
+  const setUseTokenDetection = jest.fn().mockResolvedValue(undefined);
+  const setUseMultiAccountBalanceChecker = jest
+    .fn()
+    .mockResolvedValue(undefined);
+  const setUseTransactionSimulations = jest.fn().mockResolvedValue(undefined);
+  const setUseExternalNameSources = jest.fn().mockResolvedValue(undefined);
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+    setBackgroundConnection({
+      setUseTokenDetection,
+      setUseMultiAccountBalanceChecker,
+      setUseTransactionSimulations,
+      setUseExternalNameSources,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } as any);
+  });
+
+  it('shows categories for network services, asset data, and address information', () => {
+    renderWithProvider(<PrivacySettings />, createStore());
+
+    expect(screen.getByText('Network and data services')).toBeInTheDocument();
+    expect(screen.getByText('Assets and simulations')).toBeInTheDocument();
+    expect(screen.getByText('Address information')).toBeInTheDocument();
+    expect(screen.queryByText('Security')).not.toBeInTheDocument();
+  });
+
+  it('saves the privacy choices exposed during onboarding', () => {
+    const { container } = renderWithProvider(
+      <PrivacySettings />,
+      createStore(),
+    );
+
+    fireEvent.click(
+      screen.getByTestId('category-item-Network and data services'),
+    );
+    fireEvent.click(container.querySelectorAll('input[type=checkbox]')[0]);
+    expect(mockOpenBasicFunctionalityModal).toHaveBeenCalledTimes(1);
+
+    fireEvent.click(screen.getByTestId('category-item-Assets and simulations'));
+    let toggles = container.querySelectorAll('input[type=checkbox]');
+    fireEvent.click(toggles[0]);
+    fireEvent.click(toggles[1]);
+    fireEvent.click(toggles[2]);
+
+    fireEvent.click(screen.getByTestId('category-item-Address information'));
+    toggles = container.querySelectorAll('input[type=checkbox]');
+    fireEvent.click(toggles[0]);
+
+    fireEvent.click(screen.getByTestId('privacy-settings-back-button'));
+
+    expect(setUseTokenDetection).toHaveBeenCalledWith(true);
+    expect(setUseTransactionSimulations).toHaveBeenCalledWith(false);
+    expect(setUseMultiAccountBalanceChecker).toHaveBeenCalledWith(false);
+    expect(setUseExternalNameSources).toHaveBeenCalledWith(false);
+  });
+
+  it('does not expose advanced IPFS, ENS, price, or 4byte settings', () => {
+    const { container } = renderWithProvider(
+      <PrivacySettings />,
+      createStore(),
+    );
+
+    fireEvent.click(screen.getByTestId('category-item-Assets and simulations'));
+
+    expect(screen.queryByTestId('ipfs-input')).not.toBeInTheDocument();
+    expect(
+      screen.queryByTestId('currency-rate-check-toggle'),
+    ).not.toBeInTheDocument();
+    expect(container.textContent).not.toContain('Show ENS domains');
+    expect(container.textContent).not.toContain('Decode smart contracts');
+  });
+});
+
+function createStore() {
+  return configureMockStore([thunk])({
     metamask: {
       ...mockNetworkState(
         { chainId: CHAIN_IDS.MAINNET },
-        { chainId: CHAIN_IDS.LINEA_MAINNET },
+        { chainId: CHAIN_IDS.BASE },
         { chainId: CHAIN_IDS.SEPOLIA },
-        { chainId: CHAIN_IDS.LINEA_SEPOLIA },
       ),
-      use4ByteResolution: true,
       useTokenDetection: false,
-      useCurrencyRateCheck: true,
       useMultiAccountBalanceChecker: true,
-      ipfsGateway: 'test.link',
-      useAddressBarEnsResolution: true,
       useTransactionSimulations: true,
+      useExternalNameSources: true,
       useExternalServices: true,
     },
     appState: {
       externalServicesOnboardingToggleState: true,
     },
-  };
-
-  const store = configureMockStore([thunk])(mockStore);
-  const setFeatureFlagStub = jest.fn();
-  const setUse4ByteResolutionStub = jest.fn();
-  const setUseTokenDetectionStub = jest.fn().mockResolvedValue(true);
-  const setUseCurrencyRateCheckStub = jest.fn().mockResolvedValue(true);
-  const setIpfsGatewayStub = jest.fn().mockResolvedValue('test.link');
-  const completeOnboardingStub = jest.fn().mockResolvedValue(true);
-  const setUseMultiAccountBalanceCheckerStub = jest
-    .fn()
-    .mockResolvedValue(true);
-  const setUseAddressBarEnsResolutionStub = jest.fn().mockResolvedValue(true);
-  const onboardingToggleBasicFunctionalityOnStub = jest.fn();
-  const toggleExternalServicesStub = jest.fn();
-  const setUseTransactionSimulationsStub = jest.fn();
-  const setPreferenceStub = jest.fn();
-
-  setBackgroundConnection({
-    setFeatureFlag: setFeatureFlagStub,
-    setUse4ByteResolution: setUse4ByteResolutionStub,
-    setUseTokenDetection: setUseTokenDetectionStub,
-    setUseCurrencyRateCheck: setUseCurrencyRateCheckStub,
-    setIpfsGateway: setIpfsGatewayStub,
-    completeOnboarding: completeOnboardingStub,
-    setUseMultiAccountBalanceChecker: setUseMultiAccountBalanceCheckerStub,
-    setUseAddressBarEnsResolution: setUseAddressBarEnsResolutionStub,
-    toggleExternalServices: toggleExternalServicesStub,
-    onboardingToggleBasicFunctionalityOn:
-      onboardingToggleBasicFunctionalityOnStub,
-    setUseTransactionSimulations: setUseTransactionSimulationsStub,
-    setPreference: setPreferenceStub,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  } as any);
-
-  it('should update the default settings from each category', () => {
-    const { container, queryByTestId } = renderWithProvider(
-      <PrivacySettings />,
-      store,
-    );
-    // All settings are initialized toggled to be same as default
-    expect(toggleExternalServicesStub).toHaveBeenCalledTimes(0);
-    expect(setUse4ByteResolutionStub).toHaveBeenCalledTimes(0);
-    expect(setUseTokenDetectionStub).toHaveBeenCalledTimes(0);
-    expect(setUseMultiAccountBalanceCheckerStub).toHaveBeenCalledTimes(0);
-    expect(setUseCurrencyRateCheckStub).toHaveBeenCalledTimes(0);
-    expect(setUseAddressBarEnsResolutionStub).toHaveBeenCalledTimes(0);
-    expect(setUseTransactionSimulationsStub).toHaveBeenCalledTimes(0);
-    expect(setPreferenceStub).toHaveBeenCalledTimes(0);
-
-    // Default Settings - General category
-    const itemCategoryGeneral = queryByTestId('category-item-General');
-    expect(itemCategoryGeneral).toBeInTheDocument();
-    fireEvent.click(itemCategoryGeneral as HTMLElement);
-
-    let toggles = container.querySelectorAll('input[type=checkbox]');
-    const backButton = queryByTestId('privacy-settings-back-button');
-
-    fireEvent.click(toggles[0]); // toggleExternalServicesStub
-
-    // Default Settings - Assets category
-    const itemCategoryAssets = queryByTestId('category-item-Assets');
-    fireEvent.click(itemCategoryAssets as HTMLElement);
-
-    toggles = container.querySelectorAll('input[type=checkbox]');
-
-    fireEvent.click(toggles[0]); // setUseTokenDetectionStub
-    fireEvent.click(toggles[1]); // setUseTransactionSimulationsStub
-
-    fireEvent.click(toggles[2]); // setUseCurrencyRateCheckStub
-    fireEvent.click(toggles[3]); // setUseAddressBarEnsResolutionStub
-    fireEvent.click(toggles[4]); // setUseMultiAccountBalanceCheckerStub
-
-    // Default Settings - Security category
-    const itemCategorySecurity = queryByTestId('category-item-Security');
-    fireEvent.click(itemCategorySecurity as HTMLElement);
-
-    toggles = container.querySelectorAll('input[type=checkbox]');
-
-    fireEvent.click(toggles[0]); // setUse4ByteResolutionStub
-    fireEvent.click(toggles[1]); // setPreferenceStub
-
-    fireEvent.click(backButton as HTMLElement);
-
-    expect(setUseTokenDetectionStub).toHaveBeenCalledTimes(1);
-    expect(setUseTokenDetectionStub.mock.calls[0][0]).toStrictEqual(true);
-    expect(setUseTransactionSimulationsStub).toHaveBeenCalledTimes(1);
-    expect(setUseTransactionSimulationsStub.mock.calls[0][0]).toStrictEqual(
-      false,
-    );
-
-    expect(setUseCurrencyRateCheckStub).toHaveBeenCalledTimes(1);
-    expect(setUseCurrencyRateCheckStub.mock.calls[0][0]).toStrictEqual(false);
-    expect(setUseAddressBarEnsResolutionStub).toHaveBeenCalledTimes(1);
-    expect(setUseAddressBarEnsResolutionStub.mock.calls[0][0]).toStrictEqual(
-      false,
-    );
-    expect(setUseMultiAccountBalanceCheckerStub).toHaveBeenCalledTimes(1);
-    expect(setUseMultiAccountBalanceCheckerStub.mock.calls[0][0]).toStrictEqual(
-      false,
-    );
-
-    expect(setUse4ByteResolutionStub).toHaveBeenCalledTimes(1);
-    expect(setUse4ByteResolutionStub.mock.calls[0][0]).toStrictEqual(false);
   });
-
-  describe('IPFS', () => {
-    it('should handle proper IPFS input', () => {
-      const { queryByTestId, queryByText } = renderWithProvider(
-        <PrivacySettings />,
-        store,
-      );
-
-      const itemCategoryAssets = queryByTestId('category-item-Assets');
-      fireEvent.click(itemCategoryAssets as HTMLElement);
-
-      const ipfsInput = queryByTestId('ipfs-input');
-      const ipfsEvent = {
-        target: {
-          value: 'ipfs.io',
-        },
-      };
-
-      fireEvent.change(ipfsInput as HTMLElement, ipfsEvent);
-
-      const validIpfsUrl = queryByText(
-        messages.onboardingAdvancedPrivacyIPFSValid.message,
-      );
-      expect(validIpfsUrl).toBeInTheDocument();
-
-      const backButton = queryByTestId('privacy-settings-back-button');
-      fireEvent.click(backButton as HTMLElement);
-
-      expect(setIpfsGatewayStub).toHaveBeenCalled();
-    });
-
-    it('should error with gateway.ipfs.io IPFS input', () => {
-      const { queryByTestId, queryByText } = renderWithProvider(
-        <PrivacySettings />,
-        store,
-      );
-
-      const itemCategoryAssets = queryByTestId('category-item-Assets');
-      fireEvent.click(itemCategoryAssets as HTMLElement);
-
-      const ipfsInput = queryByTestId('ipfs-input');
-      const ipfsEvent = {
-        target: {
-          value: 'gateway.ipfs.io',
-        },
-      };
-
-      fireEvent.change(ipfsInput as HTMLElement, ipfsEvent);
-
-      const invalidErrorMsg = queryByText(
-        messages.onboardingAdvancedPrivacyIPFSInvalid.message,
-      );
-
-      expect(invalidErrorMsg).toBeInTheDocument();
-    });
-
-    it('should error with improper IPFS input', () => {
-      const { queryByTestId, queryByText } = renderWithProvider(
-        <PrivacySettings />,
-        store,
-      );
-
-      const itemCategoryAssets = queryByTestId('category-item-Assets');
-      fireEvent.click(itemCategoryAssets as HTMLElement);
-
-      const ipfsInput = queryByTestId('ipfs-input');
-      const ipfsEvent = {
-        target: {
-          value: ' ',
-        },
-      };
-
-      fireEvent.change(ipfsInput as HTMLElement, ipfsEvent);
-
-      const invalidErrorMsg = queryByText(
-        messages.onboardingAdvancedPrivacyIPFSInvalid.message,
-      );
-
-      expect(invalidErrorMsg).toBeInTheDocument();
-    });
-  });
-});
+}

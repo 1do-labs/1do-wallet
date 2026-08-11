@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -21,11 +21,7 @@ import { useI18nContext } from '../../../hooks/useI18nContext';
 // TODO: Remove restricted import
 // eslint-disable-next-line import-x/no-restricted-paths
 import locales from '../../../../app/_locales/index.json';
-import { isMaintainedLocale } from '../../../../shared/constants/locales';
 import type { MetaMaskReduxState } from '../../../store/store';
-import { Divider } from '../shared';
-
-type LocaleEntry = (typeof locales)[number];
 
 const LanguageSubPage = () => {
   const t = useI18nContext();
@@ -35,26 +31,13 @@ const LanguageSubPage = () => {
     (state: MetaMaskReduxState) => state.metamask.currentLocale,
   );
 
-  const { supportedLocales, communityLocales } = useMemo(() => {
-    const supported: LocaleEntry[] = [];
-    const community: LocaleEntry[] = [];
-    for (const locale of locales) {
-      if (isMaintainedLocale(locale.code)) {
-        supported.push(locale);
-      } else {
-        community.push(locale);
-      }
-    }
-    return { supportedLocales: supported, communityLocales: community };
-  }, []);
-
   const handleSelect = (value: string) => {
     dispatch(updateCurrentLocale(value));
     navigate(PREFERENCES_AND_DISPLAY_ROUTE);
   };
 
-  const renderLocaleRows = (entries: LocaleEntry[]) =>
-    entries.map(({ code: value, name: label }) => {
+  const renderLocaleRows = () =>
+    locales.map(({ code: value, name: label }) => {
       const isSelected = value === currentLocale;
       return (
         <Box
@@ -94,17 +77,7 @@ const LanguageSubPage = () => {
       >
         {t('supportedLanguagesSectionTitle')}
       </Text>
-      {renderLocaleRows(supportedLocales)}
-      <Divider />
-      <Text
-        variant={TextVariant.BodyMd}
-        color={TextColor.TextAlternative}
-        className="px-4 pt-3 pb-2"
-        data-testid="community-languages-section-heading"
-      >
-        {t('communityContributedLanguagesSectionTitle')}
-      </Text>
-      {renderLocaleRows(communityLocales)}
+      {renderLocaleRows()}
     </Box>
   );
 };

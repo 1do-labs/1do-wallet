@@ -8,6 +8,7 @@ import {
 } from '../../../store/actions';
 import type { MetaMaskReduxState } from '../../../store/store';
 import { PRIVACY_ITEMS } from '../search-config';
+import { BasicFunctionalityToggleItem } from './basic-functionality-item';
 import { ThirdPartyApisItem } from './third-party-apis-item';
 import { DownloadStateLogsItem } from './download-state-logs-item';
 import { ExportYourDataItem } from './export-your-data-item';
@@ -34,6 +35,7 @@ const SkipLinkConfirmationToggleItem = createToggleItem({
 
 /** Registry of setting items for the Privacy page. Add new items here */
 const PRIVACY_SETTING_ITEMS: SettingItemConfig[] = [
+  { id: 'basic-functionality', component: BasicFunctionalityToggleItem },
   { id: 'third-party-apis', component: ThirdPartyApisItem },
   {
     id: 'batch-account-balance-requests',

@@ -111,6 +111,9 @@
   "activityEmptyDescription": {
     "message": "暂无内容。你的活动会显示在这里。"
   },
+  "alchemyPrices": {
+    "message": "Alchemy Prices"
+  },
   "add": {
     "message": "添加"
   },
@@ -631,9 +634,6 @@
   "assets": {
     "message": "资产"
   },
-  "assetsDescription": {
-    "message": "自动检测钱包中的代币，显示 NFT，并获取批量账户余额更新"
-  },
   "asterdexReferralSubtitle": {
     "message": "使用 1do 推荐码，交易可获得 4% 的返现。",
     "description": "The subtitle of the AsterDEX referral confirmation screen"
@@ -655,7 +655,7 @@
     "description": "$1 is a link to a support article"
   },
   "autoDetectTokensDescriptionV2": {
-    "message": "显示发送到您钱包的新代币。"
+    "message": "通过配置的 RPC 和代币数据提供商检测新代币，提供商可能收到您的 IP 地址和账户地址。"
   },
   "autoLock": {
     "message": "自动锁定"
@@ -763,15 +763,15 @@
     "message": "基本"
   },
   "basicConfigurationDescription": {
-    "message": "1do 通过互联网服务提供代币详情和燃料设置等基本功能。当您使用互联网服务时，您的 IP 地址会共享，在本例中与 1do 共享。这就像您访问任何网站一样。1do 暂时使用这些数据，并且绝不会出卖您的数据。您可以使用 VPN 或关闭这些服务，但这可能会影响您的 1do 体验。要了解详情，请参阅我们的 $1。",
-    "description": "$1 is to be replaced by the message for privacyMsg, and will link to https://consensys.io/privacy-policy"
+    "message": "允许 1do 向您配置的 RPC 和 API 提供商请求代币数据、价格、余额更新和交易模拟。提供商会收到您的 IP 地址及完成请求所需的数据。关闭后可减少外部请求，但部分钱包功能将受限。详情请阅读我们的$1。",
+    "description": "$1 is replaced by the Privacy Policy link."
   },
   "basicConfigurationDescriptionV2": {
-    "message": "包含代币详情和燃料设置等基本功能。为获得最佳体验，请保持此功能开启。请参阅我们的 $1，了解更多信息。",
-    "description": "$1 is to be replaced by the message for privacyMsg, and will link to https://consensys.io/privacy-policy"
+    "message": "允许向您配置的 RPC 和 API 提供商请求代币数据、价格、余额更新和交易模拟。关闭后可减少外部请求，但部分钱包功能将受限。详情请阅读我们的$1。",
+    "description": "$1 is replaced by the Privacy Policy link."
   },
   "basicConfigurationLabel": {
-    "message": "基本功能"
+    "message": "外部数据服务"
   },
   "basicConfigurationModalCheckbox": {
     "message": "我理解并想继续"
@@ -953,11 +953,8 @@
     "message": "选择您的网络"
   },
   "chooseYourNetworkDescription": {
-    "message": "在您使用我们的默认设置和配置时，我们将默认远程过程调用（RPC）提供商，以提供我们所能实现的最可靠且私密的以太坊数据访问。在少数情况下，我们可能会使用其他 RPC 提供商，以便为用户提供最佳体验。您可以选择自己的 RPC 服务，但请谨记：任何 RPC 提供商都会接收到您的 IP 地址和以太坊钱包信息以完成交易。要详细了解默认 RPC 提供商如何处理 EVM 账户数据，请参阅我们的 $1；关于 Solana 账户的相关信息，请参阅 $2。",
-    "description": "$1 is a link to the privacy policy, $2 is a link to Solana accounts support"
-  },
-  "chooseYourNetworkDescriptionCallToAction": {
-    "message": "点击此处"
+    "message": "内置 EVM 网络默认使用 Alchemy RPC。您也可以选择自定义 RPC，但任何 RPC 提供商都可能接收您的 IP 地址、账户地址和交易请求。详情请阅读我们的$1。",
+    "description": "$1 is a link to the privacy policy"
   },
   "chromeRequiredForHardwareWallets": {
     "message": "您需要在 Google Chrome 上使用 1do 以连接到您的硬件钱包。"
@@ -997,19 +994,12 @@
   "closeWindowAnytime": {
     "message": "您可以随时关闭此窗口。"
   },
-  "coingecko": {
-    "message": "CoinGecko"
-  },
   "collectionName": {
     "message": "收藏品名称"
   },
   "comboNoOptions": {
     "message": "找不到任何选项",
     "description": "Default text shown in the combo field dropdown if no options."
-  },
-  "communityContributedLanguagesSectionTitle": {
-    "message": "社区贡献",
-    "description": "Section heading on the language settings screen for locales maintained by community contributors."
   },
   "completed": {
     "message": "已完成"
@@ -1450,9 +1440,6 @@
   "creatorAddress": {
     "message": "创建者地址"
   },
-  "cryptoCompare": {
-    "message": "CryptoCompare"
-  },
   "CSS_loadingTakingTooLongActionText": {
     "message": "如果问题仍然存在，请重启 1do。",
     "description": "Second line of the message that is shown when the initial loading of the 1do UI takes a very long time."
@@ -1468,8 +1455,11 @@
     "message": "显示余额和代币价格检查器"
   },
   "currencyRateCheckToggleDescription": {
-    "message": "我们使用$1和$2的API来显示您的余额和代币价格。$3",
-    "description": "$1 represents Coingecko, $2 represents CryptoCompare and $3 represents Privacy Policy"
+    "message": "我们使用$1获取代币价格，并使用$2换算法币汇率。这些请求不包含您的钱包地址。$3",
+    "description": "$1 represents Alchemy Prices, $2 represents ExchangeRate-API, and $3 represents Privacy Policy"
+  },
+  "currencyRateCheckToggleDescriptionV2": {
+    "message": "使用 Alchemy Prices API 获取代币价格，并使用 ExchangeRate-API 换算法币汇率。价格请求不包含您的钱包地址。"
   },
   "currencySymbol": {
     "message": "货币符号"
@@ -1712,10 +1702,10 @@
     "message": "默认 RPC（远程过程调用）URL"
   },
   "defaultSettingsSubTitle": {
-    "message": "1do 使用默认设置达到安全性和易用性的最佳平衡。更改这些设置以进一步保护您的隐私。"
+    "message": "选择哪些 RPC 和数据提供商可以接收资产检测、余额更新及交易模拟所需的信息。"
   },
   "defaultSettingsTitle": {
-    "message": "默认隐私设置"
+    "message": "隐私和数据设置"
   },
   "defi": {
     "message": "去中心化金融"
@@ -2215,6 +2205,9 @@
   "etherscanViewOn": {
     "message": "在 Etherscan 上查看"
   },
+  "exchangeRateApi": {
+    "message": "ExchangeRate-API"
+  },
   "ethGasPriceFetchWarning": {
     "message": "由于目前主要的燃料估算服务不可用，因此提供了备用燃料价格。"
   },
@@ -2246,10 +2239,10 @@
     "message": "建议的昵称"
   },
   "externalNameSourcesSettingDescription": {
-    "message": "我们将从 Etherscan 和 Lens 协议等第三方来源为您与之交互的地址获取建议的昵称。这些来源将能够看到这些地址和您的 IP 地址。您的账户地址不会暴露给第三方。"
+    "message": "从 Etherscan、Lens 和代币名称来源获取建议名称。这些提供商会收到您的 IP 地址及被查询的地址；除非查询目标正是您的账户，否则不会发送当前所选账户。"
   },
   "externalNameSourcesSettingDescriptionV2": {
-    "message": "从 Etherscan 和 Lens 协议等第三方来源获取您所交互地址的建议昵称。"
+    "message": "从 Etherscan、Lens 和代币名称来源获取建议名称。提供商会收到您的 IP 地址及被查询的地址。"
   },
   "failed": {
     "message": "失败"
@@ -2504,9 +2497,6 @@
   },
   "generalCameraErrorTitle": {
     "message": "出错了...."
-  },
-  "generalDescription": {
-    "message": "跨设备同步设置、选择网络首选项和跟踪代币数据"
   },
   "genericExplorerView": {
     "message": "在$1查看账户"
@@ -3024,7 +3014,7 @@
     "description": "$1 will be replaced by the learnMore translation key"
   },
   "learnMoreAboutPrivacy": {
-    "message": "了解有关隐私最佳实践的更多信息。"
+    "message": "阅读 1Do 隐私政策。"
   },
   "learnMoreKeystone": {
     "message": "了解更多"
@@ -4080,13 +4070,10 @@
     "message": "IPFS 网关 URL 有效"
   },
   "onboardingAdvancedPrivacyNetworkDescription": {
-    "message": "在您使用我们的默认设置和配置时，我们将默认远程过程调用（RPC）提供商，以提供我们所能实现的最可靠且私密的以太坊数据访问。在少数情况下，我们可能会使用其他 RPC 提供商，以便为用户提供最佳体验。您可以选择自己的 RPC 服务，但请谨记：任何 RPC 提供商都会接收到您的 IP 地址和以太坊钱包信息以完成交易。要详细了解默认 RPC 提供商如何处理 EVM 账户数据，请参阅我们的 $1；关于 Solana 账户的相关信息，请参阅 $2。"
-  },
-  "onboardingAdvancedPrivacyNetworkDescriptionCallToAction": {
-    "message": "点击此处"
+    "message": "1do 使用每个 EVM 网络所配置的 RPC。内置网络默认使用 Alchemy。任何 RPC 提供商都会收到您的 IP 地址、账户地址，以及读取余额或提交交易所需的请求数据。您可以在下方检查、替换或添加 RPC。详情请阅读我们的$1。"
   },
   "onboardingAdvancedPrivacyNetworkTitle": {
-    "message": "选择您的网络"
+    "message": "网络和 RPC 提供商"
   },
   "onboardingContinueWith": {
     "message": "使用 $1 继续",
@@ -4519,8 +4506,26 @@
   "privacy": {
     "message": "隐私"
   },
+  "privacyAddressInformationDescription": {
+    "message": "选择是否允许第三方来源为您交互的地址提供建议名称。"
+  },
+  "privacyAddressInformationTitle": {
+    "message": "地址信息"
+  },
+  "privacyAssetsAndSimulationsDescription": {
+    "message": "控制代币检测、远程交易模拟和批量账户余额请求。"
+  },
+  "privacyAssetsAndSimulationsTitle": {
+    "message": "资产和交易模拟"
+  },
   "privacyMsg": {
     "message": "隐私政策"
+  },
+  "privacyNetworkAndServicesDescription": {
+    "message": "管理外部数据服务以及每个 EVM 网络使用的 RPC 提供商。"
+  },
+  "privacyNetworkAndServicesTitle": {
+    "message": "网络和数据服务"
   },
   "privateKey": {
     "message": "私钥",
@@ -5116,9 +5121,6 @@
   "securityDefaultSettingsSocialLogin": {
     "message": "安全与隐私"
   },
-  "securityDescription": {
-    "message": "减少您加入不安全网络的机会并保护您的账户"
-  },
   "securityLoginWithSocial": {
     "message": "使用 $1 登录",
     "description": "The $1 is the text 'Google' or 'Apple'"
@@ -5440,10 +5442,10 @@
     "message": "我们无法估算燃料。合约中可能存在错误，这笔交易可能会失败。"
   },
   "simulationsSettingDescription": {
-    "message": "开启此选项，以便在确认交易和签名之前预估交易余额的变化。这并不能保证交易的最终结果。$1"
+    "message": "将交易或签名数据发送给所选网络配置的 RPC，以便在确认前预估余额变化。内置网络默认使用 Alchemy。模拟结果不能保证最终执行结果。$1"
   },
   "simulationsSettingDescriptionV2": {
-    "message": "在您确认交易前估算交易的余额变化。这并不能保证您交易的最终结果。$1"
+    "message": "将交易数据发送给所选网络的 RPC，以便在确认前预估余额变化。内置网络默认使用 Alchemy。$1"
   },
   "simulationsSettingSubHeader": {
     "message": "预计余额变化"
@@ -6508,10 +6510,10 @@
     "message": "批量账户余额请求"
   },
   "useMultiAccountBalanceCheckerSettingDescription": {
-    "message": "通过批处理账户余额请求，可更快获得余额更新。此操作让我们可以全面获取您的账户余额信息，以便您更快地获得更新，从而获得更佳体验。关闭此功能后，第三方将您的账户相互关联的概率会较低。"
+    "message": "通过配置的数据提供商在同一请求中查询多个账户余额。这样速度更快，但提供商可以知道这些账户地址来自同一次请求。"
   },
   "useMultiAccountBalanceCheckerSettingDescriptionV2": {
-    "message": "一次性发送您所有账户的余额更新。这能带来更快捷、更流畅的多账户管理体验。"
+    "message": "在同一请求中查询多个账户余额。这样速度更快，但配置的数据提供商可以关联该请求中的账户地址。"
   },
   "useNftDetection": {
     "message": "自动检测NFT"
@@ -6545,7 +6547,7 @@
     "description": "useSafeChainsListValidationWebsite is separated from the rest of the text so that we can bold the third party service name in the middle of them"
   },
   "useTokenDetectionPrivacyDesc": {
-    "message": "要自动显示发送到您账户的代币，需要与第三方服务器通信以获取代币的图像。这些服务器将拥有您的IP地址的访问权限。"
+    "message": "通过配置的 RPC 和代币数据提供商自动检测代币。这些提供商可能收到您的 IP 地址、账户地址、网络及代币合约地址。"
   },
   "value": {
     "message": "值"

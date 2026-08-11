@@ -5,7 +5,6 @@ import { DateTime } from 'luxon';
 import {
   getFormattedIpfsUrl,
   fetchTokenContractExchangeRates,
-  CodefiTokenPricesServiceV2,
 } from '@metamask/assets-controllers';
 import * as lodash from 'lodash';
 import bowser from 'bowser';
@@ -13,6 +12,8 @@ import { isObject, isStrictHexString } from '@metamask/utils';
 import { Web3Provider } from '@ethersproject/providers';
 import { Contract } from '@ethersproject/contracts';
 import { KeyringTypes } from '@metamask/keyring-controller';
+// eslint-disable-next-line import-x/no-restricted-paths
+import { AlchemyTokenPricesService } from '../../../app/scripts/lib/alchemy-token-prices-service';
 import { CHAIN_IDS } from '../../../shared/constants/network';
 import { logErrorWithMessage } from '../../../shared/lib/error';
 import {
@@ -845,7 +846,7 @@ export const fetchTokenExchangeRates = async (
 ) => {
   try {
     return await fetchTokenContractExchangeRates({
-      tokenPricesService: new CodefiTokenPricesServiceV2(),
+      tokenPricesService: new AlchemyTokenPricesService(),
       nativeCurrency,
       tokenAddresses,
       chainId,

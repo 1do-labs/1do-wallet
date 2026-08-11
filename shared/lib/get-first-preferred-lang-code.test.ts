@@ -18,19 +18,19 @@ describe('getFirstPreferredLangCode', () => {
   });
 
   it('returns the first supported locale from the preferred list', async () => {
-    mockGetAcceptLanguages.mockResolvedValue(['fr', 'de']);
+    mockGetAcceptLanguages.mockResolvedValue(['zh-CN', 'en']);
 
     const result = await getFirstPreferredLangCode();
 
-    expect(result).toBe('fr');
+    expect(result).toBe('zh_CN');
   });
 
   it('returns the first supported locale when earlier entries are unsupported', async () => {
-    mockGetAcceptLanguages.mockResolvedValue(['xx', 'yy', 'de']);
+    mockGetAcceptLanguages.mockResolvedValue(['xx', 'yy', 'en']);
 
     const result = await getFirstPreferredLangCode();
 
-    expect(result).toBe('de');
+    expect(result).toBe('en');
   });
 
   it('returns en when no preferred locale is supported', async () => {
@@ -79,16 +79,6 @@ describe('getFirstPreferredLangCode', () => {
     });
   });
 
-  describe('Spanish locale handling', () => {
-    it('maps es to es_419 via the pre-seeded default', async () => {
-      mockGetAcceptLanguages.mockResolvedValue(['es']);
-
-      const result = await getFirstPreferredLangCode();
-
-      expect(result).toBe('es_419');
-    });
-  });
-
   describe('Chinese locale handling', () => {
     it('maps zh to zh_CN via the pre-seeded default', async () => {
       mockGetAcceptLanguages.mockResolvedValue(['zh']);
@@ -106,42 +96,31 @@ describe('getFirstPreferredLangCode', () => {
       expect(result).toBe('zh_CN');
     });
 
-    it('maps zh-tw (hyphen form) to zh_TW', async () => {
+    it('falls back to zh_CN for Traditional Chinese browser locales', async () => {
       mockGetAcceptLanguages.mockResolvedValue(['zh-tw']);
 
       const result = await getFirstPreferredLangCode();
 
-      expect(result).toBe('zh_TW');
-    });
-  });
-
-  describe('regional code fallback', () => {
-    it('falls back to the base language code when only the base locale is supported', async () => {
-      // fr-CA is not a supported locale but fr is; the result should be fr
-      mockGetAcceptLanguages.mockResolvedValue(['fr-CA']);
-
-      const result = await getFirstPreferredLangCode();
-
-      expect(result).toBe('fr');
+      expect(result).toBe('zh_CN');
     });
   });
 
   describe('locale code normalisation', () => {
     it('is case-insensitive for locale codes', async () => {
-      mockGetAcceptLanguages.mockResolvedValue(['FR']);
+      mockGetAcceptLanguages.mockResolvedValue(['EN']);
 
       const result = await getFirstPreferredLangCode();
 
-      expect(result).toBe('fr');
+      expect(result).toBe('en');
     });
 
     it('normalises underscores to hyphens before matching', async () => {
-      // Some browsers may return zh_TW; the module lowercases and replaces '_' with '-'
+      // Some browsers may return zh_TW; it maps to the supported Simplified Chinese locale.
       mockGetAcceptLanguages.mockResolvedValue(['zh_TW']);
 
       const result = await getFirstPreferredLangCode();
 
-      expect(result).toBe('zh_TW');
+      expect(result).toBe('zh_CN');
     });
   });
 });

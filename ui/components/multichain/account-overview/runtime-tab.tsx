@@ -63,7 +63,7 @@ const RuntimeAppCard = ({
           {Icon ? <Icon aria-hidden="true" /> : null}
         </Box>
         <Box flexDirection={BoxFlexDirection.Column} gap={1}>
-          <Text variant={TextVariant.BodySm} color={TextColor.TextDefault}>
+          <Text variant={TextVariant.BodyMd} color={TextColor.TextDefault}>
             {app.label}
           </Text>
         </Box>

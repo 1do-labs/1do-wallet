@@ -22,7 +22,6 @@
 //
 // //////////////////////////////////////////////////////////////////////////////
 
-const { deepStrictEqual, AssertionError } = require('node:assert');
 const fs = require('fs');
 const { promisify } = require('util');
 const log = require('loglevel');
@@ -119,29 +118,6 @@ async function writeLocale(code, locale) {
 async function verifyLocale(code) {
   const englishLocale = await getLocale('en');
   let failed = false;
-
-  try {
-    // `en_GB` is a special case, added for compliance reasons
-    // Not used in-app. Should be identical to `en`.
-    const englishGbLocale = await getLocale('en_GB');
-    deepStrictEqual(
-      englishLocale,
-      englishGbLocale,
-      'en_GB should be identical to en',
-    );
-  } catch (error) {
-    if (!(error instanceof AssertionError)) {
-      throw error;
-    }
-
-    if (fix) {
-      console.info('Differences detected in `en_GB` local; overwriting');
-      await writeLocale('en_GB', englishLocale);
-    } else {
-      console.error(error);
-    }
-    failed = true;
-  }
 
   const targetLocale = await getLocale(code);
 

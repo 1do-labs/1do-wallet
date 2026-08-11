@@ -1,7 +1,7 @@
 /**
  * Values supported by the Price API for the `timePeriod` parameter.
  *
- * @see https://price.api.cx.metamask.io/docs#/Historical%20Prices/PriceController_getHistoricalPricesByCaipAssetId
+ * Used to choose an Alchemy historical-price time window.
  */
 export type PriceApiTimePeriod = `${number}${
   | 'D'

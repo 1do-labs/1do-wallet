@@ -1,7 +1,5 @@
-import {
-  CodefiTokenPricesServiceV2,
-  TokenRatesController,
-} from '@metamask/assets-controllers';
+import { TokenRatesController } from '@metamask/assets-controllers';
+import { AlchemyTokenPricesService } from '../../lib/alchemy-token-prices-service';
 import { MessengerClientInitFunction } from '../types';
 import {
   TokenRatesControllerMessenger,
@@ -28,7 +26,7 @@ export const TokenRatesControllerInit: MessengerClientInitFunction<
   const messengerClient = new TokenRatesController({
     messenger: controllerMessenger,
     state: persistedState.TokenRatesController,
-    tokenPricesService: new CodefiTokenPricesServiceV2(),
+    tokenPricesService: new AlchemyTokenPricesService(),
     disabled: !preferencesState.useCurrencyRateCheck,
   });
 

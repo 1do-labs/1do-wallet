@@ -1,7 +1,5 @@
-import {
-  CodefiTokenPricesServiceV2,
-  CurrencyRateController,
-} from '@metamask/assets-controllers';
+import { CurrencyRateController } from '@metamask/assets-controllers';
+import { AlchemyTokenPricesService } from '../lib/alchemy-token-prices-service';
 import {
   CurrencyRateControllerInitMessenger,
   CurrencyRateControllerMessenger,
@@ -31,7 +29,7 @@ export const CurrencyRateControllerInit: MessengerClientInitFunction<
     includeUsdRate: true,
     useExternalServices: () =>
       initMessenger.call('PreferencesController:getState').useExternalServices,
-    tokenPricesService: new CodefiTokenPricesServiceV2(),
+    tokenPricesService: new AlchemyTokenPricesService(),
   });
 
   return {

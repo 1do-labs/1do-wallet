@@ -37,26 +37,25 @@ describe('LanguageSubPage', () => {
     setBackgroundConnection(backgroundConnectionMock as never);
   });
 
-  it('renders language options and section headings', () => {
+  it('renders the supported English and Simplified Chinese options', () => {
     renderWithProvider(<LanguageSubPage />, mockStore);
 
     expect(
       screen.getByText(tEn('supportedLanguagesSectionTitle')),
     ).toBeInTheDocument();
-    expect(
-      screen.getByText(tEn('communityContributedLanguagesSectionTitle')),
-    ).toBeInTheDocument();
     expect(screen.getByText('English')).toBeInTheDocument();
-    expect(screen.getByText('Español (Latinoamérica)')).toBeInTheDocument();
-    expect(screen.getByText('Deutsch')).toBeInTheDocument();
+    expect(screen.getByText('中文(简体)')).toBeInTheDocument();
+    expect(
+      screen.queryByTestId('community-languages-section-heading'),
+    ).not.toBeInTheDocument();
   });
 
   it('calls updateCurrentLocale and navigates when a language is clicked', () => {
     renderWithProvider(<LanguageSubPage />, mockStore);
 
-    fireEvent.click(screen.getByText('Español (Latinoamérica)'));
+    fireEvent.click(screen.getByText('中文(简体)'));
 
-    expect(mockUpdateCurrentLocale).toHaveBeenCalledWith('es_419');
+    expect(mockUpdateCurrentLocale).toHaveBeenCalledWith('zh_CN');
     expect(mockNavigate).toHaveBeenCalledWith(PREFERENCES_AND_DISPLAY_ROUTE);
   });
 
@@ -70,9 +69,9 @@ describe('LanguageSubPage', () => {
     });
     renderWithProvider(<LanguageSubPage />, storeWithEnLocale);
 
-    fireEvent.click(screen.getByText('Deutsch'));
+    fireEvent.click(screen.getByText('中文(简体)'));
 
-    expect(mockUpdateCurrentLocale).toHaveBeenCalledWith('de');
+    expect(mockUpdateCurrentLocale).toHaveBeenCalledWith('zh_CN');
     expect(mockNavigate).toHaveBeenCalledWith(PREFERENCES_AND_DISPLAY_ROUTE);
   });
 });

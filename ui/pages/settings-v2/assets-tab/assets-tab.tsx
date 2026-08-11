@@ -3,11 +3,13 @@ import { SettingItemConfig } from '../types';
 import { SettingsTab, createToggleItem } from '../shared';
 import {
   getUseTokenDetection,
+  getUseCurrencyRateCheck,
   getShouldHideZeroBalanceTokens,
   getShowNativeTokenAsMainBalance,
 } from '../../../selectors';
 import {
   setUseTokenDetection,
+  setUseCurrencyRateCheck,
   setHideZeroBalanceTokens,
   setShowNativeTokenAsMainBalancePreference,
 } from '../../../store/actions';
@@ -43,9 +45,22 @@ const AutodetectTokensToggleItem = createToggleItem({
   containerDataTestId: 'autodetect-tokens',
 });
 
+const ShowBalanceAndTokenPricesToggleItem = createToggleItem({
+  name: 'ShowBalanceAndTokenPricesToggleItem',
+  titleKey: ASSET_ITEMS['show-balance-and-token-prices'],
+  descriptionKey: 'currencyRateCheckToggleDescriptionV2',
+  selector: getUseCurrencyRateCheck,
+  action: setUseCurrencyRateCheck,
+  dataTestId: 'currency-rate-check-toggle',
+});
+
 /** Registry of setting items for the Assets page. Add new items here */
 const ASSET_SETTING_ITEMS: SettingItemConfig[] = [
   { id: 'local-currency', component: LocalCurrencyItem },
+  {
+    id: 'show-balance-and-token-prices',
+    component: ShowBalanceAndTokenPricesToggleItem,
+  },
   { id: 'show-network-token', component: ShowNetworkTokenToggleItem },
   {
     id: 'hide-zero-balance-tokens',

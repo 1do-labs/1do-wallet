@@ -3,10 +3,12 @@ import { useQuery } from '@tanstack/react-query';
 import { CaipChainId, Hex, parseCaipAssetType } from '@metamask/utils';
 // @ts-expect-error suppress CommonJS vs ECMAScript error
 import { Point } from 'chart.js';
-import { API_URLS, GC_TIMES, STALE_TIMES } from '@metamask/core-backend';
+import { GC_TIMES, STALE_TIMES } from '@metamask/core-backend';
 import { fromIso8601DurationToPriceApiTimePeriod } from '../util';
 import { toAssetId } from '../../../../shared/lib/asset-utils';
-import { apiClient } from '../../../helpers/api-client';
+// eslint-disable-next-line import-x/no-restricted-paths
+import { AlchemyTokenPricesService } from '../../../../app/scripts/lib/alchemy-token-prices-service';
+import { convertCaipToHexChainId } from '../../../../shared/lib/network.utils';
 
 export type HistoricalPrices = {
   /** The prices data points. Is an empty array if the prices could not be loaded. */
@@ -90,17 +92,6 @@ const transformPricesToPoints = (
   data: { prices?: number[][] } | undefined,
 ): Point[] => data?.prices?.map((p) => ({ x: p?.[0], y: p?.[1] })) ?? [];
 
-type PricesClientFetch = {
-  fetch: (
-    baseUrl: string,
-    path: string,
-    options?: {
-      signal?: AbortSignal;
-      params?: Record<string, string | undefined>;
-    },
-  ) => Promise<{ prices?: [number, number][] }>;
-};
-
 /** TanStack Query key prefix — distinct from `@metamask/core-backend` `['prices', ...]` keys to avoid cache/queryFn mismatches. */
 const V3_HISTORICAL_PRICES_QUERY_KEY_ROOT = [
   'metamask-extension',
@@ -151,6 +142,7 @@ export const useHistoricalPrices = ({
   currency,
   timeRange,
 }: UseHistoricalPricesParams) => {
+  const pricesService = useMemo(() => new AlchemyTokenPricesService(), []);
   const v3Params = useMemo(
     () => getV3HistoricalPricesCaipParams(chainId, address),
     [chainId, address],
@@ -177,25 +169,19 @@ export const useHistoricalPrices = ({
   const { data: prices = [], isFetching } = useQuery({
     // @ts-expect-error - fix once extension in react-query v5
     queryKey,
-    queryFn: async ({ queryKey: qk, signal }) => {
+    queryFn: async ({ queryKey: qk }) => {
       if (qk[3] === 'disabled') {
         return { prices: [] as [number, number][] };
       }
       const caipChainId = qk[3] as CaipChainId;
-      const assetType = qk[4] as string;
       const curr = qk[5] as string;
       const period = qk[6] as string;
-      return (apiClient.prices as unknown as PricesClientFetch).fetch(
-        API_URLS.PRICES,
-        `/v3/historical-prices/${caipChainId}/${assetType}`,
-        {
-          signal,
-          params: {
-            vsCurrency: curr,
-            timePeriod: period,
-          },
-        },
-      );
+      return pricesService.fetchHistoricalPrices({
+        chainId: convertCaipToHexChainId(caipChainId),
+        address,
+        currency: curr,
+        timePeriod: period,
+      });
     },
     enabled: Boolean(v3Params),
     keepPreviousData: true,

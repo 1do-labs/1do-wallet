@@ -1,22 +1,17 @@
 import { waitFor } from '@testing-library/react';
 import { renderHookWithProvider } from '../../../../test/lib/render-helpers-navigate';
-import { apiClient } from '../../../helpers/api-client';
 import {
   DEFAULT_USE_HISTORICAL_PRICES_METADATA,
   useHistoricalPrices,
 } from './useHistoricalPrices';
 
-jest.mock('../../../helpers/api-client', () => ({
-  apiClient: {
-    prices: {
-      fetch: jest.fn(),
-    },
-  },
-}));
+const mockFetchHistoricalPrices = jest.fn();
 
-const mockPricesFetch = jest.mocked(
-  (apiClient.prices as unknown as { fetch: jest.Mock }).fetch,
-);
+jest.mock('../../../../app/scripts/lib/alchemy-token-prices-service', () => ({
+  AlchemyTokenPricesService: jest.fn().mockImplementation(() => ({
+    fetchHistoricalPrices: mockFetchHistoricalPrices,
+  })),
+}));
 
 /**
  * In these tests, we represent the price data with 1 point per day.
@@ -115,7 +110,7 @@ const mockBaseState = {
 describe('useHistoricalPrices', () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    mockPricesFetch.mockResolvedValue({ prices: [] });
+    mockFetchHistoricalPrices.mockResolvedValue({ prices: [] });
   });
 
   describe('EVM chain', () => {
@@ -152,7 +147,9 @@ describe('useHistoricalPrices', () => {
     });
 
     it('returns historical prices on successful fetch', async () => {
-      mockPricesFetch.mockResolvedValue({ prices: SEVEN_DAY_PRICES });
+      mockFetchHistoricalPrices.mockResolvedValue({
+        prices: SEVEN_DAY_PRICES,
+      });
 
       const { result } = renderHookWithProvider(
         () => useHistoricalPrices({ chainId, address, currency, timeRange }),
@@ -169,8 +166,10 @@ describe('useHistoricalPrices', () => {
       });
     });
 
-    it('calls v3 endpoint with correct CAIP params', async () => {
-      mockPricesFetch.mockResolvedValue({ prices: SEVEN_DAY_PRICES });
+    it('requests Alchemy historical prices with EVM parameters', async () => {
+      mockFetchHistoricalPrices.mockResolvedValue({
+        prices: SEVEN_DAY_PRICES,
+      });
 
       const { result } = renderHookWithProvider(
         () => useHistoricalPrices({ chainId, address, currency, timeRange }),
@@ -181,22 +180,16 @@ describe('useHistoricalPrices', () => {
         expect(result.current.loading).toBe(false);
       });
 
-      expect(mockPricesFetch).toHaveBeenCalledWith(
-        'https://price.api.cx.metamask.io',
-        expect.stringMatching(
-          /\/v3\/historical-prices\/eip155:1\/erc20:0x[0-9a-fA-F]{40}/u,
-        ),
-        expect.objectContaining({
-          params: expect.objectContaining({
-            vsCurrency: 'usd',
-            timePeriod: '7D',
-          }),
-        }),
-      );
+      expect(mockFetchHistoricalPrices).toHaveBeenCalledWith({
+        chainId: '0x1',
+        address,
+        currency: 'usd',
+        timePeriod: '7D',
+      });
     });
 
     it('returns default data on fetch error', async () => {
-      mockPricesFetch.mockRejectedValue(new Error('Network error'));
+      mockFetchHistoricalPrices.mockRejectedValue(new Error('Network error'));
 
       const consoleSpy = jest
         .spyOn(console, 'error')

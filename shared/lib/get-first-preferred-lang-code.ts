@@ -5,8 +5,6 @@ import allLocales from '../../app/_locales/index.json';
 // ensure that we default users with browser language code 'zh' to the supported 'zh_CN' language code
 const existingLocaleCodes: Record<string, string> = {
   zh: 'zh_CN',
-  // Generic `es` maps to the maintained Latin American Spanish bundle until a Castilian (`es-ES`) locale exists.
-  es: 'es_419',
 };
 
 // mapping some browsers return hyphen instead underscore in locale codes (e.g. zh_TW -> zh-tw)
