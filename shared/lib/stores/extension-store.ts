@@ -7,8 +7,6 @@ import type {
   MetaData,
 } from './base-store';
 
-const { sentry } = globalThis;
-
 /**
  * An implementation of the MetaMask Extension BaseStore system that uses the
  * browser.storage.local API to persist and retrieve state.
@@ -135,13 +133,6 @@ export default class ExtensionStore implements BaseStore {
     try {
       await local.remove(toRemove);
     } catch (error) {
-      if (sentry) {
-        const sentryError = new AggregateError(
-          [error],
-          'Error removing keys from local store',
-        );
-        sentry.captureException(sentryError);
-      }
       log.error(
         '[ExtensionStore]: Error removing keys from local store:',
         error,

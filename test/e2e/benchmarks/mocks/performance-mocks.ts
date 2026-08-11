@@ -44,7 +44,7 @@ export type MockPriorityLevel = keyof typeof MOCK_PRIORITIES;
 
 /**
  * Wraps a static response with a simulated network delay.
- * Delay values are based on Sentry production traces.
+ * Delay values approximate production network behavior.
  *
  * @param delayMs
  * @param response
@@ -79,10 +79,6 @@ const INTERCEPTED_PATTERNS: {
   match: (url: string, method: string) => boolean;
   response: Record<string, unknown>;
 }[] = [
-  {
-    match: (url) => /^https:\/\/sentry\.io\/api/u.test(url),
-    response: { statusCode: 200, json: { success: true } },
-  },
   {
     match: (url) => /^https:\/\/api\.segment\.io\/v1\//u.test(url),
     response: { statusCode: 200, json: {} },
@@ -154,12 +150,6 @@ export function getCommonMocks(server: Mockttp): Promise<MockedEndpoint>[] {
         return { statusCode: 200, json: chainsList };
       }),
     server
-      .forPost(/^https:\/\/sentry\.io\/api/u)
-      .always()
-      .thenCallback(() => {
-        return { statusCode: 200, json: { success: true } };
-      }),
-    server
       .forAnyRequest()
       .forHost('bitcoin-mainnet.infura.io')
       .always()
@@ -192,16 +182,6 @@ export async function mockBenchmarkEndpoints(
   server: Mockttp,
 ): Promise<MockedEndpoint[]> {
   const endpoints: MockedEndpoint[] = [];
-
-  endpoints.push(
-    await server
-      .forPost(/sentry\.io/u)
-      .asPriority(150)
-      .always()
-      .thenCallback(
-        delayedResponse(100, { statusCode: 200, json: { success: true } }),
-      ),
-  );
 
   endpoints.push(
     await server

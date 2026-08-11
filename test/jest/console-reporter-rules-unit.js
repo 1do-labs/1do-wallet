@@ -87,11 +87,6 @@ module.exports = [
     group: 'MetaMask: Backend WebSocket warnings',
   },
 
-  {
-    match: /Sentry not initialized/u,
-    group: 'MetaMask: Sentry initialization warnings',
-  },
-
   // Instance warnings
   {
     match: /You have multiple instances of MetaMask running/u,

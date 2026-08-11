@@ -100,7 +100,7 @@ import {
 } from '../../shared/lib/eip7702-support-utils';
 import { createEIP7702UpgradeTransaction } from '../../shared/lib/eip7702-utils';
 import { verifyOneDoRuntimeDeployment } from '../../shared/lib/onedo-runtime/verify-deployment';
-import { captureException } from '../../shared/lib/sentry';
+import { captureException } from '../../shared/lib/local-error-log';
 import {
   CHAIN_IDS,
   CHAIN_SPEC_URL,

@@ -1,13 +1,14 @@
 import React from 'react';
-import { captureException } from '../../../shared/lib/sentry';
+import { captureException } from '../../../shared/lib/local-error-log';
 import { getMessage as getMessageShared } from '../../../shared/lib/i18n';
 import { renderWithProvider } from '../../../test/lib/render-helpers-navigate';
 import { getMessage } from './i18n-helper';
 
 jest.mock('../../../shared/lib/i18n');
-jest.mock('../../../shared/lib/sentry', () => ({
+jest.mock('../../../shared/lib/local-error-log', () => ({
   captureException: jest.fn(),
-  sentryLogger: jest.requireActual('../../../shared/lib/sentry').sentryLogger,
+  localErrorLogger: jest.requireActual('../../../shared/lib/local-error-log')
+    .localErrorLogger,
 }));
 const mockedCaptureException = jest.mocked(captureException);
 
@@ -41,7 +42,7 @@ describe('I18N Helper', () => {
       );
     });
 
-    it('invokes getMessage from shared module with onError callback that logs Sentry exception', () => {
+    it('invokes getMessage from shared module with a local error callback', () => {
       getMessage(localeCodeMock, localeMessagesMock, keyMock);
 
       const onErrorCallback = getMessageShared.mock.calls[0][4];

@@ -69,7 +69,7 @@ Note: multiple array options cannot be set this way, due to this bug in yargs: h
 
 ### `--env` (alias: `-e`)
 
-Explicitly sets the build environment for Sentry reporting and feature flags. If not specified, it is auto-detected from git.
+Explicitly sets the build environment for feature flags. If not specified, it is auto-detected from git.
 
 | Value               | When Used                                    |
 | ------------------- | -------------------------------------------- |

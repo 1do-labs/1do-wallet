@@ -3,7 +3,7 @@ import {
   EventConstraint,
   Messenger,
 } from '@metamask/messenger';
-import { captureException } from '../../../shared/lib/sentry';
+import { captureException } from '../../../shared/lib/local-error-log';
 
 export const ROOT_MESSENGER_NAMESPACE = 'Root';
 

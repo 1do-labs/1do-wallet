@@ -4,7 +4,6 @@
 // declared using var and not const or let, which is why this rule is disabled
 /* eslint-disable no-var */
 
-import * as Sentry from '@sentry/browser';
 import {
   Success,
   Unsuccessful,
@@ -255,26 +254,10 @@ type StateHooks = {
   getLogs?: () => any[];
   // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31973
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  getMostRecentPersistedState?: () => any;
-  // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31973
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   getPersistedState: () => Promise<any>;
   // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31973
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   getBackupState?: () => Promise<any>;
-  // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31973
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  getSentryAppState?: () => any;
-  getSentryState: () => {
-    browser: string;
-    version: string;
-    // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31973
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    state?: any;
-    // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31973
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    persistedState?: any;
-  };
   // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31973
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   metamaskGetState?: () => Promise<any>;
@@ -336,9 +319,9 @@ type StateHooks = {
 
 export declare global {
   var platform: ExtensionPlatform;
-  // Sentry is undefined in dev, so use optional chaining
-  var sentry: Sentry | undefined;
-
+  // Legacy migrations may still probe this removed integration.
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  var sentry: any;
   var chrome: Chrome;
 
   var ethereumProvider: Provider;

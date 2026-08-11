@@ -5,7 +5,7 @@ import {
   getMessage as getMessageShared,
 } from '../../../shared/lib/i18n';
 import { NETWORK_TYPES } from '../../../shared/constants/network';
-import { captureException } from '../../../shared/lib/sentry';
+import { captureException } from '../../../shared/lib/local-error-log';
 
 /**
  * Returns a localized message for the given key

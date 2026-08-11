@@ -122,8 +122,7 @@ export class CriticalStartupErrorHandler {
     try {
       await Promise.race([startSyncUi, syncUiTimeoutPromise]);
     } catch (error) {
-      // add sentryTags to the error for better debugging in Sentry.
-      const sentryTags = {
+      const diagnosticTags = {
         // we want to know if a problem happens between app-init's onConnect and
         // this background's onConnect. if we receive the app-init liveness
         // ping, then we can be pretty confident that the connection was working
@@ -143,8 +142,8 @@ export class CriticalStartupErrorHandler {
         'uiStartup.receivedAppInitPing': this.#receivedAppInitPing.toString(),
       };
       (
-        error as unknown as { sentryTags?: Record<string, unknown> }
-      ).sentryTags = sentryTags;
+        error as unknown as { diagnosticTags?: Record<string, unknown> }
+      ).diagnosticTags = diagnosticTags;
       await displayCriticalErrorMessage(
         this.#container,
         CriticalErrorTranslationKey.TroubleStarting,

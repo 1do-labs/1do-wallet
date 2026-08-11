@@ -60,7 +60,7 @@ import { AccountGroupId, AccountWalletId } from '@metamask/account-api';
 import { SerializedUR } from '@metamask/eth-qr-keyring';
 import { toHardwareWalletError } from '../contexts/hardware-wallets/rpcErrorUtils';
 import { HardwareWalletType } from '../contexts/hardware-wallets/types';
-import { captureException } from '../../shared/lib/sentry';
+import { captureException } from '../../shared/lib/local-error-log';
 import { switchDirection } from '../../shared/lib/switch-direction';
 import type { RuntimeDeploymentStatus } from '../../shared/lib/onedo-runtime/verify-deployment';
 import {
@@ -113,7 +113,6 @@ import {
   getErrorMessage,
   isErrorWithMessage,
   logErrorWithMessage,
-  createSentryError,
 } from '../../shared/lib/error';
 import type { DefaultAddressScope } from '../../shared/constants/default-address';
 import { ThemeType } from '../../shared/constants/preferences';
@@ -4667,11 +4666,10 @@ export async function getTrezorFeatures(): Promise<TrezorGetFeaturesResponse> {
 }
 
 /**
- * This method deduplicates error reports to sentry by maintaining a state
+ * This method deduplicates local error records by maintaining a state
  * object 'singleExceptions' in the app slice. The only place this state object
  * is accessed from is within this method, to check if it has already seen and
- * therefore tracked this error. This is to avoid overloading sentry with lots
- * of duplicate errors.
+ * therefore tracked this error. This avoids noisy duplicate logs.
  *
  * @param error
  * @returns

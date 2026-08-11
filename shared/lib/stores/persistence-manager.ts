@@ -2,7 +2,7 @@ import EventEmitter from 'events';
 import log from 'loglevel';
 import { isEmpty } from 'lodash';
 import { RuntimeObject, hasProperty, isObject } from '@metamask/utils';
-import { captureException, captureMessage } from '../sentry';
+import { captureException, captureMessage } from '../local-error-log';
 import { MISSING_VAULT_ERROR } from '../../constants/errors';
 import { getManifestFlags } from '../manifestFlags';
 import { VaultCorruptionType } from '../../constants/state-corruption';
@@ -161,8 +161,7 @@ const STATE_LOCK = 'state-lock';
  *
  * 3. **Error Management:**
  * - Tracks whether data persistence is failing and logs appropriate errors
- * - Captures exceptions during write operations and reports them using
- * Sentry
+ * - Records exceptions during write operations in the local error log
  *
  *
  * Usage:
@@ -184,8 +183,7 @@ export class PersistenceManager extends EventEmitter<PersistenceManagerEventMap>
   /**
    * dataPersistenceFailing is a boolean that is set to true if the storage
    * system attempts to write state and the write operation fails. This is only
-   * used as a way of deduplicating error reports sent to sentry as it is
-   * likely that multiple writes will fail concurrently.
+   * used to avoid repeatedly logging concurrent write failures.
    */
   #dataPersistenceFailing: boolean = false;
 
@@ -193,7 +191,7 @@ export class PersistenceManager extends EventEmitter<PersistenceManagerEventMap>
    * mostRecentRetrievedState is a property that holds the most recent state
    * successfully retrieved from memory. Due to the nature of async read
    * operations it is beneficial to have a near real-time snapshot of the state
-   * for sending data to sentry as well as other developer tooling.
+   * for local recovery and developer tooling.
    */
   #mostRecentRetrievedState: MetaMaskStorageStructure | null = null;
 
@@ -301,9 +299,7 @@ export class PersistenceManager extends EventEmitter<PersistenceManagerEventMap>
           error.message ===
             'A mutation operation was attempted on a database that did not allow mutations.'
         ) {
-          // Custom fingerprint prevents Sentry's deduplication from dropping
-          // this event when other persistence errors with the same underlying
-          // error message (e.g., "An unexpected error occurred") are reported.
+          // Keep a stable diagnostic identifier for this failure mode.
           captureException(error, {
             tags: { 'persistence.error': 'backup-db-open-failed' },
             fingerprint: ['persistence-error', 'backup-db-open-failed'],
@@ -458,7 +454,7 @@ export class PersistenceManager extends EventEmitter<PersistenceManagerEventMap>
       { mode: 'exclusive', signal: abortController.signal },
       async () => {
         this.#currentLockAbortController = undefined;
-        // Track which operation failed to use the correct Sentry tag
+        // Track which persistence operation failed.
         let backupFailed = false;
         try {
           // atomically set all the keys (includes test simulation check)
@@ -474,7 +470,7 @@ export class PersistenceManager extends EventEmitter<PersistenceManagerEventMap>
             // and the backup has changed
             if (this.#backup !== stringifiedBackup) {
               // save it to the backup DB - wrapped in try-catch to differentiate
-              // backup failures from storage.local failures in Sentry
+              // backup failures from storage.local failures
               try {
                 await this.#backupDb?.set(backup);
                 this.#backup = stringifiedBackup;
@@ -506,9 +502,7 @@ export class PersistenceManager extends EventEmitter<PersistenceManagerEventMap>
             // Use different tags to differentiate storage.local vs IndexedDB backup failures.
             const tag = backupFailed ? 'set-backup-failed' : 'set-failed';
 
-            // Custom fingerprint prevents Sentry's deduplication from dropping
-            // this event when other persistence errors with the same underlying
-            // error message (e.g., "An unexpected error occurred") are reported.
+            // Keep a stable diagnostic identifier for this failure mode.
             captureException(err, {
               tags: { 'persistence.error': tag },
               fingerprint: ['persistence-error', tag],
@@ -576,7 +570,7 @@ export class PersistenceManager extends EventEmitter<PersistenceManagerEventMap>
       { mode: 'exclusive', signal: abortController.signal },
       async () => {
         this.#currentLockAbortController = undefined;
-        // Track which operation failed to use the correct Sentry tag
+        // Track which persistence operation failed.
         let backupFailed = false;
         try {
           const clone = structuredClone(this.#pendingPairs);
@@ -607,7 +601,7 @@ export class PersistenceManager extends EventEmitter<PersistenceManagerEventMap>
           if (hasVault(partialState)) {
             const backup = makeBackup(partialState, meta);
             // save it to the backup DB - wrapped in try-catch to differentiate
-            // backup failures from storage.local failures in Sentry
+            // backup failures from storage.local failures
             try {
               await this.#backupDb?.set(backup);
             } catch (backupErr) {
@@ -639,9 +633,7 @@ export class PersistenceManager extends EventEmitter<PersistenceManagerEventMap>
               ? 'persist-backup-failed'
               : 'persist-failed';
 
-            // Custom fingerprint prevents Sentry's deduplication from dropping
-            // this event when other persistence errors with the same underlying
-            // error message (e.g., "An unexpected error occurred") are reported.
+            // Keep a stable diagnostic identifier for this failure mode.
             captureException(err, {
               tags: { 'persistence.error': tag },
               fingerprint: ['persistence-error', tag],
@@ -694,9 +686,7 @@ export class PersistenceManager extends EventEmitter<PersistenceManagerEventMap>
             'Error retrieving the current state of the local store:',
             localStoreError,
           );
-          // Custom fingerprint prevents Sentry's deduplication from dropping
-          // this event when other persistence errors with the same underlying
-          // error message (e.g., "An unexpected error occurred") are reported.
+          // Keep a stable diagnostic identifier for this failure mode.
           captureException(localStoreError, {
             tags: { 'persistence.error': 'get-failed' },
             fingerprint: ['persistence-error', 'get-failed'],

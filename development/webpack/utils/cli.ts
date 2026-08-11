@@ -229,17 +229,14 @@ function preParse(argv: string[]) {
 /**
  * Resolves the MetaMask build environment.
  *
- * The environment determines which Sentry project events are sent to,
- * feature flag detection, and other build-specific behaviors.
+ * The environment determines feature flag detection and other build-specific behaviors.
  *
  * Resolution order:
  * 1. If `--test` is set, returns 'testing'
  * 2. If `--mode development`, returns 'development'
  * 3. Otherwise, auto-detects from git context (release branch, main, PR, or other)
  *
- * NOTE: 'production' environment is NEVER returned as a default. It must be
- * explicitly set via `--env` to prevent accidental pollution of production
- * Sentry with events from local or CI test builds.
+ * NOTE: 'production' environment is never returned as a default.
  *
  * @param args - The parsed CLI arguments
  * @param args.test - Whether this is a test build
@@ -475,14 +472,6 @@ function getOptions(
       group: toOrange('Developer assistance:'),
       type: 'string',
     },
-    sentry: {
-      array: false,
-      default: isProduction,
-      defaultDescription: prodDefaultDesc,
-      description: 'Enables/disables Sentry Application Monitoring',
-      group: toOrange('Developer assistance:'),
-      type: 'boolean',
-    },
     reactCompilerVerbose: prerequisites.reactCompilerVerbose,
     reactCompilerDebug: {
       array: false,
@@ -614,7 +603,7 @@ function getOptions(
         'Auto-detected from git context (branch name, CI environment), or set to "testing" when --test is used, or "development" when --mode development is used',
       description:
         'The build environment (production, development, testing, staging, release-candidate, pull-request, other). ' +
-        'Controls Sentry project targeting and feature flag detection. ' +
+        'Controls feature flag detection and environment-specific behavior. ' +
         'If not specified, auto-detected from git context or derived from --test / --mode development.',
       group: toOrange('Build options:'),
       type: 'string',
@@ -702,7 +691,6 @@ LavaMoat: ${args.lavamoat}
 LavaMoat debug: ${args.lavamoatDebug}
 Generate policy: ${args.generatePolicy}
 Snow: ${args.snow}
-Sentry: ${args.sentry}
 React Compiler verbose: ${args.reactCompilerVerbose}
 React Compiler debug: ${args.reactCompilerDebug}
 Threads: ${args.threads}

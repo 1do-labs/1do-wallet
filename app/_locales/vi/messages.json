@@ -2520,18 +2520,6 @@
   "errorGettingSafeChainList": {
     "message": "Lỗi khi lấy danh sách chuỗi an toàn, vui lòng tiếp tục một cách thận trọng."
   },
-  "errorLegalTextFirstInfo": {
-    "message": "Thông tin chẩn đoán kỹ thuật."
-  },
-  "errorLegalTextNoPersonalInfo": {
-    "message": "Không thu thập thông tin cá nhân hoặc thông tin thiết bị khác."
-  },
-  "errorLegalTextSecondInfo": {
-    "message": "Trình duyệt, hệ điều hành và phiên bản 1do của bạn."
-  },
-  "errorLegalTextSummary": {
-    "message": "Chúng tôi sẽ nhận một báo cáo lỗi duy nhất, bao gồm:"
-  },
   "errorMessage": {
     "message": "Thông báo: $1",
     "description": "Displayed error message for debugging purposes. $1 is the error message"
@@ -2544,10 +2532,6 @@
     "message": "Liên hệ bộ phận hỗ trợ",
     "description": "Button for contact MM support"
   },
-  "errorPageDescribeUsWhatHappened": {
-    "message": "Mô tả những gì đã xảy ra",
-    "description": "Button for submitting report to sentry"
-  },
   "errorPageInfo": {
     "message": "Không thể hiển thị thông tin của bạn. Đừng lo, ví và tiền của bạn vẫn an toàn.",
     "description": "Information banner shown in the error page"
@@ -2555,18 +2539,6 @@
   "errorPageMessageTitle": {
     "message": "Thông báo lỗi",
     "description": "Title for description, which is displayed for debugging purposes"
-  },
-  "errorPageSentryFormTitle": {
-    "message": "Mô tả những gì đã xảy ra",
-    "description": "In sentry feedback form, The title at the top of the feedback form."
-  },
-  "errorPageSentryMessagePlaceholder": {
-    "message": "Chia sẻ thông tin chi tiết như cách chúng tôi có thể tái hiện lỗi để giúp chúng tôi khắc phục vấn đề.",
-    "description": "In sentry feedback form, The placeholder for the feedback description input field."
-  },
-  "errorPageSentrySuccessMessageText": {
-    "message": "Cảm ơn! Chúng tôi sẽ sớm tiến hành xem xét.",
-    "description": "In sentry feedback form, The message displayed after a successful feedback submission."
   },
   "errorPageTitle": {
     "message": "1do đã gặp lỗi",

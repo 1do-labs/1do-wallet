@@ -2520,18 +2520,6 @@
   "errorGettingSafeChainList": {
     "message": "Fehler beim Abrufen der Liste sicherer Ketten, bitte mit Vorsicht fortfahren."
   },
-  "errorLegalTextFirstInfo": {
-    "message": "Technische Diagnoseinformationen."
-  },
-  "errorLegalTextNoPersonalInfo": {
-    "message": "Es werden keine personenbezogenen Daten oder andere Geräteinformationen erfasst."
-  },
-  "errorLegalTextSecondInfo": {
-    "message": "Ihre Browser-, Betriebssystem- und 1do-Versionen."
-  },
-  "errorLegalTextSummary": {
-    "message": "Wir erhalten einen einzelnen Fehlerbericht mit folgenden Angaben:"
-  },
   "errorMessage": {
     "message": "Nachricht: $1",
     "description": "Displayed error message for debugging purposes. $1 is the error message"
@@ -2544,10 +2532,6 @@
     "message": "Support kontaktieren",
     "description": "Button for contact MM support"
   },
-  "errorPageDescribeUsWhatHappened": {
-    "message": "Beschreiben Sie, was vorgefallen ist",
-    "description": "Button for submitting report to sentry"
-  },
   "errorPageInfo": {
     "message": "Ihre Daten können nicht angezeigt werden. Keine Sorge, Ihre Wallet und Ihr Geld sind sicher.",
     "description": "Information banner shown in the error page"
@@ -2555,18 +2539,6 @@
   "errorPageMessageTitle": {
     "message": "Fehlermeldung",
     "description": "Title for description, which is displayed for debugging purposes"
-  },
-  "errorPageSentryFormTitle": {
-    "message": "Beschreiben Sie, was vorgefallen ist",
-    "description": "In sentry feedback form, The title at the top of the feedback form."
-  },
-  "errorPageSentryMessagePlaceholder": {
-    "message": "Die Übermittlung von Details, z. B. wie wir den Fehler reproduzieren können, wird uns bei der Behebung des Problems helfen.",
-    "description": "In sentry feedback form, The placeholder for the feedback description input field."
-  },
-  "errorPageSentrySuccessMessageText": {
-    "message": "Vielen Dank! Wir werden uns bald damit befassen.",
-    "description": "In sentry feedback form, The message displayed after a successful feedback submission."
   },
   "errorPageTitle": {
     "message": "1do hat einen Fehler festgestellt.",

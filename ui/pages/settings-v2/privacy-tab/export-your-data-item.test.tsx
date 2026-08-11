@@ -5,7 +5,7 @@ import thunk from 'redux-thunk';
 import mockState from '../../../../test/data/mock-state.json';
 import { enLocale as messages } from '../../../../test/lib/i18n-helpers';
 import { renderWithProvider } from '../../../../test/lib/render-helpers-navigate';
-import { captureException } from '../../../../shared/lib/sentry';
+import { captureException } from '../../../../shared/lib/local-error-log';
 import * as exportUtils from '../../../helpers/utils/export-utils';
 import { backupUserData } from '../../../store/actions';
 import { ExportYourDataItem } from './export-your-data-item';
@@ -20,8 +20,8 @@ jest.mock('../../../store/actions', () => ({
   backupUserData: jest.fn(),
 }));
 
-jest.mock('../../../../shared/lib/sentry', () => ({
-  ...jest.requireActual('../../../../shared/lib/sentry'),
+jest.mock('../../../../shared/lib/local-error-log', () => ({
+  ...jest.requireActual('../../../../shared/lib/local-error-log'),
   captureException: jest.fn(),
 }));
 

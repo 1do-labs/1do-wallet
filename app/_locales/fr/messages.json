@@ -2517,18 +2517,6 @@
   "errorGettingSafeChainList": {
     "message": "Erreur lors de l’obtention de la liste des chaînes sécurisées, veuillez continuer avec précaution."
   },
-  "errorLegalTextFirstInfo": {
-    "message": "Informations de diagnostic technique."
-  },
-  "errorLegalTextNoPersonalInfo": {
-    "message": "Aucune donnée personnelle ou autre information relative à votre appareil ne sera collectée."
-  },
-  "errorLegalTextSecondInfo": {
-    "message": "Votre navigateur, votre système d’exploitation et les versions de 1do."
-  },
-  "errorLegalTextSummary": {
-    "message": "Nous recevrons un seul rapport d’erreur contenant :"
-  },
   "errorMessage": {
     "message": "Message : $1",
     "description": "Displayed error message for debugging purposes. $1 is the error message"
@@ -2541,10 +2529,6 @@
     "message": "Contacter l’assistance",
     "description": "Button for contact MM support"
   },
-  "errorPageDescribeUsWhatHappened": {
-    "message": "Décrivez ce qui s’est passé",
-    "description": "Button for submitting report to sentry"
-  },
   "errorPageInfo": {
     "message": "Vos informations ne peuvent pas être affichées. Ne vous inquiétez pas, votre portefeuille et vos fonds sont en sécurité.",
     "description": "Information banner shown in the error page"
@@ -2552,18 +2536,6 @@
   "errorPageMessageTitle": {
     "message": "Message d’erreur ",
     "description": "Title for description, which is displayed for debugging purposes"
-  },
-  "errorPageSentryFormTitle": {
-    "message": "Décrivez ce qui s’est passé",
-    "description": "In sentry feedback form, The title at the top of the feedback form."
-  },
-  "errorPageSentryMessagePlaceholder": {
-    "message": "Le fait de partager des détails tels que la façon dont nous pouvons reproduire le bogue nous aidera à résoudre le problème.",
-    "description": "In sentry feedback form, The placeholder for the feedback description input field."
-  },
-  "errorPageSentrySuccessMessageText": {
-    "message": "Merci. Nous y jetterons un coup d’œil prochainement.",
-    "description": "In sentry feedback form, The message displayed after a successful feedback submission."
   },
   "errorPageTitle": {
     "message": "1do a rencontré une erreur",

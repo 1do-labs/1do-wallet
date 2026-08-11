@@ -3,7 +3,6 @@ import { toHex } from '@metamask/controller-utils';
 import type { Hex, Json } from '@metamask/utils';
 import type { AccountsControllerState } from '@metamask/accounts-controller';
 import type { AddressBookControllerState } from '@metamask/address-book-controller';
-import type { AnnouncementControllerState } from '@metamask/announcement-controller';
 import type {
   CurrencyRateState,
   MultichainAssetsRatesControllerState,
@@ -164,11 +163,6 @@ class FixtureBuilderV2 {
       };
     }
     merge(this.fixture.data.AddressBookController, data);
-    return this;
-  }
-
-  withAnnouncementController(data: Partial<AnnouncementControllerState>): this {
-    merge(this.fixture.data.AnnouncementController, data);
     return this;
   }
 

@@ -15,12 +15,10 @@ import {
 const backgroundFiles: string[] = [
   'scripts/runtime-lavamoat.js',
   'scripts/lockdown-more.js',
-  'scripts/sentry-install.js',
   'scripts/policy-load.js',
 ];
 
 const uiFiles: string[] = [
-  'scripts/sentry-install.js',
   'scripts/runtime-lavamoat.js',
   'scripts/lockdown-more.js',
   'scripts/policy-load.js',

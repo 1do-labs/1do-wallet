@@ -2523,18 +2523,6 @@
   "errorGettingSafeChainList": {
     "message": "안전 체인 목록을 가져오는 동안 오류가 발생했습니다. 주의하여 계속 진행하세요."
   },
-  "errorLegalTextFirstInfo": {
-    "message": "기술 진단 정보입니다."
-  },
-  "errorLegalTextNoPersonalInfo": {
-    "message": "개인 정보나 기타 장치 정보는 수집되지 않습니다."
-  },
-  "errorLegalTextSecondInfo": {
-    "message": "브라우저, 운영 체제, 1do 버전입니다."
-  },
-  "errorLegalTextSummary": {
-    "message": "당사는 다음이 포함된 한 건의 오류 보고서를 받게 됩니다."
-  },
   "errorMessage": {
     "message": "메시지: $1",
     "description": "Displayed error message for debugging purposes. $1 is the error message"
@@ -2547,10 +2535,6 @@
     "message": "지원팀에 문의",
     "description": "Button for contact MM support"
   },
-  "errorPageDescribeUsWhatHappened": {
-    "message": "오류에 대해 설명해 주세요",
-    "description": "Button for submitting report to sentry"
-  },
   "errorPageInfo": {
     "message": "귀하의 정보를 표시할 수 없습니다. 걱정하지 마세요, 지갑과 자금은 안전합니다.",
     "description": "Information banner shown in the error page"
@@ -2558,18 +2542,6 @@
   "errorPageMessageTitle": {
     "message": "오류 메시지",
     "description": "Title for description, which is displayed for debugging purposes"
-  },
-  "errorPageSentryFormTitle": {
-    "message": "오류에 대해 설명해 주세요",
-    "description": "In sentry feedback form, The title at the top of the feedback form."
-  },
-  "errorPageSentryMessagePlaceholder": {
-    "message": "버그를 재현할 수 있는 방법 등 자세한 정보를 알려주시면 문제를 해결하는 데 도움이 됩니다.",
-    "description": "In sentry feedback form, The placeholder for the feedback description input field."
-  },
-  "errorPageSentrySuccessMessageText": {
-    "message": "감사합니다! 곧 확인하겠습니다.",
-    "description": "In sentry feedback form, The message displayed after a successful feedback submission."
   },
   "errorPageTitle": {
     "message": "1do 오류 발생",

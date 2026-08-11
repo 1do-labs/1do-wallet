@@ -1,4 +1,4 @@
-import { captureException } from '../../../shared/lib/sentry';
+import { captureException } from '../../../shared/lib/local-error-log';
 import { AlertTypes } from '../../../shared/constants/alerts';
 import {
   addPermittedAccount,

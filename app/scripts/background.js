@@ -4,9 +4,8 @@
 
 // Disabled to allow setting up initial state hooks first
 
-// This import sets up global functions required for Sentry to function.
-// It must be run first in case an error is thrown later during initialization.
-// eslint-disable-next-line import-x/order -- intentional first import for Sentry
+// This import initializes persistence hooks before background startup.
+// eslint-disable-next-line import-x/order -- intentional first import
 import { persistenceManager } from './lib/setup-initial-state-hooks';
 
 // Import these before network constants are evaluated.
@@ -37,12 +36,11 @@ import { BACKGROUND_LIVENESS_METHOD } from '../../shared/constants/ui-initializa
 import { REJECT_NOTIFICATION_CLOSE_SIG } from '../../shared/constants/notifications';
 import { checkForLastErrorAndLog } from '../../shared/lib/browser-runtime.utils';
 import { isManifestV3 } from '../../shared/lib/mv3.utils';
-import { maskObject } from '../../shared/lib/object.utils';
 import {
   OffscreenCommunicationTarget,
   OffscreenCommunicationEvents,
 } from '../../shared/constants/offscreen-communication';
-import { captureException } from '../../shared/lib/sentry';
+import { captureException } from '../../shared/lib/local-error-log';
 import { getCurrentChainId } from '../../shared/lib/selectors/networks';
 import { createCaipStream } from '../../shared/lib/caip-stream';
 import { isStateCorruptionError } from '../../shared/constants/errors';
@@ -59,7 +57,6 @@ import { useSplitStateStorage } from './lib/use-split-state-storage';
 import migrations from './migrations';
 import Migrator from './lib/migrator';
 import ExtensionPlatform from './platforms/extension';
-import { SENTRY_BACKGROUND_STATE } from './constants/sentry-state';
 
 import NotificationManager, {
   NOTIFICATION_MANAGER_EVENTS,
@@ -108,13 +105,6 @@ const inTest = process.env.IN_TEST;
 const { safePersist, requestSafeReload, evacuate } =
   getRequestSafeReload(persistenceManager);
 
-// Setup global hook for improved Sentry state snapshots during initialization
-global.stateHooks.getMostRecentPersistedState = () =>
-  persistenceManager.mostRecentRetrievedState;
-
-// Expose storageKind for Sentry tagging (used to distinguish 'data' vs 'split' storage)
-global.stateHooks.getStorageKind = () => persistenceManager.storageKind;
-
 /**
  * A helper function to log the current state of the vault. Useful for debugging
  * purposes, to, in the case of storage errors, a possible way for an end
@@ -124,7 +114,6 @@ global.logEncryptedVault = () => {
   persistenceManager.logEncryptedVault();
 };
 
-const { sentry } = global;
 let firstTimeState = { ...rawFirstTimeState };
 
 const metamaskInternalProcessHash = {
@@ -388,7 +377,7 @@ const handleOnConnect = async (port) => {
     // This is set in `setupController`, which is called as part of initialization
     connectWindowPostMessage(port);
   } catch (error) {
-    sentry?.captureException(error);
+    captureException(error);
 
     // Only handle errors for MetaMask UI connections (popup, notification, fullscreen),
     // not for contentscripts injected into regular web pages.
@@ -430,8 +419,9 @@ const handleOnConnect = async (port) => {
               message: error.message ?? 'Unknown error',
               name: error.name ?? 'UnknownError',
               stack: error.stack,
-              // Preserve sentryTags for searchable/filterable fields in Sentry UI
-              ...(error.sentryTags && { sentryTags: error.sentryTags }),
+              ...(error.diagnosticTags && {
+                diagnosticTags: error.diagnosticTags,
+              }),
             }
           : {
               message: String(error),
@@ -638,7 +628,7 @@ async function initialize(backup) {
     getExtensionURL: platform.getExtensionURL,
     getState: controller.getState.bind(controller),
   })
-    .on('error', (error) => sentry?.captureException(error))
+    .on('error', (error) => captureException(error))
     .install();
 }
 
@@ -719,13 +709,12 @@ export async function loadStateFromPersistence(backup) {
       : null,
   });
 
-  // report migration errors to sentry
+  // Record migration errors locally with a redacted vault structure.
   migrator.on('error', (err) => {
     console.warn(err);
     // get vault structure without secrets
     const vaultStructure = getObjStructure(preMigrationVersionedData);
-    sentry?.captureException(err, {
-      // "extra" key is required by Sentry
+    captureException(err, {
       extra: { vaultStructure },
     });
   });
@@ -743,21 +732,18 @@ export async function loadStateFromPersistence(backup) {
   );
 
   /**
-   * Creates an Error with sentryTags for migration failures.
+   * Creates an Error with diagnostic tags for migration failures.
    * Tags help identify if user should have had a backup (v12.20.0+, migration 157+),
    * and include installation info for diagnostics.
-   * These are captured via the critical error page's "Send error report" checkbox
-   * flow (see ui/helpers/utils/display-critical-error.ts).
-   *
    * @param {string} message - The error message
-   * @returns {Promise<Error>} Error object with sentryTags property
+   * @returns {Promise<Error>} Error object with diagnosticTags property
    */
   const createMigrationError = async (message) => {
     const preMigrationVersion = preMigrationVersionedData?.meta?.version;
     const backupShouldExist =
       typeof preMigrationVersion === 'number' && preMigrationVersion >= 157;
 
-    // Try to get firstTimeInfo for Sentry tags (installation version and date)
+    // Try to get firstTimeInfo for local diagnostics.
     // Check in-memory sources first (fast, synchronous checks)
     // Check both new location (AppMetadataController) and old location (top-level)
     // for compatibility with pre-migration-190 state
@@ -775,15 +761,13 @@ export async function loadStateFromPersistence(backup) {
         const indexedDbBackup = await persistenceManager.getBackup();
         firstTimeInfo = indexedDbBackup?.AppMetadataController?.firstTimeInfo;
       } catch {
-        // Ignore backup fetch errors - we still want to report the migration error
+        // Ignore backup fetch errors; the migration error remains actionable.
       }
     }
 
     const error = new Error(message);
 
-    // Add sentryTags for searchable/filterable fields in Sentry UI
-    // These are extracted by sendErrorToSentry in display-critical-error.ts
-    error.sentryTags = {
+    error.diagnosticTags = {
       'corruption.preMigrationVersion': String(
         preMigrationVersion ?? 'unknown',
       ),
@@ -1069,7 +1053,7 @@ export function setupController(
       // then persist it
       safePersist().catch((error) => {
         log.error('Error persisting updated state:', error);
-        sentry?.captureException(error);
+        captureException(error);
       });
     }
 
@@ -1114,7 +1098,7 @@ export function setupController(
           await safePersist();
         } catch (error) {
           log.error('Error persisting state change:', error);
-          sentry?.captureException(error);
+          captureException(error);
         }
       },
     );
@@ -1126,14 +1110,14 @@ export function setupController(
       // persist the new state
       safePersist(currentState).catch((error) => {
         log.error('Error persisting updated controller state:', error);
-        sentry?.captureException(error);
+        captureException(error);
       });
     }
     controller.store.on('update', safePersist);
   }
   controller.store.on('error', (error) => {
     log.error('MetaMask controller.store error:', error);
-    sentry?.captureException(error);
+    captureException(error);
   });
 
   setupEnsIpfsResolver({
@@ -1146,8 +1130,6 @@ export function setupController(
       controller.preferencesController.state.useAddressBarEnsResolution,
     provider: controller.provider,
   });
-
-  setupSentryGetStateGlobal(controller);
 
   const isClientOpenStatus = () => {
     return (
@@ -1871,13 +1853,6 @@ browser.windows.onFocusChanged.addListener(async (windowId) => {
 
   await refreshAppActiveTab(windowId);
 });
-
-function setupSentryGetStateGlobal(store) {
-  global.stateHooks.getSentryAppState = function () {
-    const backgroundState = store.memStore.getState();
-    return maskObject(backgroundState, SENTRY_BACKGROUND_STATE);
-  };
-}
 
 /**
  *

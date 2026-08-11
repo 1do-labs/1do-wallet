@@ -54,50 +54,7 @@ const {
 } = require('./transforms/remove-fenced-code');
 
 // map dist files to bag of needed native APIs against LM scuttling
-const scuttlingConfigBase = {
-  'scripts/sentry-install.js': {
-    // globals sentry need to function
-    window: '',
-    navigator: '',
-    location: '',
-    Uint16Array: '',
-    fetch: '',
-    String: '',
-    Math: '',
-    Object: '',
-    Symbol: '',
-    Function: '',
-    Array: '',
-    Boolean: '',
-    Number: '',
-    Request: '',
-    Date: '',
-    JSON: '',
-    encodeURIComponent: '',
-    console: '',
-    crypto: '',
-    Map: '',
-    isFinite: '',
-    // {clear/set}Timeout are "this sensitive"
-    clearTimeout: 'window',
-    setTimeout: 'window',
-    // sentry special props
-    __SENTRY__: '',
-    sentryHooks: '',
-    sentry: '',
-    appState: '',
-    extra: '',
-    stateHooks: '',
-    nw: '',
-    // Sentry Auto Session Tracking
-    document: '',
-    history: '',
-    isNaN: '',
-    parseInt: '',
-    // Lodash
-    RegExp: '',
-  },
-};
+const scuttlingConfigBase = {};
 
 const mv3ScuttlingConfig = { ...scuttlingConfigBase };
 const standardScuttlingConfig = { ...scuttlingConfigBase };
@@ -234,12 +191,6 @@ function createScriptTasks({
       createDisableConsoleBundle({ buildTarget }),
     );
 
-    // this can run whenever
-    const installSentrySubtask = createTask(
-      `${taskPrefix}:sentry`,
-      createSentryBundle({ buildTarget }),
-    );
-
     // task for initiating browser livereload
     const initiateLiveReload = async () => {
       if (isDevBuild(buildTarget)) {
@@ -261,7 +212,6 @@ function createScriptTasks({
       standardSubtask,
       contentscriptSubtask,
       disableConsoleSubtask,
-      installSentrySubtask,
     ].map((subtask) =>
       runInChildProcess(subtask, {
         shouldIncludeSnow,
@@ -286,30 +236,6 @@ function createScriptTasks({
    */
   function createDisableConsoleBundle({ buildTarget }) {
     const label = 'disable-console';
-    return createNormalBundle({
-      browserPlatforms,
-      buildTarget,
-      buildType,
-      destFilepath: `scripts/${label}.js`,
-      entryFilepath: `./app/scripts/${label}.js`,
-      ignoredFiles,
-      label,
-      policyOnly,
-      shouldLintFenceFiles,
-      version,
-      applyLavaMoat,
-    });
-  }
-
-  /**
-   * Create a bundle for the "sentry-install" module.
-   *
-   * @param {object} options - The build options.
-   * @param {BUILD_TARGETS} options.buildTarget - The current build target.
-   * @returns {Function} A function that creates the bundle.
-   */
-  function createSentryBundle({ buildTarget }) {
-    const label = 'sentry-install';
     return createNormalBundle({
       browserPlatforms,
       buildTarget,
@@ -1227,7 +1153,6 @@ function getScriptTags({
     ...(shouldIncludeSnow
       ? ['./scripts/snow.js', './scripts/use-snow.js']
       : []),
-    './scripts/sentry-install.js',
     ...securityScripts,
     ...jsBundles,
   ];

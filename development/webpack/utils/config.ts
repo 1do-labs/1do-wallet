@@ -135,9 +135,6 @@ export function getVariables(
     } as Variables,
   });
 
-  // variables that are used in the webpack build's entry points. Our runtime
-  // code checks for the _string_ `"true"`, so we cast to string here.
-  variables.set('ENABLE_SENTRY', args.sentry.toString());
   variables.set('ENABLE_SNOW', args.snow.toString());
   variables.set('ENABLE_LAVAMOAT', args.lavamoat.toString());
 

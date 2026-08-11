@@ -7,7 +7,7 @@ import {
 } from '@metamask/utils';
 import { cloneDeep } from 'lodash';
 import { v4 } from 'uuid';
-import { captureException } from '../../../shared/lib/sentry';
+import { captureException } from '../../../shared/lib/local-error-log';
 
 export type VersionedData = {
   meta: { version: number };

@@ -1,6 +1,6 @@
 import { hasProperty, isObject } from '@metamask/utils';
 
-import { captureException } from '../../../shared/lib/sentry';
+import { captureException } from '../../../shared/lib/local-error-log';
 
 type StateNECWithNativeAssetIdentifiers = {
   // eslint-disable-next-line @typescript-eslint/naming-convention

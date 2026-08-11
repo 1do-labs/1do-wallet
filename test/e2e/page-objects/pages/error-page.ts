@@ -1,8 +1,5 @@
 import { Driver } from '../../webdriver/driver';
 
-const FEEDBACK_MESSAGE =
-  'Message: Unable to find value of key "developerOptions" for locale "en"';
-
 class ErrorPage {
   private readonly driver: Driver;
 
@@ -11,23 +8,8 @@ class ErrorPage {
 
   private readonly errorMessage = '[data-testid="error-page-error-message"]';
 
-  private readonly sendReportToSentryButton =
-    '[data-testid="error-page-describe-what-happened-button"]';
-
-  private readonly sentryReportForm =
-    '[data-testid="error-page-sentry-feedback-modal"]';
-
   private readonly contactSupportButton =
     '[data-testid="error-page-contact-support-button"]';
-
-  private readonly sentryFeedbackTextarea =
-    '[data-testid="error-page-sentry-feedback-textarea"]';
-
-  private readonly sentryFeedbackSubmitButton =
-    '[data-testid="error-page-sentry-feedback-submit-button"]';
-
-  private readonly sentryFeedbackSuccessModal =
-    '[data-testid="error-page-sentry-feedback-success-modal"]';
 
   private readonly visitSupportDataConsentModal =
     '[data-testid="visit-support-data-consent-modal"]';
@@ -59,16 +41,6 @@ class ErrorPage {
     });
   }
 
-  async submitToSentryUserFeedbackForm(): Promise<void> {
-    console.log(`Open sentry user feedback form in error page`);
-    await this.driver.clickElement(this.sendReportToSentryButton);
-    await this.driver.waitForSelector(this.sentryReportForm);
-    await this.driver.fill(this.sentryFeedbackTextarea, FEEDBACK_MESSAGE);
-    await this.driver.clickElementAndWaitToDisappear(
-      this.sentryFeedbackSubmitButton,
-    );
-  }
-
   async clickContactButton(): Promise<void> {
     console.log(`Contact metamask support form in a separate page`);
     await this.driver.waitUntilXWindowHandles(1);
@@ -90,11 +62,6 @@ class ErrorPage {
       this.visitSupportDataConsentModalRejectButton,
     );
     await this.driver.waitUntilXWindowHandles(2);
-  }
-
-  async waitForSentrySuccessModal(): Promise<void> {
-    await this.driver.waitForSelector(this.sentryFeedbackSuccessModal);
-    await this.driver.assertElementNotPresent(this.sentryFeedbackSuccessModal);
   }
 }
 

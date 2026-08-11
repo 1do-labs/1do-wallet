@@ -756,8 +756,6 @@ async function initBundler(
   }
 }
 
-const sentryRegEx = /^https:\/\/sentry\.io\/api\/\d+\/envelope/gu;
-
 /**
  * Check if sidepanel is enabled by examining the build flag at runtime.
  * Only works on Chrome-based browsers (Firefox doesn't support sidepanel).
@@ -841,7 +839,6 @@ module.exports = {
   largeDelayMs,
   regularDelayMs,
   roundToXDecimalPlaces,
-  sentryRegEx,
   shouldIgnoreKey,
   tinyDelayMs,
   veryLargeDelayMs,

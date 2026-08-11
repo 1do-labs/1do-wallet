@@ -2,9 +2,6 @@ import type { PersistenceManager as PersistenceManagerType } from '../../../shar
 
 const mockGet = jest.fn();
 const mockGetBackup = jest.fn();
-const mockCleanUpMostRecentRetrievedState = jest.fn();
-const mockPersistenceOn = jest.fn();
-let mockMostRecentRetrievedState: unknown = null;
 
 jest.mock('../platforms/extension', () => {
   return jest.fn().mockImplementation(() => ({
@@ -14,14 +11,6 @@ jest.mock('../platforms/extension', () => {
 
 jest.mock('../../../shared/lib/manifestFlags', () => ({
   getManifestFlags: () => ({ testing: {} }),
-}));
-
-jest.mock('../constants/sentry-state', () => ({
-  SENTRY_BACKGROUND_STATE: {},
-}));
-
-jest.mock('../../../shared/lib/object.utils', () => ({
-  maskObject: jest.fn((obj) => obj),
 }));
 
 jest.mock('../../../shared/lib/stores/extension-store', () => {
@@ -37,15 +26,6 @@ jest.mock('../../../shared/lib/stores/persistence-manager', () => ({
     const instance = {
       get: mockGet,
       getBackup: mockGetBackup,
-      cleanUpMostRecentRetrievedState: mockCleanUpMostRecentRetrievedState,
-      on: (...args: unknown[]) => {
-        mockPersistenceOn(...args);
-        return instance;
-      },
-      off: jest.fn(),
-      get mostRecentRetrievedState() {
-        return mockMostRecentRetrievedState;
-      },
     };
     return instance;
   }),
@@ -76,9 +56,6 @@ describe('setup-initial-state-hooks', () => {
 
   beforeEach(() => {
     jest.resetModules();
-    mockMostRecentRetrievedState = null;
-    mockCleanUpMostRecentRetrievedState.mockClear();
-    mockPersistenceOn.mockClear();
     globalThis.stateHooks = {} as typeof stateHooks;
   });
 
@@ -185,25 +162,6 @@ describe('setup-initial-state-hooks', () => {
       expect(persistenceManager).toBeDefined();
       expect(persistenceManager.get).toBeDefined();
     });
-
-    it('registers persistence lifecycle event listeners for analytics wiring', async () => {
-      setSelfHref('chrome-extension://abc123/home.html');
-      await importFresh();
-
-      expect(mockPersistenceOn).toHaveBeenCalledTimes(3);
-      expect(mockPersistenceOn).toHaveBeenCalledWith(
-        'vaultCorruptionDetected',
-        expect.any(Function),
-      );
-      expect(mockPersistenceOn).toHaveBeenCalledWith(
-        'splitStateMigrationSucceeded',
-        expect.any(Function),
-      );
-      expect(mockPersistenceOn).toHaveBeenCalledWith(
-        'splitStateMigrationFailed',
-        expect.any(Function),
-      );
-    });
   });
 
   describe('stateHooks', () => {
@@ -241,97 +199,6 @@ describe('setup-initial-state-hooks', () => {
       await (hooks.getBackupState as () => Promise<unknown>)();
 
       expect(mockGetBackup).toHaveBeenCalled();
-    });
-
-    it('registers getSentryState on globalThis.stateHooks', async () => {
-      setSelfHref('chrome-extension://abc123/home.html');
-      await importFresh();
-
-      expect(globalThis.stateHooks.getSentryState).toBeDefined();
-      expect(typeof globalThis.stateHooks.getSentryState).toBe('function');
-    });
-
-    describe('getSentryState', () => {
-      it('returns app state when getSentryAppState is set', async () => {
-        setSelfHref('chrome-extension://abc123/home.html');
-        await importFresh();
-
-        const mockAppState = { foo: 'bar' };
-        globalThis.stateHooks.getSentryAppState = () => mockAppState;
-
-        const result = globalThis.stateHooks.getSentryState();
-
-        expect(mockCleanUpMostRecentRetrievedState).toHaveBeenCalled();
-        expect(result).toStrictEqual(
-          expect.objectContaining({
-            version: '1.0.0',
-            state: mockAppState,
-          }),
-        );
-      });
-
-      it('returns persisted state from mostRecentRetrievedState', async () => {
-        setSelfHref('chrome-extension://abc123/home.html');
-        await importFresh();
-
-        const mockPersistedState = { data: { config: {} }, meta: {} };
-        mockMostRecentRetrievedState = mockPersistedState;
-
-        const result = globalThis.stateHooks.getSentryState();
-
-        expect(result).toStrictEqual(
-          expect.objectContaining({
-            version: '1.0.0',
-            persistedState: mockPersistedState,
-          }),
-        );
-      });
-
-      it('returns persisted state from getMostRecentPersistedState', async () => {
-        setSelfHref('chrome-extension://abc123/home.html');
-        await importFresh();
-
-        const mockPersistedState = { data: { config: {} }, meta: {} };
-        globalThis.stateHooks.getMostRecentPersistedState = () =>
-          mockPersistedState;
-
-        const result = globalThis.stateHooks.getSentryState();
-
-        expect(result).toStrictEqual(
-          expect.objectContaining({
-            version: '1.0.0',
-            persistedState: mockPersistedState,
-          }),
-        );
-      });
-
-      it('returns base state when getMostRecentPersistedState returns null', async () => {
-        setSelfHref('chrome-extension://abc123/home.html');
-        await importFresh();
-
-        globalThis.stateHooks.getMostRecentPersistedState = () => null;
-
-        const result = globalThis.stateHooks.getSentryState();
-
-        expect(result).toStrictEqual(
-          expect.objectContaining({ version: '1.0.0' }),
-        );
-        expect(result).not.toHaveProperty('state');
-        expect(result).not.toHaveProperty('persistedState');
-      });
-
-      it('returns base state when no app state or persisted state is available', async () => {
-        setSelfHref('chrome-extension://abc123/home.html');
-        await importFresh();
-
-        const result = globalThis.stateHooks.getSentryState();
-
-        expect(result).toStrictEqual(
-          expect.objectContaining({ version: '1.0.0' }),
-        );
-        expect(result).not.toHaveProperty('state');
-        expect(result).not.toHaveProperty('persistedState');
-      });
     });
   });
 });

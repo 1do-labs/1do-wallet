@@ -2517,18 +2517,6 @@
   "errorGettingSafeChainList": {
     "message": "May error habang kinukuha ang ligtas na chain list, mangyaring magpatuloy nang may pag-iingat."
   },
-  "errorLegalTextFirstInfo": {
-    "message": "Impormasyon sa teknikal na diagnostic."
-  },
-  "errorLegalTextNoPersonalInfo": {
-    "message": "Hindi kokolektahin ang anumang personal na impormasyon o impormasyon ng device."
-  },
-  "errorLegalTextSecondInfo": {
-    "message": "Ang iyong browser, operating system, at mga bersyon ng 1do."
-  },
-  "errorLegalTextSummary": {
-    "message": "Makakatanggap kami ng ulat ng isang error na naglalaman ng:"
-  },
   "errorMessage": {
     "message": "Mensahe: $1",
     "description": "Displayed error message for debugging purposes. $1 is the error message"
@@ -2541,10 +2529,6 @@
     "message": "Kontakin ang suporta",
     "description": "Button for contact MM support"
   },
-  "errorPageDescribeUsWhatHappened": {
-    "message": "Ilarawan kung ano ang nangyari",
-    "description": "Button for submitting report to sentry"
-  },
   "errorPageInfo": {
     "message": "Hindi puwedeng ipakita ang impormasyon mo. Huwag mag-alala, ligtas ang wallet at mga pondo mo.",
     "description": "Information banner shown in the error page"
@@ -2552,18 +2536,6 @@
   "errorPageMessageTitle": {
     "message": "Mensahe ng error",
     "description": "Title for description, which is displayed for debugging purposes"
-  },
-  "errorPageSentryFormTitle": {
-    "message": "Ilarawan kung ano ang nangyari",
-    "description": "In sentry feedback form, The title at the top of the feedback form."
-  },
-  "errorPageSentryMessagePlaceholder": {
-    "message": "Matutulungan mo kaming ayusin ang problema kapag nagbahagi ka ng mga detalye gaya ng kung paano namin mare-reproduce ang bug.",
-    "description": "In sentry feedback form, The placeholder for the feedback description input field."
-  },
-  "errorPageSentrySuccessMessageText": {
-    "message": "Salamat! Susuriin namin ito sa lalong madaling panahon.",
-    "description": "In sentry feedback form, The message displayed after a successful feedback submission."
   },
   "errorPageTitle": {
     "message": "Nagkaroon ng error sa 1do",

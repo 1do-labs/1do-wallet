@@ -2517,18 +2517,6 @@
   "errorGettingSafeChainList": {
     "message": "Ошибка при получении списка безопасных блокчейнов. Продолжайте с осторожностью."
   },
-  "errorLegalTextFirstInfo": {
-    "message": "Техническая диагностическая информация."
-  },
-  "errorLegalTextNoPersonalInfo": {
-    "message": "Никакие личные данные или другая информация об устройстве не собираются."
-  },
-  "errorLegalTextSecondInfo": {
-    "message": "Ваш браузер, операционная система и версии 1do."
-  },
-  "errorLegalTextSummary": {
-    "message": "Мы получим единый отчет об ошибках, содержащий следующее:"
-  },
   "errorMessage": {
     "message": "Сообщение: $1",
     "description": "Displayed error message for debugging purposes. $1 is the error message"
@@ -2541,10 +2529,6 @@
     "message": "Связаться со службой поддержки",
     "description": "Button for contact MM support"
   },
-  "errorPageDescribeUsWhatHappened": {
-    "message": "Опишите, что произошло",
-    "description": "Button for submitting report to sentry"
-  },
   "errorPageInfo": {
     "message": "Невозможно показать вашу информацию. Не волнуйтесь, ваш кошелек и средства в безопасности.",
     "description": "Information banner shown in the error page"
@@ -2552,18 +2536,6 @@
   "errorPageMessageTitle": {
     "message": "Сообщение об ошибке",
     "description": "Title for description, which is displayed for debugging purposes"
-  },
-  "errorPageSentryFormTitle": {
-    "message": "Опишите, что произошло",
-    "description": "In sentry feedback form, The title at the top of the feedback form."
-  },
-  "errorPageSentryMessagePlaceholder": {
-    "message": "Предоставление подробной информации, например, о том, как мы можем воспроизвести ошибку, поможет нам решить проблему.",
-    "description": "In sentry feedback form, The placeholder for the feedback description input field."
-  },
-  "errorPageSentrySuccessMessageText": {
-    "message": "Спасибо! Мы скоро рассмотрим это.",
-    "description": "In sentry feedback form, The message displayed after a successful feedback submission."
   },
   "errorPageTitle": {
     "message": "1do обнаружил ошибку",

@@ -1,6 +1,6 @@
 import { RpcEndpointType } from '@metamask/network-controller';
 import { getErrorMessage, hasProperty, Hex, isObject } from '@metamask/utils';
-import { captureException } from '../../../shared/lib/sentry';
+import { captureException } from '../../../shared/lib/local-error-log';
 import { CHAIN_IDS } from '../../../shared/constants/network';
 
 type VersionedData = {

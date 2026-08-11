@@ -44,30 +44,8 @@ export type ManifestFlags = {
      * The user persona being tested (e.g., 'standard' or 'powerUser')
      */
     persona?: string;
-    /**
-     * The test title for Sentry metrics grouping
-     */
+    /** The test title for benchmark grouping. */
     testTitle?: string;
-  };
-  /**
-   * Sentry flags
-   */
-  sentry?: {
-    /**
-     * Override the performance trace sample rate
-     */
-    tracesSampleRate?: number;
-    /**
-     * Sub-sample rate for lazy-loaded components.
-     *
-     * Multiply this rate by tracesSampleRate to get the actual probability of sampling the load
-     * time of a lazy-loaded component.
-     */
-    lazyLoadSubSampleRate?: number;
-    /**
-     * Force enable Sentry (this is typically set by individual E2E tests in spec files)
-     */
-    forceEnable?: boolean;
   };
   /**
    * Feature flags to control business logic behavior

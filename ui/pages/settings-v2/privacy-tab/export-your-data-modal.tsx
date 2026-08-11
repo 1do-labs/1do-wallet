@@ -27,7 +27,7 @@ import {
   exportAsFile,
   ExportableContentType,
 } from '../../../helpers/utils/export-utils';
-import { captureException } from '../../../../shared/lib/sentry';
+import { captureException } from '../../../../shared/lib/local-error-log';
 import { backupUserData } from '../../../store/actions';
 
 type BackupUserDataResponse = {

@@ -103,7 +103,7 @@ export type AppMetadataControllerMessenger = Messenger<
  * {@link AppMetadataController}'s metadata.
  *
  * This allows us to choose if fields of the state should be persisted or not
- * using the `persist` flag; and if they can be sent to Sentry or not, using
+ * using the `persist` flag; and if they can appear in diagnostic snapshots, using
  * the `anonymous` flag.
  */
 const controllerMetadata: StateMetadata<AppMetadataControllerState> = {

@@ -224,38 +224,6 @@ async function setupMocking(
   });
 
   await server
-    .forPost('https://sentry.io/api/0000000/envelope/')
-    .thenCallback(() => {
-      return {
-        statusCode: 200,
-        json: {},
-      };
-    });
-
-  await server
-    .forPost('https://sentry.io/api/0000000/store/')
-    .thenCallback(() => {
-      return {
-        statusCode: 200,
-        json: {},
-      };
-    });
-
-  // SENTRY_DSN_PERFORMANCE
-  await server
-    .forPost('https://sentry.io/api/4510302346608640/envelope/')
-    .thenPassThrough({
-      beforeRequest: (req) => {
-        console.log(
-          'Request going to Sentry metamask-performance ============',
-          req.url,
-          false,
-        );
-        return {};
-      },
-    });
-
-  await server
     .forGet('https://www.4byte.directory/api/v1/signatures/')
     .thenCallback(() => {
       return {

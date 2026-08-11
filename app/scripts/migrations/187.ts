@@ -1,5 +1,5 @@
 import { hasProperty, isObject, getErrorMessage } from '@metamask/utils';
-import { captureException } from '../../../shared/lib/sentry';
+import { captureException } from '../../../shared/lib/local-error-log';
 
 type VersionedData = {
   meta: { version: number };

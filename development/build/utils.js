@@ -48,7 +48,7 @@ const TASK_PREFIX_TO_BUILD_TARGET = [
  * Task names follow patterns like:
  * - 'dev' -> 'dev' (already a build target)
  * - 'scripts:core:test:standardEntryPoints' -> 'test'
- * - 'scripts:core:test-live:sentry' -> 'testDev'
+ * - 'scripts:core:test-live:standardEntryPoints' -> 'testDev'
  *
  * @param {string} taskName - The task name or build target.
  * @returns {BUILD_TARGETS} The extracted build target, or the original
@@ -198,8 +198,7 @@ function logError(error) {
  * This function wrapAgainstScuttling() tries to generically wrap given code
  * with an environment that allows it to still function under a scuttled environment.
  *
- * It's only (current) use is for sentry code which runs before scuttling happens but
- * later on still leans on properties of the global object which at that point are scuttled.
+ * Wrap code that needs selected global properties after scuttling.
  *
  * To accomplish that, we wrap the entire provided code with the good old with-proxy trick,
  * which helps us capture access attempts like (1) window.fetch/globalThis.fetch and (2) fetch.
@@ -211,9 +210,6 @@ function logError(error) {
  * Specifically when the code tries to set properties to the global object,
  * in addition to the preconfigured properties, we also accept any property
  * starting with on to support global event handlers settings.
- *
- * Also, sentry invokes functions dynamically using Function.prototype's call and apply,
- * and our proxy messes with their this when that happens, so these two required a tailor-made patch.
  *
  * @param content - contents of the js code to wrap
  * @param bag - bag of global object properties to provide to the wrapped js code

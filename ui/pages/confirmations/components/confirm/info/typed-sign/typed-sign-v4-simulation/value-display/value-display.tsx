@@ -1,7 +1,7 @@
 import { NameType } from '@metamask/name-controller';
 import { Hex } from '@metamask/utils';
 import React, { useMemo } from 'react';
-import { captureException } from '../../../../../../../../../shared/lib/sentry';
+import { captureException } from '../../../../../../../../../shared/lib/local-error-log';
 import { calcTokenAmount } from '../../../../../../../../../shared/lib/transactions-controller-utils';
 import useTokenExchangeRate from '../../../../../../../../components/app/currency-input/hooks/useTokenExchangeRate';
 import Name from '../../../../../../../../components/app/name/name';

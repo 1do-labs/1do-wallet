@@ -18,7 +18,7 @@ import {
   getRpcUrl,
   getFailoverUrlsForNetwork,
 } from '../../../shared/constants/network';
-import { captureException } from '../../../shared/lib/sentry';
+import { captureException } from '../../../shared/lib/local-error-log';
 import { MessengerClientInitFunction } from './types';
 import { NetworkControllerInitMessenger } from './messengers';
 

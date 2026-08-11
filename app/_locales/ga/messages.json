@@ -2024,18 +2024,6 @@
   "errorGettingSafeChainList": {
     "message": "Earráid agus liosta slabhra sábháilte á fháil, lean ar aghaidh go cúramach le do thoil."
   },
-  "errorLegalTextFirstInfo": {
-    "message": "Faisnéis theicniúil dhiagnóiseach."
-  },
-  "errorLegalTextNoPersonalInfo": {
-    "message": "Ní bhaileofar aon fhaisnéis phearsanta ná aon fhaisnéis eile faoi ghléasanna."
-  },
-  "errorLegalTextSecondInfo": {
-    "message": "Leaganacha do bhrabhsálaí, do chóras oibriúcháin, agus do 1do."
-  },
-  "errorLegalTextSummary": {
-    "message": "Gheobhaimid tuarascáil earráide amháin, ina mbeidh:"
-  },
   "errorMessage": {
     "message": "Teachtaireacht: $1",
     "description": "Displayed error message for debugging purposes. $1 is the error message"
@@ -2048,10 +2036,6 @@
     "message": "Déan teagmháil leis an tacaíocht",
     "description": "Button for contact MM support"
   },
-  "errorPageDescribeUsWhatHappened": {
-    "message": "Déan cur síos ar a tharla",
-    "description": "Button for submitting report to sentry"
-  },
   "errorPageInfo": {
     "message": "Ní féidir do chuid faisnéise a thaispeáint. Ná bíodh imní ort, tá do sparán agus do chistí sábháilte.",
     "description": "Information banner shown in the error page"
@@ -2059,18 +2043,6 @@
   "errorPageMessageTitle": {
     "message": "Teachtaireacht earráide",
     "description": "Title for description, which is displayed for debugging purposes"
-  },
-  "errorPageSentryFormTitle": {
-    "message": "Déan cur síos ar a tharla",
-    "description": "In sentry feedback form, The title at the top of the feedback form."
-  },
-  "errorPageSentryMessagePlaceholder": {
-    "message": "Má roinneann tú sonraí amhail conas is féidir linn an fabht a atáirgeadh, cabhróidh sé linn an fhadhb a réiteach.",
-    "description": "In sentry feedback form, The placeholder for the feedback description input field."
-  },
-  "errorPageSentrySuccessMessageText": {
-    "message": "Go raibh maith agat! Féachfaimid air go luath.",
-    "description": "In sentry feedback form, The message displayed after a successful feedback submission."
   },
   "errorPageTitle": {
     "message": "Tharla earráid i 1do",

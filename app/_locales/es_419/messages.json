@@ -2517,18 +2517,6 @@
   "errorGettingSafeChainList": {
     "message": "Error al obtener la lista de cadenas seguras, por favor continúe con precaución."
   },
-  "errorLegalTextFirstInfo": {
-    "message": "Información de diagnóstico técnico."
-  },
-  "errorLegalTextNoPersonalInfo": {
-    "message": "No se recopilará ninguna información personal ni ninguna otra información del dispositivo."
-  },
-  "errorLegalTextSecondInfo": {
-    "message": "Tu navegador, sistema operativo y versiones de 1do."
-  },
-  "errorLegalTextSummary": {
-    "message": "Recibiremos un único informe de error que contiene:"
-  },
   "errorMessage": {
     "message": "Mensaje: $1",
     "description": "Displayed error message for debugging purposes. $1 is the error message"
@@ -2541,10 +2529,6 @@
     "message": "Contactar a soporte",
     "description": "Button for contact MM support"
   },
-  "errorPageDescribeUsWhatHappened": {
-    "message": "Describa lo sucedido",
-    "description": "Button for submitting report to sentry"
-  },
   "errorPageInfo": {
     "message": "No se puede mostrar su información. No se preocupe, su monedero y sus fondos están a salvo.",
     "description": "Information banner shown in the error page"
@@ -2552,18 +2536,6 @@
   "errorPageMessageTitle": {
     "message": "Mensaje de error",
     "description": "Title for description, which is displayed for debugging purposes"
-  },
-  "errorPageSentryFormTitle": {
-    "message": "Describa lo sucedido",
-    "description": "In sentry feedback form, The title at the top of the feedback form."
-  },
-  "errorPageSentryMessagePlaceholder": {
-    "message": "Compartir detalles como la forma de reproducir el error nos ayudará a solucionar el problema.",
-    "description": "In sentry feedback form, The placeholder for the feedback description input field."
-  },
-  "errorPageSentrySuccessMessageText": {
-    "message": "¡Gracias! Lo revisaremos en breve.",
-    "description": "In sentry feedback form, The message displayed after a successful feedback submission."
   },
   "errorPageTitle": {
     "message": "1do encontró un error",

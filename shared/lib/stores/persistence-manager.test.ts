@@ -3,7 +3,7 @@
 import 'navigator.locks';
 import log from 'loglevel';
 
-import { captureException, captureMessage } from '../sentry';
+import { captureException, captureMessage } from '../local-error-log';
 import { MISSING_VAULT_ERROR } from '../../constants/errors';
 import { PersistenceManager } from './persistence-manager';
 import ExtensionStore from './extension-store';
@@ -30,7 +30,7 @@ jest.mock('loglevel', () => ({
   error: jest.fn(),
   info: jest.fn(),
 }));
-jest.mock('../sentry', () => ({
+jest.mock('../local-error-log', () => ({
   captureException: jest.fn(),
   captureMessage: jest.fn(),
 }));

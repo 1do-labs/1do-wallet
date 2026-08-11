@@ -2,7 +2,7 @@ import { useEffect, useRef, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import stringify from 'fast-json-stable-stringify';
 import type { Json } from '@metamask/utils';
-import { captureException } from '../../shared/lib/sentry';
+import { captureException } from '../../shared/lib/local-error-log';
 import { getCompletedOnboarding } from '../ducks/metamask/metamask';
 import { useSyncEqualityCheck } from './useSyncEqualityCheck';
 

@@ -5,16 +5,13 @@ import { render } from 'react-dom';
 import browser from 'webextension-polyfill';
 import { isInternalAccountInPermittedAccountIds } from '@metamask/chain-agnostic-permission';
 
-import { captureException } from '../shared/lib/sentry';
 import { withResolvers } from '../shared/lib/promise-with-resolvers';
 // TODO: Remove restricted import
 // eslint-disable-next-line import-x/no-restricted-paths
 import { getEnvironmentType } from '../app/scripts/lib/util';
 import { AlertTypes } from '../shared/constants/alerts';
-import { maskObject } from '../shared/lib/object.utils';
 // TODO: Remove restricted import
 // eslint-disable-next-line import-x/no-restricted-paths
-import { SENTRY_UI_STATE } from '../app/scripts/constants/sentry-state';
 import {
   ENVIRONMENT_TYPE_POPUP,
   ENVIRONMENT_TYPE_SIDEPANEL,
@@ -30,7 +27,6 @@ import { getCurrentChainId } from '../shared/lib/selectors/networks';
 import { MESSENGER_SUBSCRIPTION_NOTIFICATION } from '../shared/constants/messages';
 import {
   setupLongTaskObserver,
-  setupLongTaskSentryReporting,
   exposeLongTaskMetricsForTesting,
 } from './helpers/utils/performance-observers';
 import * as actions from './store/actions';
@@ -339,7 +335,7 @@ function setupStateHooks(store) {
   ) {
     /**
      * The following stateHook is a method intended to throw an error, used in
-     * manual and E2E tests to ensure that errors are attempted to be sent to sentry.
+     * manual and E2E tests to ensure that global errors are handled.
      *
      * @param {string} [msg] - The error message to throw, defaults to 'Test Error'
      */
@@ -349,20 +345,9 @@ function setupStateHooks(store) {
       throw error;
     };
     /**
-     * The following stateHook is a method intended to capture an error, used in
-     * manual and E2E tests to ensure that errors are correctly sent to sentry.
-     *
-     * @param {string} [msg] - The error message to capture, defaults to 'Test Error'
-     */
-    window.stateHooks.captureTestError = async function (msg = 'Test Error') {
-      const error = new Error(msg);
-      error.name = 'TestError';
-      captureException(error);
-    };
-    /**
      * The following stateHook is a method intended to throw an error in the
      * background, used in manual and E2E tests to ensure that errors are attempted to be
-     * sent to sentry.
+     * handled by the background process.
      *
      * @param {string} [msg] - The error message to throw, defaults to 'Test Error'
      */
@@ -370,17 +355,6 @@ function setupStateHooks(store) {
       msg = 'Test Error',
     ) {
       await actions.throwTestBackgroundError(msg);
-    };
-    /**
-     * The following stateHook is a method intended to capture an error in the background, used
-     * in manual and E2E tests to ensure that errors are correctly sent to sentry.
-     *
-     * @param {string} [msg] - The error message to capture, defaults to 'Test Error'
-     */
-    window.stateHooks.captureBackgroundError = async function (
-      msg = 'Test Error',
-    ) {
-      await actions.captureTestBackgroundError(msg);
     };
   }
 
@@ -395,10 +369,6 @@ function setupStateHooks(store) {
   };
   window.stateHooks.getCleanAppState = async function () {
     return getCleanAppState(store);
-  };
-  window.stateHooks.getSentryAppState = function () {
-    const reduxState = store.getState();
-    return maskObject(reduxState, SENTRY_UI_STATE);
   };
   window.stateHooks.getLogs = function () {
     // These logs are logged by LoggingController
@@ -416,13 +386,6 @@ function setupStateHooks(store) {
   const longTaskSampleRate =
     process.env.IN_TEST || process.env.METAMASK_DEBUG ? 1 : 0.1;
   setupLongTaskObserver(longTaskSampleRate);
-
-  // Report TBT to Sentry when popup becomes hidden (production + debug).
-  // Sentry's browserTracingIntegration already creates per-task ui.long-task
-  // spans; this adds aggregate TBT as a custom measurement alongside them.
-  if (!process.env.IN_TEST) {
-    setupLongTaskSentryReporting();
-  }
 
   // Expose metrics APIs for E2E benchmark harness
   if (process.env.IN_TEST || process.env.METAMASK_DEBUG) {

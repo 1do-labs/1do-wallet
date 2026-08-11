@@ -20,10 +20,6 @@ describe('createTracingMiddleware', () => {
     jest.resetAllMocks();
 
     request = { ...REQUEST_MOCK };
-
-    globalThis.sentry = {
-      withIsolationScope: jest.fn().mockReturnValue({}),
-    };
   });
 
   it('adds trace context to request if method is send transaction', async () => {

@@ -2523,18 +2523,6 @@
   "errorGettingSafeChainList": {
     "message": "Terjadi kesalahan saat mendapatkan daftar rantai aman, lanjutkan dengan hati-hati."
   },
-  "errorLegalTextFirstInfo": {
-    "message": "Informasi diagnostik teknis."
-  },
-  "errorLegalTextNoPersonalInfo": {
-    "message": "Tidak ada informasi pribadi atau informasi perangkat lain yang akan dikumpulkan."
-  },
-  "errorLegalTextSecondInfo": {
-    "message": "Versi browser, sistem operasi, dan 1do Anda."
-  },
-  "errorLegalTextSummary": {
-    "message": "Kami akan menerima satu laporan kesalahan, yang berisi:"
-  },
   "errorMessage": {
     "message": "Pesan: $1",
     "description": "Displayed error message for debugging purposes. $1 is the error message"
@@ -2547,10 +2535,6 @@
     "message": "Hubungi dukungan",
     "description": "Button for contact MM support"
   },
-  "errorPageDescribeUsWhatHappened": {
-    "message": "Jelaskan yang terjadi",
-    "description": "Button for submitting report to sentry"
-  },
   "errorPageInfo": {
     "message": "Informasi Anda tidak dapat ditampilkan. Jangan khawatir, dompet dan dana Anda aman.",
     "description": "Information banner shown in the error page"
@@ -2558,18 +2542,6 @@
   "errorPageMessageTitle": {
     "message": "Pesan kesalahan",
     "description": "Title for description, which is displayed for debugging purposes"
-  },
-  "errorPageSentryFormTitle": {
-    "message": "Jelaskan yang terjadi",
-    "description": "In sentry feedback form, The title at the top of the feedback form."
-  },
-  "errorPageSentryMessagePlaceholder": {
-    "message": "Berbagi detail seperti cara kami dapat mereproduksi bug akan membantu kami memperbaiki masalah tersebut.",
-    "description": "In sentry feedback form, The placeholder for the feedback description input field."
-  },
-  "errorPageSentrySuccessMessageText": {
-    "message": "Terima kasih! Kami akan segera memeriksanya.",
-    "description": "In sentry feedback form, The message displayed after a successful feedback submission."
   },
   "errorPageTitle": {
     "message": "1do mengalami kesalahan",

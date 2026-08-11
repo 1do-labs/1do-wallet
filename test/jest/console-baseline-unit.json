@@ -54,7 +54,6 @@
     },
     "app/scripts/metamask-controller.test.js": {
       "MetaMask: MetaMetrics invalid trait types": 1,
-      "MetaMask: Sentry initialization warnings": 1,
       "ObjectMultiplex: Malformed chunk warnings": 1,
       "Third-party: Bindings failed, using pure JS": 1,
       "error: AssertionError: The Snaps platform requires": 1,
@@ -158,9 +157,6 @@
     },
     "shared/lib/selectors/index.test.ts": {
       "Reselect: Identity function warnings": 2
-    },
-    "shared/lib/sentry.test.ts": {
-      "error: Error: Test error": 2
     },
     "shared/lib/stores/browser-storage-adapter.test.ts": {
       "error: StorageService: Failed to clear namespace": 1,

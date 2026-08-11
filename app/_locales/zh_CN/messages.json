@@ -2149,18 +2149,6 @@
   "errorGettingSafeChainList": {
     "message": "获取安全链列表时出错，请谨慎继续。"
   },
-  "errorLegalTextFirstInfo": {
-    "message": "技术诊断信息。"
-  },
-  "errorLegalTextNoPersonalInfo": {
-    "message": "不会收集个人信息或其他设备信息。"
-  },
-  "errorLegalTextSecondInfo": {
-    "message": "您的浏览器、操作系统及 1do 版本信息。"
-  },
-  "errorLegalTextSummary": {
-    "message": "我们将收到一份错误报告，其中包含："
-  },
   "errorMessage": {
     "message": "信息：$1",
     "description": "Displayed error message for debugging purposes. $1 is the error message"
@@ -2173,10 +2161,6 @@
     "message": "联系支持团队",
     "description": "Button for contact MM support"
   },
-  "errorPageDescribeUsWhatHappened": {
-    "message": "请描述所发生的问题",
-    "description": "Button for submitting report to sentry"
-  },
   "errorPageInfo": {
     "message": "您的信息不能显示。别担心，您的钱包和资金都很安全。",
     "description": "Information banner shown in the error page"
@@ -2184,18 +2168,6 @@
   "errorPageMessageTitle": {
     "message": "错误消息",
     "description": "Title for description, which is displayed for debugging purposes"
-  },
-  "errorPageSentryFormTitle": {
-    "message": "请描述所发生的问题",
-    "description": "In sentry feedback form, The title at the top of the feedback form."
-  },
-  "errorPageSentryMessagePlaceholder": {
-    "message": "分享如何重现错误等详细信息将有助于我们解决问题。",
-    "description": "In sentry feedback form, The placeholder for the feedback description input field."
-  },
-  "errorPageSentrySuccessMessageText": {
-    "message": "谢谢！我们将很快查看。",
-    "description": "In sentry feedback form, The message displayed after a successful feedback submission."
   },
   "errorPageTitle": {
     "message": "1do 遇到了一个错误",

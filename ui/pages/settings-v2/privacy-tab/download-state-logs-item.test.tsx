@@ -13,8 +13,8 @@ jest.mock('../../../helpers/utils/export-utils', () => ({
   exportAsFile: jest.fn(),
 }));
 
-jest.mock('../../../../shared/lib/sentry', () => ({
-  ...jest.requireActual('../../../../shared/lib/sentry'),
+jest.mock('../../../../shared/lib/local-error-log', () => ({
+  ...jest.requireActual('../../../../shared/lib/local-error-log'),
   captureException: jest.fn(),
 }));
 

@@ -1,7 +1,7 @@
 import { hasProperty, isObject } from '@metamask/utils';
 import { cloneDeep } from 'lodash';
 import { CHAIN_IDS } from '../../../shared/constants/network';
-import { captureException } from '../../../shared/lib/sentry';
+import { captureException } from '../../../shared/lib/local-error-log';
 
 export const version = 175;
 

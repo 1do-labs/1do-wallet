@@ -19,7 +19,6 @@ describe('getBuildTargetFromTask', () => {
     expect(
       getBuildTargetFromTask('scripts:core:test:standardEntryPoints'),
     ).toBe('test');
-    expect(getBuildTargetFromTask('scripts:core:test:sentry')).toBe('test');
     expect(
       getBuildTargetFromTask('scripts:core:test-live:standardEntryPoints'),
     ).toBe('testDev');

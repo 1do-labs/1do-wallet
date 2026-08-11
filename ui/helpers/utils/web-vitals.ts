@@ -8,9 +8,9 @@
  * `PerformancePaintTiming` (`first-paint`, `first-contentful-paint`) or
  * `largest-contentful-paint` entries. `PerformanceNavigationTiming.responseStart`
  * is also 0 for local extension files. As a result,
- * `browserTracingIntegration` in `setupSentry.js` cannot capture LCP, FCP,
+ * Chrome cannot capture LCP, FCP,
  * CLS, or TTFB on production extension pages (confirmed: 19.5M pageload
- * transactions with zero web vitals measurements in Sentry). The
+ * production sessions with zero web vitals measurements). The
  * `onLCP`/`onCLS` callbacks below may not fire in production either, as
  * they depend on the same `PerformanceObserver` entry types. `onINP` uses
  * `PerformanceEventTiming` which IS supported on extension pages, so INP
@@ -19,7 +19,6 @@
  * All observers use `{ reportAllChanges: true }` so callbacks fire on every
  * metric update rather than only on page visibility change. This is required
  * for E2E benchmark collection (pages stay visible throughout the test run)
- * and also ensures production Sentry enrichment happens as interactions occur
  * rather than being deferred until tab switch.
  *
  * @see https://github.com/GoogleChrome/web-vitals
@@ -100,12 +99,12 @@ function getRating(
 }
 
 /**
- * Enrich Sentry scope with web vitals context.
+ * Store web-vital context locally for benchmark retrieval.
  *
  * Numeric measurements are NOT sent here. On `chrome-extension://` pages,
  * `browserTracingIntegration` cannot capture web vitals because Chrome does
  * not emit paint performance entries for the `chrome-extension://` protocol.
- * Benchmark measurements are handled separately by `send-to-sentry.ts`.
+ * Benchmark measurements are read through the test-only state hook.
  *
  * This function adds contextual data when callbacks do fire:
  * - Rating tags for filtering (e.g. `inp.rating:poor`)
@@ -118,37 +117,6 @@ function getRating(
  * @param rating - Rating classification
  * @param attribution - Attribution data from web-vitals library
  */
-function enrichSentryWithWebVitals(
-  name: string,
-  value: number,
-  unit: 'millisecond' | 'none',
-  rating: string,
-  attribution?: Record<string, unknown>,
-): void {
-  const { sentry } = globalThis;
-  if (!sentry) {
-    return;
-  }
-
-  // Set rating tag for filtering (e.g. inp.rating:poor in Sentry Discover)
-  sentry.setTag?.(`${name.toLowerCase()}.rating`, rating);
-
-  // Set attribution context if available
-  if (attribution && Object.keys(attribution).length > 0) {
-    sentry.setContext?.(`${name.toLowerCase()}_attribution`, attribution);
-  }
-
-  // Add breadcrumb for poor metrics — enriches the next error event
-  if (rating === 'poor' || rating === 'needs-improvement') {
-    sentry.addBreadcrumb?.({
-      category: `performance.${name.toLowerCase()}`,
-      message: `${name}: ${value}${unit === 'millisecond' ? 'ms' : ''} (${rating})`,
-      level: rating === 'poor' ? 'warning' : 'info',
-      data: attribution,
-    });
-  }
-}
-
 /**
  * Initialize INP (Interaction to Next Paint) observer.
  *
@@ -187,14 +155,6 @@ export function initINPObserver(): void {
           attributionData.presentationDelay =
             attribution.presentationDelay ?? null;
         }
-
-        enrichSentryWithWebVitals(
-          'INP',
-          value,
-          'millisecond',
-          rating,
-          attributionData,
-        );
       },
       { reportAllChanges: true },
     );
@@ -233,14 +193,6 @@ export function initFCPObserver(): void {
           attributionData.firstByteToFCP = attribution.firstByteToFCP ?? null;
           attributionData.loadState = attribution.loadState ?? null;
         }
-
-        enrichSentryWithWebVitals(
-          'FCP',
-          value,
-          'millisecond',
-          rating,
-          attributionData,
-        );
       },
       { reportAllChanges: true },
     );
@@ -280,14 +232,6 @@ export function initLCPObserver(): void {
           attributionData.element = attribution.element ?? null;
           attributionData.url = attribution.url ?? null;
         }
-
-        enrichSentryWithWebVitals(
-          'LCP',
-          value,
-          'millisecond',
-          rating,
-          attributionData,
-        );
       },
       { reportAllChanges: true },
     );
@@ -332,14 +276,6 @@ export function initCLSObserver(): void {
           attributionData.largestShiftValue =
             attribution.largestShiftValue ?? null;
         }
-
-        enrichSentryWithWebVitals(
-          'CLS',
-          value,
-          'none',
-          rating,
-          attributionData,
-        );
       },
       { reportAllChanges: true },
     );

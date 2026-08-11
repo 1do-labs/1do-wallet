@@ -146,7 +146,7 @@ const MigrateToSplitStateTest = () => {
     <div>
       <Text>Split State Migration</Text>
       <div style={{ marginTop: '8px', marginBottom: '8px' }}>
-        <strong>Current storage kind: {storageKind}</strong>
+        <strong>{`Current storage kind: ${storageKind}`}</strong>
       </div>
       <hr />
       <h2>Split State Migration Flags</h2>

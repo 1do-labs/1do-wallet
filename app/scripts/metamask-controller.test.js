@@ -410,10 +410,6 @@ describe('MetaMaskController', () => {
           },
         ]),
       );
-    globalThis.sentry = {
-      withIsolationScope: jest.fn(),
-    };
-
     // Re-create the ULID generator to start over again the `mockULIDs` list.
     mockUlidGenerator = ulidGenerator();
   });

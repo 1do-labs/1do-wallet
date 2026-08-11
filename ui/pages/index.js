@@ -8,7 +8,7 @@ import {
   useRouteError,
 } from 'react-router-dom';
 import { QueryClientProvider } from '@tanstack/react-query';
-import { captureException } from '../../shared/lib/sentry';
+import { captureException } from '../../shared/lib/local-error-log';
 import { I18nProvider, LegacyI18nProvider } from '../contexts/i18n';
 import { AssetPollingProvider } from '../contexts/assetPolling';
 import RiveWasmProvider from '../contexts/rive-wasm';

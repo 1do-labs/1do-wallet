@@ -17,7 +17,6 @@ describe('./utils/cli.ts', () => {
     progress: true,
     releaseVersion: 0,
     devtool: 'source-map',
-    sentry: false,
     test: false,
     reactCompilerVerbose: false,
     reactCompilerDebug: 'none',

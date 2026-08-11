@@ -2517,18 +2517,6 @@
   "errorGettingSafeChainList": {
     "message": "Güvenli zincir listesi alınırken hata oluştu, lütfen dikkatli bir şekilde devam edin."
   },
-  "errorLegalTextFirstInfo": {
-    "message": "Teknik tanılama verileri."
-  },
-  "errorLegalTextNoPersonalInfo": {
-    "message": "Kişisel bilgi veya diğer cihaz bilgileri toplanmayacaktır."
-  },
-  "errorLegalTextSecondInfo": {
-    "message": "Tarayıcınız, işletim sisteminiz ve 1do sürümleriniz."
-  },
-  "errorLegalTextSummary": {
-    "message": "Aşağıdakileri içeren tek bir hata raporu alacağız:"
-  },
   "errorMessage": {
     "message": "Mesaj: $1",
     "description": "Displayed error message for debugging purposes. $1 is the error message"
@@ -2541,10 +2529,6 @@
     "message": "Destek ile iletişime geçin",
     "description": "Button for contact MM support"
   },
-  "errorPageDescribeUsWhatHappened": {
-    "message": "Ne olduğunu açıklayın",
-    "description": "Button for submitting report to sentry"
-  },
   "errorPageInfo": {
     "message": "Bilgileriniz gösterilemiyor. Endişelenmeyin, cüzdanınız ve paranız güvende.",
     "description": "Information banner shown in the error page"
@@ -2552,18 +2536,6 @@
   "errorPageMessageTitle": {
     "message": "Hata mesajı",
     "description": "Title for description, which is displayed for debugging purposes"
-  },
-  "errorPageSentryFormTitle": {
-    "message": "Ne olduğunu açıklayın",
-    "description": "In sentry feedback form, The title at the top of the feedback form."
-  },
-  "errorPageSentryMessagePlaceholder": {
-    "message": "Hatayı nasıl tekrarlayabileceğimiz gibi ayrıntıların paylaşılması sorunu çözmemize yardımcı olacaktır.",
-    "description": "In sentry feedback form, The placeholder for the feedback description input field."
-  },
-  "errorPageSentrySuccessMessageText": {
-    "message": "Teşekkürler! En kısa sürede ele alacağız.",
-    "description": "In sentry feedback form, The message displayed after a successful feedback submission."
   },
   "errorPageTitle": {
     "message": "1do bir hata ile karşılaştı",

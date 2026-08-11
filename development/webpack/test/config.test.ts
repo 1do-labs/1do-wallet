@@ -136,12 +136,6 @@ describe('./utils/config.ts', () => {
         buildEnvVarDeclarations.has('ALCHEMY_PROD_API_KEY'),
         'should include build type specific env vars',
       );
-
-      // Verify it includes keys from the global buildConfig.env (e.g., SENTRY_DSN)
-      assert.ok(
-        buildEnvVarDeclarations.has('SENTRY_DSN'),
-        'should include global config env vars',
-      );
     });
 
     it('should throw when production environment is missing required variables', () => {

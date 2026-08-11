@@ -14,12 +14,6 @@ jest.mock('webextension-polyfill', () => ({
   },
 }));
 
-jest.mock('../../../shared/lib/manifestFlags', () => ({
-  getManifestFlags: jest.fn(() => ({
-    sentry: { forceEnable: false },
-  })),
-}));
-
 describe('displayCriticalError', () => {
   let rootContainer: HTMLElement;
   let container: HTMLElement;
@@ -49,7 +43,6 @@ describe('displayCriticalError', () => {
     jest.spyOn(errorUtils, 'getErrorHtml').mockImplementation(
       (_errorKey, _error, _localeContext, _supportLink) => `
         <div>
-          <input type="checkbox" id="critical-error-checkbox" checked />
           <button id="critical-error-button">Restart</button>
         </div>
       `,
@@ -84,7 +77,7 @@ describe('displayCriticalError', () => {
     ).toContain('critical-error-button');
   });
 
-  it('clicking restart button does not send remote reports and reloads if checkbox checked', async () => {
+  it('clicking restart reloads without sending a remote report', async () => {
     const error = new Error(MOCK_ERROR_MESSAGE);
 
     await expect(
@@ -99,52 +92,9 @@ describe('displayCriticalError', () => {
     const restartButton = rootContainer.querySelector<HTMLButtonElement>(
       '#critical-error-button',
     );
-    const checkbox = rootContainer.querySelector<HTMLInputElement>(
-      '#critical-error-checkbox',
-    );
-
     expect(restartButton).toBeTruthy();
-    expect(checkbox).toBeTruthy();
 
-    if (restartButton && checkbox) {
-      checkbox.checked = true;
-
-      const flushPromises = () => new Promise(setImmediate);
-      await act(async () => {
-        restartButton.click();
-        await flushPromises();
-      });
-
-      expect(fetch).not.toHaveBeenCalled();
-      expect(browser.runtime.reload).toHaveBeenCalled();
-    }
-  });
-
-  it('does not send to Sentry if checkbox is unchecked', async () => {
-    const error = new Error(MOCK_ERROR_MESSAGE);
-
-    await expect(
-      displayCriticalErrorMessage(
-        container,
-        CriticalErrorTranslationKey.SomethingIsWrong,
-        error,
-        'en',
-      ),
-    ).rejects.toThrow(error);
-
-    const restartButton = rootContainer.querySelector<HTMLButtonElement>(
-      '#critical-error-button',
-    );
-    const checkbox = rootContainer.querySelector<HTMLInputElement>(
-      '#critical-error-checkbox',
-    );
-
-    expect(restartButton).toBeTruthy();
-    expect(checkbox).toBeTruthy();
-
-    if (restartButton && checkbox) {
-      checkbox.checked = false;
-
+    if (restartButton) {
       const flushPromises = () => new Promise(setImmediate);
       await act(async () => {
         restartButton.click();

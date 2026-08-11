@@ -33,13 +33,13 @@ export function logErrorWithMessage(error: unknown) {
 }
 
 /**
- * Creates an error instance with readable message and cause for sentry.
+ * Creates an error instance with a readable message and cause.
  *
  * @param message - The message to create the error with.
  * @param cause - The cause of the error.
  * @returns The created error.
  */
-export function createSentryError(message: string, cause: unknown): Error {
+export function createDiagnosticError(message: string, cause: unknown): Error {
   const error = new Error(message) as Error & { cause: unknown };
   error.cause = cause;
   return error;

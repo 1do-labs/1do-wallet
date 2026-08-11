@@ -43,8 +43,7 @@ import {
   getIsLegacyInfuraEndpointUrl,
   KNOWN_CUSTOM_ENDPOINT_URLS,
 } from '../../../shared/lib/network-utils';
-// Re-export install type utilities from dedicated module to avoid circular dependencies
-// and keep the sentry bundle lightweight
+// Re-export install type utilities from a dedicated module to avoid circular dependencies.
 export { getInstallType, initInstallType } from './install-type';
 export { getEnvironmentType } from '../../../shared/lib/environment-type';
 

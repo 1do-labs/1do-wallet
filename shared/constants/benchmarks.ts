@@ -90,7 +90,7 @@ export type WebVitalsAggregated = {
 
 export type WebVitalsRun = WebVitalsMetrics & { iteration: number };
 
-/** Full web vitals summary: per-run snapshots for Sentry spans + aggregated stats */
+/** Full web vitals summary: per-run snapshots plus aggregated stats. */
 export type WebVitalsSummary = {
   runs: WebVitalsRun[];
   aggregated: WebVitalsAggregated;

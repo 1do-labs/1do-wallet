@@ -35,25 +35,6 @@
         "devicePixelRatio": true
       }
     },
-    "@sentry/utils": {
-      "globals": {
-        "performance.now": true,
-        "performance.timeOrigin": true,
-        "devicePixelRatio": true,
-        "navigator.userAgent": true,
-        "navigator.language": true,
-        "navigator.userAgentData": true,
-        "crypto": true,
-        "onunhandledrejection": true,
-        "addEventListener": true,
-        "PerformanceObserver": true,
-        "chrome.app": true,
-        "chrome.runtime": true,
-        "location": false,
-        "location.href": true,
-        "top": true
-      }
-    },
     "@trezor/connect-web>@trezor/connect-common>@trezor/env-utils>ua-parser-js": {
       "globals": {
         "navigator.userAgentData": true

@@ -139,15 +139,11 @@ async function defineAndRunBuildTasks() {
       'Promise',
       'JSON',
       'Date',
-      // globals sentry needs to function
-      '__SENTRY__',
       'appState',
       'extra',
       'stateHooks',
-      'sentryHooks',
-      'sentry',
       'logEncryptedVault',
-      'history', // needed by Sentry and react-router-dom v6 HashRouter
+      'history', // needed by react-router-dom v6 HashRouter
       // Globals used by `react-dom`
       'getSelection',
       // globals `opera` needs to function

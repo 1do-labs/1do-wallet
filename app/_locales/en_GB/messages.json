@@ -2509,18 +2509,6 @@
   "errorGettingSafeChainList": {
     "message": "Error while getting safe chain list, please continue with caution."
   },
-  "errorLegalTextFirstInfo": {
-    "message": "Technical diagnostic information."
-  },
-  "errorLegalTextNoPersonalInfo": {
-    "message": "No personal information or other device information will be collected."
-  },
-  "errorLegalTextSecondInfo": {
-    "message": "Your browser, operating system, and 1do versions."
-  },
-  "errorLegalTextSummary": {
-    "message": "We will receive a single error report, containing:"
-  },
   "errorMessage": {
     "message": "Message: $1",
     "description": "Displayed error message for debugging purposes. $1 is the error message"
@@ -2533,10 +2521,6 @@
     "message": "Contact support",
     "description": "Button for contact MM support"
   },
-  "errorPageDescribeUsWhatHappened": {
-    "message": "Describe what happened",
-    "description": "Button for submitting report to sentry"
-  },
   "errorPageInfo": {
     "message": "Your information can’t be shown. Don’t worry, your wallet and funds are safe.",
     "description": "Information banner shown in the error page"
@@ -2544,18 +2528,6 @@
   "errorPageMessageTitle": {
     "message": "Error message",
     "description": "Title for description, which is displayed for debugging purposes"
-  },
-  "errorPageSentryFormTitle": {
-    "message": "Describe what happened",
-    "description": "In sentry feedback form, The title at the top of the feedback form."
-  },
-  "errorPageSentryMessagePlaceholder": {
-    "message": "Sharing details like how we can reproduce the bug will help us fix the problem.",
-    "description": "In sentry feedback form, The placeholder for the feedback description input field."
-  },
-  "errorPageSentrySuccessMessageText": {
-    "message": "Thanks! We will take a look soon.",
-    "description": "In sentry feedback form, The message displayed after a successful feedback submission."
   },
   "errorPageTitle": {
     "message": "1do encountered an error",

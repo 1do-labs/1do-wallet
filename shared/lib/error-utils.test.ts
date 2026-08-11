@@ -45,10 +45,6 @@ const enMessages: I18NMessageDict = {
   errorPageContactSupport: { message: 'Contact support' },
   errorDetails: { message: 'Error details' },
   reportThisError: { message: 'Report this error' },
-  errorLegalTextSummary: { message: 'Legal summary' },
-  errorLegalTextFirstInfo: { message: 'First legal info' },
-  errorLegalTextSecondInfo: { message: 'Second legal info' },
-  errorLegalTextNoPersonalInfo: { message: 'No personal info' },
 };
 
 describe('Error utils Tests', function () {

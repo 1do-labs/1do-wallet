@@ -12,31 +12,7 @@ export enum CriticalErrorTranslationKey {
   SomethingIsWrong = 'somethingIsWrong',
 }
 
-/**
- * Sentry remote reporting is disabled for this wallet build.
- *
- * @param error - The error object to report to Sentry
- * @returns Promise that resolves after local logging
- */
-async function sendErrorToSentry(error: ErrorLike): Promise<void> {
-  console.error('Critical error remote reporting disabled:', error);
-}
-
-/**
- * Handles the restart action: sends error report to Sentry (if enabled) and restarts 1do.
- *
- * @param error - The error object to report
- * @param shouldReport - Whether to send the error report to Sentry
- */
-async function handleRestartAction(
-  error: ErrorLike,
-  shouldReport: boolean,
-): Promise<void> {
-  // Send error report to Sentry first (if enabled)
-  if (shouldReport) {
-    await sendErrorToSentry(error);
-  }
-  // Restart the extension
+async function handleRestartAction(): Promise<void> {
   browser.runtime.reload();
 }
 
@@ -67,15 +43,8 @@ export async function displayCriticalErrorMessage(
       criticalErrorContainer.querySelector<HTMLButtonElement>(
         '#critical-error-button',
       );
-    const reportCheckbox =
-      criticalErrorContainer.querySelector<HTMLInputElement>(
-        '#critical-error-checkbox',
-      );
-
-    // Restart button: report error and restart 1do
     restartButton?.addEventListener('click', async () => {
-      const shouldReport = reportCheckbox?.checked ?? false;
-      await handleRestartAction(error, shouldReport);
+      await handleRestartAction();
     });
   }
 

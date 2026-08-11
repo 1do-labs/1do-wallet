@@ -36,7 +36,6 @@ import { getEnvironmentType } from '../../../../app/scripts/lib/util';
 import { ENVIRONMENT_TYPE_POPUP } from '../../../../shared/constants/app';
 import { ConfirmationsDeveloperOptions } from '../../confirmations/components/developer/confirmations-developer-options';
 import ToggleRow from './developer-options-toggle-row-component';
-import SentryTest from './sentry-test';
 import MigrateToSplitStateTest from './migrate-to-split-state-test';
 
 /**
@@ -187,7 +186,6 @@ const DeveloperOptionsTab = () => {
         {renderServiceWorkerKeepAliveToggle()}
       </div>
 
-      <SentryTest />
       <hr />
       <MigrateToSplitStateTest />
       <hr />

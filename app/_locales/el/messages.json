@@ -2517,18 +2517,6 @@
   "errorGettingSafeChainList": {
     "message": "Σφάλμα κατά τη λήψη της λίστας ασφαλών αλυσίδων, συνεχίστε με προσοχή."
   },
-  "errorLegalTextFirstInfo": {
-    "message": "Τεχνικές διαγνωστικές πληροφορίες."
-  },
-  "errorLegalTextNoPersonalInfo": {
-    "message": "Δεν θα συλλεχθούν προσωπικές πληροφορίες ή άλλες πληροφορίες συσκευής."
-  },
-  "errorLegalTextSecondInfo": {
-    "message": "Η έκδοση του προγράμματος περιήγησής σας, του λειτουργικού σας συστήματος και του 1do."
-  },
-  "errorLegalTextSummary": {
-    "message": "Θα λάβουμε μία αναφορά σφάλματος, που θα περιλαμβάνει:"
-  },
   "errorMessage": {
     "message": "Μήνυμα: $1",
     "description": "Displayed error message for debugging purposes. $1 is the error message"
@@ -2541,10 +2529,6 @@
     "message": "Επικοινωνία με την υποστήριξη",
     "description": "Button for contact MM support"
   },
-  "errorPageDescribeUsWhatHappened": {
-    "message": "Περιγράψτε τι έχει συμβεί",
-    "description": "Button for submitting report to sentry"
-  },
   "errorPageInfo": {
     "message": "Οι πληροφορίες σας δεν μπορούν να εμφανιστούν. Μην ανησυχείτε, το πορτοφόλι και τα κεφάλαιά σας είναι ασφαλή.",
     "description": "Information banner shown in the error page"
@@ -2552,18 +2536,6 @@
   "errorPageMessageTitle": {
     "message": "Μήνυμα σφάλματος",
     "description": "Title for description, which is displayed for debugging purposes"
-  },
-  "errorPageSentryFormTitle": {
-    "message": "Περιγράψτε τι έχει συμβεί",
-    "description": "In sentry feedback form, The title at the top of the feedback form."
-  },
-  "errorPageSentryMessagePlaceholder": {
-    "message": "Η παροχή λεπτομερειών, όπως ο τρόπος με τον οποίο μπορούμε να επαναλάβουμε το σφάλμα, θα μας βοηθήσει να διορθώσουμε το πρόβλημα.",
-    "description": "In sentry feedback form, The placeholder for the feedback description input field."
-  },
-  "errorPageSentrySuccessMessageText": {
-    "message": "Ευχαριστούμε! Θα ρίξουμε μια ματιά σύντομα.",
-    "description": "In sentry feedback form, The message displayed after a successful feedback submission."
   },
   "errorPageTitle": {
     "message": "Το 1do αντιμετώπισε ένα σφάλμα",

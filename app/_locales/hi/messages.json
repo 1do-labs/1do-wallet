@@ -2523,18 +2523,6 @@
   "errorGettingSafeChainList": {
     "message": "सेफ चेन लिस्ट पाते समय गड़बड़ी हुई, कृपया सावधानी के साथ जारी रखें।"
   },
-  "errorLegalTextFirstInfo": {
-    "message": "तकनीकी नैदानिक जानकारी।"
-  },
-  "errorLegalTextNoPersonalInfo": {
-    "message": "कोई व्यक्तिगत जानकारी या अन्य डिवाइस जानकारी एकत्रित नहीं की जाएगी।"
-  },
-  "errorLegalTextSecondInfo": {
-    "message": "आपका ब्राउज़र, ऑपरेटिंग सिस्टम और 1do का वर्शन।"
-  },
-  "errorLegalTextSummary": {
-    "message": "हमें एक ही गड़बड़ी रिपोर्ट प्राप्त होगी, जिसमें शामिल होगा:"
-  },
   "errorMessage": {
     "message": "मैसेज: $1",
     "description": "Displayed error message for debugging purposes. $1 is the error message"
@@ -2547,10 +2535,6 @@
     "message": "सपोर्ट टीम से कॉन्टेक्ट करें",
     "description": "Button for contact MM support"
   },
-  "errorPageDescribeUsWhatHappened": {
-    "message": "वर्णन करें कि क्या हुआ",
-    "description": "Button for submitting report to sentry"
-  },
   "errorPageInfo": {
     "message": "आपकी जानकारी नहीं दिखाई जा सकती। चिंता न करें, आपके वॉलेट और फंड सुरक्षित हैं।",
     "description": "Information banner shown in the error page"
@@ -2558,18 +2542,6 @@
   "errorPageMessageTitle": {
     "message": "गड़बड़ी संबंधी संदेश",
     "description": "Title for description, which is displayed for debugging purposes"
-  },
-  "errorPageSentryFormTitle": {
-    "message": "वर्णन करें कि क्या हुआ",
-    "description": "In sentry feedback form, The title at the top of the feedback form."
-  },
-  "errorPageSentryMessagePlaceholder": {
-    "message": "हम बग को कैसे फिर से उत्पन्न कर सकते हैं जैसे विवरण साझा करने से हमें समस्या को ठीक करने में मदद मिलेगी।",
-    "description": "In sentry feedback form, The placeholder for the feedback description input field."
-  },
-  "errorPageSentrySuccessMessageText": {
-    "message": "धन्यवाद! हम जल्द ही इस पर गौर करेंगे।",
-    "description": "In sentry feedback form, The message displayed after a successful feedback submission."
   },
   "errorPageTitle": {
     "message": "1do में कोई गड़बड़ी हुई",

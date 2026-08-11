@@ -2523,18 +2523,6 @@
   "errorGettingSafeChainList": {
     "message": "安全なチェーンリストの取得中にエラーが発生しました。慎重に続けてください。"
   },
-  "errorLegalTextFirstInfo": {
-    "message": "技術的な診断情報です。"
-  },
-  "errorLegalTextNoPersonalInfo": {
-    "message": "個人情報やその他のデバイス情報は収集されません。"
-  },
-  "errorLegalTextSecondInfo": {
-    "message": "お使いのブラウザ、OS、および1doのバージョンです。"
-  },
-  "errorLegalTextSummary": {
-    "message": "以下を含む1件のエラーレポートが送信されます:"
-  },
   "errorMessage": {
     "message": "メッセージ: $1",
     "description": "Displayed error message for debugging purposes. $1 is the error message"
@@ -2547,10 +2535,6 @@
     "message": "サポートへのお問い合わせ",
     "description": "Button for contact MM support"
   },
-  "errorPageDescribeUsWhatHappened": {
-    "message": "発生した問題についてご説明ください",
-    "description": "Button for submitting report to sentry"
-  },
   "errorPageInfo": {
     "message": "情報は表示できませんが、ご心配なく。ウォレットと資金は安全です。",
     "description": "Information banner shown in the error page"
@@ -2558,18 +2542,6 @@
   "errorPageMessageTitle": {
     "message": "エラーメッセージ",
     "description": "Title for description, which is displayed for debugging purposes"
-  },
-  "errorPageSentryFormTitle": {
-    "message": "発生した問題についてご説明ください",
-    "description": "In sentry feedback form, The title at the top of the feedback form."
-  },
-  "errorPageSentryMessagePlaceholder": {
-    "message": "バグを再現する方法などの詳細をお知らせいただくと、問題の解決に役立ちます。",
-    "description": "In sentry feedback form, The placeholder for the feedback description input field."
-  },
-  "errorPageSentrySuccessMessageText": {
-    "message": "ありがとうございます。すぐに確認いたします。",
-    "description": "In sentry feedback form, The message displayed after a successful feedback submission."
   },
   "errorPageTitle": {
     "message": "1doにエラーが発生しました",

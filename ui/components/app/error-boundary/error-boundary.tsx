@@ -1,5 +1,5 @@
 import React, { Component, ReactNode, ErrorInfo } from 'react';
-import { captureException } from '../../../../shared/lib/sentry';
+import { captureException } from '../../../../shared/lib/local-error-log';
 import { I18nContext } from '../../../contexts/i18n';
 
 type ErrorBoundaryProps = { children: ReactNode };
