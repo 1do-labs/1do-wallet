@@ -117,9 +117,8 @@ describe('BatchSimulationDetails 1Do wallet-native transfers', () => {
     );
   });
 
-  it.each(['enableApp', 'disableApp'] as const)(
-    'keeps generic simulation details metrics-only for 1Do %s access updates',
-    (functionName) => {
+  (['enableApp', 'disableApp'] as const).forEach((functionName) => {
+    it(`keeps generic simulation details visible for 1Do ${functionName} access updates`, () => {
       const transactionMeta = buildTransactionMeta(
         accountRuntimeInterface.encodeFunctionData(functionName, [
           '0x3C7618FdAb069e8888E5587cA2766497B866afD5',
@@ -138,10 +137,10 @@ describe('BatchSimulationDetails 1Do wallet-native transfers', () => {
         }),
         expect.anything(),
       );
-    },
-  );
+    });
+  });
 
-  it.each([
+  const runtimeCalls: [string, string][] = [
     [
       'executeRuntimeApp',
       accountRuntimeInterface.encodeFunctionData('executeRuntimeApp', [
@@ -167,20 +166,23 @@ describe('BatchSimulationDetails 1Do wallet-native transfers', () => {
         '1',
       ]),
     ],
-  ])('keeps generic simulation details visible for 1Do %s', (_name, data) => {
-    const transactionMeta = buildTransactionMeta(data);
-    useConfirmContextMock.mockReturnValue({
-      currentConfirmation: transactionMeta,
-    } as never);
+  ];
+  runtimeCalls.forEach(([_name, data]) => {
+    it(`keeps generic simulation details visible for 1Do ${_name}`, () => {
+      const transactionMeta = buildTransactionMeta(data);
+      useConfirmContextMock.mockReturnValue({
+        currentConfirmation: transactionMeta,
+      } as never);
 
-    render(<BatchSimulationDetails />);
+      render(<BatchSimulationDetails />);
 
-    expect(SimulationDetailsMock).toHaveBeenCalledWith(
-      expect.objectContaining({
-        metricsOnly: false,
-        transaction: transactionMeta,
-      }),
-      expect.anything(),
-    );
+      expect(SimulationDetailsMock).toHaveBeenCalledWith(
+        expect.objectContaining({
+          metricsOnly: false,
+          transaction: transactionMeta,
+        }),
+        expect.anything(),
+      );
+    });
   });
 });

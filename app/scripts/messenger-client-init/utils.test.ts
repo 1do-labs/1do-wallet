@@ -11,7 +11,7 @@ type InitFunctions = Parameters<
   typeof initMessengerClients
 >[0]['initFunctions'];
 
-const CONTROLLER_NAME_MOCK = 'MockController';
+const CONTROLLER_NAME_MOCK = 'AccountTrackerController';
 const CONTROLLER_NAME_2_MOCK = 'TransactionController';
 
 function buildControllerMock(name?: string) {

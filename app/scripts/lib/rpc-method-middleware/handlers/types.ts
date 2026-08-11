@@ -15,7 +15,6 @@ import {
 } from '@metamask/chain-agnostic-permission';
 import { MessageType } from '../../../../../shared/constants/app';
 import type MetamaskController from '../../../metamask-controller';
-import type { MetaMetricsController } from '../../../controllers/metametrics-controller';
 import type { AppStateController } from '../../../controllers/app-state-controller';
 
 export type HandlerWrapper = {
@@ -39,8 +38,6 @@ export type RequestPermissionsForOrigin = (
 ) => Promise<[GrantedPermissions]>;
 
 export type GetUnlockPromise = AppStateController['getUnlockPromise'];
-
-export type SendMetrics = MetaMetricsController['trackEvent'];
 
 type AbstractPermissionController = PermissionController<
   PermissionSpecificationConstraint,

@@ -11,21 +11,23 @@ import {
   AccountGroupType,
   AccountGroupId,
 } from '@metamask/account-api';
+import type { NetworkConfiguration } from '@metamask/network-controller';
 import { renderWithProvider } from '../../../../test/lib/render-helpers-navigate';
 import mockState from '../../../../test/data/mock-state.json';
 import configureStore from '../../../store/store';
 import { enLocale as messages } from '../../../../test/lib/i18n-helpers';
 import { createMockMultichainAccountsState } from '../../../selectors/multichain-accounts/test-utils';
 import { selectBalanceForAllWallets } from '../../../selectors/assets';
-import {
-  getAllNetworkConfigurationsByCaipChainId,
-  type EvmNetworkConfigurationWithCaipChainId,
-} from '../../../../shared/lib/selectors/networks';
+import { getAllNetworkConfigurationsByCaipChainId } from '../../../../shared/lib/selectors/networks';
 import { getMultichainNetwork } from '../../../selectors/multichain';
 import {
   MultichainAccountsConnectPage,
   MultichainConnectPageProps,
 } from './multichain-accounts-connect-page';
+
+type EvmNetworkConfigurationWithCaipChainId = NetworkConfiguration & {
+  caipChainId: `${string}:${string}`;
+};
 
 const mockGetAllNetworkConfigurationsByCaipChainId =
   getAllNetworkConfigurationsByCaipChainId as jest.MockedFunction<
@@ -113,14 +115,23 @@ const STABLE_ACCOUNT_GROUPS_FOR_PERMISSIONS = {
   ],
 };
 const STABLE_ALL_BALANCES = {
+  totalBalanceInUserCurrency: 1250,
+  userCurrency: 'USD',
   wallets: {
     'entropy:01JKAF3DSGM3AB87EM9N0K41AJ': {
+      walletId: 'entropy:01JKAF3DSGM3AB87EM9N0K41AJ',
+      totalBalanceInUserCurrency: 1250,
+      userCurrency: 'USD',
       groups: {
         'entropy:01JKAF3DSGM3AB87EM9N0K41AJ/0': {
+          walletId: 'entropy:01JKAF3DSGM3AB87EM9N0K41AJ',
+          groupId: 'entropy:01JKAF3DSGM3AB87EM9N0K41AJ/0',
           totalBalanceInUserCurrency: 1000,
           userCurrency: 'USD',
         },
         'entropy:01JKAF3DSGM3AB87EM9N0K41AJ/1': {
+          walletId: 'entropy:01JKAF3DSGM3AB87EM9N0K41AJ',
+          groupId: 'entropy:01JKAF3DSGM3AB87EM9N0K41AJ/1',
           totalBalanceInUserCurrency: 250,
           userCurrency: 'USD',
         },
@@ -402,7 +413,9 @@ const render = (
   const mockMultichainState = createMockMultichainAccountsState(
     mockAccountTreeState,
     mockInternalAccountsState,
-    mockNetworkConfigurations,
+    mockNetworkConfigurations as unknown as Parameters<
+      typeof createMockMultichainAccountsState
+    >[2],
     mockSelectedAccountGroup,
   );
 

@@ -130,7 +130,7 @@ export class SelfInjectPlugin {
 
       // we must "hide" the `sourceMappingURL` from the file when `hidden`
       // source maps are requested by omitting the reference from the source
-      if (devtool && !devtool.startsWith('hidden-')) {
+      if (typeof devtool === 'string' && !devtool.startsWith('hidden-')) {
         // `sourceMappingURL` needs to be relative to the file so that the
         // browser's dev tools can find it.
         const sourceMappingURL = relative(dirname(file), sourceMapPath);

@@ -36,15 +36,8 @@ import {
 import {
   getExternalServicesOnboardingToggleState,
   getFirstTimeFlowType,
-  getParticipateInMetaMetrics,
   getDeferredDeepLink,
 } from '../../../selectors';
-import { MetaMetricsContext } from '../../../contexts/metametrics';
-import {
-  MetaMetricsEventCategory,
-  MetaMetricsEventName,
-  MetaMetricsEventAccountType,
-} from '../../../../shared/constants/metametrics';
 import { FirstTimeFlowType } from '../../../../shared/constants/onboarding';
 import {
   getCompletedOnboarding,
@@ -83,11 +76,9 @@ export default function CreationSuccessful() {
   const externalServicesOnboardingToggleState = useSelector(
     getExternalServicesOnboardingToggleState,
   );
-  const { trackEvent } = useContext(MetaMetricsContext);
   const firstTimeFlowType = useSelector(getFirstTimeFlowType);
   const isSidePanelEnabled = useSidePanelEnabled();
   const isOnboardingCompleted = useSelector(getCompletedOnboarding);
-  const participateInMetaMetrics = useSelector(getParticipateInMetaMetrics);
   const deferredDeepLink: DeferredDeepLink | null =
     useSelector(getDeferredDeepLink);
 
@@ -259,55 +250,9 @@ export default function CreationSuccessful() {
       deferredDeepLinkResult?.type !== DeferredDeepLinkRouteType.Navigate &&
       deferredDeepLinkResult?.type !== DeferredDeepLinkRouteType.Interstitial;
 
-    // Track onboarding completion event
-    if (!isOnboardingCompleted) {
-      const isNewWallet = firstTimeFlowType === FirstTimeFlowType.create;
-
-      trackEvent({
-        category: MetaMetricsEventCategory.Onboarding,
-        event: MetaMetricsEventName.OnboardingCompleted,
-        properties: {
-          // eslint-disable-next-line @typescript-eslint/naming-convention
-          wallet_setup_type: firstTimeFlowType,
-          // eslint-disable-next-line @typescript-eslint/naming-convention
-          new_wallet: isNewWallet,
-          // eslint-disable-next-line @typescript-eslint/naming-convention
-          is_basic_functionality_enabled: externalServicesOnboardingToggleState,
-        },
-      });
-    }
-
     await dispatch(
       toggleExternalServices(externalServicesOnboardingToggleState),
     );
-
-    // NOTE: Metametrics Opt In/Out event tracking should be done after `toggleExternalServices` dispatch.
-    // Since we will track the `Metrics Opt In/Out` event even when participateInMetaMetrics is false,
-    // this is to ensure that the `Metrics Opt In/Out` event will not be tracked if basic functionality is disabled.
-    if (!isOnboardingCompleted) {
-      // before onboarding completion, we track the MetricsOptIn/Out event
-
-      const isNewWallet = firstTimeFlowType === FirstTimeFlowType.create;
-      const baseAccountType = isNewWallet
-        ? MetaMetricsEventAccountType.Default
-        : MetaMetricsEventAccountType.Imported;
-
-      trackEvent(
-        {
-          category: MetaMetricsEventCategory.Onboarding,
-          event: participateInMetaMetrics
-            ? MetaMetricsEventName.MetricsOptIn
-            : MetaMetricsEventName.MetricsOptOut,
-          properties: {
-            // eslint-disable-next-line @typescript-eslint/naming-convention
-            account_type: baseAccountType,
-          },
-        },
-        {
-          isOptIn: !participateInMetaMetrics, // Force the event to be tracked even if participateInMetaMetrics is false
-        },
-      );
-    }
 
     // Side Panel - only if feature flag is enabled
     if (isSidePanelEnabled) {
@@ -364,8 +309,6 @@ export default function CreationSuccessful() {
     navigate,
     isFromSettingsSecurity,
     firstTimeFlowType,
-    trackEvent,
-    participateInMetaMetrics,
     handleOnDoneNavigation,
   ]);
 

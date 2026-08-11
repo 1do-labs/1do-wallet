@@ -29,7 +29,7 @@ export const GasFeeControllerInit: MessengerClientInitFunction<
 > = ({ controllerMessenger, initMessenger, persistedState }) => {
   const gasFeeControllerState = {
     ...persistedState.GasFeeController,
-    nonRPCGasFeeApisDisabled: false,
+    nonRPCGasFeeApisDisabled: true,
   };
 
   const messengerClient = new GasFeeController({

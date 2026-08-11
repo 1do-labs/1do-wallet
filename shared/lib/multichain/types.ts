@@ -15,7 +15,7 @@ export type NormalizedV4MultiAccountTransactionsResponse = Omit<
 export type TransactionGroup = {
   hasCancelled: boolean;
   hasRetried: boolean;
-  initialTransaction: TransactionMeta & { isSmartTransaction?: boolean };
+  initialTransaction: TransactionMeta;
   nonce: Hex;
   primaryTransaction: TransactionMeta;
   transactions: TransactionMeta[];

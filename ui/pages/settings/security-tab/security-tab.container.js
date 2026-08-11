@@ -4,7 +4,6 @@ import withRouterHooks from '../../../helpers/higher-order-components/with-route
 import {
   setIpfsGateway,
   setIsIpfsGatewayEnabled,
-  setDataCollectionForMarketing,
   setUseCurrencyRateCheck,
   setUseMultiAccountBalanceChecker,
   setUsePhishDetect,
@@ -16,17 +15,9 @@ import {
   setUse4ByteResolution,
   setUseSafeChainsListValidation,
   setUseTransactionSimulations,
-  updateDataDeletionTaskStatus,
   setSkipDeepLinkInterstitial,
-  setParticipateInMetaMetrics,
 } from '../../../store/actions';
-import {
-  getMetaMetricsDataDeletionId,
-  getHDEntropyIndex,
-  getPreferences,
-  getParticipateInMetaMetrics,
-  getDataCollectionForMarketing,
-} from '../../../selectors';
+import { getPreferences } from '../../../selectors';
 import { getNetworkConfigurationsByChainId } from '../../../../shared/lib/selectors/networks';
 import { openBasicFunctionalityModal } from '../../../ducks/app/app';
 import { getIsPrimarySeedPhraseBackedUp } from '../../../ducks/metamask/metamask';
@@ -55,8 +46,6 @@ const mapStateToProps = (state) => {
 
   return {
     networkConfigurations,
-    participateInMetaMetrics: getParticipateInMetaMetrics(state),
-    dataCollectionForMarketing: getDataCollectionForMarketing(state),
     usePhishDetect,
     useTokenDetection,
     ipfsGateway,
@@ -69,8 +58,6 @@ const mapStateToProps = (state) => {
     use4ByteResolution,
     useExternalServices,
     useTransactionSimulations: metamask.useTransactionSimulations,
-    metaMetricsDataDeletionId: getMetaMetricsDataDeletionId(state),
-    hdEntropyIndex: getHDEntropyIndex(state),
     skipDeepLinkInterstitial: Boolean(skipDeepLinkInterstitial),
     isSeedPhraseBackedUp: getIsPrimarySeedPhraseBackedUp(state),
   };
@@ -78,10 +65,6 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    setParticipateInMetaMetrics: (val) =>
-      dispatch(setParticipateInMetaMetrics(val)),
-    setDataCollectionForMarketing: (val) =>
-      dispatch(setDataCollectionForMarketing(val)),
     setUsePhishDetect: (val) => dispatch(setUsePhishDetect(val)),
     setUseCurrencyRateCheck: (val) => dispatch(setUseCurrencyRateCheck(val)),
     setUseTokenDetection: (val) => dispatch(setUseTokenDetection(val)),
@@ -107,9 +90,6 @@ const mapDispatchToProps = (dispatch) => {
     },
     setUseTransactionSimulations: (value) => {
       return dispatch(setUseTransactionSimulations(value));
-    },
-    updateDataDeletionTaskStatus: () => {
-      return updateDataDeletionTaskStatus();
     },
   };
 };

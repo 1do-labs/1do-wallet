@@ -82,7 +82,8 @@ export const mockMultichainNetworkState =
   (): MultichainNetworkControllerState => {
     return {
       multichainNetworkConfigurationsByChainId: {},
-      selectedMultichainNetworkChainId: CHAIN_IDS.MAINNET,
+      selectedMultichainNetworkChainId:
+        CHAIN_IDS.MAINNET as unknown as MultichainNetworkControllerState['selectedMultichainNetworkChainId'],
       isEvmSelected: true,
       networksWithTransactionActivity: {
         '0x0dcd5d886577d5081b0c52e242ef29e70be3e7bc': {

@@ -5,7 +5,6 @@ import { SimulationDetails } from '../../../simulation-details';
 import { AdvancedDetails } from '../shared/advanced-details/advanced-details';
 import { GasFeesSection } from '../shared/gas-fees-section/gas-fees-section';
 import SendHeading from '../shared/send-heading/send-heading';
-import { EnforcedSimulationsRow } from '../../../rows/enforced-simulations-row';
 import { TokenDetailsSection } from './token-details-section';
 import { TransactionFlowSection } from './transaction-flow-section';
 
@@ -22,10 +21,8 @@ const TokenTransferInfo = () => {
       <SimulationDetails
         transaction={transactionMeta}
         isTransactionsRedesign
-        enableMetrics
-        metricsOnly={isWalletInitiated}
+        hideDetails={isWalletInitiated}
       />
-      <EnforcedSimulationsRow />
       <TokenDetailsSection />
       <GasFeesSection />
       <AdvancedDetails />

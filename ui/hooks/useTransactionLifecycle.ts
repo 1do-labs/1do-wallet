@@ -6,19 +6,18 @@ import {
   TRANSACTION_SUCCESS_STATUSES,
 } from '../helpers/constants/transactions';
 import type { Handlers } from '../components/ui/toast/types';
-import { SmartTransactionStatus } from '../../shared/constants/transaction';
 
-export const isSuccess = (status: TransactionStatus | SmartTransactionStatus) =>
+export const isSuccess = (status: TransactionStatus) =>
   TRANSACTION_SUCCESS_STATUSES.has(status);
-export const isFailed = (status: TransactionStatus | SmartTransactionStatus) =>
+export const isFailed = (status: TransactionStatus) =>
   TRANSACTION_FAILED_STATUSES.has(status);
-export const isPending = (status: TransactionStatus | SmartTransactionStatus) =>
+export const isPending = (status: TransactionStatus) =>
   TRANSACTION_PENDING_STATUSES.has(status);
 
 export function useTransactionLifecycle<
   TTxn extends {
     id: string;
-    status: TransactionStatus | SmartTransactionStatus;
+    status: TransactionStatus;
   },
 >(transactions: readonly TTxn[], handlers: Handlers<TTxn>) {
   const ref = useRef<Map<string, TTxn> | null>(null);

@@ -34,13 +34,7 @@ import {
 } from '../../shared/constants/app';
 import { EXTENSION_MESSAGES } from '../../shared/constants/messages';
 import { BACKGROUND_LIVENESS_METHOD } from '../../shared/constants/ui-initialization';
-import {
-  REJECT_NOTIFICATION_CLOSE,
-  REJECT_NOTIFICATION_CLOSE_SIG,
-  MetaMetricsEventCategory,
-  MetaMetricsEventName,
-  MetaMetricsUserTrait,
-} from '../../shared/constants/metametrics';
+import { REJECT_NOTIFICATION_CLOSE_SIG } from '../../shared/constants/notifications';
 import { checkForLastErrorAndLog } from '../../shared/lib/browser-runtime.utils';
 import { isManifestV3 } from '../../shared/lib/mv3.utils';
 import { maskObject } from '../../shared/lib/object.utils';
@@ -75,12 +69,7 @@ import MetamaskController, {
 } from './metamask-controller';
 import getObjStructure from './lib/getObjStructure';
 import setupEnsIpfsResolver from './lib/ens-ipfs/setup';
-import {
-  getPlatform,
-  initInstallType,
-  isWebOrigin,
-  shouldEmitDappViewedEvent,
-} from './lib/util';
+import { getPlatform, isWebOrigin } from './lib/util';
 import { createOffscreen, addOffscreenConnectivityListener } from './offscreen';
 import { setupMultiplex } from './lib/stream-utils';
 import rawFirstTimeState from './first-time-state';
@@ -88,18 +77,15 @@ import { onUpdate } from './on-update';
 
 /* eslint-enable import-x/first */
 
-import { COOKIE_ID_MARKETING_WHITELIST_ORIGINS } from './constants/marketing-site-whitelist';
 import {
   METAMASK_CAIP_MULTICHAIN_PROVIDER,
   METAMASK_EIP_1193_PROVIDER,
 } from './constants/stream';
 import { ExtensionLazyListener } from './lib/extension-lazy-listener/extension-lazy-listener';
 import { DeepLinkRouter } from './lib/deep-links/deep-link-router';
-import { createEvent } from './lib/deep-links/metrics';
 import { getRequestSafeReload } from './lib/safe-reload';
 import { tryPostMessage } from './lib/start-up-errors/start-up-errors';
 import { ReferralTriggerType } from './lib/createDefiReferralMiddleware';
-import { getIframeProperties } from './lib/getIframeProperties';
 
 /**
  * @typedef {import('../../shared/lib/stores/persistence-manager').Backup} Backup
@@ -188,9 +174,7 @@ const seenFailedNonces = new Set();
 const openMetamaskTabsIDs = {};
 const requestAccountTabIds = {};
 let controller;
-const senderOriginMapping = {};
 const tabOriginMapping = {};
-const frameIdMapping = {};
 
 if (inTest || process.env.METAMASK_DEBUG) {
   global.stateHooks.metamaskGetState = persistenceManager.get.bind(
@@ -198,16 +182,6 @@ if (inTest || process.env.METAMASK_DEBUG) {
     { validateVault: false },
   );
 }
-
-const phishingPageUrl = new URL(process.env.PHISHING_WARNING_PAGE_URL);
-
-// normalized (adds a trailing slash to the end of the domain if it's missing)
-// the URL once and reuse it:
-const phishingPageHref = phishingPageUrl.toString();
-
-const ONE_SECOND_IN_MILLISECONDS = 1_000;
-// Timeout for initializing phishing warning page.
-const PHISHING_WARNING_PAGE_TIMEOUT = ONE_SECOND_IN_MILLISECONDS;
 
 lazyListener.once('runtime', 'onInstalled').then((details) => {
   handleOnInstalled(details);
@@ -324,182 +298,7 @@ const sendReadyMessageToTabs = async () => {
  *
  * @param {MetamaskController} theController
  */
-function maybeDetectPhishing(theController) {
-  /**
-   * Redirects a tab to the phishing warning page.
-   *
-   * @param {number} tabId - The ID of the tab to redirect
-   * @param {string} url - The URL to redirect to (phishing warning page)
-   * @returns {Promise<boolean>} Returns true if the redirect was successful, false otherwise.
-   *   Returns false for Google pre-fetch requests or if the redirect fails.
-   */
-  async function redirectTab(tabId, url) {
-    try {
-      const tab = await browser.tabs.get(tabId);
-
-      // Prevent redirect when due to Google pre-fetching
-      if (tab.url && tab.url.startsWith('https://www.google.com/search')) {
-        return false;
-      }
-
-      await browser.tabs.update(tabId, {
-        url,
-      });
-      return true;
-    } catch (error) {
-      sentry?.captureException(error);
-      return false;
-    }
-  }
-  // we can use the blocking API in MV2, but not in MV3
-  const isManifestV2 = !isManifestV3;
-  browser.webRequest.onBeforeRequest.addListener(
-    (details) => {
-      if (details.tabId === browser.tabs.TAB_ID_NONE) {
-        return {};
-      }
-
-      const { completedOnboarding } = theController.onboardingController.state;
-      if (!completedOnboarding) {
-        return {};
-      }
-
-      const prefState = theController.preferencesController.state;
-      if (!prefState.usePhishDetect) {
-        return {};
-      }
-
-      // ignore requests that come from our phishing warning page, as
-      // the requests may come from the "continue to site" link, so we'll
-      // actually _want_ to bypass the phishing detection. We shouldn't have to
-      // do this, because the phishing site does tell the extension that the
-      // domain it blocked it now "safe", but it does this _after_ the request
-      // begins (which would get blocked by this listener). So we have to bail
-      // on detection here.
-      // This check can be removed once  https://github.com/MetaMask/phishing-warning/issues/160
-      // is shipped.
-      if (
-        details.initiator &&
-        details.initiator !== 'null' &&
-        // compare normalized URLs
-        new URL(details.initiator).host === phishingPageUrl.host
-      ) {
-        return {};
-      }
-
-      const { hostname, href, searchParams } = new URL(details.url);
-      if (
-        inTest &&
-        searchParams.has('IN_TEST_BYPASS_EARLY_PHISHING_DETECTION')
-      ) {
-        // this is a test page that needs to bypass early phishing detection
-        return {};
-      }
-
-      theController.phishingController.maybeUpdateState();
-
-      const blockedRequestResponse =
-        theController.phishingController.isBlockedRequest(details.url);
-
-      let phishingTestResponse;
-      if (details.type === 'main_frame' || details.type === 'sub_frame') {
-        phishingTestResponse = theController.phishingController.test(
-          details.url,
-        );
-      }
-
-      // if the request is not blocked, and the phishing test is not blocked, return and don't show the phishing screen
-      if (!phishingTestResponse?.result && !blockedRequestResponse.result) {
-        return {};
-      }
-
-      // Determine the block reason based on the type
-      let blockReason;
-      let blockedUrl = href;
-      if (phishingTestResponse?.result && blockedRequestResponse.result) {
-        blockReason = `${phishingTestResponse.type} and ${blockedRequestResponse.type}`;
-      } else if (phishingTestResponse?.result) {
-        blockReason = phishingTestResponse.type;
-      } else {
-        // Override the blocked URL to the initiator URL if the request was flagged by c2 detection
-        blockReason = blockedRequestResponse.type;
-        blockedUrl = details.initiator;
-      }
-
-      let blockedHostname;
-      try {
-        blockedHostname = new URL(blockedUrl).hostname;
-      } catch {
-        // If blockedUrl is null or undefined, fall back to the original URL
-        blockedHostname = hostname;
-        blockedUrl = href;
-      }
-
-      const querystring = new URLSearchParams({
-        hostname: blockedHostname, // used for creating the EPD issue title (false positive report)
-        href: blockedUrl, // used for displaying the URL on the phsihing warning page + proceed anyway URL
-      });
-      const redirectUrl = new URL(phishingPageHref);
-      redirectUrl.hash = querystring.toString();
-      const redirectHref = redirectUrl.toString();
-
-      // Helper function to track phishing page metrics
-      const trackPhishingMetrics = () => {
-        if (!isFirefox) {
-          theController.metaMetricsController.trackEvent(
-            {
-              // should we differentiate between background redirection and content script redirection?
-              event: MetaMetricsEventName.PhishingPageDisplayed,
-              category: MetaMetricsEventCategory.Phishing,
-              properties: {
-                url: blockedUrl,
-                referrer: {
-                  url: blockedUrl,
-                },
-                reason: blockReason,
-                requestDomain: blockedRequestResponse.result
-                  ? hostname
-                  : undefined,
-              },
-            },
-            {
-              excludeMetaMetricsId: true,
-            },
-          );
-        }
-      };
-
-      // blocking is better than tab redirection, as blocking will prevent
-      // the browser from loading the page at all
-      if (isManifestV2) {
-        // We can redirect `main_frame` requests directly to the warning page.
-        // For non-`main_frame` requests (e.g. `sub_frame` or WebSocket), we cancel them
-        // and redirect the whole tab asynchronously so that the user sees the warning.
-        if (details.type === 'main_frame') {
-          trackPhishingMetrics();
-          return { redirectUrl: redirectHref };
-        }
-        redirectTab(details.tabId, redirectHref).then((redirected) => {
-          if (redirected) {
-            trackPhishingMetrics();
-          }
-        });
-        return { cancel: true };
-      }
-      redirectTab(details.tabId, redirectHref).then((redirected) => {
-        if (redirected) {
-          trackPhishingMetrics();
-        }
-      });
-      return {};
-    },
-    {
-      urls: ['http://*/*', 'https://*/*'],
-    },
-    isManifestV2 ? ['blocking'] : [],
-  );
-}
-
+// Legacy phishing interception is intentionally disabled in 1Do.
 // These are set after initialization
 /**
  * Connects a WindowPostMessage Port to the MetaMask controller.
@@ -724,10 +523,6 @@ function saveTimestamp() {
  * @returns {Promise} Setup complete.
  */
 async function initialize(backup) {
-  // Initialize install type early so it's cached for MetaMetrics user traits
-  // This is fire-and-forget - we don't await it to avoid blocking initialization
-  initInstallType();
-
   const offscreenPromise = isManifestV3 ? createOffscreen() : null;
 
   // Set up connectivity listener IMMEDIATELY for MV3 (before any awaits)
@@ -816,12 +611,7 @@ async function initialize(backup) {
     offscreenPromise,
   );
 
-  controller.metaMetricsController.updateTraits({
-    [MetaMetricsUserTrait.StorageKind]: persistenceManager.storageKind,
-  });
-
   // `setupController` sets up the `controller` object, so we can use it now:
-  maybeDetectPhishing(controller);
 
   // Set up connectivity detection
   if (isManifestV3) {
@@ -842,92 +632,16 @@ async function initialize(backup) {
     globalThis.addEventListener('offline', () => updateConnectivity(false));
   }
 
-  if (!isManifestV3) {
-    await loadPhishingWarningPage();
-  }
   await sendReadyMessageToTabs();
 
   new DeepLinkRouter({
     getExtensionURL: platform.getExtensionURL,
     getState: controller.getState.bind(controller),
   })
-    .on('navigate', async ({ url, parsed }) => {
-      // don't track deep links that are immediately redirected (like /buy)
-      if (!('redirectTo' in parsed)) {
-        await controller.metaMetricsController.trackEvent(
-          createEvent({ signature: parsed.signature, url }),
-        );
-      }
-    })
     .on('error', (error) => sentry?.captureException(error))
     .install();
 }
 
-/**
- * An error thrown if the phishing warning page takes too long to load.
- */
-class PhishingWarningPageTimeoutError extends Error {
-  constructor() {
-    super('Timeout failed');
-  }
-}
-
-/**
- * Load the phishing warning page temporarily to ensure the service
- * worker has been registered, so that the warning page works offline.
- */
-async function loadPhishingWarningPage() {
-  let iframe;
-  try {
-    const extensionStartupPhishingPageUrl = new URL(phishingPageHref);
-    // The `extensionStartup` hash signals to the phishing warning page that it should not bother
-    // setting up streams for user interaction. Otherwise this page load would cause a console
-    // error.
-    extensionStartupPhishingPageUrl.hash = '#extensionStartup';
-
-    iframe = window.document.createElement('iframe');
-    iframe.setAttribute('src', extensionStartupPhishingPageUrl.href);
-    iframe.setAttribute('sandbox', 'allow-scripts allow-same-origin');
-
-    // Create "deferred Promise" to allow passing resolve/reject to event handlers
-    let deferredResolve;
-    let deferredReject;
-    const loadComplete = new Promise((resolve, reject) => {
-      deferredResolve = resolve;
-      deferredReject = reject;
-    });
-
-    // The load event is emitted once loading has completed, even if the loading failed.
-    // If loading failed we can't do anything about it, so we don't need to check.
-    iframe.addEventListener('load', deferredResolve);
-
-    // This step initiates the page loading.
-    window.document.body.appendChild(iframe);
-
-    // This timeout ensures that this iframe gets cleaned up in a reasonable
-    // timeframe, and ensures that the "initialization complete" message
-    // doesn't get delayed too long.
-    setTimeout(
-      () => deferredReject(new PhishingWarningPageTimeoutError()),
-      PHISHING_WARNING_PAGE_TIMEOUT,
-    );
-    await loadComplete;
-  } catch (error) {
-    if (error instanceof PhishingWarningPageTimeoutError) {
-      console.warn(
-        'Phishing warning page timeout; page not guaranteed to work offline.',
-      );
-    } else {
-      console.error('Failed to initialize phishing warning page', error);
-    }
-  } finally {
-    if (iframe) {
-      iframe.remove();
-    }
-  }
-}
-
-//
 // State and Persistence
 //
 
@@ -1166,56 +880,7 @@ export async function loadStateFromPersistence(backup) {
 }
 
 /**
- * Emit event of DappViewed,
- * which should only be tracked only after a user opts into metrics and connected to the dapp
- *
- * @param {string} origin - URL of visited dapp
- * @param {string} [mainFrameOrigin] - The top-level frame origin (if sender is an iframe, this differs from origin)
- * @param {number} [frameId] - The frame ID from chrome.runtime.MessageSender (0 = top-level, >0 = iframe)
- */
-function emitDappViewedMetricEvent(origin, mainFrameOrigin, frameId) {
-  const { metaMetricsId } = controller.metaMetricsController.state;
-  if (!shouldEmitDappViewedEvent(metaMetricsId)) {
-    return;
-  }
-
-  const numberOfConnectedAccounts =
-    controller.getPermittedAccounts(origin).length;
-  if (numberOfConnectedAccounts === 0) {
-    return;
-  }
-
-  const accountsState = controller.controllerMessenger.call(
-    'AccountsController:getState',
-  );
-  const numberOfTotalAccounts = Object.keys(
-    accountsState.internalAccounts.accounts,
-  ).length;
-
-  const iframeProps = getIframeProperties({ frameId, origin, mainFrameOrigin });
-
-  controller.metaMetricsController.trackEvent(
-    {
-      event: MetaMetricsEventName.DappViewed,
-      category: MetaMetricsEventCategory.InpageProvider,
-      referrer: {
-        url: origin,
-      },
-      properties: {
-        is_first_visit: false,
-        number_of_accounts: numberOfTotalAccounts,
-        number_of_accounts_connected: numberOfConnectedAccounts,
-        ...iframeProps,
-      },
-    },
-    {
-      excludeMetaMetricsId: true,
-    },
-  );
-}
-
-/**
- * Track dapp connection when loaded and permissioned
+ * Remember the top-level origin for referral handling.
  *
  * @param {chrome.runtime.Port} remotePort - The port provided by a new context.
  */
@@ -1228,87 +893,11 @@ function trackDappView(remotePort) {
     return;
   }
   const tabId = remotePort.sender.tab.id;
-  const url = new URL(remotePort.sender.url);
-  const { origin } = url;
   const tabUrl = new URL(remotePort.sender.tab.url);
   const { origin: tabOrigin } = tabUrl;
-  const { frameId } = remotePort.sender;
 
-  // store the origin to corresponding tab so it can provide info for onActivated listener
-  if (!Object.keys(senderOriginMapping).includes(tabId)) {
-    senderOriginMapping[tabId] = origin;
-  }
-  // do the same for tab origin, which can be different to sender origin
   if (!(tabId in tabOriginMapping)) {
     tabOriginMapping[tabId] = tabOrigin;
-  }
-  if (!(tabId in frameIdMapping)) {
-    frameIdMapping[tabId] = frameId;
-  }
-
-  const isConnectedToDapp = controller.controllerMessenger.call(
-    'PermissionController:hasPermissions',
-    origin,
-  );
-
-  // when open a new tab, this event will trigger twice, only 2nd time is with dapp loaded
-  const isTabLoaded = remotePort.sender.tab.title !== 'New Tab';
-
-  // *** Emit DappViewed metric event when ***
-  // - refresh the dapp
-  // - open dapp in a new tab
-  if (isConnectedToDapp && isTabLoaded) {
-    emitDappViewedMetricEvent(origin, tabOrigin, frameId);
-  }
-}
-
-/**
- * Emit App Opened event
- *
- * @param {string} environmentType - The environment type where the app is opening
- */
-function emitAppOpenedMetricEvent(environmentType) {
-  const { metaMetricsId, participateInMetaMetrics } =
-    controller.metaMetricsController.state;
-
-  // Skip if user hasn't opted into metrics
-  if (metaMetricsId === null && !participateInMetaMetrics) {
-    return;
-  }
-
-  controller.metaMetricsController.trackEvent({
-    event: MetaMetricsEventName.AppOpened,
-    category: MetaMetricsEventCategory.App,
-    environmentType,
-  });
-}
-
-/**
- * This function checks if the app is being opened
- * and emits an event only if no other UI instances are currently open.
- *
- * @param {string} environment - The environment type where the app is opening
- */
-function trackAppOpened(environment) {
-  // List of valid environment types to track
-  const environmentTypeList = [
-    ENVIRONMENT_TYPE_POPUP,
-    ENVIRONMENT_TYPE_NOTIFICATION,
-    ENVIRONMENT_TYPE_FULLSCREEN,
-    ENVIRONMENT_TYPE_SIDEPANEL,
-  ];
-
-  // Check if any UI instances are currently open
-  const isFullscreenOpen = Object.values(openMetamaskTabsIDs).some(Boolean);
-  const isAlreadyOpen =
-    isFullscreenOpen ||
-    notificationIsOpen ||
-    openPopupCount > 0 ||
-    openSidePanelCount > 0;
-
-  // Only emit event if no UI is open and environment is valid
-  if (!isAlreadyOpen && environmentTypeList.includes(environment)) {
-    emitAppOpenedMetricEvent(environment);
   }
 }
 
@@ -1607,8 +1196,7 @@ export function setupController(
       return;
     }
 
-    const { processName, senderUrl, isMetaMaskUIPort } =
-      parsePortInfo(remotePort);
+    const { processName, isMetaMaskUIPort } = parsePortInfo(remotePort);
 
     if (isMetaMaskUIPort) {
       /**
@@ -1618,32 +1206,9 @@ export function setupController(
         overrides?.getPortStream?.(remotePort) ||
         new ExtensionPortStream(remotePort);
 
-      /**
-       * send event to sentry with details about the event
-       *
-       * @param {import("extension-port-stream").MessageTooLargeEventData} details
-       */
-      const handleMessageTooLarge = function ({ chunkSize }) {
-        /**
-         * @type {MetamaskController}
-         */
-        const theController = controller;
-        theController.metaMetricsController.trackEvent({
-          event: MetaMetricsEventName.PortStreamChunked,
-          category: MetaMetricsEventCategory.PortStream,
-          properties: { chunkSize },
-        });
-      };
-      remotePort.onDisconnect.addListener(() =>
-        portStream.off('message-too-large', handleMessageTooLarge),
-      );
-      portStream.on('message-too-large', handleMessageTooLarge);
-
       // communication with popup
       controller.isClientOpen = true;
       controller.setupTrustedCommunication(portStream, remotePort.sender);
-      trackAppOpened(processName);
-
       if (processName === ENVIRONMENT_TYPE_POPUP) {
         clearFailedTxBadge();
         openPopupCount += 1;
@@ -1703,17 +1268,6 @@ export function setupController(
           );
         });
       }
-    } else if (
-      senderUrl &&
-      senderUrl.origin === phishingPageUrl.origin &&
-      senderUrl.pathname === phishingPageUrl.pathname
-    ) {
-      const portStreamForPhishingPage =
-        overrides?.getPortStream?.(remotePort) ||
-        new ExtensionPortStream(remotePort, { chunkSize: 0 });
-      controller.setupPhishingCommunication({
-        connectionStream: portStreamForPhishingPage,
-      });
     } else {
       // this is triggered when a new tab is opened, or origin(url) is changed
       if (remotePort.sender && remotePort.sender.tab && remotePort.sender.url) {
@@ -1732,20 +1286,6 @@ export function setupController(
           }
         });
       }
-      if (
-        senderUrl &&
-        COOKIE_ID_MARKETING_WHITELIST_ORIGINS.some(
-          (origin) => origin === senderUrl.origin,
-        )
-      ) {
-        const portStreamForCookieHandlerPage =
-          overrides?.getPortStream?.(remotePort) ||
-          new ExtensionPortStream(remotePort, { chunkSize: 0 });
-        controller.setUpCookieHandlerCommunication({
-          connectionStream: portStreamForCookieHandlerPage,
-        });
-      }
-
       const portStream =
         overrides?.getPortStream?.(remotePort) ||
         new ExtensionPortStream(remotePort, { chunkSize: 0 });
@@ -1987,12 +1527,8 @@ export function setupController(
     controller.signatureController.rejectUnapproved(
       REJECT_NOTIFICATION_CLOSE_SIG,
     );
-    controller.decryptMessageController.rejectUnapproved(
-      REJECT_NOTIFICATION_CLOSE,
-    );
-    controller.encryptionPublicKeyController.rejectUnapproved(
-      REJECT_NOTIFICATION_CLOSE,
-    );
+    controller.decryptMessageController.rejectUnapproved();
+    controller.encryptionPublicKeyController.rejectUnapproved();
 
     controller.rejectAllPendingApprovals();
   }
@@ -2037,30 +1573,6 @@ async function triggerUi() {
   }
 }
 
-// It adds the "App Installed" event into a queue of events, which will be tracked only after a user opts into metrics.
-const addAppInstalledEvent = async () => {
-  if (controller) {
-    controller.metaMetricsController.updateTraits({
-      [MetaMetricsUserTrait.InstallDateExt]: new Date()
-        .toISOString()
-        .split('T')[0], // yyyy-mm-dd
-    });
-
-    const eventProperties = {};
-
-    controller.metaMetricsController.addEventBeforeMetricsOptIn({
-      category: MetaMetricsEventCategory.App,
-      event: MetaMetricsEventName.AppInstalled,
-      properties: eventProperties,
-    });
-    return;
-  }
-  setTimeout(async () => {
-    // If the controller is not set yet, we wait and try to add the "App Installed" event again.
-    await addAppInstalledEvent();
-  }, 500);
-};
-
 /**
  * Handles the onInstalled event.
  *
@@ -2087,7 +1599,6 @@ async function onInstall() {
   if (!process.env.IN_TEST && !process.env.METAMASK_DEBUG) {
     platform.openExtensionInBrowser();
   }
-  await addAppInstalledEvent();
 }
 
 /**
@@ -2109,24 +1620,7 @@ function onNavigateToTab() {
   browser.tabs.onActivated.addListener((onActivatedTab) => {
     if (controller) {
       const { tabId } = onActivatedTab;
-      const currentOrigin = senderOriginMapping[tabId];
       const currentTabOrigin = tabOriginMapping[tabId];
-      // *** Emit DappViewed metric event when ***
-      // - navigate to a connected dapp
-      if (currentOrigin) {
-        const connectSitePermissions =
-          controller.permissionController.state.subjects[currentOrigin];
-        // when the dapp is not connected, connectSitePermissions is undefined
-        const isConnectedToDapp = connectSitePermissions !== undefined;
-        if (isConnectedToDapp) {
-          emitDappViewedMetricEvent(
-            currentOrigin,
-            currentTabOrigin,
-            frameIdMapping[tabId],
-          );
-        }
-      }
-
       // If the connected dApp is a referral partner, trigger the referral flow
       const partner = getPartnerByOrigin(currentTabOrigin);
       if (partner) {

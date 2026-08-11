@@ -4,11 +4,6 @@ import { fireEvent, act, within, screen } from '@testing-library/react';
 import { renderWithProvider } from '../../../../test/lib/render-helpers-navigate';
 import configureStore from '../../../store/store';
 import mockDefaultState from '../../../../test/data/mock-state.json';
-import { MetaMetricsContext } from '../../../contexts/metametrics';
-import {
-  MetaMetricsEventCategory,
-  MetaMetricsEventName,
-} from '../../../../shared/constants/metametrics';
 import { enLocale as messages } from '../../../../test/lib/i18n-helpers';
 import { MULTICHAIN_ACCOUNT_DETAILS_PAGE_ROUTE } from '../../../helpers/constants/routes';
 import { MultichainAccountMenu } from './multichain-account-menu';
@@ -22,14 +17,6 @@ jest.mock('../../../../shared/lib/trace', () => {
     endTrace: jest.fn(),
   };
 });
-
-const mockTrackEvent = jest.fn();
-const mockMetaMetricsContext = {
-  trackEvent: mockTrackEvent,
-  bufferedTrace: jest.fn(),
-  bufferedEndTrace: jest.fn(),
-  onboardingParentContext: { current: null },
-};
 
 const popoverOpenSelector = '.mm-popover--open';
 const menuButtonSelector = '.multichain-account-cell-popover-menu-button';
@@ -101,12 +88,7 @@ describe('MultichainAccountMenu', () => {
     state = mockState,
   ) => {
     const store = configureStore(state);
-    return renderWithProvider(
-      <MetaMetricsContext.Provider value={mockMetaMetricsContext}>
-        <MultichainAccountMenu {...props} />
-      </MetaMetricsContext.Provider>,
-      store,
-    );
+    return renderWithProvider(<MultichainAccountMenu {...props} />, store);
   };
 
   beforeEach(() => {
@@ -452,68 +434,6 @@ describe('MultichainAccountMenu', () => {
     );
   });
 
-  it('tracks Account Pinned event when clicking the pin option', async () => {
-    const mockOnToggle = jest.fn();
-    const accountGroupId = 'entropy:01JKAF3DSGM3AB87EM9N0K41AJ/default';
-
-    renderComponent({
-      accountGroupId,
-      isRemovable: false,
-      isOpen: true,
-      onToggle: mockOnToggle,
-    });
-
-    const menuItems = document.querySelectorAll(menuItemSelector);
-    const pinOption = menuItems[3];
-
-    if (pinOption) {
-      await act(async () => {
-        fireEvent.click(pinOption);
-      });
-    }
-
-    expect(mockTrackEvent).toHaveBeenCalledWith({
-      event: MetaMetricsEventName.AccountPinned,
-      category: MetaMetricsEventCategory.Accounts,
-      properties: {
-        pinned: true,
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        pinned_count_after: 1,
-      },
-    });
-  });
-
-  it('tracks Account Hidden event when clicking the hide option', async () => {
-    const mockOnToggle = jest.fn();
-    const accountGroupId = 'entropy:01JKAF3DSGM3AB87EM9N0K41AJ/default';
-
-    renderComponent({
-      accountGroupId,
-      isRemovable: false,
-      isOpen: true,
-      onToggle: mockOnToggle,
-    });
-
-    const menuItems = document.querySelectorAll(menuItemSelector);
-    const hideOption = menuItems[4];
-
-    if (hideOption) {
-      await act(async () => {
-        fireEvent.click(hideOption);
-      });
-    }
-
-    expect(mockTrackEvent).toHaveBeenCalledWith({
-      event: MetaMetricsEventName.AccountHidden,
-      category: MetaMetricsEventCategory.Accounts,
-      properties: {
-        hidden: true,
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        hidden_count_after: 1,
-      },
-    });
-  });
-
   describe('tracing', () => {
     const groupId = mockDefaultState.metamask
       .selectedAccountGroup as AccountGroupId;
@@ -525,14 +445,12 @@ describe('MultichainAccountMenu', () => {
     it('calls trace ShowAccountAddressList when clicking Addresses', async () => {
       const store = configureStore(mockDefaultState);
       renderWithProvider(
-        <MetaMetricsContext.Provider value={mockMetaMetricsContext}>
-          <MultichainAccountMenu
-            accountGroupId={groupId}
-            isRemovable={false}
-            isOpen
-            onToggle={() => undefined}
-          />
-        </MetaMetricsContext.Provider>,
+        <MultichainAccountMenu
+          accountGroupId={groupId}
+          isRemovable={false}
+          isOpen
+          onToggle={() => undefined}
+        />,
         store,
       );
 

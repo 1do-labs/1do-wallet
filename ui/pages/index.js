@@ -10,10 +10,6 @@ import {
 import { QueryClientProvider } from '@tanstack/react-query';
 import { captureException } from '../../shared/lib/sentry';
 import { I18nProvider, LegacyI18nProvider } from '../contexts/i18n';
-import {
-  MetaMetricsProvider,
-  LegacyMetaMetricsProvider,
-} from '../contexts/metametrics';
 import { AssetPollingProvider } from '../contexts/assetPolling';
 import RiveWasmProvider from '../contexts/rive-wasm';
 import { queryClient } from '../contexts/query-client';
@@ -24,35 +20,29 @@ import Routes, { routeConfig } from './routes';
 
 function AppProviders() {
   return (
-    <MetaMetricsProvider>
-      <LegacyMetaMetricsProvider>
-        <I18nProvider>
-          <LegacyI18nProvider>
-            <QueryClientProvider client={queryClient}>
-              <AssetPollingProvider>
-                <HardwareWalletErrorProvider>
-                  <RiveWasmProvider>
-                    <Routes />
-                  </RiveWasmProvider>
-                </HardwareWalletErrorProvider>
-              </AssetPollingProvider>
-            </QueryClientProvider>
-          </LegacyI18nProvider>
-        </I18nProvider>
-      </LegacyMetaMetricsProvider>
-    </MetaMetricsProvider>
+    <I18nProvider>
+      <LegacyI18nProvider>
+        <QueryClientProvider client={queryClient}>
+          <AssetPollingProvider>
+            <HardwareWalletErrorProvider>
+              <RiveWasmProvider>
+                <Routes />
+              </RiveWasmProvider>
+            </HardwareWalletErrorProvider>
+          </AssetPollingProvider>
+        </QueryClientProvider>
+      </LegacyI18nProvider>
+    </I18nProvider>
   );
 }
 
 function ErrorPage({ error }) {
   return (
-    <MetaMetricsProvider>
-      <I18nProvider>
-        <LegacyI18nProvider>
-          <ErrorPageBase error={error} />
-        </LegacyI18nProvider>
-      </I18nProvider>
-    </MetaMetricsProvider>
+    <I18nProvider>
+      <LegacyI18nProvider>
+        <ErrorPageBase error={error} />
+      </LegacyI18nProvider>
+    </I18nProvider>
   );
 }
 

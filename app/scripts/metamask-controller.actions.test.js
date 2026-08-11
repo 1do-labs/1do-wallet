@@ -1,14 +1,6 @@
 /**
  * @jest-environment node
  */
-import {
-  ListNames,
-  METAMASK_STALELIST_URL,
-  METAMASK_HOTLIST_DIFF_URL,
-  PHISHING_CONFIG_BASE_URL,
-  METAMASK_STALELIST_FILE,
-  METAMASK_HOTLIST_DIFF_FILE,
-} from '@metamask/phishing-controller';
 import { ApprovalRequestNotFoundError } from '@metamask/approval-controller';
 import { PermissionsRequestNotFoundError } from '@metamask/permission-controller';
 import nock from 'nock';
@@ -127,30 +119,6 @@ describe('MetaMaskController', function () {
   });
 
   beforeEach(function () {
-    nock(PHISHING_CONFIG_BASE_URL)
-      .persist()
-      .get(METAMASK_STALELIST_FILE)
-      .reply(
-        200,
-        JSON.stringify({
-          version: 2,
-          tolerance: 2,
-          lastUpdated: 1,
-          eth_phishing_detect_config: {
-            fuzzylist: [],
-            allowlist: [],
-            blocklist: ['127.0.0.1'],
-            name: ListNames.MetaMask,
-          },
-        }),
-      )
-      .get(METAMASK_HOTLIST_DIFF_FILE)
-      .reply(
-        200,
-        JSON.stringify([
-          { url: '127.0.0.1', targetList: 'blocklist', timestamp: 0 },
-        ]),
-      );
     metamaskController = new MetaMaskController({
       showUserConfirmation: noop,
       encryptor: mockEncryptor,
@@ -186,18 +154,6 @@ describe('MetaMaskController', function () {
 
   afterAll(async function () {
     await ganacheServer.quit();
-  });
-
-  describe('Phishing Detection Mock', function () {
-    it('should be updated to use v1 of the API', function () {
-      // Update the fixture above if this test fails
-      expect(METAMASK_STALELIST_URL).toStrictEqual(
-        'https://phishing-detection.api.cx.metamask.io/v1/stalelist',
-      );
-      expect(METAMASK_HOTLIST_DIFF_URL).toStrictEqual(
-        'https://phishing-detection.api.cx.metamask.io/v2/diffsSince',
-      );
-    });
   });
 
   describe('#addNewAccount', function () {

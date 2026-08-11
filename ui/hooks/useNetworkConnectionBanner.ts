@@ -1,29 +1,16 @@
 import { useEffect, useCallback, useRef, useContext } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Hex, hexToNumber } from '@metamask/utils';
 import { selectFirstUnavailableEvmNetwork } from '../selectors/multichain/networks';
 import {
   getNetworkConnectionBanner,
   getIsDeviceOffline,
 } from '../selectors/selectors';
 import { updateNetworkConnectionBanner, updateNetwork } from '../store/actions';
-import { MetaMetricsContext } from '../contexts/metametrics';
-import {
-  MetaMetricsEventCategory,
-  MetaMetricsEventName,
-} from '../../shared/constants/metametrics';
 import { getNetworkConfigurationsByChainId } from '../../shared/lib/selectors/networks';
-import { onlyKeepHost } from '../../shared/lib/only-keep-host';
-import { submitRequestToBackground } from '../store/background-connection';
 import { NetworkConnectionBanner } from '../../shared/constants/app-state';
 import { setShowDefaultRpcSwitchToast } from '../components/app/toast-master/utils';
 
 type UseNetworkConnectionBannerResult = NetworkConnectionBanner & {
-  trackNetworkBannerEvent: (event: {
-    bannerType: 'degraded' | 'unavailable';
-    eventName: string;
-    networkClientId: string;
-  }) => void;
   /**
    * Switch the current unavailable network to its built-in default RPC endpoint.
    * Only available when the network has a default endpoint to switch to.
@@ -38,7 +25,6 @@ const UNAVAILABLE_BANNER_TIMEOUT = 30 * 1000;
 export const useNetworkConnectionBanner =
   (): UseNetworkConnectionBannerResult => {
     const dispatch = useDispatch();
-    const { trackEvent } = useContext(MetaMetricsContext);
     const isOffline = useSelector(getIsDeviceOffline);
     const firstUnavailableEvmNetwork = useSelector(
       selectFirstUnavailableEvmNetwork,
@@ -74,78 +60,11 @@ export const useNetworkConnectionBanner =
       clearUnavailableTimer();
     }, [clearDegradedTimer, clearUnavailableTimer]);
 
-    const trackNetworkBannerEvent = useCallback(
-      async ({
-        bannerType,
-        eventName,
-        networkClientId,
-      }: {
-        bannerType: 'degraded' | 'unavailable';
-        eventName: string;
-        networkClientId: string;
-      }) => {
-        try {
-          let foundNetwork: { chainId: Hex; url: string } | undefined;
-          for (const networkConfiguration of Object.values(
-            networkConfigurationsByChainId,
-          )) {
-            const rpcEndpoint = networkConfiguration.rpcEndpoints.find(
-              (endpoint) => endpoint.networkClientId === networkClientId,
-            );
-            if (rpcEndpoint) {
-              foundNetwork = {
-                chainId: networkConfiguration.chainId,
-                url: rpcEndpoint.url,
-              };
-              break;
-            }
-          }
-          if (!foundNetwork) {
-            console.warn(
-              `RPC endpoint not found for network client ID: ${networkClientId}`,
-            );
-            return;
-          }
-
-          const rpcUrl = foundNetwork.url;
-          const chainIdAsDecimal = hexToNumber(foundNetwork.chainId);
-          const isPublic = await submitRequestToBackground<boolean>(
-            'isPublicEndpointUrl',
-            [rpcUrl],
-          );
-          const sanitizedRpcUrl = isPublic ? onlyKeepHost(rpcUrl) : 'custom';
-
-          trackEvent({
-            category: MetaMetricsEventCategory.Network,
-            event: eventName,
-            // The names of Segment properties have a particular case.
-            /* eslint-disable @typescript-eslint/naming-convention */
-            properties: {
-              banner_type: bannerType,
-              chain_id_caip: `eip155:${chainIdAsDecimal}`,
-              rpc_domain: sanitizedRpcUrl,
-              rpc_endpoint_url: sanitizedRpcUrl, // @deprecated - Will be removed in a future release.
-            },
-            /* eslint-enable @typescript-eslint/naming-convention */
-          });
-        } catch (error) {
-          // Analytics tracking failed - don't surface this error since it's non-critical
-          console.error('Failed to track network banner event:', error);
-        }
-      },
-      [networkConfigurationsByChainId, trackEvent],
-    );
-
     const startUnavailableTimer = useCallback(() => {
       clearUnavailableTimer();
 
       timersRef.current.unavailableTimer = setTimeout(() => {
         if (firstUnavailableEvmNetwork) {
-          trackNetworkBannerEvent({
-            bannerType: 'unavailable',
-            eventName: MetaMetricsEventName.NetworkConnectionBannerShown,
-            networkClientId: firstUnavailableEvmNetwork.networkClientId,
-          });
           dispatch(
             updateNetworkConnectionBanner({
               status: 'unavailable',
@@ -160,23 +79,13 @@ export const useNetworkConnectionBanner =
           );
         }
       }, UNAVAILABLE_BANNER_TIMEOUT - DEGRADED_BANNER_TIMEOUT);
-    }, [
-      firstUnavailableEvmNetwork,
-      trackNetworkBannerEvent,
-      dispatch,
-      clearUnavailableTimer,
-    ]);
+    }, [firstUnavailableEvmNetwork, dispatch, clearUnavailableTimer]);
 
     const startDegradedTimer = useCallback(() => {
       clearDegradedTimer();
 
       timersRef.current.degradedTimer = setTimeout(() => {
         if (firstUnavailableEvmNetwork) {
-          trackNetworkBannerEvent({
-            bannerType: 'degraded',
-            eventName: MetaMetricsEventName.NetworkConnectionBannerShown,
-            networkClientId: firstUnavailableEvmNetwork.networkClientId,
-          });
           dispatch(
             updateNetworkConnectionBanner({
               status: 'degraded',
@@ -195,7 +104,6 @@ export const useNetworkConnectionBanner =
       }, DEGRADED_BANNER_TIMEOUT);
     }, [
       firstUnavailableEvmNetwork,
-      trackNetworkBannerEvent,
       dispatch,
       startUnavailableTimer,
       clearDegradedTimer,
@@ -305,14 +213,12 @@ export const useNetworkConnectionBanner =
         isDefaultRpcEndpoint: firstUnavailableEvmNetwork.isDefaultRpcEndpoint,
         defaultRpcEndpointIndex:
           firstUnavailableEvmNetwork.defaultRpcEndpointIndex,
-        trackNetworkBannerEvent,
         switchToDefaultRpc,
       };
     }
 
     return {
       ...networkConnectionBannerState,
-      trackNetworkBannerEvent,
       switchToDefaultRpc,
     };
   };

@@ -62,10 +62,6 @@ describe('Port Stream Chunking', function () {
       {
         fixtures: new FixtureBuilderV2()
           .withTransactionController({ transactions: largeTransactions })
-          .withMetaMetricsController({
-            metaMetricsId: MOCK_META_METRICS_ID,
-            participateInMetaMetrics: true,
-          })
           .build(),
         title: this.test?.fullTitle(),
         testSpecificMock: mockSegment,

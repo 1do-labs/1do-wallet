@@ -33,10 +33,6 @@ export function withTransactionEnvelopeTypeFixtures(
       driverOptions: { timeOut: 20000 },
       fixtures: new FixtureBuilderV2()
         .withPermissionControllerConnectedToTestDapp()
-        .withMetaMetricsController({
-          metaMetricsId: MOCK_META_METRICS_ID,
-          participateInMetaMetrics: true,
-        })
         .build(),
       localNodeOptions:
         transactionEnvelopeType === TransactionEnvelopeType.legacy
@@ -65,10 +61,6 @@ export function withSignatureFixtures(
       driverOptions: { timeOut: 20000 },
       fixtures: new FixtureBuilderV2()
         .withPermissionControllerConnectedToTestDapp()
-        .withMetaMetricsController({
-          metaMetricsId: MOCK_META_METRICS_ID,
-          participateInMetaMetrics: true,
-        })
         .build(),
       testSpecificMock: mocks,
       title,

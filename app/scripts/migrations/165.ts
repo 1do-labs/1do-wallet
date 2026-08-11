@@ -127,7 +127,6 @@ type CronjobCaveatValue = {
  * @param schedule - The schedule of the event.
  * @returns The parsed ISO 8601 date at which the event should be executed.
  */
-// TODO: Export this function from the `@metamask/snaps-controllers` package?
 export function getExecutionDate(schedule: string) {
   const date = DateTime.fromISO(schedule, { setZone: true });
   if (date.isValid) {

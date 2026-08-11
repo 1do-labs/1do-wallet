@@ -1,8 +1,7 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
-import { parseCaipChainId } from '@metamask/utils';
 import { InternalAccount } from '@metamask/keyring-internal-api';
 import {
   getMultichainAccountUrl,
@@ -11,14 +10,6 @@ import {
 
 import { MenuItem } from '../../ui/menu';
 import { useI18nContext } from '../../../hooks/useI18nContext';
-import { MetaMetricsContext } from '../../../contexts/metametrics';
-import {
-  MetaMetricsEventCategory,
-  MetaMetricsEventLinkType,
-  MetaMetricsEventName,
-  MetaMetricsEventOptions,
-  MetaMetricsEventPayload,
-} from '../../../../shared/constants/metametrics';
 import { IconName, Text } from '../../component-library';
 import {
   getBlockExplorerLinkText,
@@ -36,10 +27,6 @@ import { getCurrentChainId } from '../../../../shared/lib/selectors/networks';
 
 export type ViewExplorerMenuItemProps = {
   /**
-   * Represents the "location" property of the metrics event
-   */
-  metricsLocation: string;
-  /**
    * Closes the menu
    */
   closeMenu?: () => void;
@@ -55,27 +42,8 @@ export type ViewExplorerMenuItemProps = {
 
 export const openBlockExplorer = (
   addressLink: string,
-  metricsLocation: string,
-  trackEvent: (
-    payload: MetaMetricsEventPayload,
-    options?: MetaMetricsEventOptions,
-  ) => Promise<void>,
   closeMenu?: () => void,
 ) => {
-  trackEvent({
-    event: MetaMetricsEventName.ExternalLinkClicked,
-    category: MetaMetricsEventCategory.Navigation,
-    properties: {
-      // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-      // eslint-disable-next-line @typescript-eslint/naming-convention
-      link_type: MetaMetricsEventLinkType.AccountTracker,
-      location: metricsLocation,
-      // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-      // eslint-disable-next-line @typescript-eslint/naming-convention
-      url_domain: getURLHostName(addressLink),
-    },
-  });
-
   global.platform.openTab({
     url: addressLink,
   });
@@ -83,13 +51,11 @@ export const openBlockExplorer = (
 };
 
 export const ViewExplorerMenuItem = ({
-  metricsLocation,
   closeMenu,
   textProps,
   account,
 }: ViewExplorerMenuItemProps) => {
   const t = useI18nContext();
-  const { trackEvent } = useContext(MetaMetricsContext);
   const navigate = useNavigate();
 
   const multichainNetwork = useMultichainSelector(
@@ -100,12 +66,8 @@ export const ViewExplorerMenuItem = ({
     account.address,
     multichainNetwork,
   );
-  // TODO: Re-use CAIP-2 for metrics once event schemas support it
-  const chainId = parseCaipChainId(multichainNetwork.chainId).reference;
   const blockExplorerUrl = getMultichainBlockExplorerUrl(multichainNetwork);
 
-  // For EIP155 networks, determine subtitle based on network type
-  const { namespace } = parseCaipChainId(multichainNetwork.chainId);
   const isCustomNetwork = useSelector(getIsCustomNetwork);
   const currentChainId = useSelector(getCurrentChainId);
   const isTestNetwork = (TEST_NETWORK_IDS as string[]).includes(currentChainId);
@@ -117,25 +79,17 @@ export const ViewExplorerMenuItem = ({
   let blockExplorerUrlSubTitle = null;
   let actualAddressLink = addressLink;
 
-  if (namespace === 'eip155') {
-    // For test networks and custom networks, show actual block explorer URL
-    if (isTestNetwork || (!isPopularNetwork && isCustomNetwork)) {
-      blockExplorerUrlSubTitle = getURLHostName(blockExplorerUrl);
-      // network-specific explorer URL for navigation
-      if (blockExplorerUrl) {
-        const normalizedAddress = account.address;
-        const baseUrl = blockExplorerUrl.endsWith('/')
-          ? blockExplorerUrl
-          : `${blockExplorerUrl}/`;
-        actualAddressLink = `${baseUrl}address/${normalizedAddress}`;
-      }
-    } else {
-      // For popular networks, show etherscan.io
-      blockExplorerUrlSubTitle = 'etherscan.io';
+  if (isTestNetwork || (!isPopularNetwork && isCustomNetwork)) {
+    blockExplorerUrlSubTitle = getURLHostName(blockExplorerUrl);
+    if (blockExplorerUrl) {
+      const normalizedAddress = account.address;
+      const baseUrl = blockExplorerUrl.endsWith('/')
+        ? blockExplorerUrl
+        : `${blockExplorerUrl}/`;
+      actualAddressLink = `${baseUrl}address/${normalizedAddress}`;
     }
   } else {
-    // For non-EIP155 networks, always show actual block explorer URL
-    blockExplorerUrlSubTitle = getURLHostName(blockExplorerUrl);
+    blockExplorerUrlSubTitle = 'etherscan.io';
   }
 
   const blockExplorerLinkText = useSelector(getBlockExplorerLinkText);
@@ -151,23 +105,7 @@ export const ViewExplorerMenuItem = ({
       onClick={() => {
         blockExplorerLinkText.firstPart === 'addBlockExplorer'
           ? routeToAddBlockExplorerUrl()
-          : openBlockExplorer(
-              actualAddressLink,
-              metricsLocation,
-              trackEvent,
-              closeMenu,
-            );
-
-        trackEvent({
-          event: MetaMetricsEventName.BlockExplorerLinkClicked,
-          category: MetaMetricsEventCategory.Accounts,
-          properties: {
-            location: metricsLocation,
-            // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-            // eslint-disable-next-line @typescript-eslint/naming-convention
-            chain_id: chainId,
-          },
-        });
+          : openBlockExplorer(actualAddressLink, closeMenu);
 
         closeMenu?.();
       }}

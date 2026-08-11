@@ -152,28 +152,6 @@ describe('Privacy Settings Onboarding View', () => {
     expect(setUse4ByteResolutionStub.mock.calls[0][0]).toStrictEqual(false);
   });
 
-  describe('Social Login Flow', () => {
-    it('should update the default settings for social login', async () => {
-      const updatedMockStore = configureMockStore([thunk])({
-        ...mockStore,
-        metamask: {
-          ...mockStore.metamask,
-          firstTimeFlowType: FirstTimeFlowType.socialCreate,
-        },
-      });
-      const { getByText } = renderWithProvider(
-        <PrivacySettings />,
-        updatedMockStore,
-      );
-
-      // Default Settings - Security & privacy category (social login copy)
-      const itemCategorySecurityPrivacy = getByText(
-        messages.securityDefaultSettingsSocialLogin.message,
-      );
-      expect(itemCategorySecurityPrivacy).toBeInTheDocument();
-    });
-  });
-
   describe('IPFS', () => {
     it('should handle proper IPFS input', () => {
       const { queryByTestId, queryByText } = renderWithProvider(

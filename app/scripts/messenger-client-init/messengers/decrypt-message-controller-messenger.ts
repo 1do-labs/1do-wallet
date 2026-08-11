@@ -4,7 +4,6 @@ import {
   MessengerEvents,
 } from '@metamask/messenger';
 import { DecryptMessageControllerMessenger } from '../../controllers/decrypt-message';
-import { MetaMetricsControllerTrackEventAction } from '../../controllers/metametrics-controller-method-action-types';
 import { RootMessenger } from '../../lib/messenger';
 
 /**
@@ -40,7 +39,7 @@ export function getDecryptMessageControllerMessenger(
   return controllerMessenger;
 }
 
-type AllowedInitializationActions = MetaMetricsControllerTrackEventAction;
+type AllowedInitializationActions = never;
 
 export type DecryptMessageControllerInitMessenger = ReturnType<
   typeof getDecryptMessageControllerInitMessenger
@@ -67,7 +66,7 @@ export function getDecryptMessageControllerInitMessenger(
   });
   messenger.delegate({
     messenger: controllerInitMessenger,
-    actions: ['MetaMetricsController:trackEvent'],
+    actions: [],
   });
   return controllerInitMessenger;
 }

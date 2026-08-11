@@ -26,10 +26,8 @@ import {
   HelpTextSeverity,
 } from '../../../../../components/component-library';
 import { useI18nContext } from '../../../../../hooks/useI18nContext';
-import { useRecipientSelectionMetrics } from '../../../hooks/send/metrics/useRecipientSelectionMetrics';
 import { useRecipientValidation } from '../../../hooks/send/useRecipientValidation';
 import { useSendContext } from '../../../context/send';
-import { useRecipients } from '../../../hooks/send/useRecipients';
 import { RecipientList } from '../recipient-list';
 import { RecipientInput } from '../recipient-input';
 
@@ -51,11 +49,6 @@ export const Recipient = ({
   const t = useI18nContext();
   const [isRecipientModalOpen, setIsRecipientModalOpen] = useState(false);
   const { to, updateTo, updateToResolved } = useSendContext();
-  const {
-    setRecipientInputMethodSelectContact,
-    setRecipientInputMethodSelectAccount,
-  } = useRecipientSelectionMetrics();
-  const recipients = useRecipients();
   const recipientInputRef = useRef<HTMLInputElement>(null);
   const closeRecipientModal = useCallback(() => {
     setIsRecipientModalOpen(false);
@@ -68,25 +61,9 @@ export const Recipient = ({
 
   const onRecipientSelectedFromModal = useCallback(
     (address: string) => {
-      const isRecipientContact = recipients.some(
-        (recipient) =>
-          recipient.address.toLowerCase() === address.toLowerCase() &&
-          recipient.isContact,
-      );
-      if (isRecipientContact) {
-        setRecipientInputMethodSelectContact();
-      } else {
-        setRecipientInputMethodSelectAccount();
-      }
-
       updateTo(address);
     },
-    [
-      recipients,
-      updateTo,
-      setRecipientInputMethodSelectContact,
-      setRecipientInputMethodSelectAccount,
-    ],
+    [updateTo],
   );
 
   useEffect(() => {

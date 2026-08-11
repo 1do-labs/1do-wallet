@@ -82,9 +82,9 @@ const AssetPage = ({
 
   const { chainId, type, symbol, name, image } = asset;
 
-  const isSigningEnabled =
-    selectedAccount.methods.includes(EthMethod.SignTransaction) ||
-    selectedAccount.methods.includes(EthMethod.SignUserOperation);
+  const isSigningEnabled = selectedAccount.methods.includes(
+    EthMethod.SignTransaction,
+  );
 
   const isTestnet = useMultichainSelector(getMultichainIsTestnet);
   const shouldShowFiat = useMultichainSelector(getMultichainShouldShowFiat);

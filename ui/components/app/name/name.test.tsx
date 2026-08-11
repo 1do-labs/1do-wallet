@@ -1,253 +1,67 @@
-import * as React from 'react';
 import { NameType } from '@metamask/name-controller';
-import { fireEvent } from '@testing-library/react';
-import configureStore from 'redux-mock-store';
+import { fireEvent, screen } from '@testing-library/react';
+import React from 'react';
 import { renderWithProvider } from '../../../../test/lib/render-helpers-navigate';
-import { MetaMetricsContext } from '../../../contexts/metametrics';
-import {
-  MetaMetricsEventCategory,
-  MetaMetricsEventName,
-} from '../../../../shared/constants/metametrics';
 import { useDisplayName } from '../../../hooks/useDisplayName';
-import { mockNetworkState } from '../../../../test/stub/networks';
-import { CHAIN_IDS } from '../../../../shared/constants/network';
 import { TrustSignalDisplayState } from '../../../hooks/useTrustSignals';
-import { IconName } from '../../component-library';
-import { IconColor } from '../../../helpers/constants/design-system';
 import Name from './name';
 
 jest.mock('../../../hooks/useDisplayName');
-
-jest.mock('react-redux', () => ({
-  ...jest.requireActual('react-redux'),
-  useDispatch: () => jest.fn(),
+jest.mock('./name-details/name-display', () => ({
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  __esModule: true,
+  default: ({ handleClick }: { handleClick: () => void }) => (
+    <button onClick={handleClick}>Account name</button>
+  ),
+}));
+jest.mock('./name-details/name-details', () => ({
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  __esModule: true,
+  default: () => <div>Name details</div>,
 }));
 
-jest.mock('./name-details/name-details', () => {
-  return <div data-testid="name-details">NameDetails</div>;
-});
-
-const ADDRESS_NO_SAVED_NAME_MOCK = '0xc0ffee254729296a45a3885639ac7e10f9d54977';
-const ADDRESS_SAVED_NAME_MOCK = '0xc0ffee254729296a45a3885639ac7e10f9d54979';
-const SAVED_NAME_MOCK = 'TestName';
-const VARIATION_MOCK = 'testVariation';
-
-const STATE_MOCK = {
-  metamask: {
-    ...mockNetworkState({ chainId: CHAIN_IDS.MAINNET }),
-  },
-};
-
 describe('Name', () => {
-  const store = configureStore()(STATE_MOCK);
-  const useDisplayNameMock = jest.mocked(useDisplayName);
-
   beforeEach(() => {
-    jest.resetAllMocks();
-  });
-
-  it('renders when no address value is passed', () => {
-    useDisplayNameMock.mockReturnValue({
-      name: null,
-      hasPetname: false,
-      displayState: TrustSignalDisplayState.Unknown,
-      icon: {
-        name: IconName.Question,
-        color: undefined,
-      },
-      isAccount: false,
-    });
-
-    const { container } = renderWithProvider(
-      <Name
-        type={NameType.ETHEREUM_ADDRESS}
-        value={''}
-        variation={VARIATION_MOCK}
-      />,
-      store,
-    );
-
-    expect(container).toMatchSnapshot();
-  });
-
-  it('renders address with no saved name', () => {
-    useDisplayNameMock.mockReturnValue({
-      name: null,
-      hasPetname: false,
-      displayState: TrustSignalDisplayState.Unknown,
-      icon: {
-        name: IconName.Question,
-        color: undefined,
-      },
-      isAccount: false,
-    });
-
-    const { container } = renderWithProvider(
-      <Name
-        type={NameType.ETHEREUM_ADDRESS}
-        value={ADDRESS_NO_SAVED_NAME_MOCK}
-        variation={VARIATION_MOCK}
-      />,
-      store,
-    );
-
-    expect(container).toMatchSnapshot();
-  });
-
-  it('renders address with saved name', () => {
-    useDisplayNameMock.mockReturnValue({
-      name: SAVED_NAME_MOCK,
+    jest.mocked(useDisplayName).mockReturnValue({
+      name: 'Account name',
       hasPetname: true,
-      displayState: TrustSignalDisplayState.Petname,
-      icon: {
-        name: IconName.VerifiedFilled,
-        color: IconColor.infoDefault,
-      },
       isAccount: false,
+      displayState: TrustSignalDisplayState.Petname,
     });
-
-    const { container } = renderWithProvider(
-      <Name
-        type={NameType.ETHEREUM_ADDRESS}
-        value={ADDRESS_SAVED_NAME_MOCK}
-        variation={VARIATION_MOCK}
-      />,
-      store,
-    );
-
-    expect(container).toMatchSnapshot();
   });
 
-  it('renders address with long saved name', () => {
-    useDisplayNameMock.mockReturnValue({
-      name: "Very long and length saved name that doesn't seem to end, really.",
-      hasPetname: true,
-      displayState: TrustSignalDisplayState.Petname,
-      icon: {
-        name: IconName.VerifiedFilled,
-        color: IconColor.infoDefault,
-      },
-      isAccount: false,
-    });
-
-    const { container } = renderWithProvider(
+  it('opens name details for a non-account address', () => {
+    renderWithProvider(
       <Name
         type={NameType.ETHEREUM_ADDRESS}
-        value={ADDRESS_SAVED_NAME_MOCK}
-        variation={VARIATION_MOCK}
+        value="0x0000000000000000000000000000000000000001"
+        variation="0x1"
       />,
-      store,
     );
 
-    expect(container).toMatchSnapshot();
+    fireEvent.click(screen.getByRole('button', { name: 'Account name' }));
+
+    expect(screen.getByText('Name details')).toBeInTheDocument();
   });
 
-  it('renders address with image', () => {
-    useDisplayNameMock.mockReturnValue({
-      name: SAVED_NAME_MOCK,
+  it('does not open name details for an account', () => {
+    jest.mocked(useDisplayName).mockReturnValue({
+      name: 'Account name',
       hasPetname: true,
-      image: 'test-image',
-      displayState: TrustSignalDisplayState.Petname,
-      icon: {
-        name: IconName.VerifiedFilled,
-        color: IconColor.infoDefault,
-      },
-      isAccount: false,
-    });
-
-    const { container } = renderWithProvider(
-      <Name
-        type={NameType.ETHEREUM_ADDRESS}
-        value={ADDRESS_SAVED_NAME_MOCK}
-        variation={VARIATION_MOCK}
-      />,
-      store,
-    );
-
-    expect(container).toMatchSnapshot();
-  });
-
-  it('prevents opening name details modal for account', () => {
-    useDisplayNameMock.mockReturnValue({
-      name: SAVED_NAME_MOCK,
-      hasPetname: true,
-      image: 'test-image',
-      displayState: TrustSignalDisplayState.Petname,
-      icon: {
-        name: IconName.VerifiedFilled,
-        color: IconColor.infoDefault,
-      },
       isAccount: true,
+      displayState: TrustSignalDisplayState.Petname,
     });
 
-    const { getByTestId, queryByTestId } = renderWithProvider(
+    renderWithProvider(
       <Name
         type={NameType.ETHEREUM_ADDRESS}
-        value={ADDRESS_SAVED_NAME_MOCK}
-        variation={VARIATION_MOCK}
-        data-testid="name-component"
+        value="0x0000000000000000000000000000000000000001"
+        variation="0x1"
       />,
-      store,
     );
 
-    const nameComponent = getByTestId('name-component');
-    fireEvent.click(nameComponent);
-    expect(queryByTestId('name-details')).toBeNull();
-  });
+    fireEvent.click(screen.getByRole('button', { name: 'Account name' }));
 
-  describe('metrics', () => {
-    // @ts-expect-error This is missing from the Mocha type definitions
-    it.each([
-      ['saved', ADDRESS_SAVED_NAME_MOCK, true],
-      ['not saved', ADDRESS_NO_SAVED_NAME_MOCK, false],
-    ])(
-      'sends displayed event with %s name',
-      async (_: string, value: string, hasPetname: boolean) => {
-        const trackEventMock = jest.fn();
-        const mockMetaMetricsContext = {
-          trackEvent: trackEventMock,
-          bufferedTrace: jest.fn(),
-          bufferedEndTrace: jest.fn(),
-          onboardingParentContext: { current: null },
-        };
-
-        useDisplayNameMock.mockReturnValue({
-          name: hasPetname ? SAVED_NAME_MOCK : null,
-          hasPetname,
-          displayState: hasPetname
-            ? TrustSignalDisplayState.Petname
-            : TrustSignalDisplayState.Unknown,
-          icon: {
-            name: IconName.VerifiedFilled,
-            color: IconColor.infoDefault,
-          },
-          isAccount: false,
-        });
-
-        renderWithProvider(
-          <MetaMetricsContext.Provider value={mockMetaMetricsContext}>
-            <Name
-              type={NameType.ETHEREUM_ADDRESS}
-              value={value}
-              variation={VARIATION_MOCK}
-            />
-          </MetaMetricsContext.Provider>,
-          store,
-        );
-
-        expect(trackEventMock).toHaveBeenCalledWith({
-          event: MetaMetricsEventName.PetnameDisplayed,
-          category: MetaMetricsEventCategory.Petnames,
-          properties: {
-            // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-            // eslint-disable-next-line @typescript-eslint/naming-convention
-            petname_category: NameType.ETHEREUM_ADDRESS,
-            // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-            // eslint-disable-next-line @typescript-eslint/naming-convention
-            has_petname: hasPetname,
-          },
-        });
-      },
-    );
+    expect(screen.queryByText('Name details')).not.toBeInTheDocument();
   });
 });

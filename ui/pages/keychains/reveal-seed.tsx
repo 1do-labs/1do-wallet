@@ -1,34 +1,18 @@
-import React, { useContext, useEffect, useState, useCallback } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useEffect, useState, useCallback } from 'react';
+import { useDispatch } from 'react-redux';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import copyToClipboard from 'copy-to-clipboard';
 import {
   TextButton,
   Text,
   Box,
-  Checkbox,
   TextVariant,
   TextColor,
-  BoxBackgroundColor,
 } from '@metamask/design-system-react';
-import {
-  RecommendedAction,
-  type PhishingDetectionScanResult,
-} from '@metamask/phishing-controller';
 import { getErrorMessage } from '../../../shared/lib/error';
-import {
-  MetaMetricsEventCategory,
-  MetaMetricsEventKeyType,
-  MetaMetricsEventName,
-} from '../../../shared/constants/metametrics';
-import { MetaMetricsContext } from '../../contexts/metametrics';
 import ZENDESK_URLS from '../../helpers/constants/zendesk-url';
 import { useI18nContext } from '../../hooks/useI18nContext';
-import {
-  requestRevealSeedWords,
-  scanUrlForPhishing,
-} from '../../store/actions';
-import { getHDEntropyIndex, getOriginOfCurrentTab } from '../../selectors';
+import { requestRevealSeedWords } from '../../store/actions';
 import { endTrace, trace, TraceName } from '../../../shared/lib/trace';
 import { PREVIOUS_ROUTE } from '../../helpers/constants/routes';
 import { Toast, ToastContainer } from '../../components/multichain/toast';
@@ -51,8 +35,6 @@ function RevealSeedPage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const t = useI18nContext();
-  const { trackEvent } = useContext(MetaMetricsContext);
-  const hdEntropyIndex = useSelector(getHDEntropyIndex);
   const { keyringId } = useParams<Record<string, string | undefined>>();
   const locationState = useLocation().state as RevealSeedLocationState | null;
   const skipQuiz = locationState?.skipQuiz ?? false;
@@ -63,61 +45,10 @@ function RevealSeedPage() {
   const [password, setPassword] = useState('');
   const [seedWords, setSeedWords] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [srpViewEventTracked, setSrpViewEventTracked] = useState(false);
   const { value: showPassword, toggle } = useBoolean();
   const [phraseRevealed, setPhraseRevealed] = useState(false);
 
   const [showSuccessToast, setShowSuccessToast] = useState(false);
-
-  const activeTabOrigin = useSelector(getOriginOfCurrentTab);
-  const [scanResult, setScanResult] =
-    useState<PhishingDetectionScanResult | null>(null);
-  const [dangerAcknowledged, setDangerAcknowledged] = useState(false);
-
-  useEffect(() => {
-    let cancelled = false;
-    setScanResult(null);
-    setDangerAcknowledged(false);
-
-    if (activeTabOrigin) {
-      const originToScan = activeTabOrigin;
-      scanUrlForPhishing(originToScan)
-        .then((result) => {
-          if (cancelled) {
-            return;
-          }
-          setScanResult(result);
-        })
-        .catch(() => {
-          // Scan failed — no action needed
-        });
-    }
-
-    return () => {
-      cancelled = true;
-    };
-  }, [activeTabOrigin]);
-
-  const trackEventRef = React.useRef(trackEvent);
-  trackEventRef.current = trackEvent;
-
-  useEffect(() => {
-    if (scanResult?.recommendedAction === RecommendedAction.Block) {
-      trackEventRef.current({
-        category: MetaMetricsEventCategory.Keys,
-        event: MetaMetricsEventName.SrpRevealMaliciousSiteDetected,
-        properties: {
-          // eslint-disable-next-line @typescript-eslint/naming-convention
-          key_type: MetaMetricsEventKeyType.Srp,
-          // eslint-disable-next-line @typescript-eslint/naming-convention
-          dapp_host_name: scanResult.hostname ?? 'unknown',
-        },
-      });
-    }
-  }, [scanResult]);
-
-  // Only Block triggers the malicious warning. Warn and None show the generic warning.
-  const isMalicious = scanResult?.recommendedAction === RecommendedAction.Block;
 
   const onClickCopy = useCallback(() => {
     if (!seedWords || !phraseRevealed) {
@@ -125,31 +56,7 @@ function RevealSeedPage() {
     }
     copyToClipboard(seedWords);
     setShowSuccessToast(true);
-    trackEvent({
-      category: MetaMetricsEventCategory.Keys,
-      event: MetaMetricsEventName.KeyExportCopied,
-      properties: {
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        key_type: MetaMetricsEventKeyType.Srp,
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        copy_method: 'clipboard',
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        hd_entropy_index: hdEntropyIndex,
-      },
-    });
-    trackEvent({
-      category: MetaMetricsEventCategory.Keys,
-      event: MetaMetricsEventName.SrpCopiedToClipboard,
-      properties: {
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        key_type: MetaMetricsEventKeyType.Srp,
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        copy_method: 'clipboard',
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        hd_entropy_index: hdEntropyIndex,
-      },
-    });
-  }, [seedWords, phraseRevealed, trackEvent, hdEntropyIndex]);
+  }, [seedWords, phraseRevealed]);
 
   useEffect(() => {
     const passwordBox = document.getElementById('password-box');
@@ -164,44 +71,24 @@ function RevealSeedPage() {
       trace({ name: TraceName.RevealSeed });
       setSeedWords(null);
       setError(null);
+
       (
         dispatch(
           requestRevealSeedWords(password, keyringId),
         ) as unknown as Promise<string>
       )
         .then((revealedSeedWords) => {
-          trackEvent({
-            category: MetaMetricsEventCategory.Keys,
-            event: MetaMetricsEventName.KeyExportRevealed,
-            properties: {
-              // eslint-disable-next-line @typescript-eslint/naming-convention
-              key_type: MetaMetricsEventKeyType.Srp,
-              // eslint-disable-next-line @typescript-eslint/naming-convention
-              hd_entropy_index: hdEntropyIndex,
-            },
-          });
           setSeedWords(revealedSeedWords);
           setScreen(REVEAL_SEED_SCREEN);
         })
-        .catch((e: Error) => {
-          trackEvent({
-            category: MetaMetricsEventCategory.Keys,
-            event: MetaMetricsEventName.KeyExportFailed,
-            properties: {
-              // eslint-disable-next-line @typescript-eslint/naming-convention
-              key_type: MetaMetricsEventKeyType.Srp,
-              reason: e.message,
-              // eslint-disable-next-line @typescript-eslint/naming-convention
-              hd_entropy_index: hdEntropyIndex,
-            },
-          });
-          setError(getErrorMessage(e));
+        .catch((requestError: Error) => {
+          setError(getErrorMessage(requestError));
         })
         .finally(() => {
           endTrace({ name: TraceName.RevealSeed });
         });
     },
-    [dispatch, password, keyringId, trackEvent, hdEntropyIndex],
+    [dispatch, password, keyringId],
   );
 
   const togglePasswordVisibility = useCallback(
@@ -214,127 +101,33 @@ function RevealSeedPage() {
   );
 
   const openSupportArticle = useCallback(() => {
-    trackEvent({
-      category: MetaMetricsEventCategory.Keys,
-      event: MetaMetricsEventName.SupportLinkClicked,
-      properties: {
-        url: `${ZENDESK_URLS.PASSWORD_AND_SRP_ARTICLE}#metamask-secret-recovery-phrase-dos-and-donts`,
-        location: 'reveal_srp',
-      },
-    });
     globalThis.platform.openTab({
       url: `${ZENDESK_URLS.PASSWORD_AND_SRP_ARTICLE}#metamask-secret-recovery-phrase-dos-and-donts`,
     });
-  }, [trackEvent]);
+  }, []);
 
   const handleBack = useCallback(() => {
-    trackEvent({
-      category: MetaMetricsEventCategory.Keys,
-      event: MetaMetricsEventName.SrpRevealBackButtonClicked,
-      properties: {
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        key_type: MetaMetricsEventKeyType.Srp,
-        screen,
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        hd_entropy_index: hdEntropyIndex,
-      },
-    });
     navigate(PREVIOUS_ROUTE);
-  }, [trackEvent, screen, hdEntropyIndex, navigate]);
+  }, [navigate]);
 
   const handleQuizComplete = useCallback(() => {
     setScreen(PASSWORD_PROMPT_SCREEN);
   }, []);
 
-  useEffect(() => {
-    if (screen === REVEAL_SEED_SCREEN && !srpViewEventTracked) {
-      trackEvent({
-        category: MetaMetricsEventCategory.Keys,
-        event: MetaMetricsEventName.SrpViewSrpText,
-        properties: {
-          // eslint-disable-next-line @typescript-eslint/naming-convention
-          key_type: MetaMetricsEventKeyType.Srp,
-        },
-      });
-      setSrpViewEventTracked(true);
-    }
-  }, [screen, srpViewEventTracked, trackEvent]);
-
   const handleRevealPhrase = useCallback(() => {
-    trackEvent({
-      category: MetaMetricsEventCategory.Onboarding,
-      event: MetaMetricsEventName.OnboardingWalletSecurityPhraseRevealed,
-      properties: {
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        hd_entropy_index: hdEntropyIndex,
-      },
-    });
     setPhraseRevealed(true);
-  }, [trackEvent, hdEntropyIndex]);
-
-  const handleTabClick = useCallback(
-    (tabKey: 'text-seed' | 'qr-srp') => {
-      if (tabKey === 'text-seed') {
-        trackEvent({
-          category: MetaMetricsEventCategory.Keys,
-          event: MetaMetricsEventName.SrpViewSrpText,
-          properties: {
-            // eslint-disable-next-line @typescript-eslint/naming-convention
-            key_type: MetaMetricsEventKeyType.Srp,
-          },
-        });
-      } else if (tabKey === 'qr-srp') {
-        trackEvent({
-          category: MetaMetricsEventCategory.Keys,
-          event: MetaMetricsEventName.SrpViewsSrpQR,
-          properties: {
-            // eslint-disable-next-line @typescript-eslint/naming-convention
-            key_type: MetaMetricsEventKeyType.Srp,
-          },
-        });
-      }
-    },
-    [trackEvent],
-  );
+  }, []);
 
   const handlePasswordContinueClick = useCallback(
     (event: React.MouseEvent) => {
-      trackEvent({
-        category: MetaMetricsEventCategory.Keys,
-        event: MetaMetricsEventName.KeyExportRequested,
-        properties: {
-          // eslint-disable-next-line @typescript-eslint/naming-convention
-          key_type: MetaMetricsEventKeyType.Srp,
-          // eslint-disable-next-line @typescript-eslint/naming-convention
-          hd_entropy_index: hdEntropyIndex,
-        },
-      });
-      trackEvent({
-        category: MetaMetricsEventCategory.Keys,
-        event: MetaMetricsEventName.SrpRevealNextClicked,
-        properties: {
-          // eslint-disable-next-line @typescript-eslint/naming-convention
-          key_type: MetaMetricsEventKeyType.Srp,
-        },
-      });
       handleSubmit(event);
     },
-    [trackEvent, hdEntropyIndex, handleSubmit],
+    [handleSubmit],
   );
 
   const handleQuizGetStarted = useCallback(() => {
-    trackEvent({
-      category: MetaMetricsEventCategory.Keys,
-      event: MetaMetricsEventName.SrpRevealStarted,
-      properties: {
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        key_type: MetaMetricsEventKeyType.Srp,
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        hd_entropy_index: hdEntropyIndex,
-      },
-    });
     setScreen(QUIZ_QUESTIONS_SCREEN);
-  }, [trackEvent, hdEntropyIndex]);
+  }, []);
 
   const renderContent = () => {
     if (screen === QUIZ_INTRODUCTION_SCREEN) {
@@ -363,8 +156,6 @@ function RevealSeedPage() {
           onTogglePasswordVisibility={togglePasswordVisibility}
           onSubmit={handleSubmit}
           onContinueClick={handlePasswordContinueClick}
-          isMalicious={isMalicious}
-          dangerAcknowledged={dangerAcknowledged}
         />
       );
     }
@@ -375,7 +166,6 @@ function RevealSeedPage() {
           phraseRevealed={phraseRevealed}
           onRevealPhrase={handleRevealPhrase}
           onCopy={onClickCopy}
-          onTabClick={handleTabClick}
         />
       );
     }
@@ -416,31 +206,7 @@ function RevealSeedPage() {
               </TextButton>,
             ])}
           </Text>
-          {isMalicious ? (
-            <>
-              <RevealSeedWarning
-                message={t('dappScanMaliciousWarning')}
-                title={t('dappScanMaliciousTitle')}
-                data-testid="dapp-scan-warning"
-              />
-              <Box
-                className="flex w-full p-4 rounded-lg border-l-4 border-l-[var(--color-error-default)]"
-                backgroundColor={BoxBackgroundColor.ErrorMuted}
-              >
-                <Checkbox
-                  id="dapp-scan-acknowledge-checkbox"
-                  label={t('alertModalAcknowledge')}
-                  isSelected={dangerAcknowledged}
-                  onChange={() => setDangerAcknowledged(!dangerAcknowledged)}
-                  inputProps={{
-                    'data-testid': 'dapp-scan-acknowledge-checkbox',
-                  }}
-                />
-              </Box>
-            </>
-          ) : (
-            <RevealSeedWarning message={t('revealSeedWordsWarning')} />
-          )}
+          <RevealSeedWarning message={t('revealSeedWordsWarning')} />
         </>
       )}
       {renderContent()}

@@ -33,11 +33,6 @@ import {
   BannerAlert,
   BannerAlertSeverity,
 } from '../../components/component-library';
-import { MetaMetricsContext } from '../../contexts/metametrics';
-import {
-  MetaMetricsEventCategory,
-  MetaMetricsEventName,
-} from '../../../shared/constants/metametrics';
 import { buildDuplicateContactMap, hasDuplicateContacts } from './utils';
 import { ContactListItem } from './components/contact-list-item';
 import { ContactsEmptyState } from './components/contacts-empty-state';
@@ -50,7 +45,6 @@ export function ContactsListPage() {
   const location = useLocation();
   const [searchParams] = useSearchParams();
   const fromPath = searchParams.get('from') ?? undefined;
-  const { trackEvent } = useContext(MetaMetricsContext);
   const completeAddressBook = useSelector(getCompleteAddressBook);
   const internalAccounts = useSelector(getInternalAccounts);
   const [showDeletedToast, setShowDeletedToast] = useState(false);
@@ -84,17 +78,6 @@ export function ContactsListPage() {
       ),
     [completeAddressBook, internalAccounts],
   );
-
-  useEffect(() => {
-    trackEvent({
-      category: MetaMetricsEventCategory.Contacts,
-      event: MetaMetricsEventName.ContactsPageViewed,
-      properties: {
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        number_of_contacts: contacts.length,
-      },
-    });
-  }, [trackEvent, contacts.length]);
 
   useEffect(() => {
     if (location.state?.showContactDeletedToast) {
@@ -256,11 +239,6 @@ export function ContactsListPage() {
             >
               <ContactsEmptyState
                 onAddContact={() => {
-                  trackEvent({
-                    category: MetaMetricsEventCategory.Contacts,
-                    event: MetaMetricsEventName.AddContactClicked,
-                    properties: { location: 'contacts_list' },
-                  });
                   navigate(CONTACTS_ADD_ROUTE);
                 }}
               />
@@ -283,11 +261,6 @@ export function ContactsListPage() {
               size={ButtonSize.Lg}
               isFullWidth
               onClick={() => {
-                trackEvent({
-                  category: MetaMetricsEventCategory.Contacts,
-                  event: MetaMetricsEventName.AddContactClicked,
-                  properties: { location: 'contacts_list' },
-                });
                 navigate(CONTACTS_ADD_ROUTE);
               }}
               data-testid="contacts-add-contact-button"

@@ -25,8 +25,7 @@ export const TokenDetectionControllerInit: MessengerClientInitFunction<
         'AssetsContractController:getBalancesInSingleCall',
         ...args,
       ),
-    trackMetaMetricsEvent: (...args) =>
-      initMessenger.call('MetaMetricsController:trackEvent', ...args),
+    trackMetaMetricsEvent: () => undefined,
     useTokenDetection: () => Boolean(getRetypedPrefState().useTokenDetection),
     useExternalServices: () =>
       Boolean(getRetypedPrefState().useExternalServices),

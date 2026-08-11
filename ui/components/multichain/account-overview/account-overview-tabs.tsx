@@ -1,18 +1,14 @@
-import React, { useCallback, useContext, useEffect, useMemo } from 'react';
+import React, { useCallback, useContext, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { Hex, isStrictHexString } from '@metamask/utils';
-import { toEvmCaipChainId } from '@metamask/multichain-network-controller';
+import { Hex } from '@metamask/utils';
 import ErrorBoundary from '../../app/error-boundary/error-boundary';
 import {
-  ACCOUNT_OVERVIEW_TAB_KEY_TO_METAMETRICS_EVENT_NAME_MAP,
   ACCOUNT_OVERVIEW_TAB_KEY_TO_TRACE_NAME_MAP,
   AccountOverviewTabKey,
   AccountOverviewTab,
 } from '../../../../shared/constants/app-state';
-import { MetaMetricsEventCategory } from '../../../../shared/constants/metametrics';
 import { endTrace, trace } from '../../../../shared/lib/trace';
-import { MetaMetricsContext } from '../../../contexts/metametrics';
 import { ASSET_ROUTE } from '../../../helpers/constants/routes';
 import { useI18nContext } from '../../../hooks/useI18nContext';
 import { useTabState } from '../../../hooks/useTabState';
@@ -21,7 +17,6 @@ import {
   getDefaultHomeActiveTabName,
   getEnabledChainIds,
 } from '../../../selectors';
-import { getAllEnabledNetworksForAllNamespaces } from '../../../selectors/multichain/networks';
 import {
   detectNfts,
   setDefaultHomeActiveTabName,
@@ -55,7 +50,6 @@ export const AccountOverviewTabs = ({
 
   const navigate = useNavigate();
   const t = useI18nContext();
-  const { trackEvent } = useContext(MetaMetricsContext);
   const dispatch = useDispatch();
   const selectedChainIds = useSelector(getEnabledChainIds);
   const prefetchTransactions = usePrefetchTransactions();
@@ -65,18 +59,6 @@ export const AccountOverviewTabs = ({
       setDefaultHomeActiveTabName(activeTabKey);
     }
   }, [activeTabKey]);
-
-  // Get all enabled networks (what the user has actually selected)
-  const allEnabledNetworks = useSelector(getAllEnabledNetworksForAllNamespaces);
-
-  // Convert enabled networks to CAIP format for metrics
-  const networkFilterForMetrics = useMemo(
-    () =>
-      allEnabledNetworks.map((chainId) =>
-        isStrictHexString(chainId) ? toEvmCaipChainId(chainId) : chainId,
-      ),
-    [allEnabledNetworks],
-  );
 
   // EVM specific tokenBalance polling, updates state via polling loop per chainId
   useTokenBalances({
@@ -96,33 +78,13 @@ export const AccountOverviewTabs = ({
       if (tabName === AccountOverviewTabKey.Nfts) {
         dispatch(detectNfts(selectedChainIds));
       }
-      if (tabName in ACCOUNT_OVERVIEW_TAB_KEY_TO_METAMETRICS_EVENT_NAME_MAP) {
-        trackEvent({
-          category: MetaMetricsEventCategory.Home,
-          event:
-            ACCOUNT_OVERVIEW_TAB_KEY_TO_METAMETRICS_EVENT_NAME_MAP[
-              tabName as keyof typeof ACCOUNT_OVERVIEW_TAB_KEY_TO_METAMETRICS_EVENT_NAME_MAP
-            ],
-          properties: {
-            // eslint-disable-next-line @typescript-eslint/naming-convention
-            network_filter: networkFilterForMetrics,
-          },
-        });
-      }
       if (tabName in ACCOUNT_OVERVIEW_TAB_KEY_TO_TRACE_NAME_MAP) {
         trace({
           name: ACCOUNT_OVERVIEW_TAB_KEY_TO_TRACE_NAME_MAP[tabName],
         });
       }
     },
-    [
-      activeTabKey,
-      networkFilterForMetrics,
-      setActiveTabKey,
-      dispatch,
-      selectedChainIds,
-      trackEvent,
-    ],
+    [activeTabKey, setActiveTabKey, dispatch, selectedChainIds],
   );
 
   const onClickAsset = useCallback(

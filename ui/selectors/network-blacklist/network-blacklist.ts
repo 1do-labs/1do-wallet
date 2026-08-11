@@ -14,7 +14,7 @@ import { getRemoteFeatureFlags } from '../remote-feature-flags';
 export const selectAdditionalNetworksBlacklistFeatureFlag = createSelector(
   getRemoteFeatureFlags,
   (remoteFeatureFlags) => {
-    const remoteValue = remoteFeatureFlags.additionalNetworksBlacklist as
+    const remoteValue = remoteFeatureFlags?.additionalNetworksBlacklist as
       | string[]
       | undefined;
 

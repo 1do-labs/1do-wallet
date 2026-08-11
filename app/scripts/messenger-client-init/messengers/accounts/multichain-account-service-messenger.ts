@@ -21,10 +21,6 @@ import {
   NetworkControllerGetNetworkClientByIdAction,
 } from '@metamask/network-controller';
 import {
-  RemoteFeatureFlagControllerStateChangeEvent,
-  RemoteFeatureFlagControllerGetStateAction,
-} from '@metamask/remote-feature-flag-controller';
-import {
   PreferencesControllerGetStateAction,
   PreferencesControllerStateChangeEvent,
 } from '../../../controllers/preferences-controller';
@@ -47,8 +43,7 @@ type Actions =
 type Events =
   | KeyringControllerStateChangeEvent
   | AccountsControllerAccountAddedEvent
-  | AccountsControllerAccountRemovedEvent
-  | RemoteFeatureFlagControllerStateChangeEvent;
+  | AccountsControllerAccountRemovedEvent;
 
 export type MultichainAccountServiceMessenger = ReturnType<
   typeof getMultichainAccountServiceMessenger
@@ -79,7 +74,6 @@ export function getMultichainAccountServiceMessenger(
       'KeyringController:stateChange',
       'AccountsController:accountAdded',
       'AccountsController:accountRemoved',
-      'RemoteFeatureFlagController:stateChange',
     ],
     actions: [
       'AccountsController:listMultichainAccounts',
@@ -99,9 +93,7 @@ export function getMultichainAccountServiceMessenger(
   return serviceMessenger;
 }
 
-type AllowedInitializationActions =
-  | PreferencesControllerGetStateAction
-  | RemoteFeatureFlagControllerGetStateAction;
+type AllowedInitializationActions = PreferencesControllerGetStateAction;
 
 type AllowedInitializationEvents = PreferencesControllerStateChangeEvent;
 
@@ -133,10 +125,7 @@ export function getMultichainAccountServiceInitMessenger(
   });
   messenger.delegate({
     messenger: serviceInitMessenger,
-    actions: [
-      'PreferencesController:getState',
-      'RemoteFeatureFlagController:getState',
-    ],
+    actions: ['PreferencesController:getState'],
     events: ['PreferencesController:stateChange'],
   });
   return serviceInitMessenger;

@@ -53,7 +53,6 @@ export function useEIP7702Account(
           },
           {
             networkClientId,
-            requireApproval: true,
             type: TransactionType.revokeDelegation,
           },
         ),
@@ -110,7 +109,6 @@ export function useEIP7702Account(
           },
           {
             networkClientId,
-            requireApproval: true,
             type: TransactionType.batch,
           },
         ),

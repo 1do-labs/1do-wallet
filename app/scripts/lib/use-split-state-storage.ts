@@ -2,35 +2,12 @@
 import browser from 'webextension-polyfill';
 import { AccountsControllerState } from '@metamask/accounts-controller';
 import { NetworkState } from '@metamask/network-controller';
-import { RemoteFeatureFlagControllerState } from '@metamask/remote-feature-flag-controller';
-import { hasProperty, isObject, Json } from '@metamask/utils';
 import { getIsSettingsPageDevOptionsEnabled } from '../../../shared/lib/environment';
 
 type State = {
-  RemoteFeatureFlagController?: RemoteFeatureFlagControllerState;
   AccountsController?: AccountsControllerState;
   NetworkController?: NetworkState;
 };
-
-function isFlagValid(flag?: Json): flag is {
-  value: {
-    enabled: number;
-    maxAccounts: number;
-    maxNetworks: number;
-  };
-} {
-  return (
-    isObject(flag) &&
-    hasProperty(flag, 'value') &&
-    isObject(flag.value) &&
-    hasProperty(flag.value, 'enabled') &&
-    typeof flag.value.enabled === 'number' &&
-    hasProperty(flag.value, 'maxAccounts') &&
-    typeof flag.value.maxAccounts === 'number' &&
-    hasProperty(flag.value, 'maxNetworks') &&
-    typeof flag.value.maxNetworks === 'number'
-  );
-}
 
 async function developerOverrides() {
   const {
@@ -99,19 +76,5 @@ export async function useSplitStateStorage(state: State): Promise<boolean> {
     }
   }
 
-  const remoteFeatureFlagControllerState = state.RemoteFeatureFlagController;
-  const flag =
-    remoteFeatureFlagControllerState?.remoteFeatureFlags
-      ?.platformSplitStateGradualRollout;
-
-  if (!isFlagValid(flag) || flag.value.enabled <= 0) {
-    return false;
-  }
-
-  const { accountCount, networkCount } = getCounts(state);
-
-  return (
-    accountCount <= flag.value.maxAccounts &&
-    networkCount <= flag.value.maxNetworks
-  );
+  return false;
 }

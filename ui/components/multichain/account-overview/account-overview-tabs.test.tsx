@@ -1,15 +1,7 @@
 import React from 'react';
-import { fireEvent } from '@testing-library/react';
 import mockState from '../../../../test/data/mock-state.json';
-import { enLocale as messages } from '../../../../test/lib/i18n-helpers';
 import configureStore from '../../../store/store';
 import { renderWithProvider } from '../../../../test/lib/render-helpers-navigate';
-import { MetaMetricsContext } from '../../../contexts/metametrics';
-import {
-  MetaMetricsEventCategory,
-  MetaMetricsEventName,
-} from '../../../../shared/constants/metametrics';
-import { CHAIN_IDS } from '../../../../shared/constants/network';
 import { AccountOverviewTabs } from './account-overview-tabs';
 
 jest.mock('../../../store/actions', () => ({
@@ -40,59 +32,9 @@ jest.mock('./runtime-tab', () => ({
   RuntimeTab: () => <div data-testid="runtime-tab-panel" />,
 }));
 
-describe('AccountOverviewTabs - event metrics', () => {
-  const mockTrackEvent = jest.fn();
-  const mockMetaMetricsContext = {
-    trackEvent: mockTrackEvent,
-    bufferedTrace: jest.fn(),
-    bufferedEndTrace: jest.fn(),
-    onboardingParentContext: { current: null },
-  };
-
+describe('AccountOverviewTabs', () => {
   beforeEach(() => {
     jest.clearAllMocks();
-  });
-
-  it('includes network_filter property with EVM networks in CAIP format', () => {
-    const store = configureStore({
-      metamask: {
-        ...mockState.metamask,
-        enabledNetworkMap: {
-          eip155: {
-            [CHAIN_IDS.MAINNET]: true,
-            [CHAIN_IDS.POLYGON]: true,
-          },
-        },
-      },
-    });
-
-    const { getByText } = renderWithProvider(
-      <MetaMetricsContext.Provider value={mockMetaMetricsContext}>
-        <AccountOverviewTabs
-          showTokens={true}
-          showNfts={false}
-          showActivity={true}
-          showRuntime={true}
-          setBasicFunctionalityModalOpen={jest.fn()}
-          onSupportLinkClick={jest.fn()}
-        />
-      </MetaMetricsContext.Provider>,
-      store,
-      '/?tab=activity',
-    );
-
-    // Click a tab to trigger event
-    fireEvent.click(getByText(messages.tokens.message));
-
-    // Verify network_filter property is included in correct format
-    expect(mockTrackEvent).toHaveBeenCalledWith({
-      category: MetaMetricsEventCategory.Home,
-      event: MetaMetricsEventName.TokenScreenOpened,
-      properties: {
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        network_filter: ['eip155:1', 'eip155:137'],
-      },
-    });
   });
 
   it('renders runtime tab when enabled', () => {
@@ -101,16 +43,14 @@ describe('AccountOverviewTabs - event metrics', () => {
     });
 
     const { getByTestId } = renderWithProvider(
-      <MetaMetricsContext.Provider value={mockMetaMetricsContext}>
-        <AccountOverviewTabs
-          showTokens={true}
-          showNfts={false}
-          showActivity={true}
-          showRuntime={true}
-          setBasicFunctionalityModalOpen={jest.fn()}
-          onSupportLinkClick={jest.fn()}
-        />
-      </MetaMetricsContext.Provider>,
+      <AccountOverviewTabs
+        showTokens={true}
+        showNfts={false}
+        showActivity={true}
+        showRuntime={true}
+        setBasicFunctionalityModalOpen={jest.fn()}
+        onSupportLinkClick={jest.fn()}
+      />,
       store,
     );
 

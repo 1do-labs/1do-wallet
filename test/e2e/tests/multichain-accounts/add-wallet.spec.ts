@@ -1,6 +1,4 @@
 import path from 'path';
-import { Mockttp } from 'mockttp';
-import { USER_STORAGE_FEATURE_NAMES } from '@metamask/profile-sync-controller/sdk';
 import { Driver } from '../../webdriver/driver';
 import { withFixtures } from '../../helpers';
 import FixtureBuilderV2 from '../../fixtures/fixture-builder-v2';
@@ -9,48 +7,19 @@ import HeaderNavbar from '../../page-objects/pages/header-navbar';
 import HomePage from '../../page-objects/pages/home/homepage';
 import { login } from '../../page-objects/flows/login.flow';
 import { completeImportSRPOnboardingFlow } from '../../page-objects/flows/onboarding.flow';
-import { UserStorageMockttpController } from '../../helpers/identity/user-storage/userStorageMockttpController';
-import {
-  accountsToMockForAccountsSync,
-  getAccountsSyncMockResponse,
-} from '../identity/account-syncing/mock-data';
 import { mockPriceApi } from '../tokens/utils/mocks';
-import { mockIdentityServices } from '../identity/mocks';
 
 const DEFAULT_LOCAL_NODE_USD_BALANCE = '85,025.00';
 
 describe('Add wallet', function () {
-  const arrange = async () => {
-    const unencryptedAccounts = accountsToMockForAccountsSync;
-    const mockedAccountSyncResponse = await getAccountsSyncMockResponse();
-    const userStorageMockttpController = new UserStorageMockttpController();
-    return {
-      unencryptedAccounts,
-      mockedAccountSyncResponse,
-      userStorageMockttpController,
-    };
-  };
-
   it('Import wallet using SRP during onboarding', async function () {
-    const { mockedAccountSyncResponse, userStorageMockttpController } =
-      await arrange();
     await withFixtures(
       {
         fixtures: new FixtureBuilderV2({ onboarding: true })
           .withShowNativeTokenAsMainBalanceDisabled()
           .withEnabledNetworks({ eip155: { '0x1': true } })
           .build(),
-        testSpecificMock: async (server: Mockttp) => {
-          userStorageMockttpController.setupPath(
-            USER_STORAGE_FEATURE_NAMES.accounts,
-            server,
-            {
-              getResponse: mockedAccountSyncResponse,
-            },
-          );
-          await mockPriceApi(server);
-          return mockIdentityServices(server, userStorageMockttpController);
-        },
+        testSpecificMock: mockPriceApi,
         title: this.test?.fullTitle(),
       },
       async ({ driver }) => {
@@ -117,25 +86,13 @@ describe('Add wallet', function () {
 
   it('Import wallet using json file', async function () {
     const IMPORTED_ACCOUNT_NAME = 'Imported Account 1';
-    const { mockedAccountSyncResponse, userStorageMockttpController } =
-      await arrange();
     await withFixtures(
       {
         fixtures: new FixtureBuilderV2()
           .withAccountsControllerImportedAccount()
           .withKeyringControllerImportedAccountVault()
           .build(),
-        testSpecificMock: async (server: Mockttp) => {
-          await mockPriceApi(server);
-          userStorageMockttpController.setupPath(
-            USER_STORAGE_FEATURE_NAMES.accounts,
-            server,
-            {
-              getResponse: mockedAccountSyncResponse,
-            },
-          );
-          return mockIdentityServices(server, userStorageMockttpController);
-        },
+        testSpecificMock: mockPriceApi,
         title: this.test?.fullTitle(),
       },
       async ({ driver }) => {
@@ -179,24 +136,12 @@ describe('Add wallet', function () {
   it('Import wallet using private key of an already active account should result in an error', async function () {
     const testPrivateKey =
       '0x53CB0AB5226EEBF4D872113D98332C1555DC304443BEE1CF759D15798D3C55A9';
-    const { mockedAccountSyncResponse, userStorageMockttpController } =
-      await arrange();
     await withFixtures(
       {
         fixtures: new FixtureBuilderV2()
           .withKeyringControllerImportedAccountVault()
           .build(),
-        testSpecificMock: async (server: Mockttp) => {
-          await mockPriceApi(server);
-          userStorageMockttpController.setupPath(
-            USER_STORAGE_FEATURE_NAMES.accounts,
-            server,
-            {
-              getResponse: mockedAccountSyncResponse,
-            },
-          );
-          return mockIdentityServices(server, userStorageMockttpController);
-        },
+        testSpecificMock: mockPriceApi,
         title: this.test?.fullTitle(),
       },
       async ({ driver }) => {

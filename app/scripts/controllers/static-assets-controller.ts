@@ -12,9 +12,6 @@ import type {
   TokensControllerGetStateAction,
   Token,
 } from '@metamask/assets-controllers';
-import { toEvmCaipChainId } from '@metamask/multichain-network-controller';
-
-import fetchWithCache from '../../../shared/lib/fetch-with-cache';
 
 const CONTROLLER = 'StaticAssetsController' as const;
 
@@ -23,10 +20,6 @@ export const DEFAULT_INTERVAL_MS = 3 * 60 * 60 * 1000; // 3 hour
 export const DEFAULT_CACHE_EXPIRATION_MS = 1 * 60 * 60 * 1000; // 1 hour
 
 export const DEFAULT_TOP_X = 10;
-
-const STATIC_ASSETS_URL = 'https://static.cx.metamask.io';
-
-const TOKEN_API_BASE_URL = 'https://token.api.cx.metamask.io';
 
 export type StaticAssetsPollingFeatureFlagOptions = {
   /** The supported chains for the controller. */
@@ -83,10 +76,8 @@ export type StaticAssetsControllerOptions = {
 /**
  * The top asset type.
  *
- * @see https://token.api.cx.metamask.io/v3/tokens/trending?chainIds=eip155%3A56&minVolume24hUsd=1&minLiquidity=1&minMarketCap=1
- *
- * This is the type of the top assets that are fetched from the API.
- * It is used to transform the top assets to tokens.
+ * Legacy type retained for persisted state compatibility. 1Do does not fetch
+ * trending assets from the legacy MetaMask API.
  */
 type TopAsset = {
   assetId: CaipAssetType;
@@ -96,49 +87,28 @@ type TopAsset = {
 };
 
 /**
- * Fetch top assets for a chain from the API.
+ * Legacy top-asset fetch hook. Asset discovery is handled by Alchemy-backed
+ * controllers.
  *
  * @param params - The parameters for the fetch.
  * @param params.chainId - The chain ID.
- * @param params.cacheExpirationTime - The cache expiration time in milliseconds.
+ * @param params.cacheExpirationTime
  * @returns The top assets.
  */
 async function fetchTopAssets({
-  chainId,
-  cacheExpirationTime,
+  chainId: _chainId,
+  cacheExpirationTime: _cacheExpirationTime,
 }: {
   chainId: string;
   cacheExpirationTime: number;
 }): Promise<TopAsset[]> {
-  try {
-    if (!isStrictHexString(chainId)) {
-      return [];
-    }
-    const caip2ChainId = toEvmCaipChainId(chainId);
-    const url = new URL(`${TOKEN_API_BASE_URL}/v3/tokens/trending`);
-    url.searchParams.set('chainIds', caip2ChainId);
-    // Set the minimum volume, liquidity and market cap to 1 to fetch all tokens.
-    url.searchParams.set('minVolume24hUsd', '1');
-    url.searchParams.set('minLiquidity', '1');
-    url.searchParams.set('minMarketCap', '1');
-
-    const response = await fetchWithCache({
-      url: url.toString(),
-      fetchOptions: { method: 'GET' },
-      cacheOptions: { cacheRefreshTime: cacheExpirationTime },
-      functionName: 'fetchTopAssets',
-    });
-    return response;
-  } catch (error) {
-    // we return an empty array if the fetch top assets fails
-    return [];
-  }
+  // 1Do does not use MetaMask's token discovery service. Asset discovery is
+  // provided by the Alchemy-backed asset controllers instead.
+  return [];
 }
 
 function buildImageUrl(assetId: CaipAssetType, extension: string): string {
-  const caipAssetType = parseCaipAssetType(assetId);
-  // Most of the token has migrated to v2, hence, we use v2 instead of v1.
-  return `${STATIC_ASSETS_URL}/api/v2/tokenIcons/assets/${caipAssetType.chain.namespace}/${caipAssetType.chain.reference}/${caipAssetType.assetNamespace}/${caipAssetType.assetReference.toLowerCase()}.${extension}`;
+  return '';
 }
 
 /**

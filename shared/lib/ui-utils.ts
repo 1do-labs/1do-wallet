@@ -9,7 +9,6 @@ export const COINGECKO_LINK = 'https://www.coingecko.com/';
 export const CRYPTOCOMPARE_LINK = 'https://www.cryptocompare.com/';
 export const PRIVACY_POLICY_LINK = ONEDO_PRIVACY_LINK;
 export const METAMETRICS_SETTINGS_LINK = ONEDO_WEBSITE_LINK;
-export const SURVEY_LINK = 'https://www.getfeedback.com/r/Oczu1vP0';
 
 // TODO make sure these links are correct
 export const ETHERSCAN_PRIVACY_LINK = 'https://etherscan.io/privacyPolicy';

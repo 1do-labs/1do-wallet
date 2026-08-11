@@ -27,11 +27,8 @@ import { useIsNFT } from '../info/approve/hooks/use-is-nft';
 import { useTokenTransactionData } from '../info/hooks/useTokenTransactionData';
 import { getIsRevokeSetApprovalForAll } from '../info/utils';
 import { getIsRevokeDAIPermit } from '../utils';
-import { useSignatureEventFragment } from '../../../hooks/useSignatureEventFragment';
-import { useTransactionEventFragment } from '../../../hooks/useTransactionEventFragment';
 import { NestedTransactionTag } from '../../transactions/nested-transaction-tag';
 import { useIsUpgradeTransaction } from '../info/hooks/useIsUpgradeTransaction';
-import { getPermissionDescription } from '../info/typed-sign/typed-sign-permission/typed-sign-permission-util';
 import {
   ConfirmationLoader,
   useConfirmationNavigationOptions,
@@ -48,8 +45,6 @@ const TRANSACTION_TYPES_HIDE_BANNER: string[] = [
 function ConfirmBannerAlert({ ownerId }: { ownerId: string }) {
   const { currentConfirmation } = useConfirmContext<TransactionMeta>();
   const { generalAlerts } = useAlerts(ownerId);
-  const { updateSignatureEventFragment } = useSignatureEventFragment();
-  const { updateTransactionEventFragment } = useTransactionEventFragment();
 
   const transactionType = currentConfirmation?.type;
   const shouldHideBanner =
@@ -59,17 +54,6 @@ function ConfirmBannerAlert({ ownerId }: { ownerId: string }) {
     return null;
   }
 
-  const onClickSupportLink = () => {
-    const properties = {
-      properties: {
-        // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        external_link_clicked: 'security_alert_support_link',
-      },
-    };
-    updateSignatureEventFragment(properties);
-    updateTransactionEventFragment(properties, ownerId);
-  };
   return (
     <Box marginTop={3}>
       {generalAlerts.map((alert) => (
@@ -83,7 +67,6 @@ function ConfirmBannerAlert({ ownerId }: { ownerId: string }) {
             details={alert.alertDetails}
             reportUrl={alert.reportUrl}
             children={alert.content}
-            onClickSupportLink={onClickSupportLink}
           />
         </Box>
       ))}
@@ -140,8 +123,6 @@ const getTitle = (
         } else {
           title = t('confirmTitlePermitTokens');
         }
-      } else if ((confirmation as SignatureRequestType).decodedPermission) {
-        title = t('confirmTitlePermission');
       } else {
         title = t('confirmTitleSignature');
       }
@@ -217,16 +198,6 @@ const getDescription = (
 
         return t('confirmTitleDescPermitSignature');
       }
-      if ((confirmation as SignatureRequestType).decodedPermission) {
-        const permissionType = (confirmation as SignatureRequestType)
-          .decodedPermission?.permission?.type;
-
-        return getPermissionDescription(
-          t as ReturnType<typeof useI18nContext>,
-          permissionType,
-        );
-      }
-
       return t('confirmTitleDescSign');
     case TransactionType.tokenMethodApprove:
       if (isNFT) {

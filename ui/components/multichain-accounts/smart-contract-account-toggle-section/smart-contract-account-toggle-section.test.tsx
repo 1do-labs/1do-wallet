@@ -3,6 +3,7 @@ import { fireEvent, screen, waitFor } from '@testing-library/react';
 import { Hex } from '@metamask/utils';
 import { renderWithProvider } from '../../../../test/lib/render-helpers-navigate';
 import { enLocale as messages } from '../../../../test/lib/i18n-helpers';
+import baseMockState from '../../../../test/data/mock-state.json';
 import configureStore from '../../../store/store';
 import {
   useEIP7702Networks,
@@ -10,6 +11,7 @@ import {
 } from '../../../pages/confirmations/hooks/useEIP7702Networks';
 import { useEIP7702Account } from '../../../pages/confirmations/hooks/useEIP7702Account';
 import { useBatchAuthorizationRequests } from '../../../pages/confirmations/hooks/useBatchAuthorizationRequests';
+import { useOneDoSmartAccountStatus } from '../../../hooks/accounts/useOneDoSmartAccountStatus';
 import ZENDESK_URLS from '../../../helpers/constants/zendesk-url';
 import { SmartContractAccountToggleSection } from './smart-contract-account-toggle-section';
 
@@ -17,6 +19,7 @@ import { SmartContractAccountToggleSection } from './smart-contract-account-togg
 jest.mock('../../../pages/confirmations/hooks/useEIP7702Networks');
 jest.mock('../../../pages/confirmations/hooks/useEIP7702Account');
 jest.mock('../../../pages/confirmations/hooks/useBatchAuthorizationRequests');
+jest.mock('../../../hooks/accounts/useOneDoSmartAccountStatus');
 
 // Mock global.platform.openTab
 const mockOpenTab = jest.fn();
@@ -36,16 +39,24 @@ const mockUseBatchAuthorizationRequests =
   useBatchAuthorizationRequests as jest.MockedFunction<
     typeof useBatchAuthorizationRequests
   >;
+const mockUseOneDoSmartAccountStatus =
+  useOneDoSmartAccountStatus as jest.MockedFunction<
+    typeof useOneDoSmartAccountStatus
+  >;
 
 // Mock functions for the toggle hooks
 const mockDowngradeAccount = jest.fn();
 const mockUpgradeAccount = jest.fn();
 const mockIsUpgraded = jest.fn();
+const mockGetDelegationAddress = jest.fn();
+const mockGetRuntimeDeploymentStatus = jest.fn();
 
 const mockAddress = '0x742d35Cc6634C0532925a3b8D4E8f3c9B26e6e6e';
 
 const mockState = {
+  ...baseMockState,
   appState: {
+    ...baseMockState.appState,
     accountDetailsAddress: mockAddress,
   },
 };
@@ -93,12 +104,23 @@ describe('SmartContractAccountToggleSection', () => {
     // Mock the hooks used by SmartContractAccountToggle
     mockUseEIP7702Account.mockReturnValue({
       isUpgraded: mockIsUpgraded,
+      getDelegationAddress: mockGetDelegationAddress,
+      getRuntimeDeploymentStatus: mockGetRuntimeDeploymentStatus,
       downgradeAccount: mockDowngradeAccount,
       upgradeAccount: mockUpgradeAccount,
     });
 
     mockUseBatchAuthorizationRequests.mockReturnValue({
       hasPendingRequests: false,
+    });
+
+    mockUseOneDoSmartAccountStatus.mockReturnValue({
+      isActive: false,
+      isChecking: false,
+      hasError: false,
+      pendingUpgradeTransaction: undefined,
+      refresh: jest.fn().mockResolvedValue(false),
+      setActive: jest.fn(),
     });
   });
 
@@ -150,9 +172,10 @@ describe('SmartContractAccountToggleSection', () => {
 
       expect(screen.getByText('Ethereum Mainnet')).toBeInTheDocument();
       expect(screen.getByText('Sepolia')).toBeInTheDocument();
-      // Check that toggle checkboxes are rendered (2 toggles) + 1 learn more button
+      // Check that the network toggles and Runtime upgrade action are rendered.
       expect(screen.getAllByRole('checkbox')).toHaveLength(2);
-      expect(screen.getAllByRole('button')).toHaveLength(1); // Just the learn more button
+      expect(screen.getAllByRole('button')).toHaveLength(2);
+      expect(screen.getByTestId('smart-account-upgrade-button')).toBeDisabled();
       expect(container).toMatchSnapshot();
     });
 

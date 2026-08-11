@@ -11,11 +11,6 @@ import {
 import { CreateEthAccount } from '../create-eth-account';
 import { getHdKeyringOfSelectedAccountOrPrimaryKeyring } from '../../../selectors';
 import { useI18nContext } from '../../../hooks/useI18nContext';
-import { MetaMetricsContext } from '../../../contexts/metametrics';
-import {
-  MetaMetricsEventCategory,
-  MetaMetricsEventName,
-} from '../../../../shared/constants/metametrics';
 import { SrpList } from '../multi-srp/srp-list';
 
 const EVM_WALLET_TYPE = 'evm' as const;
@@ -30,7 +25,6 @@ type EditAccountAddAccountFormProps = {
 export const EditAccountAddAccountForm: React.FC<
   EditAccountAddAccountFormProps
 > = ({ accountType, onActionComplete, onBack, onClose }) => {
-  const { trackEvent } = useContext(MetaMetricsContext);
   const t = useI18nContext();
   const [showSrpSelection, setShowSrpSelection] = useState(false);
 
@@ -42,17 +36,8 @@ export const EditAccountAddAccountForm: React.FC<
   );
 
   const onSelectSrp = useCallback(() => {
-    trackEvent({
-      category: MetaMetricsEventCategory.Accounts,
-      event: MetaMetricsEventName.SecretRecoveryPhrasePickerClicked,
-      properties: {
-        // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        button_type: 'picker',
-      },
-    });
     setShowSrpSelection((previous) => !previous);
-  }, [trackEvent]);
+  }, []);
 
   return (
     <ModalContent>

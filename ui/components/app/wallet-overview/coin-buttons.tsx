@@ -2,6 +2,7 @@ import React, { useCallback, useContext, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { CaipChainId } from '@metamask/utils';
+import type { InternalAccount } from '@metamask/keyring-internal-api';
 
 import { transitionForward } from '../../ui/transition';
 
@@ -15,11 +16,6 @@ import {
 import { getNetworkConfigurationIdByChainId } from '../../../selectors';
 import { getSelectedAccountGroup } from '../../../selectors/multichain-accounts/account-tree';
 import Tooltip from '../../ui/tooltip';
-import {
-  MetaMetricsEventCategory,
-  MetaMetricsEventName,
-} from '../../../../shared/constants/metametrics';
-import { MetaMetricsContext } from '../../../contexts/metametrics';
 import {
   BlockSize,
   Display,
@@ -57,7 +53,6 @@ const CoinButtons = ({
   const t = useContext(I18nContext);
   const dispatch = useDispatch();
 
-  const { trackEvent } = useContext(MetaMetricsContext);
   const [showReceiveModal, setShowReceiveModal] = useState(false);
 
   const { address: selectedAddress } = account;
@@ -127,27 +122,6 @@ const CoinButtons = ({
   }, [currentChainId, multichainChainId, chainId, networks, dispatch]);
 
   const handleSendOnClick = useCallback(async () => {
-    trackEvent(
-      {
-        event: MetaMetricsEventName.SendStarted,
-        category: MetaMetricsEventCategory.Navigation,
-        properties: {
-          // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-          // eslint-disable-next-line @typescript-eslint/naming-convention
-          account_type: account.type,
-          // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-          // eslint-disable-next-line @typescript-eslint/naming-convention
-          token_symbol: nativeToken,
-          location: 'Home',
-          text: 'Send',
-          // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-          // eslint-disable-next-line @typescript-eslint/naming-convention
-          chain_id: chainId,
-        },
-      },
-      { excludeMetaMetricsId: false },
-    );
-
     // Native Send flow
     await setCorrectChain();
     const params =
@@ -159,23 +133,11 @@ const CoinButtons = ({
     nativeToken,
     navigate,
     setCorrectChain,
-    trackEvent,
     trackingLocation,
   ]);
 
   const handleReceiveOnClick = useCallback(() => {
     trace({ name: TraceName.ReceiveModal });
-    trackEvent({
-      event: MetaMetricsEventName.NavReceiveButtonClicked,
-      category: MetaMetricsEventCategory.Navigation,
-      properties: {
-        text: 'Receive',
-        location: trackingLocation,
-        // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        chain_id: chainId,
-      },
-    });
 
     if (selectedAccountGroup) {
       // Navigate to the multichain address list page with receive source
@@ -188,7 +150,7 @@ const CoinButtons = ({
       // Show the traditional receive modal
       setShowReceiveModal(true);
     }
-  }, [selectedAccountGroup, navigate, trackEvent, trackingLocation, chainId]);
+  }, [selectedAccountGroup, navigate, trackingLocation, chainId]);
 
   return (
     <Box

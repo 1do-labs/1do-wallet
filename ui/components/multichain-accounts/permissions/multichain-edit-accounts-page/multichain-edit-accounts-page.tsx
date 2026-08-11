@@ -15,11 +15,6 @@ import {
   BackgroundColor,
   TextVariant,
 } from '../../../../helpers/constants/design-system';
-import {
-  MetaMetricsEventCategory,
-  MetaMetricsEventName,
-} from '../../../../../shared/constants/metametrics';
-import { MetaMetricsContext } from '../../../../contexts/metametrics';
 import { MultichainAccountList } from '../../multichain-account-list';
 import { getAccountTree } from '../../../../selectors/multichain-accounts/account-tree';
 import { AccountGroupWithInternalAccounts } from '../../../../selectors/multichain-accounts/account-tree.types';
@@ -47,7 +42,6 @@ export const MultichainEditAccountsPage: React.FC<
   onClose,
 }) => {
   const t = useI18nContext();
-  const { trackEvent } = useContext(MetaMetricsContext);
   const [selectedAccountGroups, setSelectedAccountGroups] = useState(
     defaultSelectedAccountGroups,
   );
@@ -105,21 +99,7 @@ export const MultichainEditAccountsPage: React.FC<
     );
 
     onSubmit(selectedAccountGroups);
-    trackEvent({
-      category: MetaMetricsEventCategory.Permissions,
-      event: MetaMetricsEventName.UpdatePermissionedAccounts,
-      properties: {
-        addedAccounts: addedAccounts.length,
-        removedAccounts: removedAccounts.length,
-        location: 'Edit Accounts Modal',
-      },
-    });
-  }, [
-    selectedAccountGroups,
-    defaultSelectedAccountGroups,
-    onSubmit,
-    trackEvent,
-  ]);
+  }, [selectedAccountGroups, defaultSelectedAccountGroups, onSubmit]);
 
   return (
     <Page

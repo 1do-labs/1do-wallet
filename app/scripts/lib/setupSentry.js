@@ -8,16 +8,11 @@ import { isManifestV3 } from '../../../shared/lib/mv3.utils';
 import { getManifestFlags } from '../../../shared/lib/manifestFlags';
 import { getSentryRelease } from '../../../shared/lib/sentry-release';
 import extractEthjsErrorMessage from './extractEthjsErrorMessage';
-import { metaMetricsIntegration } from './sentry-metametrics';
-import {
-  getMetaMetricsState,
-  getMetaMetricsStateFromAppState,
-  getState,
-} from './sentry-get-state';
-import { makeTransport } from './sentry-make-transport';
 import { getInstallType, initInstallType } from './install-type';
 
 const internalLog = createModuleLogger(log, 'internal');
+
+const getState = () => globalThis.stateHooks?.getSentryState?.() || {};
 
 /* eslint-disable prefer-destructuring */
 // Destructuring breaks the inlining of the environment variables
@@ -108,10 +103,6 @@ function getClientOptions() {
         enableLongAnimationFrame: true,
         shouldCreateSpanForRequest,
       }),
-      metaMetricsIntegration({
-        getMetaMetricsState,
-        log,
-      }),
     ],
     release: RELEASE,
     // Client reports are automatically sent when a page's visibility changes to
@@ -124,7 +115,6 @@ function getClientOptions() {
     tracesSampleRate: getTracesSampleRate(sentryTarget),
     // If we are reporting to SENTRY_DSN_PERFORMANCE, we want to ignore all errors.
     ignoreErrors: sentryTarget === SENTRY_DSN_PERFORMANCE ? [/.*/u] : undefined,
-    transport: makeTransport,
   };
 }
 
@@ -280,15 +270,7 @@ function hideUrlIfNotInternal(url) {
  */
 export function beforeBreadcrumb() {
   return (breadcrumb) => {
-    if (!getState) {
-      return null;
-    }
-    const appState = getState();
-    const state = getMetaMetricsStateFromAppState(appState);
-    if (
-      !state?.participateInMetaMetrics ||
-      breadcrumb?.category === 'ui.input'
-    ) {
+    if (breadcrumb?.category === 'ui.input') {
       return null;
     }
     const newBreadcrumb = removeUrlsFromBreadCrumb(breadcrumb);

@@ -1,11 +1,6 @@
 import { NameOrigin, NameType } from '@metamask/name-controller';
-import { Hex } from '@metamask/utils';
 import { useSelector } from 'react-redux';
 import { useMemo } from 'react';
-import {
-  EXPERIENCES_TYPE,
-  FIRST_PARTY_CONTRACT_NAMES,
-} from '../../shared/constants/first-party-contracts';
 import { toChecksumHexAddress } from '../../shared/lib/hexstring-utils';
 import { getDomainResolutions } from '../ducks/domains';
 import { selectERC20TokensByChain } from '../selectors';
@@ -44,7 +39,6 @@ export function useDisplayNames(
   requests: UseDisplayNameRequest[],
 ): UseDisplayNameResponse[] {
   const nameEntries = useNames(requests);
-  const firstPartyContractNames = useFirstPartyContractNames(requests);
   const trustSignals = useTrustSignals(
     requests.map((req) => ({ ...req, chainId: req.variation })),
   );
@@ -55,7 +49,6 @@ export function useDisplayNames(
 
   return requests.map((_request, index) => {
     const nameEntry = nameEntries[index];
-    const firstPartyContractName = firstPartyContractNames[index];
     const trustSignal = trustSignals[index];
     const erc20Token = erc20Tokens[index];
     const watchedNftName = watchedNFTNames[index];
@@ -68,9 +61,6 @@ export function useDisplayNames(
       // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31880
       // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
       nameEntry?.name ||
-      // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31880
-      // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
-      firstPartyContractName ||
       // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31880
       // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
       // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31880
@@ -183,29 +173,6 @@ function useDomainResolutions(nameRequests: UseDisplayNameRequest[]) {
     const ensName = matchedResolution?.domainName;
 
     return ensName;
-  });
-}
-
-function useFirstPartyContractNames(nameRequests: UseDisplayNameRequest[]) {
-  return nameRequests.map(({ type, value, variation }) => {
-    if (type !== NameType.ETHEREUM_ADDRESS) {
-      return undefined;
-    }
-
-    const normalizedContractAddress = value.toLowerCase();
-
-    const contractNames = Object.keys(
-      FIRST_PARTY_CONTRACT_NAMES,
-    ) as EXPERIENCES_TYPE[];
-
-    return contractNames.find((contractName) => {
-      const currentContractAddress =
-        FIRST_PARTY_CONTRACT_NAMES[contractName]?.[variation as Hex];
-
-      return (
-        currentContractAddress?.toLowerCase() === normalizedContractAddress
-      );
-    });
   });
 }
 

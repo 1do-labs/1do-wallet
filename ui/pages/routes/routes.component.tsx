@@ -46,9 +46,6 @@ import {
   MULTICHAIN_ACCOUNT_DETAILS_PAGE_ROUTE,
   MULTICHAIN_WALLET_DETAILS_PAGE_ROUTE,
   MULTICHAIN_SMART_ACCOUNT_PAGE_ROUTE,
-  GATOR_PERMISSIONS,
-  TOKEN_TRANSFER_ROUTE,
-  REVIEW_GATOR_PERMISSIONS_ROUTE,
   DECRYPT_MESSAGE_REQUEST_PATH,
   ENCRYPTION_PUBLIC_KEY_REQUEST_PATH,
   CONTACTS_ROUTE,
@@ -100,8 +97,6 @@ import { mmLazy } from '../../helpers/utils/mm-lazy';
 import { type Confirmation } from '../confirmations/types/confirm';
 import { MultichainAccountAddressListPage } from '../multichain-accounts/multichain-account-address-list-page';
 import { MultichainAccountPrivateKeyListPage } from '../multichain-accounts/multichain-account-private-key-list-page';
-import MultichainAccountIntroModalContainer from '../../components/app/modals/multichain-accounts/intro-modal';
-import { useMultichainAccountsIntroModal } from '../../hooks/useMultichainAccountsIntroModal';
 import { AccountList } from '../multichain-accounts/account-list';
 import { AddWalletPage } from '../multichain-accounts/add-wallet-page';
 import { WalletDetailsPage } from '../multichain-accounts/wallet-details-page';
@@ -110,7 +105,6 @@ import { LegacyLayout } from '../../layouts/legacy-layout';
 import { RequireAuthenticated } from '../../layouts/require-authenticated';
 import { RequireOnboarded } from '../../layouts/require-onboarded';
 import { contactsRoutes } from '../contacts';
-import RequireBasicFunctionality from '../../helpers/higher-order-components/require-basic-functionality/require-basic-functionality';
 import { getCurrencyRateControllerCurrentCurrency } from '../../../shared/lib/selectors/assets-migration';
 import { Toaster } from '../../components/ui/toast/toast';
 import { ToastListener } from '../../app/toast-listener/toast-listener';
@@ -160,24 +154,6 @@ const PermissionsPage = mmLazy(
   () =>
     import(
       '../../components/multichain/pages/permissions-page/permissions-page.js'
-    ),
-);
-const GatorPermissionsPage = mmLazy(
-  () =>
-    import(
-      '../../components/multichain/pages/gator-permissions/gator-permissions-page.tsx'
-    ),
-);
-const GatorPermissionsTokenTransferPermissionsPage = mmLazy(
-  () =>
-    import(
-      '../../components/multichain/pages/gator-permissions/token-transfer/token-transfer-page.tsx'
-    ),
-);
-const GatorPermissionsReviewPermissionsPage = mmLazy(
-  () =>
-    import(
-      '../../components/multichain/pages/gator-permissions/review-permissions/review-gator-permissions-page.tsx'
     ),
 );
 const Home = mmLazy(() => import('../home/index.js'));
@@ -309,18 +285,6 @@ export const routeConfig = [
         element: <PermissionsPage />,
       },
       {
-        path: GATOR_PERMISSIONS,
-        element: <GatorPermissionsPage />,
-      },
-      {
-        path: `${TOKEN_TRANSFER_ROUTE}/:origin?`,
-        element: <GatorPermissionsTokenTransferPermissionsPage />,
-      },
-      {
-        path: `${REVIEW_GATOR_PERMISSIONS_ROUTE}/:chainId/:permissionGroupName/:origin?`,
-        element: <GatorPermissionsReviewPermissionsPage />,
-      },
-      {
         path: REVIEW_PERMISSIONS,
         element: <MultichainReviewPermissions />,
       },
@@ -422,10 +386,6 @@ export default function Routes() {
   );
 
   const pendingConfirmations = useAppSelector(getUnapprovedConfirmations);
-
-  // Multichain intro modal logic (extracted to custom hook)
-  const { showMultichainIntroModal, setShowMultichainIntroModal } =
-    useMultichainAccountsIntroModal(isUnlocked, location);
 
   const isUsingRedesignedConfirmationType = useIsRedesignedConfirmationType();
 
@@ -578,12 +538,6 @@ export default function Routes() {
           onClose={() => dispatch(hideDeprecatedNetworkModal())}
         />
       ) : null}
-      {showMultichainIntroModal ? (
-        <MultichainAccountIntroModalContainer
-          onClose={() => setShowMultichainIntroModal(false)}
-        />
-      ) : null}
-
       {isLoadingShown ? <Loading loadingMessage={loadMessage} /> : null}
 
       {renderRoutes()}

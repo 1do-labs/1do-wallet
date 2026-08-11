@@ -3,7 +3,6 @@ import {
   TransactionType,
 } from '@metamask/transaction-controller';
 import React, { useCallback } from 'react';
-import { MetaMetricsEventLocation } from '../../../../../../shared/constants/metametrics';
 import {
   Box,
   ButtonIcon,
@@ -47,7 +46,6 @@ export const WalletInitiatedHeader = () => {
 
     if (isNativeSend || isERC20TokenSend || isNFTTokenSend) {
       onCancel({
-        location: MetaMetricsEventLocation.Confirmation,
         navigateBackForSend: true,
       });
     }

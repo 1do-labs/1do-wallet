@@ -41,24 +41,6 @@ export enum TransactionGroupStatus {
 }
 
 /**
- * Statuses that are specific to Smart Transactions.
- */
-export enum SmartTransactionStatus {
-  /** It can be cancelled for various reasons. */
-  // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-  // eslint-disable-next-line @typescript-eslint/naming-convention
-  cancelled = 'cancelled',
-  /** Smart transaction is being processed. */
-  // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-  // eslint-disable-next-line @typescript-eslint/naming-convention
-  pending = 'pending',
-  /** Smart transaction was successfully mined. */
-  // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-  // eslint-disable-next-line @typescript-eslint/naming-convention
-  success = 'success',
-}
-
-/**
  * Types that are specific to the transaction approval amount.
  */
 export enum TransactionApprovalAmountType {
@@ -145,73 +127,6 @@ export enum TransactionGroupCategory {
   // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
   // eslint-disable-next-line @typescript-eslint/naming-convention
   redeposit = 'redeposit',
-}
-
-/**
- * Defines the possible types
- */
-export enum TransactionMetaMetricsEvent {
-  /**
-   * All transactions, except incoming ones, are added to the controller state
-   * in an unapproved status. When this happens we fire the Transaction Added
-   * event to show that the transaction has been added to the user's MetaMask.
-   */
-  // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-  // eslint-disable-next-line @typescript-eslint/naming-convention
-  added = 'Transaction Added',
-  /**
-   * When an unapproved transaction is in the controller state, MetaMask will
-   * render a confirmation screen for that transaction. If the user approves
-   * the transaction we fire this event to indicate that the user has approved
-   * the transaction for submission to the network.
-   */
-  // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-  // eslint-disable-next-line @typescript-eslint/naming-convention
-  approved = 'Transaction Approved',
-  /**
-   * All transactions that are submitted will finalized (eventually) by either
-   * being dropped, failing or being confirmed. When this happens we track this
-   * event, along with the status.
-   */
-  // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-  // eslint-disable-next-line @typescript-eslint/naming-convention
-  finalized = 'Transaction Finalized',
-  /**
-   * When an unapproved transaction is in the controller state, MetaMask will
-   * render a confirmation screen for that transaction. If the user rejects the
-   * transaction we fire this event to indicate that the user has rejected the
-   * transaction. It will be removed from state as a result.
-   */
-  // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-  // eslint-disable-next-line @typescript-eslint/naming-convention
-  rejected = 'Transaction Rejected',
-  /**
-   * After a transaction is approved by the user, it is then submitted to the
-   * network for inclusion in a block. When this happens we fire the
-   * Transaction Submitted event to indicate that MetaMask is submitting a
-   * transaction at the user's request.
-   */
-  // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-  // eslint-disable-next-line @typescript-eslint/naming-convention
-  submitted = 'Transaction Submitted',
-}
-
-export enum AnonymousTransactionMetaMetricsEvent {
-  // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-  // eslint-disable-next-line @typescript-eslint/naming-convention
-  added = 'Transaction Added Anon',
-  // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-  // eslint-disable-next-line @typescript-eslint/naming-convention
-  approved = 'Transaction Approved Anon',
-  // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-  // eslint-disable-next-line @typescript-eslint/naming-convention
-  finalized = 'Transaction Finalized Anon',
-  // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-  // eslint-disable-next-line @typescript-eslint/naming-convention
-  rejected = 'Transaction Rejected Anon',
-  // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-  // eslint-disable-next-line @typescript-eslint/naming-convention
-  submitted = 'Transaction Submitted Anon',
 }
 
 /**

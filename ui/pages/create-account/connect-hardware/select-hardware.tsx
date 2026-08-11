@@ -37,11 +37,9 @@ import {
   QrHardwareDeviceNames,
 } from '../../../../shared/constants/hardware-wallets';
 import ZENDESK_URLS from '../../../helpers/constants/zendesk-url';
-import { MetaMetricsEventName } from '../../../../shared/constants/metametrics';
 import { openWindow } from '../../../helpers/utils/window';
 import { getBrowserName } from '../../../../shared/lib/browser-runtime.utils';
 import { PLATFORM_FIREFOX } from '../../../../shared/constants/app';
-import { MetaMetricsContext } from '../../../contexts/metametrics';
 import { useI18nContext } from '../../../hooks/useI18nContext';
 
 // Not all browsers have usb support. In particular, Firefox does
@@ -235,24 +233,13 @@ const SelectHardware = ({
   ledgerTransportType,
 }: SelectHardwareProps) => {
   const t = useI18nContext();
-  const { trackEvent } = useContext(MetaMetricsContext);
   const [selectedDevice, setSelectedDevice] = useState<string | null>(null);
   const [trezorRequestDevicePending, setTrezorRequestDevicePending] =
     useState(false);
 
   const trackMarketingEvent = useCallback(
-    (type: string, device: string) => {
-      trackEvent({
-        event: MetaMetricsEventName.HardwareWalletMarketingButtonClicked,
-        properties: {
-          // eslint-disable-next-line @typescript-eslint/naming-convention
-          button_type: type,
-          // eslint-disable-next-line @typescript-eslint/naming-convention
-          device_type: upperFirst(device),
-        },
-      });
-    },
-    [trackEvent],
+    (type: string, device: string) => undefined,
+    [],
   );
 
   const connect = useCallback(async () => {

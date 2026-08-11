@@ -4,7 +4,6 @@ import {
   DecryptMessageParams,
 } from '@metamask/message-manager';
 import type { DecryptMessageManagerMessenger } from '@metamask/message-manager';
-import { MetaMetricsEventCategory } from '../../../shared/constants/metametrics';
 import {
   DecryptMessageController,
   DecryptMessageControllerMessenger,
@@ -83,7 +82,6 @@ describe('DecryptMessageController', () => {
   const keyringControllerMock = createKeyringControllerMock();
   const messengerMock = createMessengerMock();
   const managerMessengerMock = createManagerMessengerMock();
-  const metricsEventMock = jest.fn();
 
   const decryptMessageManagerMock =
     createDecryptMessageManagerMock<DecryptMessageManager>();
@@ -126,7 +124,6 @@ describe('DecryptMessageController', () => {
 
       // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31973
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      metricsEvent: metricsEventMock as any,
       manager: new DecryptMessageManager({
         messenger: managerMessengerMock,
       }),
@@ -294,20 +291,12 @@ describe('DecryptMessageController', () => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } as any);
 
-    await decryptMessageController.rejectUnapproved('reason to cancel');
+    await decryptMessageController.rejectUnapproved();
 
     expect(decryptMessageManagerMock.rejectMessage).toBeCalledTimes(1);
     expect(decryptMessageManagerMock.rejectMessage).toBeCalledWith(
       messageIdMock,
     );
-    expect(metricsEventMock).toBeCalledTimes(1);
-    expect(metricsEventMock).toBeCalledWith({
-      event: 'reason to cancel',
-      category: MetaMetricsEventCategory.Messages,
-      properties: {
-        action: 'Decrypt Message Request',
-      },
-    });
   });
 
   describe('metadata', () => {

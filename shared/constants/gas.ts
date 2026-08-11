@@ -1,8 +1,5 @@
-const DISABLED_REMOTE_API_BASE_URL = 'http://127.0.0.1:9';
-
-export const GAS_API_BASE_URL = 'https://gas.api.cx.metamask.io';
-export const GAS_CLIENT_ID = 'extension';
-export const TOKEN_API_BASE_URL = 'https://token.api.cx.metamask.io';
+export const GAS_API_BASE_URL = 'http://127.0.0.1:9';
+export const GAS_CLIENT_ID = '1do';
 
 export const CUSTOM_GAS_ESTIMATE = 'custom';
 
@@ -30,6 +27,8 @@ export const EditGasModes = {
   speedUp: 'speed-up',
   modifyInPlace: 'modify-in-place',
 } as const;
+
+export type EditGasModes = (typeof EditGasModes)[keyof typeof EditGasModes];
 
 export const PriorityLevels = {
   low: 'low',

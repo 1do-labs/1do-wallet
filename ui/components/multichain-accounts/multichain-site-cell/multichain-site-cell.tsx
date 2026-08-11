@@ -11,11 +11,6 @@ import {
 import { PreferredAvatar } from '../../app/preferred-avatar';
 import { useI18nContext } from '../../../hooks/useI18nContext';
 import { EditNetworksModal } from '../../multichain/edit-networks-modal';
-import { MetaMetricsContext } from '../../../contexts/metametrics';
-import {
-  MetaMetricsEventCategory,
-  MetaMetricsEventName,
-} from '../../../../shared/constants/metametrics';
 import {
   AccountGroupWithInternalAccounts,
   MultichainAccountsState,
@@ -49,7 +44,6 @@ export const MultichainSiteCell: React.FC<MultichainSiteCellProps> = ({
   hideAllToasts = () => undefined,
 }) => {
   const t = useI18nContext();
-  const { trackEvent } = useContext(MetaMetricsContext);
   const allNetworks = [...nonTestNetworks, ...testNetworks];
   const seedAddressIcon = useSelector((state: MultichainAccountsState) => {
     // Only get seed address if we have a valid account group ID
@@ -77,28 +71,12 @@ export const MultichainSiteCell: React.FC<MultichainSiteCellProps> = ({
 
   const handleOpenAccountsModal = () => {
     hideAllToasts?.();
-    trackEvent({
-      category: MetaMetricsEventCategory.Navigation,
-      event: MetaMetricsEventName.ViewPermissionedAccounts,
-      properties: {
-        location:
-          'Connect view (permissions tab), Permissions toast, Permissions (dapp)',
-      },
-    });
     showEditAccounts();
   };
 
   const handleOpenNetworksModal = () => {
     hideAllToasts?.();
     setShowEditNetworksModal(true);
-    trackEvent({
-      category: MetaMetricsEventCategory.Navigation,
-      event: MetaMetricsEventName.ViewPermissionedNetworks,
-      properties: {
-        location:
-          'Connect view (permissions tab), Permissions toast, Permissions (dapp)',
-      },
-    });
   };
 
   const accountMessageConnectedState = useMemo(() => {

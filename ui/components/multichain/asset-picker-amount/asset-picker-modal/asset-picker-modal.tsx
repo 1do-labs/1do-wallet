@@ -367,6 +367,17 @@ export function AssetPickerModal({
 
       filteredTokensAddresses.add(getTokenKey(token.address, token.chainId));
 
+      const tokenName =
+        'name' in token && typeof token.name === 'string'
+          ? token.name
+          : undefined;
+      let tokenImage: string | undefined;
+      if ('image' in token && typeof token.image === 'string') {
+        tokenImage = token.image;
+      } else if ('iconUrl' in token && typeof token.iconUrl === 'string') {
+        tokenImage = token.iconUrl;
+      }
+
       const tokenWithBalanceData =
         !customTokenListGenerator && isStrictHexString(token.address)
           ? ({
@@ -374,10 +385,10 @@ export function AssetPickerModal({
               ...token,
               type: AssetType.token,
               name:
-                token.name ??
+                tokenName ??
                 evmTokenMetadataByAddress[token.address.toLowerCase()]?.name,
-              image: token.image ?? token.iconUrl,
-            } as AssetWithDisplayData<ERC20Asset>)
+              image: tokenImage,
+            } as unknown as AssetWithDisplayData<ERC20Asset>)
           : (token as unknown as AssetWithDisplayData<ERC20Asset>);
 
       // Add selected asset to the top of the list if it is the selected asset

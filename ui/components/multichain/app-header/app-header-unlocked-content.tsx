@@ -19,12 +19,7 @@ import {
   Text,
 } from '../../component-library';
 import { MultichainTriggeredAddressRowsList } from '../../multichain-accounts/multichain-address-rows-triggered-list';
-import {
-  MetaMetricsEventName,
-  MetaMetricsEventCategory,
-} from '../../../../shared/constants/metametrics';
 import { useI18nContext } from '../../../hooks/useI18nContext';
-import { setShowSupportDataConsentModal } from '../../../store/actions';
 import { AccountPicker } from '../account-picker';
 import { GlobalMenuDrawerWithList } from '../global-menu-drawer';
 import {
@@ -35,15 +30,10 @@ import {
 // TODO: Remove restricted import
 // eslint-disable-next-line import-x/no-restricted-paths
 import { normalizeSafeAddress } from '../../../../app/scripts/lib/multichain/address';
-import { MetaMetricsContext } from '../../../contexts/metametrics';
 import { useCopyToClipboard } from '../../../hooks/useCopyToClipboard';
 import { ACCOUNT_LIST_PAGE_ROUTE } from '../../../helpers/constants/routes';
 import { transitionForward } from '../../ui/transition';
-import VisitSupportDataConsentModal from '../../app/modals/visit-support-data-consent-modal';
-import {
-  getShowSupportDataConsentModal,
-  setShowCopyAddressToast,
-} from '../../../ducks/app/app';
+import { setShowCopyAddressToast } from '../../../ducks/app/app';
 import {
   getAccountListStats,
   getMultichainAccountGroupById,
@@ -74,7 +64,6 @@ export const AppHeaderUnlockedContent = ({
   disableAccountPicker,
   menuRef,
 }: AppHeaderUnlockedContentProps) => {
-  const { trackEvent } = useContext(MetaMetricsContext);
   const t = useI18nContext();
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -107,10 +96,6 @@ export const AppHeaderUnlockedContent = ({
     clearDelayMs: null,
   });
 
-  const showSupportDataConsentModal = useSelector(
-    getShowSupportDataConsentModal,
-  );
-
   const closeAccountOptionsMenu = useCallback(() => {
     setSearchParams((prev) => {
       prev.delete('drawerOpen');
@@ -135,15 +120,6 @@ export const AppHeaderUnlockedContent = ({
 
   const handleMainMenuToggle = useCallback(() => {
     const isMenuOpen = !accountOptionsMenuOpen;
-    if (isMenuOpen) {
-      trackEvent({
-        event: MetaMetricsEventName.NavMainMenuOpened,
-        category: MetaMetricsEventCategory.Navigation,
-        properties: {
-          location: 'Home',
-        },
-      });
-    }
 
     setSearchParams((prev) => {
       if (isMenuOpen) {
@@ -153,7 +129,7 @@ export const AppHeaderUnlockedContent = ({
       }
       return prev;
     });
-  }, [accountOptionsMenuOpen, trackEvent, setSearchParams]);
+  }, [accountOptionsMenuOpen, setSearchParams]);
 
   const multichainAccountAppContent = useMemo(() => {
     return (
@@ -176,22 +152,6 @@ export const AppHeaderUnlockedContent = ({
                 op: TraceOperation.AccountUi,
               });
               transitionForward(() => navigate(ACCOUNT_LIST_PAGE_ROUTE));
-              trackEvent({
-                event: MetaMetricsEventName.NavAccountMenuOpened,
-                category: MetaMetricsEventCategory.Navigation,
-                properties: {
-                  location: 'Home',
-                  // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-                  // eslint-disable-next-line @typescript-eslint/naming-convention
-                  pinned_count: accountListStats.pinnedCount,
-                  // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-                  // eslint-disable-next-line @typescript-eslint/naming-convention
-                  hidden_count: accountListStats.hiddenCount,
-                  // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-                  // eslint-disable-next-line @typescript-eslint/naming-convention
-                  total_accounts: accountListStats.totalAccounts,
-                },
-              });
             }}
             disabled={disableAccountPicker}
             paddingLeft={2}
@@ -231,7 +191,6 @@ export const AppHeaderUnlockedContent = ({
     isDefaultAddressEnabled,
     selectedMultichainAccountId,
     navigate,
-    trackEvent,
     accountListStats,
   ]);
 
@@ -296,10 +255,6 @@ export const AppHeaderUnlockedContent = ({
           anchorElement={menuRef.current}
           isOpen={accountOptionsMenuOpen}
           onClose={closeAccountOptionsMenu}
-        />
-        <VisitSupportDataConsentModal
-          isOpen={showSupportDataConsentModal}
-          onClose={() => dispatch(setShowSupportDataConsentModal(false))}
         />
       </BoxDeprecated>
     </>

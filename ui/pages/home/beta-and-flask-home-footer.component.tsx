@@ -1,17 +1,10 @@
 import React, { useContext } from 'react';
-import {
-  MetaMetricsContextProp,
-  MetaMetricsEventCategory,
-  MetaMetricsEventName,
-} from '../../../shared/constants/metametrics';
-import { MetaMetricsContext } from '../../contexts/metametrics';
 import { SUPPORT_LINK } from '../../helpers/constants/common';
 import { isFlask } from '../../../shared/lib/build-types';
 import { useI18nContext } from '../../hooks/useI18nContext';
 
 export default function BetaAndFlaskHomeFooter() {
   const t = useI18nContext();
-  const { trackEvent } = useContext(MetaMetricsContext);
 
   return (
     <>
@@ -19,22 +12,7 @@ export default function BetaAndFlaskHomeFooter() {
         target="_blank"
         rel="noopener noreferrer"
         href={SUPPORT_LINK}
-        onClick={() => {
-          trackEvent(
-            {
-              category: MetaMetricsEventCategory.Footer,
-              event: MetaMetricsEventName.SupportLinkClicked,
-              properties: {
-                url: SUPPORT_LINK,
-              },
-            },
-            {
-              contextPropsIntoEventProperties: [
-                MetaMetricsContextProp.PageTitle,
-              ],
-            },
-          );
-        }}
+        onClick={() => undefined}
       >
         {t('needHelpSubmitTicket')}
       </a>

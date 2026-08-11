@@ -59,11 +59,6 @@ import {
   Icon,
 } from '../../../../component-library';
 import { NftItem } from '../../../../multichain/nft-item';
-import {
-  MetaMetricsEventName,
-  MetaMetricsEventCategory,
-} from '../../../../../../shared/constants/metametrics';
-import { MetaMetricsContext } from '../../../../../contexts/metametrics';
 import { Content, Footer, Page } from '../../../../multichain/pages/page';
 import { formatCurrency } from '../../../../../helpers/utils/confirm-tx.util';
 import { getShortDateFormatterV2 } from '../../../../../pages/asset/util';
@@ -122,7 +117,6 @@ export function NftDetailsComponent({
   const ipfsGateway = useSelector(getIpfsGateway);
   const currentNetwork = useSelector(getCurrentChainId);
   const currentChain = useSelector(getCurrentNetwork);
-  const { trackEvent } = useContext(MetaMetricsContext);
   const currency = useSelector(getCurrentCurrency);
   const selectedNativeConversionRate = useSelector(getConversionRate);
 
@@ -217,18 +211,6 @@ export function NftDetailsComponent({
   };
 
   const { chainId } = currentChain;
-
-  useEffect(() => {
-    trackEvent({
-      event: MetaMetricsEventName.NftDetailsOpened,
-      category: MetaMetricsEventCategory.Tokens,
-      properties: {
-        // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        chain_id: chainId,
-      },
-    });
-  }, [trackEvent, chainId]);
 
   const onRemove = async () => {
     try {

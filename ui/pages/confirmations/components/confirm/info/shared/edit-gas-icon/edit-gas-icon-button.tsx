@@ -1,5 +1,4 @@
 import React, { useCallback } from 'react';
-import { TransactionMeta } from '@metamask/transaction-controller';
 import {
   Button,
   ButtonSize,
@@ -7,27 +6,14 @@ import {
   IconName,
 } from '../../../../../../../components/component-library';
 import { IconColor } from '../../../../../../../helpers/constants/design-system';
-import { useTransactionEventFragment } from '../../../../../hooks/useTransactionEventFragment';
-import { useConfirmContext } from '../../../../../context/confirm';
 import { useGasFeeModalContext } from '../../../../../context/gas-fee-modal';
 
 export const EditGasIconButton = (): JSX.Element => {
-  const { currentConfirmation: transactionMeta } =
-    useConfirmContext<TransactionMeta>();
-  const { updateTransactionEventFragment } = useTransactionEventFragment();
   const { openGasFeeModal } = useGasFeeModalContext();
 
   const handleOpenGasFeeModal = useCallback(() => {
-    updateTransactionEventFragment(
-      {
-        // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        gas_edit_attempted: 'basic',
-      },
-      transactionMeta.id,
-    );
     openGasFeeModal();
-  }, [updateTransactionEventFragment, transactionMeta.id, openGasFeeModal]);
+  }, [openGasFeeModal]);
 
   return (
     <Button

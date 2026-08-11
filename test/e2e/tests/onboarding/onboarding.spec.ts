@@ -322,10 +322,6 @@ describe('MetaMask onboarding', function () {
             firstTimeFlowType: FirstTimeFlowType.restore,
             seedPhraseBackedUp: null,
           })
-          .withMetaMetricsController({
-            participateInMetaMetrics: null,
-            metaMetricsId: null,
-          })
           .build(),
         title: this.test?.fullTitle(),
       },

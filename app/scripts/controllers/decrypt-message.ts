@@ -28,7 +28,6 @@ import { ApprovalType, ORIGIN_METAMASK } from '@metamask/controller-utils';
 import { Patch } from 'immer';
 import type { KeyringControllerDecryptMessageAction } from '@metamask/keyring-controller';
 import { Eip1024EncryptedData, hasProperty, isObject } from '@metamask/utils';
-import { MetaMetricsEventCategory } from '../../../shared/constants/metametrics';
 import { stripHexPrefix } from '../../../shared/lib/hexstring-utils';
 // This import is only used for the type.
 // eslint-disable-next-line import-x/no-restricted-paths
@@ -146,10 +145,6 @@ export type DecryptMessageControllerOptions = {
   getState: () => MetaMaskReduxState['metamask'];
   manager: DecryptMessageManager;
   messenger: DecryptMessageControllerMessenger;
-
-  // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31973
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  metricsEvent: (payload: any, options?: any) => void;
 };
 
 const MESSENGER_EXPOSED_METHODS = [
@@ -172,10 +167,6 @@ export class DecryptMessageController extends BaseController<
 > {
   private _getState: () => MetaMaskReduxState['metamask'];
 
-  // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31973
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private _metricsEvent: (payload: any, options?: any) => void;
-
   private _decryptMessageManager: DecryptMessageManager;
 
   /**
@@ -184,12 +175,10 @@ export class DecryptMessageController extends BaseController<
    * @param options - The controller options.
    * @param options.getState - Callback to retrieve all user state.
    * @param options.messenger - A reference to the messaging system.
-   * @param options.metricsEvent - A function for emitting a metric event.
    * @param options.manager - A reference to the message manager.
    */
   constructor({
     getState,
-    metricsEvent,
     messenger,
     manager,
   }: DecryptMessageControllerOptions) {
@@ -200,7 +189,6 @@ export class DecryptMessageController extends BaseController<
       state: getDefaultState(),
     });
     this._getState = getState;
-    this._metricsEvent = metricsEvent;
     this._decryptMessageManager = manager;
 
     messenger.subscribe(
@@ -336,16 +324,11 @@ export class DecryptMessageController extends BaseController<
   /**
    * Reject all unapproved messages of any type.
    *
-   * @param reason - A message to indicate why.
    */
-  rejectUnapproved(reason?: string) {
+  rejectUnapproved() {
     Object.keys(this._decryptMessageManager.getUnapprovedMessages()).forEach(
       (messageId) => {
-        this._cancelAbstractMessage(
-          this._decryptMessageManager,
-          messageId,
-          reason,
-        );
+        this._cancelAbstractMessage(this._decryptMessageManager, messageId);
       },
     );
   }
@@ -357,18 +340,7 @@ export class DecryptMessageController extends BaseController<
   private _cancelAbstractMessage(
     messageManager: DecryptMessageManager,
     messageId: string,
-    reason?: string,
   ) {
-    if (reason) {
-      this._metricsEvent({
-        event: reason,
-        category: MetaMetricsEventCategory.Messages,
-        properties: {
-          action: 'Decrypt Message Request',
-        },
-      });
-    }
-
     messageManager.rejectMessage(messageId);
     this._rejectApproval(messageId);
 

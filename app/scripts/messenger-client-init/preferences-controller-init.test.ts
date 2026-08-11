@@ -1,6 +1,7 @@
 import {
   PreferencesController,
   PreferencesControllerMessenger,
+  getDefaultPreferencesControllerState,
 } from '../controllers/preferences-controller';
 import { getRootMessenger } from '../lib/messenger';
 import { MessengerClientInitRequest } from './types';
@@ -71,6 +72,7 @@ describe('PreferencesControllerInit', () => {
     const requestMock = getInitRequestMock();
     requestMock.persistedState.PreferencesController = {
       preferences: {
+        ...getDefaultPreferencesControllerState().preferences,
         showTestNetworks: false,
       },
     };

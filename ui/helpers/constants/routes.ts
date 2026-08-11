@@ -77,9 +77,6 @@ export const REMOTE_ROUTE = '/remote';
 export const REMOTE_ROUTE_SETUP_DAILY_ALLOWANCE =
   '/remote/setup-daily-allowance';
 export const PERMISSIONS = '/permissions';
-export const GATOR_PERMISSIONS = '/gator-permissions';
-export const TOKEN_TRANSFER_ROUTE = '/gator-permissions/token-transfer';
-export const REVIEW_GATOR_PERMISSIONS_ROUTE = '/review-gator-permissions';
 export const REVIEW_PERMISSIONS = '/review-permissions';
 export const CONNECT_ROUTE = '/connect';
 export const CONNECT_CONFIRM_PERMISSIONS_ROUTE = '/confirm-permissions';
@@ -104,7 +101,6 @@ export const ONBOARDING_IMPORT_WITH_SRP_ROUTE =
   '/onboarding/import-with-recovery-phrase';
 export const ONBOARDING_PRIVACY_SETTINGS_ROUTE = '/onboarding/privacy-settings';
 export const ONBOARDING_WELCOME_ROUTE = '/onboarding/welcome';
-export const ONBOARDING_METAMETRICS = '/onboarding/metametrics';
 export const ONBOARDING_DOWNLOAD_APP_ROUTE = '/onboarding/download-app';
 export const INITIALIZE_EXPERIMENTAL_AREA = '/initialize/experimental-area';
 export const ONBOARDING_EXPERIMENTAL_AREA = '/onboarding/experimental-area';
@@ -443,11 +439,6 @@ export const ROUTES = [
     trackInAnalytics: false,
   },
   {
-    path: ONBOARDING_METAMETRICS,
-    label: 'Onboarding Metametrics',
-    trackInAnalytics: false,
-  },
-  {
     path: REVIEW_PERMISSIONS,
     label: 'Review Permissions',
     trackInAnalytics: false,
@@ -460,21 +451,6 @@ export const ROUTES = [
   {
     path: ONBOARDING_EXPERIMENTAL_AREA,
     label: 'Onboarding Experimental Area',
-    trackInAnalytics: false,
-  },
-  {
-    path: GATOR_PERMISSIONS,
-    label: 'Gator Permissions',
-    trackInAnalytics: false,
-  },
-  {
-    path: TOKEN_TRANSFER_ROUTE,
-    label: 'Gator Permissions Token Transfer',
-    trackInAnalytics: false,
-  },
-  {
-    path: `${REVIEW_GATOR_PERMISSIONS_ROUTE}/:chainId/:permissionGroupName`,
-    label: 'Review Gator Permissions',
     trackInAnalytics: false,
   },
 ] as const satisfies AppRoute[];

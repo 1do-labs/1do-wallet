@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { type CaipChainId, type Hex } from '@metamask/utils';
 import TokenCell from '../token-cell';
@@ -6,24 +6,14 @@ import { ASSET_CELL_HEIGHT } from '../constants';
 import {
   getPreferences,
   getShouldHideZeroBalanceTokens,
-  getUseExternalServices,
 } from '../../../../selectors';
 import { endTrace, TraceName } from '../../../../../shared/lib/trace';
 import { type TokenWithFiatAmount } from '../types';
-import {
-  getSelectedMultichainNetworkConfiguration,
-  getIsEvmMultichainNetworkSelected,
-  getAllEnabledNetworksForAllNamespaces,
-} from '../../../../selectors/multichain/networks';
+import { getAllEnabledNetworksForAllNamespaces } from '../../../../selectors/multichain/networks';
 import {
   getAssetsBySelectedAccountGroup,
   selectAccountGroupBalanceForEmptyState,
 } from '../../../../selectors/assets';
-import {
-  MetaMetricsEventCategory,
-  MetaMetricsEventName,
-} from '../../../../../shared/constants/metametrics';
-import { MetaMetricsContext } from '../../../../contexts/metametrics';
 import { SafeChain } from '../../../../pages/settings/networks-tab/networks-form/use-safe-chains';
 import { isEvmChainId } from '../../../../../shared/lib/asset-utils';
 import { sortAssetsWithPriority } from '../util/sortAssetsWithPriority';
@@ -43,18 +33,13 @@ const tokenValueSortConfig = {
 // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
 // eslint-disable-next-line @typescript-eslint/naming-convention
 function TokenList({ onTokenClick, safeChains }: TokenListProps) {
-  const isEvm = useSelector(getIsEvmMultichainNetworkSelected);
-  const currentNetwork = useSelector(getSelectedMultichainNetworkConfiguration);
   const { privacyMode } = useSelector(getPreferences);
   const shouldHideZeroBalanceTokens = useSelector(
     getShouldHideZeroBalanceTokens,
   );
   const hasBalance = useSelector(selectAccountGroupBalanceForEmptyState);
-  const { trackEvent } = useContext(MetaMetricsContext);
 
   const accountGroupIdAssets = useSelector(getAssetsBySelectedAccountGroup);
-
-  const useExternalServices = useSelector(getUseExternalServices);
 
   const allEnabledNetworksForAllNamespaces = useSelector(
     getAllEnabledNetworksForAllNamespaces,
@@ -82,17 +67,7 @@ function TokenList({ onTokenClick, safeChains }: TokenListProps) {
       tokenValueSortConfig,
     );
 
-    // Filter out non-EVM assets when basic functionality toggle is OFF
-    // Exception: Keep assets for the currently selected non-EVM chain
-    const finalAccountAssets = useExternalServices
-      ? accountAssets
-      : accountAssets.filter(
-          (asset) =>
-            isEvmChainId(asset.chainId) ||
-            (!isEvm && asset.chainId === currentNetwork.chainId),
-        );
-
-    return finalAccountAssets.map((asset) => {
+    return accountAssets.map((asset) => {
       const token: TokenWithFiatAmount = {
         ...asset,
         tokenFiatAmount: asset.fiat?.balance,
@@ -105,12 +80,9 @@ function TokenList({ onTokenClick, safeChains }: TokenListProps) {
       return token;
     });
   }, [
-    isEvm,
-    currentNetwork.chainId,
     accountGroupIdAssets,
     allEnabledNetworksForAllNamespaces,
     shouldHideZeroBalanceTokens,
-    useExternalServices,
   ]);
 
   useEffect(() => {
@@ -130,21 +102,6 @@ function TokenList({ onTokenClick, safeChains }: TokenListProps) {
       isEvmChainId(token.chainId) && token.isNative ? '' : token.address;
 
     onTokenClick(token.chainId, tokenAddress);
-
-    // Track event: token details
-    trackEvent({
-      category: MetaMetricsEventCategory.Tokens,
-      event: MetaMetricsEventName.TokenDetailsOpened,
-      properties: {
-        location: 'Home',
-        // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        token_symbol: token.symbol ?? 'unknown',
-        // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        chain_id: token.chainId,
-      },
-    });
   };
 
   // Disable virtualization when empty balance state is shown

@@ -5,7 +5,6 @@ import {
   SignatureControllerMessenger,
 } from '../messengers';
 import { trace } from '../../../../shared/lib/trace';
-import { MetaMetricsEventCategory } from '../../../../shared/constants/metametrics';
 
 /**
  * Initialize the signature controller.
@@ -31,20 +30,6 @@ export const SignatureControllerInit: MessengerClientInitFunction<
     // @ts-expect-error: Types of `TraceRequest` are not the same.
     trace,
   });
-
-  messengerClient.hub.on(
-    'cancelWithReason',
-    ({ metadata: message, reason }) => {
-      initMessenger.call('MetaMetricsController:trackEvent', {
-        event: reason,
-        category: MetaMetricsEventCategory.Transactions,
-        properties: {
-          action: 'Sign Request',
-          type: message.type,
-        },
-      });
-    },
-  );
 
   return {
     persistedStateKey: null,

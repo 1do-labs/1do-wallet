@@ -5,12 +5,7 @@ import { I18nContext } from '../../../contexts/i18n';
 
 import { INVALID_ASSET_TYPE } from '../../../helpers/constants/error-keys';
 import { showModal } from '../../../store/actions';
-import { MetaMetricsContext } from '../../../contexts/metametrics';
 import { AssetType } from '../../../../shared/constants/transaction';
-import {
-  MetaMetricsEventCategory,
-  MetaMetricsEventName,
-} from '../../../../shared/constants/metametrics';
 import {
   Display,
   IconColor,
@@ -34,7 +29,6 @@ const TokenButtons = ({
 }) => {
   const dispatch = useDispatch();
   const t = useContext(I18nContext);
-  const { trackEvent } = useContext(MetaMetricsContext);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -49,24 +43,6 @@ const TokenButtons = ({
   }, [token.isERC721, token.address, dispatch]);
 
   const handleSendOnClick = useCallback(async () => {
-    trackEvent(
-      {
-        event: MetaMetricsEventName.SendStarted,
-        category: MetaMetricsEventCategory.Navigation,
-        properties: {
-          // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-          // eslint-disable-next-line @typescript-eslint/naming-convention
-          token_symbol: token.symbol,
-          location: 'Token View',
-          text: 'Send',
-          // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-          // eslint-disable-next-line @typescript-eslint/naming-convention
-          chain_id: token.chainId,
-        },
-      },
-      { excludeMetaMetricsId: false },
-    );
-
     try {
       navigateToSendRoute(navigate, {
         address: token.address,
@@ -80,7 +56,7 @@ const TokenButtons = ({
         throw err;
       }
     }
-  }, [trackEvent, navigate, token]);
+  }, [navigate, token]);
 
   return (
     <Box

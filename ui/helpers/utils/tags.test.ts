@@ -148,20 +148,6 @@ describe('Tags Utils', () => {
       expect(tags['wallet.nft_count']).toStrictEqual(5);
     });
 
-    it('includes notification count', () => {
-      const state = createMockState({
-        metamaskNotificationsList: [
-          {},
-          {},
-          {},
-        ] as unknown as MetaMaskReduxState['metamask']['metamaskNotificationsList'],
-      });
-
-      const tags = getStartupTraceTags(state);
-
-      expect(tags['wallet.notification_count']).toStrictEqual(3);
-    });
-
     it('includes token count', () => {
       const state = createMockState({
         allTokens: {

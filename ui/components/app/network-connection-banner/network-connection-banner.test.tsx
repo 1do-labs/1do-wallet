@@ -5,7 +5,6 @@ import { renderWithProvider } from '../../../../test/lib/render-helpers-navigate
 import { useNetworkConnectionBanner } from '../../../hooks/useNetworkConnectionBanner';
 import { setEditedNetwork } from '../../../store/actions';
 import configureStore from '../../../store/store';
-import { MetaMetricsEventName } from '../../../../shared/constants/metametrics';
 import { enLocale as messages } from '../../../../test/lib/i18n-helpers';
 import { NetworkConnectionBanner } from './network-connection-banner';
 
@@ -48,7 +47,6 @@ describe('NetworkConnectionBanner', () => {
         networkClientId: 'mainnet',
         chainId: '0x1',
         isDefaultRpcEndpoint: false,
-        trackNetworkBannerEvent: jest.fn(),
         switchToDefaultRpc: jest.fn(),
       });
       const store = configureStore({});
@@ -73,7 +71,6 @@ describe('NetworkConnectionBanner', () => {
         networkClientId: 'mainnet',
         chainId: '0x1',
         isDefaultRpcEndpoint: true,
-        trackNetworkBannerEvent: jest.fn(),
         switchToDefaultRpc: jest.fn(),
       });
       const store = configureStore({});
@@ -99,7 +96,6 @@ describe('NetworkConnectionBanner', () => {
           networkClientId: 'mainnet',
           chainId: '0x1',
           isDefaultRpcEndpoint: false,
-          trackNetworkBannerEvent: jest.fn(),
           switchToDefaultRpc: jest.fn(),
         });
         const store = configureStore({});
@@ -116,33 +112,6 @@ describe('NetworkConnectionBanner', () => {
         });
         expect(mockUseNavigate).toHaveBeenCalledWith('/settings/networks');
       });
-
-      it('creates a metrics event', () => {
-        const trackNetworkBannerEventMock = jest.fn();
-        mockUseNetworkConnectionBanner.mockReturnValue({
-          status: 'degraded',
-          networkName: 'Ethereum Mainnet',
-          networkClientId: 'mainnet',
-          chainId: '0x1',
-          isDefaultRpcEndpoint: false,
-          trackNetworkBannerEvent: trackNetworkBannerEventMock,
-          switchToDefaultRpc: jest.fn(),
-        });
-        const store = configureStore({});
-
-        const { getByText } = renderWithProvider(
-          <NetworkConnectionBanner />,
-          store,
-        );
-        fireEvent.click(getByText(messages.updateRpc.message));
-
-        expect(trackNetworkBannerEventMock).toHaveBeenCalledWith({
-          bannerType: 'degraded',
-          eventName:
-            MetaMetricsEventName.NetworkConnectionBannerUpdateRpcClicked,
-          networkClientId: 'mainnet',
-        });
-      });
     });
   });
 
@@ -154,7 +123,6 @@ describe('NetworkConnectionBanner', () => {
         networkClientId: 'mainnet',
         chainId: '0x1',
         isDefaultRpcEndpoint: false,
-        trackNetworkBannerEvent: jest.fn(),
         switchToDefaultRpc: jest.fn(),
       });
       const store = configureStore({});
@@ -184,7 +152,6 @@ describe('NetworkConnectionBanner', () => {
         networkClientId: 'mainnet',
         chainId: '0x1',
         isDefaultRpcEndpoint: true,
-        trackNetworkBannerEvent: jest.fn(),
         switchToDefaultRpc: jest.fn(),
       });
       const store = configureStore({});
@@ -215,7 +182,6 @@ describe('NetworkConnectionBanner', () => {
           networkClientId: 'mainnet',
           chainId: '0x1',
           isDefaultRpcEndpoint: false,
-          trackNetworkBannerEvent: jest.fn(),
           switchToDefaultRpc: jest.fn(),
         });
         const store = configureStore({});
@@ -232,33 +198,6 @@ describe('NetworkConnectionBanner', () => {
         });
         expect(mockUseNavigate).toHaveBeenCalledWith('/settings/networks');
       });
-
-      it('creates a metrics event', () => {
-        const trackNetworkBannerEventMock = jest.fn();
-        mockUseNetworkConnectionBanner.mockReturnValue({
-          status: 'unavailable',
-          networkName: 'Ethereum Mainnet',
-          networkClientId: 'mainnet',
-          chainId: '0x1',
-          isDefaultRpcEndpoint: false,
-          trackNetworkBannerEvent: trackNetworkBannerEventMock,
-          switchToDefaultRpc: jest.fn(),
-        });
-        const store = configureStore({});
-
-        const { getByText } = renderWithProvider(
-          <NetworkConnectionBanner />,
-          store,
-        );
-        fireEvent.click(getByText('update RPC'));
-
-        expect(trackNetworkBannerEventMock).toHaveBeenCalledWith({
-          bannerType: 'unavailable',
-          eventName:
-            MetaMetricsEventName.NetworkConnectionBannerUpdateRpcClicked,
-          networkClientId: 'mainnet',
-        });
-      });
     });
   });
 
@@ -266,7 +205,6 @@ describe('NetworkConnectionBanner', () => {
     it('does not render the banner', () => {
       mockUseNetworkConnectionBanner.mockReturnValue({
         status: 'unknown',
-        trackNetworkBannerEvent: jest.fn(),
         switchToDefaultRpc: jest.fn(),
       });
       const store = configureStore({});
@@ -284,7 +222,6 @@ describe('NetworkConnectionBanner', () => {
     it('does not render the banner', () => {
       mockUseNetworkConnectionBanner.mockReturnValue({
         status: 'available',
-        trackNetworkBannerEvent: jest.fn(),
         switchToDefaultRpc: jest.fn(),
       });
       const store = configureStore({});
@@ -308,7 +245,6 @@ describe('NetworkConnectionBanner', () => {
         chainId: '0xa4b1',
         isDefaultRpcEndpoint: false,
         defaultRpcEndpointIndex: 1,
-        trackNetworkBannerEvent: jest.fn(),
         switchToDefaultRpc: switchToDefaultRpcMock,
       });
       const store = configureStore({});
@@ -333,7 +269,6 @@ describe('NetworkConnectionBanner', () => {
         chainId: '0xa4b1',
         isDefaultRpcEndpoint: false,
         defaultRpcEndpointIndex: 1,
-        trackNetworkBannerEvent: jest.fn(),
         switchToDefaultRpc: switchToDefaultRpcMock,
       });
       const store = configureStore({});
@@ -353,7 +288,6 @@ describe('NetworkConnectionBanner', () => {
 
     it('calls switchToDefaultRpc when "Switch to 1do default RPC" button is clicked (degraded)', () => {
       const switchToDefaultRpcMock = jest.fn();
-      const trackNetworkBannerEventMock = jest.fn();
       mockUseNetworkConnectionBanner.mockReturnValue({
         status: 'degraded',
         networkName: 'Arbitrum One',
@@ -361,7 +295,6 @@ describe('NetworkConnectionBanner', () => {
         chainId: '0xa4b1',
         isDefaultRpcEndpoint: false,
         defaultRpcEndpointIndex: 1,
-        trackNetworkBannerEvent: trackNetworkBannerEventMock,
         switchToDefaultRpc: switchToDefaultRpcMock,
       });
       const store = configureStore({});
@@ -373,17 +306,10 @@ describe('NetworkConnectionBanner', () => {
       fireEvent.click(getByText(messages.switchToMetaMaskDefaultRpc.message));
 
       expect(switchToDefaultRpcMock).toHaveBeenCalled();
-      expect(trackNetworkBannerEventMock).toHaveBeenCalledWith({
-        bannerType: 'degraded',
-        eventName:
-          MetaMetricsEventName.NetworkConnectionBannerSwitchToMetaMaskDefaultRpcClicked,
-        networkClientId: 'custom-arbitrum',
-      });
     });
 
     it('calls switchToDefaultRpc when "switch to 1do default RPC" button is clicked (unavailable)', () => {
       const switchToDefaultRpcMock = jest.fn();
-      const trackNetworkBannerEventMock = jest.fn();
       mockUseNetworkConnectionBanner.mockReturnValue({
         status: 'unavailable',
         networkName: 'Arbitrum One',
@@ -391,7 +317,6 @@ describe('NetworkConnectionBanner', () => {
         chainId: '0xa4b1',
         isDefaultRpcEndpoint: false,
         defaultRpcEndpointIndex: 1,
-        trackNetworkBannerEvent: trackNetworkBannerEventMock,
         switchToDefaultRpc: switchToDefaultRpcMock,
       });
       const store = configureStore({});
@@ -405,12 +330,6 @@ describe('NetworkConnectionBanner', () => {
       );
 
       expect(switchToDefaultRpcMock).toHaveBeenCalled();
-      expect(trackNetworkBannerEventMock).toHaveBeenCalledWith({
-        bannerType: 'unavailable',
-        eventName:
-          MetaMetricsEventName.NetworkConnectionBannerSwitchToMetaMaskDefaultRpcClicked,
-        networkClientId: 'custom-arbitrum',
-      });
     });
   });
 });

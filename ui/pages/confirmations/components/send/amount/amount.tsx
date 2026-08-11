@@ -19,7 +19,6 @@ import {
   TextVariant,
 } from '../../../../../helpers/constants/design-system';
 import { useI18nContext } from '../../../../../hooks/useI18nContext';
-import { useAmountSelectionMetrics } from '../../../hooks/send/metrics/useAmountSelectionMetrics';
 import { useBalance } from '../../../hooks/send/useBalance';
 import { useCurrencyConversions } from '../../../hooks/send/useCurrencyConversions';
 import { useMaxAmount } from '../../../hooks/send/useMaxAmount';
@@ -48,13 +47,6 @@ export const Amount = ({
     getNativeValue,
   } = useCurrencyConversions();
   const { getMaxAmount } = useMaxAmount();
-  const {
-    setAmountInputMethodManual,
-    setAmountInputMethodPasted,
-    setAmountInputMethodPressedMax,
-    setAmountInputTypeFiat,
-    setAmountInputTypeToken,
-  } = useAmountSelectionMetrics();
   const alternateDisplayValue = useMemo(
     () =>
       fiatMode
@@ -92,37 +84,16 @@ export const Amount = ({
       if (amount !== undefined && isValidPositiveNumericString(amount)) {
         setAmount(getFiatValue(amount));
       }
-      setAmountInputTypeFiat();
-    } else {
-      if (!value || isValidPositiveNumericString(value)) {
-        setAmount(value ?? '');
-      }
-      setAmountInputTypeToken();
+    } else if (!value || isValidPositiveNumericString(value)) {
+      setAmount(value ?? '');
     }
-  }, [
-    amount,
-    fiatMode,
-    getFiatValue,
-    setAmount,
-    setAmountInputTypeFiat,
-    setAmountInputTypeToken,
-    setFiatMode,
-    value,
-  ]);
+  }, [amount, fiatMode, getFiatValue, setAmount, setFiatMode, value]);
 
   const updateToMax = useCallback(() => {
     const maxValue = getMaxAmount() ?? '0';
     setAmount(fiatMode ? getFiatValue(maxValue) : maxValue);
     updateValue(maxValue, true);
-    setAmountInputMethodPressedMax();
-  }, [
-    fiatMode,
-    getFiatValue,
-    getMaxAmount,
-    setAmount,
-    setAmountInputMethodPressedMax,
-    updateValue,
-  ]);
+  }, [fiatMode, getFiatValue, getMaxAmount, setAmount, updateValue]);
 
   const balanceDisplayValue = useMemo(() => {
     if (fiatMode) {
@@ -159,8 +130,6 @@ export const Amount = ({
       <TextField
         error={Boolean(amountError)}
         onChange={onChange}
-        onPaste={setAmountInputMethodPasted}
-        onInput={setAmountInputMethodManual}
         placeholder="0"
         testId="send-amount-input"
         value={amount}

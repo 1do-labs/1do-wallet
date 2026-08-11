@@ -9,5 +9,5 @@ import { getRemoteFeatureFlags } from '../remote-feature-flags';
  */
 export const getIsRWATokensEnabled = createSelector(
   getRemoteFeatureFlags,
-  (remoteFeatureFlags) => remoteFeatureFlags.rwaTokensEnabled === true,
+  (remoteFeatureFlags) => remoteFeatureFlags?.rwaTokensEnabled === true,
 );

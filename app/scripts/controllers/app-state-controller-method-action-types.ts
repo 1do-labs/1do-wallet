@@ -45,11 +45,6 @@ export type AppStateControllerSetRecoveryPhraseReminderHasBeenShownAction = {
   handler: AppStateController['setRecoveryPhraseReminderHasBeenShown'];
 };
 
-export type AppStateControllerSetSurveyLinkLastClickedOrClosedAction = {
-  type: `AppStateController:setSurveyLinkLastClickedOrClosed`;
-  handler: AppStateController['setSurveyLinkLastClickedOrClosed'];
-};
-
 export type AppStateControllerSetOnboardingDateAction = {
   type: `AppStateController:setOnboardingDate`;
   handler: AppStateController['setOnboardingDate'];
@@ -260,16 +255,6 @@ export type AppStateControllerSetShowBetaHeaderAction = {
 export type AppStateControllerSetShowPermissionsTourAction = {
   type: `AppStateController:setShowPermissionsTour`;
   handler: AppStateController['setShowPermissionsTour'];
-};
-
-/**
- * Sets whether the multichain intro modal has been shown to the user
- *
- * @param hasShown - Whether the modal has been shown
- */
-export type AppStateControllerSetHasShownMultichainAccountsIntroModalAction = {
-  type: `AppStateController:setHasShownMultichainAccountsIntroModal`;
-  handler: AppStateController['setHasShownMultichainAccountsIntroModal'];
 };
 
 /**
@@ -492,7 +477,6 @@ export type AppStateControllerMethodActions =
   | AppStateControllerSetDefaultHomeActiveTabNameAction
   | AppStateControllerSetConnectedStatusPopoverHasBeenShownAction
   | AppStateControllerSetRecoveryPhraseReminderHasBeenShownAction
-  | AppStateControllerSetSurveyLinkLastClickedOrClosedAction
   | AppStateControllerSetOnboardingDateAction
   | AppStateControllerSetLastViewedUserSurveyAction
   | AppStateControllerSetRampCardClosedAction
@@ -517,7 +501,6 @@ export type AppStateControllerMethodActions =
   | AppStateControllerSetShowTestnetMessageInDropdownAction
   | AppStateControllerSetShowBetaHeaderAction
   | AppStateControllerSetShowPermissionsTourAction
-  | AppStateControllerSetHasShownMultichainAccountsIntroModalAction
   | AppStateControllerSetProductTourAction
   | AppStateControllerSetShowNetworkBannerAction
   | AppStateControllerUpdateNetworkConnectionBannerAction

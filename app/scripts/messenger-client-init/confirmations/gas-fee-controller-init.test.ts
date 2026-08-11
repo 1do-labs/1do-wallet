@@ -112,7 +112,7 @@ describe('GasFeeControllerInit', () => {
       jest.mocked(GasFeeController).mock.lastCall?.[0]
         .getCurrentNetworkEIP1559Compatibility;
 
-    expect(await getCurrentNetworkEIP1559Compatibility?.('sepolia')).toBe(true);
+    expect(await getCurrentNetworkEIP1559Compatibility?.()).toBe(true);
     expect(initMessengerCallMock).toHaveBeenCalledWith(
       'NetworkController:getEIP1559Compatibility',
       'sepolia',

@@ -7,7 +7,6 @@ export const PHISHING_WARNING_PAGE = '1do-phishing-warning-page';
 export const METAMASK_COOKIE_HANDLER = '1do-cookie-handler';
 export const METAMASK_EIP_1193_PROVIDER = '1do-provider';
 export const METAMASK_CAIP_MULTICHAIN_PROVIDER = '1do-multichain-provider';
-export const PHISHING_SAFELIST = '1do-phishing-safelist';
 export const PHISHING_STREAM = '1do-phishing';
 
 // For more information about these legacy streams, see here:

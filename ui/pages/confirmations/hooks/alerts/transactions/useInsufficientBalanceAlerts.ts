@@ -12,7 +12,6 @@ import { Severity } from '../../../../../helpers/constants/design-system';
 import { useI18nContext } from '../../../../../hooks/useI18nContext';
 import { getUseTransactionSimulations } from '../../../../../selectors';
 import { useConfirmContext } from '../../../context/confirm';
-import { useIsGaslessSupported } from '../../gas/useIsGaslessSupported';
 import { useHasInsufficientBalance } from '../../useHasInsufficientBalance';
 
 export function useInsufficientBalanceAlerts({
@@ -27,19 +26,8 @@ export function useInsufficientBalanceAlerts({
   const { hasInsufficientBalance, nativeCurrency } =
     useHasInsufficientBalance();
   const isSimulationEnabled = useSelector(getUseTransactionSimulations);
-  const isSponsored = currentConfirmation?.isGasFeeSponsored;
-  const {
-    isSupported: isGaslessSupported,
-    pending: isGaslessSupportedPending,
-  } = useIsGaslessSupported();
 
   const isGasFeeTokensEmpty = gasFeeTokens?.length === 0;
-
-  // Check if gasless check has completed (regardless of result)
-  const isGaslessCheckComplete = !isGaslessSupportedPending;
-
-  // Transaction is sponsored only if it's marked as sponsored AND gasless is supported
-  const isSponsoredTransaction = isSponsored && isGaslessSupported;
 
   // Simulation is complete if it's disabled, or if enabled and gasFeeTokens is loaded
   const isSimulationComplete = !isSimulationEnabled || Boolean(gasFeeTokens);
@@ -54,22 +42,8 @@ export function useInsufficientBalanceAlerts({
     !selectedGasFeeToken ||
     (excludeNativeTokenForFee && isGasFeeTokensEmpty);
 
-  // Gasless check is complete AND one of:
-  //  - Gasless is NOT supported (native currency needed for gas)
-  //  - Gasless IS supported but no alternative gas fee tokens are available
-  //  - Gas fee tokens are available but none is selected
-  const shouldCheckGaslessConditions =
-    isGaslessCheckComplete &&
-    (!isGaslessSupported ||
-      isGasFeeTokensEmpty ||
-      (!isGasFeeTokensEmpty && !selectedGasFeeToken));
-
   const showAlert =
-    hasInsufficientBalance &&
-    isSimulationComplete &&
-    hasNoGasFeeTokenSelected &&
-    shouldCheckGaslessConditions &&
-    !isSponsoredTransaction;
+    hasInsufficientBalance && isSimulationComplete && hasNoGasFeeTokenSelected;
 
   return useMemo(() => {
     if (!showAlert) {

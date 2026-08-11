@@ -23,7 +23,6 @@ export function renderWithConfirmContextProvider(
   store: unknown,
   pathname = DEFAULT_ROUTE,
   confirmationId?: string,
-  getMockTrackEvent?: () => jest.Mock,
 ) {
   return renderWithProvider(
     <HardwareWalletErrorProvider>
@@ -34,7 +33,6 @@ export function renderWithConfirmContextProvider(
     store,
     pathname,
     render,
-    getMockTrackEvent,
   );
 }
 

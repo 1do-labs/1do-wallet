@@ -402,8 +402,6 @@ export const MANTLE_DISPLAY_NAME = 'Mantle';
 export const ALCHEMY_API_KEY_PLACEHOLDER = '{alchemyApiKey}';
 
 export const alchemyApiKey =
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore: yarn test:api-specs-multichain complains "Element implicitly has an 'any' type because type 'typeof globalThis' has no index signature"
   globalThis.ALCHEMY_API_KEY ?? process.env.ALCHEMY_API_KEY;
 
 const ALCHEMY_NETWORK_SLUGS = {

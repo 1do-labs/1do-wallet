@@ -7,15 +7,10 @@ import { GasFeesSection } from '../shared/gas-fees-section/gas-fees-section';
 import { TransactionDetails } from '../shared/transaction-details/transaction-details';
 import { TransactionAccountDetails } from '../batch/transaction-account-details';
 import { BatchSimulationDetails } from '../batch/batch-simulation-details/batch-simulation-details';
-import { EnforcedSimulationsRow } from '../../../rows/enforced-simulations-row';
-import { isOneDoWalletNativeTransferTransactionCandidate } from '../../../../utils/onedo-clear-signing';
 
 const BaseTransactionInfo = () => {
   const { currentConfirmation: transactionMeta } =
     useConfirmContext<TransactionMeta>();
-  const isOneDoWalletNativeTransfer =
-    isOneDoWalletNativeTransferTransactionCandidate(transactionMeta);
-
   if (!transactionMeta?.txParams) {
     return null;
   }
@@ -24,7 +19,6 @@ const BaseTransactionInfo = () => {
     <>
       <TransactionAccountDetails />
       <BatchSimulationDetails />
-      {!isOneDoWalletNativeTransfer && <EnforcedSimulationsRow />}
       <TransactionDetails />
       <GasFeesSection />
       <AdvancedDetails />

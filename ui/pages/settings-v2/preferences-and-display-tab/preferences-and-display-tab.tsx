@@ -3,7 +3,6 @@ import { SettingItemConfig } from '../types';
 import { SettingsTab, createToggleItem, createSelectItem } from '../shared';
 import { getShowExtensionInFullSizeView, getTheme } from '../../../selectors';
 import { setShowExtensionInFullSizeView } from '../../../store/actions';
-import { MetaMetricsEventName } from '../../../../shared/constants/metametrics';
 import { ThemeType } from '../../../../shared/constants/preferences';
 import { THEME_ROUTE, LANGUAGE_ROUTE } from '../../../helpers/constants/routes';
 import type { MetaMaskReduxState } from '../../../store/store';
@@ -41,19 +40,6 @@ const ShowExtensionItem = createToggleItem({
   selector: getShowExtensionInFullSizeView,
   action: setShowExtensionInFullSizeView,
   dataTestId: 'show-extension-in-full-size-view',
-  trackEvent: {
-    event: MetaMetricsEventName.SettingsUpdated,
-    properties: (newValue) => ({
-      /* eslint-disable @typescript-eslint/naming-convention */
-      settings_group: 'preferences_and_display',
-      settings_type: 'open_full_screen',
-      old_value: !newValue,
-      new_value: newValue,
-      open_full_screen: newValue,
-      /* eslint-enable @typescript-eslint/naming-convention */
-      location: 'Preferences and Display Settings',
-    }),
-  },
 });
 
 /** Registry of setting items for the Preferences and Display page. Add new items here */

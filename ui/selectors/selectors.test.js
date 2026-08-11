@@ -10,7 +10,6 @@ import mockState from '../../test/data/mock-state.json';
 import { CHAIN_IDS, NETWORK_TYPES } from '../../shared/constants/network';
 import { createMockInternalAccount } from '../../test/jest/mocks';
 import { mockNetworkState } from '../../test/stub/networks';
-import { DeleteRegulationStatus } from '../../shared/constants/metametrics';
 import * as networkSelectors from '../../shared/lib/selectors/networks';
 import * as selectors from './selectors';
 
@@ -883,12 +882,6 @@ describe('Selectors', () => {
     });
   });
 
-  describe('#accountSupportsSmartTx', () => {
-    it('returns true if the account type is available', () => {
-      expect(selectors.accountSupportsSmartTx(mockState)).toBe(true);
-    });
-  });
-
   describe('#getHardwareWalletType', () => {
     it('returns undefined if it is not a HW wallet', () => {
       const mockStateWithImported = modifyStateWithHWKeyring(
@@ -1588,68 +1581,6 @@ describe('#getConnectedSitesList', () => {
       },
     });
   });
-  describe('#getShowDeleteMetaMetricsDataModal', () => {
-    it('returns state of showDeleteMetaMetricsDataModal', () => {
-      expect(
-        selectors.getShowDeleteMetaMetricsDataModal({
-          appState: {
-            showDeleteMetaMetricsDataModal: true,
-          },
-        }),
-      ).toStrictEqual(true);
-    });
-  });
-  describe('#getShowDataDeletionErrorModal', () => {
-    it('returns state of showDataDeletionErrorModal', () => {
-      expect(
-        selectors.getShowDataDeletionErrorModal({
-          appState: {
-            showDataDeletionErrorModal: true,
-          },
-        }),
-      ).toStrictEqual(true);
-    });
-  });
-  describe('#getMetaMetricsDataDeletionId', () => {
-    it('returns metaMetricsDataDeletionId', () => {
-      expect(
-        selectors.getMetaMetricsDataDeletionId({
-          metamask: {
-            metaMetricsDataDeletionId: '123',
-            metaMetricsDataDeletionTimestamp: '123345',
-            metaMetricsDataDeletionStatus: DeleteRegulationStatus.Initialized,
-          },
-        }),
-      ).toStrictEqual('123');
-    });
-  });
-  describe('#getMetaMetricsDataDeletionTimestamp', () => {
-    it('returns metaMetricsDataDeletionTimestamp', () => {
-      expect(
-        selectors.getMetaMetricsDataDeletionTimestamp({
-          metamask: {
-            metaMetricsDataDeletionId: '123',
-            metaMetricsDataDeletionTimestamp: '123345',
-            metaMetricsDataDeletionStatus: DeleteRegulationStatus.Initialized,
-          },
-        }),
-      ).toStrictEqual('123345');
-    });
-  });
-  describe('#getMetaMetricsDataDeletionStatus', () => {
-    it('returns metaMetricsDataDeletionStatus', () => {
-      expect(
-        selectors.getMetaMetricsDataDeletionStatus({
-          metamask: {
-            metaMetricsDataDeletionId: '123',
-            metaMetricsDataDeletionTimestamp: '123345',
-            metaMetricsDataDeletionStatus: DeleteRegulationStatus.Initialized,
-          },
-        }),
-      ).toStrictEqual('INITIALIZED');
-    });
-  });
-
   describe('getEvmInternalAccounts', () => {
     const account1 = createMockInternalAccount({
       keyringType: KeyringType.hd,

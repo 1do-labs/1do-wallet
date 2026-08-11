@@ -10,9 +10,7 @@ import {
   HYPERLIQUID_APPROVAL_TYPE,
   ASTERDEX_APPROVAL_TYPE,
   GMX_APPROVAL_TYPE,
-  SMART_TRANSACTION_CONFIRMATION_TYPES,
 } from '../../../../../shared/constants/app';
-import smartTransactionStatusPage from './smart-transaction-status-page';
 import switchEthereumChain from './switch-ethereum-chain';
 import success from './success';
 import error from './error';
@@ -23,8 +21,6 @@ const APPROVAL_TEMPLATES = {
   // Use ApprovalType from utils controller
   [ApprovalType.ResultSuccess]: success,
   [ApprovalType.ResultError]: error,
-  [SMART_TRANSACTION_CONFIRMATION_TYPES.showSmartTransactionStatusPage]:
-    smartTransactionStatusPage,
   [HYPERLIQUID_APPROVAL_TYPE]: defiReferralConsent,
   [ASTERDEX_APPROVAL_TYPE]: defiReferralConsent,
   [GMX_APPROVAL_TYPE]: defiReferralConsent,

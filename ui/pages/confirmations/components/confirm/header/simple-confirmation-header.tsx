@@ -8,7 +8,6 @@ import {
   TextColor,
   TextVariant,
 } from '@metamask/design-system-react';
-import { MetaMetricsEventLocation } from '../../../../../../shared/constants/metametrics';
 import { HeaderBase } from '../../../../../components/component-library';
 import {
   AlignItems,
@@ -32,7 +31,6 @@ const SimpleHeaderLayout = ({
 
   const handleBackButtonClick = useCallback(() => {
     onCancel({
-      location: MetaMetricsEventLocation.Confirmation,
       navigateBackToPreviousPage: true,
     });
   }, [onCancel]);

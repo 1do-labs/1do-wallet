@@ -4,7 +4,6 @@ import {
   Messenger,
   MockAnyNamespace,
 } from '@metamask/messenger';
-import { RemoteFeatureFlagControllerGetStateAction } from '@metamask/remote-feature-flag-controller';
 import { AccountTrackerController } from '@metamask/assets-controllers';
 import {
   AutoManagedNetworkClient,
@@ -32,7 +31,6 @@ jest.mock('@metamask/assets-controllers');
 function getInitRequestMock(
   baseMessenger = new Messenger<
     MockAnyNamespace,
-    | RemoteFeatureFlagControllerGetStateAction
     | NetworkControllerGetStateAction
     | NetworkControllerGetNetworkClientByIdAction
     | PreferencesControllerGetStateAction
@@ -45,16 +43,6 @@ function getInitRequestMock(
     AccountTrackerControllerInitMessenger
   >
 > {
-  baseMessenger.registerActionHandler(
-    'RemoteFeatureFlagController:getState',
-    () => ({
-      remoteFeatureFlags: {
-        assetsAccountApiBalances: ['0x1', '0x38', '0xe708'],
-      },
-      cacheTimestamp: Date.now(),
-    }),
-  );
-
   baseMessenger.registerActionHandler(
     'NetworkController:getState',
     () =>
@@ -110,7 +98,7 @@ describe('AccountTrackerControllerInit', () => {
     });
   });
 
-  it('initializes with Account API feature flag configuration', () => {
+  it('disables MetaMask Accounts API balance fetching', () => {
     AccountTrackerControllerInit(getInitRequestMock());
 
     const controllerMock = jest.mocked(AccountTrackerController);
@@ -118,9 +106,6 @@ describe('AccountTrackerControllerInit', () => {
 
     expect(constructorArgs.accountsApiChainIds).toBeDefined();
     const chainIds = constructorArgs.accountsApiChainIds?.();
-    expect(chainIds).toEqual(['0x1', '0x38', '0xe708']);
-    expect(chainIds).toContain('0x1'); // Ethereum
-    expect(chainIds).toContain('0x38'); // BSC
-    expect(chainIds).toContain('0xe708'); // Linea
+    expect(chainIds).toEqual([]);
   });
 });

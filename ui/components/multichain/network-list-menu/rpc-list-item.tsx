@@ -1,7 +1,6 @@
 import { RpcEndpointType } from '@metamask/network-controller';
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { infuraProjectId } from '../../../../shared/constants/network';
 import { Box, Tag, Text } from '../../component-library';
 import {
   Display,
@@ -22,8 +21,14 @@ export const stripKeyFromInfuraUrl = (endpoint: string) => {
 
   if (modifiedEndpoint.endsWith('/v3/{infuraProjectId}')) {
     modifiedEndpoint = modifiedEndpoint.replace('/v3/{infuraProjectId}', '');
-  } else if (modifiedEndpoint.endsWith(`/v3/${infuraProjectId}`)) {
-    modifiedEndpoint = modifiedEndpoint.replace(`/v3/${infuraProjectId}`, '');
+  } else if (
+    globalThis.INFURA_PROJECT_ID &&
+    modifiedEndpoint.endsWith(`/v3/${globalThis.INFURA_PROJECT_ID}`)
+  ) {
+    modifiedEndpoint = modifiedEndpoint.replace(
+      `/v3/${globalThis.INFURA_PROJECT_ID}`,
+      '',
+    );
   }
 
   return modifiedEndpoint;

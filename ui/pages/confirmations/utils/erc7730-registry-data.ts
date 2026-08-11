@@ -1,3 +1,7 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck -- Generated from the pinned upstream ERC-7730 registry. The
+// snapshot intentionally includes schema variants that the runtime decoder
+// rejects unless they pass its explicit supported-field checks.
 /* eslint-disable @typescript-eslint/naming-convention */
 import type {
   Erc7730CalldataIndex,

@@ -41,10 +41,6 @@ export const EncryptionPublicKeyControllerInit: MessengerClientInitFunction<
         address,
       );
     },
-    metricsEvent: initMessenger.call.bind(
-      initMessenger,
-      'MetaMetricsController:trackEvent',
-    ),
   });
 
   return {

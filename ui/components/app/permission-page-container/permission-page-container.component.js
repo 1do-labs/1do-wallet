@@ -6,7 +6,6 @@ import {
   getCaipAccountIdsFromCaip25CaveatValue,
   getAllScopesFromCaip25CaveatValue,
 } from '@metamask/chain-agnostic-permission';
-import { MetaMetricsEventCategory } from '../../../../shared/constants/metametrics';
 import PermissionsConnectFooter from '../permissions-connect-footer';
 
 import {
@@ -64,7 +63,6 @@ export default class PermissionPageContainer extends Component {
 
   static contextTypes = {
     t: PropTypes.func,
-    trackEvent: PropTypes.func,
   };
 
   state = {};
@@ -74,17 +72,6 @@ export default class PermissionPageContainer extends Component {
 
     // if the request contains a diff this means its an incremental permission request
     return request?.diff?.permissionDiffMap ?? request.permissions ?? {};
-  }
-
-  componentDidMount() {
-    this.context.trackEvent({
-      category: MetaMetricsEventCategory.Auth,
-      event: 'Tab Opened',
-      properties: {
-        action: 'Connect',
-        legacy_event: true,
-      },
-    });
   }
 
   goBack() {

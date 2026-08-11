@@ -21,7 +21,6 @@ import { useI18nContext } from '../../../../../../../hooks/useI18nContext';
 import { getPreferences } from '../../../../../../../selectors';
 import { useConfirmContext } from '../../../../../context/confirm';
 import { useTokenValues } from '../../hooks/use-token-values';
-import { useSendingValueMetric } from '../../hooks/useSendingValueMetric';
 import { useTokenDetails } from '../../hooks/useTokenDetails';
 import SendHeadingLayout from '../send-heading-layout/send-heading-layout';
 
@@ -109,8 +108,6 @@ const SendHeading = () => {
             {fiatDisplayValue}
           </Text>
         ));
-
-  useSendingValueMetric({ transactionMeta, fiatValue });
 
   return (
     <SendHeadingLayout image={TokenImage}>

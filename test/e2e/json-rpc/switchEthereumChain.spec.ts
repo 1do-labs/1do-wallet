@@ -95,7 +95,6 @@ describe('Switch Ethereum Chain for two dapps', function () {
       {
         fixtures: new FixtureBuilderV2()
           .withNetworkControllerDoubleNode()
-          .withSmartTransactionsOptedOut()
           .build(),
         dappOptions: { numberOfTestDapps: 2 },
         localNodeOptions: [

@@ -1,16 +1,9 @@
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
-import {
-  MetaMetricsEventCategory,
-  MetaMetricsEventName,
-} from '../../../../shared/constants/metametrics';
 import { DEFAULT_AUTO_LOCK_TIME_LIMIT } from '../../../../shared/constants/preferences';
-import { SMART_TRANSACTIONS_LEARN_MORE_URL } from '../../../../shared/constants/smartTransactions';
 import {
   Box,
   Button,
-  ButtonLink,
-  ButtonLinkSize,
   ButtonVariant,
 } from '../../../components/component-library';
 import TextField from '../../../components/ui/text-field';
@@ -19,8 +12,6 @@ import {
   Display,
   FlexDirection,
   JustifyContent,
-  TextVariant,
-  AlignItems,
 } from '../../../helpers/constants/design-system';
 import {
   ExportableContentType,
@@ -34,7 +25,6 @@ import {
 export default class AdvancedTab extends PureComponent {
   static contextTypes = {
     t: PropTypes.func,
-    trackEvent: PropTypes.func,
   };
 
   static propTypes = {
@@ -46,12 +36,10 @@ export default class AdvancedTab extends PureComponent {
     sendHexData: PropTypes.bool,
     showFiatInTestnets: PropTypes.bool,
     showTestNetworks: PropTypes.bool,
-    smartTransactionsEnabled: PropTypes.bool,
     autoLockTimeLimit: PropTypes.number,
     setAutoLockTimeLimit: PropTypes.func.isRequired,
     setShowFiatConversionOnTestnetsPreference: PropTypes.func.isRequired,
     setShowTestNetworks: PropTypes.func.isRequired,
-    setSmartTransactionsEnabled: PropTypes.func.isRequired,
     setDismissSeedBackUpReminder: PropTypes.func.isRequired,
     dismissSeedBackUpReminder: PropTypes.bool.isRequired,
     backupUserData: PropTypes.func.isRequired,
@@ -106,12 +94,6 @@ export default class AdvancedTab extends PureComponent {
   backupUserData = async () => {
     const { fileName, data } = await this.props.backupUserData();
     exportAsFile(fileName, data, ExportableContentType.JSON);
-
-    this.context.trackEvent({
-      event: 'User Data Exported',
-      category: 'Backup',
-      properties: {},
-    });
   };
 
   renderStateLogs() {
@@ -182,11 +164,6 @@ export default class AdvancedTab extends PureComponent {
               danger
               onClick={(event) => {
                 event.preventDefault();
-                this.context.trackEvent({
-                  category: MetaMetricsEventCategory.Settings,
-                  event: MetaMetricsEventName.AccountReset,
-                  properties: {},
-                });
                 showResetAccountConfirmationModal();
               }}
             >
@@ -232,60 +209,6 @@ export default class AdvancedTab extends PureComponent {
             offLabel={t('off')}
             onLabel={t('on')}
             dataTestId="settings-page-dismiss-smart-account-suggestion-enabled-toggle"
-          />
-        </div>
-      </Box>
-    );
-  }
-
-  renderToggleStxOptIn() {
-    const { t } = this.context;
-    const { smartTransactionsEnabled, setSmartTransactionsEnabled } =
-      this.props;
-
-    const learMoreLink = (
-      <ButtonLink
-        size={ButtonLinkSize.Inherit}
-        textProps={{
-          variant: TextVariant.bodyMd,
-          alignItems: AlignItems.flexStart,
-        }}
-        as="a"
-        href={SMART_TRANSACTIONS_LEARN_MORE_URL}
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        {t('learnMoreUpperCase')}
-      </ButtonLink>
-    );
-
-    return (
-      <Box
-        ref={this.settingsRefs[4]}
-        className="settings-page__content-row"
-        data-testid="advanced-setting-enable-smart-transactions"
-        display={Display.Flex}
-        flexDirection={FlexDirection.Row}
-        justifyContent={JustifyContent.spaceBetween}
-        gap={[null, 4]}
-      >
-        <div className="settings-page__content-item">
-          <span>{t('smartTransactions')}</span>
-          <div className="settings-page__content-description">
-            {t('stxOptInSupportedNetworksDescription', [learMoreLink])}
-          </div>
-        </div>
-
-        <div className="settings-page__content-item-col">
-          <ToggleButton
-            value={smartTransactionsEnabled}
-            onToggle={(oldValue) => {
-              const newValue = !oldValue;
-              setSmartTransactionsEnabled(newValue);
-            }}
-            offLabel={t('off')}
-            onLabel={t('on')}
-            dataTestId="settings-page-stx-opt-in-toggle"
           />
         </div>
       </Box>
@@ -416,24 +339,11 @@ export default class AdvancedTab extends PureComponent {
             {t('showExtensionInFullSizeViewDescription')}
           </div>
         </div>
-
         <div className="settings-page__content-item-col">
           <ToggleButton
             value={showExtensionInFullSizeView}
             onToggle={(value) => {
               setShowExtensionInFullSizeView(!value);
-              this.context.trackEvent({
-                event: MetaMetricsEventName.SettingsUpdated,
-                category: MetaMetricsEventCategory.Settings,
-                properties: {
-                  settings_group: 'advanced',
-                  settings_type: 'open_full_screen',
-                  old_value: value,
-                  new_value: !value,
-                  open_full_screen: !value,
-                  location: 'Advanced Settings',
-                },
-              });
             }}
             offLabel={t('off')}
             onLabel={t('on')}
@@ -606,7 +516,6 @@ export default class AdvancedTab extends PureComponent {
         {this.renderStateLogs()}
         {this.renderResetAccount()}
         {this.renderToggleDismissSmartAccountSuggestion()}
-        {this.renderToggleStxOptIn()}
         {this.renderHexDataOptIn()}
         {this.renderShowConversionInTestnets()}
         {this.renderToggleTestNetworks()}

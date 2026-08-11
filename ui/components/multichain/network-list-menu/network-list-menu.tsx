@@ -1,10 +1,4 @@
-import React, {
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-  useCallback,
-} from 'react';
+import React, { useEffect, useMemo, useState, useCallback } from 'react';
 import {
   DragDropContext,
   Droppable,
@@ -26,7 +20,6 @@ import {
 import { type CaipChainId, type Hex } from '@metamask/utils';
 import { ChainId } from '@metamask/controller-utils';
 import { useI18nContext } from '../../../hooks/useI18nContext';
-import { useAccountCreationOnNetworkChange } from '../../../hooks/accounts/useAccountCreationOnNetworkChange';
 import { NetworkListItem } from '../network-list-item';
 import {
   setActiveNetwork,
@@ -48,7 +41,6 @@ import {
 import {
   FEATURED_RPCS,
   TEST_CHAINS,
-  BUILT_IN_NETWORKS,
   CAIP_FORMATTED_TEST_CHAINS,
   CHAIN_IDS,
 } from '../../../../shared/constants/network';
@@ -89,11 +81,6 @@ import {
   ModalHeader,
   AvatarNetworkSize,
 } from '../../component-library';
-import { MetaMetricsContext } from '../../../contexts/metametrics';
-import {
-  MetaMetricsEventCategory,
-  MetaMetricsEventName,
-} from '../../../../shared/constants/metametrics';
 import {
   convertCaipToHexChainId,
   sortNetworks,
@@ -102,10 +89,7 @@ import {
   sortNetworksByPrioity,
   getFilteredFeaturedNetworks,
 } from '../../../../shared/lib/network.utils';
-import {
-  getCompletedOnboarding,
-  getIsUnlocked,
-} from '../../../ducks/metamask/metamask';
+import { getIsUnlocked } from '../../../ducks/metamask/metamask';
 import NetworksForm from '../../../pages/settings/networks-tab/networks-form';
 import { useNetworkFormState } from '../../../pages/settings/networks-tab/networks-form/networks-form-state';
 import { endTrace, TraceName } from '../../../../shared/lib/trace';
@@ -145,8 +129,6 @@ type NetworkListMenuProps = {
 export const NetworkListMenu = ({ onClose }: NetworkListMenuProps) => {
   const t = useI18nContext();
   const dispatch = useDispatch();
-  const { trackEvent } = useContext(MetaMetricsContext);
-  const { hasAnyAccountsInNetwork } = useAccountCreationOnNetworkChange();
 
   const showTestnets = useSelector(getShowTestNetworks);
   const selectedTabOrigin = useSelector(getOriginOfCurrentTab);
@@ -158,13 +140,8 @@ export const NetworkListMenu = ({ onClose }: NetworkListMenuProps) => {
   const isAccessedFromDappConnectedSitePopover = useSelector(
     getIsAccessedFromDappConnectedSitePopover,
   );
-  const completedOnboarding = useSelector(getCompletedOnboarding);
-  // This selector provides an array with two elements.
-  // 1 - All network configurations including EVM and non-EVM with the data type
-  // MultichainNetworkConfiguration from @metamask/multichain-network-controller
-  // 2 - All EVM network configurations with the data type NetworkConfiguration
-  // from @metamask/network-controller. It includes necessary data like
-  // the RPC endpoints that are not part of @metamask/multichain-network-controller.
+  // The first item contains EVM networks in CAIP format; the second contains
+  // their full RPC configurations.
   const [multichainNetworks, evmNetworks] = useSelector(
     getMultichainNetworkConfigurationsByChainId,
   );
@@ -199,12 +176,8 @@ export const NetworkListMenu = ({ onClose }: NetworkListMenuProps) => {
     () =>
       Object.entries(multichainNetworks).reduce(
         ([nonTestnetsList, testnetsList], [id, network]) => {
-          const chainId = network.isEvm
-            ? convertCaipToHexChainId(network.chainId)
-            : id;
-          const isTest = network.isEvm
-            ? TEST_CHAINS.includes(chainId as Hex)
-            : false;
+          const chainId = convertCaipToHexChainId(network.chainId);
+          const isTest = TEST_CHAINS.includes(chainId as Hex);
           (isTest ? testnetsList : nonTestnetsList)[chainId] = network;
           return [nonTestnetsList, testnetsList];
         },
@@ -380,88 +353,21 @@ export const NetworkListMenu = ({ onClose }: NetworkListMenuProps) => {
   };
 
   const handleNetworkChange = async (chainId: CaipChainId) => {
-    const currentChain =
-      getMultichainNetworkConfigurationOrThrow(currentChainId);
-    const chain = getMultichainNetworkConfigurationOrThrow(chainId);
-
-    if (!chain.isEvm) {
-      return;
-    }
+    getMultichainNetworkConfigurationOrThrow(chainId);
     await handleEvmNetworkChange(chainId);
-
-    const chainIdToTrack = chain.isEvm
-      ? convertCaipToHexChainId(chainId)
-      : chainId;
-    const currentChainIdToTrack = currentChain.isEvm
-      ? convertCaipToHexChainId(currentChainId)
-      : currentChainId;
-
-    // Check if the destination network is custom (not built-in, featured, or multichain)
-    const hexChainId = chain.isEvm
-      ? convertCaipToHexChainId(chain.chainId)
-      : chain.chainId;
-
-    const isBuiltInNetwork = Object.values(BUILT_IN_NETWORKS).some(
-      (builtInNetwork) => builtInNetwork.chainId === hexChainId,
-    );
-    const isFeaturedRpc = FEATURED_RPCS.some(
-      (featuredRpc) => featuredRpc.chainId === hexChainId,
-    );
-    const isCustomNetwork = !isBuiltInNetwork && !isFeaturedRpc;
-
-    trackEvent({
-      event: MetaMetricsEventName.NavNetworkSwitched,
-      category: MetaMetricsEventCategory.Network,
-      properties: {
-        location: 'Network Menu',
-        // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        chain_id: currentChainIdToTrack,
-        // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        from_network: currentChainIdToTrack,
-        // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        to_network: chainIdToTrack,
-        // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        custom_network: isCustomNetwork,
-      },
-    });
   };
 
   const hasMultiRpcOptions = useCallback(
     (network: MultichainNetworkConfiguration): boolean =>
-      network.isEvm &&
       getRpcDataByChainId(network.chainId, evmNetworks).rpcEndpoints.length > 1,
     [evmNetworks],
-  );
-
-  const isNetworkEnabled = useCallback(
-    (network: MultichainNetworkConfiguration): boolean => {
-      return (
-        network.isEvm ||
-        (isUnlocked && completedOnboarding) ||
-        hasAnyAccountsInNetwork(network.chainId)
-      );
-    },
-    [isUnlocked, completedOnboarding, hasAnyAccountsInNetwork],
   );
 
   const getItemCallbacks = useCallback(
     (
       network: MultichainNetworkConfiguration,
     ): Record<string, (() => void) | undefined> => {
-      const { chainId, isEvm } = network;
-
-      if (!isEvm) {
-        return {
-          onDiscoverClick: undefined,
-        };
-      }
-
-      // Non-EVM networks cannot be deleted, edited or have
-      // RPC endpoints so it's safe to call this conversion function here.
+      const { chainId } = network;
       const hexChainId = convertCaipToHexChainId(chainId);
       const isDeletable =
         isUnlocked &&
@@ -550,7 +456,6 @@ export const NetworkListMenu = ({ onClose }: NetworkListMenuProps) => {
         onEditClick={onEdit}
         onDiscoverClick={onDiscoverClick}
         onRpcEndpointClick={onRpcSelect}
-        disabled={!isNetworkEnabled(network)}
         notSelectable={!canSelectNetwork}
       />
     );
@@ -659,13 +564,6 @@ export const NetworkListMenu = ({ onClose }: NetworkListMenuProps) => {
                     onToggle={(value: boolean) => {
                       const newVal = !value;
                       dispatch(setShowTestNetworks(newVal));
-                      trackEvent({
-                        event: MetaMetricsEventName.TestNetworksDisplayed,
-                        category: MetaMetricsEventCategory.Network,
-                        properties: {
-                          value: newVal,
-                        },
-                      });
                     }}
                   />
                 </Box>
@@ -688,10 +586,6 @@ export const NetworkListMenu = ({ onClose }: NetworkListMenuProps) => {
               startIconProps={{ marginRight: 2 }}
               block
               onClick={() => {
-                trackEvent({
-                  event: MetaMetricsEventName.AddNetworkButtonClick,
-                  category: MetaMetricsEventCategory.Network,
-                });
                 setActionMode(ACTION_MODE.ADD_EDIT);
               }}
             >

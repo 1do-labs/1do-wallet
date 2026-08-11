@@ -25,7 +25,6 @@ export function buildControllerInitRequestMock(): jest.Mocked<
     getFlatState: jest.fn(),
     getPermittedAccounts: jest.fn(),
     getProvider: jest.fn(),
-    getTransactionMetricsRequest: jest.fn(),
     getUIState: jest.fn(),
     offscreenPromise: Promise.resolve(),
     persistedState: {},

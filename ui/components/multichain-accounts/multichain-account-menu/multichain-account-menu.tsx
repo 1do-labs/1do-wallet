@@ -27,11 +27,6 @@ import {
 } from '../../../store/actions';
 import { getAccountTree } from '../../../selectors/multichain-accounts/account-tree';
 import { trace, TraceName, TraceOperation } from '../../../../shared/lib/trace';
-import { MetaMetricsContext } from '../../../contexts/metametrics';
-import {
-  MetaMetricsEventCategory,
-  MetaMetricsEventName,
-} from '../../../../shared/constants/metametrics';
 import { MultichainAccountMenuProps } from './multichain-account-menu.types';
 
 export const MultichainAccountMenu = ({
@@ -46,7 +41,6 @@ export const MultichainAccountMenu = ({
   const dispatch = useDispatch();
   const popoverRef = useRef<HTMLDivElement>(null);
   const accountTree = useSelector(getAccountTree);
-  const { trackEvent } = useContext(MetaMetricsContext);
 
   // Get the account group metadata to check pinned/hidden state
   const accountGroupMetadata = useMemo(() => {
@@ -142,17 +136,6 @@ export const MultichainAccountMenu = ({
 
       await dispatch(setAccountGroupPinned(accountGroupId, newPinnedState));
 
-      // Track the Account Pinned event
-      trackEvent({
-        event: MetaMetricsEventName.AccountPinned,
-        category: MetaMetricsEventCategory.Accounts,
-        properties: {
-          pinned: newPinnedState,
-          // eslint-disable-next-line @typescript-eslint/naming-convention
-          pinned_count_after: countAccountsByStatus('pinned', newPinnedState),
-        },
-      });
-
       onToggle?.();
     };
 
@@ -170,17 +153,6 @@ export const MultichainAccountMenu = ({
       }
 
       await dispatch(setAccountGroupHidden(accountGroupId, newHiddenState));
-
-      // Track the Account Hidden event
-      trackEvent({
-        event: MetaMetricsEventName.AccountHidden,
-        category: MetaMetricsEventCategory.Accounts,
-        properties: {
-          hidden: newHiddenState,
-          // eslint-disable-next-line @typescript-eslint/naming-convention
-          hidden_count_after: countAccountsByStatus('hidden', newHiddenState),
-        },
-      });
 
       onToggle?.();
     };
@@ -240,7 +212,6 @@ export const MultichainAccountMenu = ({
     isHidden,
     dispatch,
     onToggle,
-    trackEvent,
     countAccountsByStatus,
   ]);
 

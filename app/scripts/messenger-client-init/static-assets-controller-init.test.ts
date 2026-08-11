@@ -3,9 +3,7 @@ import { getRootMessenger } from '../lib/messenger';
 import { MessengerClientInitRequest } from './types';
 import { buildControllerInitRequestMock } from './test/utils';
 import {
-  getStaticAssetsControllerInitMessenger,
   getStaticAssetsControllerMessenger,
-  StaticAssetsControllerInitMessenger,
   StaticAssetsControllerMessenger,
 } from './messengers';
 import { StaticAssetsControllerInit } from './static-assets-controller-init';
@@ -13,17 +11,14 @@ import { StaticAssetsControllerInit } from './static-assets-controller-init';
 jest.mock('../controllers/static-assets-controller');
 
 function getInitRequestMock(): jest.Mocked<
-  MessengerClientInitRequest<
-    StaticAssetsControllerMessenger,
-    StaticAssetsControllerInitMessenger
-  >
+  MessengerClientInitRequest<StaticAssetsControllerMessenger>
 > {
   const baseMessenger = getRootMessenger<never, never>();
 
   const requestMock = {
     ...buildControllerInitRequestMock(),
     controllerMessenger: getStaticAssetsControllerMessenger(baseMessenger),
-    initMessenger: getStaticAssetsControllerInitMessenger(baseMessenger),
+    initMessenger: undefined,
   };
 
   return requestMock;

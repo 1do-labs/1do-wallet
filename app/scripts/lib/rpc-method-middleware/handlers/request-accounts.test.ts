@@ -3,15 +3,7 @@ import type {
   JsonRpcRequest,
   PendingJsonRpcResponse,
 } from '@metamask/utils';
-import * as Util from '../../util';
 import requestEthereumAccounts from './request-accounts';
-import type { RequestEthereumAccountsOptions } from './request-accounts';
-
-jest.mock('../../util', () => ({
-  ...jest.requireActual('../../util'),
-  shouldEmitDappViewedEvent: jest.fn(),
-}));
-const MockUtil = jest.mocked(Util);
 
 const baseRequest = {
   jsonrpc: '2.0' as const,
@@ -26,19 +18,6 @@ const createMockedHandler = () => {
   const next = jest.fn();
   const end = jest.fn();
   const getAccounts = jest.fn().mockReturnValue([]);
-  const sendMetrics = jest.fn();
-  const metamaskState = {
-    permissionHistory: {},
-    metaMetricsId: 'metaMetricsId',
-    internalAccounts: {
-      accounts: {
-        '0x01': { address: '0x01' },
-        '0x02': { address: '0x02' },
-        '0x03': { address: '0x03' },
-      } as unknown as RequestEthereumAccountsOptions['metamaskState']['internalAccounts']['accounts'],
-      selectedAccount: '',
-    },
-  };
   const getCaip25PermissionFromLegacyPermissionsForOrigin = jest
     .fn()
     .mockResolvedValue({});
@@ -53,8 +32,6 @@ const createMockedHandler = () => {
   ) =>
     requestEthereumAccounts.implementation(request, response, next, end, {
       getAccounts,
-      sendMetrics,
-      metamaskState,
       getCaip25PermissionFromLegacyPermissionsForOrigin,
       requestPermissionsForOrigin,
     });
@@ -64,8 +41,6 @@ const createMockedHandler = () => {
     next,
     end,
     getAccounts,
-    sendMetrics,
-    metamaskState,
     getCaip25PermissionFromLegacyPermissionsForOrigin,
     requestPermissionsForOrigin,
     handler,
@@ -140,55 +115,6 @@ describe('requestEthereumAccountsHandler', () => {
       await handler(baseRequest);
       expect(response.result).toStrictEqual(['0xdead', '0xbeef']);
       expect(getAccounts).toHaveBeenCalledTimes(2);
-    });
-
-    it('emits the dapp viewed metrics event when shouldEmitDappViewedEvent returns true', async () => {
-      const { handler, getAccounts, sendMetrics } = createMockedHandler();
-      getAccounts
-        .mockReturnValueOnce([])
-        .mockReturnValueOnce(['0xdead', '0xbeef']);
-      MockUtil.shouldEmitDappViewedEvent.mockReturnValue(true);
-
-      await handler(baseRequest);
-      expect(sendMetrics).toHaveBeenCalledWith(
-        {
-          category: 'inpage_provider',
-          event: 'Dapp Viewed',
-          properties: {
-            // eslint-disable-next-line @typescript-eslint/naming-convention
-            is_first_visit: true,
-            // eslint-disable-next-line @typescript-eslint/naming-convention
-            number_of_accounts: 3,
-            // eslint-disable-next-line @typescript-eslint/naming-convention
-            number_of_accounts_connected: 2,
-            // eslint-disable-next-line @typescript-eslint/naming-convention
-            is_iframe: false,
-            // eslint-disable-next-line @typescript-eslint/naming-convention
-            is_cross_origin_iframe: false,
-            // eslint-disable-next-line @typescript-eslint/naming-convention
-            iframe_origin: null,
-            // eslint-disable-next-line @typescript-eslint/naming-convention
-            top_level_origin: null,
-          },
-          referrer: {
-            url: 'http://test.com',
-          },
-        },
-        {
-          excludeMetaMetricsId: true,
-        },
-      );
-    });
-
-    it('does not emit the dapp viewed metrics event when shouldEmitDappViewedEvent returns false', async () => {
-      const { handler, getAccounts, sendMetrics } = createMockedHandler();
-      getAccounts
-        .mockReturnValueOnce([])
-        .mockReturnValueOnce(['0xdead', '0xbeef']);
-      MockUtil.shouldEmitDappViewedEvent.mockReturnValue(false);
-
-      await handler(baseRequest);
-      expect(sendMetrics).not.toHaveBeenCalled();
     });
   });
 });

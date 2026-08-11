@@ -62,11 +62,6 @@ export class WalletPage {
     await this.tokenTab.click();
   }
 
-  async selectSwapAction() {
-    await this.swapButton.waitFor({ state: 'visible' });
-    await this.swapButton.click();
-  }
-
   async selectActivityList() {
     await this.activityListTab.click();
   }

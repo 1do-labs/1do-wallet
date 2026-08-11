@@ -58,12 +58,7 @@ describe('Remote feature flag', function (this: Suite) {
   it('should be fetched with threshold value when basic functionality toggle is on', async function () {
     await withFixtures(
       {
-        fixtures: new FixtureBuilderV2()
-          .withMetaMetricsController({
-            metaMetricsId: MOCK_META_METRICS_ID,
-            participateInMetaMetrics: true,
-          })
-          .build(),
+        fixtures: new FixtureBuilderV2().build(),
         title: this.test?.fullTitle(),
         testSpecificMock: mockRemoteFeatureFlags,
       },
@@ -108,12 +103,7 @@ describe('Remote feature flag', function (this: Suite) {
   it('offers the option to pass into manifest file for developers along with original response', async function () {
     await withFixtures(
       {
-        fixtures: new FixtureBuilderV2()
-          .withMetaMetricsController({
-            metaMetricsId: MOCK_META_METRICS_ID,
-            participateInMetaMetrics: true,
-          })
-          .build(),
+        fixtures: new FixtureBuilderV2().build(),
         manifestFlags: {
           remoteFeatureFlags: MOCK_CUSTOMIZED_REMOTE_FEATURE_FLAGS,
         },

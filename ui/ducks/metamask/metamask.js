@@ -46,7 +46,6 @@ const initialState = {
     showExtensionInFullSizeView: false,
     showFiatInTestnets: false,
     showTestNetworks: true,
-    smartTransactionsOptInStatus: true,
     featureNotificationsEnabled: false,
     privacyMode: false,
     showMultiRpcModal: false,
@@ -55,8 +54,6 @@ const initialState = {
   completedOnboarding: false,
   knownMethodData: {},
   use4ByteResolution: true,
-  participateInMetaMetrics: null,
-  dataCollectionForMarketing: null,
   currencyRates: {
     ETH: {
       conversionRate: null,
@@ -136,18 +133,6 @@ export default function reduceMetamask(state = initialState, action) {
       };
     }
 
-    case actionConstants.SET_PARTICIPATE_IN_METAMETRICS:
-      return {
-        ...metamaskState,
-        participateInMetaMetrics: action.value,
-      };
-
-    case actionConstants.SET_DATA_COLLECTION_FOR_MARKETING:
-      return {
-        ...metamaskState,
-        dataCollectionForMarketing: action.value,
-      };
-
     case actionConstants.COMPLETE_ONBOARDING: {
       return {
         ...metamaskState,
@@ -172,9 +157,6 @@ export default function reduceMetamask(state = initialState, action) {
         isUnlocked: false,
         onboardingTabs: {},
         seedPhraseBackedUp: null,
-        // reset metametrics optin status
-        participateInMetaMetrics: null,
-        metaMetricsId: null,
       };
     }
 
@@ -235,9 +217,6 @@ export const getAlertEnabledness = (state) => state.metamask.alertEnabledness;
 
 export const getUnconnectedAccountAlertEnabledness = (state) =>
   getAlertEnabledness(state)[AlertTypes.unconnectedAccount];
-
-export const getWeb3ShimUsageAlertEnabledness = (state) =>
-  getAlertEnabledness(state)[AlertTypes.web3ShimUsage];
 
 export const getUnconnectedAccountAlertShown = (state) =>
   state.metamask.unconnectedAccountAlertShownOrigins;

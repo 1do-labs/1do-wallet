@@ -28,6 +28,13 @@ exports[`SmartContractAccountToggleSection Disabled State Handling disables all 
           Learn more
         </button>
       </p>
+      <button
+        class="mm-box mm-text mm-button-base mm-button-base--size-lg mm-button-base--disabled mm-button-base--block mm-button-primary mm-button-primary--disabled mm-text--body-md-medium mm-box--margin-top-4 mm-box--padding-0 mm-box--padding-right-4 mm-box--padding-left-4 mm-box--display-inline-flex mm-box--justify-content-center mm-box--align-items-center mm-box--color-icon-inverse mm-box--background-color-icon-default mm-box--rounded-xl"
+        data-testid="smart-account-upgrade-button"
+        disabled=""
+      >
+        Upgrade smart account
+      </button>
     </div>
     <div
       class="mm-box"
@@ -149,6 +156,13 @@ exports[`SmartContractAccountToggleSection Learn More Button opens Zendesk artic
           Learn more
         </button>
       </p>
+      <button
+        class="mm-box mm-text mm-button-base mm-button-base--size-lg mm-button-base--disabled mm-button-base--block mm-button-primary mm-button-primary--disabled mm-text--body-md-medium mm-box--margin-top-4 mm-box--padding-0 mm-box--padding-right-4 mm-box--padding-left-4 mm-box--display-inline-flex mm-box--justify-content-center mm-box--align-items-center mm-box--color-icon-inverse mm-box--background-color-icon-default mm-box--rounded-xl"
+        data-testid="smart-account-upgrade-button"
+        disabled=""
+      >
+        Upgrade smart account
+      </button>
     </div>
     <div
       class="mm-box"
@@ -189,6 +203,13 @@ exports[`SmartContractAccountToggleSection Loading State shows loading spinner w
           Learn more
         </button>
       </p>
+      <button
+        class="mm-box mm-text mm-button-base mm-button-base--size-lg mm-button-base--disabled mm-button-base--block mm-button-primary mm-button-primary--disabled mm-text--body-md-medium mm-box--margin-top-4 mm-box--padding-0 mm-box--padding-right-4 mm-box--padding-left-4 mm-box--display-inline-flex mm-box--justify-content-center mm-box--align-items-center mm-box--color-icon-inverse mm-box--background-color-icon-default mm-box--rounded-xl"
+        data-testid="smart-account-upgrade-button"
+        disabled=""
+      >
+        Upgrade smart account
+      </button>
     </div>
     <div
       class="mm-box"
@@ -270,6 +291,13 @@ exports[`SmartContractAccountToggleSection Network Integration displays toggle f
           Learn more
         </button>
       </p>
+      <button
+        class="mm-box mm-text mm-button-base mm-button-base--size-lg mm-button-base--disabled mm-button-base--block mm-button-primary mm-button-primary--disabled mm-text--body-md-medium mm-box--margin-top-4 mm-box--padding-0 mm-box--padding-right-4 mm-box--padding-left-4 mm-box--display-inline-flex mm-box--justify-content-center mm-box--align-items-center mm-box--color-icon-inverse mm-box--background-color-icon-default mm-box--rounded-xl"
+        data-testid="smart-account-upgrade-button"
+        disabled=""
+      >
+        Upgrade smart account
+      </button>
     </div>
     <div
       class="mm-box"

@@ -14,14 +14,9 @@ import {
   Text,
   TextVariant,
 } from '@metamask/design-system-react';
-import { MetaMetricsContext } from '../../../contexts/metametrics';
 import { setTheme } from '../../../store/actions';
 import { PREFERENCES_AND_DISPLAY_ROUTE } from '../../../helpers/constants/routes';
 import { getTheme } from '../../../selectors';
-import {
-  MetaMetricsEventName,
-  MetaMetricsEventCategory,
-} from '../../../../shared/constants/metametrics';
 import { ThemeType } from '../../../../shared/constants/preferences';
 import { useI18nContext } from '../../../hooks/useI18nContext';
 import { THEME_OPTIONS } from './theme-utils';
@@ -30,18 +25,9 @@ const ThemeSubPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const t = useI18nContext();
-  const { trackEvent } = useContext(MetaMetricsContext);
   const currentTheme = useSelector(getTheme) as ThemeType;
 
   const handleSelect = (value: ThemeType) => {
-    trackEvent({
-      category: MetaMetricsEventCategory.Settings,
-      event: MetaMetricsEventName.ThemeChanged,
-      properties: {
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        theme_selected: value,
-      },
-    });
     dispatch(setTheme(value));
     navigate(PREFERENCES_AND_DISPLAY_ROUTE);
   };

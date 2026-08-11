@@ -49,7 +49,7 @@ export function useHasInsufficientBalance(): {
    * Tempo (7702) special case: Force "enough native balance" in legacy flow
    * (when `excludeNativeTokenForFee` is false) to restore old MetaMask behavior.
    * New MM reports "0" balance, breaking legacy flow. Temporary fix until HW
-   * supports gasless/7702.
+   * supports fee-token payment with EIP-7702.
    */
   const hasInsufficientBalance = hasNoNativeAsset
     ? Boolean(excludeNativeTokenForFee)

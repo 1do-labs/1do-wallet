@@ -1,16 +1,9 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { getErrorMessage } from '../../../../shared/lib/error';
-import {
-  MetaMetricsEventAccountImportType,
-  MetaMetricsEventAccountType,
-  MetaMetricsEventCategory,
-  MetaMetricsEventName,
-} from '../../../../shared/constants/metametrics';
 import { Box, ButtonLink, Label, Text } from '../../component-library';
 import Dropdown from '../../ui/dropdown';
-import { MetaMetricsContext } from '../../../contexts/metametrics';
 import {
   BlockSize,
   FontWeight,
@@ -21,7 +14,6 @@ import {
 import ZENDESK_URLS from '../../../helpers/constants/zendesk-url';
 import { useI18nContext } from '../../../hooks/useI18nContext';
 import * as actions from '../../../store/actions';
-import { getHDEntropyIndex } from '../../../selectors/selectors';
 
 // Subviews
 import JsonImportView from './json';
@@ -30,8 +22,6 @@ import PrivateKeyImportView from './private-key';
 export const ImportAccount = ({ onActionComplete }) => {
   const t = useI18nContext();
   const dispatch = useDispatch();
-  const { trackEvent } = useContext(MetaMetricsContext);
-  const hdEntropyIndex = useSelector(getHDEntropyIndex);
 
   const menuItems = [t('privateKey'), t('jsonFile')];
 
@@ -48,7 +38,6 @@ export const ImportAccount = ({ onActionComplete }) => {
         actions.importNewAccount(strategy, importArgs, loadingMessage),
       );
       if (selectedAccount) {
-        trackImportEvent(strategy, true);
         setImportErrorMessage();
         onActionComplete(true);
       } else {
@@ -57,8 +46,6 @@ export const ImportAccount = ({ onActionComplete }) => {
       }
     } catch (error) {
       const message = getErrorMessage(error);
-      trackImportEvent(strategy, message);
-
       if (handleKeyringControllerError(error)) {
         return false;
       }
@@ -68,28 +55,6 @@ export const ImportAccount = ({ onActionComplete }) => {
     }
 
     return true;
-  }
-
-  function trackImportEvent(strategy, wasSuccessful) {
-    const accountImportType =
-      strategy === 'Private Key'
-        ? MetaMetricsEventAccountImportType.PrivateKey
-        : MetaMetricsEventAccountImportType.Json;
-
-    const event = wasSuccessful
-      ? MetaMetricsEventName.AccountAdded
-      : MetaMetricsEventName.AccountAddFailed;
-
-    trackEvent({
-      category: MetaMetricsEventCategory.Accounts,
-      event,
-      properties: {
-        account_type: MetaMetricsEventAccountType.Imported,
-        account_import_type: accountImportType,
-        hd_entropy_index: hdEntropyIndex,
-        is_suggested_name: true,
-      },
-    });
   }
 
   function getLoadingMessage(strategy) {

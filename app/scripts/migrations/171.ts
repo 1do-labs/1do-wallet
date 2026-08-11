@@ -87,52 +87,6 @@ function createEvmEnabledNetworkMap(
   return enabledNetworkMap;
 }
 
-/**
- * Creates enabledNetworkMap for non-EVM networks
- *
- * @param selectedMultichainNetworkChainId - The selected multichain network chain ID
- * @returns The enabled network map for non-EVM networks
- */
-function createNonEvmEnabledNetworkMap(
-  selectedMultichainNetworkChainId: string,
-): Record<string, Record<string, boolean>> {
-  const caipChainId = formatChainIdToCaip(selectedMultichainNetworkChainId);
-  const { namespace: chainNamespace } = parseCaipChainId(caipChainId);
-
-  const enabledNetworkMap = {
-    [chainNamespace]: {
-      [selectedMultichainNetworkChainId]: true,
-    },
-  };
-
-  return enabledNetworkMap;
-}
-
-/**
- * Merges enabled network maps by namespace while preserving chain entries.
- *
- * @param baseEnabledNetworkMap - The base enabled network map.
- * @param additionalEnabledNetworkMap - The additional enabled network map to merge.
- * @returns The merged enabled network map.
- */
-function mergeEnabledNetworkMaps(
-  baseEnabledNetworkMap: Record<string, Record<string, boolean>>,
-  additionalEnabledNetworkMap: Record<string, Record<string, boolean>>,
-): Record<string, Record<string, boolean>> {
-  const mergedEnabledNetworkMap = { ...baseEnabledNetworkMap };
-
-  for (const [namespace, networkMap] of Object.entries(
-    additionalEnabledNetworkMap,
-  )) {
-    mergedEnabledNetworkMap[namespace] = {
-      ...(mergedEnabledNetworkMap[namespace] ?? {}),
-      ...networkMap,
-    };
-  }
-
-  return mergedEnabledNetworkMap;
-}
-
 function transformState(
   state: Record<string, unknown>,
 ): Record<string, unknown> {
@@ -184,42 +138,8 @@ function transformState(
     return state;
   }
 
-  const { MultichainNetworkController: multichainNetworkControllerState } =
-    state;
-
-  if (!isObject(multichainNetworkControllerState)) {
-    global.sentry?.captureException?.(new Error());
-    return state;
-  }
-
-  // Extract required state properties
-  const { selectedMultichainNetworkChainId } = multichainNetworkControllerState;
-
-  // Validate selectedMultichainNetworkChainId
-  if (
-    !selectedMultichainNetworkChainId ||
-    typeof selectedMultichainNetworkChainId !== 'string'
-  ) {
-    global.sentry?.captureException?.(
-      new Error(
-        `Migration ${version}: selectedMultichainNetworkChainId is type '${typeof selectedMultichainNetworkChainId}', expected string.`,
-      ),
-    );
-    return state;
-  }
-
-  // Create enabledNetworkMap by merging both EVM and non-EVM networks
-  const evmEnabledNetworkMap = createEvmEnabledNetworkMap(
+  networkOrderControllerState.enabledNetworkMap = createEvmEnabledNetworkMap(
     tokenNetworkFilter as Record<string, boolean>,
-  );
-  const nonEvmEnabledNetworkMap = createNonEvmEnabledNetworkMap(
-    selectedMultichainNetworkChainId,
-  );
-
-  // Merge both maps by namespace to avoid replacing existing chain maps.
-  networkOrderControllerState.enabledNetworkMap = mergeEnabledNetworkMaps(
-    evmEnabledNetworkMap,
-    nonEvmEnabledNetworkMap,
   );
 
   return state;

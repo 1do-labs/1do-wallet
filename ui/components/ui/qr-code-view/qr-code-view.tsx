@@ -7,7 +7,6 @@ import { isHexPrefixed } from 'ethereumjs-util';
 // eslint-disable-next-line import-x/no-restricted-paths
 import { normalizeSafeAddress } from '../../../../app/scripts/lib/multichain/address';
 import { Box, Icon, IconName, IconSize, Text } from '../../component-library';
-import { MetaMetricsContext } from '../../../contexts/metametrics';
 import type { MetaMaskReduxState } from '../../../store/store';
 import {
   AlignItems,
@@ -18,10 +17,6 @@ import {
   TextVariant,
 } from '../../../helpers/constants/design-system';
 import { useI18nContext } from '../../../hooks/useI18nContext';
-import {
-  MetaMetricsEventCategory,
-  MetaMetricsEventName,
-} from '../../../../shared/constants/metametrics';
 import { useCopyToClipboard } from '../../../hooks/useCopyToClipboard';
 
 function mapStateToProps(state: Pick<MetaMaskReduxState, 'appState'>) {
@@ -48,8 +43,6 @@ function QrCodeView({
   accountName?: string;
   location?: string;
 }) {
-  const { trackEvent } = useContext(MetaMetricsContext);
-
   // useCopyToClipboard analysis: As of writing this, this is only used for public addresses
   const [copied, handleCopy] = useCopyToClipboard({ clearDelayMs: null });
   const t = useI18nContext();
@@ -137,13 +130,6 @@ function QrCodeView({
         data-clipboard-text={checksummedAddress}
         onClick={() => {
           handleCopy(checksummedAddress);
-          trackEvent({
-            category: MetaMetricsEventCategory.Accounts,
-            event: MetaMetricsEventName.PublicAddressCopied,
-            properties: {
-              location,
-            },
-          });
         }}
       >
         <Icon

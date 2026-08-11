@@ -38,10 +38,6 @@ import {
 } from '../../../selectors/multichain-accounts/account-tree.types';
 import { setSelectedMultichainAccount } from '../../../store/actions';
 import { DEFAULT_ROUTE } from '../../../helpers/constants/routes';
-import {
-  MetaMetricsEventCategory,
-  MetaMetricsEventName,
-} from '../../../../shared/constants/metametrics';
 import { endTrace, trace, TraceName } from '../../../../shared/lib/trace';
 import {
   ACCOUNT_OVERVIEW_TAB_KEY_TO_TRACE_NAME_MAP,
@@ -53,7 +49,6 @@ import {
   getHDEntropyIndex,
   getPreferences,
 } from '../../../selectors';
-import { MetaMetricsContext } from '../../../contexts/metametrics';
 import { MultichainAccountMenu } from '../multichain-account-menu';
 import { AddMultichainAccount } from '../add-multichain-account';
 import { MultichainAccountEditModal } from '../multichain-account-edit-modal';
@@ -114,7 +109,6 @@ export const MultichainAccountList = ({
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { trackEvent } = useContext(MetaMetricsContext);
   const t = useI18nContext();
   const defaultHomeActiveTabName: AccountOverviewTabKey = useSelector(
     getDefaultHomeActiveTabName,
@@ -235,16 +229,6 @@ export const MultichainAccountList = ({
 
   const defaultHandleAccountClick = useCallback(
     (accountGroupId: AccountGroupId) => {
-      trackEvent({
-        category: MetaMetricsEventCategory.Navigation,
-        event: MetaMetricsEventName.NavAccountSwitched,
-        properties: {
-          location: 'Main Menu',
-          // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-          // eslint-disable-next-line @typescript-eslint/naming-convention
-          hd_entropy_index: hdEntropyIndex,
-        },
-      });
       endTrace({
         name: ACCOUNT_OVERVIEW_TAB_KEY_TO_TRACE_NAME_MAP[
           defaultHomeActiveTabName
@@ -259,7 +243,7 @@ export const MultichainAccountList = ({
       dispatch(setSelectedMultichainAccount(accountGroupId));
       navigate(DEFAULT_ROUTE);
     },
-    [trackEvent, hdEntropyIndex, defaultHomeActiveTabName, dispatch, navigate],
+    [hdEntropyIndex, defaultHomeActiveTabName, dispatch, navigate],
   );
 
   const handleAccountClickToUse = useCallback(

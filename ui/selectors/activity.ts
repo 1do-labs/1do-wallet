@@ -4,10 +4,7 @@ import { EXCLUDED_TRANSACTION_TYPES } from '../helpers/constants/transactions';
 import type { TransactionGroup } from '../../shared/lib/multichain/types';
 import { CHAIN_ID_TO_CURRENCY_SYMBOL_MAP } from '../../shared/constants/network';
 import { NATIVE_TOKEN_ADDRESS } from '../../shared/constants/transaction';
-import {
-  groupAndSortTransactionsByNonce,
-  smartTransactionsListSelector,
-} from './transactions';
+import { groupAndSortTransactionsByNonce } from './transactions';
 import {
   selectOrderedTransactions,
   selectRequiredTransactionHashes,
@@ -31,14 +28,8 @@ function isFromSelectedAccount(tx: TransactionMeta, selectedAddress: string) {
 export const selectLocalTransactions = createSelector(
   selectOrderedTransactions,
   getSelectedInternalAccount,
-  smartTransactionsListSelector,
   selectRequiredTransactionHashes,
-  (
-    transactions,
-    selectedAccount,
-    smartTransactions,
-    internalTxHashes,
-  ): TransactionGroup[] => {
+  (transactions, selectedAccount, internalTxHashes): TransactionGroup[] => {
     if (!selectedAccount?.address) {
       return EMPTY_ARRAY as unknown as TransactionGroup[];
     }
@@ -56,13 +47,11 @@ export const selectLocalTransactions = createSelector(
       return true;
     });
 
-    const combined = [...filtered, ...smartTransactions];
-
-    if (!combined.length) {
+    if (!filtered.length) {
       return EMPTY_ARRAY as unknown as TransactionGroup[];
     }
 
-    return groupAndSortTransactionsByNonce(combined) as TransactionGroup[];
+    return groupAndSortTransactionsByNonce(filtered) as TransactionGroup[];
   },
 );
 

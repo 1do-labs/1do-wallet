@@ -69,7 +69,9 @@ type ClearSigningContext = {
   envelope: Record<string, unknown>;
 };
 
-const parseTypedData = (data?: SignatureRequestType['msgParams']['data']) => {
+const parseTypedData = (
+  data?: NonNullable<SignatureRequestType['msgParams']>['data'],
+) => {
   if (!data) {
     return undefined;
   }

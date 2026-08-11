@@ -22,10 +22,12 @@ import {
   isObject,
 } from '@metamask/utils';
 import { BigNumber } from 'bignumber.js';
-import { groupBy } from 'lodash';
 import { InternalAccount } from '@metamask/keyring-internal-api';
 import { createSelector } from 'reselect';
-import type { AccountTreeControllerState } from '@metamask/account-tree-controller';
+import type {
+  AccountTreeControllerState,
+  AccountWalletObject,
+} from '@metamask/account-tree-controller';
 import type { AccountsControllerState } from '@metamask/accounts-controller';
 import type {
   TokenBalancesControllerState,
@@ -71,7 +73,7 @@ import {
 } from '../../shared/lib/selectors/assets-migration';
 import { traceAsControllerCallback } from '../../shared/lib/trace';
 import { getSelectedInternalAccount, getAccountIdByAddress } from './accounts';
-import { getMultichainBalances, RatesState } from './multichain';
+import { getMultichainBalances } from './multichain';
 import { EMPTY_OBJECT } from './shared';
 import {
   getAllTokens,
@@ -90,10 +92,7 @@ import {
   getSelectedMultichainNetworkConfiguration,
   MultichainNetworkControllerState,
 } from './multichain/networks';
-import {
-  getInternalAccountBySelectedAccountGroupAndCaip,
-  getSelectedAccountGroup,
-} from './multichain-accounts/account-tree';
+import { getSelectedAccountGroup } from './multichain-accounts/account-tree';
 
 export type AssetsState = {
   metamask: MultichainAssetsControllerState;
@@ -116,8 +115,7 @@ export type BalanceCalculationState = {
     MultichainAssetsControllerState &
     AccountTrackerControllerState &
     NetworkEnablementControllerState &
-    MultichainNetworkControllerState['metamask'] &
-    RatesState['metamask'] & {
+    MultichainNetworkControllerState['metamask'] & {
       networkConfigurationsByChainId: NetworkState['metamask']['networkConfigurationsByChainId'];
     };
 };
@@ -386,11 +384,11 @@ export const getTokenBalancesEvm = createDeepEqualSelector(
 
             tokensWithBalance.push({
               ...token,
-              address: token.address as CaipAssetType,
+              address: token.address,
               assetId: token.assetId as CaipAssetType | undefined,
               balance,
               tokenFiatAmount,
-              chainId: chainId as CaipChainId,
+              chainId,
               string: String(balance),
               secondary: 0,
               title,
@@ -400,70 +398,6 @@ export const getTokenBalancesEvm = createDeepEqualSelector(
       },
     );
     return tokensWithBalance;
-  },
-);
-
-/**
- * @deprecated use getAllAssets instead
- */
-export const getMultiChainAssets = createDeepEqualSelector(
-  (_state, selectedAccount) => selectedAccount,
-  getMultichainBalances,
-  getMultiChainAssetsControllerAccountsAssets,
-  getMultiChainAssetsControllerAssetsMetadata,
-  getMultichainAssetsRatesControllerConversionRates,
-  getPreferences,
-  (
-    selectedAccountAddress,
-    multichainBalances,
-    accountAssets,
-    assetsMetadata,
-    assetRates,
-    preferences,
-  ) => {
-    const { hideZeroBalanceTokens } = preferences;
-    const assetIds = accountAssets?.[selectedAccountAddress.id] || [];
-    const balances = multichainBalances?.[selectedAccountAddress.id];
-
-    const allAssets: TokenWithFiatAmount[] = [];
-    assetIds.forEach((assetId: CaipAssetId) => {
-      const { chainId, assetNamespace } = parseCaipAssetType(assetId);
-      const isNative = assetNamespace === 'slip44';
-      const balance = balances?.[assetId] || { amount: '0', unit: '' };
-      const rate = assetRates?.[assetId]?.rate;
-
-      const balanceInFiat = rate
-        ? new BigNumber(balance.amount).times(rate).toNumber()
-        : null;
-
-      const assetMetadataFallback = {
-        name: balance.unit,
-        symbol: balance.unit || '',
-        fungible: true,
-        units: [{ name: assetId, symbol: balance.unit || '', decimals: 0 }],
-      };
-
-      const metadata = assetsMetadata[assetId] || assetMetadataFallback;
-      const decimals = metadata.units[0]?.decimals || 0;
-      if (!hideZeroBalanceTokens || balance.amount !== '0' || isNative) {
-        allAssets.push({
-          title: metadata.name,
-          address: assetId,
-          symbol: metadata.symbol,
-          image: metadata.iconUrl,
-          decimals,
-          chainId,
-          isNative,
-          balance: balance.amount,
-          secondary: balanceInFiat,
-          string: '',
-          tokenFiatAmount: balanceInFiat,
-          isStakeable: false,
-        });
-      }
-    });
-
-    return allAssets;
   },
 );
 
@@ -493,33 +427,18 @@ export const getTokenByAccountAndAddressAndChainId = createDeepEqualSelector(
   ) => _chainId,
   (
     state,
-    account: InternalAccount | undefined,
+    _account: InternalAccount | undefined,
     tokenAddress: Hex | CaipAssetType | string | undefined,
     chainId: Hex | CaipChainId,
   ) => {
     const isEvm = isEvmChainId(chainId);
-    if (!tokenAddress && !isEvm) {
+    if (!isEvm) {
       return null;
     }
 
-    const accountToUse =
-      account ??
-      (isEvm
-        ? getSelectedInternalAccount(state)
-        : getInternalAccountBySelectedAccountGroupAndCaip(
-            state,
-            chainId as CaipChainId,
-          ));
-
-    const assetsToSearch = isEvm
-      ? (getSelectedAccountTokensAcrossChains(state) as Record<
-          Hex,
-          TokenWithFiatAmount[]
-        >)
-      : (groupBy(getMultiChainAssets(state, accountToUse), 'chainId') as Record<
-          CaipChainId,
-          TokenWithFiatAmount[]
-        >);
+    const assetsToSearch = getSelectedAccountTokensAcrossChains(
+      state,
+    ) as Record<Hex, TokenWithFiatAmount[]>;
 
     const result = findAssetByAddress(assetsToSearch, tokenAddress, chainId);
 
@@ -1186,7 +1105,9 @@ export const selectAccountGroupBalanceForEmptyState = createSelector(
 
     // Find the group in the account tree to get account IDs
     let groupAccountIds: string[] = [];
-    for (const treeWallet of Object.values(accountTree.wallets)) {
+    for (const treeWallet of Object.values(
+      accountTree.wallets,
+    ) as AccountWalletObject[]) {
       if (treeWallet.groups[selectedGroupId]) {
         groupAccountIds = treeWallet.groups[selectedGroupId].accounts || [];
         break;
@@ -1202,13 +1123,16 @@ export const selectAccountGroupBalanceForEmptyState = createSelector(
     const groupAddresses = new Set<string>();
 
     // Extract addresses from accountsState for accounts in this group
-    Object.entries(accountsState.internalAccounts?.accounts || {}).forEach(
-      ([accountId, account]) => {
-        if (groupAccountIdsSet.has(accountId) && account?.address) {
-          groupAddresses.add(account.address.toLowerCase());
-        }
-      },
-    );
+    (
+      Object.entries(accountsState.internalAccounts?.accounts || {}) as [
+        string,
+        InternalAccount,
+      ][]
+    ).forEach(([accountId, account]) => {
+      if (groupAccountIdsSet.has(accountId) && account?.address) {
+        groupAddresses.add(account.address.toLowerCase());
+      }
+    });
 
     const mainnetEvmChainIds = new Set(
       Object.keys(allMainnetNetworksMap?.eip155 || {}),

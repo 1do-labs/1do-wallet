@@ -20,7 +20,6 @@ const BatchAccountBalanceRequestsToggleItem = createToggleItem({
     state.metamask.useMultiAccountBalanceChecker,
   action: setUseMultiAccountBalanceChecker,
   dataTestId: 'batch-account-balance-requests-toggle',
-  trackEventProperty: 'use_multi_account_balance_checker',
 });
 
 const SkipLinkConfirmationToggleItem = createToggleItem({
@@ -31,7 +30,6 @@ const SkipLinkConfirmationToggleItem = createToggleItem({
     Boolean(getPreferences(state).skipDeepLinkInterstitial),
   action: setSkipDeepLinkInterstitial,
   dataTestId: 'skip-link-confirmation-toggle',
-  trackEventProperty: 'skip_deep_link_interstitial',
 });
 
 /** Registry of setting items for the Privacy page. Add new items here */

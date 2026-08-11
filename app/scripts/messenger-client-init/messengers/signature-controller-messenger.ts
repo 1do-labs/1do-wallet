@@ -9,7 +9,6 @@ import type {
   KeyringControllerSignTypedMessageAction,
 } from '@metamask/keyring-controller';
 import { PreferencesControllerGetStateAction } from '../../controllers/preferences-controller';
-import { MetaMetricsControllerTrackEventAction } from '../../controllers/metametrics-controller-method-action-types';
 import { RootMessenger } from '../../lib/messenger';
 
 type AllowedActions =
@@ -59,9 +58,7 @@ export function getSignatureControllerMessenger(
   return controllerMessenger;
 }
 
-type AllowedInitializationActions =
-  | MetaMetricsControllerTrackEventAction
-  | PreferencesControllerGetStateAction;
+type AllowedInitializationActions = PreferencesControllerGetStateAction;
 
 export type SignatureControllerInitMessenger = ReturnType<
   typeof getSignatureControllerInitMessenger
@@ -88,10 +85,7 @@ export function getSignatureControllerInitMessenger(
   });
   messenger.delegate({
     messenger: controllerInitMessenger,
-    actions: [
-      'MetaMetricsController:trackEvent',
-      'PreferencesController:getState',
-    ],
+    actions: ['PreferencesController:getState'],
   });
   return controllerInitMessenger;
 }

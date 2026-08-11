@@ -8,9 +8,7 @@ import NativeSendHeading from '../shared/native-send-heading/native-send-heading
 import { TokenDetailsSection } from '../token-transfer/token-details-section';
 import { TransactionFlowSection } from '../token-transfer/transaction-flow-section';
 import { useMaxValueRefresher } from '../hooks/useMaxValueRefresher';
-import { EnforcedSimulationsRow } from '../../../rows/enforced-simulations-row';
 import { OneDoTransactionClearSigningSection } from '../shared/onedo-clear-signing/onedo-clear-signing';
-import { isOneDoWalletNativeTransferTransactionCandidate } from '../../../../utils/onedo-clear-signing';
 
 const NativeTransferInfo = () => {
   const { currentConfirmation: transactionMeta } =
@@ -18,9 +16,6 @@ const NativeTransferInfo = () => {
   useMaxValueRefresher();
 
   const isWalletInitiated = transactionMeta.origin === 'metamask';
-  const isOneDoWalletNativeTransfer =
-    isOneDoWalletNativeTransferTransactionCandidate(transactionMeta);
-
   return (
     <>
       <NativeSendHeading />
@@ -28,10 +23,8 @@ const NativeTransferInfo = () => {
       <SimulationDetails
         transaction={transactionMeta}
         isTransactionsRedesign
-        enableMetrics
-        metricsOnly={isWalletInitiated}
+        hideDetails={isWalletInitiated}
       />
-      {!isOneDoWalletNativeTransfer && <EnforcedSimulationsRow />}
       <OneDoTransactionClearSigningSection />
       <TokenDetailsSection />
       <GasFeesSection />

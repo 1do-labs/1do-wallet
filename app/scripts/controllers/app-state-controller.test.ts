@@ -398,20 +398,6 @@ describe('AppStateController', () => {
     });
   });
 
-  describe('setSurveyLinkLastClickedOrClosed', () => {
-    it('set the surveyLinkLastClickedOrClosed time', async () => {
-      await withController(({ controller }) => {
-        const mockParams = Date.now();
-
-        controller.setSurveyLinkLastClickedOrClosed(mockParams);
-
-        expect(controller.state.surveyLinkLastClickedOrClosed).toStrictEqual(
-          mockParams,
-        );
-      });
-    });
-  });
-
   describe('setOnboardingDate', () => {
     it('set the onboardingDate', async () => {
       await withController(({ controller }) => {
@@ -711,7 +697,6 @@ describe('AppStateController', () => {
               "defaultHomeActiveTabName": null,
               "fullScreenGasPollTokens": [],
               "hadAdvancedGasFeesSetPriorToMigration92_3": false,
-              "hasShownMultichainAccountsIntroModal": false,
               "isRampCardClosed": false,
               "isWalletResetInProgress": false,
               "lastInteractedConfirmationInfo": {
@@ -795,7 +780,6 @@ describe('AppStateController', () => {
               "defaultHomeActiveTabName": null,
               "fullScreenGasPollTokens": [],
               "hadAdvancedGasFeesSetPriorToMigration92_3": false,
-              "hasShownMultichainAccountsIntroModal": false,
               "isRampCardClosed": false,
               "isWalletResetInProgress": false,
               "lastInteractedConfirmationInfo": {
@@ -874,7 +858,6 @@ describe('AppStateController', () => {
               "connectedStatusPopoverHasBeenShown": true,
               "defaultHomeActiveTabName": null,
               "hadAdvancedGasFeesSetPriorToMigration92_3": false,
-              "hasShownMultichainAccountsIntroModal": false,
               "isRampCardClosed": false,
               "isWalletResetInProgress": false,
               "lastInteractedConfirmationInfo": {
@@ -948,7 +931,6 @@ describe('AppStateController', () => {
               "currentPopupId": 0,
               "defaultHomeActiveTabName": null,
               "fullScreenGasPollTokens": [],
-              "hasShownMultichainAccountsIntroModal": false,
               "isRampCardClosed": false,
               "isWalletResetInProgress": false,
               "lastInteractedConfirmationInfo": {

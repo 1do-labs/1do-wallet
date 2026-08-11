@@ -274,20 +274,18 @@ About 1Do
 
 ## 12. 验证记录
 
-本轮提交前已完成：
+本轮收尾验证结果：
 
-- Runtime 部署验证单测；
-- EIP-7702 工具单测；
-- Runtime 激活 Hook 单测；
-- Runtime 激活状态单测；
-- `yarn lint:changed:fix`；
-- Chromium MV3、LavaMoat 测试构建；
-- YAML 语法检查；
-- `git diff --check`。
+- 全量 TypeScript 检查通过：`yarn lint:tsc --pretty false`；
+- changed lint 通过：`yarn lint:changed:fix`，0 errors、32 个既有 React Hook warnings；
+- Runtime/EIP-7702 核心测试通过：7 个 suite、50 个测试、7 个 snapshot；
+- 旧入口清理后的 `ui/index.test.js` 通过，扩展核心收尾测试合计 8 个 suite、51 个测试；
+- lockfile 去重、allow-scripts、LavaMoat policy 和 attribution 已按依赖删减重新生成；
+- 带 LavaMoat 的 Chromium MV3 `build:test` 通过，并生成 `dist/chrome` 测试包（约 50 MB）；
+- 修复了 policy-only 构建中复用已结束空写入流导致的 contentscript `write after end`；
+- 归属清单已按生成器输出更新；其许可证原文包含少量行尾空格，因此 `git diff --check` 会仅提示 attribution 文本格式，不影响构建或许可证内容。
 
-完整 TypeScript 检查仍会报告仓库既有的两处 `requireApproval` 参数类型错误；它们位于现有 EIP-7702 Hook 的旧调用签名中，不是本次 Runtime 验证器引入的问题。
-
-实时 Alchemy 合约读取因当前执行环境连接超时未完成；可信哈希来自 `1do-core` 当前编译产物，验证器本身通过 mock RPC 覆盖了可信、未部署、不可信和 RPC 不可用路径。
+Runtime 部署验证器的可信、未部署、不可信和 RPC 不可用路径均由 mock RPC 单测覆盖；可信部署事实来源仍是 `1do-core` 的部署 Manifest。
 
 ## 13. 相关代码
 

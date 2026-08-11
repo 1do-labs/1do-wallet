@@ -1,4 +1,3 @@
-import { ControllerStateChangeEvent } from '@metamask/base-controller';
 import {
   ActionConstraint,
   MOCK_ANY_NAMESPACE,
@@ -8,11 +7,8 @@ import {
 import {
   NetworkController,
   NetworkControllerMessenger,
+  RpcEndpointType,
 } from '@metamask/network-controller';
-import {
-  RemoteFeatureFlagControllerGetStateAction,
-  RemoteFeatureFlagControllerState,
-} from '@metamask/remote-feature-flag-controller';
 import { MessengerClientInitRequest } from './types';
 import { buildControllerInitRequestMock } from './test/utils';
 import {
@@ -42,29 +38,15 @@ jest.mock('@metamask/network-controller', () => {
 });
 
 function getInitRequestMock(
-  messenger = new Messenger<
-    MockAnyNamespace,
-    RemoteFeatureFlagControllerGetStateAction | ActionConstraint,
-    ControllerStateChangeEvent<
-      'RemoteFeatureFlagController',
-      RemoteFeatureFlagControllerState
-    >
-  >({ namespace: MOCK_ANY_NAMESPACE }),
+  messenger = new Messenger<MockAnyNamespace, ActionConstraint, never>({
+    namespace: MOCK_ANY_NAMESPACE,
+  }),
 ): jest.Mocked<
   MessengerClientInitRequest<
     NetworkControllerMessenger,
     NetworkControllerInitMessenger
   >
 > {
-  messenger.registerActionHandler(
-    'RemoteFeatureFlagController:getState',
-    jest.fn().mockReturnValue({
-      remoteFeatureFlags: {
-        walletFrameworkRpcFailoverEnabled: true,
-      },
-    }),
-  );
-
   const requestMock = {
     ...buildControllerInitRequestMock(),
     controllerMessenger: getNetworkControllerMessenger(messenger),
@@ -99,7 +81,7 @@ describe('NetworkControllerInit', () => {
       getBlockTrackerOptions: expect.any(Function),
       getRpcServiceOptions: expect.any(Function),
       infuraProjectId: '1do-alchemy-rpc-only',
-      isRpcFailoverEnabled: true,
+      isRpcFailoverEnabled: false,
     });
   });
 
@@ -380,7 +362,7 @@ describe('NetworkControllerInit', () => {
 
       const controllerMock = jest.mocked(NetworkController);
       expect(
-        controllerMock.mock.calls[0][0].state.selectedNetworkClientId,
+        controllerMock.mock.calls[0]?.[0].state?.selectedNetworkClientId,
       ).toBe('mainnet-alchemy');
     } finally {
       if (originalInTest === undefined) {
@@ -419,7 +401,7 @@ describe('NetworkControllerInit', () => {
               {
                 networkClientId: 'mainnet',
                 url: 'https://mainnet.infura.io/v3/{infuraProjectId}',
-                type: 'infura',
+                type: RpcEndpointType.Custom,
                 failoverUrls: [],
               },
             ],
@@ -435,7 +417,7 @@ describe('NetworkControllerInit', () => {
               {
                 networkClientId: 'sepolia',
                 url: 'https://sepolia.infura.io/v3/{infuraProjectId}',
-                type: 'infura',
+                type: RpcEndpointType.Custom,
                 failoverUrls: [],
               },
             ],
@@ -448,9 +430,11 @@ describe('NetworkControllerInit', () => {
 
     const controllerMock = jest.mocked(NetworkController);
     const initialState = controllerMock.mock.calls[0][0].state;
-    expect(initialState.selectedNetworkClientId).toBe('sepolia-alchemy');
+    expect(initialState).toBeDefined();
+    expect(initialState?.selectedNetworkClientId).toBe('sepolia-alchemy');
     expect(
-      initialState.networkConfigurationsByChainId['0xaa36a7'].rpcEndpoints[0],
+      initialState?.networkConfigurationsByChainId?.['0xaa36a7']
+        ?.rpcEndpoints[0],
     ).toStrictEqual({
       failoverUrls: [],
       networkClientId: 'sepolia-alchemy',
@@ -477,7 +461,7 @@ describe('NetworkControllerInit', () => {
               {
                 networkClientId: 'mainnet',
                 url: 'https://mainnet.infura.io/v3/{infuraProjectId}',
-                type: 'infura',
+                type: RpcEndpointType.Custom,
                 failoverUrls: [],
               },
             ],
@@ -493,7 +477,7 @@ describe('NetworkControllerInit', () => {
               {
                 networkClientId: 'sepolia',
                 url: 'https://sepolia.infura.io/v3/{infuraProjectId}',
-                type: 'infura',
+                type: RpcEndpointType.Custom,
                 failoverUrls: [],
               },
             ],
@@ -505,11 +489,11 @@ describe('NetworkControllerInit', () => {
     NetworkControllerInit(request);
 
     const controllerMock = jest.mocked(NetworkController);
-    expect(controllerMock.mock.calls[0][0].state.selectedNetworkClientId).toBe(
-      'mainnet-alchemy',
-    );
     expect(
-      controllerMock.mock.calls[0][0].state.networkConfigurationsByChainId?.[
+      controllerMock.mock.calls[0]?.[0].state?.selectedNetworkClientId,
+    ).toBe('mainnet-alchemy');
+    expect(
+      controllerMock.mock.calls[0]?.[0].state?.networkConfigurationsByChainId?.[
         '0x14a34'
       ],
     ).toMatchObject({
@@ -522,63 +506,5 @@ describe('NetworkControllerInit', () => {
         }),
       ],
     });
-  });
-
-  it('enables RPC failover when the `walletFrameworkRpcFailoverEnabled` feature flag is enabled', () => {
-    const messenger = new Messenger<
-      MockAnyNamespace,
-      RemoteFeatureFlagControllerGetStateAction,
-      ControllerStateChangeEvent<
-        'RemoteFeatureFlagController',
-        RemoteFeatureFlagControllerState
-      >
-    >({ namespace: MOCK_ANY_NAMESPACE });
-
-    const request = getInitRequestMock(messenger);
-
-    const { messengerClient } = NetworkControllerInit(request);
-    expect(messengerClient.enableRpcFailover).not.toHaveBeenCalled();
-
-    messenger.publish(
-      'RemoteFeatureFlagController:stateChange',
-      // @ts-expect-error: Partial mock.
-      {
-        remoteFeatureFlags: {
-          walletFrameworkRpcFailoverEnabled: true,
-        },
-      },
-      [],
-    );
-
-    expect(messengerClient.enableRpcFailover).toHaveBeenCalled();
-  });
-
-  it('disables RPC failover when the `walletFrameworkRpcFailoverEnabled` feature flag is disabled', () => {
-    const messenger = new Messenger<
-      MockAnyNamespace,
-      RemoteFeatureFlagControllerGetStateAction,
-      ControllerStateChangeEvent<
-        'RemoteFeatureFlagController',
-        RemoteFeatureFlagControllerState
-      >
-    >({ namespace: MOCK_ANY_NAMESPACE });
-
-    const request = getInitRequestMock(messenger);
-
-    const { messengerClient } = NetworkControllerInit(request);
-    expect(messengerClient.disableRpcFailover).not.toHaveBeenCalled();
-
-    messenger.publish(
-      'RemoteFeatureFlagController:stateChange',
-      // @ts-expect-error: Partial mock.
-      {
-        remoteFeatureFlags: {
-          walletFrameworkRpcFailoverEnabled: false,
-        },
-      },
-      [],
-    );
-
-    expect(messengerClient.disableRpcFailover).toHaveBeenCalled();
   });
 });

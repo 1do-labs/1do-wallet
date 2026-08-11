@@ -78,11 +78,6 @@ import {
   transformOriginToTitle,
 } from '../../../helpers/utils/util';
 import {
-  MetaMetricsEventCategory,
-  MetaMetricsEventName,
-} from '../../../../shared/constants/metametrics';
-import { MetaMetricsContext } from '../../../contexts/metametrics';
-import {
   EvmNetworkConfigurationWithCaipChainId,
   MergedInternalAccountWithCaipAccountId,
 } from '../../../selectors/selectors.types';
@@ -126,7 +121,6 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
   targetSubjectMetadata,
 }) => {
   const t = useI18nContext();
-  const { trackEvent } = useContext(MetaMetricsContext);
   const [activeTab, setActiveTab] = useState('accounts');
 
   const existingPermissions = useSelector((state) =>
@@ -169,25 +163,25 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
 
   const [evmMainnetNetworkConfigurations, evmTestNetworkConfigurations] =
     useMemo(
-    () =>
-      Object.entries(networkConfigurationsByCaipChainId).reduce(
-        ([mainnetNetworks, testnetNetworks], [chainId, network]) => {
-          const caipChainId = chainId as CaipChainId;
-          const isTestNetwork =
-            CAIP_FORMATTED_TEST_CHAINS.includes(caipChainId);
-          (isTestNetwork ? testnetNetworks : mainnetNetworks).push({
-            ...network,
-            caipChainId,
-          });
-          return [mainnetNetworks, testnetNetworks];
-        },
-        [
-          [] as EvmNetworkConfigurationWithCaipChainId[],
-          [] as EvmNetworkConfigurationWithCaipChainId[],
-        ],
-      ),
-    [networkConfigurationsByCaipChainId],
-  );
+      () =>
+        Object.entries(networkConfigurationsByCaipChainId).reduce(
+          ([mainnetNetworks, testnetNetworks], [chainId, network]) => {
+            const caipChainId = chainId as CaipChainId;
+            const isTestNetwork =
+              CAIP_FORMATTED_TEST_CHAINS.includes(caipChainId);
+            (isTestNetwork ? testnetNetworks : mainnetNetworks).push({
+              ...network,
+              caipChainId,
+            });
+            return [mainnetNetworks, testnetNetworks];
+          },
+          [
+            [] as EvmNetworkConfigurationWithCaipChainId[],
+            [] as EvmNetworkConfigurationWithCaipChainId[],
+          ],
+        ),
+      [networkConfigurationsByCaipChainId],
+    );
 
   const allNetworksList = useMemo(
     () =>
@@ -285,7 +279,7 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
       const {
         chain: { namespace },
       } = parseCaipAccountId(account.caipAccountId);
-      return requestedNamespacesWithoutWallet.includes(namespace);
+      return namespace === KnownCaipNamespace.Eip155;
     },
   );
 
@@ -390,15 +384,7 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
 
   const handleOpenAccountsModal = useCallback(() => {
     setShowEditAccountsModal(true);
-    trackEvent({
-      category: MetaMetricsEventCategory.Navigation,
-      event: MetaMetricsEventName.ViewPermissionedAccounts,
-      properties: {
-        location:
-          'Connect view (accounts tab), Permissions toast, Permissions (dapp)',
-      },
-    });
-  }, [trackEvent]);
+  }, []);
 
   const handleCloseEditAccountsModal = useCallback(() => {
     setShowEditAccountsModal(false);
@@ -533,23 +519,22 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
                     selected={false}
                   />
                 ))}
-                {selectedAccounts.length === 0 &&
-                  (
-                    <Box
-                      className="connect-page__accounts-empty"
-                      display={Display.Flex}
-                      justifyContent={JustifyContent.center}
-                      alignItems={AlignItems.center}
-                      borderRadius={BorderRadius.XL}
+                {selectedAccounts.length === 0 && (
+                  <Box
+                    className="connect-page__accounts-empty"
+                    display={Display.Flex}
+                    justifyContent={JustifyContent.center}
+                    alignItems={AlignItems.center}
+                    borderRadius={BorderRadius.XL}
+                  >
+                    <ButtonLink
+                      onClick={handleOpenAccountsModal}
+                      data-testid="edit"
                     >
-                      <ButtonLink
-                        onClick={handleOpenAccountsModal}
-                        data-testid="edit"
-                      >
-                        {t('selectAccountToConnect')}
-                      </ButtonLink>
-                    </Box>
-                  )}
+                      {t('selectAccountToConnect')}
+                    </ButtonLink>
+                  </Box>
+                )}
               </Box>
               {selectedAccounts.length > 0 && (
                 <Box

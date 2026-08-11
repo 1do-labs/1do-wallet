@@ -1,4 +1,3 @@
-import { ControllerStateChangeEvent } from '@metamask/base-controller';
 import {
   Messenger,
   type MessengerActions,
@@ -9,14 +8,6 @@ import {
   NetworkControllerRpcEndpointDegradedEvent,
   NetworkControllerRpcEndpointUnavailableEvent,
 } from '@metamask/network-controller';
-import {
-  RemoteFeatureFlagControllerGetStateAction,
-  RemoteFeatureFlagControllerState,
-} from '@metamask/remote-feature-flag-controller';
-import {
-  MetaMetricsControllerGetMetaMetricsIdAction,
-  MetaMetricsControllerTrackEventAction,
-} from '../../controllers/metametrics-controller-method-action-types';
 import { RootMessenger } from '../../lib/messenger';
 
 /**
@@ -45,18 +36,11 @@ export function getNetworkControllerMessenger(
   return controllerMessenger;
 }
 
-type AllowedInitializationActions =
-  | MetaMetricsControllerGetMetaMetricsIdAction
-  | MetaMetricsControllerTrackEventAction
-  | RemoteFeatureFlagControllerGetStateAction;
+type AllowedInitializationActions = never;
 
 type AllowedInitializationEvents =
   | NetworkControllerRpcEndpointUnavailableEvent
-  | NetworkControllerRpcEndpointDegradedEvent
-  | ControllerStateChangeEvent<
-      'RemoteFeatureFlagController',
-      RemoteFeatureFlagControllerState
-    >;
+  | NetworkControllerRpcEndpointDegradedEvent;
 
 export type NetworkControllerInitMessenger = ReturnType<
   typeof getNetworkControllerInitMessenger
@@ -86,15 +70,10 @@ export function getNetworkControllerInitMessenger(
   });
   messenger.delegate({
     messenger: controllerInitMessenger,
-    actions: [
-      'MetaMetricsController:getMetaMetricsId',
-      'MetaMetricsController:trackEvent',
-      'RemoteFeatureFlagController:getState',
-    ],
+    actions: [],
     events: [
       'NetworkController:rpcEndpointUnavailable',
       'NetworkController:rpcEndpointDegraded',
-      'RemoteFeatureFlagController:stateChange',
     ],
   });
   return controllerInitMessenger;

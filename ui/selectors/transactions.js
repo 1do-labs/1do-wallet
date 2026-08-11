@@ -4,7 +4,6 @@ import {
   TransactionStatus,
   TransactionType,
 } from '@metamask/transaction-controller';
-import { SmartTransactionStatuses } from '@metamask/smart-transactions-controller';
 import {
   isCorrectDeveloperTransactionType,
   isCorrectSignatureApprovalType,
@@ -15,7 +14,6 @@ import {
   EXCLUDED_TRANSACTION_TYPES,
 } from '../helpers/constants/transactions';
 import txHelper from '../helpers/utils/tx-helper';
-import { SmartTransactionStatus } from '../../shared/constants/transaction';
 import { hexToDecimal } from '../../shared/lib/conversion.utils';
 import {
   getProviderConfig,
@@ -160,67 +158,27 @@ export const unapprovedEncryptionPublicKeyMsgsSelector = (state) =>
 export const unapprovedTypedMessagesSelector = (state) =>
   state.metamask.unapprovedTypedMessages;
 
-// Memoized to prevent new array creation on every render
-export const smartTransactionsListSelector = createSelector(
-  getSelectedInternalAccount,
-  (state) => state.metamask.smartTransactionsState?.smartTransactions,
-  getCurrentChainId,
-  (selectedInternalAccount, smartTransactions, chainId) => {
-    const selectedAddress = selectedInternalAccount?.address;
-    const chainSmartTransactions = smartTransactions?.[chainId];
-
-    if (!chainSmartTransactions?.length) {
-      return EMPTY_ARRAY;
-    }
-
-    return chainSmartTransactions
-      .filter((smartTransaction) => {
-        if (
-          smartTransaction.txParams?.from !== selectedAddress ||
-          smartTransaction.confirmed
-        ) {
-          return false;
-        }
-        if (smartTransaction.status === SmartTransactionStatuses.PENDING) {
-          return true;
-        }
-        return false;
-      })
-      .map((stx) => ({
-        ...stx,
-        isSmartTransaction: true,
-        status: stx.status?.startsWith('cancelled')
-          ? SmartTransactionStatus.cancelled
-          : stx.status,
-      }));
-  },
-);
-
 export const selectedAddressTxListSelectorAllChain = createSelector(
   getSelectedInternalAccount,
   getTransactions,
-  smartTransactionsListSelector,
-  (selectedInternalAccount, transactions = [], smTransactions = []) => {
+  (selectedInternalAccount, transactions = []) => {
     return transactions
       .filter(
         ({ txParams }) => txParams.from === selectedInternalAccount.address,
       )
-      .filter(({ type }) => !EXCLUDED_TRANSACTION_TYPES.has(type))
-      .concat(smTransactions);
+      .filter(({ type }) => !EXCLUDED_TRANSACTION_TYPES.has(type));
   },
 );
 
 export const selectedAddressTxListSelector = createSelector(
   getSelectedInternalAccount,
   getCurrentNetworkTransactions,
-  smartTransactionsListSelector,
-  (selectedInternalAccount, transactions = [], smTransactions = []) => {
+  (selectedInternalAccount, transactions = []) => {
     return transactions
       .filter(
         ({ txParams }) => txParams.from === selectedInternalAccount.address,
       )
-      .filter(({ type }) => !EXCLUDED_TRANSACTION_TYPES.has(type))
-      .concat(smTransactions);
+      .filter(({ type }) => !EXCLUDED_TRANSACTION_TYPES.has(type));
   },
 );
 

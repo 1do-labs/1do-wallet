@@ -269,14 +269,6 @@ export function getExternalServicesOnboardingToggleState(state) {
   return state.appState.externalServicesOnboardingToggleState;
 }
 
-export function getShowDeleteMetaMetricsDataModal(state) {
-  return state.appState.showDeleteMetaMetricsDataModal;
-}
-
-export function getShowDataDeletionErrorModal(state) {
-  return state.appState.showDataDeletionErrorModal;
-}
-
 export const getPendingTokens = (state) => state.appState.pendingTokens;
 
 /** `metamask` slice selectors */
@@ -285,11 +277,6 @@ export function getNetworkIdentifier(state) {
   const { type, nickname, rpcUrl } = getProviderConfig(state);
 
   return nickname || rpcUrl || type;
-}
-
-export function getMetaMetricsId(state) {
-  const { metaMetricsId } = state.metamask;
-  return metaMetricsId;
 }
 
 export function isCurrentProviderCustom(state) {
@@ -354,16 +341,6 @@ export function checkNetworkOrAccountNotSupports1559(state) {
 export function isHardwareWallet(state) {
   const keyring = getCurrentKeyring(state);
   return Boolean(keyring?.type?.includes('Hardware'));
-}
-
-/**
- * Checks if the account supports smart transactions.
- *
- * @param {object} state - The state object.
- * @returns {boolean}
- */
-export function accountSupportsSmartTx(state) {
-  return Boolean(getAccountType(state));
 }
 
 /**
@@ -1628,10 +1605,6 @@ export const getUSDConversionRateByChainId = (chainId) =>
 
 export { getCurrencyRateControllerCurrencyRates as getCurrencyRates };
 
-export function getWeb3ShimUsageStateForOrigin(state, origin) {
-  return state.metamask.web3ShimUsageOrigins[origin];
-}
-
 /**
  * @typedef {object} SwapsEthToken
  * @property {string} symbol - The symbol for ETH, namely "ETH"
@@ -2710,18 +2683,6 @@ export function getNames(state) {
 }
 export function getNameSources(state) {
   return state.metamask.nameSources || {};
-}
-
-export function getMetaMetricsDataDeletionId(state) {
-  return state.metamask.metaMetricsDataDeletionId;
-}
-
-export function getMetaMetricsDataDeletionTimestamp(state) {
-  return state.metamask.metaMetricsDataDeletionTimestamp;
-}
-
-export function getMetaMetricsDataDeletionStatus(state) {
-  return state.metamask.metaMetricsDataDeletionStatus;
 }
 
 export const getSelectedKeyringByIdOrDefault = createSelector(

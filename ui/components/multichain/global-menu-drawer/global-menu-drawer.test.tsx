@@ -3,11 +3,7 @@ import { fireEvent, waitFor } from '@testing-library/react';
 import { renderWithProvider } from '../../../../test/lib/render-helpers-navigate';
 import configureStore from '../../../store/store';
 import mockState from '../../../../test/data/mock-state.json';
-import {
-  GATOR_PERMISSIONS,
-  PERMISSIONS,
-} from '../../../helpers/constants/routes';
-import { isGatorPermissionsRevocationFeatureEnabled } from '../../../../shared/lib/environment';
+import { PERMISSIONS } from '../../../helpers/constants/routes';
 import { GlobalMenuDrawer } from './global-menu-drawer';
 import { GlobalMenuDrawerWithList } from './global-menu-drawer-with-list';
 
@@ -19,8 +15,6 @@ jest.mock('../../../../app/scripts/lib/util', () => ({
   ...jest.requireActual('../../../../app/scripts/lib/util'),
   getEnvironmentType: jest.fn(),
 }));
-
-jest.mock('../../../../shared/lib/environment');
 
 jest.mock('../../../hooks/useSidePanelEnabled', () => ({
   useSidePanelEnabled: jest.fn(() => false),
@@ -134,9 +128,6 @@ describe('GlobalMenuDrawerWithList', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     getEnvironmentType.mockReturnValue('popup');
-    jest
-      .mocked(isGatorPermissionsRevocationFeatureEnabled)
-      .mockReturnValue(false);
   });
 
   it('renders menu list when open', async () => {
@@ -168,41 +159,7 @@ describe('GlobalMenuDrawerWithList', () => {
     expect(getByTestId('global-menu-drawer')).toBeInTheDocument();
   });
 
-  it('connected sites link includes from param when at default route and Gator feature enabled', async () => {
-    jest
-      .mocked(isGatorPermissionsRevocationFeatureEnabled)
-      .mockReturnValue(true);
-
-    const store = configureStore({
-      ...mockState,
-      metamask: {
-        ...mockState.metamask,
-        transactions: [],
-      },
-    });
-    const { getByTestId } = renderWithProvider(
-      <GlobalMenuDrawerWithList
-        isOpen
-        onClose={() => undefined}
-        data-testid="global-menu-drawer"
-      />,
-      store,
-      '/',
-    );
-
-    await waitFor(() => {
-      const link = getByTestId('global-menu-connected-sites');
-      expect(link).toBeInTheDocument();
-      expect(link.getAttribute('href')).toContain(GATOR_PERMISSIONS);
-      expect(link.getAttribute('href')).toContain('from=%2F');
-    });
-  });
-
-  it('connected sites link includes from param when at default route and Gator feature disabled', async () => {
-    jest
-      .mocked(isGatorPermissionsRevocationFeatureEnabled)
-      .mockReturnValue(false);
-
+  it('connected sites link includes from param', async () => {
     const store = configureStore({
       ...mockState,
       metamask: {

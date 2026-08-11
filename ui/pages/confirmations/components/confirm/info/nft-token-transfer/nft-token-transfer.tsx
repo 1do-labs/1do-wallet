@@ -21,8 +21,7 @@ const NFTTokenTransferInfo = () => {
       <SimulationDetails
         transaction={transactionMeta}
         isTransactionsRedesign
-        enableMetrics
-        metricsOnly={isWalletInitiated}
+        hideDetails={isWalletInitiated}
       />
       <TokenDetailsSection />
       <GasFeesSection />

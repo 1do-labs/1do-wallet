@@ -32,11 +32,6 @@ import {
   BlockSize,
 } from '../../../helpers/constants/design-system';
 import { MergedInternalAccountWithCaipAccountId } from '../../../selectors/selectors.types';
-import {
-  MetaMetricsEventCategory,
-  MetaMetricsEventName,
-} from '../../../../shared/constants/metametrics';
-import { MetaMetricsContext } from '../../../contexts/metametrics';
 import { isEqualCaseInsensitive } from '../../../../shared/lib/string-utils';
 import { EditAccountAddAccountForm } from './add-account';
 import { EditAccountModalAddNewAccountOption } from './add-new-account-option';
@@ -63,16 +58,14 @@ export const EditAccountsModal: React.FC<EditAccountsModalProps> = ({
   onSubmit,
 }) => {
   const t = useI18nContext();
-  const { trackEvent } = useContext(MetaMetricsContext);
   const [modalStage, setModalStage] = useState<EditAccountModalStage>(
     EditAccountModalStage.AccountList,
   );
   const [selectedAccountAddresses, setSelectedAccountAddresses] = useState(
     defaultSelectedAccountAddresses,
   );
-  const [accountType, setAccountType] = useState<
-    typeof EVM_WALLET_TYPE
-  >(EVM_WALLET_TYPE);
+  const [accountType, setAccountType] =
+    useState<typeof EVM_WALLET_TYPE>(EVM_WALLET_TYPE);
   useEffect(() => {
     setSelectedAccountAddresses(defaultSelectedAccountAddresses);
   }, [
@@ -252,15 +245,6 @@ export const EditAccountsModal: React.FC<EditAccountsModalProps> = ({
                     );
 
                   onSubmit(selectedAccountAddresses);
-                  trackEvent({
-                    category: MetaMetricsEventCategory.Permissions,
-                    event: MetaMetricsEventName.UpdatePermissionedAccounts,
-                    properties: {
-                      addedAccounts: addedAccounts.length,
-                      removedAccounts: removedAccounts.length,
-                      location: 'Edit Accounts Modal',
-                    },
-                  });
 
                   onClose();
                 }}

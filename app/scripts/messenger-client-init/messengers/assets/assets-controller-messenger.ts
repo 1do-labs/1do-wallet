@@ -5,7 +5,6 @@ import {
   AccountTreeControllerSelectedAccountGroupChangeEvent,
   AccountTreeControllerStateChangeEvent,
 } from '@metamask/account-tree-controller';
-import { PhishingControllerBulkScanTokensAction } from '@metamask/phishing-controller';
 import { AccountsControllerGetSelectedAccountAction } from '@metamask/accounts-controller';
 import {
   NetworkEnablementControllerGetStateAction,
@@ -140,7 +139,6 @@ type AllowedActions =
   | CoreAssetsControllerActions
   | RpcDataSourceActions
   | AccountDataSourceActions
-  | PhishingControllerBulkScanTokensAction
   | AccountsControllerGetSelectedAccountAction;
 /**
  * All events allowed for the AssetsController messenger.
@@ -197,7 +195,6 @@ export function getAssetsControllerMessenger(
       'NetworkController:getState',
       'NetworkController:getNetworkClientById',
       'PermissionController:getPermissions',
-      'PhishingController:bulkScanTokens',
       'AccountsController:getSelectedAccount',
     ],
     events: [

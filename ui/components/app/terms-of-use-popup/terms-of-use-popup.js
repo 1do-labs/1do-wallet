@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import { I18nContext } from '../../../contexts/i18n';
 import {
@@ -15,11 +15,6 @@ import {
   ModalOverlay,
   Text,
 } from '../../component-library';
-import {
-  MetaMetricsEventCategory,
-  MetaMetricsEventName,
-} from '../../../../shared/constants/metametrics';
-import { MetaMetricsContext } from '../../../contexts/metametrics';
 import {
   AlignItems,
   BlockSize,
@@ -38,18 +33,6 @@ import {
 export default function TermsOfUsePopup({ onClose, onAccept }) {
   const t = useContext(I18nContext);
   const { value: isTermsOfUseChecked, toggle } = useBoolean();
-
-  const { trackEvent } = useContext(MetaMetricsContext);
-
-  useEffect(() => {
-    trackEvent({
-      category: MetaMetricsEventCategory.Onboarding,
-      event: MetaMetricsEventName.TermsOfUseShown,
-      properties: {
-        location: 'Terms Of Use Popover',
-      },
-    });
-  }, [trackEvent]);
 
   return (
     <Modal
@@ -86,9 +69,9 @@ export default function TermsOfUsePopup({ onClose, onAccept }) {
             </Text>
             <Text variant={TextVariant.bodySm} marginBottom={4}>
               Some features may rely on third-party infrastructure such as RPC
-              providers, block explorers, price feeds, or websites you choose
-              to connect. Those services operate under their own terms,
-              policies, and availability constraints.
+              providers, block explorers, price feeds, or websites you choose to
+              connect. Those services operate under their own terms, policies,
+              and availability constraints.
             </Text>
             <Text variant={TextVariant.bodySm} marginBottom={4}>
               By continuing, you agree to review the latest notices published on{' '}

@@ -25,16 +25,7 @@ export const TokenBalancesControllerInit: MessengerClientInitFunction<
     interval: 30_000,
     allowExternalServices: () =>
       Boolean(getRetypedPrefState().useExternalServices),
-    accountsApiChainIds: () => {
-      const state = initMessenger.call('RemoteFeatureFlagController:getState');
-
-      const featureFlagForAccountApiBalances =
-        state?.remoteFeatureFlags?.assetsAccountApiBalances;
-
-      return Array.isArray(featureFlagForAccountApiBalances)
-        ? (featureFlagForAccountApiBalances as `0x${string}`[])
-        : [];
-    },
+    accountsApiChainIds: () => [],
     platform: 'extension',
     isOnboarded: () => {
       const { completedOnboarding } = initMessenger.call(

@@ -38,7 +38,6 @@ import {
   ButtonIconSize,
   IconName,
   IconSize,
-  SuccessPill,
   Text,
 } from '../../../../component-library';
 import { NetworkListItem } from '../../../network-list-item';
@@ -52,12 +51,9 @@ import { useI18nContext } from '../../../../../hooks/useI18nContext';
 import {
   getOrderedNetworksList,
   getMultichainNetworkConfigurationsTuple,
-  getUseExternalServices,
 } from '../../../../../selectors';
 import { getInternalAccountBySelectedAccountGroupAndCaip } from '../../../../../selectors/multichain-accounts/account-tree';
 import { selectAdditionalNetworksBlacklistFeatureFlag } from '../../../../../selectors/network-blacklist/network-blacklist';
-import { isEvmChainId } from '../../../../../../shared/lib/asset-utils';
-import { useIsNetworkGasSponsored } from '../../../../../hooks/useIsNetworkGasSponsored';
 
 const AdditionalNetwork = ({ network }: { network: AddNetworkFields }) => {
   const t = useI18nContext();
@@ -68,8 +64,6 @@ const AdditionalNetwork = ({ network }: { network: AddNetworkFields }) => {
 
   // Use the additional network handlers hook
   const { handleAdditionalNetworkClick } = useAdditionalNetworkHandlers();
-  const { isNetworkGasSponsored } = useIsNetworkGasSponsored(network.chainId);
-
   return (
     <Box
       display={Display.Flex}
@@ -101,9 +95,6 @@ const AdditionalNetwork = ({ network }: { network: AddNetworkFields }) => {
         <Text variant={TextVariant.bodyMdMedium} color={TextColor.textDefault}>
           {network.name}
         </Text>
-        {isNetworkGasSponsored && (
-          <SuccessPill label={t('noNetworkFee')} display={Display.InlineFlex} />
-        )}
       </Box>
       <ButtonIcon
         size={ButtonIconSize.Md}
@@ -131,8 +122,6 @@ const DefaultNetworks = memo(() => {
   // Use the shared network change handlers hook
   const { handleNetworkChange } = useNetworkChangeHandlers();
 
-  const useExternalServices = useSelector(getUseExternalServices);
-
   // extract the evm account of the selected account group
   const evmAccountGroup = useSelector((state) =>
     getInternalAccountBySelectedAccountGroupAndCaip(state, EthScope.Eoa),
@@ -150,16 +139,10 @@ const DefaultNetworks = memo(() => {
     useNetworkManagerState({ showDefaultNetworks: true });
 
   // Memoize sorted networks to avoid expensive sorting on every render
-  const orderedNetworks = useMemo(() => {
-    const filteredNetworks = useExternalServices
-      ? nonTestNetworks
-      : Object.fromEntries(
-          Object.entries(nonTestNetworks).filter(([, network]) =>
-            isEvmChainId(network.chainId as `0x${string}`),
-          ),
-        );
-    return sortNetworks(filteredNetworks, orderedNetworksList);
-  }, [nonTestNetworks, orderedNetworksList, useExternalServices]);
+  const orderedNetworks = useMemo(
+    () => sortNetworks(nonTestNetworks, orderedNetworksList),
+    [nonTestNetworks, orderedNetworksList],
+  );
 
   // Memoize the featured networks calculation
   const featuredNetworksNotYetEnabled = useMemo(() => {
@@ -168,22 +151,15 @@ const DefaultNetworks = memo(() => {
       ({ chainId }) => !evmNetworks[chainId],
     );
 
-    // Apply basic functionality toggle filter to exclude non-EVM networks when BFT is OFF
-    const bftFilteredNetworks = useExternalServices
-      ? availableNetworks
-      : availableNetworks.filter(({ chainId }) =>
-          isEvmChainId(chainId as `0x${string}`),
-        );
-
     // Apply blacklist filter to exclude blacklisted networks
     const filteredNetworks = getFilteredFeaturedNetworks(
       blacklistedChainIds,
-      bftFilteredNetworks,
+      availableNetworks,
     );
 
     // Sort alphabetically
     return filteredNetworks.sort((a, b) => a.name.localeCompare(b.name));
-  }, [evmNetworks, blacklistedChainIds, useExternalServices]);
+  }, [evmNetworks, blacklistedChainIds]);
 
   const isAllPopularNetworksSelected = useMemo(
     () => allEnabledNetworksForAllNamespaces.length > 1,

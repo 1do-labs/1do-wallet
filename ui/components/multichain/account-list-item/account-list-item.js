@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'clsx';
 import { useSelector } from 'react-redux';
@@ -29,11 +29,6 @@ import UserPreferencedCurrencyDisplay from '../../app/user-preferenced-currency-
 import { PRIMARY } from '../../../helpers/constants/common';
 import Tooltip from '../../ui/tooltip/tooltip';
 import {
-  MetaMetricsEventCategory,
-  MetaMetricsEventName,
-} from '../../../../shared/constants/metametrics';
-import { MetaMetricsContext } from '../../../contexts/metametrics';
-import {
   isAccountConnectedToCurrentTab,
   getShouldHideZeroBalanceTokens,
   getIsTokenNetworkFilterEqualCurrentNetwork,
@@ -47,7 +42,6 @@ import {
   getMultichainShouldShowFiat,
 } from '../../../selectors/multichain';
 import { ConnectedStatus } from '../connected-status';
-import { getHDEntropyIndex } from '../../../selectors/selectors';
 // TODO: Remove restricted import
 // eslint-disable-next-line import-x/no-restricted-paths
 import { normalizeSafeAddress } from '../../../../app/scripts/lib/multichain/address';
@@ -83,7 +77,6 @@ const AccountListItem = ({
 }) => {
   const t = useI18nContext();
 
-  const hdEntropyIndex = useSelector(getHDEntropyIndex);
   const [accountOptionsMenuOpen, setAccountOptionsMenuOpen] = useState(false);
   const [accountListItemMenuElement, setAccountListItemMenuElement] =
     useState();
@@ -150,7 +143,6 @@ const AccountListItem = ({
     }
   }, [itemRef, selected, shouldScrollToWhenSelected]);
 
-  const { trackEvent } = useContext(MetaMetricsContext);
   const currentTabIsConnectedToSelectedAddress = useSelector((state) =>
     isAccountConnectedToCurrentTab(state, account.address),
   );
@@ -194,7 +186,6 @@ const AccountListItem = ({
       {startAccessory ? (
         <Box className="me-2 mt-1">{startAccessory}</Box>
       ) : null}
-
       <Box className="flex w-full gap-2 items-center">
         <Box className="flex sm:hidden" data-testid="account-list-item-badge">
           <ConnectedStatus
@@ -314,7 +305,6 @@ const AccountListItem = ({
           ) : null}
         </Box>
       </Box>
-
       <Box
         className="flex"
         justifyContent={BoxJustifyContent.Center}
@@ -328,16 +318,6 @@ const AccountListItem = ({
             ref={setAccountListItemMenuRef}
             onClick={(e) => {
               e.stopPropagation();
-              if (!accountOptionsMenuOpen) {
-                trackEvent({
-                  event: MetaMetricsEventName.AccountDetailMenuOpened,
-                  category: MetaMetricsEventCategory.Navigation,
-                  properties: {
-                    location: 'Account Options',
-                    hd_entropy_index: hdEntropyIndex,
-                  },
-                });
-              }
               setAccountOptionsMenuOpen(!accountOptionsMenuOpen);
             }}
             data-testid="account-list-item-menu-button"

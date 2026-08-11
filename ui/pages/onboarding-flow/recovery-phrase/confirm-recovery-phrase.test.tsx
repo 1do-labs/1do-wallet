@@ -7,7 +7,6 @@ import { enLocale as messages } from '../../../../test/lib/i18n-helpers';
 import { setSeedPhraseBackedUp } from '../../../store/actions';
 import {
   ONBOARDING_COMPLETION_ROUTE,
-  ONBOARDING_METAMETRICS,
   MANAGE_WALLET_RECOVERY_ROUTE,
 } from '../../../helpers/constants/routes';
 import * as BrowserRuntimeUtils from '../../../../shared/lib/browser-runtime.utils';
@@ -96,7 +95,7 @@ describe('Confirm Recovery Phrase Component', () => {
     });
     renderWithProvider(<ConfirmRecoveryPhrase {...props} />, store);
 
-    expect(mockUseNavigate).toHaveBeenCalledWith(ONBOARDING_METAMETRICS, {
+    expect(mockUseNavigate).toHaveBeenCalledWith(ONBOARDING_COMPLETION_ROUTE, {
       replace: true,
     });
   });
@@ -218,7 +217,7 @@ describe('Confirm Recovery Phrase Component', () => {
     fireEvent.click(gotItButton);
 
     expect(setSeedPhraseBackedUp).toHaveBeenCalledWith(true);
-    expect(mockUseNavigate).toHaveBeenCalledWith(ONBOARDING_METAMETRICS, {
+    expect(mockUseNavigate).toHaveBeenCalledWith(ONBOARDING_COMPLETION_ROUTE, {
       replace: true,
     });
   });

@@ -9,11 +9,6 @@ import mockState from '../../../../../test/data/mock-state.json';
 import configureStore from '../../../../store/store';
 import * as actions from '../../../../store/actions';
 import * as hooks from '../../../../hooks/useAccountGroupsForPermissions';
-import { isGatorPermissionsRevocationFeatureEnabled } from '../../../../../shared/lib/environment';
-import {
-  getTokenTransferPermissionsByOrigin,
-  getPermissionMetaDataByOrigin,
-} from '../../../../selectors/gator-permissions/gator-permissions';
 import { getCaip25AccountIdsFromAccountGroupAndScope } from '../../../../../shared/lib/multichain/scope-utils';
 import { MultichainReviewPermissions } from './multichain-review-permissions-page';
 
@@ -54,13 +49,6 @@ jest.mock('../../../../store/actions', () => ({
   ),
   setPermittedAccounts: jest.fn(() => ({ type: 'SET_PERMITTED_ACCOUNTS' })),
   setPermittedChains: jest.fn(() => ({ type: 'SET_PERMITTED_CHAINS' })),
-}));
-
-jest.mock('../../../../../shared/lib/environment');
-
-jest.mock('../../../../selectors/gator-permissions/gator-permissions', () => ({
-  getPermissionMetaDataByOrigin: jest.fn(),
-  getTokenTransferPermissionsByOrigin: jest.fn(),
 }));
 
 jest.mock('../../../../../shared/lib/multichain/scope-utils', () => ({
@@ -135,7 +123,6 @@ const TEST_IDS = {
   MULTICHAIN_ACCOUNT_CELL: (id: string) => `multichain-account-cell-${id}`,
   SITE_CELL_CONNECTION_LIST_ITEM: 'site-cell-connection-list-item',
   DISCONNECT_ALL_MODAL: 'disconnect-all-modal',
-  GATOR_PERMISSIONS_CELL: 'gator-permissions-cell',
 } as const;
 
 const render = (state = {}) => {
@@ -166,10 +153,6 @@ const render = (state = {}) => {
 describe('MultichainReviewPermissions', () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    jest
-      .mocked(isGatorPermissionsRevocationFeatureEnabled)
-      .mockReturnValue(false);
-    jest.mocked(getTokenTransferPermissionsByOrigin).mockReturnValue([]);
   });
 
   it('renders summary page when no account groups are connected', () => {
@@ -431,71 +414,5 @@ describe('MultichainReviewPermissions', () => {
         getByText(messages.accountsPermissionsTitle.message),
       ).toBeInTheDocument();
     });
-  });
-});
-
-describe('gator permissions', () => {
-  it('renders gator permissions cell when feature is enabled and there are permissions', () => {
-    jest
-      .mocked(isGatorPermissionsRevocationFeatureEnabled)
-      .mockReturnValue(true);
-
-    jest.mocked(getPermissionMetaDataByOrigin).mockReturnValue({
-      tokenTransfer: {
-        count: 2,
-        chains: ['0x1'],
-      },
-    });
-
-    jest.mocked(getTokenTransferPermissionsByOrigin).mockReturnValue([]);
-
-    const { getAllByTestId } = render();
-
-    const gatorPermissionsCells = getAllByTestId(
-      TEST_IDS.GATOR_PERMISSIONS_CELL,
-    );
-    expect(gatorPermissionsCells.length).toBeGreaterThan(0);
-  });
-
-  it('should not render gator permissions cell when feature is disabled and there are permissions', () => {
-    jest
-      .mocked(isGatorPermissionsRevocationFeatureEnabled)
-      .mockReturnValue(false);
-
-    jest.mocked(getPermissionMetaDataByOrigin).mockReturnValue({
-      tokenTransfer: {
-        count: 2,
-        chains: ['0x1'],
-      },
-    });
-
-    jest.mocked(getTokenTransferPermissionsByOrigin).mockReturnValue([]);
-
-    const { queryByTestId } = render();
-
-    expect(
-      queryByTestId(TEST_IDS.GATOR_PERMISSIONS_CELL),
-    ).not.toBeInTheDocument();
-  });
-
-  it('should not render gator permissions cell when feature is enabled and there are no permissions', () => {
-    jest
-      .mocked(isGatorPermissionsRevocationFeatureEnabled)
-      .mockReturnValue(true);
-
-    jest.mocked(getPermissionMetaDataByOrigin).mockReturnValue({
-      tokenTransfer: {
-        count: 0,
-        chains: [],
-      },
-    });
-
-    jest.mocked(getTokenTransferPermissionsByOrigin).mockReturnValue([]);
-
-    const { queryByTestId } = render();
-
-    expect(
-      queryByTestId(TEST_IDS.GATOR_PERMISSIONS_CELL),
-    ).not.toBeInTheDocument();
   });
 });

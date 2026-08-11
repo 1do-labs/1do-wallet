@@ -36,7 +36,6 @@ describe('getAssetsControllerMessenger', () => {
           'NetworkController:getState',
           'NetworkController:getNetworkClientById',
           'PermissionController:getPermissions',
-          'PhishingController:bulkScanTokens',
         ]),
       }),
     );

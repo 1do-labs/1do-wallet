@@ -58,7 +58,7 @@ describe('asset-utils', () => {
       const chainId = 'eip155:1' as CaipChainId;
 
       const result = toAssetId(nativeAddress, chainId);
-      expect(result).toBe(getNativeAssetForChainId(chainId).assetId);
+      expect(result).toBe(getNativeAssetForChainId(chainId)?.assetId);
       expect(CaipAssetTypeStruct.validate(result)).toStrictEqual([
         undefined,
         result,
@@ -70,7 +70,7 @@ describe('asset-utils', () => {
       const chainId = 'eip155:1' as CaipChainId;
 
       const result = toAssetId(nativeAddress as never, chainId);
-      expect(result).toBe(getNativeAssetForChainId(chainId).assetId);
+      expect(result).toBe(getNativeAssetForChainId(chainId)?.assetId);
       expect(CaipAssetTypeStruct.validate(result)).toStrictEqual([
         undefined,
         result,

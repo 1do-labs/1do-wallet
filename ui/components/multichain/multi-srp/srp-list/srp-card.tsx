@@ -17,14 +17,9 @@ import {
   TextColor,
   TextVariant,
 } from '@metamask/design-system-react';
-import { MetaMetricsContext } from '../../../../contexts/metametrics';
 import { useWalletInfo } from '../../../../hooks/multichain-accounts/useWalletInfo';
 import { useI18nContext } from '../../../../hooks/useI18nContext';
 import { useSingleWalletAccountsBalanceCallback } from '../../../../hooks/multichain-accounts/useWalletBalance';
-import {
-  MetaMetricsEventCategory,
-  MetaMetricsEventName,
-} from '../../../../../shared/constants/metametrics';
 
 import Card from '../../../ui/card';
 import { SrpListItem } from './srp-list-item';
@@ -50,7 +45,6 @@ export const SrpCard = ({
   hideShowAccounts = false,
 }: SrpCardProps) => {
   const t = useI18nContext();
-  const { trackEvent } = useContext(MetaMetricsContext);
   const { multichainAccounts, keyringId } = useWalletInfo(walletId);
   const [showAccounts, setShowAccounts] = useState<boolean>(false);
   const walletAccountBalance = useSingleWalletAccountsBalanceCallback(walletId);
@@ -74,15 +68,6 @@ export const SrpCard = ({
       key={`srp-${index}-${keyringId}`}
       data-testid={`hd-keyring-${keyringId}`}
       onClick={() => {
-        trackEvent({
-          category: MetaMetricsEventCategory.Accounts,
-          event: MetaMetricsEventName.SecretRecoveryPhrasePickerClicked,
-          properties: {
-            // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-            // eslint-disable-next-line @typescript-eslint/naming-convention
-            button_type: 'srp_select',
-          },
-        });
         if (keyringId) {
           onActionComplete(keyringId, shouldTriggerBackup);
         }
@@ -107,15 +92,6 @@ export const SrpCard = ({
               data-testid={`srp-list-show-accounts-${index}`}
               onClick={(event: React.MouseEvent) => {
                 event.stopPropagation();
-                trackEvent({
-                  category: MetaMetricsEventCategory.Accounts,
-                  event: MetaMetricsEventName.SecretRecoveryPhrasePickerClicked,
-                  properties: {
-                    // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-                    // eslint-disable-next-line @typescript-eslint/naming-convention
-                    button_type: 'details',
-                  },
-                });
                 setShowAccounts((prevState) => !prevState);
               }}
             >

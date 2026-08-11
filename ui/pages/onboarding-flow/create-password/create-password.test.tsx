@@ -6,7 +6,6 @@ import { renderWithProvider } from '../../../../test/lib/render-helpers-navigate
 import { enLocale as messages } from '../../../../test/lib/i18n-helpers';
 import initializedMockState from '../../../../test/data/mock-send-state.json';
 import {
-  ONBOARDING_METAMETRICS,
   ONBOARDING_COMPLETION_ROUTE,
   ONBOARDING_REVIEW_SRP_ROUTE,
   ONBOARDING_WELCOME_ROUTE,
@@ -60,7 +59,7 @@ describe('Onboarding Create Password', () => {
       );
     });
 
-    it('should route to metametrics when keyring is present and imported first time flow type', () => {
+    it('routes imported wallets directly to onboarding completion', () => {
       const importFirstTimeFlowState = {
         ...initializedMockState,
         metamask: {
@@ -79,9 +78,12 @@ describe('Onboarding Create Password', () => {
         />,
         mockStore,
       );
-      expect(mockUseNavigate).toHaveBeenCalledWith(ONBOARDING_METAMETRICS, {
-        replace: true,
-      });
+      expect(mockUseNavigate).toHaveBeenCalledWith(
+        ONBOARDING_COMPLETION_ROUTE,
+        {
+          replace: true,
+        },
+      );
     });
 
     it('should redirect to onboarding completion when user has imported SRP and set participating in metametrics', () => {
@@ -279,7 +281,8 @@ describe('Onboarding Create Password', () => {
       expect(mockCreateNewAccount).not.toHaveBeenCalled();
     });
 
-    it('should create new wallet without marketing checked when its social login flow', () => {
+    /* Removed seedless/social onboarding coverage; 1Do uses SRP onboarding. */
+    /* it('should create new wallet without marketing checked when its social login flow', () => {
       const mockStore = configureMockStore([thunk])({
         ...mockState,
         metamask: {
@@ -329,7 +332,7 @@ describe('Onboarding Create Password', () => {
       fireEvent.click(createNewWalletButton as HTMLElement);
 
       expect(mockCreateNewAccount).toHaveBeenCalled();
-    });
+    }); */
   });
 
   describe('Create New Account', () => {
@@ -455,14 +458,17 @@ describe('Onboarding Create Password', () => {
       );
 
       await waitFor(() => {
-        expect(mockUseNavigate).toHaveBeenCalledWith(ONBOARDING_METAMETRICS, {
-          replace: true,
-        });
+        expect(mockUseNavigate).toHaveBeenCalledWith(
+          ONBOARDING_COMPLETION_ROUTE,
+          {
+            replace: true,
+          },
+        );
       });
     });
   });
 
-  describe('Analytics IFrame', () => {
+  /* Removed MetaMetrics iframe coverage. describe('Analytics IFrame', () => {
     it('should inject iframe when participating in metametrics', () => {
       const state = {
         ...mockState,
@@ -502,9 +508,9 @@ describe('Onboarding Create Password', () => {
       );
       expect(queryByTestId('create-password-iframe')).not.toBeInTheDocument();
     });
-  });
+  }); */
 
-  it('should redirect to onboarding welcome page when seedless onboarding user is not authenticated', async () => {
+  /* it('should redirect to onboarding welcome page when seedless onboarding user is not authenticated', async () => {
     const mockGetIsSeedlessOnboardingUserAuthenticated = jest
       .spyOn(Actions, 'getIsSeedlessOnboardingUserAuthenticated')
       .mockReturnValueOnce(jest.fn().mockResolvedValue(false));
@@ -530,5 +536,5 @@ describe('Onboarding Create Password', () => {
         replace: true,
       });
     });
-  });
+  }); */
 });

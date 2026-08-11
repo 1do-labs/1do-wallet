@@ -5,7 +5,6 @@ import React, {
   useMemo,
   useReducer,
   useState,
-  useContext,
 } from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
@@ -17,21 +16,12 @@ import {
   ApprovalType,
   NETWORKS_BYPASSING_VALIDATION,
 } from '@metamask/controller-utils';
-import {
-  CHAIN_SPEC_URL,
-  BUILT_IN_NETWORKS,
-  FEATURED_RPCS,
-} from '../../../../shared/constants/network';
+import { CHAIN_SPEC_URL } from '../../../../shared/constants/network';
 import fetchWithCache from '../../../../shared/lib/fetch-with-cache';
-import {
-  MetaMetricsEventCategory,
-  MetaMetricsEventName,
-} from '../../../../shared/constants/metametrics';
 import MetaMaskTemplateRenderer from '../../../components/app/metamask-template-renderer';
 import ConfirmationWarningModal from '../components/confirmation-warning-modal';
 import { DEFAULT_ROUTE } from '../../../helpers/constants/routes';
 import { useI18nContext } from '../../../hooks/useI18nContext';
-import { MetaMetricsContext } from '../../../contexts/metametrics';
 import {
   getUnapprovedTemplatedConfirmations,
   getUnapprovedTxCount,
@@ -44,8 +34,6 @@ import { getNetworkConfigurationsByChainId } from '../../../../shared/lib/select
 import Callout from '../../../components/ui/callout';
 import { Box } from '../../../components/component-library';
 import Loading from '../../../components/ui/loading-screen';
-import { SMART_TRANSACTION_CONFIRMATION_TYPES } from '../../../../shared/constants/app';
-import { getExtensionSkipTransactionStatusPage } from '../../../../shared/lib/selectors/smart-transactions';
 import { DAY } from '../../../../shared/constants/time';
 import { Nav } from '../components/confirm/nav';
 import { ConfirmContextProvider } from '../context/confirm';
@@ -214,7 +202,6 @@ export default function ConfirmationPage({
   redirectToHomeOnZeroConfirmations = true,
 }) {
   const t = useI18nContext();
-  const { trackEvent } = useContext(MetaMetricsContext);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const pendingConfirmations = useSelector(getUnapprovedTemplatedConfirmations);
@@ -229,9 +216,6 @@ export default function ConfirmationPage({
   );
   const networkConfigurationsByChainId = useSelector(
     getNetworkConfigurationsByChainId,
-  );
-  const skipSmartTransactionStatusPage = useSelector(
-    getExtensionSkipTransactionStatusPage,
   );
   const [approvalFlowLoadingText, setApprovalFlowLoadingText] = useState(null);
 
@@ -264,12 +248,9 @@ export default function ConfirmationPage({
 
   const [submitAlerts, setSubmitAlerts] = useState([]);
 
-  const isSmartTransactionStatus =
-    pendingConfirmation?.type ===
-    SMART_TRANSACTION_CONFIRMATION_TYPES.showSmartTransactionStatusPage;
-
-  const hasHeader =
-    CONFIRMATION_TYPES_WITH_HEADER.includes(pendingConfirmation?.type);
+  const hasHeader = CONFIRMATION_TYPES_WITH_HEADER.includes(
+    pendingConfirmation?.type,
+  );
 
   // Generating templatedValues is potentially expensive, and if done on every render
   // will result in a new object. Avoiding calling this generation unnecessarily will
@@ -291,7 +272,9 @@ export default function ConfirmationPage({
           },
           // Passing `t` in the contexts object is a bit redundant but since it's a
           // context too, it makes sense (for completeness)
-          { t, trackEvent },
+          {
+            t,
+          },
         )
       : {};
   }, [
@@ -301,7 +284,6 @@ export default function ConfirmationPage({
     navigate,
     matchedChain,
     currencySymbolWarning,
-    trackEvent,
     networkConfigurationsByChainId,
   ]);
 
@@ -310,14 +292,6 @@ export default function ConfirmationPage({
       templatedValues.onLoad();
     }
   }, [templatedValues]);
-
-  const [lastConfirmationType, setLastConfirmationType] = useState(null);
-
-  useEffect(() => {
-    if (pendingConfirmation?.type) {
-      setLastConfirmationType(pendingConfirmation.type);
-    }
-  }, [pendingConfirmation?.type]);
 
   const shouldShowActivity = false;
 
@@ -423,10 +397,6 @@ export default function ConfirmationPage({
     return null;
   }
 
-  if (isSmartTransactionStatus && skipSmartTransactionStatusPage) {
-    return null;
-  }
-
   const handleSubmitResult = (submitResult) => {
     if (submitResult?.length > 0) {
       setSubmitAlerts(submitResult);
@@ -437,39 +407,6 @@ export default function ConfirmationPage({
   };
   const handleSubmit = async () => {
     setLoading(true);
-
-    if (
-      pendingConfirmation?.requestData?.fromNetworkConfiguration?.chainId &&
-      pendingConfirmation?.requestData?.toNetworkConfiguration?.chainId
-    ) {
-      // Check if the destination network is custom (not built-in, featured, or multichain)
-      const toChainId =
-        pendingConfirmation.requestData.toNetworkConfiguration.chainId;
-
-      const isBuiltInNetwork = Object.values(BUILT_IN_NETWORKS).some(
-        (builtInNetwork) => builtInNetwork.chainId === toChainId,
-      );
-      const isFeaturedRpc = FEATURED_RPCS.some(
-        (featuredRpc) => featuredRpc.chainId === toChainId,
-      );
-      const isCustomNetwork = !isBuiltInNetwork && !isFeaturedRpc;
-
-      trackEvent({
-        category: MetaMetricsEventCategory.Network,
-        event: MetaMetricsEventName.NavNetworkSwitched,
-        properties: {
-          location: 'Switch Modal',
-          from_network:
-            pendingConfirmation.requestData.fromNetworkConfiguration.chainId,
-          to_network:
-            pendingConfirmation.requestData.toNetworkConfiguration.chainId,
-          custom_network: isCustomNetwork,
-          referrer: {
-            url: window.location.origin,
-          },
-        },
-      });
-    }
 
     if (templateState[pendingConfirmation.id]?.useWarningModal) {
       setShowWarningModal(true);
@@ -531,7 +468,11 @@ export default function ConfirmationPage({
             cancelText={templatedValues.cancelText}
             loading={loading}
             submitAlerts={submitAlerts.map((alert, idx) => (
-              <Callout key={alert.id} severity={alert.severity} isFirst={idx === 0}>
+              <Callout
+                key={alert.id}
+                severity={alert.severity}
+                isFirst={idx === 0}
+              >
                 <MetaMaskTemplateRenderer sections={alert.content} />
               </Callout>
             ))}

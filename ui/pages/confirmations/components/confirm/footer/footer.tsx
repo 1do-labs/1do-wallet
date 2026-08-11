@@ -2,7 +2,6 @@ import { TransactionMeta } from '@metamask/transaction-controller';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { MetaMetricsEventLocation } from '../../../../../../shared/constants/metametrics';
 import { isCorrectDeveloperTransactionType } from '../../../../../../shared/lib/confirmation.utils';
 import { ConfirmAlertModal } from '../../../../../components/app/alert-system/confirm-alert-modal';
 import {
@@ -25,7 +24,6 @@ import { useI18nContext } from '../../../../../hooks/useI18nContext';
 import { useConfirmationNavigation } from '../../../hooks/useConfirmationNavigation';
 import { resolvePendingApproval } from '../../../../../store/actions';
 import { useConfirmContext } from '../../../context/confirm';
-import { useIsGaslessLoading } from '../../../hooks/gas/useIsGaslessLoading';
 import { useTransactionConfirm } from '../../../hooks/transactions/useTransactionConfirm';
 import { useConfirmActions } from '../../../hooks/useConfirmActions';
 import { useOriginThrottling } from '../../../hooks/useOriginThrottling';
@@ -41,10 +39,9 @@ import {
 } from '../../../../../contexts/hardware-wallets';
 import OriginThrottleModal from './origin-throttle-modal';
 
-export type OnCancelHandler = ({
-  location,
-}: {
-  location: MetaMetricsEventLocation;
+export type OnCancelHandler = (options?: {
+  navigateBackForSend?: boolean;
+  navigateBackToPreviousPage?: boolean;
 }) => void;
 
 function reviewAlertButtonText(
@@ -213,7 +210,6 @@ const Footer = () => {
     useConfirmContext<TransactionMeta>();
   const currentConfirmationId = currentConfirmation?.id;
   const t = useI18nContext();
-  const { isGaslessLoading } = useIsGaslessLoading();
 
   const { from: fromAddress } = getConfirmationSender(currentConfirmation);
   const { shouldThrottleOrigin } = useOriginThrottling();
@@ -240,9 +236,7 @@ const Footer = () => {
 
   const onUserRejectedHardwareWalletError = useCallback(async () => {
     // User intentionally rejected on device; follow the cancel flow.
-    await onCancel({
-      location: MetaMetricsEventLocation.Confirmation,
-    });
+    await onCancel();
     dismissErrorModal();
     if (currentConfirmationId) {
       navigateNext(currentConfirmationId);
@@ -272,8 +266,7 @@ const Footer = () => {
     shouldRunHardwareWalletPreflight,
   ]);
 
-  const isConfirmDisabled =
-    (!isScrollToBottomCompleted && !isSignature) || isGaslessLoading;
+  const isConfirmDisabled = !isScrollToBottomCompleted && !isSignature;
 
   const shouldShowReconnectButton =
     shouldRunHardwareWalletPreflight &&
@@ -281,7 +274,7 @@ const Footer = () => {
     !hasUnconfirmedDangerAlerts;
 
   const onReconnectHardwareWalletCta = useCallback(async () => {
-    await onSubmitPreflightCheck({ trackConnectCta: true });
+    await onSubmitPreflightCheck();
   }, [onSubmitPreflightCheck]);
 
   const onSubmit = useCallback(async () => {
@@ -363,7 +356,6 @@ const Footer = () => {
     }
 
     await onCancel({
-      location: MetaMetricsEventLocation.Confirmation,
       navigateBackToPreviousPage: Boolean(goBackTo),
     });
 

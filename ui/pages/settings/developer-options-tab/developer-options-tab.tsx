@@ -28,14 +28,12 @@ import {
 import { useI18nContext } from '../../../hooks/useI18nContext';
 import {
   resetOnboarding,
-  resetViewedNotifications,
   setServiceWorkerKeepAlivePreference,
 } from '../../../store/actions';
 // TODO: Remove restricted import
 // eslint-disable-next-line import-x/no-restricted-paths
 import { getEnvironmentType } from '../../../../app/scripts/lib/util';
 import { ENVIRONMENT_TYPE_POPUP } from '../../../../shared/constants/app';
-import { getRemoteFeatureFlags } from '../../../selectors';
 import { ConfirmationsDeveloperOptions } from '../../confirmations/components/developer/confirmations-developer-options';
 import ToggleRow from './developer-options-toggle-row-component';
 import SentryTest from './sentry-test';
@@ -55,7 +53,6 @@ const DeveloperOptionsTab = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const [hasResetAnnouncements, setHasResetAnnouncements] = useState(false);
   const [hasResetOnboarding, setHasResetOnboarding] = useState(false);
   const [isServiceWorkerKeptAlive, setIsServiceWorkerKeptAlive] =
     useState(true);
@@ -71,11 +68,6 @@ const DeveloperOptionsTab = () => {
   useEffect(() => {
     handleSettingsRefs(t, t('developerOptions'), settingsRefs);
   }, [t, settingsRefs]);
-
-  const handleResetAnnouncementClick = useCallback((): void => {
-    resetViewedNotifications();
-    setHasResetAnnouncements(true);
-  }, []);
 
   const handleResetOnboardingClick = useCallback(async (): Promise<void> => {
     await dispatch(resetOnboarding());
@@ -99,53 +91,6 @@ const DeveloperOptionsTab = () => {
   ): Promise<void> => {
     await dispatch(setServiceWorkerKeepAlivePreference(value));
     setIsServiceWorkerKeptAlive(value);
-  };
-
-  const renderAnnouncementReset = () => {
-    return (
-      <Box
-        ref={settingsRefs[1] as React.RefObject<HTMLDivElement>}
-        className="settings-page__content-row"
-        display={Display.Flex}
-        flexDirection={FlexDirection.Row}
-        justifyContent={JustifyContent.spaceBetween}
-        gap={4}
-      >
-        <div className="settings-page__content-item">
-          <span>Announcements</span>
-          <div className="settings-page__content-description">
-            Resets isShown boolean to false for all announcements. Announcements
-            are the notifications shown in the What&apos;s New popup modal.
-          </div>
-        </div>
-
-        <div className="settings-page__content-item-col">
-          <Button
-            variant={ButtonVariant.Primary}
-            onClick={handleResetAnnouncementClick}
-          >
-            Reset
-          </Button>
-        </div>
-        <div className="settings-page__content-item-col">
-          <Box
-            display={Display.Flex}
-            alignItems={AlignItems.center}
-            paddingLeft={2}
-            paddingRight={2}
-            style={{ height: '40px', width: '40px' }}
-          >
-            <Icon
-              className="settings-page-developer-options__icon-check"
-              name={IconName.Check}
-              color={IconColor.successDefault}
-              size={IconSize.Lg}
-              hidden={!hasResetAnnouncements}
-            />
-          </Box>
-        </div>
-      </Box>
-    );
   };
 
   const renderOnboardingReset = () => {
@@ -215,36 +160,6 @@ const DeveloperOptionsTab = () => {
     );
   };
 
-  const remoteFeatureFlags = useSelector(getRemoteFeatureFlags);
-
-  const renderRemoteFeatureFlags = () => {
-    return (
-      <Box
-        className="settings-page__content-row"
-        display={Display.Flex}
-        flexDirection={FlexDirection.Row}
-        justifyContent={JustifyContent.spaceBetween}
-        gap={4}
-      >
-        <div className="settings-page__content-item">
-          <span>Remote feature flags</span>
-          <div className="settings-page__content-description">
-            Remote feature flag values come from LaunchDarkly by default. If you
-            need to update feature flag values locally for development purposes,
-            you can change feature flag values in .manifest-overrides.json,
-            which will override values coming from LaunchDarkly.
-          </div>
-        </div>
-        <div
-          className="settings-page__content-description"
-          data-testid="developer-options-remote-feature-flags"
-        >
-          {JSON.stringify(remoteFeatureFlags)}
-        </div>
-      </Box>
-    );
-  };
-
   return (
     <div className="settings-page__body">
       <Text className="settings-page__security-tab-sub-header__bold">
@@ -259,9 +174,6 @@ const DeveloperOptionsTab = () => {
       >
         Current States
       </Text>
-      <div className="settings-page__content-padded">
-        {renderRemoteFeatureFlags()}
-      </div>
       <Text
         className="settings-page__security-tab-sub-header"
         color={TextColor.textAlternative}
@@ -271,7 +183,6 @@ const DeveloperOptionsTab = () => {
         Reset States
       </Text>
       <div className="settings-page__content-padded">
-        {renderAnnouncementReset()}
         {renderOnboardingReset()}
         {renderServiceWorkerKeepAliveToggle()}
       </div>

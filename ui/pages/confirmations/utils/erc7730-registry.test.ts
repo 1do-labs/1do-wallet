@@ -74,10 +74,15 @@ describe('ERC-7730 registry utilities', () => {
       },
     };
 
-    const path = getErc7730CalldataDescriptorPath(transaction, {
-      'eip155:10:0x111111125421ca6dc452d289314280a0f8842a65':
-        'registry/1inch/calldata-AggregationRouterV6.json',
-    });
+    const path = getErc7730CalldataDescriptorPath(
+      transaction as unknown as Parameters<
+        typeof getErc7730CalldataDescriptorPath
+      >[0],
+      {
+        'eip155:10:0x111111125421ca6dc452d289314280a0f8842a65':
+          'registry/1inch/calldata-AggregationRouterV6.json',
+      },
+    );
 
     expect(path).toBe('registry/1inch/calldata-AggregationRouterV6.json');
   });

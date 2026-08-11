@@ -1161,8 +1161,6 @@ describe('preferences controller', () => {
             privacyMode: true,
             showFiatInTestnets: true,
             showTestNetworks: true,
-            smartTransactionsMigrationApplied: false,
-            smartTransactionsOptInStatus: true,
             useNativeCurrencyAsPrimaryCurrency: true,
             useSidePanelAsDefault: false,
             showDefaultAddress: true,

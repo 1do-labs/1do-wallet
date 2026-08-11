@@ -5,11 +5,7 @@ import { CreatePasswordForm } from '.';
 describe('CreatePasswordForm', () => {
   it('renders match snapshot', () => {
     const { container } = render(
-      <CreatePasswordForm
-        isSocialLoginFlow={false}
-        onSubmit={jest.fn()}
-        onBack={jest.fn()}
-      />,
+      <CreatePasswordForm onSubmit={jest.fn()} onBack={jest.fn()} />,
     );
     expect(container).toMatchSnapshot();
   });
@@ -17,11 +13,7 @@ describe('CreatePasswordForm', () => {
   it('onsubmit called with correct passwords and terms checked', async () => {
     const onSubmit = jest.fn();
     const { queryByTestId } = render(
-      <CreatePasswordForm
-        isSocialLoginFlow={false}
-        onSubmit={onSubmit}
-        onBack={jest.fn()}
-      />,
+      <CreatePasswordForm onSubmit={onSubmit} onBack={jest.fn()} />,
     );
 
     const createPasswordInput = queryByTestId('create-password-new-input');

@@ -4,7 +4,7 @@ import {
   isEvmAccountType,
   EthScope,
 } from '@metamask/keyring-api';
-import { InternalAccount } from '@metamask/keyring-internal-api';
+import type { InternalAccount } from '@metamask/keyring-internal-api';
 import { KeyringTypes } from '@metamask/keyring-controller';
 import { v4 as uuidv4 } from 'uuid';
 import { keyringTypeToName } from '@metamask/accounts-controller';
@@ -140,7 +140,7 @@ export function createMockInternalAccount({
   id?: string;
   name?: string;
   address?: string;
-  type?: string;
+  type?: InternalAccount['type'];
   keyringType?: string;
   lastSelected?: number;
   snapOptions?: {
@@ -149,9 +149,9 @@ export function createMockInternalAccount({
     id: string;
   };
   options?: Record<string, Json>;
-} = {}) {
-  let scopes;
-  let methods;
+} = {}): InternalAccount {
+  let scopes: InternalAccount['scopes'];
+  let methods: InternalAccount['methods'];
 
   switch (type) {
     case EthAccountType.Eoa:

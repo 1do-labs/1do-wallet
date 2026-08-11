@@ -16,16 +16,10 @@ import {
 // eslint-disable-next-line import-x/no-restricted-paths
 import { addUrlProtocolPrefix } from '../../../../app/scripts/lib/util';
 import { THIRD_PARTY_API_ITEMS } from '../search-config';
-import { MetaMetricsContext } from '../../../contexts/metametrics';
-import {
-  MetaMetricsEventCategory,
-  MetaMetricsEventName,
-} from '../../../../shared/constants/metametrics';
 
 export const IpfsGatewayItem = () => {
   const t = useI18nContext();
   const dispatch = useDispatch();
-  const { trackEvent } = useContext(MetaMetricsContext);
 
   const ipfsGatewayFromState = useSelector(
     (state: MetaMaskReduxState) => state.metamask.ipfsGateway,
@@ -63,15 +57,6 @@ export const IpfsGatewayItem = () => {
 
   const handleToggle = (currentValue: boolean) => {
     const newValue = !currentValue;
-
-    trackEvent({
-      category: MetaMetricsEventCategory.Settings,
-      event: MetaMetricsEventName.SettingsUpdated,
-      properties: {
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        use_ipfs_gateway: newValue,
-      },
-    });
 
     if (currentValue) {
       dispatch(setIsIpfsGatewayEnabled(false));

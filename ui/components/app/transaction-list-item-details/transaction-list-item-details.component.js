@@ -13,8 +13,6 @@ import Tooltip from '../../ui/tooltip';
 import CancelButton from '../cancel-button';
 import Popover from '../../ui/popover';
 import { SECOND } from '../../../../shared/constants/time';
-import { MetaMetricsEventCategory } from '../../../../shared/constants/metametrics';
-import { getURLHostName } from '../../../helpers/utils/util';
 import { NETWORKS_ROUTE } from '../../../helpers/constants/routes';
 import { COPY_OPTIONS } from '../../../../shared/constants/copy';
 import { CHAIN_ID_TO_NETWORK_IMAGE_URL_MAP } from '../../../../shared/constants/network';
@@ -43,7 +41,6 @@ function getTransactionHash(transaction) {
 export default class TransactionListItemDetails extends PureComponent {
   static contextTypes = {
     t: PropTypes.func,
-    trackEvent: PropTypes.func,
   };
 
   static defaultProps = {};
@@ -111,16 +108,6 @@ export default class TransactionListItemDetails extends PureComponent {
       onClose();
       navigate(`${NETWORKS_ROUTE}#blockExplorerUrl`);
     } else {
-      this.context.trackEvent({
-        category: MetaMetricsEventCategory.Transactions,
-        event: 'Clicked Block Explorer Link',
-        properties: {
-          link_type: 'Transaction Block Explorer',
-          action: 'Transaction Details',
-          block_explorer_domain: getURLHostName(blockExplorerLink),
-        },
-      });
-
       global.platform.openTab({
         url: blockExplorerLink,
       });
@@ -147,15 +134,6 @@ export default class TransactionListItemDetails extends PureComponent {
     if (!transactionHash) {
       return;
     }
-
-    this.context.trackEvent({
-      category: MetaMetricsEventCategory.Navigation,
-      event: 'Copied Transaction ID',
-      properties: {
-        action: 'Activity Log',
-        legacy_event: true,
-      },
-    });
 
     this.setState({ justCopied: true }, () => {
       copyToClipboard(transactionHash, COPY_OPTIONS);

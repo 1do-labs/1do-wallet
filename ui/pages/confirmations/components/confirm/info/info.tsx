@@ -1,10 +1,7 @@
 import { TransactionType } from '@metamask/transaction-controller';
 import { ApprovalType } from '@metamask/controller-utils';
 import React, { useMemo } from 'react';
-import { getEnabledAdvancedPermissions } from '../../../../../../shared/lib/environment';
-import { useTrustSignalMetrics } from '../../../../trust-signals/hooks/useTrustSignalMetrics';
 import { useConfirmContext } from '../../../context/confirm';
-import { useSmartTransactionFeatureFlags } from '../../../hooks/useSmartTransactionFeatureFlags';
 import { useTransactionFocusEffect } from '../../../hooks/useTransactionFocusEffect';
 import { SignatureRequestType } from '../../../types/confirm';
 import { AddEthereumChain } from '../../../external/add-ethereum-chain/add-ethereum-chain';
@@ -23,7 +20,6 @@ import SetApprovalForAllInfo from './set-approval-for-all-info/set-approval-for-
 import TokenTransferInfo from './token-transfer/token-transfer';
 import TypedSignV1Info from './typed-sign-v1/typed-sign-v1';
 import TypedSignInfo from './typed-sign/typed-sign';
-import TypedSignPermissionInfo from './typed-sign/typed-sign-permission';
 
 // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
 // eslint-disable-next-line @typescript-eslint/naming-convention
@@ -103,10 +99,7 @@ const Info = () => {
   const { currentConfirmation } = useConfirmContext();
   const { loader } = useConfirmationNavigationOptions();
 
-  useSmartTransactionFeatureFlags();
   useTransactionFocusEffect();
-
-  useTrustSignalMetrics();
 
   const ConfirmationInfoComponentMap = useMemo(
     () => ({
@@ -122,24 +115,6 @@ const Info = () => {
         const { version } = signatureRequest?.msgParams ?? {};
         if (version === 'V1') {
           return TypedSignV1Info;
-        }
-        if (signatureRequest?.decodedPermission) {
-          const requestedPermissionType =
-            signatureRequest.decodedPermission.permission.type;
-
-          const enabledPermissions = getEnabledAdvancedPermissions();
-
-          if (!enabledPermissions.includes(requestedPermissionType)) {
-            // This should never happen, as `wallet_requestExecutionPermissions`
-            // only accepts permissions of enabled types. This is here as a
-            // security precaution, to ensure that permission types that are not
-            // yet enabled are never available to sign.
-            throw new Error(
-              `Invalid eth_signTypedData_v4 request - Advanced Permission type: ${requestedPermissionType} not enabled`,
-            );
-          }
-
-          return TypedSignPermissionInfo;
         }
         return TypedSignInfo;
       },

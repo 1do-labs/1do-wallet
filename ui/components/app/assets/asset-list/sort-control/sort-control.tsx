@@ -12,12 +12,6 @@ import {
   TextVariant,
 } from '../../../../../helpers/constants/design-system';
 import { setTokenSortConfig } from '../../../../../store/actions';
-import { MetaMetricsContext } from '../../../../../contexts/metametrics';
-import {
-  MetaMetricsEventCategory,
-  MetaMetricsEventName,
-  MetaMetricsUserTrait,
-} from '../../../../../../shared/constants/metametrics';
 import { getTokenSortConfig } from '../../../../../selectors';
 import { getCurrentCurrency } from '../../../../../ducks/metamask/metamask';
 import { useI18nContext } from '../../../../../hooks/useI18nContext';
@@ -73,7 +67,6 @@ type SortControlProps = {
 
 const SortControl = ({ handleClose }: SortControlProps) => {
   const t = useI18nContext();
-  const { trackEvent } = useContext(MetaMetricsContext);
   const tokenSortConfig = useSelector(getTokenSortConfig);
   const currentCurrency = useSelector(getCurrentCurrency);
 
@@ -93,16 +86,9 @@ const SortControl = ({ handleClose }: SortControlProps) => {
           order,
         }),
       );
-      trackEvent({
-        category: MetaMetricsEventCategory.Settings,
-        event: MetaMetricsEventName.TokenSortPreference,
-        properties: {
-          [MetaMetricsUserTrait.TokenSortPreference]: key,
-        },
-      });
       handleClose();
     },
-    [dispatch, handleClose, trackEvent],
+    [dispatch, handleClose],
   );
 
   return (

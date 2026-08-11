@@ -10,10 +10,7 @@ import {
   hideModal,
   closeCurrentNotificationWindow,
 } from '../../store/actions';
-import {
-  CONFIRM_TRANSACTION_ROUTE,
-  CROSS_CHAIN_SWAP_ROUTE,
-} from '../../helpers/constants/routes';
+import { CONFIRM_TRANSACTION_ROUTE } from '../../helpers/constants/routes';
 import { createHardwareWalletError } from './errors';
 import {
   HardwareWalletErrorProvider,
@@ -475,7 +472,7 @@ describe('HardwareWalletErrorProvider', () => {
       };
 
       const store = mockStore(createMockState());
-      renderHardwareWalletErrorHook(store, CROSS_CHAIN_SWAP_ROUTE);
+      renderHardwareWalletErrorHook(store, CONFIRM_TRANSACTION_ROUTE);
 
       expect(mockShowModal).toHaveBeenCalledWith(
         expect.objectContaining({

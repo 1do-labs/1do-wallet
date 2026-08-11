@@ -1,198 +1,383 @@
-diff --git a/dist/utils/validation.cjs b/dist/utils/validation.cjs
-index e1ad589da95fbce5c9421ec1e9a35526681c8d5e..90d33a7143a293b3d8e730c103e07cb29e16753b 100644
---- a/dist/utils/validation.cjs
-+++ b/dist/utils/validation.cjs
-@@ -47,11 +47,6 @@ async function validateTransactionOrigin({ data, from, internalAccounts, origin,
-     if (authorizationList || envelopeType === types_1.TransactionEnvelopeType.setCode) {
-         throw rpc_errors_1.rpcErrors.invalidParams('External EIP-7702 transactions are not supported');
-     }
--    const hasData = Boolean(data && data !== '0x');
--    if (hasData &&
--        internalAccounts?.some((account) => account.toLowerCase() === to?.toLowerCase())) {
--        throw rpc_errors_1.rpcErrors.invalidParams('External transactions to internal accounts cannot include data');
--    }
- }
- exports.validateTransactionOrigin = validateTransactionOrigin;
+diff --git a/dist/TransactionController.d.cts b/dist/TransactionController.d.cts
+index c0da68a14d9ca7e143b09fe177714af93b1f0687..9cf012c459368a22040a52ad5dc1377a5a808c15 100644
+--- a/dist/TransactionController.d.cts
++++ b/dist/TransactionController.d.cts
+@@ -10,7 +10,6 @@ import type { KeyringControllerSignEip7702AuthorizationAction } from "@metamask/
+ import type { Messenger } from "@metamask/messenger";
+ import type { NetworkClientId, NetworkController, NetworkControllerStateChangeEvent, NetworkState, NetworkControllerFindNetworkClientIdByChainIdAction, NetworkControllerGetNetworkClientByIdAction } from "@metamask/network-controller";
+ import type { NonceLock, Transaction as NonceTrackerTransaction } from "@metamask/nonce-tracker";
+-import type { RemoteFeatureFlagControllerGetStateAction } from "@metamask/remote-feature-flag-controller";
+ import type { Hex } from "@metamask/utils";
+ import type { IncomingTransactionOptions } from "./helpers/IncomingTransactionHelper.cjs";
+ import type { TransactionControllerMethodActions } from "./TransactionController-method-action-types.cjs";
+@@ -191,7 +190,7 @@ declare const controllerName = "TransactionController";
  /**
-@@ -189,17 +184,6 @@ exports.validateParamTo = validateParamTo;
- function validateBatchRequest({ internalAccounts, request, sizeLimit, }) {
-     const { origin } = request;
-     const isExternal = origin && origin !== controller_utils_1.ORIGIN_METAMASK;
--    const internalAccountsNormalized = internalAccounts.map((account) => account.toLowerCase());
--    if (isExternal &&
--        request.transactions.some((nestedTransaction) => {
--            const normalizedCallTo = nestedTransaction.params.to?.toLowerCase();
--            const callData = nestedTransaction.params.data;
--            const isInternalAccount = internalAccountsNormalized.includes(normalizedCallTo);
--            const hasData = Boolean(callData && callData !== '0x');
--            return isInternalAccount && hasData;
--        })) {
--        throw rpc_errors_1.rpcErrors.invalidParams('External calls to internal accounts cannot include data');
--    }
-     if (isExternal && request.transactions.length > sizeLimit) {
-         throw new rpc_errors_1.JsonRpcError(ErrorCode.BundleTooLarge, `Batch size cannot exceed ${sizeLimit}. got: ${request.transactions.length}`);
+  * The external actions available to the {@link TransactionController}.
+  */
+-export type AllowedActions = AccountsControllerGetSelectedAccountAction | AccountsControllerGetStateAction | ApprovalControllerAddRequestAction | KeyringControllerSignEip7702AuthorizationAction | NetworkControllerFindNetworkClientIdByChainIdAction | NetworkControllerGetNetworkClientByIdAction | RemoteFeatureFlagControllerGetStateAction;
++export type AllowedActions = AccountsControllerGetSelectedAccountAction | AccountsControllerGetStateAction | ApprovalControllerAddRequestAction | KeyringControllerSignEip7702AuthorizationAction | NetworkControllerFindNetworkClientIdByChainIdAction | NetworkControllerGetNetworkClientByIdAction;
+ /**
+  * The external events available to the {@link TransactionController}.
+  */
+diff --git a/dist/TransactionController.d.mts b/dist/TransactionController.d.mts
+index 749a7c272482bcc3ed460a03910a814cf1f9159f..015364a960367d35066a3d4f27a1e74fa0feb957 100644
+--- a/dist/TransactionController.d.mts
++++ b/dist/TransactionController.d.mts
+@@ -10,7 +10,6 @@ import type { KeyringControllerSignEip7702AuthorizationAction } from "@metamask/
+ import type { Messenger } from "@metamask/messenger";
+ import type { NetworkClientId, NetworkController, NetworkControllerStateChangeEvent, NetworkState, NetworkControllerFindNetworkClientIdByChainIdAction, NetworkControllerGetNetworkClientByIdAction } from "@metamask/network-controller";
+ import type { NonceLock, Transaction as NonceTrackerTransaction } from "@metamask/nonce-tracker";
+-import type { RemoteFeatureFlagControllerGetStateAction } from "@metamask/remote-feature-flag-controller";
+ import type { Hex } from "@metamask/utils";
+ import type { IncomingTransactionOptions } from "./helpers/IncomingTransactionHelper.mjs";
+ import type { TransactionControllerMethodActions } from "./TransactionController-method-action-types.mjs";
+@@ -191,7 +190,7 @@ declare const controllerName = "TransactionController";
+ /**
+  * The external actions available to the {@link TransactionController}.
+  */
+-export type AllowedActions = AccountsControllerGetSelectedAccountAction | AccountsControllerGetStateAction | ApprovalControllerAddRequestAction | KeyringControllerSignEip7702AuthorizationAction | NetworkControllerFindNetworkClientIdByChainIdAction | NetworkControllerGetNetworkClientByIdAction | RemoteFeatureFlagControllerGetStateAction;
++export type AllowedActions = AccountsControllerGetSelectedAccountAction | AccountsControllerGetStateAction | ApprovalControllerAddRequestAction | KeyringControllerSignEip7702AuthorizationAction | NetworkControllerFindNetworkClientIdByChainIdAction | NetworkControllerGetNetworkClientByIdAction;
+ /**
+  * The external events available to the {@link TransactionController}.
+  */
+diff --git a/dist/api/simulation-api.cjs b/dist/api/simulation-api.cjs
+index e902c6bd4701aff2eddd10e8f5e15126352e2654..b9ffda220ef4d3127d90043eb787e5a7aad26982 100644
+--- a/dist/api/simulation-api.cjs
++++ b/dist/api/simulation-api.cjs
+@@ -1,16 +1,13 @@
+ "use strict";
+ Object.defineProperty(exports, "__esModule", { value: true });
+ exports.simulateTransactions = void 0;
+-const controller_utils_1 = require("@metamask/controller-utils");
+ const utils_1 = require("@metamask/utils");
+ const lodash_1 = require("lodash");
+ const constants_1 = require("../constants.cjs");
+ const errors_1 = require("../errors.cjs");
+ const logger_1 = require("../logger.cjs");
+ const log = (0, utils_1.createModuleLogger)(logger_1.projectLogger, 'simulation-api');
+-const RPC_METHOD = 'infura_simulateTransactions';
+-const BASE_URL = 'https://tx-sentinel-{0}.api.cx.metamask.io/';
+-const ENDPOINT_NETWORKS = 'networks';
++const RPC_METHOD = 'alchemy_simulateAssetChanges';
+ let requestIdCounter = 0;
+ /**
+  * Simulate transactions using the transaction simulation API.
+@@ -20,7 +17,7 @@ let requestIdCounter = 0;
+  * @returns The response from the simulation API.
+  */
+ async function simulateTransactions(chainId, request) {
+-    let url = await getSimulationUrl(chainId);
++    let url = '';
+     const { newUrl, authorization } = (await request.getSimulationConfig(url)) || {};
+     if (newUrl) {
+         url = newUrl;
+@@ -43,7 +40,7 @@ async function simulateTransactions(chainId, request) {
+             id: String(requestId),
+             jsonrpc: '2.0',
+             method: RPC_METHOD,
+-            params: [finalRequest],
++            params: finalRequest.transactions,
+         }),
+     });
+     const responseJson = await response.json();
+@@ -52,7 +49,16 @@ async function simulateTransactions(chainId, request) {
+         const { code, message } = responseJson.error;
+         throw new errors_1.SimulationError(message, code);
      }
-diff --git a/dist/utils/validation.mjs b/dist/utils/validation.mjs
-index e61c079e4b5be6a75e58fc73f3e030786b384e1b..0ee7d0d7a9b46ca55590038d122d7a6e075f4cba 100644
---- a/dist/utils/validation.mjs
-+++ b/dist/utils/validation.mjs
-@@ -44,11 +44,6 @@ export async function validateTransactionOrigin({ data, from, internalAccounts,
-     if (authorizationList || envelopeType === TransactionEnvelopeType.setCode) {
-         throw rpcErrors.invalidParams('External EIP-7702 transactions are not supported');
-     }
--    const hasData = Boolean(data && data !== '0x');
--    if (hasData &&
--        internalAccounts?.some((account) => account.toLowerCase() === to?.toLowerCase())) {
--        throw rpcErrors.invalidParams('External transactions to internal accounts cannot include data');
+-    return responseJson?.result;
++    const changes = responseJson?.result?.changes ?? [];
++    return {
++        assetChanges: changes,
++        gasUsed: responseJson?.result?.gasUsed,
++        transactions: [{
++            assetChanges: changes,
++            gasLimit: responseJson?.result?.gasUsed ?? '0x0',
++            gasUsed: responseJson?.result?.gasUsed,
++        }],
++    };
+ }
+ exports.simulateTransactions = simulateTransactions;
+ /**
+@@ -61,35 +67,6 @@ exports.simulateTransactions = simulateTransactions;
+  * @param chainId - The chain ID to get the URL for.
+  * @returns The URL for the transaction simulation API.
+  */
+-async function getSimulationUrl(chainId) {
+-    const networkData = await getNetworkData();
+-    const chainIdDecimal = (0, controller_utils_1.convertHexToDecimal)(chainId);
+-    const network = networkData[chainIdDecimal];
+-    if (!network?.confirmations) {
+-        log('Chain is not supported', chainId);
+-        throw new errors_1.SimulationChainNotSupportedError(chainId);
 -    }
+-    return getUrl(network.network);
+-}
+-/**
+- * Retrieve the supported network data from the simulation API.
+- *
+- * @returns The network data response from the simulation API.
+- */
+-async function getNetworkData() {
+-    const url = `${getUrl('ethereum-mainnet')}${ENDPOINT_NETWORKS}`;
+-    const response = await fetch(url);
+-    return response.json();
+-}
+-/**
+- * Generate the URL for the specified subdomain in the simulation API.
+- *
+- * @param subdomain - The subdomain to generate the URL for.
+- * @returns The URL for the transaction simulation API.
+- */
+-function getUrl(subdomain) {
+-    return BASE_URL.replace('{0}', subdomain);
+-}
+ /**
+  * Finalize the simulation request.
+  * Overrides the DelegationManager code to remove signature errors.
+diff --git a/dist/api/simulation-api.mjs b/dist/api/simulation-api.mjs
+index a098d54d4e4888cb405a4478b11fa2f44e42064e..a767e074e960da702a59cfb94454dbbc27185ab8 100644
+--- a/dist/api/simulation-api.mjs
++++ b/dist/api/simulation-api.mjs
+@@ -1,14 +1,11 @@
+-import { convertHexToDecimal } from "@metamask/controller-utils";
+ import { createModuleLogger } from "@metamask/utils";
+ import $lodash from "lodash";
+ const { cloneDeep } = $lodash;
+ import { CODE_DELEGATION_MANAGER_NO_SIGNATURE_ERRORS, DELEGATION_MANAGER_ADDRESSES } from "../constants.mjs";
+-import { SimulationChainNotSupportedError, SimulationError } from "../errors.mjs";
++import { SimulationError } from "../errors.mjs";
+ import { projectLogger } from "../logger.mjs";
+ const log = createModuleLogger(projectLogger, 'simulation-api');
+-const RPC_METHOD = 'infura_simulateTransactions';
+-const BASE_URL = 'https://tx-sentinel-{0}.api.cx.metamask.io/';
+-const ENDPOINT_NETWORKS = 'networks';
++const RPC_METHOD = 'alchemy_simulateAssetChanges';
+ let requestIdCounter = 0;
+ /**
+  * Simulate transactions using the transaction simulation API.
+@@ -18,7 +15,7 @@ let requestIdCounter = 0;
+  * @returns The response from the simulation API.
+  */
+ export async function simulateTransactions(chainId, request) {
+-    let url = await getSimulationUrl(chainId);
++    let url = '';
+     const { newUrl, authorization } = (await request.getSimulationConfig(url)) || {};
+     if (newUrl) {
+         url = newUrl;
+@@ -41,7 +38,7 @@ export async function simulateTransactions(chainId, request) {
+             id: String(requestId),
+             jsonrpc: '2.0',
+             method: RPC_METHOD,
+-            params: [finalRequest],
++            params: finalRequest.transactions,
+         }),
+     });
+     const responseJson = await response.json();
+@@ -50,7 +47,16 @@ export async function simulateTransactions(chainId, request) {
+         const { code, message } = responseJson.error;
+         throw new SimulationError(message, code);
+     }
+-    return responseJson?.result;
++    const changes = responseJson?.result?.changes ?? [];
++    return {
++        assetChanges: changes,
++        gasUsed: responseJson?.result?.gasUsed,
++        transactions: [{
++            assetChanges: changes,
++            gasLimit: responseJson?.result?.gasUsed ?? '0x0',
++            gasUsed: responseJson?.result?.gasUsed,
++        }],
++    };
  }
  /**
-  * Validates the transaction params for required properties and throws in
-@@ -183,17 +178,6 @@ export function validateParamTo(to) {
- export function validateBatchRequest({ internalAccounts, request, sizeLimit, }) {
-     const { origin } = request;
-     const isExternal = origin && origin !== ORIGIN_METAMASK;
--    const internalAccountsNormalized = internalAccounts.map((account) => account.toLowerCase());
--    if (isExternal &&
--        request.transactions.some((nestedTransaction) => {
--            const normalizedCallTo = nestedTransaction.params.to?.toLowerCase();
--            const callData = nestedTransaction.params.data;
--            const isInternalAccount = internalAccountsNormalized.includes(normalizedCallTo);
--            const hasData = Boolean(callData && callData !== '0x');
--            return isInternalAccount && hasData;
--        })) {
--        throw rpcErrors.invalidParams('External calls to internal accounts cannot include data');
+  * Get the URL for the transaction simulation API.
+@@ -58,35 +64,6 @@ export async function simulateTransactions(chainId, request) {
+  * @param chainId - The chain ID to get the URL for.
+  * @returns The URL for the transaction simulation API.
+  */
+-async function getSimulationUrl(chainId) {
+-    const networkData = await getNetworkData();
+-    const chainIdDecimal = convertHexToDecimal(chainId);
+-    const network = networkData[chainIdDecimal];
+-    if (!network?.confirmations) {
+-        log('Chain is not supported', chainId);
+-        throw new SimulationChainNotSupportedError(chainId);
 -    }
-     if (isExternal && request.transactions.length > sizeLimit) {
-         throw new JsonRpcError(ErrorCode.BundleTooLarge, `Batch size cannot exceed ${sizeLimit}. got: ${request.transactions.length}`);
-     }
+-    return getUrl(network.network);
+-}
+-/**
+- * Retrieve the supported network data from the simulation API.
+- *
+- * @returns The network data response from the simulation API.
+- */
+-async function getNetworkData() {
+-    const url = `${getUrl('ethereum-mainnet')}${ENDPOINT_NETWORKS}`;
+-    const response = await fetch(url);
+-    return response.json();
+-}
+-/**
+- * Generate the URL for the specified subdomain in the simulation API.
+- *
+- * @param subdomain - The subdomain to generate the URL for.
+- * @returns The URL for the transaction simulation API.
+- */
+-function getUrl(subdomain) {
+-    return BASE_URL.replace('{0}', subdomain);
+-}
+ /**
+  * Finalize the simulation request.
+  * Overrides the DelegationManager code to remove signature errors.
 diff --git a/dist/utils/balance-changes.cjs b/dist/utils/balance-changes.cjs
-index 96e0fb1c0f64b886596ee5bfe9dab44646c67839..c7b12776b781ce52f66d934b31392c51d8609a7d 100644
+index 96e0fb1c0f64b886596ee5bfe9dab44646c67839..4af3eb56123b686d988b5810294d2a82452244e6 100644
 --- a/dist/utils/balance-changes.cjs
 +++ b/dist/utils/balance-changes.cjs
-@@ -139,8 +139,60 @@ function getNativeBalanceChange(request, response) {
-     if (!previousBalance || !newBalance) {
-         return undefined;
+@@ -79,6 +79,12 @@ async function getBalanceChanges(request) {
+                 withLogs: true,
+             },
+         });
++        if (Array.isArray(response.assetChanges)) {
++            return {
++                simulationData: getAlchemySimulationData(request, response.assetChanges),
++                gasUsed: response.gasUsed,
++            };
++        }
+         const transactionResponse = response.transactions?.[0];
+         callTraceErrors = extractCallTraceErrors(transactionResponse?.callTrace);
+         const transactionError = transactionResponse?.error;
+@@ -118,6 +124,39 @@ async function getBalanceChanges(request) {
      }
-+    const traceBalanceChange = getNativeBalanceChangeFromTrace(transactionResponse.callTrace, userAddress);
-+    if (traceBalanceChange) {
-+        return getSimulationBalanceChange(previousBalance, (0, controller_utils_1.toHex)((0, controller_utils_1.hexToBN)(previousBalance).add(traceBalanceChange)));
-+    }
-+    if (hasAuthorizationOrSelfCall(txParams)) {
-+        return undefined;
-+    }
-     return getSimulationBalanceChange(previousBalance, newBalance, transactionResponse.gasCost);
  }
-+/**
-+ * Extract native asset transfers involving the user from a call trace.
-+ *
-+ * @param call - The call trace root.
-+ * @param userAddress - The transaction sender.
-+ * @returns Net native balance change or undefined if no value transfer exists.
-+ */
-+function getNativeBalanceChangeFromTrace(call, userAddress) {
-+    if (!call) {
-+        return undefined;
-+    }
-+    const userAddressLowercase = userAddress.toLowerCase();
-+    const from = call.from?.toLowerCase?.();
-+    const to = call.to?.toLowerCase?.();
-+    const value = (0, controller_utils_1.hexToBN)(call.value ?? '0x0');
-+    let balanceChange = new bn_js_1.default(0);
-+    if (!value.isZero()) {
-+        if (from === userAddressLowercase) {
-+            balanceChange = balanceChange.sub(value);
+ exports.getBalanceChanges = getBalanceChanges;
++function getAlchemySimulationData(request, changes) {
++    const userAddress = request.txParams.from.toLowerCase();
++    let nativeBalanceChange;
++    const tokenBalanceChanges = [];
++    for (const change of changes) {
++        const difference = change.rawAmount?.hex ?? change.rawAmount;
++        if (typeof difference !== 'string' || !difference.startsWith('0x')) {
++            continue;
 +        }
-+        if (to === userAddressLowercase) {
-+            balanceChange = balanceChange.add(value);
++        const balanceChange = {
++            previousBalance: '0x0',
++            newBalance: difference,
++            difference,
++            isDecrease: change.from?.toLowerCase() === userAddress,
++        };
++        if (change.assetType === 'NATIVE') {
++            nativeBalanceChange = balanceChange;
++        }
++        else if (change.contractAddress) {
++            tokenBalanceChanges.push({
++                ...balanceChange,
++                address: change.contractAddress,
++                id: change.tokenId,
++                standard: change.assetType === 'ERC721'
++                    ? types_1.SimulationTokenStandard.erc721
++                    : change.assetType === 'ERC1155'
++                        ? types_1.SimulationTokenStandard.erc1155
++                        : types_1.SimulationTokenStandard.erc20,
++            });
 +        }
 +    }
-+    const nestedCalls = call.calls ?? [];
-+    for (const nestedCall of nestedCalls) {
-+        const nestedBalanceChange = getNativeBalanceChangeFromTrace(nestedCall, userAddress);
-+        if (nestedBalanceChange) {
-+            balanceChange = balanceChange.add(nestedBalanceChange);
-+        }
-+    }
-+    return balanceChange.isZero() ? undefined : balanceChange;
-+}
-+/**
-+ * Check if a transaction is likely to use delegated account execution.
-+ *
-+ * @param txParams - Transaction parameters.
-+ * @returns True if native balance changes should come from trace value transfers.
-+ */
-+function hasAuthorizationOrSelfCall(txParams) {
-+    return Boolean(txParams.authorizationList?.length ||
-+        (txParams.from &&
-+            txParams.to &&
-+            txParams.from.toLowerCase() === txParams.to.toLowerCase()));
++    return { nativeBalanceChange, tokenBalanceChanges };
 +}
  /**
-  * Extract events from a simulation response.
+  * Extract the native balance change from a simulation response.
   *
 diff --git a/dist/utils/balance-changes.mjs b/dist/utils/balance-changes.mjs
-index 4a0e382abcf56f9aab71dd75153912d7698c98cc..b1975b514f328ed0ce3b88706a6e0ce0a02703bc 100644
+index 4a0e382abcf56f9aab71dd75153912d7698c98cc..2a8590509ba1c97bcebb03b72bd5308aee32c1dc 100644
 --- a/dist/utils/balance-changes.mjs
 +++ b/dist/utils/balance-changes.mjs
-@@ -139,8 +139,60 @@ function getNativeBalanceChange(request, response) {
-     if (!previousBalance || !newBalance) {
-         return undefined;
+@@ -80,6 +80,12 @@ export async function getBalanceChanges(request) {
+                 withLogs: true,
+             },
+         });
++        if (Array.isArray(response.assetChanges)) {
++            return {
++                simulationData: getAlchemySimulationData(request, response.assetChanges),
++                gasUsed: response.gasUsed,
++            };
++        }
+         const transactionResponse = response.transactions?.[0];
+         callTraceErrors = extractCallTraceErrors(transactionResponse?.callTrace);
+         const transactionError = transactionResponse?.error;
+@@ -118,6 +124,39 @@ export async function getBalanceChanges(request) {
+         };
      }
-+    const traceBalanceChange = getNativeBalanceChangeFromTrace(transactionResponse.callTrace, userAddress);
-+    if (traceBalanceChange) {
-+        return getSimulationBalanceChange(previousBalance, toHex(hexToBN(previousBalance).add(traceBalanceChange)));
-+    }
-+    if (hasAuthorizationOrSelfCall(txParams)) {
-+        return undefined;
-+    }
-     return getSimulationBalanceChange(previousBalance, newBalance, transactionResponse.gasCost);
  }
-+/**
-+ * Extract native asset transfers involving the user from a call trace.
-+ *
-+ * @param call - The call trace root.
-+ * @param userAddress - The transaction sender.
-+ * @returns Net native balance change or undefined if no value transfer exists.
-+ */
-+function getNativeBalanceChangeFromTrace(call, userAddress) {
-+    if (!call) {
-+        return undefined;
-+    }
-+    const userAddressLowercase = userAddress.toLowerCase();
-+    const from = call.from?.toLowerCase?.();
-+    const to = call.to?.toLowerCase?.();
-+    const value = hexToBN(call.value ?? '0x0');
-+    let balanceChange = new BN(0);
-+    if (!value.isZero()) {
-+        if (from === userAddressLowercase) {
-+            balanceChange = balanceChange.sub(value);
++function getAlchemySimulationData(request, changes) {
++    const userAddress = request.txParams.from.toLowerCase();
++    let nativeBalanceChange;
++    const tokenBalanceChanges = [];
++    for (const change of changes) {
++        const difference = change.rawAmount?.hex ?? change.rawAmount;
++        if (typeof difference !== 'string' || !difference.startsWith('0x')) {
++            continue;
 +        }
-+        if (to === userAddressLowercase) {
-+            balanceChange = balanceChange.add(value);
++        const balanceChange = {
++            previousBalance: '0x0',
++            newBalance: difference,
++            difference,
++            isDecrease: change.from?.toLowerCase() === userAddress,
++        };
++        if (change.assetType === 'NATIVE') {
++            nativeBalanceChange = balanceChange;
++        }
++        else if (change.contractAddress) {
++            tokenBalanceChanges.push({
++                ...balanceChange,
++                address: change.contractAddress,
++                id: change.tokenId,
++                standard: change.assetType === 'ERC721'
++                    ? SimulationTokenStandard.erc721
++                    : change.assetType === 'ERC1155'
++                        ? SimulationTokenStandard.erc1155
++                        : SimulationTokenStandard.erc20,
++            });
 +        }
 +    }
-+    const nestedCalls = call.calls ?? [];
-+    for (const nestedCall of nestedCalls) {
-+        const nestedBalanceChange = getNativeBalanceChangeFromTrace(nestedCall, userAddress);
-+        if (nestedBalanceChange) {
-+            balanceChange = balanceChange.add(nestedBalanceChange);
-+        }
-+    }
-+    return balanceChange.isZero() ? undefined : balanceChange;
-+}
-+/**
-+ * Check if a transaction is likely to use delegated account execution.
-+ *
-+ * @param txParams - Transaction parameters.
-+ * @returns True if native balance changes should come from trace value transfers.
-+ */
-+function hasAuthorizationOrSelfCall(txParams) {
-+    return Boolean(txParams.authorizationList?.length ||
-+        (txParams.from &&
-+            txParams.to &&
-+            txParams.from.toLowerCase() === txParams.to.toLowerCase()));
++    return { nativeBalanceChange, tokenBalanceChanges };
 +}
  /**
-  * Extract events from a simulation response.
+  * Extract the native balance change from a simulation response.
   *
+diff --git a/dist/utils/feature-flags.cjs b/dist/utils/feature-flags.cjs
+index 7442346c72e46835bc339a4f69d6f8cef350063a..2f02da0dcdcfadd3dab626dcc5649e089781604d 100644
+--- a/dist/utils/feature-flags.cjs
++++ b/dist/utils/feature-flags.cjs
+@@ -236,8 +236,6 @@ exports.isIncomingTransactionsUseBackendWebSocketServiceEnabled = isIncomingTran
+  * @returns The feature flags.
+  */
+ function getFeatureFlags(messenger) {
+-    const featureFlags = messenger.call('RemoteFeatureFlagController:getState').remoteFeatureFlags;
+-    log('Retrieved feature flags', featureFlags);
+-    return featureFlags;
++    return {};
+ }
+ //# sourceMappingURL=feature-flags.cjs.map
+diff --git a/dist/utils/feature-flags.mjs b/dist/utils/feature-flags.mjs
+index 90cd2c2a6452a076fd02ed95cf282111af4ea9df..ec461a2524d452faa8d4c9d239d96ae97754ec00 100644
+--- a/dist/utils/feature-flags.mjs
++++ b/dist/utils/feature-flags.mjs
+@@ -220,8 +220,6 @@ export function isIncomingTransactionsUseBackendWebSocketServiceEnabled(messenge
+  * @returns The feature flags.
+  */
+ function getFeatureFlags(messenger) {
+-    const featureFlags = messenger.call('RemoteFeatureFlagController:getState').remoteFeatureFlags;
+-    log('Retrieved feature flags', featureFlags);
+-    return featureFlags;
++    return {};
+ }
+ //# sourceMappingURL=feature-flags.mjs.map
+diff --git a/package.json b/package.json
+index 708fce325ca73253e11c31eb2f448746407630c5..a4b57f6c3b1d59cbdadad60b1f70854b9d3c5d0b 100644
+--- a/package.json
++++ b/package.json
+@@ -70,7 +70,6 @@
+     "@metamask/metamask-eth-abis": "^3.1.1",
+     "@metamask/network-controller": "^30.0.1",
+     "@metamask/nonce-tracker": "^6.0.0",
+-    "@metamask/remote-feature-flag-controller": "^4.2.0",
+     "@metamask/rpc-errors": "^7.0.2",
+     "@metamask/utils": "^11.9.0",
+     "async-mutex": "^0.5.0",

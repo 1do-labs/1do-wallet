@@ -11,8 +11,6 @@ import { ONBOARDING_PRIVACY_SETTINGS_ROUTE } from '../../../helpers/constants/ro
 import { BasicConfigurationModal } from './basic-configuration-modal';
 
 jest.mock('../../../store/actions', () => ({
-  setDataCollectionForMarketing: jest.fn(),
-  setParticipateInMetaMetrics: jest.fn(),
   toggleExternalServices: jest.fn(),
 }));
 
@@ -147,10 +145,6 @@ describe('BasicConfigurationModal', () => {
 
       expect(hideBasicFunctionalityModal).toHaveBeenCalledTimes(1);
       expect(onboardingToggleBasicFunctionalityOff).toHaveBeenCalledTimes(1);
-      expect(Actions.setParticipateInMetaMetrics).toHaveBeenCalledTimes(1);
-      expect(Actions.setParticipateInMetaMetrics).toHaveBeenCalledWith(false);
-      expect(Actions.setDataCollectionForMarketing).toHaveBeenCalledTimes(1);
-      expect(Actions.setDataCollectionForMarketing).toHaveBeenCalledWith(false);
     });
   });
 
@@ -193,10 +187,6 @@ describe('BasicConfigurationModal', () => {
       fireEvent.click(toggleBasicFunctionalityButton);
 
       expect(hideBasicFunctionalityModal).toHaveBeenCalledTimes(1);
-      expect(Actions.setParticipateInMetaMetrics).toHaveBeenCalledTimes(1);
-      expect(Actions.setParticipateInMetaMetrics).toHaveBeenCalledWith(false);
-      expect(Actions.setDataCollectionForMarketing).toHaveBeenCalledTimes(1);
-      expect(Actions.setDataCollectionForMarketing).toHaveBeenCalledWith(false);
       expect(Actions.toggleExternalServices).toHaveBeenCalledTimes(1);
       expect(Actions.toggleExternalServices).toHaveBeenCalledWith(false);
     });
@@ -215,8 +205,6 @@ describe('BasicConfigurationModal', () => {
       fireEvent.click(toggleBasicFunctionalityButton);
 
       expect(hideBasicFunctionalityModal).toHaveBeenCalledTimes(1);
-      expect(Actions.setParticipateInMetaMetrics).toHaveBeenCalledTimes(0);
-      expect(Actions.setDataCollectionForMarketing).toHaveBeenCalledTimes(0);
       expect(Actions.toggleExternalServices).toHaveBeenCalledTimes(1);
       expect(Actions.toggleExternalServices).toHaveBeenCalledWith(true);
     });

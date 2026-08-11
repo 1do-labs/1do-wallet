@@ -2,12 +2,6 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Navigate } from 'react-router-dom';
 import { Text, TextVariant, TextColor } from '@metamask/design-system-react';
-import {
-  MetaMetricsContextProp,
-  MetaMetricsEventCategory,
-  MetaMetricsEventName,
-  MetaMetricsUserTrait,
-} from '../../../shared/constants/metametrics';
 import TermsOfUsePopup from '../../components/app/terms-of-use-popup';
 import RecoveryPhraseReminder from '../../components/app/recovery-phrase-reminder';
 import { FirstTimeFlowType } from '../../../shared/constants/onboarding';
@@ -20,14 +14,7 @@ import ConnectedAccounts from '../connected-accounts';
 import { isMv3ButOffscreenDocIsMissing } from '../../../shared/lib/mv3.utils';
 import ActionableMessage from '../../components/ui/actionable-message/actionable-message';
 import { ScrollContainer } from '../../contexts/scroll-container';
-import {
-  FontWeight,
-  Display,
-  FlexDirection,
-  BlockSize,
-  AlignItems,
-  JustifyContent,
-} from '../../helpers/constants/design-system';
+import { FontWeight, Display } from '../../helpers/constants/design-system';
 import { SECOND } from '../../../shared/constants/time';
 import {
   ButtonIcon,
@@ -35,12 +22,6 @@ import {
   IconName,
   Box,
   Icon,
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  ModalOverlay,
 } from '../../components/component-library';
 import MultiRpcEditModal from '../../components/app/multi-rpc-edit-modal/multi-rpc-edit-modal';
 import UpdateModal from '../../components/app/update-modal/update-modal';
@@ -51,10 +32,8 @@ import {
   ONBOARDING_REVIEW_SRP_ROUTE,
 } from '../../helpers/constants/routes';
 import ZENDESK_URLS from '../../helpers/constants/zendesk-url';
-import { METAMETRICS_SETTINGS_LINK } from '../../helpers/constants/common';
-import { SUPPORT_LINK } from '../../../shared/lib/ui-utils';
 import { AccountOverview } from '../../components/multichain';
-import { isBeta, isFlask, isMain } from '../../../shared/lib/build-types';
+import { isBeta, isFlask } from '../../../shared/lib/build-types';
 import BetaAndFlaskHomeFooter from './beta-and-flask-home-footer.component';
 import { HomeDeepLinkActions } from './HomeDeepLinkActions';
 
@@ -82,7 +61,6 @@ function shouldCloseNotificationPopup({
 export default class Home extends PureComponent {
   static contextTypes = {
     t: PropTypes.func,
-    trackEvent: PropTypes.func,
   };
 
   static propTypes = {
@@ -103,14 +81,7 @@ export default class Home extends PureComponent {
     showUpdateModal: PropTypes.bool.isRequired,
     newNetworkAddedConfigurationId: PropTypes.string,
     totalUnapprovedCount: PropTypes.number.isRequired,
-    participateInMetaMetrics: PropTypes.bool.isRequired,
-    setDataCollectionForMarketing: PropTypes.func.isRequired,
-    dataCollectionForMarketing: PropTypes.bool,
     location: PropTypes.object,
-    shouldShowWeb3ShimUsageNotification: PropTypes.bool.isRequired,
-    setWeb3ShimUsageAlertDismissed: PropTypes.func.isRequired,
-    originOfCurrentTab: PropTypes.string,
-    disableWeb3ShimUsageAlert: PropTypes.func.isRequired,
     infuraBlocked: PropTypes.bool.isRequired,
     setRecoveryPhraseReminderHasBeenShown: PropTypes.func.isRequired,
     setRecoveryPhraseReminderLastShown: PropTypes.func.isRequired,
@@ -287,31 +258,9 @@ export default class Home extends PureComponent {
   onAcceptTermsOfUse = () => {
     const { setTermsOfUseLastAgreed } = this.props;
     setTermsOfUseLastAgreed(new Date().getTime());
-    this.context.trackEvent({
-      category: MetaMetricsEventCategory.Onboarding,
-      event: MetaMetricsEventName.TermsOfUseAccepted,
-      properties: {
-        location: 'Terms Of Use Popover',
-      },
-    });
   };
 
-  onSupportLinkClick = () => {
-    if (isMain()) {
-      this.context.trackEvent(
-        {
-          category: MetaMetricsEventCategory.Home,
-          event: MetaMetricsEventName.SupportLinkClicked,
-          properties: {
-            url: SUPPORT_LINK,
-          },
-        },
-        {
-          contextPropsIntoEventProperties: [MetaMetricsContextProp.PageTitle],
-        },
-      );
-    }
-  };
+  onSupportLinkClick = () => undefined;
 
   onOutdatedBrowserWarningClose = () => {
     const { setOutdatedBrowserWarningLastShown } = this.props;
@@ -325,10 +274,6 @@ export default class Home extends PureComponent {
       navigate,
       shouldShowSeedPhraseReminder,
       isPopup,
-      shouldShowWeb3ShimUsageNotification,
-      setWeb3ShimUsageAlertDismissed,
-      originOfCurrentTab,
-      disableWeb3ShimUsageAlert,
       infuraBlocked,
       showOutdatedBrowserWarning,
       newNftAddedMessage,
@@ -550,31 +495,6 @@ export default class Home extends PureComponent {
           }
         />
       ) : null,
-      shouldShowWeb3ShimUsageNotification ? (
-        <HomeNotification
-          key="show-web3-shim"
-          descriptionText={t('web3ShimUsageNotification', [
-            <span
-              key="web3ShimUsageNotificationLink"
-              className="home-notification__text-link"
-              onClick={() =>
-                global.platform.openTab({ url: ZENDESK_URLS.LEGACY_WEB3 })
-              }
-            >
-              {t('here')}
-            </span>,
-          ])}
-          ignoreText={t('dismiss')}
-          onIgnore={(disable) => {
-            setWeb3ShimUsageAlertDismissed(originOfCurrentTab);
-            if (disable) {
-              disableWeb3ShimUsageAlert();
-            }
-          }}
-          checkboxText={t('dontShowThisAgain')}
-          checkboxTooltipText={t('canToggleInSettings')}
-        />
-      ) : null,
       !isPrimarySeedPhraseBackedUp && shouldShowSeedPhraseReminder ? (
         <HomeNotification
           key="show-seed-phrase-reminder"
@@ -628,99 +548,6 @@ export default class Home extends PureComponent {
     ) : null;
   }
 
-  renderOnboardingPopover = () => {
-    const { t } = this.context;
-    const { setDataCollectionForMarketing } = this.props;
-
-    const handleClose = () => {
-      setDataCollectionForMarketing(false);
-      this.context.trackEvent({
-        category: MetaMetricsEventCategory.Home,
-        event: MetaMetricsEventName.AnalyticsPreferenceSelected,
-        properties: {
-          [MetaMetricsUserTrait.HasMarketingConsent]: false,
-          location: 'marketing_consent_modal',
-        },
-      });
-    };
-
-    const handleConsent = (consent) => {
-      setDataCollectionForMarketing(consent);
-      this.context.trackEvent({
-        category: MetaMetricsEventCategory.Home,
-        event: MetaMetricsEventName.AnalyticsPreferenceSelected,
-        properties: {
-          [MetaMetricsUserTrait.HasMarketingConsent]: consent,
-          location: 'marketing_consent_modal',
-        },
-      });
-    };
-
-    return (
-      <Modal isOpen onClose={handleClose}>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader
-            onClose={handleClose}
-            display={Display.Flex}
-            flexDirection={FlexDirection.Row}
-            fontWeight={FontWeight.Bold}
-            alignItems={AlignItems.center}
-            justifyContent={JustifyContent.center}
-            gap={4}
-            size={18}
-            paddingBottom={0}
-          >
-            {t('onboardedMetametricsTitle')}
-          </ModalHeader>
-          <ModalBody>
-            <Box
-              display={Display.Flex}
-              flexDirection={FlexDirection.Column}
-              gap={2}
-              margin={4}
-            >
-              <Text>
-                {t('onboardedMetametricsParagraph1', [
-                  <a
-                    href={METAMETRICS_SETTINGS_LINK}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    key="retention-link"
-                  >
-                    {t('onboardedMetametricsLink')}
-                  </a>,
-                ])}
-              </Text>
-              <Text>{t('onboardedMetametricsParagraph2')}</Text>
-              <ul className="home__onboarding_list">
-                <li>{t('onboardedMetametricsKey1')}</li>
-                <li>{t('onboardedMetametricsKey2')}</li>
-                <li>{t('onboardedMetametricsKey3')}</li>
-              </ul>
-              <Text>{t('onboardedMetametricsParagraph3')}</Text>
-            </Box>
-          </ModalBody>
-          <ModalFooter>
-            <Box
-              display={Display.Flex}
-              flexDirection={FlexDirection.Row}
-              gap={2}
-              width={BlockSize.Full}
-            >
-              <Button type="secondary" onClick={() => handleConsent(false)}>
-                {t('onboardedMetametricsDisagree')}
-              </Button>
-              <Button type="primary" onClick={() => handleConsent(true)}>
-                {t('onboardedMetametricsAccept')}
-              </Button>
-            </Box>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
-    );
-  };
-
   renderPopover = () => {
     const { setConnectedStatusPopoverHasBeenShown } = this.props;
     const { t } = this.context;
@@ -772,8 +599,6 @@ export default class Home extends PureComponent {
       useExternalServices,
       setBasicFunctionalityModalOpen,
       forgottenPassword,
-      participateInMetaMetrics,
-      dataCollectionForMarketing,
       connectedStatusPopoverHasBeenShown,
       isPopup,
       showRecoveryPhraseReminder,
@@ -834,10 +659,6 @@ export default class Home extends PureComponent {
     return (
       <ScrollContainer className="main-container main-container--has-shadow">
         <div className="home__container">
-          {dataCollectionForMarketing === null &&
-          participateInMetaMetrics === true
-            ? this.renderOnboardingPopover()
-            : null}
           {showMultiRpcEditModal && <MultiRpcEditModal />}
           {displayUpdateModal && <UpdateModal />}
           {showRecoveryPhrase ? (

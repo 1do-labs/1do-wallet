@@ -138,31 +138,6 @@ describe('AlertController', () => {
     });
   });
 
-  describe('web3ShimUsageOrigins', () => {
-    it('should default web3ShimUsageOrigins', async () => {
-      await withController(({ controller }) => {
-        expect(controller.state.web3ShimUsageOrigins).toStrictEqual({});
-      });
-    });
-
-    it('should set origin of web3ShimUsageOrigins to recorded', async () => {
-      await withController(({ controller }) => {
-        controller.setWeb3ShimUsageRecorded('testWeb3ShimUsageOrigin');
-        expect(controller.state.web3ShimUsageOrigins).toStrictEqual({
-          testWeb3ShimUsageOrigin: 1,
-        });
-      });
-    });
-    it('should set origin of web3ShimUsageOrigins to dismissed', async () => {
-      await withController(({ controller }) => {
-        controller.setWeb3ShimUsageAlertDismissed('testWeb3ShimUsageOrigin');
-        expect(controller.state.web3ShimUsageOrigins).toStrictEqual({
-          testWeb3ShimUsageOrigin: 2,
-        });
-      });
-    });
-  });
-
   describe('selectedAccount change', () => {
     it('should set unconnectedAccountAlertShownOrigins to {}', async () => {
       await withController(({ controller, messenger }) => {
@@ -200,9 +175,7 @@ describe('AlertController', () => {
         ).toMatchInlineSnapshot(`
           {
             "alertEnabledness": {
-              "smartTransactionsMigration": true,
               "unconnectedAccount": true,
-              "web3ShimUsage": true,
             },
           }
         `);
@@ -220,12 +193,9 @@ describe('AlertController', () => {
         ).toMatchInlineSnapshot(`
           {
             "alertEnabledness": {
-              "smartTransactionsMigration": true,
               "unconnectedAccount": true,
-              "web3ShimUsage": true,
             },
             "unconnectedAccountAlertShownOrigins": {},
-            "web3ShimUsageOrigins": {},
           }
         `);
       });
@@ -242,12 +212,9 @@ describe('AlertController', () => {
         ).toMatchInlineSnapshot(`
           {
             "alertEnabledness": {
-              "smartTransactionsMigration": true,
               "unconnectedAccount": true,
-              "web3ShimUsage": true,
             },
             "unconnectedAccountAlertShownOrigins": {},
-            "web3ShimUsageOrigins": {},
           }
         `);
       });
@@ -264,12 +231,9 @@ describe('AlertController', () => {
         ).toMatchInlineSnapshot(`
           {
             "alertEnabledness": {
-              "smartTransactionsMigration": true,
               "unconnectedAccount": true,
-              "web3ShimUsage": true,
             },
             "unconnectedAccountAlertShownOrigins": {},
-            "web3ShimUsageOrigins": {},
           }
         `);
       });

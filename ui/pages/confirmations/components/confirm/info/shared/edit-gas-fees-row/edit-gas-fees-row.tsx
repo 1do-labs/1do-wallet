@@ -5,11 +5,7 @@ import { useSelector } from 'react-redux';
 import { TEST_CHAINS } from '../../../../../../../../shared/constants/network';
 import { ConfirmInfoAlertRow } from '../../../../../../../components/app/confirm/info/row/alert-row/alert-row';
 import { RowAlertKey } from '../../../../../../../components/app/confirm/info/row/constants';
-import {
-  Box,
-  SuccessPill,
-  Text,
-} from '../../../../../../../components/component-library';
+import { Box, Text } from '../../../../../../../components/component-library';
 import { Skeleton } from '../../../../../../../components/component-library/skeleton';
 import Tooltip from '../../../../../../../components/ui/tooltip';
 import {
@@ -23,15 +19,11 @@ import {
 } from '../../../../../../../helpers/constants/design-system';
 import { useI18nContext } from '../../../../../../../hooks/useI18nContext';
 import { getPreferences } from '../../../../../../../selectors';
-import { isOneDoRuntimeAccessUpdateTransaction } from '../../../../../../../../shared/lib/onedo-runtime-access';
 import { useConfirmContext } from '../../../../../context/confirm';
 import { useEstimationFailed } from '../../../../../hooks/gas/useEstimationFailed';
-import { useIsGaslessSupported } from '../../../../../hooks/gas/useIsGaslessSupported';
 import { selectConfirmationAdvancedDetailsOpen } from '../../../../../selectors/preferences';
 import { useBalanceChanges } from '../../../../simulation-details/useBalanceChanges';
-import { useTransactionNativeTicker } from '../../../../../hooks/transactions/useTransactionNativeTicker';
 import { useSelectedGasFeeToken } from '../../hooks/useGasFeeToken';
-import { useIsUpgradeTransaction } from '../../hooks/useIsUpgradeTransaction';
 import { EditGasIconButton } from '../edit-gas-icon/edit-gas-icon-button';
 import { SelectedGasFeeToken } from '../selected-gas-fee-token';
 
@@ -54,50 +46,30 @@ export const EditGasFeesRow = ({
   const showAdvancedDetails = useSelector(
     selectConfirmationAdvancedDetailsOpen,
   );
-  const {
-    chainId,
-    isGasFeeSponsored: doesSentinelAllowSponsorship,
-    simulationData,
-  } = transactionMeta;
+  const { chainId, simulationData } = transactionMeta;
 
   const estimationFailed = useEstimationFailed();
   const gasFeeToken = useSelectedGasFeeToken();
-  const { isUpgradeOnly } = useIsUpgradeTransaction();
-  const isOneDoRuntimeAccessUpdate =
-    isOneDoRuntimeAccessUpdateTransaction(transactionMeta);
   const showFiat = useShowFiat(chainId);
   const fiatValue = gasFeeToken?.amountFiat || fiatFee;
   const hasFiatValue = Boolean(fiatValue);
   const tokenValue = gasFeeToken ? gasFeeToken.amountFormatted : nativeFee;
   const metamaskFeeFiat = gasFeeToken?.metamaskFeeFiat;
-  const nativeTokenSymbol = useTransactionNativeTicker() ?? '';
 
   const balanceChangesResult = useBalanceChanges({
     chainId,
     simulationData,
-    transaction: transactionMeta,
   });
   const isLoadingGasUsed = !simulationData || balanceChangesResult.pending;
 
-  // This prevents the gas fee row from showing as sponsored if stx is disabled
-  // by the user and 7702 is not supported in the chain.
-  const { isSupported: isGaslessSupported } = useIsGaslessSupported();
-  const isGasFeeSponsored =
-    isGaslessSupported &&
-    doesSentinelAllowSponsorship &&
-    !isUpgradeOnly &&
-    !isOneDoRuntimeAccessUpdate;
-
   let tooltip = t('estimatedFeeTooltip');
-  if (isGasFeeSponsored) {
-    tooltip = t('gasFeesSponsoredExplanation', [nativeTokenSymbol]);
-  } else if (gasFeeToken?.metaMaskFee && gasFeeToken.metaMaskFee !== '0x0') {
+  if (gasFeeToken?.metaMaskFee && gasFeeToken.metaMaskFee !== '0x0') {
     tooltip = t('confirmGasFeeTokenTooltip', [metamaskFeeFiat]);
   }
 
-  const isGasFeeEditable = !disableUpdate && !gasFeeToken && !isGasFeeSponsored;
+  const isGasFeeEditable = !disableUpdate && !gasFeeToken;
   const shouldShowPrimaryFiatValue =
-    showFiat && hasFiatValue && !showAdvancedDetails && !isGasFeeSponsored;
+    showFiat && hasFiatValue && !showAdvancedDetails;
 
   return (
     <Box display={Display.Flex} flexDirection={FlexDirection.Column}>
@@ -120,14 +92,8 @@ export const EditGasFeesRow = ({
             textAlign={TextAlign.Center}
             gap={1}
           >
-            {isGasFeeSponsored && (
-              <SuccessPill
-                label={t('paidByMetaMask')}
-                data-testid="paid-by-meta-mask"
-              />
-            )}
             {isGasFeeEditable && <EditGasIconButton />}
-            {estimationFailed && !isGasFeeSponsored && (
+            {estimationFailed && (
               <Text color={TextColor.textDefault}>{t('unavailable')}</Text>
             )}
             {!estimationFailed && (
@@ -138,43 +104,41 @@ export const EditGasFeesRow = ({
                     roundedValue={fiatValue}
                   />
                 )}
-                {!shouldShowPrimaryFiatValue && !isGasFeeSponsored && (
+                {!shouldShowPrimaryFiatValue && (
                   <TokenValue roundedValue={tokenValue} />
                 )}
               </>
             )}
-            {!isGasFeeSponsored && <SelectedGasFeeToken />}
+            <SelectedGasFeeToken />
           </Box>
         )}
       </ConfirmInfoAlertRow>
-      {!isGasFeeSponsored && (
-        <Box
-          display={Display.Flex}
-          justifyContent={JustifyContent.spaceBetween}
-          paddingInline={2}
-        >
-          <Box style={{ marginTop: gasFeeToken ? -8 : 0 }}>
-            <Text
-              data-testid="gas-fee-token-fee"
-              variant={TextVariant.bodySm}
-              color={TextColor.textAlternative}
-              paddingBottom={gasFeeToken ? 2 : 0}
-            >
-              {gasFeeToken?.metaMaskFee && gasFeeToken?.metaMaskFee !== '0x0'
-                ? t('confirmGasFeeTokenMetaMaskFee', [metamaskFeeFiat])
-                : ' '}
-            </Text>
-          </Box>
-          {showAdvancedDetails && !estimationFailed && hasFiatValue && (
-            <FiatValue
-              fullValue={fiatFeeWith18SignificantDigits}
-              roundedValue={fiatValue}
-              variant={TextVariant.bodySm}
-              color={TextColor.textAlternative}
-            />
-          )}
+      <Box
+        display={Display.Flex}
+        justifyContent={JustifyContent.spaceBetween}
+        paddingInline={2}
+      >
+        <Box style={{ marginTop: gasFeeToken ? -8 : 0 }}>
+          <Text
+            data-testid="gas-fee-token-fee"
+            variant={TextVariant.bodySm}
+            color={TextColor.textAlternative}
+            paddingBottom={gasFeeToken ? 2 : 0}
+          >
+            {gasFeeToken?.metaMaskFee && gasFeeToken?.metaMaskFee !== '0x0'
+              ? t('confirmGasFeeTokenMetaMaskFee', [metamaskFeeFiat])
+              : ' '}
+          </Text>
         </Box>
-      )}
+        {showAdvancedDetails && !estimationFailed && hasFiatValue && (
+          <FiatValue
+            fullValue={fiatFeeWith18SignificantDigits}
+            roundedValue={fiatValue}
+            variant={TextVariant.bodySm}
+            color={TextColor.textAlternative}
+          />
+        )}
+      </Box>
     </Box>
   );
 };

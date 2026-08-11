@@ -4,7 +4,7 @@ import configureMockStore from 'redux-mock-store';
 import { renderWithProvider } from '../../../../test/lib/render-helpers-navigate';
 import {
   ONBOARDING_CONFIRM_SRP_ROUTE,
-  ONBOARDING_METAMETRICS,
+  ONBOARDING_COMPLETION_ROUTE,
   MANAGE_WALLET_RECOVERY_ROUTE,
 } from '../../../helpers/constants/routes';
 import { enLocale as messages } from '../../../../test/lib/i18n-helpers';
@@ -79,7 +79,7 @@ describe('Review Recovery Phrase Component', () => {
     });
     renderWithProvider(<RecoveryPhrase {...props} />, store);
 
-    expect(mockUseNavigate).toHaveBeenCalledWith(ONBOARDING_METAMETRICS, {
+    expect(mockUseNavigate).toHaveBeenCalledWith(ONBOARDING_COMPLETION_ROUTE, {
       replace: true,
     });
   });

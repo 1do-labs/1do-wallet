@@ -37,16 +37,7 @@ export const AccountTrackerControllerInit: MessengerClientInitFunction<
       );
       return useExternalServices;
     },
-    accountsApiChainIds: () => {
-      const state = initMessenger.call('RemoteFeatureFlagController:getState');
-
-      const featureFlagForAccountApiBalances =
-        state?.remoteFeatureFlags?.assetsAccountApiBalances;
-
-      return Array.isArray(featureFlagForAccountApiBalances)
-        ? (featureFlagForAccountApiBalances as `0x${string}`[])
-        : [];
-    },
+    accountsApiChainIds: () => [],
     fetchingEnabled: () => onboardingController().state.completedOnboarding,
     isOnboarded: () => {
       const { completedOnboarding } = onboardingController().state;

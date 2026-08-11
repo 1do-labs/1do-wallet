@@ -19,7 +19,6 @@ import {
   KeyringControllerGetStateAction,
   KeyringControllerUnlockEvent,
 } from '@metamask/keyring-controller';
-import { ProfileMetricsControllerSkipInitialDelayAction } from '@metamask/profile-metrics-controller';
 
 import { MINUTE } from '../../../shared/constants/time';
 import { AUTO_LOCK_TIMEOUT_ALARM } from '../../../shared/constants/alarms';
@@ -105,13 +104,11 @@ export type AppStateControllerState = {
   showPermissionsTour: boolean;
   showTestnetMessageInDropdown: boolean;
   slides: CarouselSlide[];
-  surveyLinkLastClickedOrClosed: number | null;
   termsOfUseLastAgreed?: number;
   throttledOrigins: ThrottledOrigins;
   timeoutMinutes: number;
   trezorModel: string | null;
   updateModalLastDismissedAt: number | null;
-  hasShownMultichainAccountsIntroModal: boolean;
   /**
    * The pending redirect route to be applied after the default page is loaded.
    * If this is set, next time default page is loaded, the redirect will be applied.
@@ -156,8 +153,7 @@ export type AllowedActions =
   | ApprovalControllerAddRequestAction
   | ApprovalControllerAcceptRequestAction
   | KeyringControllerGetStateAction
-  | PreferencesControllerGetStateAction
-  | ProfileMetricsControllerSkipInitialDelayAction;
+  | PreferencesControllerGetStateAction;
 
 /**
  * Event emitted when the state of the {@link AppStateController} changes.
@@ -247,12 +243,10 @@ const getDefaultAppStateControllerState = (): AppStateControllerState => ({
   showPermissionsTour: true,
   showTestnetMessageInDropdown: true,
   slides: [],
-  surveyLinkLastClickedOrClosed: null,
   throttledOrigins: {},
   timeoutMinutes: DEFAULT_AUTO_LOCK_TIME_LIMIT,
   trezorModel: null,
   updateModalLastDismissedAt: null,
-  hasShownMultichainAccountsIntroModal: false,
   pendingRedirectRoute: null,
   isWalletResetInProgress: false,
   storageWriteErrorType: null,
@@ -501,12 +495,6 @@ const controllerMetadata: StateMetadata<AppStateControllerState> = {
     includeInDebugSnapshot: true,
     usedInUi: true,
   },
-  surveyLinkLastClickedOrClosed: {
-    includeInStateLogs: true,
-    persist: true,
-    includeInDebugSnapshot: true,
-    usedInUi: true,
-  },
   termsOfUseLastAgreed: {
     includeInStateLogs: true,
     persist: true,
@@ -536,12 +524,6 @@ const controllerMetadata: StateMetadata<AppStateControllerState> = {
     persist: true,
     includeInDebugSnapshot: true,
     usedInUi: true,
-  },
-  hasShownMultichainAccountsIntroModal: {
-    persist: true,
-    includeInDebugSnapshot: true,
-    usedInUi: true,
-    includeInStateLogs: true,
   },
   pendingRedirectRoute: {
     includeInStateLogs: true,
@@ -592,7 +574,6 @@ const MESSENGER_EXPOSED_METHODS = [
   'setCurrentPopupId',
   'setDefaultHomeActiveTabName',
   'setDeferredDeepLink',
-  'setHasShownMultichainAccountsIntroModal',
   'setIsWalletResetInProgress',
   'setLastActiveTime',
   'setLastInteractedConfirmationInfo',
@@ -616,7 +597,6 @@ const MESSENGER_EXPOSED_METHODS = [
   'setShowPermissionsTour',
   'setShowTestnetMessageInDropdown',
   'setStorageWriteErrorType',
-  'setSurveyLinkLastClickedOrClosed',
   'setTermsOfUseLastAgreed',
   'setTrezorModel',
   'setUpdateModalLastDismissedAt',
@@ -782,12 +762,6 @@ export class AppStateController extends BaseController<
     });
   }
 
-  setSurveyLinkLastClickedOrClosed(time: number): void {
-    this.update((state) => {
-      state.surveyLinkLastClickedOrClosed = time;
-    });
-  }
-
   setOnboardingDate(): void {
     this.update((state) => {
       state.onboardingDate = Date.now();
@@ -818,13 +792,10 @@ export class AppStateController extends BaseController<
     });
   }
 
-  setPna25Acknowledged(acknowledged: boolean, disableDelay = false): void {
+  setPna25Acknowledged(acknowledged: boolean, _disableDelay = false): void {
     this.update((state) => {
       state.pna25Acknowledged = acknowledged;
     });
-    if (disableDelay && acknowledged) {
-      this.messenger.call('ProfileMetricsController:skipInitialDelay');
-    }
   }
 
   /**
@@ -1163,17 +1134,6 @@ export class AppStateController extends BaseController<
   setShowPermissionsTour(showPermissionsTour: boolean): void {
     this.update((state) => {
       state.showPermissionsTour = showPermissionsTour;
-    });
-  }
-
-  /**
-   * Sets whether the multichain intro modal has been shown to the user
-   *
-   * @param hasShown - Whether the modal has been shown
-   */
-  setHasShownMultichainAccountsIntroModal(hasShown: boolean): void {
-    this.update((state) => {
-      state.hasShownMultichainAccountsIntroModal = hasShown;
     });
   }
 

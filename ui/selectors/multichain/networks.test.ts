@@ -16,7 +16,6 @@ import { MOCK_ACCOUNT_EOA } from '../../../test/data/mock-accounts';
 import { RemoteFeatureFlagsState } from '../remote-feature-flags';
 import {
   type MultichainNetworkControllerState,
-  getNonEvmMultichainNetworkConfigurationsByChainId,
   getMultichainNetworkConfigurationsByChainId,
   getMultichainNetworkConfigurationsTuple,
   getSelectedMultichainNetworkChainId,
@@ -98,7 +97,7 @@ const mockState: TestState = {
   metamask: {
     remoteFeatureFlags: {},
     multichainNetworkConfigurationsByChainId: {},
-    selectedMultichainNetworkChainId: 'unknown:ignored' as CaipChainId,
+    selectedMultichainNetworkChainId: 'unknown:ignored' as never,
     isEvmSelected: false,
     selectedNetworkClientId: 'mainnet',
     networkConfigurationsByChainId: {
@@ -128,14 +127,6 @@ const mockState: TestState = {
 };
 
 describe('Multichain network selectors', () => {
-  describe('getNonEvmMultichainNetworkConfigurationsByChainId', () => {
-    it('returns an empty object', () => {
-      expect(
-        getNonEvmMultichainNetworkConfigurationsByChainId(mockState),
-      ).toStrictEqual({});
-    });
-  });
-
   describe('getMultichainNetworkConfigurationsByChainId', () => {
     it('returns only EVM multichain network configurations by chain ID', () => {
       expect(
@@ -179,7 +170,7 @@ describe('Multichain network selectors', () => {
 
   describe('getIsEvmMultichainNetworkSelected', () => {
     it('always returns true', () => {
-      expect(getIsEvmMultichainNetworkSelected(mockState)).toStrictEqual(true);
+      expect(getIsEvmMultichainNetworkSelected()).toStrictEqual(true);
     });
   });
 

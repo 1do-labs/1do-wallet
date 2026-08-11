@@ -44,11 +44,6 @@ import { getMarketData, getCurrencyRates } from '../../../selectors';
 import { getMultichainIsEvm } from '../../../selectors/multichain';
 import Tooltip from '../../ui/tooltip';
 import { useI18nContext } from '../../../hooks/useI18nContext';
-import { MetaMetricsContext } from '../../../contexts/metametrics';
-import {
-  MetaMetricsEventCategory,
-  MetaMetricsEventName,
-} from '../../../../shared/constants/metametrics';
 import {
   CURRENCY_SYMBOLS,
   NETWORK_TO_NAME_MAP,
@@ -107,7 +102,6 @@ export const TokenListItemComponent = ({
 }: TokenListItemProps) => {
   const t = useI18nContext();
   const isEvm = useSelector(getMultichainIsEvm);
-  const { trackEvent } = useContext(MetaMetricsContext);
   const currencyRates = useSelector(getCurrencyRates);
 
   // We do not want to display any percentage with non-EVM since we don't have the data for this yet. So
@@ -191,20 +185,6 @@ export const TokenListItemComponent = ({
             }
 
             onClick();
-            trackEvent({
-              category: MetaMetricsEventCategory.Tokens,
-              event: MetaMetricsEventName.TokenDetailsOpened,
-              properties: {
-                location: 'Home',
-                // FIXME: This might not be a number for non-EVM accounts
-                // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-                // eslint-disable-next-line @typescript-eslint/naming-convention
-                chain_id: chainId,
-                // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-                // eslint-disable-next-line @typescript-eslint/naming-convention
-                token_symbol: tokenSymbol,
-              },
-            });
           },
         })}
       >

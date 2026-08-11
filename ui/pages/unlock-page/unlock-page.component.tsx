@@ -33,13 +33,8 @@ import {
   TextTransform,
 } from '../../helpers/constants/design-system';
 import { DEFAULT_ROUTE } from '../../helpers/constants/routes';
-import {
-  MetaMetricsEventCategory,
-  MetaMetricsEventName,
-} from '../../../shared/constants/metametrics';
 import { isBeta, isFlask } from '../../../shared/lib/build-types';
 import { TraceName, TraceOperation } from '../../../shared/lib/trace';
-import { withMetaMetrics } from '../../contexts/metametrics';
 import ResetPasswordModal from './reset-password-modal';
 import FormattedCounter from './formatted-counter';
 import { OneDoUnlockLogo } from './one-do-unlock-logo';
@@ -52,7 +47,6 @@ type UnlockPageProps = {
   onRestore: () => void;
   onSubmit: (password: string) => Promise<void>;
   forceUpdateMetamaskState: () => Promise<void>;
-  onboardingParentContext: MutableRefObject<unknown>;
   firstTimeFlowType: string | null;
   resetWallet: () => Promise<void>;
   isPopup: boolean;
@@ -69,9 +63,6 @@ type UnlockPageState = {
 };
 
 type UnlockPageContext = {
-  trackEvent: (event: object, options?: object) => void;
-  bufferedTrace: (trace: object) => void;
-  bufferedEndTrace: (trace: object) => void;
   t: (key: string, args?: unknown[]) => string;
 };
 
@@ -85,9 +76,6 @@ type LoginError = {
 
 class UnlockPage extends Component<UnlockPageProps, UnlockPageState> {
   static contextTypes = {
-    trackEvent: PropTypes.func,
-    bufferedTrace: PropTypes.func,
-    bufferedEndTrace: PropTypes.func,
     t: PropTypes.func,
   };
 
@@ -99,7 +87,6 @@ class UnlockPage extends Component<UnlockPageProps, UnlockPageState> {
     onRestore: PropTypes.func,
     onSubmit: PropTypes.func,
     forceUpdateMetamaskState: PropTypes.func,
-    onboardingParentContext: PropTypes.object,
     firstTimeFlowType: PropTypes.string,
     resetWallet: PropTypes.func,
     isPopup: PropTypes.bool,
@@ -157,40 +144,8 @@ class UnlockPage extends Component<UnlockPageProps, UnlockPageState> {
 
     this.setState({ error: null, isSubmitting: true });
 
-    if (!isOnboardingCompleted) {
-      this.context.bufferedTrace({
-        name: TraceName.OnboardingPasswordLoginAttempt,
-        op: TraceOperation.OnboardingUserJourney,
-        parentContext: this.props.onboardingParentContext?.current,
-      });
-    }
-
     try {
       await onSubmit(password);
-
-      if (!isOnboardingCompleted) {
-        this.context.bufferedEndTrace({
-          name: TraceName.OnboardingPasswordLoginAttempt,
-        });
-        this.context.bufferedEndTrace({
-          name: TraceName.OnboardingJourneyOverall,
-        });
-      }
-
-      this.context.trackEvent(
-        {
-          category: MetaMetricsEventCategory.Navigation,
-          event: MetaMetricsEventName.AppUnlocked,
-          properties: {
-            // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-            // eslint-disable-next-line @typescript-eslint/naming-convention
-            failed_attempts: this.failed_attempts,
-          },
-        },
-        {
-          isNewVisit: true,
-        },
-      );
     } catch (error) {
       await this.handleLoginError(error as LoginError);
     } finally {
@@ -228,16 +183,6 @@ class UnlockPage extends Component<UnlockPageProps, UnlockPageState> {
 
     if (errorReason) {
       await this.props.forceUpdateMetamaskState();
-      this.context.trackEvent({
-        category: MetaMetricsEventCategory.Navigation,
-        event: MetaMetricsEventName.AppUnlockedFailed,
-        properties: {
-          reason: errorReason,
-          // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-          // eslint-disable-next-line @typescript-eslint/naming-convention
-          failed_attempts: this.failed_attempts,
-        },
-      });
     }
 
     this.setState({
@@ -288,29 +233,10 @@ class UnlockPage extends Component<UnlockPageProps, UnlockPageState> {
   };
 
   onForgotPasswordOrLoginWithDiffMethods = async () => {
-    this.context.trackEvent({
-      category: MetaMetricsEventCategory.Onboarding,
-      event: MetaMetricsEventName.ForgotPasswordClicked,
-      properties: {
-        // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        account_type: 'metamask',
-      },
-    });
-
     this.setState({ showResetPasswordModal: true });
   };
 
   onRestoreWallet = async () => {
-    this.context.trackEvent({
-      category: MetaMetricsEventCategory.Accounts,
-      event: MetaMetricsEventName.ResetWallet,
-      properties: {
-        // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        account_type: 'metamask',
-      },
-    });
     this.props.onRestore();
   };
 
@@ -455,6 +381,4 @@ class UnlockPage extends Component<UnlockPageProps, UnlockPageState> {
   }
 }
 
-export default withMetaMetrics(
-  UnlockPage as unknown as ComponentType<Record<string, unknown>>,
-);
+export default UnlockPage as unknown as ComponentType<Record<string, unknown>>;

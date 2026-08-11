@@ -1,8 +1,6 @@
 import type { Page } from '@playwright/test';
 import {
   CONFIRM_TRANSACTION_ROUTE,
-  CROSS_CHAIN_SWAP_ROUTE,
-  PREPARE_SWAP_ROUTE,
   SETTINGS_ROUTE,
   SIGNATURE_REQUEST_PATH,
   UNLOCK_ROUTE,
@@ -60,15 +58,10 @@ describe('state-inspector', () => {
   });
 
   describe('detectScreenFromUrl', () => {
-    it('detects send, swap, settings and unlock from hash routes', () => {
+    it('detects send, settings and unlock from hash routes', () => {
       expect(detectScreenFromUrl('chrome-extension://id/home.html#/send')).toBe(
         'send',
       );
-      expect(
-        detectScreenFromUrl(
-          `chrome-extension://id/home.html#${CROSS_CHAIN_SWAP_ROUTE + PREPARE_SWAP_ROUTE}`,
-        ),
-      ).toBe('swap');
       expect(
         detectScreenFromUrl(
           `chrome-extension://id/home.html#${SETTINGS_ROUTE}`,

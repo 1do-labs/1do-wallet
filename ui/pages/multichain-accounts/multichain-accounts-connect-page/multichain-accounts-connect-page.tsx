@@ -66,11 +66,6 @@ import {
   isIpAddress,
   transformOriginToTitle,
 } from '../../../helpers/utils/util';
-import {
-  MetaMetricsEventCategory,
-  MetaMetricsEventName,
-} from '../../../../shared/constants/metametrics';
-import { MetaMetricsContext } from '../../../contexts/metametrics';
 import { EvmNetworkConfigurationWithCaipChainId } from '../../../selectors/selectors.types';
 import { mergeCaip25CaveatValues } from '../../../../shared/lib/caip25-caveat-merger';
 import { MultichainAccountCell } from '../../../components/multichain-accounts/multichain-account-cell';
@@ -128,7 +123,6 @@ export const MultichainAccountsConnectPage: React.FC<
   targetSubjectMetadata,
 }) => {
   const t = useI18nContext();
-  const { trackEvent } = useContext(MetaMetricsContext);
   const [pageMode, setPageMode] = useState<MultichainAccountsConnectPageMode>(
     MultichainAccountsConnectPageMode.Summary,
   );
@@ -283,7 +277,7 @@ export const MultichainAccountsConnectPage: React.FC<
         new Set(
           defaultSelectedNetworkList.filter((caipChainId) => {
             const { namespace } = parseCaipChainId(caipChainId);
-            return requestedNamespacesWithoutWallet.includes(namespace);
+            return namespace === KnownCaipNamespace.Eip155;
           }),
         ),
       );
@@ -437,16 +431,8 @@ export const MultichainAccountsConnectPage: React.FC<
   ]);
 
   const setModeToEditAccounts = useCallback(() => {
-    trackEvent({
-      category: MetaMetricsEventCategory.Navigation,
-      event: MetaMetricsEventName.ViewPermissionedAccounts,
-      properties: {
-        location:
-          'Connect view (accounts tab), Permissions toast, Permissions (dapp)',
-      },
-    });
     setPageMode(MultichainAccountsConnectPageMode.EditAccounts);
-  }, [trackEvent]);
+  }, []);
 
   const handleCancelConnection = useCallback(() => {
     rejectPermissionsRequest(permissionsRequestId);

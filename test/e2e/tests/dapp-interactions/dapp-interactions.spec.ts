@@ -66,16 +66,9 @@ describe('Dapp interactions', function () {
         fixtures: new FixtureBuilderV2()
           .withPermissionControllerConnectedToTestDapp()
           .build(),
-        testSpecificMock: mockNotificationsEndpoint,
         title: this.test?.fullTitle(),
       },
-      async ({
-        driver,
-        mockedEndpoint: mockedEndpoints,
-      }: {
-        driver: Driver;
-        mockedEndpoint: MockedEndpoint[];
-      }) => {
+      async ({ driver }: { driver: Driver }) => {
         await driver.navigate();
         const loginPage = new LoginPage(driver);
         await loginPage.checkPageIsLoaded();
@@ -96,13 +89,6 @@ describe('Dapp interactions', function () {
         await connectAccountConfirmation.checkForAccountsInPermissionList([
           'Account 1',
         ]);
-
-        // Wait until last request happens in the connect screen to ensure is ready
-        const [notificationsEndpoint] = mockedEndpoints;
-        await driver.wait(async () => {
-          const isPending = await notificationsEndpoint.isPending();
-          return isPending === false;
-        }, driver.timeout);
 
         await connectAccountConfirmation.confirmConnect();
         await driver.switchToWindowWithTitle(WINDOW_TITLES.TestDApp);

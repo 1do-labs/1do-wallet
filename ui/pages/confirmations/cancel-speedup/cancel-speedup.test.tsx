@@ -123,7 +123,7 @@ describe('CancelSpeedup Component', () => {
     maxPriorityFeePerGas?: string;
     gas?: string;
     gasLimitNoBuffer?: string;
-    gasFeeEstimates?: (typeof mockEstimates)[GasEstimateTypes.feeMarket]['gasFeeEstimates'];
+    gasFeeEstimates?: (typeof mockEstimates)['fee-market']['gasFeeEstimates'];
   };
 
   const render = (

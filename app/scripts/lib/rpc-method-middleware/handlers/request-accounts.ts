@@ -11,28 +11,15 @@ import type { OriginString } from '@metamask/permission-controller';
 import { rpcErrors } from '@metamask/rpc-errors';
 
 import { MESSAGE_TYPE } from '../../../../../shared/constants/app';
-import type { FlattenedBackgroundStateProxy } from '../../../../../shared/types';
-import {
-  MetaMetricsEventName,
-  MetaMetricsEventCategory,
-} from '../../../../../shared/constants/metametrics';
-import { shouldEmitDappViewedEvent } from '../../util';
-import { getIframeProperties } from '../../getIframeProperties';
 import type {
   GetAccounts,
   HandlerWrapper,
-  SendMetrics,
   GetCaip25PermissionFromLegacyPermissionsForOrigin,
   RequestPermissionsForOrigin,
 } from './types';
 
 export type RequestEthereumAccountsOptions = {
   getAccounts: GetAccounts;
-  sendMetrics: SendMetrics;
-  metamaskState: Pick<
-    FlattenedBackgroundStateProxy,
-    'metaMetricsId' | 'permissionHistory' | 'internalAccounts'
-  >;
   getCaip25PermissionFromLegacyPermissionsForOrigin: GetCaip25PermissionFromLegacyPermissionsForOrigin;
   requestPermissionsForOrigin: RequestPermissionsForOrigin;
 };
@@ -47,8 +34,6 @@ type RequestEthereumAccountsConstraint<
     end: JsonRpcEngineEndCallback,
     {
       getAccounts,
-      sendMetrics,
-      metamaskState,
       getCaip25PermissionFromLegacyPermissionsForOrigin,
       requestPermissionsForOrigin,
     }: RequestEthereumAccountsOptions,
@@ -60,8 +45,6 @@ const requestEthereumAccounts = {
   implementation: requestEthereumAccountsHandler,
   hookNames: {
     getAccounts: true,
-    sendMetrics: true,
-    metamaskState: true,
     getCaip25PermissionFromLegacyPermissionsForOrigin: true,
     requestPermissionsForOrigin: true,
   },
@@ -84,8 +67,6 @@ const locks = new Set();
  * @param end - The json-rpc-engine 'end' callback.
  * @param options - The RPC method hooks.
  * @param options.getAccounts - Gets the accounts for the requesting origin.
- * @param options.sendMetrics - submits a metametrics event, not waiting for it to complete or allowing its error to bubble up
- * @param options.metamaskState
  * @param options.getCaip25PermissionFromLegacyPermissionsForOrigin - A hook that returns a CAIP-25 permission from a legacy `eth_accounts` and `endowment:permitted-chains` permission.
  * @param options.requestPermissionsForOrigin - A hook that requests CAIP-25 permissions for the origin.
  */
@@ -98,8 +79,6 @@ async function requestEthereumAccountsHandler<
   end: JsonRpcEngineEndCallback,
   {
     getAccounts,
-    sendMetrics,
-    metamaskState,
     getCaip25PermissionFromLegacyPermissionsForOrigin,
     requestPermissionsForOrigin,
   }: RequestEthereumAccountsOptions,
@@ -140,49 +119,6 @@ async function requestEthereumAccountsHandler<
   // We cannot derive ethAccounts directly from the CAIP-25 permission
   // because the accounts will not be in order of lastSelected
   ethAccounts = getAccounts(origin);
-
-  // first time connection to dapp will lead to no log in the permissionHistory
-  // and if user has connected to dapp before, the dapp origin will be included in the permissionHistory state
-  // we will leverage that to identify `is_first_visit` for metrics
-  if (shouldEmitDappViewedEvent(metamaskState.metaMetricsId)) {
-    const isFirstVisit = !Object.keys(metamaskState.permissionHistory).includes(
-      origin,
-    );
-    const { mainFrameOrigin, frameId } = req as JsonRpcRequest<Params> & {
-      origin: OriginString;
-      mainFrameOrigin?: string;
-      frameId?: number;
-    };
-    const iframeProps = getIframeProperties({
-      frameId,
-      origin,
-      mainFrameOrigin,
-    });
-
-    sendMetrics(
-      {
-        event: MetaMetricsEventName.DappViewed,
-        category: MetaMetricsEventCategory.InpageProvider,
-        referrer: {
-          url: origin,
-        },
-        properties: {
-          // eslint-disable-next-line @typescript-eslint/naming-convention
-          is_first_visit: isFirstVisit,
-          // eslint-disable-next-line @typescript-eslint/naming-convention
-          number_of_accounts: Object.keys(
-            metamaskState.internalAccounts.accounts,
-          ).length,
-          // eslint-disable-next-line @typescript-eslint/naming-convention
-          number_of_accounts_connected: ethAccounts.length,
-          ...iframeProps,
-        },
-      },
-      {
-        excludeMetaMetricsId: true,
-      },
-    );
-  }
 
   res.result = ethAccounts;
   return end();

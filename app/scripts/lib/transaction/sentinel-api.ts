@@ -12,7 +12,6 @@ export type SentinelNetwork = {
   network: string;
   explorer: string;
   confirmations: boolean;
-  smartTransactions: boolean;
   relayTransactions: boolean;
   hidden: boolean;
   sendBundle: boolean;

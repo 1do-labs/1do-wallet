@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useLocation } from 'react-router-dom';
 import classnames from 'clsx';
 import { providerErrors, serializeError } from '@metamask/rpc-errors';
-import { ERC20 } from '@metamask/controller-utils';
 import { AvatarToken, AvatarTokenSize } from '@metamask/design-system-react';
 import {
   BannerAlert,
@@ -20,7 +19,6 @@ import {
 import TokenBalance from '../../components/ui/token-balance';
 import { PageContainerFooter } from '../../components/ui/page-container';
 import { I18nContext } from '../../contexts/i18n';
-import { MetaMetricsContext } from '../../contexts/metametrics';
 import { getMostRecentOverviewPage } from '../../ducks/history/history';
 import { getTokens } from '../../ducks/metamask/metamask';
 import ZENDESK_URLS from '../../helpers/constants/zendesk-url';
@@ -29,12 +27,6 @@ import {
   resolvePendingApproval,
   rejectPendingApproval,
 } from '../../store/actions';
-import {
-  MetaMetricsEventCategory,
-  MetaMetricsEventName,
-  MetaMetricsTokenEventSource,
-} from '../../../shared/constants/metametrics';
-import { AssetType } from '../../../shared/constants/transaction';
 import { getSuggestedTokens } from '../../selectors';
 import { Nav } from '../confirmations/components/confirm/nav';
 import { hideAppHeader } from '../routes/utils';
@@ -99,7 +91,6 @@ const ConfirmAddSuggestedToken = () => {
   const mostRecentOverviewPage = useSelector(getMostRecentOverviewPage);
   const suggestedTokens = useSelector(getSuggestedTokens);
   const tokens = useSelector(getTokens);
-  const { trackEvent } = useContext(MetaMetricsContext);
   const approvalId = suggestedTokens[0]?.id;
 
   const knownTokenBannerAlert = useMemo(() => {
@@ -137,26 +128,12 @@ const ConfirmAddSuggestedToken = () => {
 
   const handleAddTokensClick = useCallback(async () => {
     await Promise.all(
-      suggestedTokens.map(async ({ requestData: { asset }, id }) => {
+      suggestedTokens.map(async ({ id }) => {
         await dispatch(resolvePendingApproval(id, null));
-
-        trackEvent({
-          event: MetaMetricsEventName.TokenAdded,
-          category: MetaMetricsEventCategory.Wallet,
-          sensitiveProperties: {
-            token_symbol: asset.symbol,
-            token_contract_address: asset.address,
-            token_decimal_precision: asset.decimals,
-            unlisted: asset.unlisted,
-            source: MetaMetricsTokenEventSource.Dapp,
-            token_standard: ERC20,
-            asset_type: AssetType.token,
-          },
-        });
       }),
     );
     navigate(mostRecentOverviewPage);
-  }, [dispatch, navigate, trackEvent, mostRecentOverviewPage, suggestedTokens]);
+  }, [dispatch, navigate, mostRecentOverviewPage, suggestedTokens]);
 
   const handleCancelTokenClick = useCallback(async () => {
     await Promise.all(

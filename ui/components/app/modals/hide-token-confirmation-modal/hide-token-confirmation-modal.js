@@ -90,7 +90,6 @@ function mapDispatchToProps(dispatch) {
 class HideTokenConfirmationModal extends Component {
   static contextTypes = {
     t: PropTypes.func,
-    trackEvent: PropTypes.func,
   };
 
   static propTypes = {

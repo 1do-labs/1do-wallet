@@ -23,7 +23,6 @@ const ShowNetworkTokenToggleItem = createToggleItem({
   action: setShowNativeTokenAsMainBalancePreference,
   dataTestId: 'show-native-token-as-main-balance',
   containerDataTestId: 'show-native-token-as-main-balance-toggle',
-  trackEventProperty: 'show_native_token_as_main_balance',
 });
 
 const HideZeroBalanceTokensToggleItem = createToggleItem({
@@ -32,7 +31,6 @@ const HideZeroBalanceTokensToggleItem = createToggleItem({
   selector: getShouldHideZeroBalanceTokens,
   action: setHideZeroBalanceTokens,
   dataTestId: 'toggle-zero-balance-button',
-  trackEventProperty: 'hide_zero_balance_tokens',
 });
 
 const AutodetectTokensToggleItem = createToggleItem({

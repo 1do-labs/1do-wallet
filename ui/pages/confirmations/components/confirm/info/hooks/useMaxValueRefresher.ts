@@ -19,7 +19,6 @@ import { Numeric } from '../../../../../../../shared/lib/Numeric';
 import { updateEditableParams } from '../../../../../../store/actions';
 import { useConfirmContext } from '../../../../context/confirm';
 import { HEX_ZERO } from '../shared/constants';
-import { useTransactionEventFragment } from '../../../../hooks/useTransactionEventFragment';
 import { useSupportsEIP1559 } from './useSupportsEIP1559';
 
 /**
@@ -43,13 +42,11 @@ export const useMaxValueRefresher = () => {
   const dispatch = useDispatch();
   const {
     chainId,
-    id: transactionId,
     txParams: { from },
   } = transactionMeta;
   const isMaxAmountMode = useSelector((state) =>
     selectMaxValueModeForTransaction(state, transactionMeta?.id),
   );
-  const { updateTransactionEventFragment } = useTransactionEventFragment();
   const [searchParams] = useSearchParams();
   const paramMaxValueMode = searchParams.get('maxValueMode') === 'true';
   const isMaxValueMode = isMaxAmountMode || paramMaxValueMode;
@@ -63,19 +60,6 @@ export const useMaxValueRefresher = () => {
   const maxFeePerGas =
     (transactionMeta.txParams.maxFeePerGas as Hex) || HEX_ZERO;
   const layer1GasFee = transactionMeta.layer1GasFee as Hex;
-
-  useEffect(() => {
-    updateTransactionEventFragment(
-      {
-        properties: {
-          // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-          // eslint-disable-next-line @typescript-eslint/naming-convention
-          is_send_max: isMaxValueMode,
-        },
-      },
-      transactionId,
-    );
-  }, [isMaxValueMode, transactionId]);
 
   useEffect(() => {
     if (

@@ -354,8 +354,6 @@ export type PreferencesControllerMethodActions =
   | PreferencesControllerSetUse4ByteResolutionAction
   | PreferencesControllerSetUseCurrencyRateCheckAction
   | PreferencesControllerSetOpenSeaEnabledAction
-  | PreferencesControllerSetSecurityAlertsEnabledAction
-  | PreferencesControllerSetWatchEthereumAccountEnabledAction
   | PreferencesControllerSetUseExternalNameSourcesAction
   | PreferencesControllerSetUseTransactionSimulationsAction
   | PreferencesControllerSetAdvancedGasFeeAction
@@ -373,7 +371,6 @@ export type PreferencesControllerMethodActions =
   | PreferencesControllerSetLedgerTransportPreferenceAction
   | PreferencesControllerSetDismissSeedBackUpReminderAction
   | PreferencesControllerSetOverrideContentSecurityPolicyHeaderAction
-  | PreferencesControllerSetManageInstitutionalWalletsAction
   | PreferencesControllerSetServiceWorkerKeepAlivePreferenceAction
   | PreferencesControllerSetUseSidePanelAsDefaultAction
   | PreferencesControllerSetShowDefaultAddressAction

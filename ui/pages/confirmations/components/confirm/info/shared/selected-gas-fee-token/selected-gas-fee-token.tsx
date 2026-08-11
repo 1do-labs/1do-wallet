@@ -18,8 +18,6 @@ import { useConfirmContext } from '../../../../../context/confirm';
 import { GasFeeTokenModal } from '../gas-fee-token-modal';
 import { useSelectedGasFeeToken } from '../../hooks/useGasFeeToken';
 import { GasFeeTokenIcon, GasFeeTokenIconSize } from '../gas-fee-token-icon';
-import { useIsGaslessSupported } from '../../../../../hooks/gas/useIsGaslessSupported';
-import { useIsInsufficientBalance } from '../../../../../hooks/useIsInsufficientBalance';
 import { useNativeCurrencySymbol } from '../../hooks/useNativeCurrencySymbol';
 
 // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
@@ -30,21 +28,7 @@ export function SelectedGasFeeToken() {
   const { chainId, gasFeeTokens, excludeNativeTokenForFee } =
     currentConfirmation;
 
-  const { isSupported: isGaslessSupported, isSmartTransaction } =
-    useIsGaslessSupported();
-
-  const hasInsufficientNative = useIsInsufficientBalance();
-
-  const hasOnlyFutureNativeToken =
-    gasFeeTokens?.length === 1 &&
-    gasFeeTokens[0].tokenAddress === NATIVE_TOKEN_ADDRESS;
-
-  const supportsFutureNative = hasInsufficientNative && isSmartTransaction;
-
-  const hasGasFeeTokens =
-    isGaslessSupported &&
-    Boolean(gasFeeTokens?.length) &&
-    (!hasOnlyFutureNativeToken || supportsFutureNative);
+  const hasGasFeeTokens = Boolean(gasFeeTokens?.length);
 
   const nonNativeGasFeeTokensLength = useMemo(() => {
     return (

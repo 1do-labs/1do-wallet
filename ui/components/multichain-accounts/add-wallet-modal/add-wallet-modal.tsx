@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Box,
@@ -38,12 +38,6 @@ import {
 // TODO: Remove restricted import
 // eslint-disable-next-line import-x/no-restricted-paths
 import { getEnvironmentType } from '../../../../app/scripts/lib/util';
-import {
-  MetaMetricsEventCategory,
-  MetaMetricsEventName,
-  type MetaMetricsEventPayload,
-} from '../../../../shared/constants/metametrics';
-import { MetaMetricsContext } from '../../../contexts/metametrics';
 
 export type AddWalletModalProps = Omit<
   ModalProps,
@@ -58,7 +52,6 @@ type WalletOption = {
   titleKey: string;
   iconName: IconName;
   route: string;
-  metricsEvent?: MetaMetricsEventPayload;
 };
 
 export const AddWalletModal: React.FC<AddWalletModalProps> = ({
@@ -68,7 +61,6 @@ export const AddWalletModal: React.FC<AddWalletModalProps> = ({
 }) => {
   const t = useI18nContext();
   const navigate = useNavigate();
-  const { trackEvent } = useContext(MetaMetricsContext);
 
   const walletOptions: WalletOption[] = [
     {
@@ -88,31 +80,11 @@ export const AddWalletModal: React.FC<AddWalletModalProps> = ({
       titleKey: 'addAHardwareWallet',
       iconName: IconName.Hardware,
       route: CONNECT_HARDWARE_ROUTE,
-      metricsEvent: {
-        event: MetaMetricsEventName.AddHardwareWalletClicked,
-        category: MetaMetricsEventCategory.Navigation,
-      },
     },
   ];
 
   const handleOptionClick = (option: WalletOption) => {
     onClose?.();
-
-    if (option.metricsEvent) {
-      trackEvent(option.metricsEvent);
-    }
-
-    if (option.id === 'import-wallet') {
-      // Track the event for the selected option.
-      trackEvent({
-        category: MetaMetricsEventCategory.Navigation,
-        event: MetaMetricsEventName.ImportSecretRecoveryPhrase,
-        properties: {
-          status: 'started',
-          location: 'Add Wallet Modal',
-        },
-      });
-    }
 
     // Hardware wallet connections require expanded view
     if (option.id === 'hardware-wallet') {

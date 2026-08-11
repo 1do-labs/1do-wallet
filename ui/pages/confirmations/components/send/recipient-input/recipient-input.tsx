@@ -30,7 +30,6 @@ import { useI18nContext } from '../../../../../hooks/useI18nContext';
 import { useRecipientValidation } from '../../../hooks/send/useRecipientValidation';
 import { useRecipients } from '../../../hooks/send/useRecipients';
 import { useAccountAddressSeedIconMap } from '../../../hooks/send/useAccountAddressSeedIconMap';
-import { useRecipientSelectionMetrics } from '../../../hooks/send/metrics/useRecipientSelectionMetrics';
 import { useSendContext } from '../../../context/send';
 import { ConfusableRecipientName } from './confusable-recipient-name';
 
@@ -43,8 +42,6 @@ export const RecipientInput = ({
   recipientInputRef: React.RefObject<HTMLInputElement>;
   recipientValidationResult: ReturnType<typeof useRecipientValidation>;
 }) => {
-  const { setRecipientInputMethodManual, setRecipientInputMethodPasted } =
-    useRecipientSelectionMetrics();
   const recipients = useRecipients();
   const t = useI18nContext();
   const { to, updateTo } = useSendContext();
@@ -66,16 +63,10 @@ export const RecipientInput = ({
 
   const onToChange = useCallback(
     (e) => {
-      if (e.nativeEvent.inputType === 'insertFromPaste') {
-        setRecipientInputMethodPasted();
-      } else {
-        setRecipientInputMethodManual();
-      }
-
       const address = e.target.value;
       updateTo(address);
     },
-    [updateTo, setRecipientInputMethodManual, setRecipientInputMethodPasted],
+    [updateTo],
   );
 
   const clearRecipient = useCallback(() => {

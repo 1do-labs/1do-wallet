@@ -9,7 +9,6 @@ import {
   NetworkEnablementControllerGetStateAction,
   NetworkEnablementControllerListPopularEvmNetworksAction,
 } from '@metamask/network-enablement-controller';
-import { RemoteFeatureFlagControllerGetStateAction } from '@metamask/remote-feature-flag-controller';
 import {
   AccountsControllerGetSelectedAccountAction,
   AccountsControllerListAccountsAction,
@@ -92,9 +91,7 @@ export function getAccountTrackerControllerMessenger(
   return accountTrackerControllerMessenger;
 }
 
-type AllowedInitializationActions =
-  | RemoteFeatureFlagControllerGetStateAction
-  | PreferencesControllerGetStateAction;
+type AllowedInitializationActions = PreferencesControllerGetStateAction;
 
 type AllowedInitializationEvents = NetworkControllerNetworkDidChangeEvent;
 
@@ -126,10 +123,7 @@ export function getAccountTrackerControllerInitMessenger(
   });
   messenger.delegate({
     messenger: accountTrackerControllerInitMessenger,
-    actions: [
-      'RemoteFeatureFlagController:getState',
-      'PreferencesController:getState',
-    ],
+    actions: ['PreferencesController:getState'],
     events: ['NetworkController:networkDidChange'],
   });
   return accountTrackerControllerInitMessenger;

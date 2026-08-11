@@ -35,14 +35,11 @@ import {
   DEFAULT_ROUTE,
   PREVIOUS_ROUTE,
   REVIEW_PERMISSIONS,
-  GATOR_PERMISSIONS,
 } from '../../../../helpers/constants/routes';
 import {
   getConnectedSitesListWithNetworkInfo,
   getPermissionSubjects,
 } from '../../../../selectors';
-import { getMergedConnectionsListWithGatorPermissions } from '../../../../selectors/gator-permissions/gator-permissions';
-import { isGatorPermissionsRevocationFeatureEnabled } from '../../../../../shared/lib/environment';
 import { removePermissionsFor } from '../../../../store/actions';
 import { DisconnectAllSitesModal } from '../../disconnect-all-modal';
 import { Toast, ToastContainer } from '../../toast';
@@ -62,11 +59,7 @@ const PermissionsPage = () => {
     if (fromPath === DEFAULT_ROUTE) {
       navigate(PREVIOUS_ROUTE);
     } else {
-      navigate(
-        isGatorPermissionsRevocationFeatureEnabled()
-          ? GATOR_PERMISSIONS
-          : DEFAULT_ROUTE,
-      );
+      navigate(DEFAULT_ROUTE);
     }
   };
   const [totalConnections, setTotalConnections] = useState(0);
@@ -74,12 +67,9 @@ const PermissionsPage = () => {
   const [showSuccessToast, setShowSuccessToast] = useState(false);
   const [showErrorToast, setShowErrorToast] = useState(false);
 
-  const mergedConnectionsList = useSelector((state) => {
-    if (!isGatorPermissionsRevocationFeatureEnabled()) {
-      return getConnectedSitesListWithNetworkInfo(state);
-    }
-    return getMergedConnectionsListWithGatorPermissions(state);
-  });
+  const mergedConnectionsList = useSelector(
+    getConnectedSitesListWithNetworkInfo,
+  );
 
   const subjects = useSelector(getPermissionSubjects);
 
@@ -160,9 +150,7 @@ const PermissionsPage = () => {
           textAlign={TextAlign.Center}
           data-testid="permissions-page-title"
         >
-          {isGatorPermissionsRevocationFeatureEnabled()
-            ? t('sites')
-            : t('dappConnections')}
+          {t('dappConnections')}
         </Text>
       </Header>
       <Content padding={0}>

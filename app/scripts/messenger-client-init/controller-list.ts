@@ -8,7 +8,6 @@ import {
   PermissionSpecificationConstraint,
   SubjectMetadataController,
 } from '@metamask/permission-controller';
-import { SmartTransactionsController } from '@metamask/smart-transactions-controller';
 import { TransactionController } from '@metamask/transaction-controller';
 import { AccountsController } from '@metamask/accounts-controller';
 import {
@@ -20,7 +19,6 @@ import {
   MultichainBalancesController,
   NftController,
   NftDetectionController,
-  RatesController,
   TokenBalancesController,
   TokenDetectionController,
   TokenListController,
@@ -29,9 +27,7 @@ import {
 } from '@metamask/assets-controllers';
 import { AssetsController } from '@metamask/assets-controller';
 import { MultichainNetworkController } from '@metamask/multichain-network-controller';
-import { DelegationController } from '@metamask/delegation-controller';
 
-import { RemoteFeatureFlagController } from '@metamask/remote-feature-flag-controller';
 import { AccountTreeController } from '@metamask/account-tree-controller';
 import { EnsController } from '@metamask/ens-controller';
 import { NameController } from '@metamask/name-controller';
@@ -39,8 +35,6 @@ import { SelectedNetworkController } from '@metamask/selected-network-controller
 import { ApprovalController } from '@metamask/approval-controller';
 import { NetworkEnablementController } from '@metamask/network-enablement-controller';
 import { PermissionLogController } from '@metamask/permission-log-controller';
-import { AnnouncementController } from '@metamask/announcement-controller';
-import { PhishingController } from '@metamask/phishing-controller';
 import { LoggingController } from '@metamask/logging-controller';
 import { StorageService } from '@metamask/storage-service';
 import { AddressBookController } from '@metamask/address-book-controller';
@@ -49,10 +43,8 @@ import {
   EncryptionPublicKeyManager,
 } from '@metamask/message-manager';
 import { SignatureController } from '@metamask/signature-controller';
-import { UserOperationController } from '@metamask/user-operation-controller';
 import { ClientController } from '@metamask/client-controller';
 import { ConnectivityController } from '@metamask/connectivity-controller';
-import { ProfileMetricsController } from '@metamask/profile-metrics-controller';
 import {
   GeolocationApiService,
   GeolocationController,
@@ -60,16 +52,13 @@ import {
 import { OnboardingController } from '../controllers/onboarding';
 import { PreferencesController } from '../controllers/preferences-controller';
 import { NetworkOrderController } from '../controllers/network-order';
-import { MetaMetricsController } from '../controllers/metametrics-controller';
 import { AppStateController } from '../controllers/app-state-controller';
 import { AccountOrderController } from '../controllers/account-order';
 import { AlertController } from '../controllers/alert-controller';
-import { MetaMetricsDataDeletionController } from '../controllers/metametrics-data-deletion/metametrics-data-deletion';
 import { AppMetadataController } from '../controllers/app-metadata';
 import { DecryptMessageController } from '../controllers/decrypt-message';
 import { EncryptionPublicKeyController } from '../controllers/encryption-public-key';
 import { StaticAssetsController } from '../controllers/static-assets-controller';
-import { DataDeletionService } from '../services/data-deletion-service';
 import { LegacyBackgroundApiService } from '../services/legacy-background-api-service';
 
 /**
@@ -81,16 +70,13 @@ export type MessengerClient =
   | AccountsController
   | AddressBookController
   | AlertController
-  | AnnouncementController
   | AppMetadataController
   | ApprovalController
   | AppStateController
   | AssetsController
   | CurrencyRateController
-  | DataDeletionService
   | DecryptMessageController
   | DecryptMessageManager
-  | DelegationController
   | EncryptionPublicKeyController
   | EncryptionPublicKeyManager
   | EnsController
@@ -101,8 +87,6 @@ export type MessengerClient =
   | KeyringController
   | LegacyBackgroundApiService
   | LoggingController
-  | MetaMetricsController
-  | MetaMetricsDataDeletionController
   | MultichainAssetsController
   | MultichainAssetsRatesController
   | MultichainBalancesController
@@ -116,20 +100,15 @@ export type MessengerClient =
       CaveatSpecificationConstraint
     >
   | PermissionLogController
-  | PhishingController
   | PreferencesController
-  | RatesController
-  | RemoteFeatureFlagController
   | SelectedNetworkController
   | SignatureController
-  | SmartTransactionsController
   | SubjectMetadataController
   | TokenBalancesController
   | TokenDetectionController
   | TokenListController
   | TokensController
   | TransactionController
-  | UserOperationController
   | TokenRatesController
   | NftController
   | NftDetectionController
@@ -139,7 +118,6 @@ export type MessengerClient =
   | NetworkEnablementController
   | ClientController
   | StaticAssetsController
-  | ProfileMetricsController
   | ConnectivityController;
 
 /**
@@ -151,21 +129,17 @@ export type MessengerClientFlatState = AccountOrderController['state'] &
   AlertController['state'] &
   AccountTreeController['state'] &
   AddressBookController['state'] &
-  AnnouncementController['state'] &
   AppMetadataController['state'] &
   ApprovalController['state'] &
   AppStateController['state'] &
   AssetsController['state'] &
   ClientController['state'] &
   CurrencyRateController['state'] &
-  DelegationController['state'] &
   EnsController['state'] &
   GasFeeController['state'] &
   GeolocationController['state'] &
   KeyringController['state'] &
   LoggingController['state'] &
-  MetaMetricsController['state'] &
-  MetaMetricsDataDeletionController['state'] &
   MultichainAssetsController['state'] &
   MultichainAssetsRatesController['state'] &
   MultichainBalancesController['state'] &
@@ -179,23 +153,17 @@ export type MessengerClientFlatState = AccountOrderController['state'] &
     CaveatSpecificationConstraint
   >['state'] &
   PermissionLogController['state'] &
-  PhishingController['state'] &
   PreferencesController['state'] &
-  RatesController['state'] &
-  RemoteFeatureFlagController['state'] &
   SelectedNetworkController['state'] &
   SignatureController['state'] &
-  SmartTransactionsController['state'] &
   TokenBalancesController['state'] &
   TokenDetectionController['state'] &
   TokenListController['state'] &
   TokensController['state'] &
   StaticAssetsController['state'] &
   TransactionController['state'] &
-  UserOperationController['state'] &
   TokenRatesController['state'] &
   NftController['state'] &
   NftDetectionController['state'] &
   NetworkEnablementController['state'] &
-  AccountTrackerController['state'] &
-  ProfileMetricsController['state'];
+  AccountTrackerController['state'];

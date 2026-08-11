@@ -1,12 +1,10 @@
 import type { ControllerGetStateAction } from '@metamask/base-controller';
 import { Messenger, MessengerEvents } from '@metamask/messenger';
 import type { NetworkControllerFindNetworkClientIdByChainIdAction } from '@metamask/network-controller';
-import { AccountsControllerGetSelectedAccountAction } from '@metamask/accounts-controller';
 import {
   TokensControllerState,
   TokensControllerAddTokensAction,
 } from '@metamask/assets-controllers';
-import { RemoteFeatureFlagControllerGetStateAction } from '@metamask/remote-feature-flag-controller';
 
 import { RootMessenger } from '../../lib/messenger';
 import { type StaticAssetsControllerMessenger as StaticAssetsControllerMessengerType } from '../../controllers/static-assets-controller';
@@ -17,7 +15,6 @@ type TokensControllerGetStateAction = ControllerGetStateAction<
 >;
 
 type AllowedActions =
-  | AccountsControllerGetSelectedAccountAction
   | NetworkControllerFindNetworkClientIdByChainIdAction
   | TokensControllerGetStateAction
   | TokensControllerAddTokensAction;
@@ -28,13 +25,6 @@ export type StaticAssetsControllerMessenger = ReturnType<
   typeof getStaticAssetsControllerMessenger
 >;
 
-/**
- * Create a messenger restricted to the allowed actions and events of the
- * static assets controller.
- *
- * @param messenger - The base messenger used to create the restricted
- * messenger.
- */
 export function getStaticAssetsControllerMessenger(
   messenger: RootMessenger<AllowedActions, AllowedEvents>,
 ) {
@@ -57,35 +47,4 @@ export function getStaticAssetsControllerMessenger(
     events: [],
   });
   return controllerMessenger;
-}
-
-type AllowedInitializationActions = RemoteFeatureFlagControllerGetStateAction;
-
-export type StaticAssetsControllerInitMessenger = ReturnType<
-  typeof getStaticAssetsControllerInitMessenger
->;
-
-/**
- * Create a messenger restricted to the allowed actions and events needed during
- * initialization of the static assets controller.
- *
- * @param messenger
- */
-export function getStaticAssetsControllerInitMessenger(
-  messenger: RootMessenger<AllowedInitializationActions, never>,
-) {
-  const controllerInitMessenger = new Messenger<
-    'StaticAssetsControllerInit',
-    AllowedInitializationActions,
-    never,
-    typeof messenger
-  >({
-    namespace: 'StaticAssetsControllerInit',
-    parent: messenger,
-  });
-  messenger.delegate({
-    messenger: controllerInitMessenger,
-    actions: ['RemoteFeatureFlagController:getState'],
-  });
-  return controllerInitMessenger;
 }

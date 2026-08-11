@@ -42,11 +42,6 @@ import {
   isValidHexAddress,
 } from '../../../../shared/lib/hexstring-utils';
 import type { EditContactFormProps } from '../contacts.types';
-import { MetaMetricsContext } from '../../../contexts/metametrics';
-import {
-  MetaMetricsEventCategory,
-  MetaMetricsEventName,
-} from '../../../../shared/constants/metametrics';
 
 export function EditContactForm({
   address,
@@ -58,7 +53,6 @@ export function EditContactForm({
 }: EditContactFormProps) {
   const t = useI18nContext();
   const dispatch = useDispatch();
-  const { trackEvent } = useContext(MetaMetricsContext);
   const addressBook = useSelector(getCompleteAddressBook);
   const internalAccounts = useSelector(getInternalAccounts);
   const networks = useSelector(getNetworkConfigurationsByChainId);
@@ -95,7 +89,7 @@ export function EditContactForm({
   const selectedNetworkName =
     selectedNetwork?.name ??
     (contactChainId
-      ? `${t('unknownNetworkForGatorPermissions')} (${contactChainId})`
+      ? `${t('networkTabCustom')} (${contactChainId})`
       : t('networkTabCustom'));
 
   const isUnchanged =
@@ -150,18 +144,6 @@ export function EditContactForm({
       }
     }
     const savedAddress = newAddress === address ? address : newAddress;
-    trackEvent({
-      category: MetaMetricsEventCategory.Contacts,
-      event: MetaMetricsEventName.ContactUpdated,
-      properties: {
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        chain_id: contactChainId,
-      },
-      sensitiveProperties: {
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        contact_address: savedAddress,
-      },
-    });
     onSuccess();
   };
 

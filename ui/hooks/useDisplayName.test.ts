@@ -2,10 +2,6 @@ import { NameOrigin, NameType } from '@metamask/name-controller';
 import { CHAIN_IDS } from '@metamask/transaction-controller';
 import { Hex } from '@metamask/utils';
 import { cloneDeep } from 'lodash';
-import {
-  EXPERIENCES_TYPE,
-  FIRST_PARTY_CONTRACT_NAMES,
-} from '../../shared/constants/first-party-contracts';
 import mockState from '../../test/data/mock-state.json';
 import { renderHookWithProvider } from '../../test/lib/render-helpers-navigate';
 import { getDomainResolutions } from '../ducks/domains';
@@ -30,7 +26,6 @@ const VARIATION_MOCK = CHAIN_IDS.GOERLI;
 const PETNAME_MOCK = 'testName1';
 const ERC20_TOKEN_NAME_MOCK = 'testName2';
 const WATCHED_NFT_NAME_MOCK = 'testName3';
-const FIRST_PARTY_CONTRACT_NAME_MOCK = 'testName5';
 const ENS_NAME_MOCK = 'vitalik.eth';
 const SYMBOL_MOCK = 'tes';
 const ERC20_IMAGE_MOCK = 'testImage';
@@ -111,16 +106,6 @@ describe('useDisplayName', () => {
     ]);
   }
 
-  function mockFirstPartyContractName(
-    value: string,
-    variation: string,
-    name: string,
-  ) {
-    FIRST_PARTY_CONTRACT_NAMES[name as EXPERIENCES_TYPE] = {
-      [variation as Hex]: value as Hex,
-    };
-  }
-
   beforeEach(() => {
     jest.resetAllMocks();
 
@@ -143,10 +128,6 @@ describe('useDisplayName', () => {
     ]);
 
     state = cloneDeep(mockState);
-
-    delete FIRST_PARTY_CONTRACT_NAMES[
-      FIRST_PARTY_CONTRACT_NAME_MOCK as EXPERIENCES_TYPE
-    ];
   });
 
   it('returns no name if no defaults found', () => {
@@ -302,66 +283,6 @@ describe('useDisplayName', () => {
     });
   });
 
-  describe('First-party Contract', () => {
-    it('returns first-party contract name', () => {
-      mockFirstPartyContractName(
-        VALUE_MOCK,
-        VARIATION_MOCK,
-        FIRST_PARTY_CONTRACT_NAME_MOCK,
-      );
-
-      const { result } = renderHookWithProvider(
-        () =>
-          useDisplayName({
-            value: VALUE_MOCK,
-            type: NameType.ETHEREUM_ADDRESS,
-            variation: VARIATION_MOCK,
-          }),
-        mockState,
-      );
-
-      expect(result.current).toStrictEqual({
-        contractDisplayName: undefined,
-        hasPetname: false,
-        image: undefined,
-        isAccount: false,
-        name: FIRST_PARTY_CONTRACT_NAME_MOCK,
-        displayState: TrustSignalDisplayState.Recognized,
-        icon: null,
-        subtitle: null,
-      });
-    });
-
-    it('returns no name if type is not address', () => {
-      const { result } = renderHookWithProvider(
-        () =>
-          useDisplayName({
-            value:
-              FIRST_PARTY_CONTRACT_NAMES[EXPERIENCES_TYPE.METAMASK_BRIDGE][
-                CHAIN_IDS.OPTIMISM
-              ],
-            type: OTHER_NAME_TYPE,
-            variation: CHAIN_IDS.OPTIMISM,
-          }),
-        mockState,
-      );
-
-      expect(result.current).toStrictEqual({
-        contractDisplayName: undefined,
-        hasPetname: false,
-        image: undefined,
-        isAccount: false,
-        name: null,
-        displayState: TrustSignalDisplayState.Unknown,
-        icon: {
-          name: IconName.Question,
-          color: undefined,
-        },
-        subtitle: null,
-      });
-    });
-  });
-
   describe('Watched NFT', () => {
     it('returns watched NFT name', () => {
       mockWatchedNFTName(VALUE_MOCK, VARIATION_MOCK, WATCHED_NFT_NAME_MOCK);
@@ -475,11 +396,6 @@ describe('useDisplayName', () => {
   describe('Priority', () => {
     it('uses petname as first priority', () => {
       mockPetname(PETNAME_MOCK);
-      mockFirstPartyContractName(
-        VALUE_MOCK,
-        VARIATION_MOCK,
-        FIRST_PARTY_CONTRACT_NAME_MOCK,
-      );
       mockERC20Token(
         VALUE_MOCK,
         VARIATION_MOCK,
@@ -506,43 +422,6 @@ describe('useDisplayName', () => {
         isAccount: false,
         name: PETNAME_MOCK,
         displayState: TrustSignalDisplayState.Petname,
-        icon: null,
-        subtitle: null,
-      });
-    });
-
-    it('uses first-party contract name as second priority', () => {
-      mockFirstPartyContractName(
-        VALUE_MOCK,
-        VARIATION_MOCK,
-        FIRST_PARTY_CONTRACT_NAME_MOCK,
-      );
-      mockERC20Token(
-        VALUE_MOCK,
-        VARIATION_MOCK,
-        ERC20_TOKEN_NAME_MOCK,
-        SYMBOL_MOCK,
-        ERC20_IMAGE_MOCK,
-      );
-      mockWatchedNFTName(VALUE_MOCK, VARIATION_MOCK, WATCHED_NFT_NAME_MOCK);
-
-      const { result } = renderHookWithProvider(
-        () =>
-          useDisplayName({
-            value: VALUE_MOCK,
-            type: NameType.ETHEREUM_ADDRESS,
-            variation: VARIATION_MOCK,
-          }),
-        state,
-      );
-
-      expect(result.current).toStrictEqual({
-        contractDisplayName: ERC20_TOKEN_NAME_MOCK,
-        hasPetname: false,
-        image: ERC20_IMAGE_MOCK,
-        isAccount: false,
-        name: FIRST_PARTY_CONTRACT_NAME_MOCK,
-        displayState: TrustSignalDisplayState.Recognized,
         icon: null,
         subtitle: null,
       });

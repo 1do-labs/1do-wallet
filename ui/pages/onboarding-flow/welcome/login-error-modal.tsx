@@ -22,13 +22,7 @@ import {
 } from '../../../components/component-library';
 import { AlignItems } from '../../../helpers/constants/design-system';
 import { useI18nContext } from '../../../hooks/useI18nContext';
-import {
-  MetaMetricsContextProp,
-  MetaMetricsEventCategory,
-  MetaMetricsEventName,
-} from '../../../../shared/constants/metametrics';
 import { SUPPORT_LINK } from '../../../helpers/constants/common';
-import { MetaMetricsContext } from '../../../contexts/metametrics';
 import { LOGIN_ERROR, LoginErrorType } from './types';
 
 type LoginErrorModalProps = {
@@ -43,7 +37,6 @@ export default function LoginErrorModal({
   loginError,
 }: LoginErrorModalProps) {
   const t = useI18nContext();
-  const { trackEvent } = useContext(MetaMetricsContext);
 
   const getTitle = () => {
     if (loginError === LOGIN_ERROR.UNABLE_TO_CONNECT) {
@@ -66,23 +59,7 @@ export default function LoginErrorModal({
       <TextButton
         key="loginErrorGenericDescription"
         size={TextButtonSize.BodyMd}
-        onClick={() => {
-          trackEvent(
-            {
-              category: MetaMetricsEventCategory.Onboarding,
-              event: MetaMetricsEventName.SupportLinkClicked,
-              properties: {
-                url: SUPPORT_LINK,
-                location: 'Welcome page',
-              },
-            },
-            {
-              contextPropsIntoEventProperties: [
-                MetaMetricsContextProp.PageTitle,
-              ],
-            },
-          );
-        }}
+        onClick={() => undefined}
         asChild
         className="hover:bg-transparent active:bg-transparent w-fit"
       >

@@ -47,16 +47,20 @@ describe('NetworkConstants', () => {
   });
 
   describe('FEATURED_RPCS provider usage', () => {
-    it.each([
+    const alchemyChainIds = [
       CHAIN_IDS.ARBITRUM,
       CHAIN_IDS.AVALANCHE,
       CHAIN_IDS.BSC,
       CHAIN_IDS.OPTIMISM,
       CHAIN_IDS.POLYGON,
       CHAIN_IDS.BASE,
-    ])('uses Alchemy for chain %s', (chainId) => {
-      const rpc = FEATURED_RPCS.find((entry) => entry.chainId === chainId);
-      expect(rpc?.rpcEndpoints[0].url).toContain('.g.alchemy.com/v2/');
+    ];
+
+    alchemyChainIds.forEach((chainId) => {
+      it(`uses Alchemy for chain ${chainId}`, () => {
+        const rpc = FEATURED_RPCS.find((entry) => entry.chainId === chainId);
+        expect(rpc?.rpcEndpoints[0].url).toContain('.g.alchemy.com/v2/');
+      });
     });
 
     it('uses the official zkSync Era RPC', () => {

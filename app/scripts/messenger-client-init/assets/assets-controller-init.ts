@@ -4,12 +4,6 @@ import {
 } from '@metamask/assets-controller';
 import type { PreferencesState } from '@metamask/preferences-controller';
 import { createApiPlatformClient } from '@metamask/core-backend';
-import {
-  isAssetsUnifyStateFeatureEnabled,
-  ASSETS_UNIFY_STATE_VERSION_1,
-  type AssetsUnifyStateFeatureFlag,
-  ASSETS_UNIFY_STATE_FLAG,
-} from '../../../../shared/lib/assets-unify-state/remote-feature-flag';
 import { type MessengerClientInitFunction } from '../types';
 import {
   type AssetsControllerMessenger,
@@ -109,41 +103,19 @@ function getApiClient(
  * @param request.controllerMessenger - The messenger to use for the controller.
  * @param request.persistedState - The persisted state of the extension.
  * @param request.initMessenger - The init messenger to use for the controller.
- * @param request.getMessengerClient - Function to get a controller by name.
  * @returns The initialized controller.
  */
 export const AssetsControllerInit: MessengerClientInitFunction<
   AssetsController,
   AssetsControllerMessenger,
   AssetsControllerInitMessenger
-> = ({
-  controllerMessenger,
-  persistedState,
-  initMessenger,
-  getMessengerClient,
-}) => {
+> = ({ controllerMessenger, persistedState, initMessenger }) => {
   /**
    * Check if the AssetsController feature is enabled based on the remote feature flag.
    *
    * @returns True if the feature is enabled, false otherwise.
    */
-  const isEnabled = (): boolean => {
-    try {
-      const remoteFeatureFlagController = getMessengerClient(
-        'RemoteFeatureFlagController',
-      );
-      const featureFlag = remoteFeatureFlagController.state.remoteFeatureFlags[
-        ASSETS_UNIFY_STATE_FLAG
-      ] as AssetsUnifyStateFeatureFlag | undefined;
-
-      return isAssetsUnifyStateFeatureEnabled(
-        featureFlag,
-        ASSETS_UNIFY_STATE_VERSION_1,
-      );
-    } catch {
-      return false;
-    }
-  };
+  const isEnabled = (): boolean => false;
 
   // Get token detection preference
   const tokenDetectionEnabled = safeGetTokenDetectionEnabled(initMessenger);

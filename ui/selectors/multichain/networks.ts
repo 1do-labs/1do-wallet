@@ -9,20 +9,17 @@ import {
   NetworkStatus,
   type NetworkConfiguration as InternalNetworkConfiguration,
 } from '@metamask/network-controller';
-import { isEvmAccountType } from '@metamask/keyring-api';
 import type { InternalAccount } from '@metamask/keyring-internal-api';
 import type { NetworkType } from '@metamask/controller-utils';
 import {
   type CaipChainId,
   type Hex,
   KnownCaipNamespace,
-  parseCaipChainId,
 } from '@metamask/utils';
 import { createSelector } from 'reselect';
 import {
   CHAIN_ID_TO_NETWORK_IMAGE_URL_MAP,
   getRpcUrl,
-  infuraProjectId,
 } from '../../../shared/constants/network';
 import {
   type ProviderConfigState,
@@ -38,12 +35,7 @@ import { createDeepEqualSelector } from '../../../shared/lib/selectors/selector-
 import { getEnabledNetworks } from '../../../shared/lib/selectors/multichain';
 import { getIsLegacyInfuraEndpointUrl } from '../../../shared/lib/network-utils';
 import { type RemoteFeatureFlagsState } from '../remote-feature-flags';
-import {
-  getInternalAccounts,
-  getSelectedInternalAccount,
-  getMaybeSelectedInternalAccount,
-  type AccountsState,
-} from '../accounts';
+import { type AccountsState } from '../accounts';
 
 // Selector types
 
@@ -51,20 +43,12 @@ export type MultichainNetworkControllerState = {
   metamask: InternalMultichainNetworkState;
 };
 
-type SelectedNetworkChainIdState = {
-  metamask: Pick<
-    InternalMultichainNetworkState,
-    'selectedMultichainNetworkChainId'
-  >;
-};
-
-type IsEvmSelectedState = {
-  metamask: Pick<InternalMultichainNetworkState, 'isEvmSelected'>;
-};
-
 function getIsDefaultRpcEndpointUrl(endpointUrl: string): boolean {
   return (
-    getIsLegacyInfuraEndpointUrl(endpointUrl, infuraProjectId ?? '') ||
+    getIsLegacyInfuraEndpointUrl(
+      endpointUrl,
+      globalThis.INFURA_PROJECT_ID ?? '',
+    ) ||
     endpointUrl === getRpcUrl({ network: 'mainnet' }) ||
     endpointUrl.endsWith('.g.alchemy.com/v2/{alchemyApiKey}') ||
     /^https:\/\/[^/]+\.g\.alchemy\.com\/v2\/[^/?#]+$/u.test(endpointUrl)
@@ -84,8 +68,6 @@ type NetworksWithTransactionActivityByAccountsState = {
  */
 export type MultichainNetworkConfigState =
   MultichainNetworkConfigurationsByChainIdState &
-    SelectedNetworkChainIdState &
-    IsEvmSelectedState &
     SelectedNetworkClientIdState &
     ProviderConfigState &
     NetworksWithTransactionActivityByAccountsState &
@@ -93,23 +75,6 @@ export type MultichainNetworkConfigState =
     AccountsState;
 
 // Selectors
-
-const getIsNonEvmNetworksEnabled = createSelector(getInternalAccounts, () => {
-  return { bitcoinEnabled: false, solanaEnabled: false, tronEnabled: false };
-});
-
-export const getNonEvmMultichainNetworkConfigurationsByChainId =
-  createDeepEqualSelector(
-    (state: MultichainNetworkConfigurationsByChainIdState) =>
-      state.metamask.multichainNetworkConfigurationsByChainId,
-    getIsNonEvmNetworksEnabled,
-    (
-      _multichainNetworkConfigurationsByChainId,
-      _isNonEvmNetworksEnabled,
-    ): Record<CaipChainId, InternalMultichainNetworkConfiguration> => {
-      return {};
-    },
-  );
 
 /**
  * Returns all EVM networks converted to multichain network configuration format.
@@ -142,20 +107,15 @@ export const getEvmMultichainNetworkConfigurations = createSelector(
 );
 
 /**
- * Returns all multichain network configurations (both EVM and non-EVM) by chain ID.
- * This selector provides stable references when the underlying data hasn't changed.
+ * Returns EVM network configurations by chain ID.
+ * 1Do supports EVM networks only; non-EVM network state is intentionally ignored.
  */
 export const getAllMultichainNetworkConfigurations = createSelector(
-  getNonEvmMultichainNetworkConfigurationsByChainId,
   getEvmMultichainNetworkConfigurations,
   (
-    nonEvmNetworkConfigurationsByChainId,
     evmNetworks,
   ): Record<CaipChainId, InternalMultichainNetworkConfiguration> => {
-    return {
-      ...nonEvmNetworkConfigurationsByChainId,
-      ...evmNetworks,
-    };
+    return evmNetworks;
   },
 );
 
@@ -184,19 +144,13 @@ export const getMultichainNetworkConfigurationsByChainId = createSelector(
 export const getMultichainNetworkConfigurationsTuple =
   getMultichainNetworkConfigurationsByChainId;
 
-export const getIsEvmMultichainNetworkSelected = (state: IsEvmSelectedState) =>
-  state.metamask.isEvmSelected;
+export const getIsEvmMultichainNetworkSelected = () => true;
 
 export const getSelectedMultichainNetworkChainId = (
   state: MultichainNetworkConfigState,
 ) => {
-  const isEvmSelected = getIsEvmMultichainNetworkSelected(state);
-
-  if (isEvmSelected) {
-    const evmNetworkConfig = getProviderConfig(state);
-    return toEvmCaipChainId(evmNetworkConfig.chainId);
-  }
-  return state.metamask.selectedMultichainNetworkChainId;
+  const evmNetworkConfig = getProviderConfig(state);
+  return toEvmCaipChainId(evmNetworkConfig.chainId);
 };
 
 export const getSelectedMultichainNetworkConfiguration = createSelector(
@@ -209,11 +163,8 @@ export const getSelectedMultichainNetworkConfiguration = createSelector(
 
 export const getEnabledNetworksByNamespace = createSelector(
   getEnabledNetworks,
-  getSelectedMultichainNetworkChainId,
-  (enabledNetworkMap, currentMultichainChainId) => {
-    const { namespace } = parseCaipChainId(currentMultichainChainId);
-    const namespaceMap = enabledNetworkMap[namespace] ?? {};
-
+  (enabledNetworkMap) => {
+    const namespaceMap = enabledNetworkMap[KnownCaipNamespace.Eip155] ?? {};
     return Object.fromEntries(
       Object.entries(namespaceMap).filter(([, enabled]) => enabled === true),
     );
@@ -223,50 +174,26 @@ export const getEnabledNetworksByNamespace = createSelector(
 export const getAllEnabledNetworksForAllNamespaces = createSelector(
   getEnabledNetworks,
   (enabledNetworkMap) =>
-    Object.values(enabledNetworkMap).flatMap((namespaceNetworks) =>
-      Object.entries(namespaceNetworks)
-        .filter(([, enabled]) => enabled)
-        .map(([chainId]) => chainId),
-    ),
+    Object.entries(enabledNetworkMap[KnownCaipNamespace.Eip155] ?? {})
+      .filter(([, enabled]) => enabled)
+      .map(([chainId]) => chainId),
 );
 
 export const selectEnabledNetworksAsCaipChainIds = createSelector(
   getEnabledNetworks,
   (enabledNetworkMap): CaipChainId[] =>
-    Object.entries(enabledNetworkMap)
-      .flatMap(([namespace, namespaceNetworks]) =>
-        Object.entries(namespaceNetworks)
-          .filter(([, enabled]) => enabled)
-          .map(([chainId]) =>
-            namespace === KnownCaipNamespace.Eip155
-              ? toEvmCaipChainId(chainId as Hex)
-              : (chainId as CaipChainId),
-          ),
-      )
+    Object.entries(enabledNetworkMap[KnownCaipNamespace.Eip155] ?? {})
+      .filter(([, enabled]) => enabled)
+      .map(([chainId]) => toEvmCaipChainId(chainId as Hex))
       .sort(),
-);
-
-export const selectNonEvmChainIds = createSelector(
-  getEnabledNetworks,
-  (enabledNetworkMap) =>
-    Object.entries(enabledNetworkMap)
-      .filter(([namespace]) => namespace !== 'eip155')
-      .flatMap(([, chains]) =>
-        Object.entries(chains)
-          .filter(([, enabled]) => enabled)
-          .map(([id]) => id),
-      ),
 );
 
 export const getEnabledChainIds = createSelector(
   getNetworkConfigurationsByChainId,
   getEnabledNetworks,
-  getSelectedMultichainNetworkChainId,
-  (networkConfigurations, enabledNetworks, currentMultichainChainId) => {
-    const { namespace } = parseCaipChainId(currentMultichainChainId);
-
-    // Get enabled networks for the current namespace
-    const networksForNamespace = enabledNetworks[namespace] || {};
+  (networkConfigurations, enabledNetworks) => {
+    const networksForNamespace =
+      enabledNetworks[KnownCaipNamespace.Eip155] || {};
 
     return Object.keys(networkConfigurations).filter(
       (chainId) => networksForNamespace[chainId],
@@ -277,12 +204,9 @@ export const getEnabledChainIds = createSelector(
 export const getEnabledNetworkClientIds = createSelector(
   getNetworkConfigurationsByChainId,
   getEnabledNetworks,
-  getSelectedMultichainNetworkChainId,
-  (networkConfigurations, enabledNetworks, currentMultichainChainId) => {
-    const { namespace } = parseCaipChainId(currentMultichainChainId);
-
-    // Get enabled networks for the current namespace
-    const networksForNamespace = enabledNetworks[namespace as string] || {};
+  (networkConfigurations, enabledNetworks) => {
+    const networksForNamespace =
+      enabledNetworks[KnownCaipNamespace.Eip155] || {};
 
     return Object.entries(networkConfigurations).reduce(
       (acc, [chainId, network]) => {
@@ -304,30 +228,20 @@ export const selectAnyEnabledNetworksAreAvailable = createSelector(
   selectDefaultNetworkClientIdsByChainId,
   getNetworksMetadata,
   (allEnabledNetworks, defaultNetworkClientIdsByChainId, networksMetadata) => {
-    return Object.entries(allEnabledNetworks).reduce<boolean>(
-      (result, [namespace, enabledNetworksByChainId]) => {
-        if (namespace === KnownCaipNamespace.Eip155) {
-          const chainIds = Object.entries(enabledNetworksByChainId)
-            .filter(([_chainId, isEnabled]) => isEnabled)
-            .map(([chainId, _isEnabled]) => chainId) as Hex[];
-          const networkClientIds = chainIds.map(
-            (chainId) => defaultNetworkClientIdsByChainId[chainId],
-          );
-          return (
-            // If only non-EVM networks are enabled, then we may still
-            // have an entry for EIP-155 but it will be empty
-            networkClientIds.length === 0 ||
-            networkClientIds.some(
-              (networkClientId) =>
-                networksMetadata[networkClientId]?.status ===
-                NetworkStatus.Available,
-            )
-          );
-        }
-        // Assume that all non-EVM networks are available
-        return result;
-      },
-      true,
+    const chainIds = Object.entries(
+      allEnabledNetworks[KnownCaipNamespace.Eip155] ?? {},
+    )
+      .filter(([, isEnabled]) => isEnabled)
+      .map(([chainId]) => chainId as Hex);
+    const networkClientIds = chainIds.map(
+      (chainId) => defaultNetworkClientIdsByChainId[chainId],
+    );
+    return (
+      networkClientIds.length === 0 ||
+      networkClientIds.some(
+        (networkClientId) =>
+          networksMetadata[networkClientId]?.status === NetworkStatus.Available,
+      )
     );
   },
 );
@@ -418,77 +332,34 @@ export type MultichainNetwork = {
 // currency will be BTC..
 
 export function getMultichainIsEvm(
-  state: MultichainNetworkConfigState &
-    AccountsState & { metamask: { completedOnboarding?: boolean } },
-  account?: InternalAccount,
+  _state: MultichainNetworkConfigState & AccountsState,
+  _account?: InternalAccount,
 ) {
-  const isOnboarded = state.metamask.completedOnboarding;
-  // Selected account is not available during onboarding (this is used in
-  // the AppHeader)
-  const selectedAccount = account ?? getMaybeSelectedInternalAccount(state);
-
-  // There are no selected account during onboarding. we default to the original EVM behavior.
-  return (
-    !isOnboarded || !selectedAccount || isEvmAccountType(selectedAccount.type)
-  );
+  return true;
 }
 
 export function getMultichainNetwork(
   state: MultichainNetworkConfigState & AccountsState,
   account?: InternalAccount,
 ): MultichainNetwork {
-  const isEvm = getMultichainIsEvm(state, account);
-
-  if (isEvm) {
-    // EVM networks
-    const evmChainId: Hex = getCurrentChainId(state);
-
-    // TODO: Update to use network configurations when @metamask/network-controller is updated to 20.0.0
-    // ProviderConfig will be deprecated to use NetworkConfigurations
-    // When a user updates a network name its only updated in the NetworkConfigurations.
-    const evmNetwork: ProviderConfigWithImageUrlAndExplorerUrl =
-      getProviderConfig(state) as ProviderConfigWithImageUrlAndExplorerUrl;
-
-    const evmChainIdKey =
-      evmChainId as keyof typeof CHAIN_ID_TO_NETWORK_IMAGE_URL_MAP;
-
-    evmNetwork.rpcPrefs = {
-      ...evmNetwork.rpcPrefs,
-      imageUrl: CHAIN_ID_TO_NETWORK_IMAGE_URL_MAP[evmChainIdKey],
-    };
-
-    const networkConfigurations = getNetworkConfigurationsByChainId(state);
-    return {
-      nickname: networkConfigurations[evmChainId]?.name ?? evmNetwork.rpcUrl,
-      isEvmNetwork: true,
-      // We assume the chain ID is `string` or `number`, so we convert it to a
-      // `Number` to be compliant with EIP155 CAIP chain ID
-      chainId: `${KnownCaipNamespace.Eip155}:${Number(
-        evmChainId,
-      )}` as CaipChainId,
-      network: evmNetwork,
-    };
-  }
-
-  const fallbackChainId: Hex = getCurrentChainId(state);
-  const fallbackNetwork: ProviderConfigWithImageUrlAndExplorerUrl =
+  const evmChainId: Hex = getCurrentChainId(state);
+  const evmNetwork: ProviderConfigWithImageUrlAndExplorerUrl =
     getProviderConfig(state) as ProviderConfigWithImageUrlAndExplorerUrl;
-  const fallbackChainIdKey =
-    fallbackChainId as keyof typeof CHAIN_ID_TO_NETWORK_IMAGE_URL_MAP;
+  const evmChainIdKey =
+    evmChainId as keyof typeof CHAIN_ID_TO_NETWORK_IMAGE_URL_MAP;
 
-  fallbackNetwork.rpcPrefs = {
-    ...fallbackNetwork.rpcPrefs,
-    imageUrl: CHAIN_ID_TO_NETWORK_IMAGE_URL_MAP[fallbackChainIdKey],
+  evmNetwork.rpcPrefs = {
+    ...evmNetwork.rpcPrefs,
+    imageUrl: CHAIN_ID_TO_NETWORK_IMAGE_URL_MAP[evmChainIdKey],
   };
 
   const networkConfigurations = getNetworkConfigurationsByChainId(state);
   return {
-    nickname:
-      networkConfigurations[fallbackChainId]?.name ?? fallbackNetwork.rpcUrl,
+    nickname: networkConfigurations[evmChainId]?.name ?? evmNetwork.rpcUrl,
     isEvmNetwork: true,
     chainId: `${KnownCaipNamespace.Eip155}:${Number(
-      fallbackChainId,
+      evmChainId,
     )}` as CaipChainId,
-    network: fallbackNetwork,
+    network: evmNetwork,
   };
 }

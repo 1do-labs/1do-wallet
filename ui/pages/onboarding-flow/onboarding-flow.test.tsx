@@ -16,14 +16,12 @@ import {
   ONBOARDING_PRIVACY_SETTINGS_ROUTE,
   ONBOARDING_COMPLETION_ROUTE,
   ONBOARDING_IMPORT_WITH_SRP_ROUTE,
-  ONBOARDING_METAMETRICS,
   ONBOARDING_REVEAL_SRP_ROUTE,
   ONBOARDING_ROUTE,
 } from '../../helpers/constants/routes';
 import { CHAIN_IDS } from '../../../shared/constants/network';
 import {
   createNewVaultAndGetSeedPhrase,
-  restoreSocialBackupAndGetSeedPhrase,
   setCompletedOnboarding,
   setCompletedOnboardingWithSidepanel,
   setUseSidePanelAsDefault,
@@ -31,7 +29,6 @@ import {
 } from '../../store/actions';
 import { mockNetworkState } from '../../../test/stub/networks';
 import { FirstTimeFlowType } from '../../../shared/constants/onboarding';
-import { getIsSeedlessOnboardingFeatureEnabled } from '../../../shared/lib/environment';
 import { useSidePanelEnabled } from '../../hooks/useSidePanelEnabled';
 import OnboardingFlow from './onboarding-flow';
 
@@ -233,11 +230,6 @@ describe('Onboarding Flow', () => {
 
   beforeEach(() => {
     (
-      getIsSeedlessOnboardingFeatureEnabled as jest.MockedFunction<
-        typeof getIsSeedlessOnboardingFeatureEnabled
-      >
-    ).mockReturnValue(false);
-    (
       useSidePanelEnabled as jest.MockedFunction<typeof useSidePanelEnabled>
     ).mockReturnValue(false);
   });
@@ -399,107 +391,6 @@ describe('Onboarding Flow', () => {
 
       await waitFor(() => expect(unlockAndGetSeedPhrase).toHaveBeenCalled());
     });
-
-    it('keeps the loading overlay visible until social import sidepanel rehydration completes', async () => {
-      const sidepanelCompletion = createDeferred<void>();
-
-      (
-        getIsSeedlessOnboardingFeatureEnabled as jest.MockedFunction<
-          typeof getIsSeedlessOnboardingFeatureEnabled
-        >
-      ).mockReturnValue(true);
-      (
-        useSidePanelEnabled as jest.MockedFunction<typeof useSidePanelEnabled>
-      ).mockReturnValue(true);
-      (
-        restoreSocialBackupAndGetSeedPhrase as jest.MockedFunction<
-          typeof restoreSocialBackupAndGetSeedPhrase
-        >
-      ).mockImplementation(() => async () => 'seed phrase');
-      (
-        setUseSidePanelAsDefault as jest.MockedFunction<
-          typeof setUseSidePanelAsDefault
-        >
-      ).mockImplementation(() => async () => ({ useSidePanelAsDefault: true }));
-      (
-        setCompletedOnboardingWithSidepanel as jest.MockedFunction<
-          typeof setCompletedOnboardingWithSidepanel
-        >
-      ).mockImplementation(() => async () => await sidepanelCompletion.promise);
-
-      const { container, getByTestId } = renderUnlockPage({
-        firstTimeFlowType: FirstTimeFlowType.socialImport,
-      });
-
-      submitUnlock(getByTestId);
-
-      await waitFor(() => {
-        expect(restoreSocialBackupAndGetSeedPhrase).toHaveBeenCalled();
-        expect(setUseSidePanelAsDefault).toHaveBeenCalledWith(true);
-        expect(setCompletedOnboardingWithSidepanel).toHaveBeenCalled();
-      });
-
-      expect(container.querySelector('.loading-overlay')).toBeInTheDocument();
-      expect(mockUseNavigate).not.toHaveBeenCalled();
-
-      sidepanelCompletion.resolve();
-
-      await waitFor(() => {
-        expect(mockUseNavigate).toHaveBeenCalledWith(DEFAULT_ROUTE, {
-          replace: true,
-        });
-      });
-      await waitFor(() => {
-        expect(
-          container.querySelector('.loading-overlay'),
-        ).not.toBeInTheDocument();
-      });
-    });
-
-    it('keeps the loading overlay visible until social import rehydration completes without sidepanel', async () => {
-      const onboardingCompletion = createDeferred<void>();
-
-      (
-        getIsSeedlessOnboardingFeatureEnabled as jest.MockedFunction<
-          typeof getIsSeedlessOnboardingFeatureEnabled
-        >
-      ).mockReturnValue(true);
-      (
-        restoreSocialBackupAndGetSeedPhrase as jest.MockedFunction<
-          typeof restoreSocialBackupAndGetSeedPhrase
-        >
-      ).mockImplementation(() => async () => 'seed phrase');
-      (
-        setCompletedOnboarding as jest.MockedFunction<
-          typeof setCompletedOnboarding
-        >
-      ).mockImplementation(
-        () => async () => await onboardingCompletion.promise,
-      );
-
-      const { container, getByTestId } = renderUnlockPage({
-        firstTimeFlowType: FirstTimeFlowType.socialImport,
-      });
-
-      submitUnlock(getByTestId);
-
-      await waitFor(() => {
-        expect(restoreSocialBackupAndGetSeedPhrase).toHaveBeenCalled();
-        expect(setCompletedOnboarding).toHaveBeenCalled();
-      });
-
-      expect(container.querySelector('.loading-overlay')).toBeInTheDocument();
-      expect(mockUseNavigate).not.toHaveBeenCalled();
-
-      onboardingCompletion.resolve();
-
-      await waitFor(() => {
-        expect(
-          container.querySelector('.loading-overlay'),
-        ).not.toBeInTheDocument();
-      });
-      expect(mockUseNavigate).not.toHaveBeenCalled();
-    });
   });
 
   it('should render privacy settings', () => {
@@ -536,17 +427,6 @@ describe('Onboarding Flow', () => {
     await waitFor(() => {
       expect(queryByTestId('get-started')).toBeInTheDocument();
     });
-  });
-
-  it('should render onboarding metametrics screen', () => {
-    const { queryByTestId } = renderWithProvider(
-      <OnboardingFlowWithRouteContext />,
-      store,
-      ONBOARDING_METAMETRICS,
-    );
-
-    const onboardingMetametrics = queryByTestId('onboarding-metametrics');
-    expect(onboardingMetametrics).toBeInTheDocument();
   });
 
   it('should render onboarding experimental screen', () => {

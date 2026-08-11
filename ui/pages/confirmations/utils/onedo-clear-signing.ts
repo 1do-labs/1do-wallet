@@ -466,7 +466,9 @@ const normalizeFillRows = (rows: OneDoClearSigningRow[]) =>
     'Buyer pays token ID': 'You pay token ID',
   });
 
-const parseTypedData = (data?: SignatureRequestType['msgParams']['data']) => {
+const parseTypedData = (
+  data?: NonNullable<SignatureRequestType['msgParams']>['data'],
+) => {
   if (!data) {
     return undefined;
   }
@@ -1020,7 +1022,7 @@ export const getOneDoTypedDataClearSigning = (
 
     return withDescriptor(
       {
-        title: '1Do gasless signed execution',
+        title: '1Do signed execution',
         subtitle: 'ERC-7730 clear signing',
         rows: [
           addressRow('Wallet', message.wallet),

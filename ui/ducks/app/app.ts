@@ -53,7 +53,6 @@ type AppState = {
   };
   showPermittedNetworkToastOpen: boolean;
   showIpfsModalOpen: boolean;
-  showSupportDataConsentModal: boolean;
   importTokensModalOpen: boolean;
   deprecatedNetworkModalOpen: boolean;
   accountDetail: {
@@ -89,8 +88,6 @@ type AppState = {
     testKey: string | null;
   };
   gasLoadingAnimationIsShowing: boolean;
-  smartTransactionsError: string | null;
-  smartTransactionsErrorMessageDismissed: boolean;
   ledgerWebHidConnectedStatus: WebHIDConnectedStatuses;
   ledgerTransportStatus: HardwareTransportStates;
   showBasicFunctionalityModal: boolean;
@@ -116,8 +113,6 @@ type AppState = {
   customTokenAmount: string;
   txId: string | null;
   accountDetailsAddress: string;
-  showDeleteMetaMetricsDataModal: boolean;
-  showDataDeletionErrorModal: boolean;
   isAddingNewNetwork: boolean;
   isMultiRpcOnboarding: boolean;
   isAccessedFromDappConnectedSitePopover: boolean;
@@ -192,8 +187,6 @@ const initialState: AppState = {
     testKey: null,
   },
   gasLoadingAnimationIsShowing: false,
-  smartTransactionsError: null,
-  smartTransactionsErrorMessageDismissed: false,
   ledgerWebHidConnectedStatus: WebHIDConnectedStatuses.unknown,
   ledgerTransportStatus: HardwareTransportStates.none,
   newNftAddedMessage: '',
@@ -210,8 +203,6 @@ const initialState: AppState = {
   scrollToBottom: true,
   txId: null,
   accountDetailsAddress: '',
-  showDeleteMetaMetricsDataModal: false,
-  showDataDeletionErrorModal: false,
   isAddingNewNetwork: false,
   isMultiRpcOnboarding: false,
   isAccessedFromDappConnectedSitePopover: false,
@@ -221,7 +212,6 @@ const initialState: AppState = {
   showCopyAddressToast: false,
   showClaimSubmitToast: null,
   showDefaultRpcSwitchToast: false,
-  showSupportDataConsentModal: false,
 };
 
 export default function reduceApp(
@@ -400,19 +390,6 @@ export default function reduceApp(
       return {
         ...appState,
         qrCodeData: action.value,
-      };
-
-    // Smart Transactions errors.
-    case actionConstants.SET_SMART_TRANSACTIONS_ERROR:
-      return {
-        ...appState,
-        smartTransactionsError: action.payload,
-      };
-
-    case actionConstants.DISMISS_SMART_TRANSACTIONS_ERROR_MESSAGE:
-      return {
-        ...appState,
-        smartTransactionsErrorMessageDismissed: true,
       };
 
     // modal methods:
@@ -684,26 +661,6 @@ export default function reduceApp(
         ...appState,
         isNetworkMenuOpen: false,
       };
-    case actionConstants.DELETE_METAMETRICS_DATA_MODAL_OPEN:
-      return {
-        ...appState,
-        showDeleteMetaMetricsDataModal: true,
-      };
-    case actionConstants.DELETE_METAMETRICS_DATA_MODAL_CLOSE:
-      return {
-        ...appState,
-        showDeleteMetaMetricsDataModal: false,
-      };
-    case actionConstants.DATA_DELETION_ERROR_MODAL_OPEN:
-      return {
-        ...appState,
-        showDataDeletionErrorModal: true,
-      };
-    case actionConstants.DATA_DELETION_ERROR_MODAL_CLOSE:
-      return {
-        ...appState,
-        showDataDeletionErrorModal: false,
-      };
     case actionConstants.SHOW_SETTINGS_PAGE_ERROR:
       return {
         ...appState,
@@ -736,12 +693,6 @@ export default function reduceApp(
       return {
         ...appState,
         showDefaultRpcSwitchToast: action.payload,
-      };
-
-    case actionConstants.SET_SHOW_SUPPORT_DATA_CONSENT_MODAL:
-      return {
-        ...appState,
-        showSupportDataConsentModal: action.payload,
       };
 
     default:
@@ -855,34 +806,6 @@ export function getLedgerTransportStatus(state: AppSliceState): string | null {
   return state.appState.ledgerTransportStatus;
 }
 
-export function getShowSupportDataConsentModal(state: AppSliceState): boolean {
-  return state.appState.showSupportDataConsentModal;
-}
-
 export function getShowCopyAddressToast(state: AppSliceState): boolean {
   return state.appState.showCopyAddressToast;
-}
-
-export function openDeleteMetaMetricsDataModal(): Action {
-  return {
-    type: actionConstants.DELETE_METAMETRICS_DATA_MODAL_OPEN,
-  };
-}
-
-export function hideDeleteMetaMetricsDataModal(): Action {
-  return {
-    type: actionConstants.DELETE_METAMETRICS_DATA_MODAL_CLOSE,
-  };
-}
-
-export function openDataDeletionErrorModal(): Action {
-  return {
-    type: actionConstants.DATA_DELETION_ERROR_MODAL_OPEN,
-  };
-}
-
-export function hideDataDeletionErrorModal(): Action {
-  return {
-    type: actionConstants.DATA_DELETION_ERROR_MODAL_CLOSE,
-  };
 }

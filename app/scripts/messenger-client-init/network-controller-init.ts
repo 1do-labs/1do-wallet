@@ -12,12 +12,7 @@ import {
 } from '@metamask/controller-utils';
 import { CONNECTIVITY_STATUSES } from '@metamask/connectivity-controller';
 import { hasProperty } from '@metamask/utils';
-import { RemoteFeatureFlagControllerState } from '@metamask/remote-feature-flag-controller';
 import { SECOND } from '../../../shared/constants/time';
-import {
-  onRpcEndpointDegraded,
-  onRpcEndpointUnavailable,
-} from '../lib/network-controller/messenger-action-handlers';
 import {
   CHAIN_IDS,
   getRpcUrl,
@@ -144,12 +139,13 @@ function getInitialState(initialState?: Partial<NetworkController['state']>) {
   let initialNetworkControllerState = initialState;
 
   if (initialNetworkControllerState) {
-    addBaseSepoliaNetwork(
-      initialNetworkControllerState.networkConfigurationsByChainId,
-    );
+    const networks =
+      initialNetworkControllerState.networkConfigurationsByChainId ?? {};
+    initialNetworkControllerState.networkConfigurationsByChainId = networks;
+    addBaseSepoliaNetwork(networks);
     initialNetworkControllerState.selectedNetworkClientId =
       normalizeAlchemyRpcEndpoints(
-        initialNetworkControllerState.networkConfigurationsByChainId,
+        networks,
         initialNetworkControllerState.selectedNetworkClientId,
       );
   } else {
@@ -290,25 +286,9 @@ export const NetworkControllerInit: MessengerClientInitFunction<
   initMessenger,
   persistedState,
 }) => {
-  const remoteFeatureFlagsControllerState = initMessenger.call(
-    'RemoteFeatureFlagController:getState',
-  );
   const initialState = getInitialState(persistedState.NetworkController);
   const networkControllerInfuraCompatibilityProjectId =
     infuraProjectId || NETWORK_CONTROLLER_PROJECT_ID_COMPATIBILITY_PLACEHOLDER;
-
-  /**
-   * Determines if RPC failover is enabled based on RemoteFeatureFlagController
-   * state.
-   *
-   * @param state - RemoteFeatureFlagControllerState
-   * @returns true if RPC failover is enabled, false otherwise
-   */
-  const getIsRpcFailoverEnabled = (state: RemoteFeatureFlagControllerState) => {
-    const walletFrameworkRpcFailoverEnabled = state.remoteFeatureFlags
-      .walletFrameworkRpcFailoverEnabled as boolean | undefined;
-    return walletFrameworkRpcFailoverEnabled ?? false;
-  };
 
   const getBlockTrackerOptions = () => {
     return process.env.IN_TEST
@@ -367,72 +347,8 @@ export const NetworkControllerInit: MessengerClientInitFunction<
     getBlockTrackerOptions,
     getRpcServiceOptions,
     additionalDefaultNetworks: ADDITIONAL_DEFAULT_NETWORKS,
-    isRpcFailoverEnabled: getIsRpcFailoverEnabled(
-      remoteFeatureFlagsControllerState,
-    ),
+    isRpcFailoverEnabled: false,
   });
-
-  initMessenger.subscribe(
-    'NetworkController:rpcEndpointUnavailable',
-    async ({ chainId, endpointUrl, error }) => {
-      onRpcEndpointUnavailable({
-        chainId,
-        endpointUrl,
-        error,
-        infuraProjectId: networkControllerInfuraCompatibilityProjectId,
-        trackEvent: initMessenger.call.bind(
-          initMessenger,
-          'MetaMetricsController:trackEvent',
-        ),
-        metaMetricsId: initMessenger.call(
-          'MetaMetricsController:getMetaMetricsId',
-        ),
-      });
-    },
-  );
-
-  initMessenger.subscribe(
-    'NetworkController:rpcEndpointDegraded',
-    async ({
-      chainId,
-      endpointUrl,
-      error,
-      rpcMethodName,
-      type,
-      retryReason,
-    }) => {
-      onRpcEndpointDegraded({
-        chainId,
-        endpointUrl,
-        error,
-        infuraProjectId: networkControllerInfuraCompatibilityProjectId,
-        retryReason,
-        rpcMethodName,
-        trackEvent: initMessenger.call.bind(
-          initMessenger,
-          'MetaMetricsController:trackEvent',
-        ),
-        metaMetricsId: initMessenger.call(
-          'MetaMetricsController:getMetaMetricsId',
-        ),
-        type,
-      });
-    },
-  );
-
-  initMessenger.subscribe(
-    'RemoteFeatureFlagController:stateChange',
-    (isRpcFailoverEnabled) => {
-      if (isRpcFailoverEnabled) {
-        console.log('Enabling RPC failover.');
-        messengerClient.enableRpcFailover();
-      } else {
-        console.log('Disabling RPC failover.');
-        messengerClient.disableRpcFailover();
-      }
-    },
-    getIsRpcFailoverEnabled,
-  );
 
   // Delay lookupNetwork until after onboarding to prevent network requests before the user can
   // update their RPC endpoints.

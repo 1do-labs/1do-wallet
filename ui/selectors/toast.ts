@@ -1,9 +1,5 @@
 import { createSelector } from 'reselect';
-import { createDeepEqualSelector } from '../../shared/lib/selectors/selector-creators';
-import { SMART_TRANSACTION_CONFIRMATION_TYPES } from '../../shared/constants/app';
 import type { MetaMaskReduxState } from '../store/store';
-import { TOAST_EXCLUDED_TRANSACTION_TYPES } from '../helpers/constants/transactions';
-import { getPendingApprovals } from './approvals';
 import { EMPTY_ARRAY } from './shared';
 import {
   selectRequiredTransactionHashes,
@@ -48,7 +44,6 @@ export const selectEvmTransactionsForToast = createSelector(
       }
       return (
         Boolean(type) &&
-        !TOAST_EXCLUDED_TRANSACTION_TYPES.has(type) &&
         !requiredTransactionIds.has(transaction.id) &&
         !(
           transaction.hash &&
@@ -56,45 +51,5 @@ export const selectEvmTransactionsForToast = createSelector(
         )
       );
     });
-  },
-);
-
-type TxRequest = {
-  approvalId: string;
-  txId: string;
-  smartTransactionStatus: string | undefined;
-};
-
-export const selectSmartTransactions = createDeepEqualSelector(
-  getPendingApprovals,
-  (pendingApprovals) => {
-    const result: TxRequest[] = [];
-
-    for (const approval of pendingApprovals) {
-      if (
-        approval.type !==
-        SMART_TRANSACTION_CONFIRMATION_TYPES.showSmartTransactionStatusPage
-      ) {
-        continue;
-      }
-
-      const { requestState = {} } = approval;
-      const { txId, smartTransaction } = requestState as {
-        txId?: string;
-        smartTransaction?: { status?: string };
-      };
-
-      if (!txId) {
-        continue;
-      }
-
-      result.push({
-        approvalId: approval.id,
-        txId,
-        smartTransactionStatus: smartTransaction?.status,
-      });
-    }
-
-    return result;
   },
 );

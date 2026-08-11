@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useMemo } from 'react';
+import { useCallback, useContext, useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -13,16 +13,13 @@ import {
 import {
   SETTINGS_ROUTE,
   PERMISSIONS,
-  GATOR_PERMISSIONS,
   CONTACTS_ROUTE,
 } from '../../../helpers/constants/routes';
 import {
   lockMetamask,
-  setShowSupportDataConsentModal,
   toggleNetworkMenu,
   toggleDefaultView,
 } from '../../../store/actions';
-import { isGatorPermissionsRevocationFeatureEnabled } from '../../../../shared/lib/environment';
 import { useI18nContext } from '../../../hooks/useI18nContext';
 import { useSidePanelEnabled } from '../../../hooks/useSidePanelEnabled';
 import { useBrowserSupportsSidePanel } from '../../../hooks/useBrowserSupportsSidePanel';
@@ -37,20 +34,7 @@ import {
 import { getBrowserName } from '../../../../shared/lib/browser-runtime.utils';
 import { SUPPORT_LINK } from '../../../../shared/lib/ui-utils';
 
-import { MetaMetricsContext } from '../../../contexts/metametrics';
-import {
-  MetaMetricsContextProp,
-  MetaMetricsEventCategory,
-  MetaMetricsEventName,
-} from '../../../../shared/constants/metametrics';
-
-import {
-  getUnapprovedTransactions,
-  getMetaMetricsId,
-  getParticipateInMetaMetrics,
-  getDataCollectionForMarketing,
-} from '../../../selectors';
-import { getPortfolioUrl } from '../../../helpers/utils/portfolio';
+import { getUnapprovedTransactions } from '../../../selectors';
 import type { GlobalMenuSection } from '../global-menu/global-menu-list.types';
 import { isBeta, isFlask } from '../../../../shared/lib/build-types';
 
@@ -67,7 +51,6 @@ export function useGlobalMenuSections(
 ): GlobalMenuSection[] {
   const t = useI18nContext();
   const dispatch = useDispatch();
-  const { trackEvent } = useContext(MetaMetricsContext);
   const location = useLocation();
 
   const unapprovedTransactions = useSelector(getUnapprovedTransactions);
@@ -80,81 +63,18 @@ export function useGlobalMenuSections(
   const isSidepanel = currentEnvironment === ENVIRONMENT_TYPE_SIDEPANEL;
   const isPopup = currentEnvironment === ENVIRONMENT_TYPE_POPUP;
 
-  const metaMetricsId = useSelector(getMetaMetricsId);
-  const isMetaMetricsEnabled = useSelector(getParticipateInMetaMetrics);
-  const isMarketingEnabled = useSelector(getDataCollectionForMarketing);
-
   const supportText =
     isBeta() || isFlask() ? t('needHelpSubmitTicket') : t('support');
-  const supportLink = SUPPORT_LINK || '';
-
   const handleSupportMenuClick = useCallback(() => {
-    dispatch(setShowSupportDataConsentModal(true));
-    trackEvent(
-      {
-        category: MetaMetricsEventCategory.Home,
-        event: MetaMetricsEventName.SupportLinkClicked,
-        properties: {
-          url: supportLink,
-          location: METRICS_LOCATION,
-        },
-      },
-      {
-        contextPropsIntoEventProperties: [MetaMetricsContextProp.PageTitle],
-      },
-    );
+    global.platform.openTab({ url: SUPPORT_LINK });
     onClose();
-  }, [dispatch, trackEvent, supportLink, onClose]);
+  }, [onClose]);
 
   return useMemo(() => {
     const section2: GlobalMenuSection = {
       id: 'global-menu-section-2',
       items: [],
     };
-
-    if (isPopup || isSidepanel) {
-      section2.items.push({
-        id: 'global-menu-expand-view',
-        iconName: IconName.Expand,
-        label: t('openFullScreen'),
-        onClick: () => {
-          global?.platform?.openExtensionInBrowser?.();
-          trackEvent({
-            event: MetaMetricsEventName.AppWindowExpanded,
-            category: MetaMetricsEventCategory.Navigation,
-            properties: { location: METRICS_LOCATION },
-          });
-          onClose();
-        },
-      });
-    }
-
-    if (
-      getBrowserName() !== PLATFORM_FIREFOX &&
-      browserSupportsSidePanel === true &&
-      isSidePanelEnabled &&
-      (isPopup || isSidepanel)
-    ) {
-      section2.items.push({
-        id: 'global-menu-toggle-view',
-        iconName: isSidepanel ? IconName.PopUp : IconName.SidePanel,
-        label: isSidepanel ? t('switchToPopup') : t('switchToSidePanel'),
-        onClick: async () => {
-          await dispatch(toggleDefaultView());
-          trackEvent({
-            event: MetaMetricsEventName.ViewportSwitched,
-            category: MetaMetricsEventCategory.Navigation,
-            properties: {
-              location: METRICS_LOCATION,
-              to: isSidepanel
-                ? ENVIRONMENT_TYPE_POPUP
-                : ENVIRONMENT_TYPE_SIDEPANEL,
-            },
-          });
-          onClose();
-        },
-      });
-    }
 
     const section2Manage: GlobalMenuSection = {
       id: 'global-menu-section-manage',
@@ -170,16 +90,8 @@ export function useGlobalMenuSections(
           id: 'global-menu-connected-sites',
           iconName: IconName.SecurityTick,
           label: t('allPermissions'),
-          to: isGatorPermissionsRevocationFeatureEnabled()
-            ? `${GATOR_PERMISSIONS}?from=${encodeURIComponent(location.pathname)}`
-            : `${PERMISSIONS}?from=${encodeURIComponent(location.pathname)}`,
-          onClick: () => {
-            trackEvent({
-              event: MetaMetricsEventName.NavPermissionsOpened,
-              category: MetaMetricsEventCategory.Navigation,
-              properties: { location: METRICS_LOCATION },
-            });
-          },
+          to: `${PERMISSIONS}?from=${encodeURIComponent(location.pathname)}`,
+          onClick: () => undefined,
           disabled: hasUnapprovedTransactions,
         },
         {
@@ -203,30 +115,9 @@ export function useGlobalMenuSections(
           iconName: IconName.Setting,
           label: t('settings'),
           to: `${SETTINGS_ROUTE}?drawerOpen=true`,
-          onClick: () => {
-            trackEvent({
-              category: MetaMetricsEventCategory.Navigation,
-              event: MetaMetricsEventName.NavSettingsOpened,
-              properties: { location: METRICS_LOCATION },
-            });
-          },
+          onClick: () => undefined,
           disabled: hasUnapprovedTransactions,
         },
-        // Uncomment to view Settings V2 in Hamburger Menu
-        // {
-        //   id: 'global-menu-settings-v2',
-        //   iconName: IconName.Setting,
-        //   label: `${t('settings')} (V2)`,
-        //   to: SETTINGS_V2_ROUTE,
-        //   onClick: () => {
-        //     trackEvent({
-        //       category: MetaMetricsEventCategory.Navigation,
-        //       event: MetaMetricsEventName.NavSettingsOpened,
-        //       properties: { location: METRICS_LOCATION },
-        //     });
-        //   },
-        //   disabled: hasUnapprovedTransactions,
-        // },
         {
           id: 'global-menu-support',
           iconName: IconName.MessageQuestion,
@@ -246,11 +137,6 @@ export function useGlobalMenuSections(
           textColor: TextColor.ErrorDefault,
           label: t('logOut'),
           onClick: async () => {
-            trackEvent({
-              category: MetaMetricsEventCategory.Navigation,
-              event: MetaMetricsEventName.AppLocked,
-              properties: { location: METRICS_LOCATION },
-            });
             onClose();
 
             await dispatch(lockMetamask(t('lockMetaMaskLoadingMessage')));
@@ -276,10 +162,6 @@ export function useGlobalMenuSections(
     hasUnapprovedTransactions,
     onClose,
     dispatch,
-    trackEvent,
-    metaMetricsId,
-    isMetaMetricsEnabled,
-    isMarketingEnabled,
     browserSupportsSidePanel,
     isSidePanelEnabled,
     supportText,

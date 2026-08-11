@@ -8,14 +8,8 @@ import {
 import { Hex, isStrictHexString, hexToNumber } from '@metamask/utils';
 import { NETWORKS_BYPASSING_VALIDATION } from '@metamask/controller-utils';
 import {
-  MetaMetricsEventCategory,
-  MetaMetricsEventName,
-  MetaMetricsNetworkEventSource,
-} from '../../../../../shared/constants/metametrics';
-import {
   CHAIN_ID_TO_CURRENCY_SYMBOL_MAP,
   CHAIN_IDS,
-  infuraProjectId,
   NETWORK_TO_NAME_MAP,
 } from '../../../../../shared/constants/network';
 import {
@@ -28,7 +22,6 @@ import {
 } from '../../../../../shared/lib/network.utils';
 import { jsonRpcRequest } from '../../../../../shared/lib/rpc.utils';
 import { submitRequestToBackground } from '../../../../store/background-connection';
-import { MetaMetricsContext } from '../../../../contexts/metametrics';
 import { useI18nContext } from '../../../../hooks/useI18nContext';
 import { getNetworkConfigurationsByChainId } from '../../../../../shared/lib/selectors/networks';
 import {
@@ -100,7 +93,6 @@ export const NetworksForm = ({
 }) => {
   const t = useI18nContext();
   const dispatch = useDispatch();
-  const { trackEvent } = useContext(MetaMetricsContext);
   const scrollableRef = useRef<HTMLDivElement>(null);
   const networkConfigurations = useSelector(getNetworkConfigurationsByChainId);
   const isRpcFailoverEnabled = useSelector(getIsRpcFailoverEnabled);
@@ -141,7 +133,10 @@ export const NetworksForm = ({
 
   const templateInfuraRpc = (endpoint: string) =>
     endpoint.endsWith('{infuraProjectId}')
-      ? endpoint.replace('{infuraProjectId}', infuraProjectId ?? '')
+      ? endpoint.replace(
+          '{infuraProjectId}',
+          globalThis.INFURA_PROJECT_ID ?? '',
+        )
       : endpoint;
 
   // Validate the network name when it changes
@@ -343,19 +338,6 @@ export const NetworksForm = ({
                   : Promise.resolve('unknown'),
                 sanitizeRpcUrl(newRpcEndpoint.url),
               ]);
-
-              trackEvent({
-                category: MetaMetricsEventCategory.Network,
-                event: MetaMetricsEventName.NetworkConnectionBannerRpcUpdated,
-                // The names of Segment properties have a particular case.
-                /* eslint-disable @typescript-eslint/naming-convention */
-                properties: {
-                  chain_id_caip: `eip155:${chainIdAsDecimal}`,
-                  from_rpc_domain: fromRpcDomain,
-                  to_rpc_domain: toRpcDomain,
-                },
-                /* eslint-enable @typescript-eslint/naming-convention */
-              });
             } catch (error) {
               // Analytics tracking failed, but network update succeeded - don't surface this error
               console.error('Failed to track RPC update analytics:', error);
@@ -365,38 +347,6 @@ export const NetworksForm = ({
           await dispatch(addNetwork(networkPayload));
           await dispatch(setEnabledNetworks(networkPayload.chainId));
         }
-
-        trackEvent({
-          event: MetaMetricsEventName.CustomNetworkAdded,
-          category: MetaMetricsEventCategory.Network,
-          properties: {
-            // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-            // eslint-disable-next-line @typescript-eslint/naming-convention
-            block_explorer_url:
-              blockExplorers?.blockExplorerUrls?.[
-                blockExplorers?.defaultBlockExplorerUrlIndex ?? -1
-              ],
-            // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-            // eslint-disable-next-line @typescript-eslint/naming-convention
-            chain_id: chainIdHex,
-            // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-            // eslint-disable-next-line @typescript-eslint/naming-convention
-            network_name: name,
-            // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-            // eslint-disable-next-line @typescript-eslint/naming-convention
-            source_connection_method:
-              MetaMetricsNetworkEventSource.CustomNetworkForm,
-            // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-            // eslint-disable-next-line @typescript-eslint/naming-convention
-            token_symbol: ticker,
-          },
-          sensitiveProperties: {
-            rpcUrl: rpcIdentifierUtility(
-              rpcUrls?.rpcEndpoints[rpcUrls.defaultRpcEndpointIndex ?? -1]?.url,
-              safeChains ?? [],
-            ),
-          },
-        });
 
         dispatch(
           setEditedNetwork({

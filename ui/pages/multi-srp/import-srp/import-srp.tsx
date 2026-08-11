@@ -18,8 +18,6 @@ import { Header, Page } from '../../../components/multichain/pages/page';
 import { getMetaMaskHdKeyrings } from '../../../selectors';
 import { MetaMaskReduxDispatch } from '../../../store/store';
 import SrpInputForm from '../../srp-input-form';
-import { MetaMetricsContext } from '../../../contexts/metametrics';
-import { MetaMetricsEventName } from '../../../../shared/constants/metametrics';
 
 export const ImportSrp = () => {
   const t = useI18nContext();
@@ -28,7 +26,6 @@ export const ImportSrp = () => {
   const [srpError, setSrpError] = useState('');
   const [secretRecoveryPhrase, setSecretRecoveryPhrase] = useState('');
   const hdKeyrings = useSelector(getMetaMaskHdKeyrings);
-  const { trackEvent } = useContext(MetaMetricsContext);
 
   // Providing duplicate SRP throws an error in metamask-controller, which results in a warning in the UI
   // We want to hide the warning when the component unmounts
@@ -43,14 +40,6 @@ export const ImportSrp = () => {
       if (!secretRecoveryPhrase) {
         return;
       }
-
-      trackEvent({
-        event: MetaMetricsEventName.ImportSecretRecoveryPhrase,
-        properties: {
-          status: 'continue_button_clicked',
-          location: 'Multi SRP Import',
-        },
-      });
 
       await dispatch(importMnemonicToVault(secretRecoveryPhrase));
 

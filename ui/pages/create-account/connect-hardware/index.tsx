@@ -50,12 +50,6 @@ import ZENDESK_URLS from '../../../helpers/constants/zendesk-url';
 import { getHDEntropyIndex } from '../../../selectors/selectors';
 import { KeyringType } from '../../../../shared/constants/keyring';
 import {
-  MetaMetricsEventAccountType,
-  MetaMetricsEventCategory,
-  MetaMetricsEventName,
-} from '../../../../shared/constants/metametrics';
-import { MetaMetricsContext } from '../../../contexts/metametrics';
-import {
   toHardwareWalletError,
   HardwareWalletType,
 } from '../../../contexts/hardware-wallets';
@@ -119,7 +113,6 @@ const getErrorMessage = (
 
 const ConnectHardwareForm = () => {
   const t = useI18nContext();
-  const { trackEvent } = useContext(MetaMetricsContext);
   const dispatch: MetaMaskReduxDispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -409,14 +402,6 @@ const ConnectHardwareForm = () => {
 
       const deviceCount = hardwareWalletKeyrings.length;
 
-      trackEvent({
-        event: MetaMetricsEventName.ConnectHardwareWalletClicked,
-        properties: {
-          device_type: upperFirst(nextDevice),
-          connected_device_count: deviceCount,
-        },
-      });
-
       getPage(nextDevice, 0, defaultHdPaths[nextDevice], true);
     },
     [
@@ -425,7 +410,6 @@ const ConnectHardwareForm = () => {
       hardwareAccounts.length,
       hardwareWalletKeyrings.length,
       setCurrentDevice,
-      trackEvent,
     ],
   );
 
@@ -464,13 +448,6 @@ const ConnectHardwareForm = () => {
       try {
         await dispatch(actions.forgetDevice(deviceName as HardwareDeviceNames));
 
-        trackEvent({
-          event: MetaMetricsEventName.HardwareWalletForgotten,
-          properties: {
-            device_type: upperFirst(deviceName),
-          },
-        });
-
         setError(null);
         setSelectedAccounts([]);
         latestGetPageRequestId.current += 1;
@@ -482,19 +459,10 @@ const ConnectHardwareForm = () => {
       } catch (e) {
         const errorMessage = toErrorMessage(e);
 
-        trackEvent({
-          event: MetaMetricsEventName.HardwareWalletConnectionFailed,
-          properties: {
-            hd_path: hdPath,
-            device_type: upperFirst(deviceName),
-            error: errorMessage,
-          },
-        });
-
         setError(errorMessage);
       }
     },
-    [dispatch, setCurrentDevice, trackEvent],
+    [dispatch, setCurrentDevice],
   );
 
   const onUnlockAccounts = useCallback(
@@ -530,17 +498,6 @@ const ConnectHardwareForm = () => {
           ),
         );
 
-        // Legacy event
-        trackEvent({
-          category: MetaMetricsEventCategory.Accounts,
-          event: MetaMetricsEventName.AccountAdded,
-          properties: {
-            account_type: MetaMetricsEventAccountType.Hardware,
-            account_hardware_type: deviceName,
-            is_suggested_name: true,
-          },
-        });
-
         const connectedDevices = hardwareWalletKeyrings;
         const deviceCount = connectedDevices.length;
         const isAlreadyConnected = connectedDevices.some(
@@ -549,41 +506,10 @@ const ConnectHardwareForm = () => {
             DEVICE_KEYRING_MAP[deviceName as keyof typeof DEVICE_KEYRING_MAP],
         );
 
-        trackEvent({
-          event: MetaMetricsEventName.HardwareWalletAccountConnected,
-          properties: {
-            device_type: upperFirst(deviceName),
-            hd_path: path,
-            connected_device_count: isAlreadyConnected
-              ? deviceCount
-              : deviceCount + 1,
-          },
-        });
-
         navigate(mostRecentOverviewPage);
       } catch (e) {
         const errorMessage = toErrorMessage(e);
 
-        // Legacy event
-        trackEvent({
-          category: MetaMetricsEventCategory.Accounts,
-          event: MetaMetricsEventName.AccountAddFailed,
-          properties: {
-            account_type: MetaMetricsEventAccountType.Hardware,
-            account_hardware_type: deviceName,
-            error: errorMessage,
-            hd_entropy_index: hdEntropyIndex,
-          },
-        });
-
-        trackEvent({
-          event: MetaMetricsEventName.HardwareWalletConnectionFailed,
-          properties: {
-            hd_path: path,
-            device_type: upperFirst(deviceName),
-            error: errorMessage,
-          },
-        });
         setError(errorMessage);
       }
     },
@@ -595,7 +521,6 @@ const ConnectHardwareForm = () => {
       navigate,
       selectedAccounts,
       t,
-      trackEvent,
     ],
   );
 

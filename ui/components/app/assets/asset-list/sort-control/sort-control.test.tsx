@@ -3,7 +3,6 @@ import { screen, fireEvent } from '@testing-library/react';
 import { useSelector } from 'react-redux';
 import { setTokenSortConfig } from '../../../../../store/actions';
 import { renderWithProvider } from '../../../../../../test/lib/render-helpers-navigate';
-import { MetaMetricsContext } from '../../../../../contexts/metametrics';
 import { getPreferences } from '../../../../../selectors';
 import { getCurrentCurrency } from '../../../../../ducks/metamask/metamask';
 import SortControl from './sort-control';
@@ -33,14 +32,6 @@ jest.mock('react-redux', () => {
 const mockHandleClose = jest.fn();
 
 describe('SortControl', () => {
-  const mockTrackEvent = jest.fn();
-  const mockMetaMetricsContext = {
-    trackEvent: mockTrackEvent,
-    bufferedTrace: jest.fn(),
-    bufferedEndTrace: jest.fn(),
-    onboardingParentContext: { current: null },
-  };
-
   const renderComponent = () => {
     (useSelector as jest.Mock).mockImplementation((selector) => {
       if (selector === getPreferences) {
@@ -56,16 +47,11 @@ describe('SortControl', () => {
       return undefined;
     });
 
-    return renderWithProvider(
-      <MetaMetricsContext.Provider value={mockMetaMetricsContext}>
-        <SortControl handleClose={mockHandleClose} />
-      </MetaMetricsContext.Provider>,
-    );
+    return renderWithProvider(<SortControl handleClose={mockHandleClose} />);
   };
 
   beforeEach(() => {
     mockDispatch.mockClear();
-    mockTrackEvent.mockClear();
     (setTokenSortConfig as jest.Mock).mockClear();
   });
 
@@ -76,7 +62,7 @@ describe('SortControl', () => {
     expect(screen.getByTestId('sortByDecliningBalance')).toBeInTheDocument();
   });
 
-  it('dispatches setTokenSortConfig with expected config, and tracks event when Alphabetically is clicked', () => {
+  it('dispatches setTokenSortConfig with expected config when Alphabetically is clicked', () => {
     renderComponent();
 
     const alphabeticallyButton = screen.getByTestId(
@@ -90,19 +76,9 @@ describe('SortControl', () => {
       sortCallback: 'alphaNumeric',
       order: 'asc',
     });
-
-    expect(mockTrackEvent).toHaveBeenCalledWith({
-      category: 'Settings',
-      event: 'Token Sort Preference Updated',
-      properties: {
-        // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        token_sort_preference: 'title',
-      },
-    });
   });
 
-  it('dispatches setTokenSortConfig with expected config, and tracks event when Declining balance is clicked', () => {
+  it('dispatches setTokenSortConfig with expected config when Declining balance is clicked', () => {
     renderComponent();
 
     const decliningBalanceButton = screen.getByTestId(
@@ -115,16 +91,6 @@ describe('SortControl', () => {
       key: 'tokenFiatAmount',
       sortCallback: 'stringNumeric',
       order: 'dsc',
-    });
-
-    expect(mockTrackEvent).toHaveBeenCalledWith({
-      category: 'Settings',
-      event: 'Token Sort Preference Updated',
-      properties: {
-        // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        token_sort_preference: 'tokenFiatAmount',
-      },
     });
   });
 });

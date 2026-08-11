@@ -16,7 +16,7 @@ describe('MarketClosedActionButton', () => {
     renderWithI18n(<MarketClosedActionButton onClick={jest.fn()} />);
 
     expect(
-      screen.getByText(messages.bridgeMarketClosedAction.message),
+      screen.getByText(messages.marketClosedAction.message),
     ).toBeInTheDocument();
   });
 

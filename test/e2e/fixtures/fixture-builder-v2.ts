@@ -35,7 +35,6 @@ import {
   TransactionType,
 } from '@metamask/transaction-controller';
 import type { AppStateControllerState } from '../../../app/scripts/controllers/app-state-controller';
-import type { MetaMetricsControllerState } from '../../../app/scripts/controllers/metametrics-controller';
 import type { OnboardingControllerState } from '../../../app/scripts/controllers/onboarding';
 import type {
   Preferences,
@@ -185,11 +184,6 @@ class FixtureBuilderV2 {
 
   withKeyringController(data: Partial<KeyringControllerState>): this {
     merge(this.fixture.data.KeyringController, data);
-    return this;
-  }
-
-  withMetaMetricsController(data: Partial<MetaMetricsControllerState>): this {
-    merge(this.fixture.data.MetaMetricsController, data);
     return this;
   }
 
@@ -963,14 +957,6 @@ class FixtureBuilderV2 {
     return this.withPreferencesController({
       preferences: {
         showNativeTokenAsMainBalance: true,
-      },
-    });
-  }
-
-  withSmartTransactionsOptedOut(): this {
-    return this.withPreferencesController({
-      preferences: {
-        smartTransactionsOptInStatus: false,
       },
     });
   }

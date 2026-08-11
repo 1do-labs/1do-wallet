@@ -15,14 +15,9 @@ import {
   TextVariant,
 } from '@metamask/design-system-react';
 import availableCurrencies from '../../../helpers/constants/available-conversions.json';
-import { MetaMetricsContext } from '../../../contexts/metametrics';
 import { setCurrentCurrency } from '../../../store/actions';
 import { ASSETS_ROUTE } from '../../../helpers/constants/routes';
 import { getCurrentCurrency } from '../../../ducks/metamask/metamask';
-import {
-  MetaMetricsEventCategory,
-  MetaMetricsEventName,
-} from '../../../../shared/constants/metametrics';
 
 const sortedCurrencies = [...availableCurrencies].sort((a, b) =>
   a.name.toLocaleLowerCase().localeCompare(b.name.toLocaleLowerCase()),
@@ -36,19 +31,9 @@ const currencyOptions = sortedCurrencies.map(({ code, name }) => ({
 const CurrencySubPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { trackEvent } = useContext(MetaMetricsContext);
   const currentCurrency = useSelector(getCurrentCurrency).toLowerCase();
 
   const handleSelect = (value: string) => {
-    trackEvent({
-      category: MetaMetricsEventCategory.Settings,
-      event: MetaMetricsEventName.CurrentCurrency,
-      properties: {
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        current_currency: value,
-        location: 'settings-page',
-      },
-    });
     dispatch(setCurrentCurrency(value));
     navigate(ASSETS_ROUTE);
   };

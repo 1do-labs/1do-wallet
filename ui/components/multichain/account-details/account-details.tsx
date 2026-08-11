@@ -14,12 +14,6 @@ import {
 } from '@metamask/design-system-react';
 import { useNavigate } from 'react-router-dom';
 import {
-  MetaMetricsEventCategory,
-  MetaMetricsEventKeyType,
-  MetaMetricsEventName,
-} from '../../../../shared/constants/metametrics';
-import { MetaMetricsContext } from '../../../contexts/metametrics';
-import {
   Display,
   JustifyContent,
 } from '../../../helpers/constants/design-system';
@@ -57,7 +51,6 @@ export const AccountDetails = ({ address }: AccountDetailsProps) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const t = useI18nContext();
-  const { trackEvent } = useContext(MetaMetricsContext);
   const hdEntropyIndex = useSelector(getHDEntropyIndex);
   const accounts = useSelector(getMetaMaskAccountsOrdered);
   const account = useSelector((state) =>
@@ -80,7 +73,7 @@ export const AccountDetails = ({ address }: AccountDetailsProps) => {
     address,
   });
 
-  const isAbleToExportSrp = isAbleToRevealSrp(account, keyrings);
+  const isAbleToExportSrp = isAbleToRevealSrp(account);
   const displayExportSrpQuiz = keyringId && isAbleToExportSrp;
 
   const [attemptingExport, setAttemptingExport] = useState<AttemptExportState>(
@@ -190,18 +183,6 @@ export const AccountDetails = ({ address }: AccountDetailsProps) => {
       <HoldToRevealModal
         isOpen={showHoldToReveal}
         onClose={() => {
-          trackEvent({
-            category: MetaMetricsEventCategory.Keys,
-            event: MetaMetricsEventName.KeyExportCanceled,
-            properties: {
-              // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-              // eslint-disable-next-line @typescript-eslint/naming-convention
-              key_type: MetaMetricsEventKeyType.Pkey,
-              // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-              // eslint-disable-next-line @typescript-eslint/naming-convention
-              hd_entropy_index: hdEntropyIndex,
-            },
-          });
           setPrivateKey('');
           setShowHoldToReveal(false);
         }}

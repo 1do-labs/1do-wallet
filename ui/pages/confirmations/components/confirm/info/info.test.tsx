@@ -9,14 +9,9 @@ import {
   getMockPersonalSignConfirmState,
   getMockSetApprovalForAllConfirmState,
   getMockTypedSignConfirmState,
-  getMockTypedSignPermissionConfirmState,
 } from '../../../../../../test/data/confirmations/helper';
-import {
-  renderWithConfirmContextProvider,
-  renderWithConfirmContext,
-} from '../../../../../../test/lib/confirmations/render-helpers';
+import { renderWithConfirmContextProvider } from '../../../../../../test/lib/confirmations/render-helpers';
 import { useAssetDetails } from '../../../hooks/useAssetDetails';
-import { getEnabledAdvancedPermissions } from '../../../../../../shared/lib/environment';
 import { DEFAULT_ROUTE } from '../../../../../helpers/constants/routes';
 import { ConfirmationLoader } from '../../../hooks/useConfirmationNavigation';
 import { enLocale as messages } from '../../../../../../test/lib/i18n-helpers';
@@ -121,37 +116,6 @@ describe('Info', () => {
     const mockStore = configureMockStore([])(state);
     const { container } = renderWithConfirmContextProvider(<Info />, mockStore);
     expect(container).toMatchSnapshot();
-  });
-
-  it('renders info section for typed sign request with permission', () => {
-    const state = getMockTypedSignPermissionConfirmState();
-    const mockStore = configureMockStore([])(state);
-    const { container } = renderWithConfirmContextProvider(<Info />, mockStore);
-    expect(container).toMatchSnapshot();
-  });
-
-  it('throws an error if gator permissions feature is not enabled', () => {
-    // the requested permission type is `native-token-stream`
-    jest.mocked(getEnabledAdvancedPermissions).mockReturnValue([]);
-
-    const state = getMockTypedSignPermissionConfirmState();
-    const mockStore = configureMockStore([])(state);
-    expect(() => renderWithConfirmContext(<Info />, mockStore)).toThrow(
-      'Invalid eth_signTypedData_v4 request - Advanced Permission type: native-token-stream not enabled',
-    );
-  });
-
-  it('throws an error if the specific permission type is not enabled', () => {
-    // the requested permission type is `native-token-stream`
-    jest
-      .mocked(getEnabledAdvancedPermissions)
-      .mockReturnValue(['erc20-token-stream']);
-
-    const state = getMockTypedSignPermissionConfirmState();
-    const mockStore = configureMockStore([])(state);
-    expect(() => renderWithConfirmContext(<Info />, mockStore)).toThrow(
-      'Invalid eth_signTypedData_v4 request - Advanced Permission type: native-token-stream not enabled',
-    );
   });
 
   it('renders info section for contract interaction request', () => {

@@ -14,7 +14,6 @@ import {
   CONTENT_SCRIPT,
   LEGACY_PUBLIC_CONFIG,
   METAMASK_EIP_1193_PROVIDER,
-  PHISHING_SAFELIST,
   LEGACY_PROVIDER,
   PHISHING_STREAM,
   METAMASK_CAIP_MULTICHAIN_PROVIDER,
@@ -86,7 +85,6 @@ function setupCookieHandlerStreamsFromOrigin(origin: string): void {
   cookieHandlerPageMux.ignoreStream(LEGACY_PROVIDER);
   cookieHandlerPageMux.ignoreStream(METAMASK_EIP_1193_PROVIDER);
   cookieHandlerPageMux.ignoreStream(METAMASK_CAIP_MULTICHAIN_PROVIDER);
-  cookieHandlerPageMux.ignoreStream(PHISHING_SAFELIST);
   cookieHandlerPageMux.ignoreStream(PHISHING_STREAM);
 }
 
@@ -152,7 +150,6 @@ export const setupCookieHandlerExtStreams = (): void => {
   cookieHandlerMux.ignoreStream(LEGACY_PROVIDER);
   cookieHandlerMux.ignoreStream(METAMASK_EIP_1193_PROVIDER);
   cookieHandlerMux.ignoreStream(METAMASK_CAIP_MULTICHAIN_PROVIDER);
-  cookieHandlerMux.ignoreStream(PHISHING_SAFELIST);
   cookieHandlerMux.ignoreStream(PHISHING_STREAM);
   pipeline(
     cookieHandlerPageChannel,

@@ -5,6 +5,7 @@ import {
   getGenericErc7730TransactionClearSigning,
   getGenericErc7730TypedDataClearSigning,
   hashErc7730Descriptor,
+  type Erc7730Descriptor,
 } from './erc7730-generic';
 import {
   getRegistryErc7730TypedDataClearSigning,
@@ -185,7 +186,7 @@ describe('generic ERC-7730 clear signing parser', () => {
     expect(
       getGenericErc7730TypedDataClearSigning(
         permit2TypedData,
-        permit2Descriptor,
+        permit2Descriptor as unknown as Erc7730Descriptor,
         {
           descriptorId: 'registry/uniswap/eip712-uniswap-permit2.json',
           descriptorSha256,
@@ -237,7 +238,7 @@ describe('generic ERC-7730 clear signing parser', () => {
         index,
         descriptorStore: {
           [path]: {
-            descriptor: permit2Descriptor,
+            descriptor: permit2Descriptor as unknown as Erc7730Descriptor,
             json: descriptorJson,
             sha256,
           },
@@ -274,7 +275,7 @@ describe('generic ERC-7730 clear signing parser', () => {
             }),
           },
         } as SignatureRequestType,
-        erc2612PermitDescriptor,
+        erc2612PermitDescriptor as unknown as Erc7730Descriptor,
         {
           descriptorId: 'registry/permit/eip712-permit-optimism-usdc.json',
           descriptorSha256,
@@ -318,7 +319,7 @@ describe('generic ERC-7730 clear signing parser', () => {
             to: '0x87870Bca3F3fD6335C3F4ce8392D69350B4fA4E2',
           },
         },
-        aaveSupplyDescriptor,
+        aaveSupplyDescriptor as unknown as Erc7730Descriptor,
         {
           descriptorId: 'registry/aave/calldata-lpv3.json',
           descriptorSha256,
@@ -384,7 +385,7 @@ describe('generic ERC-7730 clear signing parser', () => {
         },
         descriptorStore: {
           [path]: {
-            descriptor: permit2Descriptor,
+            descriptor: permit2Descriptor as unknown as Erc7730Descriptor,
             json: JSON.stringify(permit2Descriptor),
             sha256: '0'.repeat(64),
           },

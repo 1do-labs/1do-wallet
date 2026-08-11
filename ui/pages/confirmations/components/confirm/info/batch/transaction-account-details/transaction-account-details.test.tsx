@@ -108,20 +108,6 @@ describe('TransactionAccountDetails', () => {
     ).toBeInTheDocument();
   });
 
-  it('renders an existing smart account switch to 1Do smart account', () => {
-    const { getByText } = renderConfirmation({
-      ...upgradeAccountConfirmationOnly,
-      delegationAddress: '0x1111111111111111111111111111111111111111',
-    });
-
-    expect(
-      getByText(messages.confirmAccountTypeSmartContract.message),
-    ).toBeInTheDocument();
-    expect(
-      getByText(messages.confirmAccountTypeOneDoSmartContract.message),
-    ).toBeInTheDocument();
-  });
-
   it('renders required data for revoke request', () => {
     const { getByText } = renderConfirmation(downgradeAccountConfirmation);
     expect(getByText('0x8a0bb...bDB87')).toBeInTheDocument();

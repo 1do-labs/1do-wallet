@@ -27,14 +27,12 @@ import { PayloadAction } from '@reduxjs/toolkit';
 import { GasFeeController } from '@metamask/gas-fee-controller';
 import { PermissionsRequest } from '@metamask/permission-controller';
 import { NonEmptyArray } from '@metamask/controller-utils';
-import type { PhishingDetectionScanResult } from '@metamask/phishing-controller';
 import {
   SetNameRequest,
   UpdateProposedNamesRequest,
   UpdateProposedNamesResult,
 } from '@metamask/name-controller';
 import {
-  TransactionContainerType,
   TransactionController,
   TransactionMeta,
   TransactionParams,
@@ -104,21 +102,7 @@ import {
   LedgerTransportTypes,
   LEDGER_USB_VENDOR_ID,
 } from '../../shared/constants/hardware-wallets';
-import {
-  MetaMetricsEventFragment,
-  MetaMetricsEventOptions,
-  MetaMetricsEventPayload,
-  MetaMetricsPageObject,
-  MetaMetricsPageOptions,
-  MetaMetricsPagePayload,
-  MetaMetricsReferrerObject,
-  MetaMetricsEventCategory,
-  MetaMetricsEventName,
-  MetaMetricsEventAccountType,
-  MetaMetricsUserTraits,
-} from '../../shared/constants/metametrics';
 import { isEqualCaseInsensitive } from '../../shared/lib/string-utils';
-import { getSmartTransactionsOptInStatusInternal } from '../../shared/lib/selectors';
 import {
   fetchLocale,
   loadRelativeTimeFormatLocaleData,
@@ -140,7 +124,6 @@ import { LastInteractedConfirmationInfo } from '../pages/confirmations/types/con
 import { trace, TraceName, TraceOperation } from '../../shared/lib/trace';
 import { SortCriteria } from '../components/app/assets/util/sort';
 import { NOTIFICATIONS_EXPIRATION_DELAY } from '../helpers/constants/notifications';
-import { getDismissSmartAccountSuggestionEnabled } from '../pages/confirmations/selectors/preferences';
 import { stripWalletTypePrefixFromWalletId } from '../hooks/multichain-accounts/utils';
 import { type NetworkConnectionBanner } from '../../shared/constants/app-state';
 import { isHardwareAccount } from '../../shared/lib/accounts';
@@ -159,11 +142,6 @@ import type {
   MetaMaskReduxState,
   TemporaryMessageDataType,
 } from './store';
-
-const parseSmartTransactionsError = (errorMessage: string): string => {
-  const errorJson = errorMessage.slice(12);
-  return JSON.parse(errorJson.trim());
-};
 
 type CustomGasSettings = {
   gas?: string;
@@ -1309,16 +1287,6 @@ function updateTransactionParams(txId: string, txParams: TransactionParams) {
   };
 }
 
-export async function getPhishingResult(website: string) {
-  return await submitRequestToBackground('getPhishingResult', [website]);
-}
-
-export async function scanUrlForPhishing(
-  origin: string,
-): Promise<PhishingDetectionScanResult | null> {
-  return await submitRequestToBackground('scanUrlForPhishing', [origin]);
-}
-
 export function deleteExpiredNotifications(): ThunkAction<
   void,
   MetaMaskReduxState,
@@ -1949,13 +1917,6 @@ export function showConfTxPage({ id }: Partial<TransactionMeta> = {}) {
   return {
     type: actionConstants.SHOW_CONF_TX_PAGE,
     id,
-  };
-}
-
-export function setShowSupportDataConsentModal(show: boolean) {
-  return {
-    type: actionConstants.SET_SHOW_SUPPORT_DATA_CONSENT_MODAL,
-    payload: show,
   };
 }
 
@@ -3332,22 +3293,7 @@ export function setDismissSmartAccountSuggestionEnabled(
 ): ThunkAction<void, MetaMaskReduxState, unknown, AnyAction> {
   // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31879
   // eslint-disable-next-line @typescript-eslint/no-misused-promises
-  return async (dispatch, getState) => {
-    const prevDismissSmartAccountSuggestionEnabled =
-      getDismissSmartAccountSuggestionEnabled(getState());
-    trackMetaMetricsEvent({
-      category: MetaMetricsEventCategory.Settings,
-      event: MetaMetricsEventName.SettingsUpdated,
-      properties: {
-        // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        dismiss_smt_acc_suggestion_enabled: value,
-        // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        prev_dismiss_smt_acc_suggestion_enabled:
-          prevDismissSmartAccountSuggestionEnabled,
-      },
-    });
+  return async (dispatch) => {
     await dispatch(
       setPreference('dismissSmartAccountSuggestionEnabled', value),
     );
@@ -3361,31 +3307,6 @@ export function setTokenSortConfig(value: SortCriteria) {
 
 export function setTokenNetworkFilter(value: Record<string, boolean>) {
   return setPreference('tokenNetworkFilter', value, false);
-}
-
-export function setSmartTransactionsPreferenceEnabled(
-  value: boolean,
-): ThunkAction<void, MetaMaskReduxState, unknown, AnyAction> {
-  // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31879
-  // eslint-disable-next-line @typescript-eslint/no-misused-promises
-  return async (dispatch, getState) => {
-    const smartTransactionsOptInStatus =
-      getSmartTransactionsOptInStatusInternal(getState());
-    trackMetaMetricsEvent({
-      category: MetaMetricsEventCategory.Settings,
-      event: MetaMetricsEventName.SettingsUpdated,
-      properties: {
-        // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        stx_opt_in: value,
-        // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        prev_stx_opt_in: smartTransactionsOptInStatus,
-      },
-    });
-    await dispatch(setPreference('smartTransactionsOptInStatus', value));
-    await forceUpdateMetamaskState(dispatch);
-  };
 }
 
 export function setShowMultiRpcModal(value: boolean) {
@@ -3546,9 +3467,6 @@ export function resetOnboarding(): ThunkAction<
   return async (dispatch: MetaMaskReduxDispatch) => {
     try {
       dispatch(resetOnboardingAction());
-
-      // reset metametrics optin status
-      dispatch(setParticipateInMetaMetrics(null));
     } catch (err) {
       console.error(err);
     }
@@ -3635,56 +3553,6 @@ export function toggleNetworkMenu(payload?: {
 export function closeNetworkMenu() {
   return {
     type: actionConstants.CLOSE_NETWORK_MENU,
-  };
-}
-
-export function setParticipateInMetaMetrics(
-  participationPreference: boolean | null,
-): ThunkAction<
-  Promise<[boolean, string]>,
-  MetaMaskReduxState,
-  unknown,
-  AnyAction
-> {
-  return async (dispatch: MetaMaskReduxDispatch) => {
-    log.debug(`background.setParticipateInMetaMetrics`);
-    try {
-      const metaMetricsId = await submitRequestToBackground<string>(
-        'setParticipateInMetaMetrics',
-        [participationPreference],
-      );
-
-      dispatch({
-        type: actionConstants.SET_PARTICIPATE_IN_METAMETRICS,
-        value: participationPreference,
-      });
-
-      return [participationPreference, metaMetricsId];
-    } catch (err) {
-      log.debug(err);
-      dispatch(displayWarning(err));
-      throw err;
-    }
-  };
-}
-
-export function setDataCollectionForMarketing(
-  dataCollectionPreference: boolean,
-): ThunkAction<
-  Promise<[boolean, string]>,
-  MetaMaskReduxState,
-  unknown,
-  AnyAction
-> {
-  return async (dispatch: MetaMaskReduxDispatch) => {
-    log.debug(`background.setDataCollectionForMarketing`);
-    await submitRequestToBackground('setDataCollectionForMarketing', [
-      dataCollectionPreference,
-    ]);
-    dispatch({
-      type: actionConstants.SET_DATA_COLLECTION_FOR_MARKETING,
-      value: dataCollectionPreference,
-    });
   };
 }
 
@@ -5150,88 +5018,6 @@ export async function attemptCloseNotificationPopup() {
   }
 }
 
-/**
- * @param payload - details of the event to track
- * @param options - options for routing/handling of event
- * @returns
- */
-export function trackMetaMetricsEvent(
-  payload: MetaMetricsEventPayload,
-  options?: MetaMetricsEventOptions,
-) {
-  return submitRequestToBackground('trackMetaMetricsEvent', [
-    { ...payload, actionId: generateActionId() },
-    options,
-  ]);
-}
-
-export function createEventFragment(
-  options: MetaMetricsEventFragment,
-): Promise<string> {
-  const actionId = generateActionId();
-  return submitRequestToBackground('createEventFragment', [
-    { ...options, actionId },
-  ]);
-}
-
-export function upsertTransactionUIMetricsFragment(
-  transactionId: string,
-  payload: Partial<MetaMetricsEventFragment>,
-) {
-  return submitRequestToBackground('upsertTransactionUIMetricsFragment', [
-    transactionId,
-    payload,
-  ]);
-}
-
-export function updateEventFragment(
-  id: string,
-  payload: Partial<MetaMetricsEventFragment>,
-) {
-  return submitRequestToBackground('updateEventFragment', [id, payload]);
-}
-
-export function finalizeEventFragment(
-  id: string,
-  options?: {
-    abandoned?: boolean;
-    page?: MetaMetricsPageObject;
-    referrer?: MetaMetricsReferrerObject;
-  },
-) {
-  return submitRequestToBackground('finalizeEventFragment', [id, options]);
-}
-
-/**
- * @param payload - details of the page viewed
- * @param options - options for handling the page view
- */
-export function trackMetaMetricsPage(
-  payload: MetaMetricsPagePayload,
-  options: MetaMetricsPageOptions,
-) {
-  return submitRequestToBackground('trackMetaMetricsPage', [
-    { ...payload, actionId: generateActionId() },
-    options,
-  ]);
-}
-
-export function updateMetaMetricsTraits(traits: MetaMetricsUserTraits) {
-  return submitRequestToBackground('updateMetaMetricsTraits', [traits]);
-}
-
-export function resetViewedNotifications() {
-  return submitRequestToBackground('resetViewedNotifications');
-}
-
-export function updateViewedNotifications(notificationIdViewedStatusMap: {
-  [notificationId: string]: boolean;
-}) {
-  return submitRequestToBackground('updateViewedNotifications', [
-    notificationIdViewedStatusMap,
-  ]);
-}
-
 export async function setAlertEnabledness(
   alertId: string,
   enabledness: boolean,
@@ -5250,222 +5036,6 @@ export async function setWeb3ShimUsageAlertDismissed(origin: string) {
   await submitRequestToBackground('setWeb3ShimUsageAlertDismissed', [origin]);
 }
 
-// Smart Transactions Controller
-export function clearSmartTransactionFees() {
-  submitRequestToBackground('clearSmartTransactionFees');
-}
-
-export function fetchSmartTransactionFees(
-  unsignedTransaction: Partial<TransactionParams> & { chainId: string },
-  approveTxParams: TransactionParams,
-): ThunkAction<void, MetaMaskReduxState, unknown, AnyAction> {
-  // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31879
-  // eslint-disable-next-line @typescript-eslint/no-misused-promises
-  return async (dispatch: MetaMaskReduxDispatch) => {
-    if (approveTxParams) {
-      approveTxParams.value = '0x0';
-    }
-    try {
-      const smartTransactionFees = await submitRequestToBackground(
-        'fetchSmartTransactionFees',
-        [unsignedTransaction, approveTxParams],
-      );
-      dispatch({
-        type: actionConstants.SET_SMART_TRANSACTIONS_ERROR,
-        payload: null,
-      });
-      return smartTransactionFees;
-    } catch (err) {
-      logErrorWithMessage(err);
-      if (isErrorWithMessage(err)) {
-        const errorMessage = getErrorMessage(err);
-        if (errorMessage.startsWith('Fetch error:')) {
-          const errorObj = parseSmartTransactionsError(errorMessage);
-          dispatch({
-            type: actionConstants.SET_SMART_TRANSACTIONS_ERROR,
-            payload: errorObj,
-          });
-        }
-      }
-      throw err;
-    }
-  };
-}
-
-type TemporarySmartTransactionGasFees = {
-  maxFeePerGas: string;
-  maxPriorityFeePerGas: string;
-  gas: string;
-  value: string;
-};
-
-const createSignedTransactions = async (
-  unsignedTransaction: Partial<TransactionParams> & { chainId: string },
-  fees: TemporarySmartTransactionGasFees[],
-  areCancelTransactions?: boolean,
-): Promise<TransactionParams[]> => {
-  const unsignedTransactionsWithFees = fees.map((fee) => {
-    const unsignedTransactionWithFees = {
-      ...unsignedTransaction,
-      maxFeePerGas: decimalToHex(fee.maxFeePerGas),
-      maxPriorityFeePerGas: decimalToHex(fee.maxPriorityFeePerGas),
-      gas: areCancelTransactions
-        ? decimalToHex(21000) // It has to be 21000 for cancel transactions, otherwise the API would reject it.
-        : unsignedTransaction.gas,
-      value: unsignedTransaction.value,
-    };
-    if (areCancelTransactions) {
-      unsignedTransactionWithFees.to = unsignedTransactionWithFees.from;
-      unsignedTransactionWithFees.data = '0x';
-    }
-    return unsignedTransactionWithFees;
-  });
-  const signedTransactions = await submitRequestToBackground<
-    TransactionParams[]
-  >('approveTransactionsWithSameNonce', [unsignedTransactionsWithFees]);
-  return signedTransactions;
-};
-
-export function signAndSendSmartTransaction({
-  unsignedTransaction,
-  smartTransactionFees,
-}: {
-  unsignedTransaction: Partial<TransactionParams> & { chainId: string };
-  smartTransactionFees: {
-    fees: TemporarySmartTransactionGasFees[];
-    cancelFees: TemporarySmartTransactionGasFees[];
-  };
-}): ThunkAction<Promise<string>, MetaMaskReduxState, unknown, AnyAction> {
-  return async (dispatch: MetaMaskReduxDispatch) => {
-    const signedTransactions = await createSignedTransactions(
-      unsignedTransaction,
-      smartTransactionFees.fees,
-    );
-    try {
-      const response = await submitRequestToBackground<{ uuid: string }>(
-        'submitSignedTransactions',
-        [
-          {
-            signedTransactions,
-            // The "signedCanceledTransactions" parameter is still expected by the STX controller but is no longer used.
-            // So we are passing an empty array. The parameter may be deprecated in a future update.
-            signedCanceledTransactions: [],
-            txParams: unsignedTransaction,
-          },
-        ],
-      ); // Returns e.g.: { uuid: 'dP23W7c2kt4FK9TmXOkz1UM2F20' }
-      return response.uuid;
-    } catch (err) {
-      logErrorWithMessage(err);
-      if (isErrorWithMessage(err)) {
-        const errorMessage = getErrorMessage(err);
-        if (errorMessage.startsWith('Fetch error:')) {
-          const errorObj = parseSmartTransactionsError(errorMessage);
-          dispatch({
-            type: actionConstants.SET_SMART_TRANSACTIONS_ERROR,
-            payload: errorObj,
-          });
-        }
-      }
-      throw err;
-    }
-  };
-}
-
-export function updateSmartTransaction(
-  uuid: string,
-  txMeta: TransactionMeta,
-): ThunkAction<void, MetaMaskReduxState, unknown, AnyAction> {
-  // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31879
-  // eslint-disable-next-line @typescript-eslint/no-misused-promises
-  return async (dispatch: MetaMaskReduxDispatch) => {
-    try {
-      await submitRequestToBackground('updateSmartTransaction', [
-        {
-          uuid,
-          ...txMeta,
-        },
-      ]);
-    } catch (err) {
-      logErrorWithMessage(err);
-      if (isErrorWithMessage(err)) {
-        const errorMessage = getErrorMessage(err);
-        if (errorMessage.startsWith('Fetch error:')) {
-          const errorObj = parseSmartTransactionsError(errorMessage);
-          dispatch({
-            type: actionConstants.SET_SMART_TRANSACTIONS_ERROR,
-            payload: errorObj,
-          });
-        }
-      }
-      throw err;
-    }
-  };
-}
-
-export function setSmartTransactionsRefreshInterval(
-  refreshInterval: number,
-): ThunkAction<void, MetaMaskReduxState, unknown, AnyAction> {
-  // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31879
-  // eslint-disable-next-line @typescript-eslint/no-misused-promises
-  return async () => {
-    if (refreshInterval === undefined || refreshInterval === null) {
-      return;
-    }
-    try {
-      await submitRequestToBackground('setStatusRefreshInterval', [
-        refreshInterval,
-      ]);
-    } catch (err) {
-      logErrorWithMessage(err);
-    }
-  };
-}
-
-export function cancelSmartTransaction(
-  uuid: string,
-): ThunkAction<void, MetaMaskReduxState, unknown, AnyAction> {
-  // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31879
-  // eslint-disable-next-line @typescript-eslint/no-misused-promises
-  return async (dispatch: MetaMaskReduxDispatch) => {
-    try {
-      await submitRequestToBackground('cancelSmartTransaction', [uuid]);
-    } catch (err) {
-      logErrorWithMessage(err);
-      if (isErrorWithMessage(err)) {
-        const errorMessage = getErrorMessage(err);
-        if (errorMessage.startsWith('Fetch error:')) {
-          const errorObj = parseSmartTransactionsError(errorMessage);
-          dispatch({
-            type: actionConstants.SET_SMART_TRANSACTIONS_ERROR,
-            payload: errorObj,
-          });
-        }
-      }
-      throw err;
-    }
-  };
-}
-
-// TODO: Not a thunk but rather a wrapper around a background call
-export function fetchSmartTransactionsLiveness({
-  networkClientId,
-  chainId,
-}: {
-  /** @deprecated Use `chainId` instead. */
-  networkClientId?: string;
-  chainId?: string;
-} = {}) {
-  return async () => {
-    try {
-      await submitRequestToBackground('fetchSmartTransactionsLiveness', [
-        { networkClientId, chainId },
-      ]);
-    } catch (err) {
-      logErrorWithMessage(err);
-    }
-  };
-}
 export function updateNetworkConnectionBanner(
   networkConnectionBanner: NetworkConnectionBanner,
 ): ThunkAction<void, MetaMaskReduxState, unknown, AnyAction> {
@@ -5639,20 +5209,6 @@ export function setName(
     // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31973
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   }) as any;
-}
-
-/**
- * To create a data deletion regulation for MetaMetrics data deletion
- */
-export async function createMetaMetricsDataDeletionTask() {
-  return await submitRequestToBackground('createMetaMetricsDataDeletionTask');
-}
-
-/**
- * To check the status of the current delete regulation.
- */
-export async function updateDataDeletionTaskStatus() {
-  return await submitRequestToBackground('updateDataDeletionTaskStatus');
 }
 
 /**
@@ -5863,73 +5419,6 @@ export function deleteNotificationsById(
 }
 
 /**
- * Synchronizes account tree data with user storage between devices.
- *
- * This function sends a request to the background script to sync accounts data and update the state accordingly.
- * If the operation encounters an error, it logs the error message and rethrows the error to ensure it is handled appropriately.
- *
- * @returns A thunk action that, when dispatched, attempts to synchronize accounts data with user storage between devices.
- */
-export function syncAccountTreeWithUserStorage(): ThunkAction<
-  void,
-  MetaMaskReduxState,
-  unknown,
-  AnyAction
-> {
-  // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31879
-  // eslint-disable-next-line @typescript-eslint/no-misused-promises
-  return async () => {
-    try {
-      const response = await submitRequestToBackground(
-        'syncAccountTreeWithUserStorage',
-      );
-      return response;
-    } catch (error) {
-      logErrorWithMessage(error);
-      throw error;
-    }
-  };
-}
-
-/**
- * Delete all of current user's accounts data from user storage.
- *
- * This function sends a request to the background script to sync accounts data and update the state accordingly.
- * If the operation encounters an error, it logs the error message and rethrows the error to ensure it is handled appropriately.
- *
- * @returns A thunk action that, when dispatched, attempts to synchronize accounts data with user storage between devices.
- */
-export function deleteAccountSyncingDataFromUserStorage(): ThunkAction<
-  void,
-  MetaMaskReduxState,
-  unknown,
-  AnyAction
-> {
-  return async () => {
-    return undefined;
-  };
-}
-
-/**
- * Synchronizes address book data with user storage between devices.
- *
- * This function sends a request to the background script to sync address book data and update the state accordingly.
- * If the operation encounters an error, it logs the error message and rethrows the error to ensure it is handled appropriately.
- *
- * @returns A thunk action that, when dispatched, attempts to synchronize address book data with user storage between devices.
- */
-export function syncContactsWithUserStorage(): ThunkAction<
-  void,
-  MetaMaskReduxState,
-  unknown,
-  AnyAction
-> {
-  return async () => {
-    return undefined;
-  };
-}
-
-/**
  * Marks MetaMask notifications as read.
  *
  * This function sends a request to the background script to mark the specified notifications as read.
@@ -6048,14 +5537,6 @@ export function disableMetamaskNotifications(): ThunkAction<
 
 export function setConfirmationAdvancedDetailsOpen(value: boolean) {
   return setPreference('showConfirmationAdvancedDetails', value);
-}
-
-export function setMultichainAccountsIntroModalShown(value: boolean) {
-  return async () => {
-    await submitRequestToBackground('setHasShownMultichainAccountsIntroModal', [
-      value,
-    ]);
-  };
 }
 
 export async function getNextAvailableAccountName(
@@ -6210,16 +5691,6 @@ export async function getERC1155BalanceOf(
     tokenId,
     networkClientId,
   ]);
-}
-
-export async function applyTransactionContainersExisting(
-  transactionId: string,
-  containerTypes: TransactionContainerType[],
-) {
-  return await submitRequestToBackground<void>(
-    'applyTransactionContainersExisting',
-    [transactionId, containerTypes],
-  );
 }
 
 export async function getLayer1GasFeeValue({

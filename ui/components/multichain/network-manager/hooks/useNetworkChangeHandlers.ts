@@ -2,10 +2,6 @@ import { useCallback, useContext, useEffect, useState } from 'react';
 import { type CaipChainId } from '@metamask/utils';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  MetaMetricsEventCategory,
-  MetaMetricsEventName,
-} from '../../../../../shared/constants/metametrics';
-import {
   convertCaipToHexChainId,
   getRpcDataByChainId,
 } from '../../../../../shared/lib/network.utils';
@@ -23,7 +19,6 @@ import {
   getMultichainNetworkConfigurationsTuple,
   getSelectedMultichainNetworkChainId,
 } from '../../../../selectors';
-import { MetaMetricsContext } from '../../../../contexts/metametrics';
 import {
   BUILT_IN_NETWORKS,
   FEATURED_RPCS,
@@ -54,7 +49,6 @@ export enum ACTION_MODE {
 
 export const useNetworkChangeHandlers = () => {
   const dispatch = useDispatch();
-  const { trackEvent } = useContext(MetaMetricsContext);
 
   const [multichainNetworks] = useSelector(
     getMultichainNetworkConfigurationsTuple,
@@ -63,9 +57,7 @@ export const useNetworkChangeHandlers = () => {
 
   const enabledNetworksByNamespace = useSelector(getEnabledNetworksByNamespace);
   const allChainIds = useSelector(getAllChainsToPoll);
-  const [, evmNetworks] = useSelector(
-    getMultichainNetworkConfigurationsTuple,
-  );
+  const [, evmNetworks] = useSelector(getMultichainNetworkConfigurationsTuple);
   const [actionMode, setActionMode] = useState(ACTION_MODE.LIST);
 
   useEffect(() => {
@@ -132,32 +124,11 @@ export const useNetworkChangeHandlers = () => {
         (featuredRpc) => featuredRpc.chainId === hexChainId,
       );
       const isCustomNetwork = !isBuiltInNetwork && !isFeaturedRpc;
-
-      trackEvent({
-        event: MetaMetricsEventName.NavNetworkSwitched,
-        category: MetaMetricsEventCategory.Network,
-        properties: {
-          location: 'Network Menu',
-          // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-          // eslint-disable-next-line @typescript-eslint/naming-convention
-          chain_id: currentChainIdToTrack,
-          // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-          // eslint-disable-next-line @typescript-eslint/naming-convention
-          from_network: currentChainIdToTrack,
-          // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-          // eslint-disable-next-line @typescript-eslint/naming-convention
-          to_network: chainIdToTrack,
-          // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-          // eslint-disable-next-line @typescript-eslint/naming-convention
-          custom_network: isCustomNetwork,
-        },
-      });
     },
     [
       getMultichainNetworkConfigurationOrThrow,
       currentChainId,
       handleEvmNetworkChange,
-      trackEvent,
     ],
   );
 

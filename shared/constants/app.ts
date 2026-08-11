@@ -138,7 +138,6 @@ export const MESSAGE_TYPE = {
   ETH_SIGN_TYPED_DATA_V3: 'eth_signTypedData_v3',
   ETH_SIGN_TYPED_DATA_V4: 'eth_signTypedData_v4',
   GET_PROVIDER_STATE: 'metamask_getProviderState',
-  LOG_WEB3_SHIM_USAGE: 'metamask_logWeb3ShimUsage',
   PERSONAL_SIGN: 'personal_sign',
   SEND_METADATA: 'metamask_sendDomainMetadata',
   SWITCH_ETHEREUM_CHAIN: 'wallet_switchEthereumChain',
@@ -152,11 +151,6 @@ export const MESSAGE_TYPE = {
   WALLET_REVOKE_SESSION: 'wallet_revokeSession',
   WALLET_SEND_CALLS: 'wallet_sendCalls',
   WALLET_SESSION_CHANGED: 'wallet_sessionChanged',
-  WALLET_REQUEST_EXECUTION_PERMISSIONS: 'wallet_requestExecutionPermissions',
-  WALLET_GET_SUPPORTED_EXECUTION_PERMISSIONS:
-    'wallet_getSupportedExecutionPermissions',
-  WALLET_GET_GRANTED_EXECUTION_PERMISSIONS:
-    'wallet_getGrantedExecutionPermissions',
   WATCH_ASSET: 'wallet_watchAsset',
   WATCH_ASSET_LEGACY: 'metamask_watchAsset',
   HYPERLIQUID_REFERRAL_CONSENT: 'hyperliquid_referral_consent',
@@ -172,11 +166,6 @@ export const HYPERLIQUID_APPROVAL_TYPE =
 export const ASTERDEX_APPROVAL_TYPE = MESSAGE_TYPE.ASTERDEX_REFERRAL_CONSENT;
 export const GMX_APPROVAL_TYPE = MESSAGE_TYPE.GMX_REFERRAL_CONSENT;
 
-export const SMART_TRANSACTION_CONFIRMATION_TYPES = {
-  showSmartTransactionStatusPage:
-    'smartTransaction:showSmartTransactionStatusPage',
-};
-
 export const POLLING_TOKEN_ENVIRONMENT_TYPES = {
   [ENVIRONMENT_TYPE_POPUP]: 'popupGasPollTokens',
   [ENVIRONMENT_TYPE_NOTIFICATION]: 'notificationGasPollTokens',
@@ -186,31 +175,6 @@ export const POLLING_TOKEN_ENVIRONMENT_TYPES = {
 } as const;
 
 export const ORIGIN_METAMASK = 'metamask';
-
-export const METAMASK_BETA_CHROME_ID = 'pbbkamfgmaedccnfkmjcofcecjhfgldn';
-export const METAMASK_PROD_CHROME_ID = 'nkbihfbeogaeaoehlefnkodbefgpgknn';
-export const METAMASK_FLASK_CHROME_ID = 'ljfoeinjpaedjfecbmggjgodbgkmjkjk';
-
-export const METAMASK_MMI_BETA_CHROME_ID = 'kmbhbcbadohhhgdgihejcicbgcehoaeg';
-export const METAMASK_MMI_PROD_CHROME_ID = 'ikkihjamdhfiojpdbnfllpjigpneipbc';
-
-export const CHROME_BUILD_IDS = [
-  METAMASK_BETA_CHROME_ID,
-  METAMASK_PROD_CHROME_ID,
-  METAMASK_FLASK_CHROME_ID,
-  METAMASK_MMI_BETA_CHROME_ID,
-  METAMASK_MMI_PROD_CHROME_ID,
-] as const;
-
-const METAMASK_BETA_FIREFOX_ID = 'webextension-beta@metamask.io';
-const METAMASK_PROD_FIREFOX_ID = 'webextension@metamask.io';
-const METAMASK_FLASK_FIREFOX_ID = 'webextension-flask@metamask.io';
-
-export const FIREFOX_BUILD_IDS = [
-  METAMASK_BETA_FIREFOX_ID,
-  METAMASK_PROD_FIREFOX_ID,
-  METAMASK_FLASK_FIREFOX_ID,
-] as const;
 
 export const UNKNOWN_TICKER_SYMBOL = 'UNKNOWN';
 

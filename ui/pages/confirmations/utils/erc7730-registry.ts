@@ -90,7 +90,9 @@ const registryKey = (chainId?: unknown, address?: unknown) => {
   return `eip155:${normalizedChainId}:${normalizedAddress}`;
 };
 
-const parseTypedData = (data?: SignatureRequestType['msgParams']['data']) => {
+const parseTypedData = (
+  data?: NonNullable<SignatureRequestType['msgParams']>['data'],
+) => {
   if (!data) {
     return undefined;
   }
@@ -119,7 +121,9 @@ const getTypedDataEncodeTypeHash = (
   const { EIP712Domain: _eip712Domain, ...messageTypes } = types;
 
   try {
-    const encoder = ethersUtils._TypedDataEncoder.from(messageTypes);
+    const encoder = ethersUtils._TypedDataEncoder.from(
+      messageTypes as Parameters<typeof ethersUtils._TypedDataEncoder.from>[0],
+    );
     return ethersUtils.id(encoder.encodeType(primaryType));
   } catch {
     return undefined;

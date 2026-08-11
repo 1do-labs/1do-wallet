@@ -4,12 +4,7 @@ import { Box } from '@metamask/design-system-react';
 import { MenuItem } from '../../ui/menu';
 import { getDebankProfileUrl } from '../../../helpers/utils/debank';
 import { getSelectedAddress } from '../../../selectors';
-import { MetaMetricsContext } from '../../../contexts/metametrics';
 import { useI18nContext } from '../../../hooks/useI18nContext';
-import {
-  MetaMetricsEventCategory,
-  MetaMetricsEventName,
-} from '../../../../shared/constants/metametrics';
 import { IconName } from '../../component-library';
 
 export const DiscoverMenuItem = ({
@@ -20,22 +15,13 @@ export const DiscoverMenuItem = ({
   metricsLocation: string;
 }) => {
   const selectedAddress = useSelector(getSelectedAddress);
-  const { trackEvent } = useContext(MetaMetricsContext);
   const t = useI18nContext();
 
   const handlePortfolioOnClick = useCallback(() => {
     const url = getDebankProfileUrl(selectedAddress);
     global.platform.openTab({ url });
-    trackEvent({
-      category: MetaMetricsEventCategory.Navigation,
-      event: MetaMetricsEventName.PortfolioLinkClicked,
-      properties: {
-        location: metricsLocation,
-        text: 'Portfolio',
-      },
-    });
     closeMenu();
-  }, [closeMenu, metricsLocation, selectedAddress, trackEvent]);
+  }, [closeMenu, metricsLocation, selectedAddress]);
 
   return (
     <MenuItem

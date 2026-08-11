@@ -22,11 +22,6 @@ import {
 } from '../../../helpers/constants/routes';
 import { useI18nContext } from '../../../hooks/useI18nContext';
 import { getCurrentKeyring } from '../../../selectors';
-import { MetaMetricsContext } from '../../../contexts/metametrics';
-import {
-  MetaMetricsEventCategory,
-  MetaMetricsEventName,
-} from '../../../../shared/constants/metametrics';
 import { getHDEntropyIndex } from '../../../selectors/selectors';
 import {
   forceUpdateMetamaskState,
@@ -62,7 +57,6 @@ export default function ImportSRP({
       navigate(ONBOARDING_CREATE_PASSWORD_ROUTE, { replace: true });
     }
   }, [currentKeyring, navigate, isWalletResetInProgress]);
-  const { trackEvent } = useContext(MetaMetricsContext);
 
   const onBack = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -87,20 +81,11 @@ export default function ImportSRP({
 
     submitSecretRecoveryPhrase?.(secretRecoveryPhrase);
 
-    trackEvent({
-      category: MetaMetricsEventCategory.Onboarding,
-      event: MetaMetricsEventName.OnboardingWalletSecurityPhraseConfirmed,
-      properties: {
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        hd_entropy_index: hdEntropyIndex,
-      },
-    });
     navigate(ONBOARDING_CREATE_PASSWORD_ROUTE);
   }, [
     secretRecoveryPhrase,
     t,
     hdEntropyIndex,
-    trackEvent,
     navigate,
     submitSecretRecoveryPhrase,
   ]);

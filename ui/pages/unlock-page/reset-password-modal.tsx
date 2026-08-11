@@ -8,6 +8,7 @@ import {
   ButtonVariant,
   Icon,
   IconName,
+  IconSize,
   Text,
   TextVariant,
   TextColor,
@@ -26,13 +27,7 @@ import {
 } from '../../components/component-library';
 import { resetWallet as resetWalletAction } from '../../store/actions';
 import { DEFAULT_ROUTE } from '../../helpers/constants/routes';
-import {
-  MetaMetricsContextProp,
-  MetaMetricsEventCategory,
-  MetaMetricsEventName,
-} from '../../../shared/constants/metametrics';
 import { SUPPORT_LINK } from '../../helpers/constants/common';
-import { MetaMetricsContext } from '../../contexts/metametrics';
 import { useBoolean } from '../../hooks/useBoolean';
 
 // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
@@ -45,7 +40,6 @@ export default function ResetPasswordModal({
   onRestore: () => void;
 }) {
   const t = useI18nContext();
-  const { trackEvent } = useContext(MetaMetricsContext);
   const { value: resetWallet, toggle: handleResetWallet } = useBoolean();
   const navigate = useNavigate();
 
@@ -57,20 +51,7 @@ export default function ResetPasswordModal({
     navigate(DEFAULT_ROUTE, { replace: true });
   };
 
-  const handleContactSupportTrackEvent = () => {
-    trackEvent(
-      {
-        category: MetaMetricsEventCategory.Navigation,
-        event: MetaMetricsEventName.SupportLinkClicked,
-        properties: {
-          url: SUPPORT_LINK,
-        },
-      },
-      {
-        contextPropsIntoEventProperties: [MetaMetricsContextProp.PageTitle],
-      },
-    );
-  };
+  const handleContactSupportTrackEvent = () => undefined;
 
   const srpLoginContent = () => {
     return (

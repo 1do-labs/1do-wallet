@@ -5,11 +5,6 @@ import { ThemeType } from '../../../../../../shared/constants/preferences';
 import { TabEmptyState } from '../../../../ui/tab-empty-state';
 import { useI18nContext } from '../../../../../hooks/useI18nContext';
 import { getTheme } from '../../../../../selectors';
-import { MetaMetricsContext } from '../../../../../contexts/metametrics';
-import {
-  MetaMetricsEventCategory,
-  MetaMetricsEventName,
-} from '../../../../../../shared/constants/metametrics';
 import { showImportNftsModal } from '../../../../../store/actions';
 
 export type NftEmptyStateProps = {
@@ -23,7 +18,6 @@ export const NftEmptyState = ({
 }: NftEmptyStateProps) => {
   const t = useI18nContext();
   const theme = useSelector(getTheme);
-  const { trackEvent } = useContext(MetaMetricsContext);
   const dispatch = useDispatch();
 
   // Theme-aware icon
@@ -34,14 +28,7 @@ export const NftEmptyState = ({
 
   const handleImportNfts = useCallback(() => {
     dispatch(showImportNftsModal({}));
-    trackEvent({
-      category: MetaMetricsEventCategory.Navigation,
-      event: MetaMetricsEventName.EmptyNFTTabButtonClicked,
-      properties: {
-        location: 'NFT_Empty_State',
-      },
-    });
-  }, [dispatch, trackEvent]);
+  }, [dispatch]);
 
   return (
     <TabEmptyState

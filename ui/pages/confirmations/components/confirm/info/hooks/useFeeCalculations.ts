@@ -13,7 +13,6 @@ import {
   multiplyHexes,
 } from '../../../../../../../shared/lib/conversion.utils';
 import { Numeric } from '../../../../../../../shared/lib/Numeric';
-import { toHex } from '../../../../../../../shared/lib/delegation/utils';
 import { getCurrentCurrency } from '../../../../../../ducks/metamask/metamask';
 import { useFiatFormatter } from '../../../../../../hooks/useFiatFormatter';
 import { useGasFeeEstimates } from '../../../../../../hooks/useGasFeeEstimates';

@@ -28,7 +28,6 @@ import {
   ONBOARDING_PRIVACY_SETTINGS_ROUTE,
   ONBOARDING_COMPLETION_ROUTE,
   ONBOARDING_IMPORT_WITH_SRP_ROUTE,
-  ONBOARDING_METAMETRICS,
   SECURITY_ROUTE,
   ONBOARDING_REVEAL_SRP_ROUTE,
   ONBOARDING_DOWNLOAD_APP_ROUTE,
@@ -52,7 +51,6 @@ import {
   getFirstTimeFlowType,
   getFirstTimeFlowTypeRouteAfterUnlock,
 } from '../../selectors';
-import { MetaMetricsContext } from '../../contexts/metametrics';
 import { submitRequestToBackgroundAndCatch } from '../../components/app/toast-master/utils';
 // eslint-disable-next-line import-x/no-restricted-paths
 import { getEnvironmentType } from '../../../app/scripts/lib/util';
@@ -75,7 +73,6 @@ import PrivacySettings from './privacy-settings/privacy-settings';
 import CreationSuccessful from './creation-successful/creation-successful';
 import OnboardingWelcome from './welcome/welcome';
 import ImportSRP from './import-srp/import-srp';
-import MetaMetricsComponent from './metametrics/metametrics';
 import OnboardingAppHeader from './onboarding-app-header/onboarding-app-header';
 import RevealRecoveryPhrase from './recovery-phrase/reveal-recovery-phrase';
 import OnboardingDownloadApp from './download-app/download-app';
@@ -108,8 +105,6 @@ export default function OnboardingFlow() {
   const isFromSettingsSecurity = new URLSearchParams(search).get(
     'isFromSettingsSecurity',
   );
-  const { bufferedTrace, onboardingParentContext, trackEvent } =
-    useContext(MetaMetricsContext);
   const isUnlocked = useSelector(getIsUnlocked);
   const firstTimeFlowType = useSelector(getFirstTimeFlowType);
   const isPrimarySeedPhraseBackedUp = useSelector(
@@ -184,20 +179,6 @@ export default function OnboardingFlow() {
     isPrimarySeedPhraseBackedUp,
     isFromSettingsSecurity,
   ]);
-
-  useEffect(() => {
-    bufferedTrace?.({
-      name: TraceName.OnboardingJourneyOverall,
-      op: TraceOperation.OnboardingUserJourney,
-    });
-    if (onboardingParentContext) {
-      // Intentionally mutating ref object
-      onboardingParentContext.current = {
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        _name: TraceName.OnboardingJourneyOverall,
-      };
-    }
-  }, [onboardingParentContext, bufferedTrace]);
 
   const handleCreateNewAccount = async (password: string) => {
     try {
@@ -368,10 +349,6 @@ export default function OnboardingFlow() {
             <Route
               path={toRelativePath(ONBOARDING_WELCOME_ROUTE)}
               element={<OnboardingWelcome />}
-            />
-            <Route
-              path={toRelativePath(ONBOARDING_METAMETRICS)}
-              element={<MetaMetricsComponent />}
             />
             <Route
               path={toRelativePath(ONBOARDING_DOWNLOAD_APP_ROUTE)}

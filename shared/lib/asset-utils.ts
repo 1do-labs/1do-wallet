@@ -11,7 +11,6 @@ import {
   KnownCaipNamespace,
   numberToHex,
 } from '@metamask/utils';
-import log from 'loglevel';
 import { toChecksumHexAddress } from '@metamask/controller-utils';
 import { toEvmCaipChainId } from '@metamask/multichain-network-controller';
 import {
@@ -19,8 +18,6 @@ import {
   isNativeAddress,
   isNonEvmChainId,
 } from './chain-utils';
-
-const STATIC_METAMASK_BASE_URL = 'https://static.cx.metamask.io';
 
 export const toAssetId = (
   address: Hex | CaipAssetType | string,
@@ -69,33 +66,17 @@ export const toAssetId = (
 /**
  * Returns the image url for a caip-formatted asset
  *
- * @param assetId - The hex address or caip-formatted asset id
- * @param chainId - The chainId in caip or hex format
+ * @param _assetId - The hex address or caip-formatted asset id
+ * @param _chainId - The chainId in caip or hex format
  * @returns The image url for the asset
  */
 export const getAssetImageUrl = (
-  assetId: CaipAssetType | Hex | string,
-  chainId: CaipChainId | Hex,
+  _assetId: CaipAssetType | Hex | string,
+  _chainId: CaipChainId | Hex,
 ) => {
-  try {
-    const assetIdInCaip = toAssetId(assetId, chainId);
-    if (!assetIdInCaip) {
-      return undefined;
-    }
-    const normalizedAssetId = (
-      isNonEvmChainId(chainId) ? assetIdInCaip : assetIdInCaip.toLowerCase()
-    ).replaceAll(':', '/');
-    return `${STATIC_METAMASK_BASE_URL}/api/v2/tokenIcons/assets/${
-      normalizedAssetId
-    }.png`;
-  } catch (error) {
-    log.error('Failed to get asset image URL', {
-      error: error instanceof Error ? error.message : String(error),
-      assetId,
-      chainId,
-    });
-    return undefined;
-  }
+  // 1Do does not use MetaMask's static asset service. Asset metadata and
+  // optional media are supplied by the configured Alchemy/NFT providers.
+  return undefined;
 };
 
 export type AssetMetadata = {

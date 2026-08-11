@@ -458,16 +458,6 @@ describe('MultichainAddressRowsList', () => {
         expect(ethereumIndex).toBe(0);
       }
 
-      // Check relative ordering for networks that exist
-      if (bitcoinIndex !== -1 && ethereumIndex !== -1) {
-        expect(bitcoinIndex).toBeGreaterThan(ethereumIndex);
-      }
-      if (solanaIndex !== -1 && bitcoinIndex !== -1) {
-        expect(solanaIndex).toBeGreaterThan(bitcoinIndex);
-      }
-      if (tronIndex !== -1 && solanaIndex !== -1) {
-        expect(tronIndex).toBeGreaterThan(solanaIndex);
-      }
       if (lineaIndex !== -1 && ethereumIndex !== -1) {
         expect(lineaIndex).toBeGreaterThan(ethereumIndex);
       }

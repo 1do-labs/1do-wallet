@@ -3,12 +3,7 @@ import { Driver } from '../../../webdriver/driver';
 import { Ganache } from '../../../seeder/ganache';
 import { Anvil } from '../../../seeder/anvil';
 import HeaderNavbar from '../header-navbar';
-import { getCleanAppState, regularDelayMs } from '../../../helpers';
-import {
-  BASE_ACCOUNT_SYNC_INTERVAL,
-  BASE_ACCOUNT_SYNC_TIMEOUT,
-  POST_UNLOCK_DELAY,
-} from '../../../tests/identity/account-syncing/helpers';
+import { regularDelayMs } from '../../../helpers';
 
 class HomePage {
   protected driver: Driver;
@@ -296,14 +291,6 @@ class HomePage {
     await this.driver.clickElement(this.sendButton);
   }
 
-  async startSwapFlow(): Promise<void> {
-    await this.driver.clickElement(this.swapButton);
-  }
-
-  async startBridgeFlow(): Promise<void> {
-    await this.driver.clickElement(this.bridgeButton);
-  }
-
   async togglePrivacyBalance(): Promise<void> {
     await this.driver.clickElement(this.privacyBalanceToggle);
   }
@@ -438,31 +425,6 @@ class HomePage {
       css: '[data-testid="multichain-token-list-item-value"]',
       text: `${expectedTokenBalance} ${symbol}`,
     });
-  }
-
-  /**
-   * This function checks if account syncing has been successfully completed at least once.
-   * Includes a delay before checking to give Firefox more time to initialize (reduces flakiness).
-   */
-  async checkHasAccountSyncingSyncedAtLeastOnce(): Promise<void> {
-    console.log(
-      `Waiting ${POST_UNLOCK_DELAY}ms before checking account sync state (Firefox timing fix)`,
-    );
-    await this.driver.delay(POST_UNLOCK_DELAY);
-    console.log('Check if account syncing has synced at least once');
-    await this.driver.waitUntil(
-      async () => {
-        const uiState = await getCleanAppState(this.driver);
-        // Check for nullish, as the state we might seems to be `null` sometimes.
-        return (
-          uiState?.metamask?.hasAccountTreeSyncingSyncedAtLeastOnce === true
-        );
-      },
-      {
-        interval: BASE_ACCOUNT_SYNC_INTERVAL,
-        timeout: BASE_ACCOUNT_SYNC_TIMEOUT, // Syncing can take some time so adding a longer timeout to reduce flakes
-      },
-    );
   }
 
   async checkIfSendButtonIsClickable(): Promise<boolean> {

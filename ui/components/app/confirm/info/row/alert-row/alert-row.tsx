@@ -6,7 +6,6 @@ import {
 } from '../../../../../../helpers/constants/design-system';
 import useAlerts from '../../../../../../hooks/useAlerts';
 import { Box } from '../../../../../component-library';
-import { useAlertMetrics } from '../../../../alert-system/contexts/alertMetricsContext';
 import InlineAlert from '../../../../alert-system/inline-alert/inline-alert';
 import { MultipleAlertModal } from '../../../../alert-system/multiple-alert-modal';
 import {
@@ -50,7 +49,6 @@ export const ConfirmInfoAlertRow = ({
   showAlertLoader = false,
   ...rowProperties
 }: ConfirmInfoAlertRowProps) => {
-  const { trackInlineAlertClicked } = useAlertMetrics();
   const { getFieldAlerts } = useAlerts(ownerId);
   const fieldAlerts = getFieldAlerts(alertKey);
   const hasFieldAlert = fieldAlerts.length > 0;
@@ -72,7 +70,6 @@ export const ConfirmInfoAlertRow = ({
 
   const handleInlineAlertClick = () => {
     setAlertModalVisible(true);
-    trackInlineAlertClicked(selectedAlertKey);
   };
 
   const onClickHandler =

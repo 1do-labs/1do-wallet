@@ -48,15 +48,10 @@ import {
 } from '../../../../../helpers/constants/design-system';
 import ImportControl from '../import-control';
 import { useI18nContext } from '../../../../../hooks/useI18nContext';
-import { MetaMetricsContext } from '../../../../../contexts/metametrics';
 import {
   CHAIN_ID_TO_NETWORK_IMAGE_URL_MAP,
   TEST_CHAINS,
 } from '../../../../../../shared/constants/network';
-import {
-  MetaMetricsEventCategory,
-  MetaMetricsEventName,
-} from '../../../../../../shared/constants/metametrics';
 // TODO: Remove restricted import
 // eslint-disable-next-line import-x/no-restricted-paths
 import { getEnvironmentType } from '../../../../../../app/scripts/lib/util';
@@ -98,7 +93,6 @@ const AssetListControlBar = ({
 }: AssetListControlBarProps) => {
   const t = useI18nContext();
   const dispatch = useDispatch();
-  const { trackEvent } = useContext(MetaMetricsContext);
   const navigate = useNavigate();
   const sortButtonRef = useRef<HTMLButtonElement>(null);
   const importButtonRef = useRef<HTMLButtonElement>(null);
@@ -235,13 +229,6 @@ const AssetListControlBar = ({
 
   const handleTokenImportModal = () => {
     dispatch(showImportTokensModal());
-    trackEvent({
-      category: MetaMetricsEventCategory.Navigation,
-      event: MetaMetricsEventName.TokenImportButtonClicked,
-      properties: {
-        location: 'HOME',
-      },
-    });
     closePopover();
   };
 

@@ -1,6 +1,7 @@
 import {
   PreferencesController,
   PreferencesControllerMessenger,
+  getDefaultPreferencesControllerState,
 } from '../controllers/preferences-controller';
 import { MessengerClientInitFunction } from './types';
 
@@ -18,11 +19,13 @@ export const PreferencesControllerInit: MessengerClientInitFunction<
   PreferencesControllerMessenger
 > = ({ controllerMessenger, persistedState, initLangCode }) => {
   const persistedPreferences = persistedState.PreferencesController ?? {};
+  const defaultPreferences = getDefaultPreferencesControllerState().preferences;
   const messengerClient = new PreferencesController({
     state: {
       currentLocale: initLangCode ?? '',
       ...persistedPreferences,
       preferences: {
+        ...defaultPreferences,
         ...persistedPreferences.preferences,
         showTestNetworks: true,
       },

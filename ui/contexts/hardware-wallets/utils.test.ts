@@ -1,9 +1,7 @@
 import { KeyringTypes } from '@metamask/keyring-controller';
 import {
-  AWAITING_SIGNATURES_ROUTE,
   CONFIRM_TRANSACTION_ROUTE,
   CONFIRMATION_V_NEXT_ROUTE,
-  CROSS_CHAIN_SWAP_ROUTE,
   DEFAULT_ROUTE,
 } from '../../helpers/constants/routes';
 
@@ -68,14 +66,6 @@ describe('isHardwareWalletRoute', () => {
 
   it('returns true for confirmation vNext route', () => {
     expect(isHardwareWalletRoute(CONFIRMATION_V_NEXT_ROUTE)).toBe(true);
-  });
-
-  it('returns true for cross-chain swap route', () => {
-    expect(isHardwareWalletRoute(CROSS_CHAIN_SWAP_ROUTE)).toBe(true);
-  });
-
-  it('returns true for awaiting signatures route', () => {
-    expect(isHardwareWalletRoute(AWAITING_SIGNATURES_ROUTE)).toBe(true);
   });
 
   it('returns false for unrelated route', () => {

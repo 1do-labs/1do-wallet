@@ -19,7 +19,6 @@ import {
 import { useI18nContext } from '../../../../../hooks/useI18nContext';
 import { type Asset } from '../../../types/send';
 import { useNavigateSendPage } from '../../../hooks/send/useNavigateSendPage';
-import { useAssetSelectionMetrics } from '../../../hooks/send/metrics/useAssetSelectionMetrics';
 import { useSendContext } from '../../../context/send';
 import { Asset as AssetComponent } from '../../UI/asset';
 import { useScrollContainer } from '../../../../../contexts/scroll-container';
@@ -55,7 +54,6 @@ export const AssetList = ({
   const scrollContainerRef = useScrollContainer();
   const { goToAmountRecipientPage } = useNavigateSendPage();
   const { updateAsset } = useSendContext();
-  const { captureAssetSelected } = useAssetSelectionMetrics();
 
   const effectiveNfts = hideNfts ? [] : nfts;
   const effectiveAllNfts = hideNfts ? [] : allNfts;
@@ -72,9 +70,8 @@ export const AssetList = ({
 
       updateAsset(asset);
       goToAmountRecipientPage();
-      captureAssetSelected(asset);
     },
-    [updateAsset, goToAmountRecipientPage, captureAssetSelected, onAssetSelect],
+    [updateAsset, goToAmountRecipientPage, onAssetSelect],
   );
 
   const items: ListItem[] = [];

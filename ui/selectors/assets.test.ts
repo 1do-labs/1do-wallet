@@ -22,7 +22,6 @@ import {
   getAssetPreferences,
   getCustomAssets,
   getAssetsRates,
-  getMultiChainAssets,
   getTokenByAccountAndAddressAndChainId,
   getHistoricalMultichainAggregatedBalance,
   selectBalanceForAllWallets,
@@ -353,127 +352,6 @@ describe('getAssetsRates', () => {
   it('should return undefined if state does not have metamask property', () => {
     const invalidState = {} as AssetsRatesState;
     expect(() => getAssetsRates(invalidState)).toThrow();
-  });
-});
-
-describe('getMultiChainAssets', () => {
-  const mockAccountId = '5132883f-598e-482c-a02b-84eeaa352f5b';
-  const mockMultichainBalances = {
-    [mockAccountId]: {
-      'eip155:1/slip44:60': {
-        amount: '0.051724127',
-        unit: 'ETH',
-      },
-      'eip155:1/erc20:0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48': {
-        amount: '0',
-        unit: 'USDC',
-      },
-    },
-  };
-
-  const mockAccountAssets = {
-    [mockAccountId]: [
-      'eip155:1/slip44:60',
-      'eip155:1/erc20:0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
-    ],
-  };
-  it('should return assets with zero balance with hideZeroBalanceTokens set to false', () => {
-    const mockState = {
-      metamask: {
-        ...mockAssetsState.metamask,
-        ...mockRatesState.metamask,
-        accountsAssets: mockAccountAssets,
-        preferences: {
-          hideZeroBalanceTokens: false,
-        },
-        balances: mockMultichainBalances,
-      },
-    };
-    const result = getMultiChainAssets(mockState, {
-      address: '0xAddress',
-      id: mockAccountId,
-    });
-    expect(result).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({
-          title: 'Ether',
-          address: 'eip155:1/slip44:60',
-          symbol: 'ETH',
-          image: 'https://example.com/token-1.png',
-          decimals: 18,
-          chainId: 'eip155:1',
-          isNative: true,
-          balance: '0.051724127',
-          secondary: null,
-        }),
-        expect.objectContaining({
-          title: 'USDC',
-          address: 'eip155:1/erc20:0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
-          symbol: 'USDC',
-          image: undefined,
-          decimals: 0,
-          chainId: 'eip155:1',
-          isNative: false,
-          balance: '0',
-          secondary: null,
-        }),
-      ]),
-    );
-  });
-  it('should not return assets with zero balance with hideZeroBalanceTokens set to true', () => {
-    const mockState = {
-      metamask: {
-        ...mockAssetsState.metamask,
-        ...mockRatesState.metamask,
-        accountsAssets: mockAccountAssets,
-        preferences: {
-          hideZeroBalanceTokens: true,
-        },
-        balances: mockMultichainBalances,
-      },
-    };
-    const result = getMultiChainAssets(mockState, {
-      address: '0xAddress',
-      id: mockAccountId,
-    });
-    expect(result).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({
-          title: 'Ether',
-          address: 'eip155:1/slip44:60',
-          symbol: 'ETH',
-          image: 'https://example.com/token-1.png',
-          decimals: 18,
-          chainId: 'eip155:1',
-          isNative: true,
-          balance: '0.051724127',
-          secondary: null,
-        }),
-      ]),
-    );
-  });
-
-  it('returns the same data if state does not change', () => {
-    const mockState = {
-      metamask: {
-        ...mockAssetsState.metamask,
-        ...mockRatesState.metamask,
-        accountsAssets: mockAccountAssets,
-        preferences: {
-          hideZeroBalanceTokens: false,
-        },
-        balances: mockMultichainBalances,
-      },
-    };
-    const result1 = getMultiChainAssets(mockState, {
-      address: '0xAddress',
-      id: mockAccountId,
-    });
-    const result2 = getMultiChainAssets(mockState, {
-      address: '0xAddress',
-      id: mockAccountId,
-    });
-    expect(result1 === result2).toBe(true);
   });
 });
 

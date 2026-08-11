@@ -2,7 +2,6 @@ import { hasProperty, isObject } from '@metamask/utils';
 import {
   METHOD_DISPLAY_STATE_CORRUPTION_ERROR,
   METHOD_REPAIR_DATABASE,
-  VaultCorruptionType,
 } from '../../../../shared/constants/state-corruption';
 import {
   type Backup,
@@ -12,8 +11,6 @@ import {
 import { ErrorLike } from '../../../../shared/constants/errors';
 import { tryPostMessage } from '../start-up-errors/start-up-errors';
 import { RELOAD_WINDOW } from '../../../../shared/constants/start-up-errors';
-import { MetaMetricsEventName } from '../../../../shared/constants/metametrics';
-import { trackVaultCorruptionEvent } from './track-vault-corruption';
 
 type Message = Parameters<chrome.runtime.Port['postMessage']>[0];
 
@@ -131,22 +128,6 @@ function maybeGetCauseMessage(error: ErrorLike): string | null {
 }
 
 /**
- * Determines the type of vault corruption based on the error.
- *
- * @param error - The error that caused the vault corruption.
- * @returns The vault corruption type.
- */
-function getVaultCorruptionType(error: ErrorLike): VaultCorruptionType {
-  // PersistenceError carries the corruption type explicitly, set when the error
-  // was created in persistence-manager.ts.
-  if (error instanceof PersistenceError) {
-    return error.corruptionType;
-  }
-  // Fallback for non-PersistenceError errors (shouldn't happen in practice)
-  return VaultCorruptionType.Unknown;
-}
-
-/**
  * Checks if the backup object has a vault.
  *
  * @param backup - The backup object to check for a vault.
@@ -219,19 +200,6 @@ export class CorruptionHandler {
       return Promise.resolve();
     }
 
-    // Determine the type of vault corruption for tracking.
-    const corruptionType = getVaultCorruptionType(error);
-
-    // Track that the restore wallet screen was viewed directly to Segment.
-    // This bypasses MetaMetricsController (not yet initialized) and uses the backup state.
-    // Note: VaultCorruptionDetected is tracked earlier in persistence-manager.ts
-    // when the PersistenceError is thrown.
-    trackVaultCorruptionEvent(
-      backup,
-      MetaMetricsEventName.VaultCorruptionRestoreWalletScreenViewed,
-      corruptionType,
-    );
-
     // if we successfully sent the error to the UI, listen for a "restore"
     // method call back to us
     return new Promise((resolve, reject) => {
@@ -259,13 +227,6 @@ export class CorruptionHandler {
           // `restoreVaultListener` listeners from all UI windows
           connectedPorts.forEach((connectedPort) =>
             connectedPort.onMessage.removeListener(restoreVaultListener),
-          );
-
-          // Track that the user clicked the restore button.
-          trackVaultCorruptionEvent(
-            backup,
-            MetaMetricsEventName.VaultCorruptionRestoreWalletButtonPressed,
-            corruptionType,
           );
 
           try {

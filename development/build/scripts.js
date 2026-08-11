@@ -102,9 +102,9 @@ const scuttlingConfigBase = {
 const mv3ScuttlingConfig = { ...scuttlingConfigBase };
 const standardScuttlingConfig = { ...scuttlingConfigBase };
 
-const noopWriteStream = through.obj((_file, _fileEncoding, callback) =>
-  callback(),
-);
+function createNoopWriteStream() {
+  return through.obj((_file, _fileEncoding, callback) => callback());
+}
 
 module.exports = createScriptTasks;
 
@@ -638,7 +638,9 @@ function createFactoredBuild({
       // setup bundle destination
       browserPlatforms.forEach((platform) => {
         const dest = `./dist/${platform}/`;
-        const destination = policyOnly ? noopWriteStream : gulp.dest(dest);
+        const destination = policyOnly
+          ? createNoopWriteStream()
+          : gulp.dest(dest);
         pipeline.get('dest').push(destination);
       });
     });
@@ -890,7 +892,9 @@ function createNormalBundle({
       // setup bundle destination
       browserPlatforms.forEach((platform) => {
         const dest = `./dist/${platform}/`;
-        const destination = policyOnly ? noopWriteStream : gulp.dest(dest);
+        const destination = policyOnly
+          ? createNoopWriteStream()
+          : gulp.dest(dest);
         pipeline.get('dest').push(destination);
       });
     });
@@ -962,7 +966,7 @@ function setupBundlerDefaults(
             './**/node_modules/ox',
             './**/node_modules/uuid',
             './**/node_modules/isows',
-            // Transitive controller dependency that still ships modern syntax.
+            // Multichain account service transitively includes this package.
             './**/node_modules/@metamask/snaps-utils',
             // Charting library (ESM-only)
             './**/node_modules/lightweight-charts',

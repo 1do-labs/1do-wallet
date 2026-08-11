@@ -5,7 +5,6 @@ import { renderWithProvider } from '../../../../test/lib/render-helpers-navigate
 import {
   DEFAULT_ROUTE,
   ONBOARDING_COMPLETION_ROUTE,
-  ONBOARDING_METAMETRICS,
   ONBOARDING_REVIEW_SRP_ROUTE,
   MANAGE_WALLET_RECOVERY_ROUTE,
 } from '../../../helpers/constants/routes';
@@ -96,7 +95,7 @@ describe('RevealRecoveryPhrase', () => {
       store,
     );
 
-    expect(mockUseNavigate).toHaveBeenCalledWith(ONBOARDING_METAMETRICS, {
+    expect(mockUseNavigate).toHaveBeenCalledWith(ONBOARDING_COMPLETION_ROUTE, {
       replace: true,
     });
   });

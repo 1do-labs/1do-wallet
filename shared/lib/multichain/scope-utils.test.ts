@@ -114,9 +114,7 @@ describe('scope-utils', () => {
 
   describe('toEvmCaipAccountId', () => {
     it('formats an EVM CAIP account ID', () => {
-      expect(toEvmCaipAccountId('eip155:1', EVM_ADDRESS)).toBe(
-        `eip155:1:${EVM_ADDRESS}`,
-      );
+      expect(toEvmCaipAccountId(EVM_ADDRESS)).toBe(`eip155:0:${EVM_ADDRESS}`);
     });
   });
 });

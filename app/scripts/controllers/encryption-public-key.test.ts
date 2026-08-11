@@ -6,7 +6,6 @@ import {
   EncryptionPublicKeyManagerMessenger,
 } from '@metamask/message-manager';
 import { KeyringType } from '../../../shared/constants/keyring';
-import { MetaMetricsEventCategory } from '../../../shared/constants/metametrics';
 import {
   EncryptionPublicKeyController,
   EncryptionPublicKeyControllerMessenger,
@@ -89,7 +88,6 @@ describe('EncryptionPublicKeyController', () => {
   const getEncryptionPublicKeyMock = jest.fn();
   const getAccountKeyringTypeMock = jest.fn();
   const getStateMock = jest.fn();
-  const metricsEventMock = jest.fn();
 
   beforeEach(() => {
     jest.resetAllMocks();
@@ -115,9 +113,6 @@ describe('EncryptionPublicKeyController', () => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       getState: getStateMock as any,
 
-      // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31973
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      metricsEvent: metricsEventMock as any,
       manager: new EncryptionPublicKeyManager({
         messenger: managerMessengerMock,
       }),
@@ -177,7 +172,7 @@ describe('EncryptionPublicKeyController', () => {
     });
 
     it('rejects all messages in the message manager', () => {
-      encryptionPublicKeyController.rejectUnapproved('Test Reason');
+      encryptionPublicKeyController.rejectUnapproved();
       expect(
         encryptionPublicKeyManagerMock.rejectMessage,
       ).toHaveBeenCalledTimes(2);
@@ -187,18 +182,6 @@ describe('EncryptionPublicKeyController', () => {
       expect(encryptionPublicKeyManagerMock.rejectMessage).toHaveBeenCalledWith(
         messageIdMock2,
       );
-    });
-
-    it('fires metrics event with reject reason', () => {
-      encryptionPublicKeyController.rejectUnapproved('Test Reason');
-      expect(metricsEventMock).toHaveBeenCalledTimes(2);
-      expect(metricsEventMock).toHaveBeenLastCalledWith({
-        event: 'Test Reason',
-        category: MetaMetricsEventCategory.Messages,
-        properties: {
-          action: 'Encryption public key Request',
-        },
-      });
     });
   });
 

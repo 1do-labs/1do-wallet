@@ -1,7 +1,5 @@
 import React from 'react';
-import { SMART_TRANSACTIONS_LEARN_MORE_URL } from '../../../../shared/constants/smartTransactions';
 import { TRANSACTION_SIMULATIONS_LEARN_MORE_LINK } from '../../../../shared/lib/ui-utils';
-import { getSmartTransactionsPreferenceEnabled } from '../../../../shared/lib/selectors/smart-transactions';
 import { SettingItemConfig } from '../types';
 import {
   SettingsTab,
@@ -12,7 +10,6 @@ import { getPreferences, getUseExternalNameSources } from '../../../selectors';
 import {
   setDismissSmartAccountSuggestionEnabled,
   setFeatureFlag,
-  setSmartTransactionsPreferenceEnabled,
   setUseExternalNameSources,
   setUseTransactionSimulations,
 } from '../../../store/actions';
@@ -22,27 +19,17 @@ import { TRANSACTION_ITEMS } from '../search-config';
 const TransactionSimulationsItem = createToggleItem({
   name: 'TransactionSimulationsItem',
   titleKey: TRANSACTION_ITEMS['estimate-balance-changes'],
+
   formatDescription: createDescriptionWithLearnMore(
     'simulationsSettingDescriptionV2',
     TRANSACTION_SIMULATIONS_LEARN_MORE_LINK,
   ),
+
   selector: (state: MetaMaskReduxState) =>
     Boolean(state.metamask?.useTransactionSimulations),
+
   action: setUseTransactionSimulations,
   dataTestId: 'transactions-simulations-toggle',
-  trackEventProperty: 'use_transaction_simulations',
-});
-
-const SmartTransactionsItem = createToggleItem({
-  name: 'SmartTransactionsItem',
-  titleKey: TRANSACTION_ITEMS['smart-transactions'],
-  formatDescription: createDescriptionWithLearnMore(
-    'stxOptInDescriptionV2',
-    SMART_TRANSACTIONS_LEARN_MORE_URL,
-  ),
-  selector: getSmartTransactionsPreferenceEnabled,
-  action: setSmartTransactionsPreferenceEnabled,
-  dataTestId: 'transactions-smart-transactions-toggle',
 });
 
 const SmartAccountRequestsFromDappsItem = createToggleItem({
@@ -59,28 +46,29 @@ const ProposedNicknamesItem = createToggleItem({
   name: 'ProposedNicknamesItem',
   titleKey: TRANSACTION_ITEMS['proposed-nicknames'],
   descriptionKey: 'externalNameSourcesSettingDescriptionV2',
+
   selector: (state: MetaMaskReduxState) =>
     Boolean(getUseExternalNameSources(state)),
+
   action: setUseExternalNameSources,
   dataTestId: 'transactions-proposed-nicknames-toggle',
-  trackEventProperty: 'use_external_name_sources',
 });
 
 const ShowHexDataItem = createToggleItem({
   name: 'ShowHexDataItem',
   titleKey: TRANSACTION_ITEMS['show-hex-data'],
   descriptionKey: 'showHexDataDescription',
+
   selector: (state: MetaMaskReduxState) =>
     Boolean(state.metamask?.featureFlags?.sendHexData),
+
   action: (value: boolean) => setFeatureFlag('sendHexData', value, ''),
   dataTestId: 'transactions-show-hex-data-toggle',
   containerDataTestId: 'transactions-settings-hex-data-toggle',
-  trackEventProperty: 'send_hex_data',
 });
 
 const TRANSACTION_SETTING_ITEMS: SettingItemConfig[] = [
   { id: 'estimate-balance-changes', component: TransactionSimulationsItem },
-  { id: 'smart-transactions', component: SmartTransactionsItem },
   {
     id: 'smart-account-requests-from-dapps',
     component: SmartAccountRequestsFromDappsItem,

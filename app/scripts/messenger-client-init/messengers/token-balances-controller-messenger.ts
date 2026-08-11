@@ -32,7 +32,6 @@ import {
   KeyringControllerLockEvent,
   KeyringControllerUnlockEvent,
 } from '@metamask/keyring-controller';
-import { RemoteFeatureFlagControllerGetStateAction } from '@metamask/remote-feature-flag-controller';
 import type {
   PreferencesControllerGetStateAction,
   PreferencesControllerStateChangeEvent,
@@ -134,7 +133,6 @@ export function getTokenBalancesControllerMessenger(
 
 type AllowedInitializationActions =
   | PreferencesControllerGetStateAction
-  | RemoteFeatureFlagControllerGetStateAction
   | OnboardingControllerGetStateAction;
 
 export type TokenBalancesControllerInitMessenger = ReturnType<
@@ -163,7 +161,6 @@ export function getTokenBalancesControllerInitMessenger(
     messenger: controllerInitMessenger,
     actions: [
       'PreferencesController:getState',
-      'RemoteFeatureFlagController:getState',
       'OnboardingController:getState',
     ],
   });

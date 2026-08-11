@@ -23,7 +23,6 @@ import {
   selectPendingApprovalsForNavigation,
 } from '../../selectors';
 import { useModalState } from '../../hooks/useModalState';
-import { useSuppressNavigation } from '../../hooks/useSuppressConfirmNavigate';
 
 const EXEMPTED_ROUTES = [
   UNLOCK_ROUTE,
@@ -47,16 +46,11 @@ export const ConfirmationHandler = () => {
 
   const pendingApprovals = useSelector(selectPendingApprovalsForNavigation);
   const hasApprovalFlows = useSelector(selectHasApprovalFlows);
-  const suppressNavigation = useSuppressNavigation();
   const stayOnHomePage = Boolean(location.state?.stayOnHomePage);
 
   const canRedirect = !isNotification && !stayOnHomePage;
   // Ported from home.component - checkStatusAndNavigate()
   const checkStatusAndNavigate = useCallback(() => {
-    if (suppressNavigation(pendingApprovals?.[0]?.id, pendingApprovals)) {
-      return;
-    }
-
     if (pendingApprovals.length || hasApprovalFlows) {
       const url = getConfirmationRoute(
         pendingApprovals?.[0]?.id,
@@ -70,13 +64,7 @@ export const ConfirmationHandler = () => {
         navigate(url, { replace: true });
       }
     }
-  }, [
-    closeModals,
-    hasApprovalFlows,
-    navigate,
-    pendingApprovals,
-    suppressNavigation,
-  ]);
+  }, [closeModals, hasApprovalFlows, navigate, pendingApprovals]);
 
   // Runs on all routes (not just home), so skip navigation on exempted routes
   const isExemptedRoute = EXEMPTED_ROUTES.some((route) =>

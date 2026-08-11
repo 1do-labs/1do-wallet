@@ -24,16 +24,10 @@ import {
   TextVariant,
 } from '../../../helpers/constants/design-system';
 import { useI18nContext } from '../../../hooks/useI18nContext';
-import { MetaMetricsContext } from '../../../contexts/metametrics';
 import {
   getHdKeyringOfSelectedAccountOrPrimaryKeyring,
   getHDEntropyIndex,
 } from '../../../selectors';
-import {
-  MetaMetricsEventAccountType,
-  MetaMetricsEventCategory,
-  MetaMetricsEventName,
-} from '../../../../shared/constants/metametrics';
 import {
   CONNECT_HARDWARE_ROUTE,
   IMPORT_SRP_ROUTE,
@@ -105,7 +99,6 @@ export const AccountMenu = ({
   children,
 }: AccountMenuProps) => {
   const t = useI18nContext();
-  const { trackEvent } = useContext(MetaMetricsContext);
   const hdEntropyIndex = useSelector(getHDEntropyIndex);
   useEffect(() => {
     endTrace({ name: TraceName.AccountList });
@@ -151,18 +144,9 @@ export const AccountMenu = ({
   );
 
   const onSelectSrp = useCallback(() => {
-    trackEvent({
-      category: MetaMetricsEventCategory.Accounts,
-      event: MetaMetricsEventName.SecretRecoveryPhrasePickerClicked,
-      properties: {
-        // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        button_type: 'picker',
-      },
-    });
     setPreviousActionMode(actionMode);
     setActionMode(ACTION_MODES.SELECT_SRP);
-  }, [setActionMode, actionMode, trackEvent]);
+  }, [setActionMode, actionMode]);
   return (
     <Modal isOpen onClose={onClose}>
       <ModalOverlay />
@@ -222,19 +206,6 @@ export const AccountMenu = ({
                 startIconName={IconName.Add}
                 startIconProps={{ size: IconSize.Md }}
                 onClick={() => {
-                  trackEvent({
-                    category: MetaMetricsEventCategory.Navigation,
-                    event: MetaMetricsEventName.AccountAddSelected,
-                    properties: {
-                      // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-                      // eslint-disable-next-line @typescript-eslint/naming-convention
-                      account_type: MetaMetricsEventAccountType.Default,
-                      location: 'Main Menu',
-                      // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-                      // eslint-disable-next-line @typescript-eslint/naming-convention
-                      hd_entropy_index: hdEntropyIndex,
-                    },
-                  });
                   setActionMode(ACTION_MODES.ADD);
                 }}
                 data-testid="multichain-account-menu-popover-add-account"
@@ -257,14 +228,6 @@ export const AccountMenu = ({
                   startIconName={IconName.Wallet}
                   startIconProps={{ size: IconSize.Md }}
                   onClick={() => {
-                    trackEvent({
-                      category: MetaMetricsEventCategory.Navigation,
-                      event: MetaMetricsEventName.ImportSecretRecoveryPhrase,
-                      properties: {
-                        status: 'started',
-                        location: 'Account Menu',
-                      },
-                    });
                     navigate(IMPORT_SRP_ROUTE);
                     onClose();
                   }}
@@ -282,19 +245,6 @@ export const AccountMenu = ({
                 startIconProps={{ size: IconSize.Md }}
                 data-testid="multichain-account-menu-popover-add-imported-account"
                 onClick={() => {
-                  trackEvent({
-                    category: MetaMetricsEventCategory.Navigation,
-                    event: MetaMetricsEventName.AccountAddSelected,
-                    properties: {
-                      // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-                      // eslint-disable-next-line @typescript-eslint/naming-convention
-                      account_type: MetaMetricsEventAccountType.Imported,
-                      location: 'Main Menu',
-                      // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-                      // eslint-disable-next-line @typescript-eslint/naming-convention
-                      hd_entropy_index: hdEntropyIndex,
-                    },
-                  });
                   setActionMode(ACTION_MODES.IMPORT);
                 }}
               >
@@ -316,19 +266,6 @@ export const AccountMenu = ({
                 startIconProps={{ size: IconSize.Md }}
                 onClick={() => {
                   onClose();
-                  trackEvent({
-                    category: MetaMetricsEventCategory.Navigation,
-                    event: MetaMetricsEventName.AccountAddSelected,
-                    properties: {
-                      // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-                      // eslint-disable-next-line @typescript-eslint/naming-convention
-                      account_type: MetaMetricsEventAccountType.Hardware,
-                      location: 'Main Menu',
-                      // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-                      // eslint-disable-next-line @typescript-eslint/naming-convention
-                      hd_entropy_index: hdEntropyIndex,
-                    },
-                  });
                   if (getEnvironmentType() === ENVIRONMENT_TYPE_POPUP) {
                     global.platform.openExtensionInBrowser?.(
                       CONNECT_HARDWARE_ROUTE,

@@ -29,11 +29,6 @@ import PasswordForm from '../../../../components/app/password-form/password-form
 import { SECURITY_ROUTE } from '../../../../helpers/constants/routes';
 import { toast, ToastContent } from '../../../../components/ui/toast/toast';
 import ZENDESK_URLS from '../../../../helpers/constants/zendesk-url';
-import { MetaMetricsContext } from '../../../../contexts/metametrics';
-import {
-  MetaMetricsEventCategory,
-  MetaMetricsEventName,
-} from '../../../../../shared/constants/metametrics';
 import { useBoolean } from '../../../../hooks/useBoolean';
 import { SECOND } from '../../../../../shared/constants/time';
 import ChangePasswordWarning from './change-password-warning';
@@ -56,7 +51,6 @@ const ChangePassword = ({
   const t = useI18nContext();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { trackEvent } = useContext(MetaMetricsContext);
   const animationEventEmitter = useRef(new EventEmitter());
   const [step, setStep] = useState(ChangePasswordSteps.VerifyCurrentPassword);
 
@@ -101,17 +95,6 @@ const ChangePassword = ({
       setStep(ChangePasswordSteps.ChangePasswordLoading);
       await dispatch(changePassword(newPassword, currentPassword));
 
-      // Track password changed event
-      trackEvent({
-        category: MetaMetricsEventCategory.Settings,
-        event: MetaMetricsEventName.PasswordChanged,
-        properties: {
-          // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-          // eslint-disable-next-line @typescript-eslint/naming-convention
-          biometrics_enabled: false,
-        },
-      });
-
       // upon successful password change, go back to the settings page
       navigate(redirectRoute);
       toast.success(
@@ -130,15 +113,6 @@ const ChangePassword = ({
 
   const handleLearnMoreClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
     event.stopPropagation();
-    trackEvent({
-      category: MetaMetricsEventCategory.Onboarding,
-      event: MetaMetricsEventName.ExternalLinkClicked,
-      properties: {
-        text: 'Learn More',
-        location: 'change_password',
-        url: ZENDESK_URLS.PASSWORD_ARTICLE,
-      },
-    });
   };
 
   const createPasswordLink = (

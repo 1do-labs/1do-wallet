@@ -1,4 +1,4 @@
-import React, { useContext, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -19,11 +19,7 @@ import {
   Checkbox,
 } from '@metamask/design-system-react';
 import { useI18nContext } from '../../../hooks/useI18nContext';
-import {
-  setDataCollectionForMarketing,
-  setParticipateInMetaMetrics,
-  toggleExternalServices,
-} from '../../../store/actions';
+import { toggleExternalServices } from '../../../store/actions';
 import {
   ModalOverlay,
   ModalContent,
@@ -33,11 +29,6 @@ import {
   ModalFooter,
 } from '../../component-library';
 import { Display } from '../../../helpers/constants/design-system';
-import {
-  MetaMetricsEventCategory,
-  MetaMetricsEventName,
-} from '../../../../shared/constants/metametrics';
-import { MetaMetricsContext } from '../../../contexts/metametrics';
 import { getUseExternalServices } from '../../../selectors';
 import {
   hideBasicFunctionalityModal,
@@ -49,7 +40,6 @@ import { useBoolean } from '../../../hooks/useBoolean';
 export function BasicConfigurationModal() {
   const t = useI18nContext();
   const dispatch = useDispatch();
-  const { trackEvent } = useContext(MetaMetricsContext);
 
   const isExternalServicesEnabled = useSelector(getUseExternalServices);
 
@@ -65,42 +55,6 @@ export function BasicConfigurationModal() {
   };
 
   const handleToggle = () => {
-    const event = onboardingFlow
-      ? {
-          category: MetaMetricsEventCategory.Onboarding,
-          event: MetaMetricsEventName.SettingsUpdated,
-          properties: {
-            /* eslint-disable @typescript-eslint/naming-convention */
-            settings_group: 'onboarding_advanced_configuration',
-            settings_type: 'basic_functionality',
-            old_value: true,
-            new_value: false,
-            was_profile_syncing_on: false,
-            /* eslint-enable @typescript-eslint/naming-convention */
-          },
-        }
-      : {
-          category: MetaMetricsEventCategory.Settings,
-          event: MetaMetricsEventName.SettingsUpdated,
-          properties: {
-            /* eslint-disable @typescript-eslint/naming-convention */
-            settings_group: 'security_privacy',
-            settings_type: 'basic_functionality',
-            old_value: isExternalServicesEnabled,
-            new_value: !isExternalServicesEnabled,
-            was_notifications_on: false,
-            was_profile_syncing_on: false,
-            /* eslint-enable @typescript-eslint/naming-convention */
-          },
-        };
-
-    trackEvent(event);
-
-    if (isExternalServicesEnabled || onboardingFlow) {
-      dispatch(setParticipateInMetaMetrics(false));
-      dispatch(setDataCollectionForMarketing(false));
-    }
-
     if (onboardingFlow) {
       dispatch(onboardingToggleBasicFunctionalityOff());
     } else {

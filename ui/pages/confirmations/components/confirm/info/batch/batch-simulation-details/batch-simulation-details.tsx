@@ -110,8 +110,7 @@ export function BatchSimulationDetails() {
             transaction={transactionMeta}
             staticRows={approveRows}
             isTransactionsRedesign
-            enableMetrics
-            metricsOnly={isOneDoRuntimeAccessUpdate}
+            hideDetails={isOneDoRuntimeAccessUpdate}
           />
         </>
       )}

@@ -18,8 +18,6 @@ import {
   getCurrencyRateControllerCurrencyRates,
   getTokenRatesControllerMarketData,
   getMultichainAssetsRatesControllerConversionRates,
-  getRatesControllerRates,
-  getRatesControllerFiatCurrency,
 } from './assets-migration';
 
 // Opt out of the global `isAssetsUnifyStateFeatureEnabled` mock (see test/jest/setup.js)
@@ -756,7 +754,10 @@ describe('getTokenBalancesControllerTokenBalances', () => {
       };
       const result = getTokenBalancesControllerTokenBalances(state);
 
-      const nativeAddress = getNativeAssetForChainId('0x1').address;
+      const nativeAddress = getNativeAssetForChainId('0x1')?.address;
+      if (!nativeAddress) {
+        throw new Error('Expected Ethereum native asset address');
+      }
       expect(result).toStrictEqual({
         [mockAccountAddressLowercase]: {
           '0x1': {
@@ -886,7 +887,8 @@ describe('getTokenBalancesControllerTokenBalances', () => {
       };
       const result = getTokenBalancesControllerTokenBalances(state);
 
-      const nativeAddress = getNativeAssetForChainId('0x1').address;
+      const nativeAddress = getNativeAssetForChainId('0x1')?.address;
+      expect(nativeAddress).toBeDefined();
       expect(
         Object.keys(result[mockAccountAddressLowercase]['0x1']),
       ).toStrictEqual([nativeAddress]);
@@ -2115,130 +2117,6 @@ describe('getMultichainAssetsRatesControllerConversionRates', () => {
       const result = getMultichainAssetsRatesControllerConversionRates(state);
 
       expect(result).toStrictEqual({});
-    });
-  });
-});
-
-describe('getRatesControllerRates', () => {
-  const solanaNativeAssetId = 'unknown:1/slip44:999';
-
-  describe('when assets unify state feature is disabled', () => {
-    it('returns rates from state unchanged', () => {
-      const legacyRates = {
-        btc: {
-          conversionDate: 1700000000000,
-          conversionRate: 71052.43,
-          usdConversionRate: 71052.43,
-        },
-        sol: {
-          conversionDate: 1700000000000,
-          conversionRate: 91.69,
-          usdConversionRate: 91.69,
-        },
-      };
-      const state = {
-        metamask: {
-          rates: legacyRates,
-        },
-      };
-      const result = getRatesControllerRates(state);
-
-      expect(result).toBe(legacyRates);
-      expect(result).toStrictEqual(legacyRates);
-    });
-  });
-
-  describe('when assets unify state feature is enabled (happy path)', () => {
-    it('derives rates from assetsInfo and assetsPrice for non-EVM native assets', () => {
-      const lastUpdated = 1700000000000;
-      const state = {
-        metamask: {
-          ...enabledFlags,
-          rates: {},
-          assetsInfo: {
-            [nativeEthAssetId]: {
-              type: 'native',
-              symbol: 'ETH',
-              decimals: 18,
-            },
-            [unsupportedNativeAssetId]: {
-              type: 'native',
-              symbol: 'BTC',
-              decimals: 8,
-            },
-            [solanaNativeAssetId]: {
-              type: 'native',
-              symbol: 'SOL',
-              decimals: 9,
-            },
-          },
-          assetsPrice: {
-            [nativeEthAssetId]: makeMockPrice({
-              id: 'eth',
-              price: 2000,
-              usdPrice: 2000,
-              lastUpdated,
-            }),
-            [unsupportedNativeAssetId]: makeMockPrice({
-              id: 'btc',
-              price: 71052.43,
-              usdPrice: 71052.43,
-              lastUpdated,
-            }),
-            [solanaNativeAssetId]: makeMockPrice({
-              id: 'sol',
-              price: 91.69,
-              usdPrice: 91.69,
-              lastUpdated,
-            }),
-          },
-        },
-      };
-      const result = getRatesControllerRates(state);
-
-      expect(result.eth).toBeUndefined();
-      expect(result).toStrictEqual({
-        btc: {
-          conversionDate: lastUpdated,
-          conversionRate: 71052.43,
-          usdConversionRate: 71052.43,
-        },
-        sol: {
-          conversionDate: lastUpdated,
-          conversionRate: 91.69,
-          usdConversionRate: 91.69,
-        },
-      });
-    });
-  });
-});
-
-describe('getRatesControllerFiatCurrency', () => {
-  describe('when assets unify state feature is disabled', () => {
-    it('returns fiatCurrency from state unchanged', () => {
-      const state = {
-        metamask: {
-          fiatCurrency: 'eur',
-        },
-      };
-      const result = getRatesControllerFiatCurrency(state);
-
-      expect(result).toBe('eur');
-    });
-  });
-
-  describe('when assets unify state feature is enabled', () => {
-    it('returns selectedCurrency from new state', () => {
-      const state = {
-        metamask: {
-          ...enabledFlags,
-          fiatCurrency: 'eur',
-          selectedCurrency: 'usd',
-        },
-      };
-      const result = getRatesControllerFiatCurrency(state);
-
-      expect(result).toBe('usd');
     });
   });
 });

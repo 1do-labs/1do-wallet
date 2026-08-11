@@ -9,12 +9,6 @@ import {
 } from '../../../../app/scripts/lib/util';
 import { ENVIRONMENT_TYPE_POPUP } from '../../../../shared/constants/app';
 import {
-  MetaMetricsEventCategory,
-  MetaMetricsEventKeyType,
-  MetaMetricsEventName,
-  MetaMetricsUserTrait,
-} from '../../../../shared/constants/metametrics';
-import {
   IPFS_DEFAULT_GATEWAY_URL,
   IPFS_FORBIDDEN_GATEWAY,
 } from '../../../../shared/constants/network';
@@ -30,9 +24,6 @@ import SRPQuiz from '../../../components/app/srp-quiz-modal/SRPQuiz';
 import {
   Button,
   ButtonSize,
-  Icon,
-  IconSize,
-  IconName,
   Box,
   Text,
   BannerAlert,
@@ -40,15 +31,12 @@ import {
 } from '../../../components/component-library';
 import TextField from '../../../components/ui/text-field';
 import ToggleButton from '../../../components/ui/toggle-button';
-import Popover from '../../../components/ui/popover';
 import {
   Display,
-  BlockSize,
   FlexDirection,
   JustifyContent,
   TextColor,
   TextVariant,
-  IconColor,
   AlignItems,
 } from '../../../helpers/constants/design-system';
 import {
@@ -60,13 +48,11 @@ import {
   getNumberOfSettingRoutesInTab,
   handleSettingsRefs,
 } from '../../../helpers/utils/settings-search';
-import { updateDataDeletionTaskStatus } from '../../../store/actions';
 import ZENDESK_URLS from '../../../helpers/constants/zendesk-url';
 
 export default class SecurityTab extends PureComponent {
   static contextTypes = {
     t: PropTypes.func,
-    trackEvent: PropTypes.func,
   };
 
   static propTypes = {
@@ -75,12 +61,6 @@ export default class SecurityTab extends PureComponent {
     setOpenSeaEnabled: PropTypes.func,
     useNftDetection: PropTypes.bool,
     setUseNftDetection: PropTypes.func,
-    dataCollectionForMarketing: PropTypes.bool,
-    setDataCollectionForMarketing: PropTypes.func.isRequired,
-    participateInMetaMetrics: PropTypes.bool.isRequired,
-    setParticipateInMetaMetrics: PropTypes.func.isRequired,
-    setUsePhishDetect: PropTypes.func.isRequired,
-    usePhishDetect: PropTypes.bool.isRequired,
     setUse4ByteResolution: PropTypes.func.isRequired,
     use4ByteResolution: PropTypes.bool.isRequired,
     useTokenDetection: PropTypes.bool.isRequired,
@@ -102,8 +82,6 @@ export default class SecurityTab extends PureComponent {
     useExternalServices: PropTypes.bool,
     setSkipDeepLinkInterstitial: PropTypes.func.isRequired,
     skipDeepLinkInterstitial: PropTypes.bool,
-    metaMetricsDataDeletionId: PropTypes.string,
-    hdEntropyIndex: PropTypes.number,
     isSeedPhraseBackedUp: PropTypes.bool,
   };
 
@@ -111,9 +89,7 @@ export default class SecurityTab extends PureComponent {
     ipfsGateway: this.props.ipfsGateway || IPFS_DEFAULT_GATEWAY_URL,
     ipfsGatewayError: '',
     srpQuizModalVisible: false,
-    showDataCollectionDisclaimer: false,
     ipfsToggle: this.props.ipfsGateway.length > 0,
-    hasEmailMarketingConsentError: false,
   };
 
   settingsRefCounter = 0;
@@ -129,53 +105,25 @@ export default class SecurityTab extends PureComponent {
       return React.createRef();
     });
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate() {
     const { t } = this.context;
     handleSettingsRefs(t, t('securityAndPrivacy'), this.settingsRefs);
-
-    if (
-      prevProps.dataCollectionForMarketing === true &&
-      this.props.participateInMetaMetrics === true &&
-      this.props.dataCollectionForMarketing === false
-    ) {
-      this.setState({ showDataCollectionDisclaimer: true });
-    }
   }
 
   async componentDidMount() {
     const { t } = this.context;
     handleSettingsRefs(t, t('securityAndPrivacy'), this.settingsRefs);
-    if (this.props.metaMetricsDataDeletionId) {
-      await updateDataDeletionTaskStatus();
-    }
   }
 
   toggleSetting(value, toggleMethod) {
     toggleMethod(!value);
   }
 
-  async toggleDataCollectionForMarketing(value) {
-    this.props.setDataCollectionForMarketing(value);
-    if (this.props.participateInMetaMetrics) {
-      this.context.trackEvent({
-        category: MetaMetricsEventCategory.Settings,
-        event: MetaMetricsEventName.AnalyticsPreferenceSelected,
-        properties: {
-          [MetaMetricsUserTrait.IsMetricsOptedIn]: true,
-          [MetaMetricsUserTrait.HasMarketingConsent]: Boolean(value),
-          location: 'Settings',
-        },
-      });
-    } else {
-      this.props.setParticipateInMetaMetrics(true);
-    }
-  }
-
   hideSrpQuizModal = () => this.setState({ srpQuizModalVisible: false });
 
   renderSeedWords() {
     const { t } = this.context;
-    const { isSeedPhraseBackedUp, navigate, hdEntropyIndex } = this.props;
+    const { isSeedPhraseBackedUp, navigate } = this.props;
 
     const getBannerDescription = () => {
       return isSeedPhraseBackedUp
@@ -230,23 +178,6 @@ export default class SecurityTab extends PureComponent {
                 size={ButtonSize.Lg}
                 onClick={(event) => {
                   event.preventDefault();
-                  this.context.trackEvent({
-                    category: MetaMetricsEventCategory.Settings,
-                    event: MetaMetricsEventName.KeyExportSelected,
-                    properties: {
-                      key_type: MetaMetricsEventKeyType.Srp,
-                      location: 'Settings',
-                      hd_entropy_index: hdEntropyIndex,
-                    },
-                  });
-                  this.context.trackEvent({
-                    category: MetaMetricsEventCategory.Settings,
-                    event: MetaMetricsEventName.SrpRevealClicked,
-                    properties: {
-                      key_type: MetaMetricsEventKeyType.Srp,
-                      location: 'Settings',
-                    },
-                  });
                   navigate(MANAGE_WALLET_RECOVERY_ROUTE);
                 }}
               >
@@ -307,43 +238,6 @@ export default class SecurityTab extends PureComponent {
     );
   }
 
-  renderPhishingDetectionToggle() {
-    const { t } = this.context;
-    const { usePhishDetect, setUsePhishDetect } = this.props;
-
-    return (
-      <Box
-        ref={this.settingsRefs[4]}
-        className="settings-page__content-row"
-        display={Display.Flex}
-        flexDirection={FlexDirection.Row}
-        justifyContent={JustifyContent.spaceBetween}
-        gap={4}
-      >
-        <div className="settings-page__content-item">
-          <span>{t('usePhishingDetection')}</span>
-          <div className="settings-page__content-description">
-            {t('usePhishingDetectionDescription')}
-          </div>
-        </div>
-
-        <div
-          className="settings-page__content-item-col"
-          data-testid="usePhishingDetection"
-        >
-          <ToggleButton
-            value={usePhishDetect}
-            onToggle={(value) => {
-              setUsePhishDetect(!value);
-            }}
-            offLabel={t('off')}
-            onLabel={t('on')}
-          />
-        </div>
-      </Box>
-    );
-  }
-
   renderUse4ByteResolutionToggle() {
     const { t } = this.context;
     const { use4ByteResolution, setUse4ByteResolution } = this.props;
@@ -374,62 +268,6 @@ export default class SecurityTab extends PureComponent {
             onLabel={t('on')}
           />
         </div>
-      </Box>
-    );
-  }
-
-  renderDataCollectionForMarketing() {
-    const { t } = this.context;
-
-    const {
-      dataCollectionForMarketing,
-      useExternalServices,
-      participateInMetaMetrics,
-    } = this.props;
-
-    const handleToggle = this.toggleDataCollectionForMarketing.bind(this);
-
-    return (
-      <Box>
-        <Box
-          ref={this.settingsRefs[19]}
-          className="settings-page__content-row"
-          display={Display.Flex}
-          flexDirection={FlexDirection.Row}
-          justifyContent={JustifyContent.spaceBetween}
-          gap={4}
-        >
-          <div className="settings-page__content-item">
-            <span>{t('dataCollectionForMarketing')}</span>
-            <div className="settings-page__content-description">
-              <span>{t('dataCollectionForMarketingDescription')}</span>
-            </div>
-          </div>
-
-          <div
-            className="settings-page__content-item-col"
-            data-testid="data-collection-for-marketing-toggle"
-          >
-            <ToggleButton
-              value={dataCollectionForMarketing}
-              disabled={!useExternalServices || !participateInMetaMetrics}
-              onToggle={(prev) => handleToggle(!prev)}
-              offLabel={t('off')}
-              onLabel={t('on')}
-            />
-          </div>
-        </Box>
-        {this.state.hasEmailMarketingConsentError && (
-          <Box paddingBottom={4}>
-            <Text
-              as="p"
-              color={TextColor.errorDefault}
-              variant={TextVariant.bodySm}
-            >
-              {t('notificationsSettingsBoxError')}
-            </Text>
-          </Box>
-        )}
       </Box>
     );
   }
@@ -883,14 +721,6 @@ export default class SecurityTab extends PureComponent {
           <ToggleButton
             value={openSeaEnabled}
             onToggle={(value) => {
-              this.context.trackEvent({
-                category: MetaMetricsEventCategory.Settings,
-                event: 'Enabled/Disable OpenSea',
-                properties: {
-                  action: 'Enabled/Disable OpenSea',
-                  legacy_event: true,
-                },
-              });
               // value is positive when being toggled off
               if (value && useNftDetection) {
                 setUseNftDetection(false);
@@ -928,7 +758,6 @@ export default class SecurityTab extends PureComponent {
             {t('useNftDetectionDescriptionText')}
           </div>
         </div>
-
         <div
           className="settings-page__content-item-col"
           data-testid="use-nft-detection"
@@ -936,14 +765,6 @@ export default class SecurityTab extends PureComponent {
           <ToggleButton
             value={useNftDetection}
             onToggle={(value) => {
-              this.context.trackEvent({
-                category: MetaMetricsEventCategory.Settings,
-                event: 'NFT Detected',
-                properties: {
-                  action: 'NFT Detected',
-                  legacy_event: true,
-                },
-              });
               if (!value && !openSeaEnabled) {
                 setOpenSeaEnabled(!value);
               }
@@ -1106,54 +927,10 @@ export default class SecurityTab extends PureComponent {
     );
   }
 
-  renderDataCollectionWarning = () => {
-    const { t } = this.context;
-
-    return (
-      <Popover
-        wrapTitle
-        centerTitle
-        onClose={() => this.setState({ showDataCollectionDisclaimer: false })}
-        title={
-          <Icon
-            size={IconSize.Xl}
-            name={IconName.Danger}
-            color={IconColor.warningDefault}
-          />
-        }
-        footer={
-          <Button
-            width={BlockSize.Full}
-            type="primary"
-            onClick={() =>
-              this.setState({ showDataCollectionDisclaimer: false })
-            }
-          >
-            {t('dataCollectionWarningPopoverButton')}
-          </Button>
-        }
-      >
-        <Box
-          display={Display.Flex}
-          flexDirection={FlexDirection.Column}
-          gap={2}
-          margin={4}
-        >
-          <Text>{t('dataCollectionWarningPopoverDescription')}</Text>
-        </Box>
-      </Popover>
-    );
-  };
-
   render() {
-    const { showDataCollectionDisclaimer } = this.state;
-
     return (
       <div className="settings-page__body">
         {this.renderUseExternalServices()}
-        {showDataCollectionDisclaimer
-          ? this.renderDataCollectionWarning()
-          : null}
         <span className="settings-page__security-tab-sub-header__bold">
           {this.context.t('security')}
         </span>
@@ -1167,9 +944,6 @@ export default class SecurityTab extends PureComponent {
           <span className="settings-page__security-tab-sub-header">
             {this.context.t('alerts')}
           </span>
-        </div>
-        <div className="settings-page__content-padded">
-          {this.renderPhishingDetectionToggle()}
         </div>
         <div className="settings-page__content-padded">
           {this.renderSkipDeepLinkInterstitial()}

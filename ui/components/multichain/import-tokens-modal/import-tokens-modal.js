@@ -1,6 +1,5 @@
 import React, {
   useCallback,
-  useContext,
   useEffect,
   useMemo,
   useRef,
@@ -12,7 +11,7 @@ import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { getTokenTrackerLink } from '@metamask/etherscan-link/dist/token-tracker-link';
 import { CHAIN_IDS } from '@metamask/transaction-controller';
-import { ERC20, ERC721, ERC1155 } from '@metamask/controller-utils';
+import { ERC721, ERC1155 } from '@metamask/controller-utils';
 import { formatChainIdToHex } from '../../../../shared/lib/chain-utils';
 import { Tab, Tabs } from '../../ui/tabs';
 import { useI18nContext } from '../../../hooks/useI18nContext';
@@ -86,23 +85,14 @@ import {
 // eslint-disable-next-line import-x/no-restricted-paths
 import { addHexPrefix } from '../../../../app/scripts/lib/util';
 import { STATIC_MAINNET_TOKEN_LIST } from '../../../../shared/constants/tokens';
-import {
-  AssetType,
-  TokenStandard,
-} from '../../../../shared/constants/transaction';
+import { TokenStandard } from '../../../../shared/constants/transaction';
 import {
   checkExistingAddresses,
   getURLHostName,
   fetchTokenExchangeRates,
 } from '../../../helpers/utils/util';
 import { tokenInfoGetter } from '../../../helpers/utils/token-util';
-import { MetaMetricsContext } from '../../../contexts/metametrics';
 import { getNativeCurrency } from '../../../ducks/metamask/metamask';
-import {
-  MetaMetricsEventCategory,
-  MetaMetricsEventName,
-  MetaMetricsTokenEventSource,
-} from '../../../../shared/constants/metametrics';
 import { isEvmChainId, toAssetId } from '../../../../shared/lib/asset-utils';
 import { NetworkSelectorCustomImport } from '../../app/import-token/network-selector-custom-import';
 import { getImageForChainId } from '../../../selectors/multichain';
@@ -242,8 +232,6 @@ export const ImportTokensModal = ({ onClose }) => {
 
   const infoGetter = useRef(tokenInfoGetter());
 
-  // CONFIRMATION MODE
-  const { trackEvent } = useContext(MetaMetricsContext);
   const pendingTokens = useSelector(getPendingTokens);
 
   const handleAddTokens = useCallback(async () => {
@@ -311,23 +299,6 @@ export const ImportTokensModal = ({ onClose }) => {
         );
       }
 
-      addedTokenValues.forEach((pendingToken) => {
-        trackEvent({
-          event: MetaMetricsEventName.TokenAdded,
-          category: MetaMetricsEventCategory.Wallet,
-          sensitiveProperties: {
-            token_symbol: pendingToken.symbol,
-            token_contract_address: pendingToken.address,
-            token_decimal_precision: pendingToken.decimals,
-            unlisted: pendingToken.unlisted,
-            source_connection_method: pendingToken.isCustom
-              ? MetaMetricsTokenEventSource.Custom
-              : MetaMetricsTokenEventSource.List,
-            token_standard: ERC20,
-            asset_type: AssetType.token,
-          },
-        });
-      });
       const tokenSymbols = [];
       for (const key in pendingTokens) {
         if (Object.prototype.hasOwnProperty.call(pendingTokens, key)) {
@@ -348,7 +319,6 @@ export const ImportTokensModal = ({ onClose }) => {
     dispatch,
     navigate,
     pendingTokens,
-    trackEvent,
     networkConfigurations,
     assetsUnifyStateFeatureEnabled,
     assetPreferences,

@@ -16,8 +16,6 @@ import {
   AssetsContractControllerGetERC721TokenURIAction,
 } from '@metamask/assets-controllers';
 import { ApprovalControllerAddRequestAction } from '@metamask/approval-controller';
-import { PhishingControllerBulkScanUrlsAction } from '@metamask/phishing-controller';
-import { MetaMetricsControllerTrackEventAction } from '../../../controllers/metametrics-controller-method-action-types';
 import { RootMessenger } from '../../../lib/messenger';
 
 type Actions =
@@ -29,8 +27,7 @@ type Actions =
   | AssetsContractControllerGetERC721AssetSymbolAction
   | AssetsContractControllerGetERC721TokenURIAction
   | AssetsContractControllerGetERC1155TokenURIAction
-  | NetworkControllerFindNetworkClientIdByChainIdAction
-  | PhishingControllerBulkScanUrlsAction;
+  | NetworkControllerFindNetworkClientIdByChainIdAction;
 
 type Events =
   | PreferencesControllerStateChangeEvent
@@ -75,14 +72,12 @@ export function getNftControllerMessenger(
       'AssetsContractController:getERC721TokenURI',
       'AssetsContractController:getERC1155TokenURI',
       'NetworkController:findNetworkClientIdByChainId',
-      'PhishingController:bulkScanUrls',
     ],
   });
   return controllerMessenger;
 }
 
-export type AllowedInitializationActions =
-  MetaMetricsControllerTrackEventAction;
+export type AllowedInitializationActions = never;
 
 export type NftControllerInitMessenger = ReturnType<
   typeof getNftControllerInitMessenger
@@ -109,7 +104,7 @@ export function getNftControllerInitMessenger(
   });
   messenger.delegate({
     messenger: controllerInitMessenger,
-    actions: ['MetaMetricsController:trackEvent'],
+    actions: [],
   });
   return controllerInitMessenger;
 }

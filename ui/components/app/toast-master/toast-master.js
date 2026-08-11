@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types -- TODO: upgrade to TypeScript */
 
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useLocation } from 'react-router-dom';
 import {
@@ -11,10 +11,7 @@ import { SECOND } from '../../../../shared/constants/time';
 import { ENVIRONMENT_TYPE_SIDEPANEL } from '../../../../shared/constants/app';
 // eslint-disable-next-line import-x/no-restricted-paths
 import { getEnvironmentType } from '../../../../app/scripts/lib/util';
-import {
-  PRIVACY_POLICY_LINK,
-  SURVEY_LINK,
-} from '../../../../shared/lib/ui-utils';
+import { PRIVACY_POLICY_LINK } from '../../../../shared/lib/ui-utils';
 import {
   BorderRadius,
   IconColor,
@@ -40,18 +37,11 @@ import {
 } from '../../../store/actions';
 import { Icon, IconName, IconSize } from '../../component-library';
 import { Toast, ToastContainer } from '../../multichain';
-import { SurveyToast } from '../../ui/survey-toast';
 import { StorageWriteErrorType } from '../../../../shared/constants/app-state';
 import { getDappActiveNetwork } from '../../../selectors/dapp';
-import { MetaMetricsContext } from '../../../contexts/metametrics';
-import {
-  MetaMetricsEventCategory,
-  MetaMetricsEventName,
-} from '../../../../shared/constants/metametrics';
 import {
   selectNftDetectionEnablementToast,
   selectShowPrivacyPolicyToast,
-  selectShowSurveyToast,
   selectNewSrpAdded,
   selectShowCopyAddressToast,
   selectShowStorageErrorToast,
@@ -63,7 +53,6 @@ import {
   setNewPrivacyPolicyToastClickedOrClosed,
   setNewPrivacyPolicyToastShownDate,
   setShowNftDetectionEnablementToast,
-  setSurveyLinkLastClickedOrClosed,
   setShowNewSrpAddedToast,
   setShowCopyAddressToast,
   setShowDefaultRpcSwitchToast,
@@ -89,8 +78,6 @@ export function ToastMaster() {
     return (
       <ToastContainer>
         {storageErrorToast}
-        <SurveyToast />
-        <SurveyToastMayDelete />
         <PrivacyPolicyToast />
         <NftEnablementToast />
         <PermittedNetworkToast />
@@ -113,34 +100,6 @@ export function ToastMaster() {
   }
 
   return null;
-}
-
-function SurveyToastMayDelete() {
-  const t = useI18nContext();
-
-  const showSurveyToast = useSelector(selectShowSurveyToast);
-
-  return (
-    showSurveyToast && (
-      <Toast
-        key="survey-toast"
-        startAdornment={
-          <Icon name={IconName.Heart} color={IconColor.errorDefault} />
-        }
-        text={t('surveyTitle')}
-        actionText={t('surveyConversion')}
-        onActionClick={() => {
-          global.platform.openTab({
-            url: SURVEY_LINK,
-          });
-          setSurveyLinkLastClickedOrClosed(Date.now());
-        }}
-        onClose={() => {
-          setSurveyLinkLastClickedOrClosed(Date.now());
-        }}
-      />
-    )
-  );
 }
 
 function PrivacyPolicyToast() {
@@ -355,10 +314,7 @@ function CopyAddressToast() {
 function StorageErrorToast() {
   const t = useI18nContext();
   const navigate = useNavigate();
-  const { trackEvent } = useContext(MetaMetricsContext);
   const [isDismissed, setIsDismissed] = useState(false);
-  const [hasTrackedView, setHasTrackedView] = useState(false);
-
   // Selector includes all conditions: flag is true, onboarding complete, and unlocked
   const showStorageErrorToast = useSelector(selectShowStorageErrorToast);
   const storageWriteErrorType = useSelector(selectStorageWriteErrorType);
@@ -373,31 +329,12 @@ function StorageErrorToast() {
     ? t('storageErrorDescriptionNoSpace')
     : t('storageErrorDescriptionDefault');
 
-  // Track "Viewed" event when toast becomes visible
-  useEffect(() => {
-    if (shouldShow && !hasTrackedView) {
-      trackEvent({
-        event: MetaMetricsEventName.StorageErrorToastViewed,
-        category: MetaMetricsEventCategory.Error,
-      });
-      setHasTrackedView(true);
-    }
-  }, [shouldShow, hasTrackedView, trackEvent]);
-
   const handleRevealSrpClick = () => {
-    trackEvent({
-      event: MetaMetricsEventName.StorageErrorToastBackupSrpButtonPressed,
-      category: MetaMetricsEventCategory.Error,
-    });
     setIsDismissed(true);
     navigate(REVEAL_SEED_ROUTE, { state: { skipQuiz: true } });
   };
 
   const handleClose = () => {
-    trackEvent({
-      event: MetaMetricsEventName.StorageErrorToastDismissed,
-      category: MetaMetricsEventCategory.Error,
-    });
     setIsDismissed(true);
   };
 

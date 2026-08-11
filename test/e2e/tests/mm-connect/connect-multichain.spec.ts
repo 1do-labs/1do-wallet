@@ -2,6 +2,7 @@ import { Suite } from 'mocha';
 
 import {
   DAPP_PATH,
+  DAPP_HOST_ADDRESS,
   MM_CONNECT_EVM_CHAINS,
   WINDOW_TITLES,
 } from '../../constants';

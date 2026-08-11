@@ -31,7 +31,6 @@ export function getAppStateControllerMessenger(
       'ApprovalController:acceptRequest',
       'KeyringController:getState',
       'PreferencesController:getState',
-      'ProfileMetricsController:skipInitialDelay',
     ],
     events: ['KeyringController:unlock', 'PreferencesController:stateChange'],
   });

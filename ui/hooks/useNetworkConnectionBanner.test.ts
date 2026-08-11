@@ -9,7 +9,6 @@ import {
 import { updateNetworkConnectionBanner, updateNetwork } from '../store/actions';
 import { setShowDefaultRpcSwitchToast } from '../components/app/toast-master/utils';
 import mockState from '../../test/data/mock-state.json';
-import { MetaMetricsEventName } from '../../shared/constants/metametrics';
 import { getNetworkConfigurationsByChainId } from '../../shared/lib/selectors/networks';
 import { useNetworkConnectionBanner } from './useNetworkConnectionBanner';
 
@@ -146,22 +145,6 @@ describe('useNetworkConnectionBanner', () => {
 
       expect(mockUpdateNetworkConnectionBanner).not.toHaveBeenCalled();
     });
-
-    it('does not create a MetaMetrics event', () => {
-      mockSelectFirstUnavailableEvmNetwork.mockReturnValue(null);
-      mockGetNetworkConnectionBanner.mockReturnValue({ status: 'unknown' });
-      const mockTrackEvent = jest.fn();
-
-      renderHookWithProviderTyped(
-        () => useNetworkConnectionBanner(),
-        mockState,
-        undefined,
-        undefined,
-        () => mockTrackEvent,
-      );
-
-      expect(mockTrackEvent).not.toHaveBeenCalled();
-    });
   });
 
   describe('when at least one network is not available yet', () => {
@@ -192,45 +175,6 @@ describe('useNetworkConnectionBanner', () => {
             chainId: '0x1',
             isDefaultRpcEndpoint: true,
             defaultRpcEndpointIndex: undefined,
-          });
-        });
-
-        it('creates a MetaMetrics event to capture that the status changed', async () => {
-          mockSelectFirstUnavailableEvmNetwork.mockReturnValue({
-            networkName: 'Ethereum Mainnet',
-            networkClientId: 'mainnet',
-            chainId: '0x1',
-            isDefaultRpcEndpoint: true,
-            defaultRpcEndpointIndex: undefined,
-          });
-          mockGetNetworkConnectionBanner.mockReturnValue({ status: 'unknown' });
-          const mockTrackEvent = jest.fn();
-
-          renderHookWithProviderTyped(
-            () => useNetworkConnectionBanner(),
-            mockState,
-            undefined,
-            undefined,
-            () => mockTrackEvent,
-          );
-          await act(async () => {
-            jest.advanceTimersByTime(5000);
-            // Flush microtask queue to allow async trackNetworkBannerEvent to complete
-            await Promise.resolve();
-          });
-
-          expect(mockTrackEvent).toHaveBeenCalledWith({
-            category: 'Network',
-            event: MetaMetricsEventName.NetworkConnectionBannerShown,
-            properties: {
-              // The names of Segment properties have a particular case.
-              /* eslint-disable @typescript-eslint/naming-convention */
-              banner_type: 'degraded',
-              chain_id_caip: 'eip155:1',
-              rpc_domain: 'mainnet.infura.io',
-              rpc_endpoint_url: 'mainnet.infura.io',
-              /* eslint-enable @typescript-eslint/naming-convention */
-            },
           });
         });
       });
@@ -301,52 +245,6 @@ describe('useNetworkConnectionBanner', () => {
           chainId: '0x1',
           isDefaultRpcEndpoint: true,
           defaultRpcEndpointIndex: undefined,
-        });
-      });
-
-      it('creates a MetaMetrics event to capture that the status changed', async () => {
-        mockSelectFirstUnavailableEvmNetwork.mockReturnValue({
-          networkName: 'Ethereum Mainnet',
-          networkClientId: 'mainnet',
-          chainId: '0x1',
-          isDefaultRpcEndpoint: true,
-          defaultRpcEndpointIndex: undefined,
-        });
-        mockGetNetworkConnectionBanner.mockReturnValue({
-          status: 'degraded',
-          networkName: 'Ethereum Mainnet',
-          networkClientId: 'mainnet',
-          chainId: '0x1',
-          isDefaultRpcEndpoint: true,
-          defaultRpcEndpointIndex: undefined,
-        });
-        const mockTrackEvent = jest.fn();
-
-        renderHookWithProviderTyped(
-          () => useNetworkConnectionBanner(),
-          mockState,
-          undefined,
-          undefined,
-          () => mockTrackEvent,
-        );
-        await act(async () => {
-          jest.advanceTimersByTime(25000);
-          // Flush microtask queue to allow async trackNetworkBannerEvent to complete
-          await Promise.resolve();
-        });
-
-        expect(mockTrackEvent).toHaveBeenCalledWith({
-          category: 'Network',
-          event: MetaMetricsEventName.NetworkConnectionBannerShown,
-          properties: {
-            // The names of Segment properties have a particular case.
-            /* eslint-disable @typescript-eslint/naming-convention */
-            banner_type: 'unavailable',
-            chain_id_caip: 'eip155:1',
-            rpc_domain: 'mainnet.infura.io',
-            rpc_endpoint_url: 'mainnet.infura.io',
-            /* eslint-enable @typescript-eslint/naming-convention */
-          },
         });
       });
     });

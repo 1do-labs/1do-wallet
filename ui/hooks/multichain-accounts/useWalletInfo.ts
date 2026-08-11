@@ -2,6 +2,7 @@ import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { AccountWalletId } from '@metamask/account-api';
 import { AccountGroupObject } from '@metamask/account-tree-controller';
+import type { KeyringObject } from '@metamask/keyring-controller';
 import { getMultichainAccountsByWalletId } from '../../selectors/multichain-accounts/account-tree';
 import { MultichainAccountsState } from '../../selectors/multichain-accounts/account-tree.types';
 import { getIsPrimarySeedPhraseBackedUp } from '../../ducks/metamask/metamask';
@@ -15,7 +16,7 @@ import { stripWalletTypePrefixFromWalletId } from './utils';
  * @returns Object containing multichain accounts, keyringId and isSRPBackedUp.
  */
 export const useWalletInfo = (walletId: AccountWalletId) => {
-  const hdKeyrings = useSelector(getMetaMaskHdKeyrings);
+  const hdKeyrings: KeyringObject[] = useSelector(getMetaMaskHdKeyrings);
   const globalSRPBackedUp = useSelector(getIsPrimarySeedPhraseBackedUp);
   const rawMultichainAccounts = useSelector((state: MultichainAccountsState) =>
     getMultichainAccountsByWalletId(state, walletId),

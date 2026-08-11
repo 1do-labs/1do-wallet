@@ -20,7 +20,6 @@ import {
   ApprovalControllerAddRequestAction,
   ApprovalControllerRejectRequestAction,
 } from '@metamask/approval-controller';
-import { MetaMetricsEventCategory } from '../../../shared/constants/metametrics';
 import { KeyringType } from '../../../shared/constants/keyring';
 import { ORIGIN_METAMASK } from '../../../shared/constants/app';
 import type { EncryptionPublicKeyControllerMethodActions } from './encryption-public-key-method-action-types';
@@ -111,10 +110,6 @@ export type EncryptionPublicKeyControllerOptions = {
   // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31973
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   getState: () => any;
-
-  // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31973
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  metricsEvent: (payload: any, options?: any) => void;
   manager: EncryptionPublicKeyManager;
 };
 
@@ -145,10 +140,6 @@ export class EncryptionPublicKeyController extends BaseController<
 
   private _encryptionPublicKeyManager: EncryptionPublicKeyManager;
 
-  // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31973
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private _metricsEvent: (payload: any, options?: any) => void;
-
   /**
    * Construct a EncryptionPublicKey controller.
    *
@@ -157,7 +148,6 @@ export class EncryptionPublicKeyController extends BaseController<
    * @param options.getEncryptionPublicKey - Callback to get the keyring encryption public key.
    * @param options.getAccountKeyringType - Callback to get the keyring type.
    * @param options.getState - Callback to retrieve all user state.
-   * @param options.metricsEvent - A function for emitting a metric event.
    * @param options.manager - A reference to the encryption public key manager.
    */
   constructor({
@@ -166,7 +156,6 @@ export class EncryptionPublicKeyController extends BaseController<
     getEncryptionPublicKey,
     getAccountKeyringType,
     getState,
-    metricsEvent,
   }: EncryptionPublicKeyControllerOptions) {
     super({
       name: controllerName,
@@ -178,7 +167,6 @@ export class EncryptionPublicKeyController extends BaseController<
     this._getEncryptionPublicKey = getEncryptionPublicKey;
     this._getAccountKeyringType = getAccountKeyringType;
     this._getState = getState;
-    this._metricsEvent = metricsEvent;
     this._encryptionPublicKeyManager = manager;
 
     this.messenger.subscribe(
@@ -321,17 +309,12 @@ export class EncryptionPublicKeyController extends BaseController<
   /**
    * Reject all unapproved messages of any type.
    *
-   * @param reason - A message to indicate why.
    */
-  rejectUnapproved(reason?: string) {
+  rejectUnapproved() {
     Object.keys(
       this._encryptionPublicKeyManager.getUnapprovedMessages(),
     ).forEach((messageId) => {
-      this._cancelAbstractMessage(
-        this._encryptionPublicKeyManager,
-        messageId,
-        reason,
-      );
+      this._cancelAbstractMessage(this._encryptionPublicKeyManager, messageId);
     });
   }
 
@@ -345,18 +328,7 @@ export class EncryptionPublicKeyController extends BaseController<
   private _cancelAbstractMessage(
     messageManager: EncryptionPublicKeyManager,
     messageId: string,
-    reason?: string,
   ) {
-    if (reason) {
-      this._metricsEvent({
-        event: reason,
-        category: MetaMetricsEventCategory.Messages,
-        properties: {
-          action: 'Encryption public key Request',
-        },
-      });
-    }
-
     messageManager.rejectMessage(messageId);
     this._rejectApproval(messageId);
 

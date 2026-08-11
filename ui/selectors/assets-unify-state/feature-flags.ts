@@ -45,7 +45,7 @@ export const getAssetsUnifyStateRemoteFeatureFlag = (
 ): AssetsUnifyStateFeatureFlagType | undefined => {
   try {
     const assetsUnifyStateFeatureFlag =
-      getRemoteFeatureFlags(state)[ASSETS_UNIFY_STATE_FLAG];
+      getRemoteFeatureFlags(state)?.[ASSETS_UNIFY_STATE_FLAG];
 
     assert(assetsUnifyStateFeatureFlag, AssetsUnifyStateFeatureFlag);
 

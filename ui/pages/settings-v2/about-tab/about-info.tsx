@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect, useMemo } from 'react';
+import React, { useCallback, useEffect, useMemo } from 'react';
 import {
   Box,
   Text,
@@ -12,7 +12,6 @@ import {
 
 import { Tag } from '../../../components/component-library';
 import { useI18nContext } from '../../../hooks/useI18nContext';
-import { MetaMetricsContext } from '../../../contexts/metametrics';
 import { SUPPORT_LINK } from '../../../helpers/constants/common';
 import { isBeta } from '../../../../shared/lib/build-types';
 import {
@@ -23,23 +22,10 @@ import {
   getNumberOfSettingRoutesInTab,
   handleSettingsRefs,
 } from '../../../helpers/utils/settings-search';
-import {
-  MetaMetricsContextProp,
-  MetaMetricsEventCategory,
-  MetaMetricsEventName,
-} from '../../../../shared/constants/metametrics';
-import VisitSupportDataConsentModal from '../../../components/app/modals/visit-support-data-consent-modal';
 import { Divider } from '../shared';
-import { useBoolean } from '../../../hooks/useBoolean';
 
 export default function AboutInfo(): React.ReactElement {
   const t = useI18nContext();
-  const { trackEvent } = useContext(MetaMetricsContext);
-
-  const {
-    value: isVisitSupportDataConsentModalOpen,
-    toggle: toggleVisitSupportDataConsentModal,
-  } = useBoolean();
 
   const version = process.env.METAMASK_VERSION ?? '';
 
@@ -56,20 +42,7 @@ export default function AboutInfo(): React.ReactElement {
     handleSettingsRefs(t, t('about'), settingsRefs);
   }, [t, settingsRefs]);
 
-  const handleContactUsClick = useCallback(() => {
-    trackEvent(
-      {
-        category: MetaMetricsEventCategory.Settings,
-        event: MetaMetricsEventName.SupportLinkClicked,
-        properties: {
-          url: SUPPORT_LINK,
-        },
-      },
-      {
-        contextPropsIntoEventProperties: [MetaMetricsContextProp.PageTitle],
-      },
-    );
-  }, [trackEvent]);
+  const handleContactUsClick = useCallback(() => undefined, []);
 
   function renderInfoLinks(): React.ReactElement {
     const privacyUrl = PRIVACY_POLICY_LINK;
@@ -138,11 +111,10 @@ export default function AboutInfo(): React.ReactElement {
         </Box>
         <Divider />
         <Box ref={settingsRefs[5]} {...linkItemProps}>
-          <TextButton
-            onClick={toggleVisitSupportDataConsentModal}
-            {...linkProps}
-          >
-            {t('supportCenter')}
+          <TextButton asChild {...linkProps}>
+            <a href={SUPPORT_LINK} target="_blank" rel="noopener noreferrer">
+              {t('supportCenter')}
+            </a>
           </TextButton>
         </Box>
         <Box ref={settingsRefs[6]} {...linkItemProps}>
@@ -196,12 +168,6 @@ export default function AboutInfo(): React.ReactElement {
         </Text>
       </Box>
       {renderInfoLinks()}
-      {isVisitSupportDataConsentModalOpen && (
-        <VisitSupportDataConsentModal
-          isOpen={isVisitSupportDataConsentModalOpen}
-          onClose={toggleVisitSupportDataConsentModal}
-        />
-      )}
     </Box>
   );
 }

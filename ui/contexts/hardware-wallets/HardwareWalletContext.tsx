@@ -7,7 +7,6 @@ import React, {
   useRef,
   type ReactNode,
 } from 'react';
-import { resetHardwareWalletRecoveryInlineCtaViewCount } from '../../../shared/lib/hardware-wallet-recovery-metrics';
 import { ConnectionState } from './connectionState';
 import { useHardwareWalletStateManager } from './HardwareWalletStateManager';
 import { useDeviceEventHandlers } from './HardwareWalletEventHandlers';
@@ -201,7 +200,6 @@ export const HardwareWalletProvider: React.FC<{ children: ReactNode }> = ({
     });
 
   const setConnectionReady = useCallback(() => {
-    resetHardwareWalletRecoveryInlineCtaViewCount();
     updateConnectionState(ConnectionState.ready());
   }, [updateConnectionState]);
 
@@ -252,7 +250,6 @@ export const HardwareWalletProvider: React.FC<{ children: ReactNode }> = ({
   }, []);
 
   const resetHardwareWalletConnection = useCallback(() => {
-    resetHardwareWalletRecoveryInlineCtaViewCount();
     if (refs.adapterRef.current) {
       refs.adapterRef.current.destroy();
       refs.adapterRef.current = null;

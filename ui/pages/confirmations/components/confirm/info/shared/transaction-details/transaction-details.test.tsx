@@ -5,6 +5,7 @@ import thunk from 'redux-thunk';
 import { Hex } from '@metamask/utils';
 import { toHex } from '@metamask/controller-utils';
 import { Interface } from '@ethersproject/abi';
+import type { TransactionMeta } from '@metamask/transaction-controller';
 import {
   getMockConfirmState,
   getMockConfirmStateForTransaction,
@@ -83,8 +84,9 @@ describe('Transaction Details', () => {
         address: '0x1111111111111111111111111111111111111111',
         chainId: CHAIN_IDS.SEPOLIA,
       });
-      transaction.txParams = {
-        ...transaction.txParams,
+      const transactionMeta = transaction as TransactionMeta;
+      transactionMeta.txParams = {
+        ...transactionMeta.txParams,
         from: '0x1111111111111111111111111111111111111111',
         to: '0x1111111111111111111111111111111111111111',
         data: accountRuntimeInterface.encodeFunctionData('enableApp', [
@@ -93,7 +95,7 @@ describe('Transaction Details', () => {
         value: '0x0',
       };
 
-      const state = getMockConfirmStateForTransaction(transaction);
+      const state = getMockConfirmStateForTransaction(transactionMeta);
       const mockStore = createMockStore(state);
       const { getByTestId, getByText } = renderWithConfirmContextProvider(
         <TransactionDetails />,

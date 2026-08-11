@@ -29,14 +29,6 @@ const REMOVE_KEYS = [
   'encryptionSalt',
   'vault',
 
-  // PhishingController
-  'c2DomainBlocklistLastFetched',
-  'hotlistLastFetched',
-  'phishingLists',
-  'stalelistLastFetched',
-  'whitelist',
-  'whitelistPaths',
-
   // SeedlessOnboardingController
   'accessToken',
   'encryptedKeyringEncryptionKey',
@@ -127,7 +119,6 @@ function sanitizeSeedlessOnboardingControllerState(state: FlattenedUIState) {
       const sanitizedToken = {
         ...token,
       };
-      // @ts-expect-error - Intentionally sanitizing a required field.
       delete sanitizedToken.authToken;
       return sanitizedToken;
     });
@@ -143,7 +134,6 @@ function sanitizeSeedlessOnboardingControllerState(state: FlattenedUIState) {
       const sanitizedBackup = {
         ...backup,
       };
-      // @ts-expect-error - Intentionally sanitizing a required field.
       delete sanitizedBackup.hash;
       return sanitizedBackup;
     });

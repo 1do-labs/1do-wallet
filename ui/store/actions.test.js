@@ -14,14 +14,7 @@ import enLocale from '../../app/_locales/en/messages.json';
 // eslint-disable-next-line import-x/no-restricted-paths
 import MetaMaskController from '../../app/scripts/metamask-controller';
 import { HardwareDeviceNames } from '../../shared/constants/hardware-wallets';
-import { GAS_LIMITS } from '../../shared/constants/gas';
 import { ORIGIN_METAMASK } from '../../shared/constants/app';
-import {
-  MetaMetricsEventCategory,
-  MetaMetricsEventName,
-  MetaMetricsNetworkEventSource,
-  MetaMetricsUserTrait,
-} from '../../shared/constants/metametrics';
 import { ETH_EOA_METHODS } from '../../shared/constants/eth-methods';
 import { mockNetworkState } from '../../test/stub/networks';
 import { CHAIN_IDS } from '../../shared/constants/network';
@@ -221,33 +214,6 @@ describe('Actions', () => {
           type: actionConstants.HIDE_WARNING,
         },
       ]);
-    });
-
-    it('tracks the onboarding analytics preference event when a tracking function is provided', async () => {
-      const store = mockStore();
-      const trackEventStub = sinon.stub().resolves();
-
-      background.restoreSocialBackupAndGetSeedPhrase.resolves('seed phrase');
-      background.getMarketingConsent = sinon.stub().resolves(false);
-      background.setDataCollectionForMarketing = sinon.stub().resolves();
-
-      setBackgroundConnection(background);
-
-      await store.dispatch(
-        actions.restoreSocialBackupAndGetSeedPhrase('password', trackEventStub),
-      );
-
-      expect(
-        trackEventStub.calledOnceWith({
-          category: MetaMetricsEventCategory.Onboarding,
-          event: MetaMetricsEventName.AnalyticsPreferenceSelected,
-          properties: {
-            [MetaMetricsUserTrait.IsMetricsOptedIn]: true,
-            [MetaMetricsUserTrait.HasMarketingConsent]: false,
-            location: 'onboarding_social_login_rehydration',
-          },
-        }),
-      ).toStrictEqual(true);
     });
 
     it('displays a warning when restoring the social backup fails', async () => {
@@ -1327,7 +1293,7 @@ describe('Actions', () => {
   describe('#updateTransaction', () => {
     const txParams = {
       from: '0x1',
-      gas: GAS_LIMITS.SIMPLE,
+      gas: '0x5208',
       gasPrice: '0x3b9aca00',
       to: '0x2',
       value: '0x0',
@@ -1384,7 +1350,7 @@ describe('Actions', () => {
           id: '1',
           value: {
             from: '0x1',
-            gas: GAS_LIMITS.SIMPLE,
+            gas: '0x5208',
             gasPrice: '0x3b9aca00',
             to: '0x2',
             value: '0x0',
@@ -2113,45 +2079,6 @@ describe('Actions', () => {
       sinon.restore();
     });
 
-    it('calls updateNetwork in the background with the correct arguments', async () => {
-      const store = mockStore();
-
-      const updateNetworkStub = sinon.stub().resolves();
-
-      background.getApi.returns({
-        updateNetwork: updateNetworkStub,
-      });
-      setBackgroundConnection(background.getApi());
-
-      const networkConfiguration = {
-        rpcUrl: 'newRpc',
-        chainId: '0x',
-        nativeCurrency: 'ETH',
-        name: 'nickname',
-        rpcEndpoints: [{ blockExplorerUrl: 'etherscan.io' }],
-      };
-
-      await store.dispatch(
-        actions.updateNetwork(networkConfiguration, {
-          source: MetaMetricsNetworkEventSource.CustomNetworkForm,
-        }),
-      );
-
-      expect(
-        updateNetworkStub.calledOnceWith(
-          '0x',
-          {
-            rpcUrl: 'newRpc',
-            chainId: '0x',
-            nativeCurrency: 'ETH',
-            name: 'nickname',
-            rpcEndpoints: [{ blockExplorerUrl: 'etherscan.io' }],
-          },
-          { source: MetaMetricsNetworkEventSource.CustomNetworkForm },
-        ),
-      ).toBe(true);
-    });
-
     it('updateNetwork has empty object for default options', async () => {
       const store = mockStore();
 
@@ -2704,22 +2631,6 @@ describe('Actions', () => {
 
       await store.dispatch(actions.setServiceWorkerKeepAlivePreference(false));
       expect(store.getActions()).toStrictEqual(expectedActions);
-    });
-  });
-
-  describe('#setParticipateInMetaMetrics', () => {
-    it('sets participateInMetaMetrics to true', async () => {
-      const store = mockStore();
-      const setParticipateInMetaMetricsStub = jest.fn().mockResolvedValue();
-
-      background.getApi.returns({
-        setParticipateInMetaMetrics: setParticipateInMetaMetricsStub,
-      });
-
-      setBackgroundConnection(background.getApi());
-
-      await store.dispatch(actions.setParticipateInMetaMetrics(true));
-      expect(setParticipateInMetaMetricsStub).toHaveBeenCalledWith(true);
     });
   });
 
@@ -3365,24 +3276,6 @@ describe('Actions', () => {
     });
   });
 
-  describe('#createMetaMetricsDataDeletionTask', () => {
-    afterEach(() => {
-      sinon.restore();
-    });
-
-    it('calls createMetaMetricsDataDeletionTask in background', async () => {
-      const createMetaMetricsDataDeletionTaskStub = sinon.stub().resolves();
-      background.getApi.returns({
-        createMetaMetricsDataDeletionTask:
-          createMetaMetricsDataDeletionTaskStub,
-      });
-
-      setBackgroundConnection(background.getApi());
-
-      await actions.createMetaMetricsDataDeletionTask();
-      expect(createMetaMetricsDataDeletionTaskStub.callCount).toStrictEqual(1);
-    });
-  });
   describe('#updateDataDeletionTaskStatus', () => {
     afterEach(() => {
       sinon.restore();

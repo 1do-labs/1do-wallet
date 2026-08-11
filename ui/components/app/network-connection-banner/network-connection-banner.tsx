@@ -20,7 +20,6 @@ import { Text } from '../../component-library/text';
 import { useNetworkConnectionBanner } from '../../../hooks/useNetworkConnectionBanner';
 import { NETWORKS_ROUTE } from '../../../helpers/constants/routes';
 import { setEditedNetwork } from '../../../store/actions';
-import { MetaMetricsEventName } from '../../../../shared/constants/metametrics';
 import { NetworkConnectionBanner as NetworkConnectionBannerType } from '../../../../shared/constants/app-state';
 
 type BannerIcon = {
@@ -243,12 +242,6 @@ export const NetworkConnectionBanner = () => {
       networkConnectionBanner.status === 'degraded' ||
       networkConnectionBanner.status === 'unavailable'
     ) {
-      networkConnectionBanner.trackNetworkBannerEvent({
-        bannerType: networkConnectionBanner.status,
-        eventName: MetaMetricsEventName.NetworkConnectionBannerUpdateRpcClicked,
-        networkClientId: networkConnectionBanner.networkClientId,
-      });
-
       dispatch(
         setEditedNetwork({
           chainId: networkConnectionBanner.chainId,
@@ -264,13 +257,6 @@ export const NetworkConnectionBanner = () => {
       networkConnectionBanner.status === 'degraded' ||
       networkConnectionBanner.status === 'unavailable'
     ) {
-      networkConnectionBanner.trackNetworkBannerEvent({
-        bannerType: networkConnectionBanner.status,
-        eventName:
-          MetaMetricsEventName.NetworkConnectionBannerSwitchToMetaMaskDefaultRpcClicked,
-        networkClientId: networkConnectionBanner.networkClientId,
-      });
-
       await networkConnectionBanner.switchToDefaultRpc();
     }
   }, [networkConnectionBanner]);

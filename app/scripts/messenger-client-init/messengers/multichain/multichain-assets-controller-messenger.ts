@@ -35,7 +35,6 @@ export function getMultichainAssetsControllerMessenger(
     actions: [
       'PermissionController:getPermissions',
       'AccountsController:listMultichainAccounts',
-      'PhishingController:bulkScanTokens',
     ],
   });
 

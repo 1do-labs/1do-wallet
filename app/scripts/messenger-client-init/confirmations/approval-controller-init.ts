@@ -2,7 +2,6 @@ import { ApprovalController } from '@metamask/approval-controller';
 import { ApprovalType } from '@metamask/controller-utils';
 import { MessengerClientInitFunction } from '../types';
 import { ApprovalControllerMessenger } from '../messengers';
-import { SMART_TRANSACTION_CONFIRMATION_TYPES } from '../../../../shared/constants/app';
 
 /**
  * Initialize the approval controller.
@@ -26,10 +25,6 @@ export const ApprovalControllerInit: MessengerClientInitFunction<
       ApprovalType.WatchAsset,
       ApprovalType.EthGetEncryptionPublicKey,
       ApprovalType.EthDecrypt,
-
-      // Exclude Smart TX Status Page from rate limiting to allow sequential
-      // transactions.
-      SMART_TRANSACTION_CONFIRMATION_TYPES.showSmartTransactionStatusPage,
     ],
   });
 

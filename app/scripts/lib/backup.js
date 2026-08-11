@@ -7,14 +7,12 @@ export default class Backup {
       addressBookController,
       accountsController,
       networkController,
-      trackMetaMetricsEvent,
     } = opts;
 
     this.preferencesController = preferencesController;
     this.accountsController = accountsController;
     this.addressBookController = addressBookController;
     this.networkController = networkController;
-    this._trackMetaMetricsEvent = trackMetaMetricsEvent;
   }
 
   async restoreUserData(jsonString) {
@@ -34,13 +32,6 @@ export default class Backup {
 
     if (internalAccounts) {
       this.accountsController.loadBackup(internalAccounts);
-    }
-
-    if (preferences || addressBook || network || internalAccounts) {
-      this._trackMetaMetricsEvent({
-        event: 'User Data Imported',
-        category: 'Backup',
-      });
     }
   }
 

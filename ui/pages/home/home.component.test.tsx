@@ -5,10 +5,6 @@ import {
   ENVIRONMENT_TYPE_FULLSCREEN,
 } from '../../../shared/constants/app';
 import { I18nContext, LegacyI18nProvider } from '../../contexts/i18n';
-import {
-  MetaMetricsContext,
-  LegacyMetaMetricsProvider,
-} from '../../contexts/metametrics';
 import Home from './home.component';
 
 jest.mock('../../components/multichain', () => ({
@@ -44,13 +40,6 @@ const t = ((key: string) =>
   ? V
   : never;
 
-const mockMetaMetricsContext = {
-  trackEvent: jest.fn().mockResolvedValue(undefined),
-  bufferedTrace: jest.fn().mockResolvedValue(undefined),
-  bufferedEndTrace: jest.fn().mockResolvedValue(undefined),
-  onboardingParentContext: { current: null },
-} as unknown as React.ContextType<typeof MetaMetricsContext>;
-
 function buildDefaultProps(overrides: Record<string, unknown> = {}) {
   return {
     navigate: jest.fn(),
@@ -60,8 +49,6 @@ function buildDefaultProps(overrides: Record<string, unknown> = {}) {
     showMultiRpcModal: false,
     showUpdateModal: false,
     totalUnapprovedCount: 0,
-    participateInMetaMetrics: false,
-    setDataCollectionForMarketing: jest.fn(),
     shouldShowWeb3ShimUsageNotification: false,
     setWeb3ShimUsageAlertDismissed: jest.fn(),
     disableWeb3ShimUsageAlert: jest.fn(),
@@ -91,11 +78,7 @@ function buildDefaultProps(overrides: Record<string, unknown> = {}) {
 function wrapWithContext(element: React.ReactElement) {
   return (
     <I18nContext.Provider value={t}>
-      <LegacyI18nProvider>
-        <MetaMetricsContext.Provider value={mockMetaMetricsContext}>
-          <LegacyMetaMetricsProvider>{element}</LegacyMetaMetricsProvider>
-        </MetaMetricsContext.Provider>
-      </LegacyI18nProvider>
+      <LegacyI18nProvider>{element}</LegacyI18nProvider>
     </I18nContext.Provider>
   );
 }

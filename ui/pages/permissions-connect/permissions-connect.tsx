@@ -55,7 +55,6 @@ import {
 import PermissionPageContainer from '../../components/app/permission-page-container';
 import { MultichainAccountsConnectPage } from '../multichain-accounts/multichain-accounts-connect-page/multichain-accounts-connect-page';
 import { useI18nContext } from '../../hooks/useI18nContext';
-import { ConnectionTrustSignalGate } from './connection-trust-signal-gate';
 import PermissionsRedirect from './redirect';
 import {
   getCaip25CaveatValueFromPermissions,
@@ -63,6 +62,14 @@ import {
 } from './connect-page/utils';
 
 const APPROVE_TIMEOUT = MILLISECOND * 1200;
+
+type TargetSubjectMetadata = {
+  extensionId: string | null;
+  iconUrl: string | null;
+  name: string;
+  origin: string;
+  subjectType: string;
+};
 
 function getDefaultSelectedAccounts(
   currentAddress: string,
@@ -154,17 +161,22 @@ function PermissionsConnect() {
     getTargetSubjectMetadata(state, originFromRequest),
   );
 
-  const targetSubjectMetadataProp = useMemo(
-    () =>
-      targetSubjectMetadataFromSelector ?? {
-        name: getURLHostName(originFromRequest) || originFromRequest,
-        origin: originFromRequest,
-        iconUrl: null,
-        extensionId: null,
-        subjectType: SubjectType.Unknown,
-      },
-    [targetSubjectMetadataFromSelector, originFromRequest],
-  );
+  const targetSubjectMetadataProp = useMemo<TargetSubjectMetadata>(() => {
+    const selectedMetadata = targetSubjectMetadataFromSelector as
+      | Partial<TargetSubjectMetadata>
+      | undefined;
+
+    return {
+      name:
+        selectedMetadata?.name ??
+        getURLHostName(originFromRequest) ??
+        originFromRequest,
+      origin: selectedMetadata?.origin ?? originFromRequest,
+      iconUrl: selectedMetadata?.iconUrl ?? null,
+      extensionId: selectedMetadata?.extensionId ?? null,
+      subjectType: selectedMetadata?.subjectType ?? SubjectType.Unknown,
+    };
+  }, [targetSubjectMetadataFromSelector, originFromRequest]);
 
   // We only consider EVM accounts for the legacy permission review flow.
   // Multichain accounts are handled separately via the MultichainEditAccountsPageWrapper.
@@ -194,9 +206,8 @@ function PermissionsConnect() {
     boolean | null
   >(null);
   const [origin] = useState<string>(originFromRequest);
-  const [targetSubjectMetadata, setTargetSubjectMetadata] = useState(
-    targetSubjectMetadataProp || {},
-  );
+  const [targetSubjectMetadata, setTargetSubjectMetadata] =
+    useState<TargetSubjectMetadata>(targetSubjectMetadataProp);
 
   const prevPermissionsRequestRef = useRef<typeof permissionsRequest | null>(
     null,
@@ -235,7 +246,15 @@ function PermissionsConnect() {
     if (pathname === connectPath && !isRequestingAccounts) {
       navigate(confirmPermissionPath, { replace: true });
     }
-  }, [dispatch, pathname, permissionsRequest, navigate, connectPath, isRequestingAccounts, confirmPermissionPath]);
+  }, [
+    dispatch,
+    pathname,
+    permissionsRequest,
+    navigate,
+    connectPath,
+    isRequestingAccounts,
+    confirmPermissionPath,
+  ]);
 
   // Cache targetSubjectMetadata when it changes
   useEffect(() => {
@@ -320,60 +339,47 @@ function PermissionsConnect() {
     targetSubjectMetadata,
   ]);
 
-  const cancelFromTrustSignalGate = useCallback(
-    () => cancelPermissionsRequest(permissionsRequestId || ''),
-    [cancelPermissionsRequest, permissionsRequestId],
-  );
-
   return (
-    <ConnectionTrustSignalGate
-      origin={origin}
-      onCancel={cancelFromTrustSignalGate}
-    >
-      <div className="permissions-connect">
-        {redirecting && permissionsApproved ? (
-          <PermissionsRedirect subjectMetadata={targetSubjectMetadata} />
-        ) : (
-          <Routes>
-            <Route
-              path="/"
-              element={renderConnectPage()}
-            />
-            <Route
-              path={toRelativeRoutePath(CONNECT_CONFIRM_PERMISSIONS_ROUTE)}
-              element={
-                <PermissionPageContainer
-                  request={permissionsRequest || {}}
-                  approvePermissionsRequest={(request: unknown) => {
-                    dispatch(
-                      approvePermissionsRequestAction(
-                        request as unknown as ControllerPermissionsRequest,
-                      ),
-                    );
-                    redirect(true);
-                  }}
-                  rejectPermissionsRequest={(requestId: string) =>
-                    cancelPermissionsRequest(requestId)
-                  }
-                  selectedAccounts={accountsWithLabels.filter(
-                    (account: { address: string }) =>
-                      selectedAccountAddresses.has(account.address),
-                  )}
-                  requestedChainIds={getRequestedChainIds(
-                    permissions as PermissionsRequest | undefined,
-                  )}
-                  selectedCaipAccountIds={null}
-                  selectedCaipChainIds={[]}
-                  targetSubjectMetadata={targetSubjectMetadata}
-                  navigate={navigate}
-                  connectPath={connectPath}
-                />
-              }
-            />
-          </Routes>
-        )}
-      </div>
-    </ConnectionTrustSignalGate>
+    <div className="permissions-connect">
+      {redirecting && permissionsApproved ? (
+        <PermissionsRedirect subjectMetadata={targetSubjectMetadata} />
+      ) : (
+        <Routes>
+          <Route path="/" element={renderConnectPage()} />
+          <Route
+            path={toRelativeRoutePath(CONNECT_CONFIRM_PERMISSIONS_ROUTE)}
+            element={
+              <PermissionPageContainer
+                request={permissionsRequest || {}}
+                approvePermissionsRequest={(request: unknown) => {
+                  dispatch(
+                    approvePermissionsRequestAction(
+                      request as unknown as ControllerPermissionsRequest,
+                    ),
+                  );
+                  redirect(true);
+                }}
+                rejectPermissionsRequest={(requestId: string) =>
+                  cancelPermissionsRequest(requestId)
+                }
+                selectedAccounts={accountsWithLabels.filter(
+                  (account: { address: string }) =>
+                    selectedAccountAddresses.has(account.address),
+                )}
+                requestedChainIds={getRequestedChainIds(
+                  permissions as PermissionsRequest | undefined,
+                )}
+                selectedCaipAccountIds={null}
+                selectedCaipChainIds={[]}
+                targetSubjectMetadata={targetSubjectMetadata}
+                navigate={navigate}
+                connectPath={connectPath}
+              />
+            }
+          />
+        </Routes>
+      )}
+    </div>
   );
 }
 

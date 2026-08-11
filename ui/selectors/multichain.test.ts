@@ -45,7 +45,7 @@ type TestState = MultichainState &
       | 'currencyRates'
       | 'completedOnboarding'
       | 'selectedNetworkClientId'
-      | 'remoteFeatureFlags'
+      | 'featureFlags'
       | 'internalAccounts'
       | 'accountIdByAddress'
       | 'isEvmSelected'
@@ -83,11 +83,17 @@ function getEvmState(chainId: Hex = CHAIN_IDS.MAINNET): TestState {
           },
         },
       },
+      balances: {},
+      conversionRates: {},
+      historicalPrices: {},
+      assetsMetadata: {},
+      accountsAssets: {},
+      allIgnoredAssets: {},
       isEvmSelected: true,
       multichainNetworkConfigurationsByChainId: {},
-      selectedMultichainNetworkChainId: `eip155:${Number(chainId)}`,
+      selectedMultichainNetworkChainId: `eip155:${Number(chainId)}` as never,
       networksWithTransactionActivity: {},
-      remoteFeatureFlags: {},
+      featureFlags: {},
     },
   };
 }
@@ -234,13 +240,12 @@ describe('Multichain Selectors', () => {
       expect(getMultichainIsTestnet(state)).toBe(false);
     });
 
-    it.each([CHAIN_IDS.SEPOLIA, CHAIN_IDS.LINEA_SEPOLIA])(
-      'returns true if account is EVM testnet: %s',
-      (chainId: Hex) => {
+    [CHAIN_IDS.SEPOLIA, CHAIN_IDS.LINEA_SEPOLIA].forEach((chainId: Hex) => {
+      it(`returns true if account is EVM testnet: ${chainId}`, () => {
         const state = getEvmState(chainId);
         expect(getMultichainIsTestnet(state)).toBe(true);
-      },
-    );
+      });
+    });
   });
 
   describe('getMultichainSelectedAccountCachedBalance', () => {

@@ -9,7 +9,6 @@ import { Browser } from 'webextension-polyfill';
 import { Encryptor } from '@metamask/keyring-controller';
 import { KeyringClass } from '@metamask/keyring-utils';
 import { QrKeyringScannerBridge } from '@metamask/eth-qr-keyring';
-import type { TransactionMetricsRequest } from '../../../shared/types';
 import { MessageSender } from '../../../types/global';
 import { HardwareTransportBridgeClass } from '../lib/hardware-keyring-builder-factory';
 import ExtensionPlatform from '../platforms/extension';
@@ -123,12 +122,6 @@ export type MessengerClientInitRequest<
     origin: string,
     options?: { suppressUnauthorizedError?: boolean },
   ): Promise<string[]>;
-
-  /**
-   * Retrieve a transaction metrics request instance.
-   * Includes data and callbacks required to generate metrics.
-   */
-  getTransactionMetricsRequest(): TransactionMetricsRequest;
 
   /**
    * Get the MetaMask state of the client available to the UI.

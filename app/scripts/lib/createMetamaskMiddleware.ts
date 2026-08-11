@@ -30,16 +30,13 @@ export default function createMetamaskMiddleware({
   processEncryptionPublicKey,
   getPendingNonce,
   getPendingTransactionByHash,
-  processRequestExecutionPermissions,
-  processGetSupportedExecutionPermissions,
-  processGetGrantedExecutionPermissions,
 }: Options) {
   const engine = JsonRpcEngineV2.create({
     middleware: [
       /* eslint-disable @typescript-eslint/naming-convention */
       createScaffoldMiddleware({
         eth_syncing: false,
-        web3_clientVersion: `MetaMask/v${version}`,
+        web3_clientVersion: `1Do/v${version}`,
       }),
       /* eslint-enable @typescript-eslint/naming-convention */
       createWalletMiddleware({
@@ -51,9 +48,6 @@ export default function createMetamaskMiddleware({
         processPersonalMessage,
         processDecryptMessage,
         processEncryptionPublicKey,
-        processRequestExecutionPermissions,
-        processGetSupportedExecutionPermissions,
-        processGetGrantedExecutionPermissions,
       }),
       createPendingNonceMiddleware({ getPendingNonce }),
       createPendingTxMiddleware({ getPendingTransactionByHash }),

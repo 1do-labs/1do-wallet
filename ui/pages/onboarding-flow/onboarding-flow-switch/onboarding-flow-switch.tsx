@@ -8,7 +8,6 @@ import {
   LOCK_ROUTE,
   ONBOARDING_EXPERIMENTAL_AREA,
   ONBOARDING_WELCOME_ROUTE,
-  ONBOARDING_METAMETRICS,
 } from '../../../helpers/constants/routes';
 import {
   getCompletedOnboarding,
@@ -19,10 +18,7 @@ import {
 } from '../../../ducks/metamask/metamask';
 import { PLATFORM_FIREFOX } from '../../../../shared/constants/app';
 import { getBrowserName } from '../../../../shared/lib/browser-runtime.utils';
-import {
-  getFirstTimeFlowType,
-  getIsParticipateInMetaMetricsSet,
-} from '../../../selectors';
+import { getFirstTimeFlowType } from '../../../selectors';
 import {
   isBeta,
   isExperimental,
@@ -40,25 +36,13 @@ export default function OnboardingFlowSwitch() {
   const seedPhraseBackedUp = useSelector(getSeedPhraseBackedUp);
   const firstTimeFlowType = useSelector(getFirstTimeFlowType);
   const isUnlocked = useSelector(getIsUnlocked);
-  const isParticipateInMetaMetricsSet = useSelector(
-    getIsParticipateInMetaMetricsSet,
-  );
 
   if (completedOnboarding) {
     return <Navigate to={DEFAULT_ROUTE} replace />;
   }
 
   if (seedPhraseBackedUp !== null) {
-    return (
-      <Navigate
-        to={
-          isParticipateInMetaMetricsSet
-            ? ONBOARDING_COMPLETION_ROUTE
-            : ONBOARDING_METAMETRICS
-        }
-        replace
-      />
-    );
+    return <Navigate to={ONBOARDING_COMPLETION_ROUTE} replace />;
   }
 
   if (isUnlocked) {
@@ -76,7 +60,7 @@ export default function OnboardingFlowSwitch() {
         <Navigate
           to={
             getBrowserName() === PLATFORM_FIREFOX
-              ? ONBOARDING_METAMETRICS
+              ? ONBOARDING_COMPLETION_ROUTE
               : ONBOARDING_WELCOME_ROUTE
           }
           replace

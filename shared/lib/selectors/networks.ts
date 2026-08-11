@@ -101,7 +101,8 @@ export function getSelectedNetworkClientId(
  * @returns A consolidated object containing all available network configurations by caip chain id.
  */
 export const getNetworkConfigurationsByCaipChainId = ({
-  multichainNetworkConfigurationsByChainId: _multichainNetworkConfigurationsByChainId,
+  multichainNetworkConfigurationsByChainId:
+    _multichainNetworkConfigurationsByChainId,
   networkConfigurationsByChainId,
   internalAccounts: _internalAccounts,
 }: {
@@ -113,13 +114,13 @@ export const getNetworkConfigurationsByCaipChainId = ({
   internalAccounts: AccountsControllerState['internalAccounts'];
 }) => {
   const caipFormattedEvmNetworkConfigurations: Record<
-    string,
-    InternalNetworkConfiguration | InternalMultichainNetworkConfiguration
+    CaipChainId,
+    InternalNetworkConfiguration
   > = {};
 
   Object.entries(networkConfigurationsByChainId).forEach(
     ([chainId, network]) => {
-      const caipChainId = `eip155:${hexToDecimal(chainId)}`;
+      const caipChainId = `eip155:${hexToDecimal(chainId)}` as CaipChainId;
       caipFormattedEvmNetworkConfigurations[caipChainId] = network;
     },
   );

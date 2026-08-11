@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback } from 'react';
 import { Alert } from '../../../../ducks/confirm-alerts/confirm-alerts';
 import {
   AlignItems,
@@ -33,7 +33,6 @@ import {
   Text,
 } from '../../../component-library';
 import { useAlertActionHandler } from '../contexts/alertActionHandler';
-import { useAlertMetrics } from '../contexts/alertMetricsContext';
 
 export type AlertModalProps = {
   /**
@@ -286,17 +285,14 @@ function ActionButton({
   alertKey: string;
 }) {
   const { processAction } = useAlertActionHandler();
-  const { trackAlertActionClicked } = useAlertMetrics();
 
   const handleClick = useCallback(() => {
     if (!action) {
       return;
     }
-    trackAlertActionClicked(alertKey);
-
     processAction(action.key);
     onClose({ recursive: true });
-  }, [action, onClose, processAction, trackAlertActionClicked, alertKey]);
+  }, [action, onClose, processAction]);
 
   if (!action) {
     return null;
@@ -334,7 +330,6 @@ export function AlertModal({
   showCloseIcon = true,
 }: AlertModalProps) {
   const { isAlertConfirmed, setAlertConfirmed, alerts } = useAlerts(ownerId);
-  const { trackAlertRender } = useAlertMetrics();
 
   const handleClose = useCallback(
     (...args) => {
@@ -344,12 +339,6 @@ export function AlertModal({
   );
 
   const selectedAlert = alerts.find((alert: Alert) => alert.key === alertKey);
-
-  useEffect(() => {
-    if (selectedAlert) {
-      trackAlertRender(selectedAlert.key);
-    }
-  }, [selectedAlert, trackAlertRender]);
 
   const isConfirmed = selectedAlert
     ? isAlertConfirmed(selectedAlert.key)

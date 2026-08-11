@@ -286,7 +286,6 @@ describe('ConnectPage', () => {
           metadata: {
             id: '1',
             origin: mockTargetSubjectMetadata.origin,
-            promptToCreateUnsupportedAccount: true,
           },
         },
         permissionsRequestId: '1',

@@ -37,16 +37,6 @@ function getInitRequestMock(): jest.Mocked<
   }));
 
   baseMessenger.registerActionHandler(
-    'RemoteFeatureFlagController:getState',
-    () =>
-      ({
-        remoteFeatureFlags: {
-          assetsAccountApiBalances: [],
-        },
-      }) as never,
-  );
-
-  baseMessenger.registerActionHandler(
     'OnboardingController:getState',
     () =>
       ({

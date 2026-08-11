@@ -2,7 +2,6 @@ import type {
   MultichainAssetsControllerState,
   MultichainAssetsRatesControllerState,
   MultichainBalancesControllerState,
-  RatesControllerState,
 } from '@metamask/assets-controllers';
 import { InternalAccount } from '@metamask/keyring-internal-api';
 import { NetworkConfiguration } from '@metamask/network-controller';
@@ -10,10 +9,7 @@ import { CaipChainId, Hex } from '@metamask/utils';
 import PropTypes from 'prop-types';
 import { createSelector } from 'reselect';
 import { Numeric } from '../../shared/lib/Numeric';
-import {
-  getRatesControllerRates,
-  getMultiChainBalancesControllerBalances,
-} from '../../shared/lib/selectors/assets-migration';
+import { getMultiChainBalancesControllerBalances } from '../../shared/lib/selectors/assets-migration';
 import {
   getConversionRate,
   getCurrentCurrency,
@@ -54,16 +50,11 @@ export type AssetsRatesState = {
   metamask: MultichainAssetsRatesControllerState;
 };
 
-export type RatesState = {
-  metamask: RatesControllerState;
-};
-
 type BalancesState = {
   metamask: MultichainBalancesControllerState;
 };
 
 export type MultichainState = AccountsState &
-  RatesState &
   BalancesState &
   NetworkState &
   AssetsRatesState &
@@ -198,8 +189,6 @@ export function getMultichainIsTestnet(
 }
 
 export const getMultichainBalances = getMultiChainBalancesControllerBalances;
-
-export { getRatesControllerRates as getMultichainCoinRates };
 
 export function getImageForChainId(chainId: string): string | undefined {
   return CHAIN_ID_TO_NETWORK_IMAGE_URL_MAP[chainId];

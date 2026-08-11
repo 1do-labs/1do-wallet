@@ -12,11 +12,6 @@ import {
   setShowDefaultAddress,
   setDefaultAddressScope,
 } from '../../../store/actions';
-import { MetaMetricsContext } from '../../../contexts/metametrics';
-import {
-  MetaMetricsEventCategory,
-  MetaMetricsEventName,
-} from '../../../../shared/constants/metametrics';
 import {
   DEFAULT_ADDRESS_OPTIONS,
   type DefaultAddressScope,
@@ -27,7 +22,6 @@ import { PREFERENCES_ITEMS } from '../search-config';
 export const ShowDefaultAddressItem = () => {
   const t = useI18nContext();
   const dispatch = useDispatch();
-  const { trackEvent } = useContext(MetaMetricsContext);
 
   const isDefaultAddressEnabled = useSelector(getIsDefaultAddressEnabled);
   const showDefaultAddress = useSelector(getShowDefaultAddressPreference);
@@ -43,19 +37,7 @@ export const ShowDefaultAddressItem = () => {
   const trackShowDefaultAddress = (
     enabled: boolean,
     scope: DefaultAddressScope,
-  ) => {
-    trackEvent({
-      event: MetaMetricsEventName.SettingsUpdated,
-      category: MetaMetricsEventCategory.Settings,
-      properties: {
-        /* eslint-disable @typescript-eslint/naming-convention */
-        show_default_address: enabled,
-        default_address_network: scope,
-        /* eslint-enable @typescript-eslint/naming-convention */
-        location: 'Settings Page',
-      },
-    });
-  };
+  ) => undefined;
 
   const handleToggle = (value: boolean) => {
     const newValue = !value;

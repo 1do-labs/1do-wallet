@@ -22,8 +22,6 @@ import {
 } from '../../../store/actions';
 import { AccountDetailsMenuItem, ViewExplorerMenuItem } from '../menu-items';
 
-const METRICS_LOCATION = 'Account Options';
-
 export const AccountListItemMenu = ({
   anchorElement,
   onClose,
@@ -136,13 +134,10 @@ export const AccountListItemMenu = ({
       <ModalFocus restoreFocus initialFocusRef={anchorElement}>
         <div onKeyDown={handleKeyDown} ref={popoverDialogRef}>
           <AccountDetailsMenuItem
-            metricsLocation={METRICS_LOCATION}
             closeMenu={closeMenu}
-            address={account.address}
             textProps={{ variant: TextVariant.BodySm }}
           />
           <ViewExplorerMenuItem
-            metricsLocation={METRICS_LOCATION}
             closeMenu={closeMenu}
             textProps={{ variant: TextVariant.BodySm }}
             account={account}

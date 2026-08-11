@@ -4,14 +4,6 @@
 import { cloneDeep } from 'lodash';
 import nock from 'nock';
 import { obj as createThroughStream } from 'through2';
-import {
-  ListNames,
-  METAMASK_STALELIST_URL,
-  METAMASK_HOTLIST_DIFF_URL,
-  PHISHING_CONFIG_BASE_URL,
-  METAMASK_STALELIST_FILE,
-  METAMASK_HOTLIST_DIFF_FILE,
-} from '@metamask/phishing-controller';
 import { EthAccountType } from '@metamask/keyring-api';
 import { MOCK_ANY_NAMESPACE, Messenger } from '@metamask/messenger';
 import { LoggingController, LogType } from '@metamask/logging-controller';
@@ -19,10 +11,7 @@ import {
   CHAIN_IDS,
   TransactionController,
 } from '@metamask/transaction-controller';
-import {
-  RatesController,
-  TokenListController,
-} from '@metamask/assets-controllers';
+import { TokenListController } from '@metamask/assets-controllers';
 import ObjectMultiplex from '@metamask/object-multiplex';
 import { TrezorKeyring } from '@metamask/eth-trezor-keyring';
 import { LedgerKeyring } from '@metamask/eth-ledger-bridge-keyring';
@@ -49,7 +38,6 @@ import mockEncryptor from '../../test/lib/mock-encryptor';
 import * as tokenUtils from '../../shared/lib/token-util';
 
 import { ETH_EOA_METHODS } from '../../shared/constants/eth-methods';
-import { createMockInternalAccount } from '../../test/jest/mocks';
 import { mockNetworkState } from '../../test/stub/networks';
 import * as NetworkConstantsModule from '../../shared/constants/network';
 import { withResolvers } from '../../shared/lib/promise-with-resolvers';
@@ -63,13 +51,11 @@ import {
   DefiReferralPartner,
 } from '../../shared/constants/defi-referrals';
 import { PATCH_STORE_SUBSTREAM_METHODS } from '../../shared/constants/patch-store-substream-methods';
-import * as environment from '../../shared/lib/environment';
 import * as metamaskControllerUtils from '../../shared/lib/metamask-controller-utils';
 import { ReferralStatus } from './controllers/preferences-controller';
 import {
   METAMASK_COOKIE_HANDLER,
   METAMASK_EIP_1193_PROVIDER,
-  PHISHING_SAFELIST,
 } from './constants/stream';
 import { getAuthorizedScopesByOrigin } from './controllers/permissions';
 import MetaMaskController from './metamask-controller';
@@ -312,11 +298,6 @@ jest.mock('@metamask/core-backend', () => ({
   createApiPlatformClient: jest.fn().mockReturnValue({ mockApiClient: true }),
 }));
 
-jest.mock('../../shared/lib/environment', () => ({
-  ...jest.requireActual('../../shared/lib/environment'),
-  getEnabledAdvancedPermissions: jest.fn(() => []),
-}));
-
 jest.mock('../../shared/lib/selectors/smart-transactions', () => {
   const actual = jest.requireActual(
     '../../shared/lib/selectors/smart-transactions',
@@ -383,18 +364,6 @@ const firstTimeState = {
       },
     ),
   },
-  PhishingController: {
-    phishingLists: [
-      {
-        allowlist: [],
-        blocklist: ['test.metamask-phishing.io'],
-        fuzzylist: [],
-        tolerance: 0,
-        version: 0,
-        name: 'MetaMask',
-      },
-    ],
-  },
 };
 
 const noop = () => undefined;
@@ -417,34 +386,6 @@ describe('MetaMaskController', () => {
       .persist()
       .get(/.*/u)
       .reply(200, '{"JPY":12415.9}');
-    nock(PHISHING_CONFIG_BASE_URL)
-      .persist()
-      .get(METAMASK_STALELIST_FILE)
-      .reply(
-        200,
-        JSON.stringify({
-          version: 2,
-          tolerance: 2,
-          lastUpdated: 1,
-          eth_phishing_detect_config: {
-            fuzzylist: [],
-            allowlist: [],
-            blocklist: ['test.metamask-phishing.io'],
-            name: ListNames.MetaMask,
-          },
-        }),
-      )
-      .get(METAMASK_HOTLIST_DIFF_FILE)
-      .reply(
-        200,
-        JSON.stringify([
-          {
-            url: 'test.metamask-phishing.io',
-            targetList: 'blocklist',
-            timestamp: 0,
-          },
-        ]),
-      );
     nock('https://client-side-detection.api.cx.metamask.io')
       .persist()
       .get('/v1/request-blocklist')
@@ -484,18 +425,6 @@ describe('MetaMaskController', () => {
 
   afterAll(async () => {
     await ganacheServer.quit();
-  });
-
-  describe('Phishing Detection Mock', () => {
-    it('should be updated to use v1 of the API', () => {
-      // Update the fixture above if this test fails
-      expect(METAMASK_STALELIST_URL).toStrictEqual(
-        'https://phishing-detection.api.cx.metamask.io/v1/stalelist',
-      );
-      expect(METAMASK_HOTLIST_DIFF_URL).toStrictEqual(
-        'https://phishing-detection.api.cx.metamask.io/v2/diffsSince',
-      );
-    });
   });
 
   describe('createEnsureOnboardingCompleteCallback (integration)', () => {
@@ -574,14 +503,6 @@ describe('MetaMaskController', () => {
           namespace: MOCK_ANY_NAMESPACE,
         }),
       });
-
-      // Mock RemoteFeatureFlagController to prevent network requests in tests
-      jest
-        .spyOn(
-          metamaskController.remoteFeatureFlagController,
-          'updateRemoteFeatureFlags',
-        )
-        .mockResolvedValue();
 
       // Mock MultichainAccountService to avoid creating wallets in tests (it's being mocked
       // on a per-test basis when needed)
@@ -679,15 +600,6 @@ describe('MetaMaskController', () => {
             PreferencesController: {
               useExternalServices: true,
               useTokenDetection: true,
-            },
-            RemoteFeatureFlagController: {
-              remoteFeatureFlags: {
-                assetsUnifyState: {
-                  enabled: true,
-                  featureVersion: '1',
-                  minimumVersion: null,
-                },
-              },
             },
           };
 
@@ -1645,12 +1557,6 @@ describe('MetaMaskController', () => {
     });
 
     describe('wallet_requestExecutionPermissions (processRequestExecutionPermissions)', () => {
-      beforeEach(() => {
-        jest
-          .mocked(environment.getEnabledAdvancedPermissions)
-          .mockReturnValue(['erc20-token-revocation']);
-      });
-
       /**
        * Run wallet_requestExecutionPermissions through the controller's
        * metamask middleware and return the JSON-RPC response.
@@ -1707,9 +1613,6 @@ describe('MetaMaskController', () => {
             },
             cacheTimestamp: 0,
           });
-        jest
-          .mocked(environment.getEnabledAdvancedPermissions)
-          .mockReturnValue(['erc20-token-revocation']);
       });
 
       /**
@@ -2670,63 +2573,6 @@ describe('MetaMaskController', () => {
         expect(ret).toStrictEqual('0x1');
       });
     });
-    describe('#setupPhishingCommunication', () => {
-      beforeEach(() => {
-        jest.spyOn(metamaskController, 'safelistPhishingDomain');
-        jest.spyOn(metamaskController, 'backToSafetyPhishingWarning');
-        metamaskController.preferencesController.setUsePhishDetect(true);
-      });
-      afterEach(() => {
-        jest.clearAllMocks();
-      });
-      it('creates a phishing stream with safelistPhishingDomain and backToSafetyPhishingWarning handler', async () => {
-        const safelistPhishingDomainRequest = {
-          name: PHISHING_SAFELIST,
-          data: {
-            id: 1,
-            method: 'safelistPhishingDomain',
-            params: ['mockHostname'],
-          },
-        };
-        const backToSafetyPhishingWarningRequest = {
-          name: PHISHING_SAFELIST,
-          data: { id: 2, method: 'backToSafetyPhishingWarning', params: [] },
-        };
-
-        const { promise, resolve } = withResolvers();
-        const { promise: promiseStream, resolve: resolveStream } =
-          withResolvers();
-        const streamTest = createThroughStream((chunk, _, cb) => {
-          if (chunk.name !== PHISHING_SAFELIST) {
-            cb();
-            return;
-          }
-          resolve();
-          cb(null, chunk);
-        });
-
-        metamaskController.setupPhishingCommunication({
-          connectionStream: streamTest,
-        });
-
-        streamTest.write(safelistPhishingDomainRequest, null, () => {
-          expect(
-            metamaskController.safelistPhishingDomain,
-          ).toHaveBeenCalledWith('mockHostname');
-        });
-        streamTest.write(backToSafetyPhishingWarningRequest, null, () => {
-          expect(
-            metamaskController.backToSafetyPhishingWarning,
-          ).toHaveBeenCalled();
-          resolveStream();
-        });
-
-        await promise;
-        streamTest.end();
-        await promiseStream;
-      });
-    });
-
     describe('#setUpCookieHandlerCommunication', () => {
       let localMetaMaskController;
       beforeEach(() => {
@@ -4169,329 +4015,6 @@ describe('MetaMaskController', () => {
           await metamaskController.getTokenSymbol('0xNotInTokenList');
 
         expect(tokenSymbol).toStrictEqual(null);
-      });
-    });
-
-    describe('MultichainRatesController start/stop', () => {
-      const mockEvmAccount = createMockInternalAccount();
-      const mockNonEvmAccount = {
-        ...mockEvmAccount,
-        scopes: ['unsupported:chain'],
-        id: '21690786-6abd-45d8-a9f0-9ff1d8ca76a1',
-        type: 'unsupported:account',
-        methods: [],
-        address: 'unsupported-account-address',
-      };
-      const mockCurrency = 'CAD';
-
-      beforeEach(() => {
-        jest.spyOn(metamaskController.multichainRatesController, 'start');
-        jest.spyOn(metamaskController.multichainRatesController, 'stop');
-      });
-
-      afterEach(() => {
-        jest.clearAllMocks();
-      });
-
-      describe('client is open', () => {
-        beforeEach(() => {
-          jest.replaceProperty(
-            metamaskController,
-            'activeControllerConnections',
-            1,
-          );
-        });
-
-        it('starts MultichainRatesController if selected account is changed to non-EVM', async () => {
-          expect(
-            metamaskController.multichainRatesController.start,
-          ).not.toHaveBeenCalled();
-
-          metamaskController.controllerMessenger.publish(
-            'AccountsController:selectedAccountChange',
-            mockNonEvmAccount,
-          );
-
-          expect(
-            metamaskController.multichainRatesController.start,
-          ).toHaveBeenCalledTimes(1);
-        });
-
-        it('stops MultichainRatesController if selected account is changed to EVM', async () => {
-          expect(
-            metamaskController.multichainRatesController.start,
-          ).not.toHaveBeenCalled();
-
-          metamaskController.controllerMessenger.publish(
-            'AccountsController:selectedAccountChange',
-            mockNonEvmAccount,
-          );
-
-          expect(
-            metamaskController.multichainRatesController.start,
-          ).toHaveBeenCalledTimes(1);
-
-          metamaskController.controllerMessenger.publish(
-            'AccountsController:selectedAccountChange',
-            mockEvmAccount,
-          );
-          expect(
-            metamaskController.multichainRatesController.start,
-          ).toHaveBeenCalledTimes(1);
-          expect(
-            metamaskController.multichainRatesController.stop,
-          ).toHaveBeenCalledTimes(1);
-        });
-
-        it('does not start MultichainRatesController if selected account is changed to EVM', async () => {
-          expect(
-            metamaskController.multichainRatesController.start,
-          ).not.toHaveBeenCalled();
-
-          metamaskController.controllerMessenger.publish(
-            'AccountsController:selectedAccountChange',
-            mockEvmAccount,
-          );
-
-          expect(
-            metamaskController.multichainRatesController.start,
-          ).not.toHaveBeenCalled();
-        });
-      });
-
-      describe('client is closed', () => {
-        beforeEach(() => {
-          jest.replaceProperty(
-            metamaskController,
-            'activeControllerConnections',
-            0,
-          );
-        });
-
-        it('does not start MultichainRatesController if selected account is changed to non-EVM', async () => {
-          expect(
-            metamaskController.multichainRatesController.start,
-          ).not.toHaveBeenCalled();
-
-          metamaskController.controllerMessenger.publish(
-            'AccountsController:selectedAccountChange',
-            mockNonEvmAccount,
-          );
-
-          expect(
-            metamaskController.multichainRatesController.start,
-          ).not.toHaveBeenCalled();
-        });
-
-        it('stops MultichainRatesController if selected account is changed to EVM', async () => {
-          metamaskController.controllerMessenger.publish(
-            'AccountsController:selectedAccountChange',
-            mockEvmAccount,
-          );
-
-          expect(
-            metamaskController.multichainRatesController.stop,
-          ).toHaveBeenCalledTimes(1);
-        });
-
-        it('does not start MultichainRatesController if selected account is changed to EVM', async () => {
-          expect(
-            metamaskController.multichainRatesController.start,
-          ).not.toHaveBeenCalled();
-
-          metamaskController.controllerMessenger.publish(
-            'AccountsController:selectedAccountChange',
-            mockEvmAccount,
-          );
-
-          expect(
-            metamaskController.multichainRatesController.start,
-          ).not.toHaveBeenCalled();
-        });
-      });
-
-      it('calls setFiatCurrency when the `currentCurrency` has changed', async () => {
-        jest.spyOn(RatesController.prototype, 'setFiatCurrency');
-        const localMetamaskController = new MetaMaskController({
-          showUserConfirmation: noop,
-          encryptor: mockEncryptor,
-          initState: {
-            ...cloneDeep(firstTimeState),
-            AccountsController: {
-              internalAccounts: {
-                accounts: {
-                  [mockNonEvmAccount.id]: mockNonEvmAccount,
-                  [mockEvmAccount.id]: mockEvmAccount,
-                },
-                selectedAccount: mockNonEvmAccount.id,
-              },
-            },
-          },
-          initLangCode: 'en_US',
-          platform: {
-            showTransactionNotification: () => undefined,
-            getVersion: () => 'foo',
-          },
-          browser: browserPolyfillMock,
-          infuraProjectId: 'foo',
-          isFirstMetaMaskControllerSetup: true,
-          cronjobControllerStorageManager:
-            createMockCronjobControllerStorageManager(),
-          controllerMessenger: new Messenger({
-            namespace: MOCK_ANY_NAMESPACE,
-          }),
-        });
-
-        metamaskController.controllerMessenger.publish(
-          'CurrencyRateController:stateChange',
-          { currentCurrency: mockCurrency },
-          getMockPatches(),
-        );
-
-        expect(
-          localMetamaskController.multichainRatesController.setFiatCurrency,
-        ).toHaveBeenCalledWith(mockCurrency);
-      });
-    });
-
-    describe('RemoteFeatureFlagController', () => {
-      let localMetamaskController;
-
-      beforeEach(() => {
-        localMetamaskController = new MetaMaskController({
-          showUserConfirmation: noop,
-          encryptor: mockEncryptor,
-          initState: {
-            ...cloneDeep(firstTimeState),
-            PreferencesController: {
-              useExternalServices: false,
-            },
-          },
-          initLangCode: 'en_US',
-          platform: {
-            showTransactionNotification: () => undefined,
-            getVersion: () => 'foo',
-          },
-          browser: browserPolyfillMock,
-          infuraProjectId: 'foo',
-          isFirstMetaMaskControllerSetup: true,
-          cronjobControllerStorageManager:
-            createMockCronjobControllerStorageManager(),
-          controllerMessenger: new Messenger({
-            namespace: MOCK_ANY_NAMESPACE,
-          }),
-        });
-
-        // Mock RemoteFeatureFlagController to prevent network requests in tests
-        jest
-          .spyOn(
-            localMetamaskController.remoteFeatureFlagController,
-            'updateRemoteFeatureFlags',
-          )
-          .mockResolvedValue();
-      });
-
-      afterEach(async () => {
-        jest.clearAllMocks();
-        // Ensure all async operations complete before next test
-        await flushPromises();
-      });
-
-      async function simulateLocalPreferencesChange(preferences) {
-        localMetamaskController.controllerMessenger.publish(
-          'PreferencesController:stateChange',
-          preferences,
-          getMockPatches(),
-        );
-        // Wait for all async operations to complete
-        await flushPromises();
-      }
-
-      it('should initialize RemoteFeatureFlagController in disabled state when useExternalServices is false', async () => {
-        const { remoteFeatureFlagController, preferencesController } =
-          localMetamaskController;
-
-        expect(preferencesController.state.useExternalServices).toBe(false);
-        expect(remoteFeatureFlagController.state).toStrictEqual({
-          remoteFeatureFlags: {},
-          localOverrides: {},
-          rawRemoteFeatureFlags: {},
-          cacheTimestamp: 0,
-        });
-      });
-
-      it('should disable feature flag fetching when useExternalServices is disabled', async () => {
-        const { remoteFeatureFlagController } = localMetamaskController;
-
-        // First enable external services
-        await simulateLocalPreferencesChange({
-          useExternalServices: true,
-        });
-
-        // Then disable them
-        await simulateLocalPreferencesChange({
-          useExternalServices: false,
-        });
-
-        expect(remoteFeatureFlagController.state).toStrictEqual({
-          remoteFeatureFlags: {},
-          localOverrides: {},
-          rawRemoteFeatureFlags: {},
-          cacheTimestamp: 0,
-        });
-      });
-
-      it('should handle errors during feature flag updates', async () => {
-        const { remoteFeatureFlagController } = localMetamaskController;
-
-        // Replace the global mock with an error mock for this test
-        jest
-          .spyOn(remoteFeatureFlagController, 'updateRemoteFeatureFlags')
-          .mockImplementation(() =>
-            Promise.reject(
-              new Error('Network error during feature flag update'),
-            ),
-          );
-
-        // Trigger the error scenario and wait for async operations
-        await simulateLocalPreferencesChange({
-          useExternalServices: true,
-        });
-
-        // Verify the controller state remains unchanged after error
-        expect(remoteFeatureFlagController.state).toStrictEqual({
-          remoteFeatureFlags: {},
-          localOverrides: {},
-          rawRemoteFeatureFlags: {},
-          cacheTimestamp: 0,
-        });
-      });
-
-      it('should maintain feature flag state across preference toggles', async () => {
-        const { remoteFeatureFlagController } = localMetamaskController;
-        const mockFlags = { testFlag: true };
-
-        jest
-          .spyOn(remoteFeatureFlagController, 'updateRemoteFeatureFlags')
-          .mockResolvedValue(mockFlags);
-
-        // Enable external services
-        await simulateLocalPreferencesChange({
-          useExternalServices: true,
-        });
-
-        // Disable external services
-        await simulateLocalPreferencesChange({
-          useExternalServices: false,
-        });
-
-        // Verify state is cleared
-        expect(remoteFeatureFlagController.state).toStrictEqual({
-          remoteFeatureFlags: {},
-          localOverrides: {},
-          rawRemoteFeatureFlags: {},
-          cacheTimestamp: 0,
-        });
       });
     });
 

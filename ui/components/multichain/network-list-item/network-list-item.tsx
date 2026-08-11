@@ -28,14 +28,12 @@ import {
   Icon,
   IconName,
   IconSize,
-  SuccessPill,
   Text,
 } from '../../component-library';
 import { useI18nContext } from '../../../hooks/useI18nContext';
 import { getAvatarNetworkColor } from '../../../helpers/utils/accounts';
 import Tooltip from '../../ui/tooltip/tooltip';
 import { NetworkListItemMenu } from '../network-list-item-menu';
-import { useIsNetworkGasSponsored } from '../../../hooks/useIsNetworkGasSponsored';
 
 const isIconSrc = (iconSrc?: string | IconName): iconSrc is IconName =>
   Object.values(IconName).includes(iconSrc as IconName);
@@ -113,8 +111,6 @@ export const NetworkListItem = ({
     }
     setIsMenuClosing(true);
   }, []);
-
-  const { isNetworkGasSponsored } = useIsNetworkGasSponsored(chainId);
 
   const renderButton = useCallback(() => {
     // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31880
@@ -246,12 +242,6 @@ export const NetworkListItem = ({
               {name}
             </Text>
           </Tooltip>
-          {isNetworkGasSponsored && (
-            <SuccessPill
-              label={t('noNetworkFee')}
-              display={Display.InlineFlex}
-            />
-          )}
         </Box>
         {rpcEndpoint && (
           <Box

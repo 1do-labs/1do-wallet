@@ -1,5 +1,5 @@
 /* eslint-disable import-x/no-duplicates */
-import React, { useMemo, useState, useCallback, useContext } from 'react';
+import React, { useMemo, useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'clsx';
 import { useNavigate } from 'react-router-dom';
@@ -27,10 +27,6 @@ import {
 import { Box, Text } from '../../component-library';
 
 import { getStatusKey } from '../../../helpers/utils/transactions.util';
-import {
-  MetaMetricsEventCategory,
-  MetaMetricsEventName,
-} from '../../../../shared/constants/metametrics';
 import { TransactionGroupCategory } from '../../../../shared/constants/transaction';
 import { EditGasModes } from '../../../../shared/constants/gas';
 import {
@@ -39,7 +35,6 @@ import {
 } from '../../../contexts/transaction-modal';
 import { formatDateWithYearContext } from '../../../helpers/utils/util';
 import CancelButton from '../cancel-button';
-import { MetaMetricsContext } from '../../../contexts/metametrics';
 import { ActivityListItem } from '../../multichain/activity-list-item';
 import { abortTransactionSigning } from '../../../store/actions';
 import { ChainBadge } from '../chain-badge/chain-badge';
@@ -67,36 +62,18 @@ function TransactionListItemInner({
 
   const senderAddress = txParams?.from;
 
-  const { trackEvent } = useContext(MetaMetricsContext);
-
   const retryTransaction = useCallback(
     async (event) => {
       event.stopPropagation();
-      trackEvent({
-        event: 'Clicked "Speed Up"',
-        category: MetaMetricsEventCategory.Navigation,
-        properties: {
-          action: 'Activity Log',
-          legacy_event: true,
-        },
-      });
       setEditGasMode(EditGasModes.speedUp);
       openModal('cancelSpeedUpTransaction');
     },
-    [openModal, setEditGasMode, trackEvent],
+    [openModal, setEditGasMode],
   );
 
   const cancelTransaction = useCallback(
     (event) => {
       event.stopPropagation();
-      trackEvent({
-        event: 'Clicked "Cancel"',
-        category: MetaMetricsEventCategory.Navigation,
-        properties: {
-          action: 'Activity Log',
-          legacy_event: true,
-        },
-      });
       if (status === TransactionStatus.approved) {
         dispatch(abortTransactionSigning(id));
       } else {
@@ -104,7 +81,7 @@ function TransactionListItemInner({
         openModal('cancelSpeedUpTransaction');
       }
     },
-    [trackEvent, openModal, setEditGasMode, status, dispatch, id],
+    [openModal, setEditGasMode, status, dispatch, id],
   );
 
   const shouldShowSpeedUp = useShouldShowSpeedUp(
@@ -137,7 +114,6 @@ function TransactionListItemInner({
    * @see {@link https://github.com/MetaMask/metamask-extension/issues/28615}
    */
   // const showRetry =
-  //   status === TransactionStatus.failed && !isSmartTransaction;
 
   const isSigning = status === TransactionStatus.approved;
   const isSubmitting = status === TransactionStatus.signed;
@@ -157,19 +133,8 @@ function TransactionListItemInner({
       navigate(`${CONFIRM_TRANSACTION_ROUTE}/${id}`);
       return;
     }
-    setShowDetails((prev) => {
-      trackEvent({
-        event: prev
-          ? MetaMetricsEventName.ActivityDetailsClosed
-          : MetaMetricsEventName.ActivityDetailsOpened,
-        category: MetaMetricsEventCategory.Navigation,
-        properties: {
-          activity_type: category,
-        },
-      });
-      return !prev;
-    });
-  }, [isUnapproved, navigate, id, trackEvent, category]);
+    setShowDetails((previousValue) => !previousValue);
+  }, [isUnapproved, navigate, id]);
 
   const isSpeedUpButtonVisible = useMemo(() => {
     if (

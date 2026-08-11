@@ -100,7 +100,6 @@ describe('Add account', function () {
 
         // Check wallet balance for both accounts
         await homePage.checkPageIsLoaded();
-        await homePage.checkHasAccountSyncingSyncedAtLeastOnce();
         await homePage.checkExpectedBalanceIsDisplayed('75,502');
         await headerNavbar.openAccountMenu();
         await accountListPage.checkPageIsLoaded();

@@ -28,7 +28,6 @@ import { getSeedPhrase } from '../../../store/actions';
 import {
   DEFAULT_ROUTE,
   ONBOARDING_COMPLETION_ROUTE,
-  ONBOARDING_METAMETRICS,
   ONBOARDING_REVIEW_SRP_ROUTE,
   MANAGE_WALLET_RECOVERY_ROUTE,
 } from '../../../helpers/constants/routes';
@@ -65,11 +64,7 @@ export default function RevealRecoveryPhrase({
 
   useEffect(() => {
     if (hasSeedPhraseBackedUp) {
-      const isFirefox = getBrowserName() === PLATFORM_FIREFOX;
-      navigate(
-        isFirefox ? ONBOARDING_COMPLETION_ROUTE : ONBOARDING_METAMETRICS,
-        { replace: true },
-      );
+      navigate(ONBOARDING_COMPLETION_ROUTE, { replace: true });
     }
   }, [navigate, hasSeedPhraseBackedUp]);
 

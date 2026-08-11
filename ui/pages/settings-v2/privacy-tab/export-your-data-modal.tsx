@@ -28,7 +28,6 @@ import {
   ExportableContentType,
 } from '../../../helpers/utils/export-utils';
 import { captureException } from '../../../../shared/lib/sentry';
-import { MetaMetricsContext } from '../../../contexts/metametrics';
 import { backupUserData } from '../../../store/actions';
 
 type BackupUserDataResponse = {
@@ -45,7 +44,6 @@ export default function ExportYourDataModal({
   onClose,
 }: Readonly<ExportYourDataModalProps>) {
   const t = useI18nContext();
-  const { trackEvent } = useContext(MetaMetricsContext);
 
   const handleDownload = async () => {
     try {
@@ -57,12 +55,6 @@ export default function ExportYourDataModal({
         data,
         ExportableContentType.JSON,
       );
-
-      await trackEvent({
-        event: 'User Data Exported',
-        category: 'Backup',
-        properties: {},
-      });
     } catch (error) {
       captureException(error);
     }

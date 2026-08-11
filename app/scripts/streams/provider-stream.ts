@@ -16,13 +16,10 @@ import {
   METAMASK_COOKIE_HANDLER,
   METAMASK_INPAGE,
   METAMASK_EIP_1193_PROVIDER,
-  PHISHING_SAFELIST,
-  PHISHING_STREAM,
 } from '../constants/stream';
 import { EXTENSION_MESSAGES } from '../../../shared/constants/messages';
 import { checkForLastError } from '../../../shared/lib/browser-runtime.utils';
 import { logStreamDisconnectWarning, MessageType } from './stream-utils';
-import { connectPhishingChannelToWarningSystem } from './phishing-stream';
 
 let legacyExtMux: ObjectMultiplex,
   legacyExtChannel: Substream,
@@ -103,8 +100,6 @@ const setupPageStreams = () => {
   pageMux.ignoreStream(METAMASK_COOKIE_HANDLER);
   pageMux.ignoreStream(LEGACY_PROVIDER);
   pageMux.ignoreStream(LEGACY_PUBLIC_CONFIG);
-  pageMux.ignoreStream(PHISHING_SAFELIST);
-  pageMux.ignoreStream(PHISHING_STREAM);
 };
 
 // The field below is used to ensure that replay is done only once for each restart.
@@ -163,9 +158,6 @@ export const setupExtensionStreams = () => {
     ),
   );
 
-  // connect "phishing" channel to warning system
-  connectPhishingChannelToWarningSystem(extensionMux);
-
   // eslint-disable-next-line no-use-before-define
   // eslint-disable-next-line @typescript-eslint/no-use-before-define
   extensionPort.onDisconnect.addListener(onDisconnectDestroyStreams);
@@ -214,8 +206,6 @@ const setupLegacyPageStreams = () => {
   legacyPageMux.ignoreStream(METAMASK_COOKIE_HANDLER);
   legacyPageMux.ignoreStream(METAMASK_EIP_1193_PROVIDER);
   legacyPageMux.ignoreStream(METAMASK_CAIP_MULTICHAIN_PROVIDER);
-  legacyPageMux.ignoreStream(PHISHING_SAFELIST);
-  legacyPageMux.ignoreStream(PHISHING_STREAM);
 };
 
 // TODO:LegacyProvider: Delete
@@ -262,8 +252,6 @@ const setupLegacyExtensionStreams = () => {
   legacyExtMux.ignoreStream(METAMASK_CAIP_MULTICHAIN_PROVIDER);
   legacyExtMux.ignoreStream(METAMASK_COOKIE_HANDLER);
   legacyExtMux.ignoreStream(LEGACY_PROVIDER);
-  legacyExtMux.ignoreStream(PHISHING_SAFELIST);
-  legacyExtMux.ignoreStream(PHISHING_STREAM);
 };
 
 /**

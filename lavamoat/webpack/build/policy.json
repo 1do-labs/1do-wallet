@@ -311,7 +311,7 @@
         "node:path.sep": true
       },
       "packages": {
-        "depcheck>resolve": true
+        "@lavamoat/webpack>@lavamoat/aa>resolve": true
       }
     },
     "@lavamoat/webpack": {
@@ -711,7 +711,7 @@
     },
     "koa>accepts": {
       "packages": {
-        "webpack>mime-types": true,
+        "koa>accepts>mime-types": true,
         "koa>accepts>negotiator": true
       }
     },
@@ -1094,7 +1094,7 @@
     },
     "webpack-dev-server>compression>compressible": {
       "packages": {
-        "koa>mime-types>mime-db": true
+        "webpack>mime-db": true
       }
     },
     "webpack-dev-server>compression": {
@@ -1773,6 +1773,11 @@
         "browserify>has>function-bind": true
       }
     },
+    "he": {
+      "globals": {
+        "define": true
+      }
+    },
     "html-bundler-webpack-plugin": {
       "builtin": {
         "crypto.createHash": true,
@@ -1821,6 +1826,20 @@
       "packages": {
         "html-bundler-webpack-plugin>html-minifier-terser>clean-css": true,
         "html-bundler-webpack-plugin>html-minifier-terser>entities": true,
+        "html-bundler-webpack-plugin>html-minifier-terser>relateurl": true,
+        "terser": true
+      }
+    },
+    "@storybook/react-webpack5>@storybook/builder-webpack5>html-webpack-plugin>html-minifier-terser": {
+      "globals": {
+        "ActiveX": true,
+        "ActiveXObject": true,
+        "DOMDocument": true,
+        "document": true
+      },
+      "packages": {
+        "html-bundler-webpack-plugin>html-minifier-terser>clean-css": true,
+        "he": true,
         "html-bundler-webpack-plugin>html-minifier-terser>relateurl": true,
         "terser": true
       }
@@ -2022,7 +2041,7 @@
         "Buffer": true
       }
     },
-    "webpack>json-parse-even-better-errors": {
+    "read-installed>read-package-json>json-parse-even-better-errors": {
       "globals": {
         "Buffer.isBuffer": true
       }
@@ -2043,12 +2062,16 @@
     },
     "webpack-dev-server>launch-editor": {
       "builtin": {
+        "child_process.exec": true,
         "child_process.execSync": true,
         "child_process.spawn": true,
         "fs.existsSync": true,
         "os.release": true,
         "path.basename": true,
-        "path.relative": true
+        "path.relative": true,
+        "path.resolve": true,
+        "path.win32.basename": true,
+        "url.fileURLToPath": true
       },
       "globals": {
         "console.log": true,
@@ -2092,14 +2115,13 @@
     },
     "webpack>loader-runner": {
       "builtin": {
-        "fs": true,
+        "fs.readFile": true,
         "url": true
       },
       "globals": {
         "Buffer.from": true,
         "Buffer.isBuffer": true,
         "console.error": true,
-        "process.nextTick": true,
         "setImmediate": true
       },
       "packages": {
@@ -2174,12 +2196,12 @@
         "micromatch>picomatch": true
       }
     },
-    "webpack>mime-types": {
+    "koa>accepts>mime-types": {
       "builtin": {
         "path.extname": true
       },
       "packages": {
-        "webpack>mime-types>mime-db": true
+        "koa>accepts>mime-types>mime-db": true
       }
     },
     "http-server>mime": {
@@ -2288,7 +2310,7 @@
       "packages": {
         "@babel/code-frame": true,
         "depcheck>cosmiconfig>parse-json>error-ex": true,
-        "webpack>json-parse-even-better-errors": true,
+        "read-installed>read-package-json>json-parse-even-better-errors": true,
         "tailwindcss>sucrase>lines-and-columns": true
       }
     },
@@ -2528,6 +2550,36 @@
         "path.resolve": true
       }
     },
+    "@lavamoat/webpack>@lavamoat/aa>resolve": {
+      "builtin": {
+        "fs.readFileSync": true,
+        "fs.realpathSync": true,
+        "fs.statSync": true,
+        "os.homedir": true,
+        "path.dirname": true,
+        "path.join": true,
+        "path.parse": true,
+        "path.relative": true,
+        "path.resolve": true
+      },
+      "globals": {
+        "process.env.HOME": true,
+        "process.env.HOMEDRIVE": true,
+        "process.env.HOMEPATH": true,
+        "process.env.LNAME": true,
+        "process.env.LOGNAME": true,
+        "process.env.USER": true,
+        "process.env.USERNAME": true,
+        "process.env.USERPROFILE": true,
+        "process.getuid": true,
+        "process.platform": true,
+        "process.versions.pnp": true
+      },
+      "packages": {
+        "depcheck>is-core-module": true,
+        "depcheck>resolve>path-parse": true
+      }
+    },
     "depcheck>resolve": {
       "builtin": {
         "fs.readFile": true,
@@ -2558,6 +2610,7 @@
         "process.versions.pnp": true
       },
       "packages": {
+        "string.prototype.matchall>es-errors": true,
         "depcheck>is-core-module": true,
         "depcheck>resolve>path-parse": true
       }
@@ -2757,7 +2810,7 @@
         "webpack-dev-server>serve-index>debug": true,
         "koa>escape-html": true,
         "webpack-dev-server>serve-index>http-errors": true,
-        "webpack>mime-types": true,
+        "koa>accepts>mime-types": true,
         "koa>parseurl": true
       }
     },
@@ -2988,13 +3041,17 @@
     },
     "terser-webpack-plugin": {
       "builtin": {
+        "crypto.randomBytes": true,
         "os.availableParallelism": true,
         "os.cpus": true,
         "path.dirname": true,
-        "path.relative": true
+        "path.relative": true,
+        "path.sep": true
       },
       "globals": {
+        "Buffer.from": true,
         "Buffer.isBuffer": true,
+        "URL": true,
         "__dirname": true,
         "__filename": true,
         "process.stderr.write": true,
@@ -3003,10 +3060,12 @@
       "packages": {
         "terser-webpack-plugin>@jridgewell/trace-mapping": true,
         "@swc/core": true,
+        "html-bundler-webpack-plugin>html-minifier-terser>clean-css": true,
         "@storybook/test-runner>@storybook/core-common>esbuild": true,
+        "@storybook/react-webpack5>@storybook/builder-webpack5>html-webpack-plugin>html-minifier-terser": true,
         "terser-webpack-plugin>jest-worker": true,
+        "postcss": true,
         "schema-utils": true,
-        "mocha>serialize-javascript": true,
         "terser": true,
         "html-bundler-webpack-plugin>handlebars>uglify-js": true
       }
@@ -3185,13 +3244,13 @@
     "mockttp>body-parser>type-is": {
       "packages": {
         "mockttp>body-parser>type-is>media-typer": true,
-        "webpack>mime-types": true
+        "koa>accepts>mime-types": true
       }
     },
     "mockttp>express>type-is": {
       "packages": {
         "mockttp>express>type-is>media-typer": true,
-        "webpack>mime-types": true
+        "koa>accepts>mime-types": true
       }
     },
     "typescript": {
@@ -3319,7 +3378,7 @@
         "http": true,
         "https": true,
         "inspector": true,
-        "module.builtinModules": true,
+        "module": true,
         "path.basename": true,
         "path.dirname": true,
         "path.extname": true,
@@ -3410,9 +3469,8 @@
         "webpack>glob-to-regexp": true,
         "del>graceful-fs": true,
         "html-bundler-webpack-plugin": true,
-        "webpack>json-parse-even-better-errors": true,
         "webpack>loader-runner": true,
-        "webpack>mime-types": true,
+        "webpack>mime-db": true,
         "webpack>neo-async": true,
         "postcss-loader": true,
         "react-compiler-webpack": true,
@@ -3486,7 +3544,7 @@
       "packages": {
         "webpack-cli>colorette": true,
         "webpack-dev-server>webpack-dev-middleware>memfs": true,
-        "webpack>mime-types": true,
+        "koa>accepts>mime-types": true,
         "koa>on-finished": true,
         "mockttp>express>range-parser": true,
         "schema-utils": true
@@ -3595,6 +3653,7 @@
         "stream.Writable": true,
         "tls.connect": true,
         "url.URL": true,
+        "util.types.isUint8Array": true,
         "zlib.Z_DEFAULT_WINDOWBITS": true,
         "zlib.Z_SYNC_FLUSH": true,
         "zlib.createDeflateRaw": true,

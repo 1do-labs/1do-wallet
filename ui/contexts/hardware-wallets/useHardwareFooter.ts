@@ -16,7 +16,6 @@ import {
   isUserRejectedHardwareWalletError,
 } from './rpcErrorUtils';
 import { ConnectionStatus, type EnsureDeviceReadyOptions } from './types';
-import { useHardwareWalletMetrics } from './useHardwareWalletMetrics';
 
 type UseHardwareFooterArgs = {
   currentConfirmation?: TransactionMeta;
@@ -24,13 +23,7 @@ type UseHardwareFooterArgs = {
   onUserRejectedHardwareWalletError: () => Promise<void>;
 };
 
-export type SubmitPreflightCheckOptions = {
-  /**
-   * When true, runs hardware-wallet Connect-CTA metrics before device readiness (e.g. dedicated “Connect device” button).
-   * Omit or set to false for preflight from the main Confirm action.
-   */
-  trackConnectCta?: boolean;
-};
+export type SubmitPreflightCheckOptions = Record<string, never>;
 
 type UseHardwareFooterResult = {
   walletType: ReturnType<typeof useHardwareWalletConfig>['walletType'];
@@ -49,7 +42,6 @@ export const useHardwareFooter = ({
   currentConfirmationId,
   onUserRejectedHardwareWalletError,
 }: UseHardwareFooterArgs): UseHardwareFooterResult => {
-  const { trackConnectCtaClicked } = useHardwareWalletMetrics();
   const inE2e =
     process.env.IN_TEST && process.env.JEST_WORKER_ID === 'undefined';
   const { connectionState } = useHardwareWalletState();
@@ -118,13 +110,9 @@ export const useHardwareFooter = ({
   ]);
 
   const onSubmitPreflightCheck = useCallback(
-    async (options?: SubmitPreflightCheckOptions): Promise<boolean> => {
+    async (_options?: SubmitPreflightCheckOptions): Promise<boolean> => {
       if (inE2e || !isHardwareWalletAccount) {
         return true;
-      }
-
-      if (options?.trackConnectCta) {
-        trackConnectCtaClicked();
       }
 
       const isDeviceReady = await ensureDeviceReady(ensureDeviceReadyOptions);
@@ -135,7 +123,6 @@ export const useHardwareFooter = ({
     [
       inE2e,
       isHardwareWalletAccount,
-      trackConnectCtaClicked,
       ensureDeviceReady,
       ensureDeviceReadyOptions,
     ],

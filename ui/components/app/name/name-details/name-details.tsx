@@ -11,7 +11,6 @@ import {
   NameControllerState,
   NameEntry,
   NameType,
-  UpdateProposedNamesResult,
 } from '@metamask/name-controller';
 import { useDispatch, useSelector } from 'react-redux';
 import { isEqual } from 'lodash';
@@ -59,7 +58,6 @@ import { useDisplayName } from '../../../../hooks/useDisplayName';
 import { useI18nContext } from '../../../../hooks/useI18nContext';
 import { TrustSignalDisplayState } from '../../../../hooks/useTrustSignals';
 import NameDisplay from './name-display';
-import { usePetnamesMetrics } from './metrics';
 
 const UPDATE_DELAY = 1000 * 2; // 2 Seconds
 
@@ -144,36 +142,13 @@ function generateComboOptions(
   );
 }
 
-function getInitialSources(
-  proposedNamesResult: Record<string, { proposedNames?: string[] }>,
-  proposedNamesState: Record<string, { proposedNames?: string[] }>,
-): string[] {
-  const resultSources = Object.keys(proposedNamesResult).filter(
-    (sourceId) => proposedNamesResult[sourceId].proposedNames?.length,
-  );
-
-  const stateSources = Object.keys(proposedNamesState).filter(
-    (sourceId) =>
-      !proposedNamesResult[sourceId]?.proposedNames &&
-      proposedNamesState[sourceId].proposedNames?.length,
-  );
-
-  return [...resultSources, ...stateSources].sort();
-}
-
 function useProposedNames(value: string, type: NameType, variation: string) {
   const dispatch = useDispatch();
   const { proposedNames } = useName(value, type, variation);
 
-  // Track latest proposed names without resetting polling interval.
-  const proposedNamesRef = useRef(proposedNames);
-  proposedNamesRef.current = proposedNames;
-
   // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31973
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const updateInterval = useRef<any>();
-
-  const [initialSources, setInitialSources] = useState<string[]>();
 
   useEffect(() => {
     const reset = () => {
@@ -183,22 +158,13 @@ function useProposedNames(value: string, type: NameType, variation: string) {
     };
 
     const update = async () => {
-      const result = (await dispatch(
+      await dispatch(
         updateProposedNames({
           value,
           type,
           onlyUpdateAfterDelay: true,
           variation,
         }),
-
-        // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31973
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      )) as any as UpdateProposedNamesResult;
-
-      setInitialSources(
-        (previous) =>
-          previous ??
-          getInitialSources(result?.results ?? {}, proposedNamesRef.current),
       );
     };
 
@@ -211,7 +177,7 @@ function useProposedNames(value: string, type: NameType, variation: string) {
     return reset;
   }, [value, type, variation, dispatch]);
 
-  return { proposedNames, initialSources };
+  return proposedNames;
 }
 
 // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
@@ -241,7 +207,6 @@ export default function NameDetails({
 
   const nameSources = useSelector(getNameSources, isEqual);
   const [name, setName] = useState('');
-  const [openMetricSent, setOpenMetricSent] = useState(false);
   const [selectedSourceId, setSelectedSourceId] = useState<string>();
   const [selectedSourceName, setSelectedSourceName] = useState<string>();
   const dispatch = useDispatch();
@@ -249,11 +214,7 @@ export default function NameDetails({
 
   const formattedValue = formatValue(value, type);
 
-  const { proposedNames, initialSources } = useProposedNames(
-    value,
-    type,
-    variation,
-  );
+  const proposedNames = useProposedNames(value, type, variation);
 
   // useCopyToClipboard analysis: Copies the public address of the name
   const [copiedAddress, handleCopyAddress] = useCopyToClipboard({
@@ -273,28 +234,7 @@ export default function NameDetails({
     [proposedNames, t, nameSources],
   );
 
-  const { trackPetnamesOpenEvent, trackPetnamesSaveEvent } = usePetnamesMetrics(
-    {
-      initialSources,
-      name,
-      proposedNameOptions,
-      savedName: savedPetname,
-      savedSourceId,
-      selectedSourceId,
-      type,
-    },
-  );
-
-  useEffect(() => {
-    if (initialSources && !openMetricSent) {
-      trackPetnamesOpenEvent();
-      setOpenMetricSent(true);
-    }
-  }, [initialSources, openMetricSent, trackPetnamesOpenEvent]);
-
   const handleSaveClick = useCallback(async () => {
-    trackPetnamesSaveEvent();
-
     await dispatch(
       saveName({
         value,
@@ -306,16 +246,7 @@ export default function NameDetails({
     );
 
     onClose();
-  }, [
-    dispatch,
-    name,
-    onClose,
-    selectedSourceId,
-    trackPetnamesSaveEvent,
-    type,
-    value,
-    variation,
-  ]);
+  }, [dispatch, name, onClose, selectedSourceId, type, value, variation]);
 
   const handleClose = useCallback(() => {
     onClose();

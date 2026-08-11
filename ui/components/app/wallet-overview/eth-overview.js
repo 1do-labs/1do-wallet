@@ -18,9 +18,7 @@ const EthOverview = ({ className }) => {
 
   // FIXME: This causes re-renders, so use isEqual to avoid this
   const account = useSelector(getSelectedInternalAccount, isEqual);
-  const isSigningEnabled =
-    account.methods.includes(EthMethod.SignTransaction) ||
-    account.methods.includes(EthMethod.SignUserOperation);
+  const isSigningEnabled = account.methods.includes(EthMethod.SignTransaction);
 
   return (
     <CoinOverview

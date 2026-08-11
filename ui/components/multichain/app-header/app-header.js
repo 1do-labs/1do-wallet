@@ -1,13 +1,8 @@
-import React, { useCallback, useContext, useRef } from 'react';
+import React, { useCallback, useRef } from 'react';
 import classnames from 'clsx';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import { matchPath } from 'react-router-dom';
-import { MetaMetricsContext } from '../../../contexts/metametrics';
-import {
-  MetaMetricsEventCategory,
-  MetaMetricsEventName,
-} from '../../../../shared/constants/metametrics';
 import {
   CONFIRM_TRANSACTION_ROUTE,
   SEND_ROUTE,
@@ -47,7 +42,6 @@ import { AppHeaderLockedContent } from './app-header-locked-content';
 
 export const AppHeader = ({ location }) => {
   const t = useI18nContext();
-  const { trackEvent } = useContext(MetaMetricsContext);
   const menuRef = useRef(null);
   const isUnlocked = useSelector(getIsUnlocked);
 
@@ -55,7 +49,6 @@ export const AppHeader = ({ location }) => {
     getSelectedMultichainNetworkConfiguration,
   );
 
-  const { chainId } = multichainNetwork;
   const networkIconSrc = getNetworkIcon(multichainNetwork);
   const enabledChainIds = useSelector(getAllEnabledNetworksForAllNamespaces);
   const allNetworksSelected = enabledChainIds.length > 1;
@@ -98,15 +91,7 @@ export const AppHeader = ({ location }) => {
   // Callback for network dropdown
   const networkOpenCallback = useCallback(() => {
     dispatch(toggleNetworkMenu());
-    trackEvent({
-      event: MetaMetricsEventName.NavNetworkMenuOpened,
-      category: MetaMetricsEventCategory.Navigation,
-      properties: {
-        location: 'App header',
-        chain_id: chainId,
-      },
-    });
-  }, [chainId, dispatch, trackEvent]);
+  }, [dispatch]);
 
   const unlockedStyling = {
     alignItems: AlignItems.center,

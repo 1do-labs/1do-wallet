@@ -7,9 +7,10 @@ import { login } from '../../page-objects/flows/login.flow';
 import TestDapp from '../../page-objects/pages/test-dapp';
 import TokenList from '../../page-objects/pages/token-list';
 import ConfirmAlertModal from '../../page-objects/pages/dialog/confirm-alert';
-import { WALLET_ADDRESS } from '../confirmations/signatures/signature-helpers';
 import { Driver } from '../../webdriver/driver';
 import { CHAIN_IDS } from '../../../../shared/constants/network';
+
+const WALLET_ADDRESS = '0x5CfE73b6021E818B776b421B1c4Db2474086a7e1';
 
 // Network configuration type
 type NetworkConfig = {

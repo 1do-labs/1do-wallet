@@ -2,10 +2,6 @@ import { TransactionMeta } from '@metamask/transaction-controller';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  getIsSmartTransaction,
-  type SmartTransactionsState,
-} from '../../../../../../../../shared/lib/selectors';
-import {
   ConfirmInfoRow,
   ConfirmInfoRowText,
 } from '../../../../../../../components/app/confirm/info/row';
@@ -62,11 +58,6 @@ const NonceDetails = () => {
     );
 
   const displayedNonce = customNonceValue || nextNonce;
-  const isSmartTransactionsEnabled = useSelector(
-    (state: SmartTransactionsState) =>
-      getIsSmartTransaction(state, currentConfirmation?.chainId),
-  );
-
   return (
     <ConfirmInfoSection data-testid="advanced-details-nonce-section">
       <ConfirmInfoRow
@@ -76,9 +67,7 @@ const NonceDetails = () => {
         <ConfirmInfoRowText
           data-testid="advanced-details-displayed-nonce"
           text={`${displayedNonce}`}
-          onEditClick={
-            isSmartTransactionsEnabled ? undefined : () => openEditNonceModal()
-          }
+          onEditClick={() => openEditNonceModal()}
           editIconClassName="edit-nonce-btn"
           editIconDataTestId="edit-nonce-icon"
         />

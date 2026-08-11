@@ -39,10 +39,6 @@ export const SENTRY_BACKGROUND_STATE: SentryBackgroundControllerMasks = {
   AlertController: {
     alertEnabledness: true,
     unconnectedAccountAlertShownOrigins: false,
-    web3ShimUsageOrigins: false,
-  },
-  AnnouncementController: {
-    announcements: false,
   },
   NetworkOrderController: {
     orderedNetworkList: [],
@@ -93,7 +89,6 @@ export const SENTRY_BACKGROUND_STATE: SentryBackgroundControllerMasks = {
     showAccountBanner: true,
     showTestnetMessageInDropdown: true,
     sidePanelGasPollTokens: true,
-    surveyLinkLastClickedOrClosed: true,
     termsOfUseLastAgreed: true,
     throttledOrigins: false,
     timeoutMinutes: true,
@@ -149,22 +144,6 @@ export const SENTRY_BACKGROUND_STATE: SentryBackgroundControllerMasks = {
   LoggingController: {
     logs: false,
   },
-  MetaMetricsController: {
-    eventsBeforeMetricsOptIn: false,
-    tracesBeforeMetricsOptIn: false,
-    fragments: false,
-    metaMetricsId: true,
-    participateInMetaMetrics: true,
-    segmentApiCalls: false,
-    traits: false,
-    dataCollectionForMarketing: false,
-    marketingCampaignCookieId: true,
-    latestNonAnonymousEventTimestamp: true,
-  },
-  MetaMetricsDataDeletionController: {
-    metaMetricsDataDeletionId: true,
-    metaMetricsDataDeletionTimestamp: true,
-  },
   NameController: {
     names: false,
     nameSources: false,
@@ -193,7 +172,6 @@ export const SENTRY_BACKGROUND_STATE: SentryBackgroundControllerMasks = {
     permissionActivityLog: false,
     permissionHistory: false,
   },
-  PhishingController: {},
   PreferencesController: {
     advancedGasFee: true,
     currentLocale: true,
@@ -212,7 +190,6 @@ export const SENTRY_BACKGROUND_STATE: SentryBackgroundControllerMasks = {
       showExtensionInFullSizeView: true,
       showFiatInTestnets: true,
       showTestNetworks: true,
-      smartTransactionsOptInStatus: true,
       tokenNetworkFilter: {},
       showNativeTokenAsMainBalance: true,
       showConfirmationAdvancedDetails: true,
@@ -221,8 +198,6 @@ export const SENTRY_BACKGROUND_STATE: SentryBackgroundControllerMasks = {
     },
     useExternalServices: false,
     theme: true,
-    signatureSecurityAlertResponses: false,
-    addressSecurityAlertResponses: false,
     use4ByteResolution: true,
     useAddressBarEnsResolution: true,
     useCurrencyRateCheck: true,
@@ -233,33 +208,12 @@ export const SENTRY_BACKGROUND_STATE: SentryBackgroundControllerMasks = {
     useTransactionSimulations: true,
     enableMV3TimestampSave: true,
   },
-  RemoteFeatureFlagController: {
-    remoteFeatureFlags: true,
-    cacheTimestamp: false,
-  },
-  MultichainRatesController: {
-    fiatCurrency: true,
-    rates: true,
-    cryptocurrencies: true,
-  },
   SelectedNetworkController: { domains: false },
   SignatureController: {
     unapprovedPersonalMsgCount: true,
     unapprovedPersonalMsgs: false,
     unapprovedTypedMessages: false,
     unapprovedTypedMessagesCount: true,
-  },
-  SmartTransactionsController: {
-    smartTransactionsState: {
-      fees: {
-        approvalTxFees: true,
-        tradeTxFees: true,
-      },
-      liveness: true,
-      smartTransactions: false,
-      userOptIn: true,
-      userOptInV2: true,
-    },
   },
   StaticAssetsController: {},
   SubjectMetadataController: {
@@ -296,9 +250,6 @@ export const SENTRY_BACKGROUND_STATE: SentryBackgroundControllerMasks = {
   },
   TxController: {
     transactions: false,
-  },
-  UserOperationController: {
-    userOperations: false,
   },
 };
 

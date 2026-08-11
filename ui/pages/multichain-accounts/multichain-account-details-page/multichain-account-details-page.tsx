@@ -22,6 +22,7 @@ import {
 } from '@metamask/design-system-react';
 
 import { KeyringTypes } from '@metamask/keyring-controller';
+import type { Hex } from '@metamask/utils';
 import { KEYRING_TYPES_SUPPORTING_7702 } from '../../../../shared/constants/keyring';
 import { PreferredAvatar } from '../../../components/app/preferred-avatar';
 import {
@@ -54,11 +55,6 @@ import { useWalletInfo } from '../../../hooks/multichain-accounts/useWalletInfo'
 import { MultichainAccountEditModal } from '../../../components/multichain-accounts/multichain-account-edit-modal';
 import { AccountRemoveModal } from '../../../components/multichain-accounts/account-remove-modal';
 import { removeAccount } from '../../../store/actions';
-import {
-  MetaMetricsEventCategory,
-  MetaMetricsEventName,
-} from '../../../../shared/constants/metametrics';
-import { MetaMetricsContext } from '../../../contexts/metametrics';
 import { trace, TraceName, TraceOperation } from '../../../../shared/lib/trace';
 import { getCurrentChainId } from '../../../../shared/lib/selectors/networks';
 import { useOneDoSmartAccountStatus } from '../../../hooks/accounts/useOneDoSmartAccountStatus';
@@ -67,7 +63,6 @@ export const MultichainAccountDetailsPage = () => {
   const t = useI18nContext();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { trackEvent } = useContext(MetaMetricsContext);
   const [searchParams] = useSearchParams();
 
   const accountGroupId = (searchParams.get('accountGroupId') ??
@@ -112,8 +107,8 @@ export const MultichainAccountDetailsPage = () => {
     KEYRING_TYPES_SUPPORTING_7702.includes(evmKeyringType as KeyringTypes);
   const currentChainId = useSelector(getCurrentChainId);
   const { isActive: isSmartAccountActive } = useOneDoSmartAccountStatus({
-    address: evmInternalAccount?.address,
-    chainId: currentChainId,
+    address: evmInternalAccount?.address as Hex | undefined,
+    chainId: currentChainId as Hex,
     enabled: Boolean(isEip7702SupportedKeyring),
   });
 
@@ -151,19 +146,10 @@ export const MultichainAccountDetailsPage = () => {
     if (firstAccountAddress) {
       // Don't want to blindly call removeAccount without an invalid or empty parameter
       dispatch(removeAccount(firstAccountAddress));
-      trackEvent({
-        event: MetaMetricsEventName.AccountRemoved,
-        category: MetaMetricsEventCategory.Accounts,
-        properties: {
-          // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-          // eslint-disable-next-line @typescript-eslint/naming-convention
-          account_type: wallet?.type,
-        },
-      });
 
       navigate(DEFAULT_ROUTE);
     }
-  }, [dispatch, trackEvent, navigate, wallet?.type, accountsWithAddresses]);
+  }, [dispatch, navigate, wallet?.type, accountsWithAddresses]);
 
   const handleWalletAction = () => {
     navigate({

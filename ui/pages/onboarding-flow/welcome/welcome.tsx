@@ -19,26 +19,12 @@ import {
   ONBOARDING_COMPLETION_ROUTE,
   ONBOARDING_CREATE_PASSWORD_ROUTE,
   ONBOARDING_IMPORT_WITH_SRP_ROUTE,
-  ONBOARDING_METAMETRICS,
   ONBOARDING_REVIEW_SRP_ROUTE,
 } from '../../../helpers/constants/routes';
-import {
-  getCurrentKeyring,
-  getFirstTimeFlowType,
-  getIsParticipateInMetaMetricsSet,
-} from '../../../selectors';
+import { getCurrentKeyring, getFirstTimeFlowType } from '../../../selectors';
 import { FirstTimeFlowType } from '../../../../shared/constants/onboarding';
-import { MetaMetricsContext } from '../../../contexts/metametrics';
 import { ENVIRONMENT } from '../../../../development/build/constants';
-import {
-  setFirstTimeFlowType,
-  setParticipateInMetaMetrics,
-} from '../../../store/actions';
-import {
-  MetaMetricsEventAccountType,
-  MetaMetricsEventCategory,
-  MetaMetricsEventName,
-} from '../../../../shared/constants/metametrics';
+import { setFirstTimeFlowType } from '../../../store/actions';
 import { getBrowserName } from '../../../../shared/lib/browser-runtime.utils';
 import { PLATFORM_FIREFOX } from '../../../../shared/constants/app';
 import { TraceName, TraceOperation } from '../../../../shared/lib/trace';
@@ -79,9 +65,6 @@ export default function OnboardingWelcome() {
   const currentKeyring = useSelector(getCurrentKeyring);
   const firstTimeFlowType = useSelector(getFirstTimeFlowType);
   const isWalletResetInProgress = useSelector(getIsWalletResetInProgress);
-  const isParticipateInMetaMetricsSet = useSelector(
-    getIsParticipateInMetaMetricsSet,
-  );
   const [newAccountCreationInProgress, setNewAccountCreationInProgress] =
     useState(false);
 
@@ -114,12 +97,7 @@ export default function OnboardingWelcome() {
         firstTimeFlowType === FirstTimeFlowType.import ||
         firstTimeFlowType === FirstTimeFlowType.restore
       ) {
-        navigate(
-          isParticipateInMetaMetricsSet
-            ? ONBOARDING_COMPLETION_ROUTE
-            : ONBOARDING_METAMETRICS,
-          { replace: true },
-        );
+        navigate(ONBOARDING_COMPLETION_ROUTE, { replace: true });
       } else {
         navigate(ONBOARDING_REVIEW_SRP_ROUTE, { replace: true });
       }
@@ -133,58 +111,24 @@ export default function OnboardingWelcome() {
     navigate,
     firstTimeFlowType,
     newAccountCreationInProgress,
-    isParticipateInMetaMetricsSet,
     isFireFox,
     isWalletResetInProgress,
   ]);
-
-  const {
-    trackEvent,
-    bufferedTrace,
-    bufferedEndTrace,
-    onboardingParentContext,
-  } = useContext(MetaMetricsContext);
 
   const onCreateClick = useCallback(async () => {
     setIsLoggingIn(true);
     setNewAccountCreationInProgress(true);
     await dispatch(setFirstTimeFlowType(FirstTimeFlowType.create));
-    trackEvent({
-      category: MetaMetricsEventCategory.Onboarding,
-      event: MetaMetricsEventName.WalletSetupStarted,
-      properties: {
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        account_type: MetaMetricsEventAccountType.Default,
-      },
-    });
-    bufferedTrace?.({
-      name: TraceName.OnboardingNewSrpCreateWallet,
-      op: TraceOperation.OnboardingUserJourney,
-      parentContext: onboardingParentContext?.current,
-    });
 
     navigate(ONBOARDING_CREATE_PASSWORD_ROUTE);
-  }, [dispatch, navigate, trackEvent, onboardingParentContext, bufferedTrace]);
+  }, [dispatch, navigate]);
 
   const onImportClick = useCallback(async () => {
     setIsLoggingIn(true);
     await dispatch(setFirstTimeFlowType(FirstTimeFlowType.import));
-    trackEvent({
-      category: MetaMetricsEventCategory.Onboarding,
-      event: MetaMetricsEventName.WalletImportStarted,
-      properties: {
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        account_type: MetaMetricsEventAccountType.Imported,
-      },
-    });
-    bufferedTrace?.({
-      name: TraceName.OnboardingExistingSrpImport,
-      op: TraceOperation.OnboardingUserJourney,
-      parentContext: onboardingParentContext?.current,
-    });
 
     navigate(ONBOARDING_IMPORT_WITH_SRP_ROUTE);
-  }, [dispatch, navigate, trackEvent, onboardingParentContext, bufferedTrace]);
+  }, [dispatch, navigate]);
 
   const handleLoginError = useCallback((error) => {
     setLoginError(error ? LOGIN_ERROR.GENERIC : null);
@@ -193,12 +137,6 @@ export default function OnboardingWelcome() {
   const handleLogin = useCallback(
     async (loginType, loginOption) => {
       try {
-        if (!isFireFox) {
-          // reset the participate in meta metrics in case it was set to true from previous login attempts
-          // to prevent the queued events from being sent
-          dispatch(setParticipateInMetaMetrics(null));
-        }
-
         if (loginType === LOGIN_TYPE.SRP) {
           if (loginOption === LOGIN_OPTION.NEW) {
             await onCreateClick();
@@ -210,7 +148,7 @@ export default function OnboardingWelcome() {
         handleLoginError(error);
       }
     },
-    [dispatch, onCreateClick, onImportClick, isFireFox, handleLoginError],
+    [onCreateClick, onImportClick, handleLoginError],
   );
 
   return (

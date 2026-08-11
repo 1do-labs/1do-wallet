@@ -226,11 +226,6 @@ describe('permission background API methods', () => {
           },
           optionalScopes: {
             'eip155:137': {
-              accounts: [
-                'eip155:137:0x1280000000000000000000000000000000000000',
-              ],
-            },
-            'eip155:137': {
               accounts: ['eip155:137:0x4'],
             },
             'eip155:10': {
@@ -585,11 +580,6 @@ describe('permission background API methods', () => {
             },
           },
           optionalScopes: {
-            'eip155:137': {
-              accounts: [
-                'eip155:137:0x1280000000000000000000000000000000000000',
-              ],
-            },
             'eip155:137': {
               accounts: ['eip155:137:0x4', 'eip155:137:0x5'],
             },

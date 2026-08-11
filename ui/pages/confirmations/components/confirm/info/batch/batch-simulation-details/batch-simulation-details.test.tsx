@@ -11,7 +11,6 @@ import {
   ApprovalBalanceChange,
   useBatchApproveBalanceChanges,
 } from '../../hooks/useBatchApproveBalanceChanges';
-import { AlertMetricsProvider } from '../../../../../../../components/app/alert-system/contexts/alertMetricsContext';
 import { useBalanceChanges } from '../../../../simulation-details/useBalanceChanges';
 import { TokenStandard } from '../../../../../../../../shared/constants/transaction';
 import { buildApproveTransactionData } from '../../../../../../../../test/data/confirmations/token-approve';
@@ -110,12 +109,7 @@ function render(transaction?: Confirmation) {
     ),
   );
 
-  return renderWithConfirmContextProvider(
-    <AlertMetricsProvider metrics={{} as never}>
-      <BatchSimulationDetails />
-    </AlertMetricsProvider>,
-    store,
-  );
+  return renderWithConfirmContextProvider(<BatchSimulationDetails />, store);
 }
 
 describe('BatchSimulationDetails', () => {

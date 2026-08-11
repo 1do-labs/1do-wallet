@@ -8,11 +8,6 @@ import { InternalAccount } from '@metamask/keyring-internal-api';
 import { Box, ButtonLink, IconName } from '../../component-library';
 import { TextVariant } from '../../../helpers/constants/design-system';
 import { getDebankProfileUrl } from '../../../helpers/utils/debank';
-import { MetaMetricsContext } from '../../../contexts/metametrics';
-import {
-  MetaMetricsEventCategory,
-  MetaMetricsEventName,
-} from '../../../../shared/constants/metametrics';
 
 import { I18nContext } from '../../../contexts/i18n';
 import { MULTICHAIN_ACCOUNT_ADDRESS_LIST_PAGE_ROUTE } from '../../../helpers/constants/routes';
@@ -58,8 +53,6 @@ export const CoinOverview = ({
 }: CoinOverviewProps) => {
   const t: ReturnType<typeof useI18nContext> = useContext(I18nContext);
 
-  const { trackEvent } = useContext(MetaMetricsContext);
-
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -87,29 +80,10 @@ export const CoinOverview = ({
   const handlePortfolioOnClick = useCallback(() => {
     const url = getDebankProfileUrl(selectedAddress);
     global.platform.openTab({ url });
-    trackEvent({
-      category: MetaMetricsEventCategory.Navigation,
-      event: MetaMetricsEventName.PortfolioLinkClicked,
-      properties: {
-        location: 'Home',
-        text: 'Portfolio',
-      },
-    });
-  }, [selectedAddress, trackEvent]);
+  }, [selectedAddress]);
 
   const handleReceiveOnClick = useCallback(() => {
     trace({ name: TraceName.ReceiveModal });
-    trackEvent({
-      event: MetaMetricsEventName.NavReceiveButtonClicked,
-      category: MetaMetricsEventCategory.Navigation,
-      properties: {
-        text: 'Receive',
-        location: 'balance_empty_state',
-        // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        chain_id: chainId,
-      },
-    });
 
     if (selectedAccountGroup) {
       // Navigate to the multichain address list page with receive source
@@ -117,7 +91,7 @@ export const CoinOverview = ({
         `${MULTICHAIN_ACCOUNT_ADDRESS_LIST_PAGE_ROUTE}?accountGroupId=${encodeURIComponent(selectedAccountGroup)}&${AddressListQueryParams.Source}=${AddressListSource.Receive}`,
       );
     }
-  }, [selectedAccountGroup, navigate, trackEvent, chainId]);
+  }, [selectedAccountGroup, navigate, chainId]);
 
   const renderPercentageAndAmountChange = () => {
     const renderPercentageAndAmountChangeTrail = () => {

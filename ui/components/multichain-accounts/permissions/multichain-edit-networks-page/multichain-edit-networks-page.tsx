@@ -25,11 +25,6 @@ import {
   TextColor,
   TextVariant,
 } from '../../../../helpers/constants/design-system';
-import {
-  MetaMetricsEventCategory,
-  MetaMetricsEventName,
-} from '../../../../../shared/constants/metametrics';
-import { MetaMetricsContext } from '../../../../contexts/metametrics';
 import { Content, Footer, Header, Page } from '../../../multichain/pages/page';
 import { EvmNetworkConfigurationWithCaipChainId } from '../../../../selectors/selectors.types';
 import { NetworkListItem } from '../../../multichain/network-list-item';
@@ -53,7 +48,6 @@ export const MultichainEditNetworksPage: React.FC<
   onClose,
 }) => {
   const t = useI18nContext();
-  const { trackEvent } = useContext(MetaMetricsContext);
   const allNetworks = [...nonTestNetworks, ...testNetworks];
 
   const [selectedChainIds, setSelectedChainIds] = useState(
@@ -204,15 +198,6 @@ export const MultichainEditNetworksPage: React.FC<
                   (chainId) => !selectedChainIdsSet.has(chainId),
                 );
 
-                trackEvent({
-                  category: MetaMetricsEventCategory.Permissions,
-                  event: MetaMetricsEventName.UpdatePermissionedNetworks,
-                  properties: {
-                    addedNetworks: addedNetworks.length,
-                    removedNetworks: removedNetworks.length,
-                    location: 'Edit Networks Modal',
-                  },
-                });
                 onClose();
               }}
               size={ButtonPrimarySize.Lg}

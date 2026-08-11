@@ -22,7 +22,6 @@ export { AvatarGroup } from './avatar-group';
 export { AddressListItem } from './address-list-item';
 export { ConnectedStatus } from './connected-status';
 export { Toast, ToastContainer } from './toast';
-export { DisconnectPermissionsModal } from './disconnect-permissions-modal';
 export { ReceiveModal } from './receive-modal';
 export { EditNetworksModal } from './edit-networks-modal';
 export { EditAccountsModal } from './edit-accounts-modal';

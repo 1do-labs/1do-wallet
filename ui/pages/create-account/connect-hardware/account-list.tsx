@@ -1,12 +1,5 @@
-import React, {
-  useCallback,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { getAccountLink } from '@metamask/etherscan-link';
-import { upperFirst } from 'lodash';
 
 import {
   Box,
@@ -29,11 +22,6 @@ import Dropdown from '../../../components/ui/dropdown';
 import { getURLHostName, shortenString } from '../../../helpers/utils/util';
 
 import { HardwareDeviceNames } from '../../../../shared/constants/hardware-wallets';
-import {
-  MetaMetricsEventCategory,
-  MetaMetricsEventName,
-} from '../../../../shared/constants/metametrics';
-import { MetaMetricsContext } from '../../../contexts/metametrics';
 import { useI18nContext } from '../../../hooks/useI18nContext';
 
 type HardwareAccount = {
@@ -83,25 +71,7 @@ const AccountList = ({
   hdPaths,
 }: AccountListProps) => {
   const t = useI18nContext();
-  const { trackEvent } = useContext(MetaMetricsContext);
   const [pathValue, setPathValue] = useState<string | null>(null);
-  const trackEventRef = useRef(trackEvent);
-  const initialDeviceRef = useRef(device);
-
-  useEffect(() => {
-    trackEventRef.current = trackEvent;
-  }, [trackEvent]);
-
-  useEffect(() => {
-    trackEventRef.current({
-      event: MetaMetricsEventName.ConnectHardwareWalletAccountSelectorViewed,
-      properties: {
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        device_type: upperFirst(initialDeviceRef.current),
-      },
-    });
-  }, []);
-
   const goToNextPage = useCallback(() => {
     // If we have < 5 accounts, it's restricted by BIP-44
     if (accounts.length === 5) {
@@ -249,17 +219,6 @@ const AccountList = ({
             <ButtonIcon
               className="hw-account-list__item__link"
               onClick={() => {
-                trackEvent({
-                  category: MetaMetricsEventCategory.Accounts,
-                  event: 'Clicked Block Explorer Link',
-                  properties: {
-                    actions: 'Hardware Connect',
-                    // eslint-disable-next-line @typescript-eslint/naming-convention
-                    link_type: 'Account Tracker',
-                    // eslint-disable-next-line @typescript-eslint/naming-convention
-                    block_explorer_domain: blockExplorerDomain,
-                  },
-                });
                 global.platform.openTab({
                   url: accountLink,
                 });

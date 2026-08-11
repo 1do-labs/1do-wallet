@@ -49,6 +49,8 @@ const mockUseBatchAuthorizationRequests =
 const mockDowngradeAccount = jest.fn();
 const mockUpgradeAccount = jest.fn();
 const mockIsUpgraded = jest.fn();
+const mockGetDelegationAddress = jest.fn();
+const mockGetRuntimeDeploymentStatus = jest.fn();
 
 const mockNetworkConfig: EIP7702NetworkConfiguration = {
   chainId: 'eip155:1' as const,
@@ -109,6 +111,8 @@ describe('SmartContractAccountToggle', () => {
 
     mockUseEIP7702Account.mockReturnValue({
       isUpgraded: mockIsUpgraded,
+      getDelegationAddress: mockGetDelegationAddress,
+      getRuntimeDeploymentStatus: mockGetRuntimeDeploymentStatus,
       downgradeAccount: mockDowngradeAccount,
       upgradeAccount: mockUpgradeAccount,
     });

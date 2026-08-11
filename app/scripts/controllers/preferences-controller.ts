@@ -95,8 +95,6 @@ export type Preferences = {
   showNativeTokenAsMainBalance: boolean;
   showTestNetworks: boolean;
   skipDeepLinkInterstitial: boolean;
-  smartTransactionsOptInStatus: boolean;
-  smartTransactionsMigrationApplied: boolean;
   tokenNetworkFilter: Record<string, boolean>;
   tokenSortConfig: {
     key: string;
@@ -112,14 +110,14 @@ export type PreferencesControllerState = Omit<
   PreferencesState,
   | 'displayNftMedia'
   | 'showTestNetworks'
-  | 'smartTransactionsOptInStatus'
-  | 'smartTransactionsMigrationApplied'
   | 'privacyMode'
   | 'tokenSortConfig'
   | 'showMultiRpcModal'
   | 'dismissSmartAccountSuggestionEnabled'
   | 'smartAccountOptIn'
   | 'showIncomingTransactions'
+  | 'securityAlertsEnabled'
+  | 'smartTransactionsOptInStatus'
   | 'tokenNetworkFilter'
 > & {
   advancedGasFee: Record<string, Record<string, string>>;
@@ -184,8 +182,6 @@ export const getDefaultPreferencesControllerState =
       showNativeTokenAsMainBalance: false,
       showTestNetworks: true,
       skipDeepLinkInterstitial: false,
-      smartTransactionsOptInStatus: true,
-      smartTransactionsMigrationApplied: false,
       tokenNetworkFilter: {},
       tokenSortConfig: {
         key: 'tokenFiatAmount',

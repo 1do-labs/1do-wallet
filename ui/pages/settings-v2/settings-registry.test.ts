@@ -68,7 +68,6 @@ describe('settings-registry', () => {
       const paths = SETTINGS_V2_RENDERABLE_ROUTES.map((r) => r.path);
 
       // Tabs
-      expect(paths).toContain(ASSETS_ROUTE);
       expect(paths).toContain(PRIVACY_ROUTE);
 
       // Sub-pages

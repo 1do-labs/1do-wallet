@@ -320,7 +320,6 @@ export async function getCleanAppState(store) {
   // when JSON.stringiy, `undefined` value will be left out.
   state.metamask = {
     ...state.metamask,
-    socialLoginEmail: undefined,
   };
 
   return state;

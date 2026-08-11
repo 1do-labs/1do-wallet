@@ -1,5 +1,6 @@
 import { Caip25CaveatType } from '@metamask/chain-agnostic-permission';
 import { PermissionController } from '@metamask/permission-controller';
+import { createMockInternalAccount } from '../../../test/jest/mocks';
 import * as permissions from '../controllers/permissions';
 import { getRootMessenger } from '../lib/messenger';
 import type {
@@ -114,21 +115,19 @@ describe('PermissionControllerInit', () => {
     const request = getInitRequestMock();
     const callMock = jest.spyOn(request.initMessenger, 'call');
 
-    callMock.mockImplementation((action: string, ...args: unknown[]) => {
+    callMock.mockImplementation(((action: string) => {
       if (action === 'AccountsController:listAccounts') {
-        return [{ type: 'eip155:evm', address: '0xabc' }];
+        return [
+          createMockInternalAccount({
+            address: '0x0000000000000000000000000000000000000abc',
+          }),
+        ];
       }
       if (action === 'NetworkController:findNetworkClientIdByChainId') {
         return 'mainnet-client-id';
       }
-      if (action === 'MultichainRoutingService:isSupportedScope') {
-        return true;
-      }
-      if (action === 'MultichainRoutingService:getSupportedAccounts') {
-        return ['0xabc'];
-      }
       return undefined;
-    });
+    }) as typeof request.initMessenger.call);
 
     try {
       PermissionControllerInit(request);
@@ -139,28 +138,21 @@ describe('PermissionControllerInit', () => {
       >[0];
 
       expect(deps.listAccounts()).toStrictEqual([
-        { type: 'eip155:evm', address: '0xabc' },
+        {
+          type: 'eip155:eoa',
+          address: '0x0000000000000000000000000000000000000abc',
+        },
       ]);
       expect(deps.findNetworkClientIdByChainId('0x1')).toBe(
         'mainnet-client-id',
       );
-      expect(deps.isNonEvmScopeSupported('eip155:0')).toBe(true);
-      expect(deps.getNonEvmAccountAddresses('eip155:0')).toStrictEqual([
-        '0xabc',
-      ]);
+      expect(deps.isNonEvmScopeSupported('eip155:0')).toBe(false);
+      expect(deps.getNonEvmAccountAddresses('eip155:0')).toStrictEqual([]);
 
       expect(callMock).toHaveBeenCalledWith('AccountsController:listAccounts');
       expect(callMock).toHaveBeenCalledWith(
         'NetworkController:findNetworkClientIdByChainId',
         '0x1',
-      );
-      expect(callMock).toHaveBeenCalledWith(
-        'MultichainRoutingService:isSupportedScope',
-        'eip155:0',
-      );
-      expect(callMock).toHaveBeenCalledWith(
-        'MultichainRoutingService:getSupportedAccounts',
-        'eip155:0',
       );
     } finally {
       callMock.mockRestore();

@@ -3,8 +3,6 @@ import {
   CONFIRM_TRANSACTION_ROUTE,
   CONFIRMATION_V_NEXT_ROUTE,
   CONNECT_ROUTE,
-  CROSS_CHAIN_SWAP_ROUTE,
-  PREPARE_SWAP_ROUTE,
   SEND_ROUTE,
   SETTINGS_ROUTE,
   SIGNATURE_REQUEST_PATH,
@@ -53,10 +51,6 @@ export async function detectCurrentScreen(
       screen: 'onboarding-complete',
       selector: '[data-testid="onboarding-complete-done"]',
     },
-    {
-      screen: 'onboarding-metametrics',
-      selector: '[data-testid="metametrics-i-agree"]',
-    },
     { screen: 'settings', selector: '[data-testid="settings-page"]' },
   ];
 
@@ -84,11 +78,6 @@ export function detectScreenFromUrl(
     screen: ExtensionState['currentScreen'];
   }[] = [
     { matcher: (path) => hasRoutePrefix(path, SEND_ROUTE), screen: 'send' },
-    {
-      matcher: (path) =>
-        hasRoutePrefix(path, CROSS_CHAIN_SWAP_ROUTE + PREPARE_SWAP_ROUTE),
-      screen: 'swap',
-    },
     {
       matcher: (path) =>
         hasRoutePrefix(

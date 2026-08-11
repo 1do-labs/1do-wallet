@@ -147,7 +147,7 @@ describe('Unlock Page', () => {
   it('clicks use different login method button', async () => {
     const mockStateWithUnlock = {
       metamask: {
-        firstTimeFlowType: FirstTimeFlowType.socialImport,
+        firstTimeFlowType: FirstTimeFlowType.import,
         completedOnboarding: false,
       },
     };

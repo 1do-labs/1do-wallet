@@ -18,11 +18,6 @@ import {
 } from '@metamask/design-system-react';
 import PasswordForm from '../../components/app/password-form/password-form';
 import { useI18nContext } from '../../hooks/useI18nContext';
-import { MetaMetricsContext } from '../../contexts/metametrics';
-import {
-  MetaMetricsEventCategory,
-  MetaMetricsEventName,
-} from '../../../shared/constants/metametrics';
 import { ONEDO_WEBSITE_LINK } from '../../../shared/lib/ui-utils';
 import { useBoolean } from '../../hooks/useBoolean';
 
@@ -41,8 +36,6 @@ const CreatePasswordForm = ({
   const [password, setPassword] = useState('');
   const { value: termsChecked, toggle } = useBoolean();
 
-  const { trackEvent } = useContext(MetaMetricsContext);
-
   const handleCreatePassword = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     await onSubmit(password, termsChecked);
@@ -52,15 +45,6 @@ const CreatePasswordForm = ({
     event: React.MouseEvent<HTMLAnchorElement>,
   ): void => {
     event.stopPropagation();
-    trackEvent({
-      category: MetaMetricsEventCategory.Onboarding,
-      event: MetaMetricsEventName.ExternalLinkClicked,
-      properties: {
-        text: 'Learn More',
-        location: 'create_password',
-        url: ONEDO_WEBSITE_LINK,
-      },
-    });
   };
 
   const createPasswordLink = (

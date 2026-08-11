@@ -26,21 +26,15 @@ import {
   unMarkPasswordForgotten,
 } from '../../store/actions';
 import { DEFAULT_ROUTE } from '../../helpers/constants/routes';
-import {
-  MetaMetricsEventCategory,
-  MetaMetricsEventName,
-} from '../../../shared/constants/metametrics';
 import { FirstTimeFlowType } from '../../../shared/constants/onboarding';
 import SrpInputForm from '../srp-input-form';
 import { CreatePasswordForm } from '../create-password-form';
 import { useI18nContext } from '../../hooks/useI18nContext';
-import { MetaMetricsContext } from '../../contexts/metametrics';
 
 function RestoreVaultPage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const t = useI18nContext();
-  const { trackEvent } = React.useContext(MetaMetricsContext);
 
   const [srpError, setSrpError] = useState('');
   const [secretRecoveryPhrase, setSecretRecoveryPhrase] = useState('');
@@ -65,11 +59,6 @@ function RestoreVaultPage() {
           createNewVaultAndRestore(password, secretRecoveryPhrase),
         );
 
-        trackEvent({
-          category: MetaMetricsEventCategory.Retention,
-          event: MetaMetricsEventName.WalletRestored,
-        });
-
         navigate(DEFAULT_ROUTE, { replace: true });
       } catch (error) {
         setLoading(false);
@@ -77,7 +66,7 @@ function RestoreVaultPage() {
         console.error('[RestoreVault] Error during import:', error);
       }
     },
-    [secretRecoveryPhrase, dispatch, trackEvent, navigate],
+    [secretRecoveryPhrase, dispatch, navigate],
   );
 
   const handleContinue = useCallback(() => {

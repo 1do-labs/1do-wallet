@@ -25,16 +25,12 @@ export type Backup = {
   // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
   // eslint-disable-next-line @typescript-eslint/naming-convention
   AppMetadataController?: unknown;
-  // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-  // eslint-disable-next-line @typescript-eslint/naming-convention
-  MetaMetricsController?: unknown;
   meta?: MetaData;
 };
 
 export const backedUpStateKeys = [
   'KeyringController',
   'AppMetadataController',
-  'MetaMetricsController',
 ] as const;
 
 export type BackedUpStateKey = (typeof backedUpStateKeys)[number];
@@ -734,9 +730,6 @@ export class PersistenceManager extends EventEmitter<PersistenceManagerEventMap>
             ) {
               log.info('Backup vault found in IndexedDB, triggering recovery');
 
-              // Track vault corruption detected event directly to Segment.
-              // We do this here (before throwing) because MetaMetricsController
-              // is not initialized yet, so we use the backup state for consent/ID.
               const corruptionType = localStoreError
                 ? VaultCorruptionType.InaccessibleDatabase
                 : VaultCorruptionType.MissingVaultInDatabase;
@@ -824,16 +817,12 @@ export class PersistenceManager extends EventEmitter<PersistenceManagerEventMap>
     if (!backupDb) {
       return undefined;
     }
-    const [
-      KeyringController,
-      AppMetadataController,
-      MetaMetricsController,
-      meta,
-    ] = await backupDb.get([...backedUpStateKeys, `meta`]);
+    const [KeyringController, AppMetadataController, meta] = await backupDb.get(
+      [...backedUpStateKeys, `meta`],
+    );
     return {
       KeyringController,
       AppMetadataController,
-      MetaMetricsController,
       meta: meta as MetaData | undefined,
     };
   }

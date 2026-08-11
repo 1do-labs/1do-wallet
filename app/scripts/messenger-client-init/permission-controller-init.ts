@@ -39,7 +39,6 @@ export const PermissionControllerInit: MessengerClientInitFunction<
 }) => {
   const messengerClient = new PermissionController({
     state: persistedState.PermissionController,
-    // @ts-expect-error PermissionController messenger parameter type is incompatible with our messenger alias (handler unions).
     messenger: controllerMessenger,
     caveatSpecifications: getCaveatSpecifications({
       listAccounts: () => {

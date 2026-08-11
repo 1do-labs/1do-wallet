@@ -3,12 +3,9 @@ import { compose } from 'redux';
 import { connect } from 'react-redux';
 import withRouterHooks from '../../helpers/higher-order-components/with-router-hooks/with-router-hooks';
 import {
-  activeTabHasPermissions,
   getUseExternalServices,
   getIsMainnet,
-  getOriginOfCurrentTab,
   getTotalUnapprovedCount,
-  getWeb3ShimUsageStateForOrigin,
   getShowRecoveryPhraseReminder,
   getShowTermsOfUse,
   getShowOutdatedBrowserWarning,
@@ -29,8 +26,6 @@ import { getInfuraBlocked } from '../../../shared/lib/selectors/networks';
 import {
   attemptCloseNotificationPopup,
   setConnectedStatusPopoverHasBeenShown,
-  setWeb3ShimUsageAlertDismissed,
-  setAlertEnabledness,
   setRecoveryPhraseReminderHasBeenShown,
   setRecoveryPhraseReminderLastShown,
   setTermsOfUseLastAgreed,
@@ -41,16 +36,12 @@ import {
   setNewTokensImported,
   setActiveNetwork,
   setNewTokensImportedError,
-  setDataCollectionForMarketing,
   setEditedNetwork,
   lookupSelectedNetworks,
   setPendingRedirectRoute,
 } from '../../store/actions';
 import { openBasicFunctionalityModal } from '../../ducks/app/app';
-import {
-  getIsPrimarySeedPhraseBackedUp,
-  getWeb3ShimUsageAlertEnabledness,
-} from '../../ducks/metamask/metamask';
+import { getIsPrimarySeedPhraseBackedUp } from '../../ducks/metamask/metamask';
 // TODO: Remove restricted import
 // eslint-disable-next-line import-x/no-restricted-paths
 import { getEnvironmentType } from '../../../app/scripts/lib/util';
@@ -59,10 +50,6 @@ import {
   ENVIRONMENT_TYPE_NOTIFICATION,
   ENVIRONMENT_TYPE_POPUP,
 } from '../../../shared/constants/app';
-import {
-  AlertTypes,
-  Web3ShimUsageAlertStates,
-} from '../../../shared/constants/alerts';
 import { getShouldShowSeedPhraseReminder } from '../../selectors/multi-srp/multi-srp';
 import {
   getRedirectAfterDefaultPage,
@@ -78,8 +65,6 @@ const mapStateToProps = (state) => {
   const {
     seedPhraseBackedUp,
     connectedStatusPopoverHasBeenShown,
-    dataCollectionForMarketing,
-    participateInMetaMetrics,
     firstTimeFlowType,
     completedOnboarding,
     forgottenPassword,
@@ -93,14 +78,6 @@ const mapStateToProps = (state) => {
   const isPopup = envType === ENVIRONMENT_TYPE_POPUP;
   const isNotification = envType === ENVIRONMENT_TYPE_NOTIFICATION;
 
-  const originOfCurrentTab = getOriginOfCurrentTab(state);
-  const shouldShowWeb3ShimUsageNotification =
-    isPopup &&
-    getWeb3ShimUsageAlertEnabledness(state) &&
-    activeTabHasPermissions(state) &&
-    getWeb3ShimUsageStateForOrigin(state, originOfCurrentTab) ===
-      Web3ShimUsageAlertStates.recorded;
-
   const shouldShowSeedPhraseReminder =
     selectedAccount && getShouldShowSeedPhraseReminder(state, selectedAccount);
 
@@ -112,17 +89,13 @@ const mapStateToProps = (state) => {
     envType,
     isPopup,
     isNotification,
-    dataCollectionForMarketing,
     selectedAddress,
     totalUnapprovedCount,
-    participateInMetaMetrics,
     hasApprovalFlows: getApprovalFlows(state)?.length > 0,
     connectedStatusPopoverHasBeenShown,
     firstTimeFlowType,
     completedOnboarding,
     isMainnet: getIsMainnet(state),
-    originOfCurrentTab,
-    shouldShowWeb3ShimUsageNotification,
     infuraBlocked: getInfuraBlocked(state),
     showRecoveryPhraseReminder: getShowRecoveryPhraseReminder(state),
     showTermsOfUsePopup: getShowTermsOfUse(state),
@@ -151,15 +124,9 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    setDataCollectionForMarketing: (val) =>
-      dispatch(setDataCollectionForMarketing(val)),
     attemptCloseNotificationPopup: () => attemptCloseNotificationPopup(),
     setConnectedStatusPopoverHasBeenShown: () =>
       dispatch(setConnectedStatusPopoverHasBeenShown()),
-    setWeb3ShimUsageAlertDismissed: (origin) =>
-      setWeb3ShimUsageAlertDismissed(origin),
-    disableWeb3ShimUsageAlert: () =>
-      setAlertEnabledness(AlertTypes.web3ShimUsage, false),
     setRecoveryPhraseReminderHasBeenShown: () =>
       dispatch(setRecoveryPhraseReminderHasBeenShown()),
     setRecoveryPhraseReminderLastShown: (lastShown) =>

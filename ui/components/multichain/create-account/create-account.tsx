@@ -3,7 +3,6 @@ import React, {
   KeyboardEvent,
   KeyboardEventHandler,
   useCallback,
-  useContext,
   useEffect,
   useState,
 } from 'react';
@@ -30,14 +29,7 @@ import {
   getSelectedKeyringByIdOrDefault,
   getHdKeyringIndexByIdOrDefault,
 } from '../../../selectors';
-import { getHDEntropyIndex } from '../../../selectors/selectors';
 import { getMostRecentOverviewPage } from '../../../ducks/history/history';
-import {
-  MetaMetricsEventAccountType,
-  MetaMetricsEventCategory,
-  MetaMetricsEventName,
-} from '../../../../shared/constants/metametrics';
-import { MetaMetricsContext } from '../../../contexts/metametrics';
 import { Display } from '../../../helpers/constants/design-system';
 import { SelectSrp } from '../multi-srp/select-srp/select-srp';
 import { endTrace, trace, TraceName } from '../../../../shared/lib/trace';
@@ -104,9 +96,6 @@ export const CreateAccount: CreateAccountComponent = React.memo(
       const t = useI18nContext();
 
       const navigate = useNavigate();
-      const { trackEvent } = useContext(MetaMetricsContext);
-      const hdEntropyIndex = useSelector(getHDEntropyIndex);
-
       const mostRecentOverviewPage = useSelector(getMostRecentOverviewPage);
 
       const accounts: InternalAccount[] = useSelector(
@@ -153,27 +142,6 @@ export const CreateAccount: CreateAccountComponent = React.memo(
           try {
             trace({ name: TraceName.CreateAccount });
             await onCreateAccount(trimmedAccountName || defaultAccountName);
-            trackEvent({
-              category: MetaMetricsEventCategory.Accounts,
-              event: MetaMetricsEventName.AccountAdded,
-              properties: {
-                // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-                // eslint-disable-next-line @typescript-eslint/naming-convention
-                account_type: MetaMetricsEventAccountType.Default,
-                location: 'Home',
-                // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-                // eslint-disable-next-line @typescript-eslint/naming-convention
-                hd_entropy_index: hdEntropyIndex,
-                // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-                // eslint-disable-next-line @typescript-eslint/naming-convention
-                chain_id_caip: scope,
-                // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-                // eslint-disable-next-line @typescript-eslint/naming-convention
-                is_suggested_name:
-                  !trimmedAccountName ||
-                  trimmedAccountName === defaultAccountName,
-              },
-            });
             if (redirectToOverview) {
               navigate(mostRecentOverviewPage);
             }
@@ -184,47 +152,18 @@ export const CreateAccount: CreateAccountComponent = React.memo(
               message = (error as Error).message;
             }
             setCreationError(message);
-
-            if (selectedKeyringId) {
-              trackEvent({
-                category: MetaMetricsEventCategory.Accounts,
-                event: MetaMetricsEventName.AccountImportFailed,
-                properties: {
-                  // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-                  // eslint-disable-next-line @typescript-eslint/naming-convention
-                  account_type: MetaMetricsEventAccountType.Imported,
-                  error: message,
-                  // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-                  // eslint-disable-next-line @typescript-eslint/naming-convention
-                  hd_entropy_index: hdEntropyIndex,
-                  // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-                  // eslint-disable-next-line @typescript-eslint/naming-convention
-                  chain_id_caip: scope,
-                },
-              });
-            } else {
-              trackEvent({
-                category: MetaMetricsEventCategory.Accounts,
-                event: MetaMetricsEventName.AccountAddFailed,
-                properties: {
-                  // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-                  // eslint-disable-next-line @typescript-eslint/naming-convention
-                  account_type: MetaMetricsEventAccountType.Default,
-                  error: message,
-                  // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-                  // eslint-disable-next-line @typescript-eslint/naming-convention
-                  hd_entropy_index: hdEntropyIndex,
-                  // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-                  // eslint-disable-next-line @typescript-eslint/naming-convention
-                  chain_id_caip: scope,
-                },
-              });
-            }
           } finally {
             endTrace({ name: TraceName.CreateAccount });
           }
         },
-        [trimmedAccountName, defaultAccountName, mostRecentOverviewPage],
+        [
+          defaultAccountName,
+          mostRecentOverviewPage,
+          navigate,
+          onCreateAccount,
+          redirectToOverview,
+          trimmedAccountName,
+        ],
       );
 
       return (

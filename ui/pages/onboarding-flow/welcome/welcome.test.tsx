@@ -3,12 +3,6 @@ import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { fireEvent, waitFor } from '@testing-library/react';
 import { renderWithProvider } from '../../../../test/lib/render-helpers-navigate';
-import { MetaMetricsContext } from '../../../contexts/metametrics';
-import {
-  MetaMetricsEventAccountType,
-  MetaMetricsEventCategory,
-  MetaMetricsEventName,
-} from '../../../../shared/constants/metametrics';
 import {
   ONBOARDING_CREATE_PASSWORD_ROUTE,
   ONBOARDING_IMPORT_WITH_SRP_ROUTE,
@@ -45,14 +39,6 @@ describe('Welcome Page', () => {
       metaMetricsId: '0x00000000',
     },
   });
-  const mockTrackEvent = jest.fn();
-  const mockMetaMetricsContext = {
-    trackEvent: mockTrackEvent,
-    bufferedTrace: jest.fn(),
-    bufferedEndTrace: jest.fn(),
-    onboardingParentContext: { current: null },
-  };
-
   beforeEach(() => {
     jest.clearAllMocks();
   });
@@ -80,24 +66,11 @@ describe('Welcome Page', () => {
   });
 
   it('starts the create wallet flow', async () => {
-    const { getByText } = renderWithProvider(
-      <MetaMetricsContext.Provider value={mockMetaMetricsContext}>
-        <Welcome />
-      </MetaMetricsContext.Provider>,
-      mockStore,
-    );
+    const { getByText } = renderWithProvider(<Welcome />, mockStore);
 
     fireEvent.click(getByText(messages.onboardingCreateWallet.message));
 
     await waitFor(() => {
-      expect(mockTrackEvent).toHaveBeenCalledWith({
-        category: MetaMetricsEventCategory.Onboarding,
-        event: MetaMetricsEventName.WalletSetupStarted,
-        properties: {
-          // eslint-disable-next-line @typescript-eslint/naming-convention
-          account_type: MetaMetricsEventAccountType.Default,
-        },
-      });
       expect(mockUseNavigate).toHaveBeenCalledWith(
         ONBOARDING_CREATE_PASSWORD_ROUTE,
       );
@@ -105,24 +78,11 @@ describe('Welcome Page', () => {
   });
 
   it('starts the import wallet flow', async () => {
-    const { getByText } = renderWithProvider(
-      <MetaMetricsContext.Provider value={mockMetaMetricsContext}>
-        <Welcome />
-      </MetaMetricsContext.Provider>,
-      mockStore,
-    );
+    const { getByText } = renderWithProvider(<Welcome />, mockStore);
 
     fireEvent.click(getByText(messages.onboardingImportWallet.message));
 
     await waitFor(() => {
-      expect(mockTrackEvent).toHaveBeenCalledWith({
-        category: MetaMetricsEventCategory.Onboarding,
-        event: MetaMetricsEventName.WalletImportStarted,
-        properties: {
-          // eslint-disable-next-line @typescript-eslint/naming-convention
-          account_type: MetaMetricsEventAccountType.Imported,
-        },
-      });
       expect(mockUseNavigate).toHaveBeenCalledWith(
         ONBOARDING_IMPORT_WITH_SRP_ROUTE,
       );

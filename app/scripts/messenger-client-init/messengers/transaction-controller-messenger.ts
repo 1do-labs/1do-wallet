@@ -7,7 +7,6 @@ import {
   AccountTrackerControllerGetStateAction,
   CurrencyRateControllerActions,
 } from '@metamask/assets-controllers';
-import { DelegationControllerSignDelegationAction } from '@metamask/delegation-controller';
 import {
   KeyringControllerSignEip7702AuthorizationAction,
   KeyringControllerSignTypedMessageAction,
@@ -23,8 +22,6 @@ import {
   NetworkControllerGetNetworkClientByIdAction,
   NetworkControllerStateChangeEvent,
 } from '@metamask/network-controller';
-import { RemoteFeatureFlagControllerGetStateAction } from '@metamask/remote-feature-flag-controller';
-import { SmartTransactionsControllerSmartTransactionEvent } from '@metamask/smart-transactions-controller';
 import {
   TransactionControllerAddTransactionAction,
   TransactionControllerAddTransactionBatchAction,
@@ -74,7 +71,6 @@ export function getTransactionControllerMessenger(
       'KeyringController:signEip7702Authorization',
       'NetworkController:findNetworkClientIdByChainId',
       'NetworkController:getNetworkClientById',
-      'RemoteFeatureFlagController:getState',
     ],
     events: [
       'AccountsController:selectedAccountChange',
@@ -91,13 +87,11 @@ type InitMessengerActions =
   | ApprovalControllerActions
   | AppStateControllerGetStateAction
   | CurrencyRateControllerActions
-  | DelegationControllerSignDelegationAction
   | KeyringControllerSignEip7702AuthorizationAction
   | KeyringControllerSignTypedMessageAction
   | NetworkControllerFindNetworkClientIdByChainIdAction
   | NetworkControllerGetEIP1559CompatibilityAction
   | NetworkControllerGetNetworkClientByIdAction
-  | RemoteFeatureFlagControllerGetStateAction
   | TransactionControllerAddTransactionAction
   | TransactionControllerAddTransactionBatchAction
   | TransactionControllerEstimateGasAction
@@ -107,7 +101,6 @@ type InitMessengerActions =
 
 type InitMessengerEvents =
   | NetworkControllerStateChangeEvent
-  | SmartTransactionsControllerSmartTransactionEvent
   | TransactionControllerStateChangeEvent
   | TransactionControllerTransactionApprovedEvent
   | TransactionControllerTransactionConfirmedEvent
@@ -132,7 +125,6 @@ export function getTransactionControllerInitMessenger(
   messenger.delegate({
     messenger: controllerInitMessenger,
     events: [
-      'SmartTransactionsController:smartTransaction',
       'TransactionController:stateChange',
       'TransactionController:transactionApproved',
       'TransactionController:transactionConfirmed',
@@ -151,13 +143,11 @@ export function getTransactionControllerInitMessenger(
       'ApprovalController:updateRequestState',
       'AppStateController:getState',
       'CurrencyRateController:getState',
-      'DelegationController:signDelegation',
       'KeyringController:signEip7702Authorization',
       'KeyringController:signTypedMessage',
       'NetworkController:findNetworkClientIdByChainId',
       'NetworkController:getEIP1559Compatibility',
       'NetworkController:getNetworkClientById',
-      'RemoteFeatureFlagController:getState',
       'TransactionController:addTransaction',
       'TransactionController:addTransactionBatch',
       'TransactionController:estimateGas',

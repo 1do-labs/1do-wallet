@@ -10,11 +10,9 @@ import {
 import LoadingScreen from '../../../../../components/ui/loading-screen';
 import { useI18nContext } from '../../../../../hooks/useI18nContext';
 import { Asset } from '../../../types/send';
-import { useAmountSelectionMetrics } from '../../../hooks/send/metrics/useAmountSelectionMetrics';
 import { useSendActions } from '../../../hooks/send/useSendActions';
 import { useSendContext } from '../../../context/send';
 import { useRecipientValidation } from '../../../hooks/send/useRecipientValidation';
-import { useRecipientSelectionMetrics } from '../../../hooks/send/metrics/useRecipientSelectionMetrics';
 import { useAmountValidation } from '../../../hooks/send/useAmountValidation';
 import { SendHero } from '../../UI/send-hero';
 import { Amount } from '../amount/amount';
@@ -29,8 +27,6 @@ export const AmountRecipient = () => {
   const { asset, toResolved, nonEVMSubmitError } = useSendContext();
   const { amountError } = useAmountValidation();
   const { handleSubmit } = useSendActions();
-  const { captureAmountSelected } = useAmountSelectionMetrics();
-  const { captureRecipientSelected } = useRecipientSelectionMetrics();
   const recipientValidationResult = useRecipientValidation();
 
   const { recipientErrorAllowAcknowledge, acknowledgeError } =
@@ -58,9 +54,7 @@ export const AmountRecipient = () => {
 
   const proceedWithSubmit = useCallback(async () => {
     handleSubmit();
-    captureAmountSelected();
-    captureRecipientSelected();
-  }, [captureAmountSelected, captureRecipientSelected, handleSubmit]);
+  }, [handleSubmit]);
 
   const handleAlertModalAcknowledge = useCallback(async () => {
     setIsAlertModalOpen(false);

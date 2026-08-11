@@ -1,9 +1,4 @@
 import { PRIVACY_POLICY_DATE } from '../../../helpers/constants/privacy-policy';
-import {
-  SURVEY_DATE,
-  SURVEY_END_TIME,
-  SURVEY_START_TIME,
-} from '../../../helpers/constants/survey';
 import { MetaMaskReduxState } from '../../../store/store';
 import {
   ClaimSubmitToastType,
@@ -29,34 +24,12 @@ type State = {
       | 'newPrivacyPolicyToastClickedOrClosed'
       | 'newPrivacyPolicyToastShownDate'
       | 'onboardingDate'
-      | 'surveyLinkLastClickedOrClosed'
-      | 'participateInMetaMetrics'
-      | 'remoteFeatureFlags'
-      | 'pna25Acknowledged'
-      | 'completedOnboarding'
       | 'storageWriteErrorType'
       | 'isUnlocked'
+      | 'completedOnboarding'
     >
   >;
 };
-
-/**
- * Determines if the survey toast should be shown based on the current time, survey start and end times, and whether the survey link was last clicked or closed.
- *
- * @param state - The application state containing the necessary survey data.
- * @returns True if the current time is between the survey start and end times and the survey link was not last clicked or closed. False otherwise.
- */
-export function selectShowSurveyToast(state: Pick<State, 'metamask'>): boolean {
-  if (state.metamask.surveyLinkLastClickedOrClosed) {
-    return false;
-  }
-
-  const startTime = new Date(`${SURVEY_DATE} ${SURVEY_START_TIME}`).getTime();
-  const endTime = new Date(`${SURVEY_DATE} ${SURVEY_END_TIME}`).getTime();
-  const now = Date.now();
-
-  return now > startTime && now < endTime;
-}
 
 /**
  * Determines if the privacy policy toast should be shown based on the current date and whether the new privacy policy toast was clicked or closed.
@@ -187,51 +160,4 @@ export function selectShowSidePanelMigrationToast(
   return Boolean(
     (state.metamask as Record<string, unknown>)?.showSidePanelMigrationToast,
   );
-}
-
-/**
- * Determines if the PNA25 banner should be shown based on:
- * - User has completed onboarding (completedOnboarding === true)
- * - LaunchDarkly feature flag (extensionUxPna25) is enabled
- * - User has opted into metrics (participateInMetaMetrics === true)
- * - User hasn't acknowledged the banner yet (pna25Acknowledged === false)
- *
- * Regular new users: Go through metametrics page → pna25Acknowledged = true → don't see banner
- * Social login users: Skip metametrics page → pna25Acknowledged = false → see banner
- * Existing users: pna25Acknowledged = false (default) → see banner
- *
- * @param state - The application state containing the banner data.
- * @returns Boolean indicating whether to show the banner
- */
-export function selectShowPna25Modal(state: Pick<State, 'metamask'>): boolean {
-  const {
-    completedOnboarding,
-    participateInMetaMetrics,
-    pna25Acknowledged,
-    remoteFeatureFlags,
-  } = state.metamask || {};
-
-  // Only show to users who have completed onboarding
-  if (!completedOnboarding) {
-    return false; // User hasn't completed onboarding yet
-  }
-
-  // For onboarding screen, we use local flag and for existing users, we use LaunchDarkly flag
-  const isPna25Enabled = remoteFeatureFlags?.extensionUxPna25;
-
-  // Check all conditions
-  if (!isPna25Enabled) {
-    return false; // LD flag not enabled
-  }
-
-  if (participateInMetaMetrics !== true) {
-    return false; // User hasn't opted into metrics
-  }
-
-  if (pna25Acknowledged === true) {
-    return false; // User already acknowledged
-  }
-
-  // Only show banner if explicitly false (existing users who haven't acknowledged)
-  return pna25Acknowledged === false;
 }

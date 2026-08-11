@@ -1,13 +1,10 @@
 import {
   SimulationError,
   SimulationErrorCode,
-  TransactionContainerType,
   TransactionMeta,
   TransactionStatus,
 } from '@metamask/transaction-controller';
 import React, { Fragment, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { useAlertMetrics } from '../../../../components/app/alert-system/contexts/alertMetricsContext';
 import InlineAlert from '../../../../components/app/alert-system/inline-alert';
 import { MultipleAlertModal } from '../../../../components/app/alert-system/multiple-alert-modal';
 import {
@@ -40,12 +37,10 @@ import {
 } from '../../../../helpers/constants/design-system';
 import useAlerts from '../../../../hooks/useAlerts';
 import { useI18nContext } from '../../../../hooks/useI18nContext';
-import { selectTransactionMetadata } from '../../../../selectors';
+import { isOneDoRuntimeAccessUpdateTransactionCandidate } from '../../utils/onedo-clear-signing';
 import { BalanceChangeList } from './balance-change-list';
 import { BalanceChange } from './types';
 import { useBalanceChanges } from './useBalanceChanges';
-import { useSimulationMetrics } from './useSimulationMetrics';
-import { isOneDoRuntimeAccessUpdateTransactionCandidate } from '../../utils/onedo-clear-signing';
 
 export type StaticRow = {
   label: string;
@@ -53,12 +48,10 @@ export type StaticRow = {
 };
 
 export type SimulationDetailsProps = {
-  enableMetrics?: boolean;
+  hideDetails?: boolean;
   isTransactionsRedesign?: boolean;
-  metricsOnly?: boolean;
   staticRows?: StaticRow[];
   transaction: TransactionMeta;
-  smartTransactionStatus?: string;
 };
 
 /**
@@ -113,35 +106,18 @@ const EmptyContent: React.FC = () => {
 };
 
 const HeaderWithAlert = ({
+  transactionId,
   title,
   titleTooltip,
-  transactionId,
 }: {
+  transactionId: string;
   title?: string;
   titleTooltip?: string;
-  transactionId: string;
 }) => {
   const t = useI18nContext();
 
-  const transactionMetadata = useSelector((state) =>
-    selectTransactionMetadata(state, transactionId),
-  );
-
-  const isEnforced = transactionMetadata?.containerTypes?.includes(
-    TransactionContainerType.EnforcedSimulations,
-  );
-
-  const label =
-    title ??
-    (isEnforced
-      ? t('simulationDetailsTitleEnforced')
-      : t('simulationDetailsTitle'));
-
-  const tooltip =
-    titleTooltip ??
-    (isEnforced
-      ? t('simulationDetailsTitleTooltipEnforced')
-      : t('simulationDetailsTitleTooltip'));
+  const label = title ?? t('simulationDetailsTitle');
+  const tooltip = titleTooltip ?? t('simulationDetailsTitleTooltip');
 
   return (
     <Box
@@ -229,9 +205,9 @@ const HeaderLayout: React.FC<{
     >
       {isTransactionsRedesign ? (
         <HeaderWithAlert
+          transactionId={transactionId}
           title={title}
           titleTooltip={titleTooltip}
-          transactionId={transactionId}
         />
       ) : (
         <LegacyHeader />
@@ -331,8 +307,6 @@ const BalanceChangesAlert = ({ transactionId }: { transactionId: string }) => {
   const selectedAlertSeverity = fieldAlerts[0]?.severity;
   const selectedAlertKey = fieldAlerts[0]?.key;
 
-  const { trackInlineAlertClicked } = useAlertMetrics();
-
   const [alertModalVisible, setAlertModalVisible] = useState<boolean>(false);
 
   const handleModalClose = () => {
@@ -341,7 +315,6 @@ const BalanceChangesAlert = ({ transactionId }: { transactionId: string }) => {
 
   const handleInlineAlertClick = () => {
     setAlertModalVisible(true);
-    trackInlineAlertClicked(selectedAlertKey);
   };
 
   return (
@@ -407,20 +380,16 @@ function SimulationDetailsSkeleton({
  *
  * @param props
  * @param props.transaction - Metadata of the transaction that was simulated.
- * @param props.enableMetrics - Whether to enable simulation metrics.
+ * @param props.hideDetails - Whether to skip rendering simulation details.
  * @param props.isTransactionsRedesign - Whether or not the component is being
  * used inside the transaction redesign flow.
- * @param props.metricsOnly - Whether to only track metrics and not render the UI.
  * @param props.staticRows - Optional static rows to display.
- * @param props.smartTransactionStatus - Optional Smart Transaction status to override transaction status for immediate UI updates.
  */
 export const SimulationDetails: React.FC<SimulationDetailsProps> = ({
   transaction,
-  enableMetrics = false,
+  hideDetails = false,
   isTransactionsRedesign = false,
-  metricsOnly = false,
   staticRows = [],
-  smartTransactionStatus,
 }: SimulationDetailsProps) => {
   const t = useI18nContext();
   const { chainId, id: transactionId, simulationData } = transaction;
@@ -429,7 +398,6 @@ export const SimulationDetails: React.FC<SimulationDetailsProps> = ({
   const balanceChangesResult = useBalanceChanges({
     chainId,
     simulationData,
-    transaction,
   });
   const loading = !simulationData || balanceChangesResult.pending;
 
@@ -437,19 +405,11 @@ export const SimulationDetails: React.FC<SimulationDetailsProps> = ({
     staticRows?.length > 0 &&
     staticRows.some((row) => row.balanceChanges?.length > 0);
 
-  useSimulationMetrics({
-    enableMetrics,
-    balanceChanges: balanceChangesResult.value,
-    loading,
-    simulationData,
-    transactionId,
-  });
-
   const { getFieldAlerts } = useAlerts(transactionId);
   const fieldAlerts = getFieldAlerts(RowAlertKey.EstimatedChangesStatic);
   const selectedAlertSeverity = fieldAlerts[0]?.severity;
 
-  if (metricsOnly || isOneDoRuntimeAccessUpdate) {
+  if (hideDetails || isOneDoRuntimeAccessUpdate) {
     return null;
   }
 
@@ -517,14 +477,6 @@ export const SimulationDetails: React.FC<SimulationDetailsProps> = ({
     completed: string;
   }) => {
     const { status } = transaction;
-
-    // If we have Smart Transaction status, use it as priority
-    // This fixes the delay issue between Smart Transaction and regular transaction status updates
-    if (smartTransactionStatus === 'success') {
-      return t(translationKeys.completed);
-    } else if (smartTransactionStatus === 'pending') {
-      return t(translationKeys.inProgress);
-    }
 
     // Fallback to regular transaction status
     if (status === TransactionStatus.confirmed) {

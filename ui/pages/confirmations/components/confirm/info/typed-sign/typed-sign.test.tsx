@@ -201,7 +201,11 @@ describe('TypedSignInfo', () => {
         }),
       },
     };
-    const state = getMockTypedSignConfirmStateForRequest(permit2Signature);
+    const state = getMockTypedSignConfirmStateForRequest(
+      permit2Signature as unknown as Parameters<
+        typeof getMockTypedSignConfirmStateForRequest
+      >[0],
+    );
     const mockStore = createMockStore(state);
     const { getByTestId } = renderWithConfirmContextProvider(
       <TypedSignInfo />,

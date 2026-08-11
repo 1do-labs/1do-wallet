@@ -3,5 +3,6 @@ import { getRemoteFeatureFlags } from '../remote-feature-flags';
 
 export const getIsTransactionLabelsEnabled = createSelector(
   getRemoteFeatureFlags,
-  ({ extensionTransactionLabels }) => Boolean(extensionTransactionLabels),
+  (remoteFeatureFlags) =>
+    Boolean(remoteFeatureFlags?.extensionTransactionLabels),
 );

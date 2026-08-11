@@ -1,13 +1,10 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback } from 'react';
 import { GasFeeToken, TransactionMeta } from '@metamask/transaction-controller';
-import classnames from 'clsx';
 
 import { NATIVE_TOKEN_ADDRESS } from '../../../../../../../../shared/constants/transaction';
 import {
   Box,
   Icon,
-  IconName,
-  IconSize,
   Modal,
   ModalBody,
   ModalContent,
@@ -19,12 +16,9 @@ import {
 import {
   AlignItems,
   BackgroundColor,
-  BorderColor,
   BorderRadius,
-  BorderStyle,
   Display,
   FlexDirection,
-  IconColor,
   JustifyContent,
   TextColor,
   TextVariant,
@@ -33,8 +27,6 @@ import { useConfirmContext } from '../../../../../context/confirm';
 import { GasFeeTokenListItem } from '../gas-fee-token-list-item';
 import { useI18nContext } from '../../../../../../../hooks/useI18nContext';
 import { updateSelectedGasFeeToken } from '../../../../../../../store/controller-actions/transaction-controller';
-import Tooltip from '../../../../../../../components/ui/tooltip';
-import { useIsGaslessSupported } from '../../../../../hooks/gas/useIsGaslessSupported';
 import { useIsInsufficientBalance } from '../../../../../hooks/useIsInsufficientBalance';
 
 // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
@@ -42,8 +34,6 @@ import { useIsInsufficientBalance } from '../../../../../hooks/useIsInsufficient
 export function GasFeeTokenModal({ onClose }: { onClose?: () => void }) {
   const t = useI18nContext();
   const { currentConfirmation } = useConfirmContext<TransactionMeta>();
-  const { isSmartTransaction } = useIsGaslessSupported();
-
   const hasInsufficientNative = useIsInsufficientBalance();
 
   const {
@@ -53,18 +43,7 @@ export function GasFeeTokenModal({ onClose }: { onClose?: () => void }) {
     excludeNativeTokenForFee,
   } = currentConfirmation;
 
-  const hasFutureNativeToken =
-    isSmartTransaction &&
-    hasInsufficientNative &&
-    Boolean(
-      gasFeeTokens?.some(
-        (token) => token.tokenAddress === NATIVE_TOKEN_ADDRESS,
-      ),
-    );
-
-  const [futureNativeSelected, setFutureNativeSelected] = useState(
-    hasFutureNativeToken && Boolean(selectedGasFeeToken),
-  );
+  const futureNativeSelected = false;
 
   const gasFeeTokenAddresses =
     gasFeeTokens
@@ -90,12 +69,7 @@ export function GasFeeTokenModal({ onClose }: { onClose?: () => void }) {
   return (
     <Modal
       isOpen={true}
-      onClose={
-        onClose ??
-        (() => {
-          // Intentionally empty
-        })
-      }
+      onClose={onClose ?? (() => undefined)}
       isClosedOnOutsideClick={false}
       isClosedOnEscapeKey={false}
     >
@@ -120,12 +94,6 @@ export function GasFeeTokenModal({ onClose }: { onClose?: () => void }) {
                 marginInline={4}
               >
                 <Title text={t('confirmGasFeeTokenModalPayETH')} noMargin />
-                {hasFutureNativeToken && (
-                  <NativeToggle
-                    isFuture={futureNativeSelected}
-                    onChange={setFutureNativeSelected}
-                  />
-                )}
               </Box>
               <GasFeeTokenListItem
                 tokenAddress={
@@ -179,90 +147,5 @@ function Title({ noMargin, text }: { noMargin?: boolean; text: string }) {
     >
       {text}
     </Text>
-  );
-}
-
-// TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-// eslint-disable-next-line @typescript-eslint/naming-convention
-function NativeToggle({
-  isFuture,
-  onChange,
-}: {
-  isFuture?: boolean;
-  onChange: (isFuture: boolean) => void;
-}) {
-  const t = useI18nContext();
-
-  return (
-    <Box
-      data-testid="native-toggle"
-      display={Display.Flex}
-      flexDirection={FlexDirection.Row}
-      borderStyle={BorderStyle.solid}
-      borderColor={BorderColor.borderMuted}
-      borderRadius={BorderRadius.MD}
-    >
-      <NativeToggleOption
-        isSelected={!isFuture}
-        onClick={() => {
-          onChange(false);
-        }}
-        tooltip={t('confirmGasFeeTokenModalNativeToggleWallet')}
-      >
-        <Icon
-          name={IconName.Wallet}
-          size={IconSize.Sm}
-          color={isFuture ? IconColor.iconAlternative : IconColor.infoDefault}
-          margin={2}
-        />
-      </NativeToggleOption>
-      <NativeToggleOption
-        isSelected={isFuture}
-        onClick={() => {
-          onChange(true);
-        }}
-        tooltip={t('confirmGasFeeTokenModalNativeToggleMetaMask')}
-      >
-        <img
-          src="./images/logo/1do-mark.svg"
-          className="gas-fee-token-native-toggle-option__fox-icon"
-        />
-      </NativeToggleOption>
-    </Box>
-  );
-}
-
-// TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-// eslint-disable-next-line @typescript-eslint/naming-convention
-function NativeToggleOption({
-  children,
-  isSelected,
-  onClick,
-  tooltip,
-}: {
-  children: React.ReactNode;
-  isSelected?: boolean;
-  onClick: () => void;
-  tooltip: string;
-}) {
-  return (
-    <Box
-      display={Display.Flex}
-      backgroundColor={isSelected ? BackgroundColor.primaryMuted : undefined}
-      borderRadius={BorderRadius.MD}
-      onClick={onClick}
-      className={classnames('gas-fee-token-native-toggle-option', {
-        'gas-fee-token-native-toggle-option--selected': isSelected ?? false,
-      })}
-    >
-      <Tooltip
-        title={tooltip}
-        wrapperStyle={{ display: 'flex' }}
-        style={{ display: 'flex' }}
-        position="bottom"
-      >
-        {children}
-      </Tooltip>
-    </Box>
   );
 }

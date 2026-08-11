@@ -76,12 +76,16 @@ const OneDoClearSigningRowValue = ({
     chainId,
   );
   const networkConfiguration = useSelector((state) =>
-    selectNetworkConfigurationByChainId(state, chainId),
+    selectNetworkConfigurationByChainId(state, chainId ?? ''),
   );
   const fallbackTokenDetails = getFallbackTokenDetails(item.tokenAddress);
 
   if (item.valueType === 'address') {
-    return <ConfirmInfoRowAddress address={item.value} chainId={chainId} />;
+    return chainId ? (
+      <ConfirmInfoRowAddress address={item.value} chainId={chainId} />
+    ) : (
+      <ConfirmInfoRowText text={item.value} />
+    );
   }
 
   if (item.valueType === 'nativeAmount' && item.rawValue) {
@@ -103,12 +107,14 @@ const OneDoClearSigningRowValue = ({
       return <ConfirmInfoRowText text={text} />;
     }
 
-    const decimals =
-      tokenDetails.standard === TokenStandard.ERC20
-        ? tokenDetails.decimalsNumber
-        : fallbackTokenDetails?.decimals;
+    const isErc20 =
+      'standard' in tokenDetails &&
+      tokenDetails.standard === TokenStandard.ERC20;
+    const decimals = isErc20
+      ? tokenDetails.decimalsNumber
+      : fallbackTokenDetails?.decimals;
     const symbol =
-      tokenDetails.standard === TokenStandard.ERC20
+      isErc20 && 'symbol' in tokenDetails
         ? tokenDetails.symbol
         : fallbackTokenDetails?.symbol;
 
@@ -181,7 +187,10 @@ const OneDoWalletNativeTransferClearSigningSection = ({
     isOneDoWalletNativeTransferTransactionCandidate(currentConfirmation);
   const targetAddress = currentConfirmation?.txParams?.to as Hex | undefined;
   const defaultRpcEndpoint = useSelector((state) =>
-    selectDefaultRpcEndpointByChainId(state, currentConfirmation?.chainId),
+    selectDefaultRpcEndpointByChainId(
+      state,
+      currentConfirmation?.chainId ?? '',
+    ),
   );
   const networkClientId = defaultRpcEndpoint?.networkClientId;
   const { value: targetCode } = useAsyncResult(async () => {

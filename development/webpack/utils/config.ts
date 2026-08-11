@@ -116,7 +116,6 @@ export function getVariables(
 
   // use the gulp-build's function to set the environment variables
   setEnvironmentVariables({
-    buildName: getBuildName(type, activeBuild, isDevBuild, args),
     buildType: type,
     environment: env,
     isDevBuild,

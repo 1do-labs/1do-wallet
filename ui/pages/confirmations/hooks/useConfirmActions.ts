@@ -4,7 +4,6 @@ import { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
-import { MetaMetricsEventLocation } from '../../../../shared/constants/metametrics';
 import { clearConfirmTransaction } from '../../../ducks/confirm-transaction/confirm-transaction.duck';
 import { DEFAULT_ROUTE } from '../../../helpers/constants/routes';
 import {
@@ -23,22 +22,17 @@ export const useConfirmActions = () => {
   const { navigateBackIfSend } = useConfirmSendNavigation();
   const { id: currentConfirmationId } = currentConfirmation || {};
 
-  const rejectApproval = useCallback(
-    async ({ location }: { location?: MetaMetricsEventLocation } = {}) => {
-      if (!currentConfirmationId) {
-        return;
-      }
+  const rejectApproval = useCallback(async () => {
+    if (!currentConfirmationId) {
+      return;
+    }
 
-      const error = providerErrors.userRejectedRequest();
-      error.data = { location };
-
-      const serializedError = serializeError(error);
-      await dispatch(
-        rejectPendingApproval(currentConfirmationId, serializedError),
-      );
-    },
-    [currentConfirmationId, dispatch],
-  );
+    const error = providerErrors.userRejectedRequest();
+    const serializedError = serializeError(error);
+    await dispatch(
+      rejectPendingApproval(currentConfirmationId, serializedError),
+    );
+  }, [currentConfirmationId, dispatch]);
 
   const resetTransactionState = useCallback(() => {
     dispatch(updateCustomNonce(''));
@@ -48,21 +42,19 @@ export const useConfirmActions = () => {
 
   const onCancel = useCallback(
     async ({
-      location,
       navigateBackForSend = false,
       navigateBackToPreviousPage = false,
     }: {
-      location?: MetaMetricsEventLocation;
       navigateBackForSend?: boolean;
       navigateBackToPreviousPage?: boolean;
-    }) => {
+    } = {}) => {
       if (!currentConfirmation) {
         return;
       }
       if (navigateBackForSend) {
         navigateBackIfSend();
       }
-      await rejectApproval({ location });
+      await rejectApproval();
       resetTransactionState();
       if (navigateBackToPreviousPage) {
         navigate(goBackTo ?? DEFAULT_ROUTE);

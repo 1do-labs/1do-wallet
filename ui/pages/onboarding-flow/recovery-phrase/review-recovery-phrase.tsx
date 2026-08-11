@@ -24,16 +24,10 @@ import {
 import { useI18nContext } from '../../../hooks/useI18nContext';
 import {
   ONBOARDING_CONFIRM_SRP_ROUTE,
-  ONBOARDING_METAMETRICS,
   ONBOARDING_REVEAL_SRP_ROUTE,
   ONBOARDING_COMPLETION_ROUTE,
   MANAGE_WALLET_RECOVERY_ROUTE,
 } from '../../../helpers/constants/routes';
-import {
-  MetaMetricsEventCategory,
-  MetaMetricsEventName,
-} from '../../../../shared/constants/metametrics';
-import { MetaMetricsContext } from '../../../contexts/metametrics';
 import { getHDEntropyIndex, getFirstTimeFlowType } from '../../../selectors';
 import SRPDetailsModal from '../../../components/app/srp-details-modal';
 import { setSeedPhraseBackedUp } from '../../../store/actions';
@@ -59,7 +53,6 @@ export default function RecoveryPhrase({
   const dispatch = useDispatch();
   const firstTimeFlowType = useSelector(getFirstTimeFlowType);
   const hasSeedPhraseBackedUp = useSelector(getSeedPhraseBackedUp);
-  const { trackEvent, bufferedEndTrace } = useContext(MetaMetricsContext);
   const hdEntropyIndex = useSelector(getHDEntropyIndex);
   const [phraseRevealed, setPhraseRevealed] = useState(false);
   const [showSrpDetailsModal, setShowSrpDetailsModal] = useState(false);
@@ -89,11 +82,7 @@ export default function RecoveryPhrase({
       );
     } else if (hasSeedPhraseBackedUp) {
       // if user has already done the Secure Wallet flow, we can redirect to the next page
-      const isFirefox = getBrowserName() === PLATFORM_FIREFOX;
-      navigate(
-        isFirefox ? ONBOARDING_COMPLETION_ROUTE : ONBOARDING_METAMETRICS,
-        { replace: true },
-      );
+      navigate(ONBOARDING_COMPLETION_ROUTE, { replace: true });
     }
   }, [
     navigate,
@@ -103,63 +92,21 @@ export default function RecoveryPhrase({
   ]);
 
   const handleContinue = useCallback(() => {
-    trackEvent({
-      category: MetaMetricsEventCategory.Onboarding,
-      event: MetaMetricsEventName.OnboardingWalletSecurityPhraseWrittenDown,
-      properties: {
-        // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31860
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        hd_entropy_index: hdEntropyIndex,
-      },
-    });
-
     navigate({
       pathname: ONBOARDING_CONFIRM_SRP_ROUTE,
       search: nextRouteQueryString ? `?${nextRouteQueryString}` : '',
     });
-  }, [hdEntropyIndex, navigate, trackEvent, nextRouteQueryString]);
+  }, [hdEntropyIndex, navigate, nextRouteQueryString]);
 
   const handleOnShowSrpDetailsModal = useCallback(() => {
-    trackEvent({
-      category: MetaMetricsEventCategory.Onboarding,
-      event: MetaMetricsEventName.SrpDefinitionClicked,
-      properties: {
-        location: 'review_recovery_phrase',
-      },
-    });
     setShowSrpDetailsModal(true);
-  }, [trackEvent]);
+  }, []);
 
   const handleRemindLater = useCallback(async () => {
     await dispatch(setSeedPhraseBackedUp(false));
 
-    trackEvent({
-      category: MetaMetricsEventCategory.Onboarding,
-      event: MetaMetricsEventName.OnboardingWalletSecuritySkipConfirmed,
-      properties: {
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        hd_entropy_index: hdEntropyIndex,
-      },
-    });
-    bufferedEndTrace?.({ name: TraceName.OnboardingNewSrpCreateWallet });
-    bufferedEndTrace?.({ name: TraceName.OnboardingJourneyOverall });
-
-    if (
-      getBrowserName() === PLATFORM_FIREFOX ||
-      firstTimeFlowType === FirstTimeFlowType.restore
-    ) {
-      navigate(ONBOARDING_COMPLETION_ROUTE, { replace: true });
-    } else {
-      navigate(ONBOARDING_METAMETRICS, { replace: true });
-    }
-  }, [
-    bufferedEndTrace,
-    dispatch,
-    firstTimeFlowType,
-    hdEntropyIndex,
-    navigate,
-    trackEvent,
-  ]);
+    navigate(ONBOARDING_COMPLETION_ROUTE, { replace: true });
+  }, [dispatch, firstTimeFlowType, hdEntropyIndex, navigate]);
 
   const handleBack = useCallback(() => {
     navigate(
@@ -242,15 +189,6 @@ export default function RecoveryPhrase({
           secretRecoveryPhrase={secretRecoveryPhrase.split(' ')}
           phraseRevealed={phraseRevealed}
           revealPhrase={() => {
-            trackEvent({
-              category: MetaMetricsEventCategory.Onboarding,
-              event:
-                MetaMetricsEventName.OnboardingWalletSecurityPhraseRevealed,
-              properties: {
-                // eslint-disable-next-line @typescript-eslint/naming-convention
-                hd_entropy_index: hdEntropyIndex,
-              },
-            });
             setPhraseRevealed(true);
           }}
         />
