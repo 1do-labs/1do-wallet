@@ -6,6 +6,7 @@ import {
   Text,
   TextColor,
   TextVariant,
+  FontWeight,
 } from '@metamask/design-system-react';
 import {
   getRuntimeAppUrl,
@@ -63,7 +64,11 @@ const RuntimeAppCard = ({
           {Icon ? <Icon aria-hidden="true" /> : null}
         </Box>
         <Box flexDirection={BoxFlexDirection.Column} gap={1}>
-          <Text variant={TextVariant.BodyMd} color={TextColor.TextDefault}>
+          <Text
+            variant={TextVariant.BodyMd}
+            color={TextColor.TextDefault}
+            fontWeight={FontWeight.Bold}
+          >
             {app.label}
           </Text>
         </Box>

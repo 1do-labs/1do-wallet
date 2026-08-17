@@ -1,0 +1,26 @@
+diff --git a/dist/constants.cjs b/dist/constants.cjs
+index fcea27c1f3025cc808306a330c314122e51d61d6..5c4f95f3026a78889d29f2e4026a9ef42a6331c6 100644
+--- a/dist/constants.cjs
++++ b/dist/constants.cjs
+@@ -218,7 +218,7 @@ exports.NETWORKS_BYPASSING_VALIDATION = {
+ };
+ // APIs
+ exports.OPENSEA_PROXY_URL = 'https://proxy.api.cx.metamask.io/opensea/v1/api/v2';
+-exports.NFT_API_BASE_URL = 'https://nft.api.cx.metamask.io';
++exports.NFT_API_BASE_URL = '';
+ exports.NFT_API_VERSION = '1';
+ exports.NFT_API_TIMEOUT = 15000;
+ // Default origin for controllers
+diff --git a/dist/constants.mjs b/dist/constants.mjs
+index 4da458bf43a0cb71acde3feddc8f673e5b567fc2..d25cbffbd4326ada1427c0f6870c66c7b7b89eae 100644
+--- a/dist/constants.mjs
++++ b/dist/constants.mjs
+@@ -215,7 +215,7 @@ export const NETWORKS_BYPASSING_VALIDATION = {
+ };
+ // APIs
+ export const OPENSEA_PROXY_URL = 'https://proxy.api.cx.metamask.io/opensea/v1/api/v2';
+-export const NFT_API_BASE_URL = 'https://nft.api.cx.metamask.io';
++export const NFT_API_BASE_URL = '';
+ export const NFT_API_VERSION = '1';
+ export const NFT_API_TIMEOUT = 15000;
+ // Default origin for controllers

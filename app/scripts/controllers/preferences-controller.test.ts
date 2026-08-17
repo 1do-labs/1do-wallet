@@ -433,8 +433,6 @@ describe('preferences controller', () => {
         privacyMode: false,
         showFiatInTestnets: false,
         showTestNetworks: true,
-        smartTransactionsMigrationApplied: false,
-        smartTransactionsOptInStatus: true,
         useNativeCurrencyAsPrimaryCurrency: true,
         useSidePanelAsDefault: true,
         showDefaultAddress: true,
@@ -464,8 +462,6 @@ describe('preferences controller', () => {
         showExtensionInFullSizeView: false,
         showFiatInTestnets: false,
         showTestNetworks: true,
-        smartTransactionsMigrationApplied: false,
-        smartTransactionsOptInStatus: true,
         useNativeCurrencyAsPrimaryCurrency: true,
         useSidePanelAsDefault: true,
         showDefaultAddress: true,
@@ -638,8 +634,6 @@ describe('preferences controller', () => {
             "showNativeTokenAsMainBalance": false,
             "showTestNetworks": true,
             "skipDeepLinkInterstitial": false,
-            "smartTransactionsMigrationApplied": false,
-            "smartTransactionsOptInStatus": true,
             "tokenNetworkFilter": {},
             "tokenSortConfig": {
               "key": "tokenFiatAmount",
@@ -658,6 +652,7 @@ describe('preferences controller', () => {
           "usePhishDetect": true,
           "useTokenDetection": true,
           "useTransactionSimulations": true,
+          "useVerifiedContractDecoding": true,
         }
       `);
     });
@@ -705,8 +700,6 @@ describe('preferences controller', () => {
             "showNativeTokenAsMainBalance": false,
             "showTestNetworks": true,
             "skipDeepLinkInterstitial": false,
-            "smartTransactionsMigrationApplied": false,
-            "smartTransactionsOptInStatus": true,
             "tokenNetworkFilter": {},
             "tokenSortConfig": {
               "key": "tokenFiatAmount",
@@ -728,12 +721,14 @@ describe('preferences controller', () => {
           "useCurrencyRateCheck": true,
           "useExternalNameSources": true,
           "useExternalServices": false,
+          "useIndexedActivity": true,
           "useMultiAccountBalanceChecker": true,
           "useNftDetection": true,
           "usePhishDetect": true,
           "useSafeChainsListValidation": true,
           "useTokenDetection": true,
           "useTransactionSimulations": true,
+          "useVerifiedContractDecoding": true,
         }
       `);
     });
@@ -781,8 +776,6 @@ describe('preferences controller', () => {
             "showNativeTokenAsMainBalance": false,
             "showTestNetworks": true,
             "skipDeepLinkInterstitial": false,
-            "smartTransactionsMigrationApplied": false,
-            "smartTransactionsOptInStatus": true,
             "tokenNetworkFilter": {},
             "tokenSortConfig": {
               "key": "tokenFiatAmount",
@@ -805,12 +798,14 @@ describe('preferences controller', () => {
           "useCurrencyRateCheck": true,
           "useExternalNameSources": true,
           "useExternalServices": false,
+          "useIndexedActivity": true,
           "useMultiAccountBalanceChecker": true,
           "useNftDetection": true,
           "usePhishDetect": true,
           "useSafeChainsListValidation": true,
           "useTokenDetection": true,
           "useTransactionSimulations": true,
+          "useVerifiedContractDecoding": true,
         }
       `);
     });
@@ -858,8 +853,6 @@ describe('preferences controller', () => {
             "showNativeTokenAsMainBalance": false,
             "showTestNetworks": true,
             "skipDeepLinkInterstitial": false,
-            "smartTransactionsMigrationApplied": false,
-            "smartTransactionsOptInStatus": true,
             "tokenNetworkFilter": {},
             "tokenSortConfig": {
               "key": "tokenFiatAmount",
@@ -882,12 +875,14 @@ describe('preferences controller', () => {
           "useCurrencyRateCheck": true,
           "useExternalNameSources": true,
           "useExternalServices": false,
+          "useIndexedActivity": true,
           "useMultiAccountBalanceChecker": true,
           "useNftDetection": true,
           "usePhishDetect": true,
           "useSafeChainsListValidation": true,
           "useTokenDetection": true,
           "useTransactionSimulations": true,
+          "useVerifiedContractDecoding": true,
         }
       `);
     });

@@ -5,6 +5,7 @@ import { IconName } from '@metamask/design-system-react';
 import { matchPath } from 'react-router-dom';
 import {
   ACCOUNT_IDENTICON_ROUTE,
+  ACCOUNTS_SETTINGS_ROUTE,
   ABOUT_US_ROUTE,
   ASSETS_ROUTE,
   AUTO_LOCK_ROUTE,
@@ -13,6 +14,8 @@ import {
   DEVELOPER_TOOLS_ROUTE,
   MANAGE_WALLET_RECOVERY_ROUTE,
   LANGUAGE_ROUTE,
+  HARDWARE_WALLETS_SETTINGS_ROUTE,
+  NETWORKS_ROUTE,
   PREFERENCES_AND_DISPLAY_ROUTE,
   SECURITY_AND_PASSWORD_ROUTE,
   SECURITY_PASSWORD_CHANGE_V2_ROUTE,
@@ -20,6 +23,7 @@ import {
   TRANSACTIONS_ROUTE,
   THEME_ROUTE,
   PRIVACY_ROUTE,
+  RUNTIME_SETTINGS_ROUTE,
   THIRD_PARTY_APIS_ROUTE,
 } from '../../helpers/constants/routes';
 import { mmLazy } from '../../helpers/utils/mm-lazy';
@@ -45,20 +49,20 @@ export const SETTINGS_V2_ROOT_SECTIONS: readonly {
   paths: readonly string[];
 }[] = [
   {
-    titleKeys: ['general'],
-    paths: [PREFERENCES_AND_DISPLAY_ROUTE],
+    titleKeys: ['wallet'],
+    paths: [ACCOUNTS_SETTINGS_ROUTE, NETWORKS_ROUTE, RUNTIME_SETTINGS_ROUTE],
   },
   {
-    titleKeys: ['securityAndPrivacy'],
-    paths: [SECURITY_AND_PASSWORD_ROUTE, PRIVACY_ROUTE],
+    titleKeys: ['dataAndPrivacy'],
+    paths: [ASSETS_ROUTE, PRIVACY_ROUTE],
   },
   {
-    titleKeys: ['transactionsAndAssets'],
-    paths: [ASSETS_ROUTE, TRANSACTIONS_ROUTE],
+    titleKeys: ['security'],
+    paths: [SECURITY_AND_PASSWORD_ROUTE, HARDWARE_WALLETS_SETTINGS_ROUTE],
   },
   {
     titleKeys: ['moreCapital'],
-    paths: [DEVELOPER_OPTIONS_ROUTE, DEVELOPER_TOOLS_ROUTE, ABOUT_US_ROUTE],
+    paths: [ABOUT_US_ROUTE, DEVELOPER_OPTIONS_ROUTE],
   },
 ] as const;
 
@@ -76,13 +80,35 @@ export const SETTINGS_V2_ROUTES: Record<string, SettingsV2RouteMeta> = {
     labelKey: 'settings',
   },
 
+  [ACCOUNTS_SETTINGS_ROUTE]: {
+    labelKey: 'accounts',
+    parentPath: SETTINGS_V2_ROUTE,
+    component: mmLazy(() => import('./accounts-tab/index.ts')),
+    isTab: true,
+    iconName: IconName.Customize,
+  },
+
+  [NETWORKS_ROUTE]: {
+    labelKey: 'networks',
+    parentPath: SETTINGS_V2_ROUTE,
+    component: mmLazy(() => import('./networks-tab/index.ts')),
+    isTab: true,
+    iconName: IconName.Global,
+  },
+
+  [RUNTIME_SETTINGS_ROUTE]: {
+    labelKey: 'runtime',
+    parentPath: SETTINGS_V2_ROUTE,
+    component: mmLazy(() => import('./runtime-tab/index.ts')),
+    isTab: true,
+    iconName: IconName.Sparkle,
+  },
+
   // --- Preferences and Display tab ---
   [PREFERENCES_AND_DISPLAY_ROUTE]: {
     labelKey: 'preferencesAndDisplay',
     parentPath: SETTINGS_V2_ROUTE,
     component: mmLazy(() => import('./preferences-and-display-tab/index.ts')),
-    isTab: true,
-    iconName: IconName.Customize,
   },
   [THEME_ROUTE]: {
     labelKey: 'theme',
@@ -110,7 +136,7 @@ export const SETTINGS_V2_ROUTES: Record<string, SettingsV2RouteMeta> = {
   // --- Notifications tab ---
   // --- Security and Password tab ---
   [SECURITY_AND_PASSWORD_ROUTE]: {
-    labelKey: 'securityAndPassword',
+    labelKey: 'securityAndBackup',
     parentPath: SETTINGS_V2_ROUTE,
     component: mmLazy(() => import('./security-and-password-tab/index.ts')),
     isTab: true,
@@ -143,7 +169,7 @@ export const SETTINGS_V2_ROUTES: Record<string, SettingsV2RouteMeta> = {
 
   // --- Privacy tab ---
   [PRIVACY_ROUTE]: {
-    labelKey: 'privacy',
+    labelKey: 'privacyAndRemoteServices',
     parentPath: SETTINGS_V2_ROUTE,
     component: mmLazy(() => import('./privacy-tab/index.ts')),
     isTab: true,
@@ -159,7 +185,7 @@ export const SETTINGS_V2_ROUTES: Record<string, SettingsV2RouteMeta> = {
 
   // --- Assets tab ---
   [ASSETS_ROUTE]: {
-    labelKey: 'assets',
+    labelKey: 'assetsAndActivity',
     parentPath: SETTINGS_V2_ROUTE,
     component: mmLazy(() => import('./assets-tab/index.ts')),
     isTab: true,
@@ -176,8 +202,6 @@ export const SETTINGS_V2_ROUTES: Record<string, SettingsV2RouteMeta> = {
     labelKey: 'transactions',
     parentPath: SETTINGS_V2_ROUTE,
     component: mmLazy(() => import('./transactions-tab/index.ts')),
-    isTab: true,
-    iconName: IconName.SwapVertical,
   },
 
   // --- Debug (internal) tab ---
@@ -193,18 +217,24 @@ export const SETTINGS_V2_ROUTES: Record<string, SettingsV2RouteMeta> = {
       }
     : {}),
 
-  // --- Developer Tools tab ---
+  [HARDWARE_WALLETS_SETTINGS_ROUTE]: {
+    labelKey: 'hardwareWallets',
+    parentPath: SETTINGS_V2_ROUTE,
+    component: mmLazy(() => import('./hardware-wallets-tab/index.ts')),
+    isTab: true,
+    iconName: IconName.SecurityKey,
+  },
+
+  // --- Developer Tools (internal route, not a public tab) ---
   [DEVELOPER_TOOLS_ROUTE]: {
     labelKey: 'developerTools',
     parentPath: SETTINGS_V2_ROUTE,
     component: mmLazy(() => import('./developer-tools-tab/index.ts')),
-    isTab: true,
-    iconName: IconName.Code,
   },
 
   // --- About tab ---
   [ABOUT_US_ROUTE]: {
-    labelKey: 'about',
+    labelKey: 'about1Do',
     parentPath: SETTINGS_V2_ROUTE,
     component: mmLazy(() => import('./about-tab/index.ts')),
     isTab: true,

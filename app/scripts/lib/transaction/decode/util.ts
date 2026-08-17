@@ -18,11 +18,15 @@ export async function decodeTransactionData({
   contractAddress,
   chainId,
   provider,
+  useVerifiedContractDecoding = true,
+  use4ByteResolution = true,
 }: {
   transactionData: Hex;
   contractAddress: Hex;
   chainId: Hex;
   provider: Provider;
+  useVerifiedContractDecoding?: boolean;
+  use4ByteResolution?: boolean;
 }): Promise<DecodedTransactionDataResponse | undefined> {
   log('Decoding transaction data', {
     transactionData,
@@ -45,7 +49,13 @@ export async function decodeTransactionData({
     };
   }
 
-  const proxyAddress = await getContractProxyAddress(contractAddress, provider);
+  if (!useVerifiedContractDecoding && !use4ByteResolution) {
+    return undefined;
+  }
+
+  const proxyAddress = useVerifiedContractDecoding
+    ? await getContractProxyAddress(contractAddress, provider)
+    : undefined;
 
   if (proxyAddress) {
     log('Retrieved proxy implementation address', proxyAddress);
@@ -53,13 +63,13 @@ export async function decodeTransactionData({
 
   const address = proxyAddress ?? contractAddress;
 
-  const sourcifyData = decodeTransactionDataWithSourcify(
-    transactionData,
-    address,
-    chainId,
-  );
+  const sourcifyData = useVerifiedContractDecoding
+    ? decodeTransactionDataWithSourcify(transactionData, address, chainId)
+    : Promise.resolve(undefined);
 
-  const fourByteData = decodeTransactionDataWithFourByte(transactionData);
+  const fourByteData = use4ByteResolution
+    ? decodeTransactionDataWithFourByte(transactionData)
+    : Promise.resolve(undefined);
 
   const [sourcifyResult, fourByteResult] = await Promise.allSettled([
     sourcifyData,

@@ -172,9 +172,11 @@ if (inTest || process.env.METAMASK_DEBUG) {
   );
 }
 
-lazyListener.once('runtime', 'onInstalled').then((details) => {
-  handleOnInstalled(details);
-});
+// Register through the lazy listener so the bootstrap listener is replaced by
+// application code immediately. Using `once()` here leaves the bootstrap
+// tracker active when an existing installation never emits onInstalled, which
+// produces a false memory-leak warning after 20 seconds.
+lazyListener.addListener('runtime', 'onInstalled', handleOnInstalled);
 
 /**
  * This deferred Promise is used to track whether initialization has finished.
@@ -255,6 +257,10 @@ const sendReadyMessageToTabs = async () => {
     })
     .catch(() => {
       checkForLastErrorAndLog();
+      // Chrome may reject this query while the service worker is starting or
+      // shutting down. Keep initialization going without attempting to
+      // iterate an undefined result.
+      return [];
     });
 
   /** @todo we should only sendMessage to dapp tabs, not all tabs. */
@@ -1337,14 +1343,6 @@ export function setupController(
   //
   updateBadge();
 
-  controller.controllerMessenger.subscribe(
-    METAMASK_CONTROLLER_EVENTS.DECRYPT_MESSAGE_MANAGER_UPDATE_BADGE,
-    updateBadge,
-  );
-  controller.controllerMessenger.subscribe(
-    METAMASK_CONTROLLER_EVENTS.ENCRYPTION_PUBLIC_KEY_MANAGER_UPDATE_BADGE,
-    updateBadge,
-  );
   controller.signatureController.hub.on(
     METAMASK_CONTROLLER_EVENTS.UPDATE_BADGE,
     updateBadge,
@@ -1509,9 +1507,6 @@ export function setupController(
     controller.signatureController.rejectUnapproved(
       REJECT_NOTIFICATION_CLOSE_SIG,
     );
-    controller.decryptMessageController.rejectUnapproved();
-    controller.encryptionPublicKeyController.rejectUnapproved();
-
     controller.rejectAllPendingApprovals();
   }
 }
@@ -1558,9 +1553,9 @@ async function triggerUi() {
 /**
  * Handles the onInstalled event.
  *
- * @param {[chrome.runtime.InstalledDetails]} params - Array containing a single installation details object.
+ * @param {chrome.runtime.InstalledDetails} details - Installation details provided by Chrome.
  */
-async function handleOnInstalled([details]) {
+async function handleOnInstalled(details) {
   if (details.reason === 'install') {
     await onInstall();
   } else if (details.reason === 'update') {
@@ -1865,10 +1860,18 @@ async function initBackground(backup) {
     if (process.env.IN_TEST) {
       // Send message to offscreen document
       if (browser.offscreen) {
-        browser.runtime.sendMessage({
-          target: OffscreenCommunicationTarget.extension,
-          event: OffscreenCommunicationEvents.metamaskBackgroundReady,
-        });
+        try {
+          const result = browser.runtime.sendMessage({
+            target: OffscreenCommunicationTarget.extension,
+            event: OffscreenCommunicationEvents.metamaskBackgroundReady,
+          });
+          await Promise.resolve(result).catch(() => {
+            // The offscreen document may have closed or been recreated while
+            // the background was initializing. This notification is best-effort.
+          });
+        } catch {
+          // Chrome may throw synchronously while the runtime is restarting.
+        }
       } else {
         window.document?.documentElement?.classList.add('controller-loaded');
       }

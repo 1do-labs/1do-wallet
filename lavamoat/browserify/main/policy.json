@@ -697,6 +697,7 @@
     "@metamask/address-book-controller": {
       "packages": {
         "@metamask/base-controller": true,
+        "@metamask/controller-utils": true,
         "@metamask/address-book-controller>@metamask/controller-utils": true
       }
     },
@@ -839,6 +840,7 @@
         "setTimeout": true
       },
       "packages": {
+        "@ethersproject/abi": true,
         "@metamask/controller-utils>@metamask/ethjs-unit": true,
         "@metamask/utils": true,
         "@metamask/controller-utils>@spruceid/siwe-parser": true,
@@ -939,6 +941,7 @@
         "setTimeout": true
       },
       "packages": {
+        "@metamask/controller-utils": true,
         "@metamask/core-backend>@metamask/controller-utils": true,
         "@metamask/utils": true,
         "@metamask/core-backend>@tanstack/query-core": true,
@@ -1287,20 +1290,12 @@
         "setInterval": true
       },
       "packages": {
+        "@metamask/controller-utils": true,
         "@metamask/gas-fee-controller>@metamask/controller-utils": true,
         "@metamask/controller-utils>@metamask/eth-query": true,
         "@metamask/polling-controller": true,
         "ethereumjs-util>bn.js": true,
         "uuid": true
-      }
-    },
-    "@metamask/geolocation-controller": {
-      "globals": {
-        "fetch": true
-      },
-      "packages": {
-        "@metamask/base-controller": true,
-        "@metamask/controller-utils": true
       }
     },
     "@metamask/jazzicon": {
@@ -1515,16 +1510,6 @@
         "uuid": true
       }
     },
-    "@metamask/message-manager": {
-      "packages": {
-        "@metamask/base-controller": true,
-        "@metamask/controller-utils": true,
-        "@metamask/utils": true,
-        "browserify>buffer": true,
-        "webpack>events": true,
-        "uuid": true
-      }
-    },
     "@metamask/messenger": {
       "globals": {
         "console.error": true
@@ -1684,6 +1669,7 @@
         "console.error": true
       },
       "packages": {
+        "@metamask/controller-utils": true,
         "@metamask/base-controller": true,
         "@metamask/assets-controller>@metamask/snaps-utils>@metamask/permission-controller>@metamask/controller-utils": true,
         "@metamask/json-rpc-engine": true,
@@ -3615,14 +3601,6 @@
       "packages": {
         "browserify>buffer": true,
         "@metamask/providers>extension-port-stream>readable-stream": true
-      }
-    },
-    "fast-json-patch": {
-      "globals": {
-        "addEventListener": true,
-        "clearTimeout": true,
-        "removeEventListener": true,
-        "setTimeout": true
       }
     },
     "react-focus-lock>focus-lock": {

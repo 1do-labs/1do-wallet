@@ -43,8 +43,6 @@ export type MessengerClientsToInitialize =
   | 'MultichainAssetsRatesController'
   | 'MultichainBalancesController'
   | 'MultichainNetworkController'
-  | 'GeolocationApiService'
-  | 'GeolocationController'
   | 'TransactionController';
 
 type InitFunction<Name extends MessengerClientsToInitialize> =

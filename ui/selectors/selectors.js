@@ -1583,6 +1583,14 @@ export function getUseExternalServices(state) {
   return state.metamask.useExternalServices;
 }
 
+export function getUseIndexedActivity(state) {
+  return state.metamask.useIndexedActivity;
+}
+
+export function getUseVerifiedContractDecoding(state) {
+  return state.metamask.useVerifiedContractDecoding;
+}
+
 export function getUSDConversionRate(state) {
   return getCurrencyRateControllerCurrencyRates(state)[
     getProviderConfig(state).ticker
@@ -1886,22 +1894,12 @@ export function getShowRecoveryPhraseReminder(state) {
 export const getNumberOfAllUnapprovedTransactionsAndMessages = createSelector(
   [
     getUnapprovedTransactions,
-    (state) => state.metamask.unapprovedDecryptMsgs,
     (state) => state.metamask.unapprovedPersonalMsgs,
-    (state) => state.metamask.unapprovedEncryptionPublicKeyMsgs,
     (state) => state.metamask.unapprovedTypedMessages,
   ],
-  (
-    unapprovedTxs,
-    unapprovedDecryptMsgs,
-    unapprovedPersonalMsgs,
-    unapprovedEncryptionPublicKeyMsgs,
-    unapprovedTypedMessages,
-  ) =>
+  (unapprovedTxs, unapprovedPersonalMsgs, unapprovedTypedMessages) =>
     Object.keys(unapprovedTxs ?? {}).length +
-    Object.keys(unapprovedDecryptMsgs ?? {}).length +
     Object.keys(unapprovedPersonalMsgs ?? {}).length +
-    Object.keys(unapprovedEncryptionPublicKeyMsgs ?? {}).length +
     Object.keys(unapprovedTypedMessages ?? {}).length,
 );
 

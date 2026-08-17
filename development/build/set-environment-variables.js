@@ -112,7 +112,10 @@ function getBuildAppId({ buildType }) {
 function getAlchemyApiKey({ buildType, variables, environment, testing }) {
   const EMPTY_API_KEY = '';
   if (testing) {
-    return EMPTY_API_KEY;
+    // Test builds are also used as locally loaded development wallets. Reuse
+    // the configured key when available so public Alchemy RPC endpoints do not
+    // become `.../v2/` and fail every network connection.
+    return variables.getMaybe('ALCHEMY_API_KEY') || EMPTY_API_KEY;
   } else if (environment !== ENVIRONMENT.PRODUCTION) {
     // Skip validation because this is unset on PRs from forks.
     // For forks, return empty API key if we don't have one.

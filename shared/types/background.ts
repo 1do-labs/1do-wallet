@@ -39,8 +39,6 @@ import type { AccountOrderControllerState } from '../../app/scripts/controllers/
 import type { PreferencesControllerState } from '../../app/scripts/controllers/preferences-controller';
 import type { AppStateControllerState } from '../../app/scripts/controllers/app-state-controller';
 import type { AlertControllerState } from '../../app/scripts/controllers/alert-controller';
-import type { EncryptionPublicKeyControllerState } from '../../app/scripts/controllers/encryption-public-key';
-import type { DecryptMessageControllerState } from '../../app/scripts/controllers/decrypt-message';
 import type { OnboardingControllerState } from '../../app/scripts/controllers/onboarding';
 import type { AppMetadataControllerState } from '../../app/scripts/controllers/app-metadata';
 import type { IsEquivalent } from './type-level-utils';
@@ -109,10 +107,6 @@ export type ControllerStatePropertiesEnumerated = {
   sidePanelGasPollTokens: AppStateControllerState['sidePanelGasPollTokens'];
   currentCurrency: CurrencyRateState['currentCurrency'];
   currencyRates: CurrencyRateState['currencyRates'];
-  unapprovedDecryptMsgs: DecryptMessageControllerState['unapprovedDecryptMsgs'];
-  unapprovedDecryptMsgCount: DecryptMessageControllerState['unapprovedDecryptMsgCount'];
-  unapprovedEncryptionPublicKeyMsgs: EncryptionPublicKeyControllerState['unapprovedEncryptionPublicKeyMsgs'];
-  unapprovedEncryptionPublicKeyMsgCount: EncryptionPublicKeyControllerState['unapprovedEncryptionPublicKeyMsgCount'];
   ensResolutionsByAddress: EnsControllerState['ensResolutionsByAddress'];
   ensEntries: EnsControllerState['ensEntries'];
   gasFeeEstimatesByChainId?: GasFeeState['gasFeeEstimatesByChainId'];
@@ -180,6 +174,8 @@ export type ControllerStatePropertiesEnumerated = {
   ledgerTransportType: PreferencesControllerState['ledgerTransportType'];
   theme: PreferencesControllerState['theme'];
   useExternalNameSources: PreferencesControllerState['useExternalNameSources'];
+  useIndexedActivity: PreferencesControllerState['useIndexedActivity'];
+  useVerifiedContractDecoding: PreferencesControllerState['useVerifiedContractDecoding'];
   enableMV3TimestampSave: PreferencesControllerState['enableMV3TimestampSave'];
   useExternalServices: PreferencesControllerState['useExternalServices'];
   textDirection?: PreferencesControllerState['textDirection'];
@@ -213,8 +209,6 @@ type ControllerStateTypesMerged = AccountsControllerState &
   ApprovalControllerState &
   AppStateControllerState &
   CurrencyRateState &
-  DecryptMessageControllerState &
-  EncryptionPublicKeyControllerState &
   EnsControllerState & {
     // This is necessary due to the nested unions and intersections in the `GasFeeState` type definition
     [P in keyof GasFeeState]: GasFeeState[P];

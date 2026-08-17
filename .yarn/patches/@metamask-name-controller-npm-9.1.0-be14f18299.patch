@@ -1,0 +1,26 @@
+diff --git a/dist/providers/token.cjs b/dist/providers/token.cjs
+index b2c4096a23587273f6e3dc78903c6d64d7b6ebe4..7cca411aed5f4b8f74d59fcb980d749529506b88 100644
+--- a/dist/providers/token.cjs
++++ b/dist/providers/token.cjs
+@@ -42,7 +42,7 @@ class TokenNameProvider {
+             };
+         }
+         const { value, variation: chainId } = request;
+-        const url = `https://token.api.cx.metamask.io/token/${chainId}?address=${value}`;
++        const url = '';
+         log('Sending request', url);
+         try {
+             const responseData = await (0, util_1.handleFetch)(url);
+diff --git a/dist/providers/token.mjs b/dist/providers/token.mjs
+index 3dc76697667537429c7cc34cc503591254e8266e..5421748b6ec6b220b58b6129119f4fe9a4d6200c 100644
+--- a/dist/providers/token.mjs
++++ b/dist/providers/token.mjs
+@@ -39,7 +39,7 @@ export class TokenNameProvider {
+             };
+         }
+         const { value, variation: chainId } = request;
+-        const url = `https://token.api.cx.metamask.io/token/${chainId}?address=${value}`;
++        const url = '';
+         log('Sending request', url);
+         try {
+             const responseData = await handleFetch(url);

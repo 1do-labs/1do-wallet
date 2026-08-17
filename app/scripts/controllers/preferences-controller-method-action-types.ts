@@ -110,6 +110,16 @@ export type PreferencesControllerSetUseExternalNameSourcesAction = {
   handler: PreferencesController['setUseExternalNameSources'];
 };
 
+export type PreferencesControllerSetUseIndexedActivityAction = {
+  type: `PreferencesController:setUseIndexedActivity`;
+  handler: PreferencesController['setUseIndexedActivity'];
+};
+
+export type PreferencesControllerSetUseVerifiedContractDecodingAction = {
+  type: `PreferencesController:setUseVerifiedContractDecoding`;
+  handler: PreferencesController['setUseVerifiedContractDecoding'];
+};
+
 /**
  * Setter for the `useTransactionSimulations` property
  *
@@ -355,6 +365,8 @@ export type PreferencesControllerMethodActions =
   | PreferencesControllerSetUseCurrencyRateCheckAction
   | PreferencesControllerSetOpenSeaEnabledAction
   | PreferencesControllerSetUseExternalNameSourcesAction
+  | PreferencesControllerSetUseIndexedActivityAction
+  | PreferencesControllerSetUseVerifiedContractDecodingAction
   | PreferencesControllerSetUseTransactionSimulationsAction
   | PreferencesControllerSetAdvancedGasFeeAction
   | PreferencesControllerSetThemeAction

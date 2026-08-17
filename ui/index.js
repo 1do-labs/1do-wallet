@@ -208,10 +208,7 @@ export async function setupInitialStore(metamaskState, activeTab) {
   const unapprovedTxsAll = txHelper(
     unapprovedTxs,
     metamaskState.unapprovedPersonalMsgs,
-    metamaskState.unapprovedDecryptMsgs,
-    metamaskState.unapprovedEncryptionPublicKeyMsgs,
     metamaskState.unapprovedTypedMessages,
-    metamaskState.networkId,
     getCurrentChainId({ metamask: metamaskState }),
   );
   const numberOfUnapprovedTx = unapprovedTxsAll.length;

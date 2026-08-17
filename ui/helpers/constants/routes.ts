@@ -15,6 +15,9 @@ export const SETTINGS_ROUTE = '/settings';
 export const LEGACY_SETTINGS_V2_ROUTE = '/settings-v2';
 export const SETTINGS_V2_ROUTE = SETTINGS_ROUTE;
 export const ASSETS_ROUTE = '/settings/assets';
+export const ACCOUNTS_SETTINGS_ROUTE = '/settings/accounts';
+export const RUNTIME_SETTINGS_ROUTE = '/settings/runtime';
+export const HARDWARE_WALLETS_SETTINGS_ROUTE = '/settings/hardware-wallets';
 export const CURRENCY_ROUTE = '/settings/assets/currency';
 export const TRANSACTIONS_ROUTE = '/settings/transactions';
 export const PREFERENCES_AND_DISPLAY_ROUTE =
@@ -85,9 +88,6 @@ export const CONNECTED_ACCOUNTS_ROUTE = '/connected/accounts';
 export const CONFIRM_TRANSACTION_ROUTE = '/confirm-transaction';
 export const CONFIRMATION_V_NEXT_ROUTE = '/confirmation';
 export const SIGNATURE_REQUEST_PATH = '/signature-request';
-export const DECRYPT_MESSAGE_REQUEST_PATH = '/decrypt-message-request';
-export const ENCRYPTION_PUBLIC_KEY_REQUEST_PATH =
-  '/encryption-public-key-request';
 export const ONBOARDING_ROUTE = '/onboarding';
 export const ONBOARDING_REVEAL_SRP_ROUTE = '/onboarding/reveal-recovery-phrase';
 export const ONBOARDING_REVIEW_SRP_ROUTE = '/onboarding/review-recovery-phrase';
@@ -369,16 +369,6 @@ export const ROUTES = [
   {
     path: `${CONFIRM_TRANSACTION_ROUTE}/:id${SIGNATURE_REQUEST_PATH}`,
     label: 'Signature Request Page',
-    trackInAnalytics: true,
-  },
-  {
-    path: `${CONFIRM_TRANSACTION_ROUTE}/:id${DECRYPT_MESSAGE_REQUEST_PATH}`,
-    label: 'Decrypt Message Request Page',
-    trackInAnalytics: true,
-  },
-  {
-    path: `${CONFIRM_TRANSACTION_ROUTE}/:id${ENCRYPTION_PUBLIC_KEY_REQUEST_PATH}`,
-    label: 'Encryption Public Key Request Page',
     trackInAnalytics: true,
   },
   {

@@ -1,4 +1,8 @@
 import { Messenger } from '@metamask/messenger';
+import type {
+  ControllerGetStateAction,
+  ControllerStateChangeEvent,
+} from '@metamask/base-controller';
 import {
   NetworkControllerFindNetworkClientIdByChainIdAction,
   NetworkControllerGetNetworkClientByIdAction,
@@ -11,6 +15,7 @@ import { ApprovalControllerAddRequestAction } from '@metamask/approval-controlle
 import { RootMessenger } from '../../../lib/messenger';
 
 type Actions =
+  | ControllerGetStateAction<'NftDetectionController', Record<string, never>>
   | ApprovalControllerAddRequestAction
   | NetworkControllerGetStateAction
   | AccountsControllerGetSelectedAccountAction
@@ -18,6 +23,7 @@ type Actions =
   | NetworkControllerFindNetworkClientIdByChainIdAction;
 
 type Events =
+  | ControllerStateChangeEvent<'NftDetectionController', Record<string, never>>
   | PreferencesControllerStateChangeEvent
   | NetworkControllerStateChangeEvent;
 

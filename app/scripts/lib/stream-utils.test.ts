@@ -3,9 +3,34 @@ import OurReadableStream from 'readable-stream';
 import ReadableStream2 from 'readable-stream-2';
 import ReadableStream3 from 'readable-stream-3';
 import ObjectMultiplex from '@metamask/object-multiplex';
-import { isStreamWritable } from './stream-utils';
+import { isStreamWritable, setupMultiplex } from './stream-utils';
 
 describe('Stream Utils', () => {
+  describe('setupMultiplex', () => {
+    it('supports the expected lifecycle listeners for multiple substreams', () => {
+      const connectionStream = new OurReadableStream.Duplex({
+        objectMode: true,
+        read() {
+          return undefined;
+        },
+        write(_chunk, _encoding, callback) {
+          callback();
+        },
+      });
+
+      const mux = setupMultiplex(connectionStream);
+      mux.createStream('controller');
+      mux.createStream('provider');
+      mux.createStream('patch-store');
+
+      expect(mux.getMaxListeners()).toBe(25);
+      expect(mux.listenerCount('close')).toBeGreaterThan(10);
+      expect(mux.listenerCount('close')).toBeLessThanOrEqual(
+        mux.getMaxListeners(),
+      );
+    });
+  });
+
   describe('isStreamWritable', () => {
     describe('Using @metamask/object-multiplex', () => {
       let stream: ObjectMultiplex;

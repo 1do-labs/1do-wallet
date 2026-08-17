@@ -3,12 +3,17 @@ import { useQuery } from '@tanstack/react-query';
 import { CaipChainId, Hex, parseCaipAssetType } from '@metamask/utils';
 // @ts-expect-error suppress CommonJS vs ECMAScript error
 import { Point } from 'chart.js';
-import { GC_TIMES, STALE_TIMES } from '@metamask/core-backend';
 import { fromIso8601DurationToPriceApiTimePeriod } from '../util';
 import { toAssetId } from '../../../../shared/lib/asset-utils';
 // eslint-disable-next-line import-x/no-restricted-paths
 import { AlchemyTokenPricesService } from '../../../../app/scripts/lib/alchemy-token-prices-service';
 import { convertCaipToHexChainId } from '../../../../shared/lib/network.utils';
+
+// Keep the query cache policy local to 1Do. The previous implementation
+// imported these constants from MetaMask's Core Backend package, even though
+// price requests are now sent through AlchemyTokenPricesService.
+const PRICE_STALE_TIME_MS = 30_000;
+const PRICE_GC_TIME_MS = 300_000;
 
 export type HistoricalPrices = {
   /** The prices data points. Is an empty array if the prices could not be loaded. */
@@ -186,8 +191,8 @@ export const useHistoricalPrices = ({
     enabled: Boolean(v3Params),
     keepPreviousData: true,
     retry: false,
-    staleTime: STALE_TIMES.PRICES,
-    gcTime: GC_TIMES.DEFAULT,
+    staleTime: PRICE_STALE_TIME_MS,
+    gcTime: PRICE_GC_TIME_MS,
     select: transformPricesToPoints,
   });
 

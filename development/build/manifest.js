@@ -96,8 +96,13 @@ function createManifestTasks({
       manifest.permissions = [
         ...new Set([
           ...manifest.permissions,
-          'http://localhost/*',
           'tabs', // test builds need tabs permission for switchToWindowWithTitle
+        ]),
+      ];
+      manifest.host_permissions = [
+        ...new Set([
+          ...(manifest.host_permissions ?? []),
+          'http://localhost/*',
         ]),
       ];
       loadManifestKey(manifest);
@@ -111,8 +116,13 @@ function createManifestTasks({
       manifest.permissions = [
         ...new Set([
           ...manifest.permissions,
-          'http://localhost/*',
           'tabs', // test builds need tabs permission for switchToWindowWithTitle
+        ]),
+      ];
+      manifest.host_permissions = [
+        ...new Set([
+          ...(manifest.host_permissions ?? []),
+          'http://localhost/*',
         ]),
       ];
       loadManifestKey(manifest);
@@ -171,7 +181,10 @@ function createManifestTasks({
           );
           const manifest = await readJson(manifestPath);
           transformFn(manifest);
-          if (buildId) {
+          // Chrome rejects unknown top-level manifest keys. Keep the build ID
+          // for Firefox's XPI cache helper, but never emit it in Chrome MV3
+          // manifests where it produces an "Unrecognized manifest key" error.
+          if (buildId && platform === 'firefox') {
             manifest.build_id = buildId;
           }
 

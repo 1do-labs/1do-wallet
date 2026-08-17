@@ -633,9 +633,12 @@ export class ManifestPlugin<Z extends boolean> {
       }
 
       // if we edit the real `manifest` we change the compilation hash
-      const manifestForEmit = this.options.setBuildId
-        ? { ...manifest, build_id: compilation.fullHash }
-        : manifest;
+      // Chrome rejects unknown top-level manifest keys. The build ID is only
+      // needed by the Firefox XPI cache helper, so omit it from Chrome MV3.
+      const manifestForEmit =
+        this.options.setBuildId && browser === 'firefox'
+          ? { ...manifest, build_id: compilation.fullHash }
+          : manifest;
 
       // cache the resolved manifests as RawSource
       this.manifestSources.set(

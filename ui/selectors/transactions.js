@@ -151,10 +151,6 @@ export const incomingTxListSelector = createDeepEqualSelector(
 
 export const unapprovedPersonalMsgsSelector = (state) =>
   state.metamask.unapprovedPersonalMsgs;
-export const unapprovedDecryptMsgsSelector = (state) =>
-  state.metamask.unapprovedDecryptMsgs;
-export const unapprovedEncryptionPublicKeyMsgsSelector = (state) =>
-  state.metamask.unapprovedEncryptionPublicKeyMsgs;
 export const unapprovedTypedMessagesSelector = (state) =>
   state.metamask.unapprovedTypedMessages;
 
@@ -184,25 +180,11 @@ export const selectedAddressTxListSelector = createSelector(
 
 export const unapprovedMessagesSelector = createSelector(
   unapprovedPersonalMsgsSelector,
-  unapprovedDecryptMsgsSelector,
-  unapprovedEncryptionPublicKeyMsgsSelector,
   unapprovedTypedMessagesSelector,
   getCurrentChainId,
-  (
-    unapprovedPersonalMsgs = {},
-    unapprovedDecryptMsgs = {},
-    unapprovedEncryptionPublicKeyMsgs = {},
-    unapprovedTypedMessages = {},
-    chainId,
-  ) =>
-    txHelper(
-      {},
-      unapprovedPersonalMsgs,
-      unapprovedDecryptMsgs,
-      unapprovedEncryptionPublicKeyMsgs,
-      unapprovedTypedMessages,
-      chainId,
-    ) || [],
+  (unapprovedPersonalMsgs = {}, unapprovedTypedMessages = {}, chainId) =>
+    txHelper({}, unapprovedPersonalMsgs, unapprovedTypedMessages, chainId) ||
+    [],
 );
 
 export const transactionSubSelectorAllChains = createSelector(

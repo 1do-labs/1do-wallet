@@ -1,4 +1,3 @@
-import { TokenListController } from '@metamask/assets-controllers';
 import {
   NetworkControllerGetNetworkClientByIdAction,
   NetworkControllerGetStateAction,
@@ -10,6 +9,7 @@ import {
   MockAnyNamespace,
 } from '@metamask/messenger';
 import { PreferencesControllerGetStateAction } from '../controllers/preferences-controller';
+import { AlchemyTokenListController } from '../controllers/alchemy-token-list-controller';
 import { MessengerClientInitRequest } from './types';
 import { buildControllerInitRequestMock } from './test/utils';
 import {
@@ -19,16 +19,6 @@ import {
   TokenListControllerMessenger,
 } from './messengers';
 import { TokenListControllerInit } from './token-list-controller-init';
-
-jest.mock('@metamask/assets-controllers', () => {
-  return {
-    TokenListController: jest.fn().mockImplementation(function (this: {
-      initialize: jest.Mock;
-    }) {
-      this.initialize = jest.fn().mockResolvedValue(undefined);
-    }),
-  };
-});
 
 function getInitRequestMock(): jest.Mocked<
   MessengerClientInitRequest<
@@ -87,17 +77,17 @@ function getInitRequestMock(): jest.Mocked<
 describe('TokenListControllerInit', () => {
   it('initializes the controller', () => {
     const { messengerClient } = TokenListControllerInit(getInitRequestMock());
-    expect(messengerClient).toBeInstanceOf(TokenListController);
+    expect(messengerClient).toBeInstanceOf(AlchemyTokenListController);
   });
 
-  it('passes the proper arguments to the controller', () => {
-    TokenListControllerInit(getInitRequestMock());
+  it('hydrates the persisted token-list state', () => {
+    const request = getInitRequestMock();
+    request.persistedState.TokenListController = {
+      tokensChainsCache: {},
+    };
 
-    const controllerMock = jest.mocked(TokenListController);
-    expect(controllerMock).toHaveBeenCalledWith({
-      messenger: expect.any(Object),
-      state: undefined,
-      chainId: '0x1',
-    });
+    const { messengerClient } = TokenListControllerInit(request);
+
+    expect(messengerClient.state).toStrictEqual({ tokensChainsCache: {} });
   });
 });

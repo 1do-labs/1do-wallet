@@ -49,7 +49,6 @@
   "default_locale": "en",
   "description": "__MSG_appDescription__",
   "host_permissions": [
-    "http://localhost:8545/",
     "http://*/*",
     "https://*/*"
   ],

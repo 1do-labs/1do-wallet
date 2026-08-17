@@ -236,8 +236,6 @@ import {
   TokenRatesControllerInit,
 } from './messenger-client-init/assets';
 import { TransactionControllerInit } from './messenger-client-init/confirmations/transaction-controller-init';
-import { GeolocationApiServiceInit } from './messenger-client-init/geolocation-api-service-init';
-import { GeolocationControllerInit } from './messenger-client-init/geolocation-controller-init';
 import { initMessengerClients } from './messenger-client-init/utils';
 import { openUpdateTabAndReload } from './lib/open-update-tab-and-reload';
 import { AccountTreeControllerInit } from './messenger-client-init/accounts/account-tree-controller-init';
@@ -274,10 +272,6 @@ import { AppMetadataControllerInit } from './messenger-client-init/app-metadata-
 import { StorageServiceInit } from './messenger-client-init/storage-service-init';
 import { ApprovalControllerInit } from './messenger-client-init/confirmations/approval-controller-init';
 import { AddressBookControllerInit } from './messenger-client-init/confirmations/address-book-controller-init';
-import { DecryptMessageManagerInit } from './messenger-client-init/confirmations/decrypt-message-manager-init';
-import { DecryptMessageControllerInit } from './messenger-client-init/confirmations/decrypt-message-controller-init';
-import { EncryptionPublicKeyControllerInit } from './messenger-client-init/confirmations/encryption-public-key-controller-init';
-import { EncryptionPublicKeyManagerInit } from './messenger-client-init/confirmations/encryption-public-key-message-manager-init';
 import { SignatureControllerInit } from './messenger-client-init/confirmations/signature-controller-init';
 import { getRootMessenger } from './lib/messenger';
 import { MessengerSubscriptions } from './lib/MessengerSubscriptions';
@@ -288,9 +282,6 @@ export const METAMASK_CONTROLLER_EVENTS = {
   // Fired after state changes that impact the extension badge (unapproved msg count)
   // The process of updating the badge happens in app/scripts/background.js.
   UPDATE_BADGE: 'updateBadge',
-  DECRYPT_MESSAGE_MANAGER_UPDATE_BADGE: 'DecryptMessageManager:updateBadge',
-  ENCRYPTION_PUBLIC_KEY_MANAGER_UPDATE_BADGE:
-    'EncryptionPublicKeyManager:updateBadge',
   // TODO: Add this and similar enums to the `controllers` repo and export them
   APPROVAL_STATE_CHANGE: 'ApprovalController:stateChange',
   APP_STATE_UNLOCK_CHANGE: 'AppStateController:unlockChange',
@@ -423,10 +414,6 @@ export default class MetamaskController extends EventEmitter {
       AccountsController: AccountsControllerInit,
       AddressBookController: AddressBookControllerInit,
       AlertController: AlertControllerInit,
-      DecryptMessageManager: DecryptMessageManagerInit,
-      DecryptMessageController: DecryptMessageControllerInit,
-      EncryptionPublicKeyManager: EncryptionPublicKeyManagerInit,
-      EncryptionPublicKeyController: EncryptionPublicKeyControllerInit,
       SignatureController: SignatureControllerInit,
       PermissionController: PermissionControllerInit,
       PermissionLogController: PermissionLogControllerInit,
@@ -436,8 +423,6 @@ export default class MetamaskController extends EventEmitter {
       NetworkController: NetworkControllerInit,
       GasFeeController: GasFeeControllerInit,
       SelectedNetworkController: SelectedNetworkControllerInit,
-      GeolocationApiService: GeolocationApiServiceInit,
-      GeolocationController: GeolocationControllerInit,
       AccountTrackerController: AccountTrackerControllerInit,
       TransactionController: TransactionControllerInit,
       NftController: NftControllerInit,
@@ -499,10 +484,6 @@ export default class MetamaskController extends EventEmitter {
     this.accountsController = messengerClientsByName.AccountsController;
     this.addressBookController = messengerClientsByName.AddressBookController;
     this.alertController = messengerClientsByName.AlertController;
-    this.decryptMessageController =
-      messengerClientsByName.DecryptMessageController;
-    this.encryptionPublicKeyController =
-      messengerClientsByName.EncryptionPublicKeyController;
     this.signatureController = messengerClientsByName.SignatureController;
     this.permissionController = messengerClientsByName.PermissionController;
     this.permissionLogController =
@@ -745,15 +726,6 @@ export default class MetamaskController extends EventEmitter {
           signatureParams: args,
         }),
 
-      processEncryptionPublicKey:
-        this.encryptionPublicKeyController.newRequestEncryptionPublicKey.bind(
-          this.encryptionPublicKeyController,
-        ),
-
-      processDecryptMessage:
-        this.decryptMessageController.newRequestDecryptMessage.bind(
-          this.decryptMessageController,
-        ),
       getPendingNonce: this.getPendingNonce.bind(this),
       getPendingTransactionByHash: (hash) =>
         this.txController.state.transactions.find(
@@ -772,8 +744,6 @@ export default class MetamaskController extends EventEmitter {
     const resetOnRestartStore = {
       AccountTracker: this.accountTrackerController,
       TokenRatesController: this.tokenRatesController,
-      DecryptMessageController: this.decryptMessageController,
-      EncryptionPublicKeyController: this.encryptionPublicKeyController,
       SignatureController: this.signatureController,
       EnsController: this.ensController,
       ApprovalController: this.approvalController,
@@ -856,12 +826,6 @@ export default class MetamaskController extends EventEmitter {
 
     // if this is the first time, clear the state of by calling these methods
     const resetMethods = [
-      this.decryptMessageController.resetState.bind(
-        this.decryptMessageController,
-      ),
-      this.encryptionPublicKeyController.resetState.bind(
-        this.encryptionPublicKeyController,
-      ),
       this.signatureController.resetState.bind(this.signatureController),
       this.ensController.resetState.bind(this.ensController),
       this.approvalController.clearRequests.bind(this.approvalController),
@@ -1506,6 +1470,13 @@ export default class MetamaskController extends EventEmitter {
         preferencesController.setUseExternalNameSources.bind(
           preferencesController,
         ),
+      setUseIndexedActivity: preferencesController.setUseIndexedActivity.bind(
+        preferencesController,
+      ),
+      setUseVerifiedContractDecoding:
+        preferencesController.setUseVerifiedContractDecoding.bind(
+          preferencesController,
+        ),
       setUseTransactionSimulations:
         preferencesController.setUseTransactionSimulations.bind(
           preferencesController,
@@ -1870,29 +1841,6 @@ export default class MetamaskController extends EventEmitter {
         ),
       setTransactionActive:
         txController.setTransactionActive.bind(txController),
-      // decryptMessageController
-      decryptMessage: this.decryptMessageController.decryptMessage.bind(
-        this.decryptMessageController,
-      ),
-      decryptMessageInline:
-        this.decryptMessageController.decryptMessageInline.bind(
-          this.decryptMessageController,
-        ),
-      cancelDecryptMessage:
-        this.decryptMessageController.cancelDecryptMessage.bind(
-          this.decryptMessageController,
-        ),
-
-      // EncryptionPublicKeyController
-      encryptionPublicKey:
-        this.encryptionPublicKeyController.encryptionPublicKey.bind(
-          this.encryptionPublicKeyController,
-        ),
-      cancelEncryptionPublicKey:
-        this.encryptionPublicKeyController.cancelEncryptionPublicKey.bind(
-          this.encryptionPublicKeyController,
-        ),
-
       // onboarding controller
       setSeedPhraseBackedUp:
         onboardingController.setSeedPhraseBackedUp.bind(onboardingController),
@@ -2079,6 +2027,10 @@ export default class MetamaskController extends EventEmitter {
         decodeTransactionData({
           ...request,
           provider: this.provider,
+          useVerifiedContractDecoding:
+            this.preferencesController.state.useVerifiedContractDecoding,
+          use4ByteResolution:
+            this.preferencesController.state.use4ByteResolution,
         }),
       // Other
       endTrace,

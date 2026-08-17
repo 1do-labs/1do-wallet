@@ -33,10 +33,7 @@ describe('TransactionsTab', () => {
       renderWithProvider(<TransactionsTab />, mockStore);
 
       const expectedTestIds = [
-        'transactions-simulations-toggle',
-        'transactions-smart-transactions-toggle',
         'transactions-smart-account-requests-toggle',
-        'transactions-proposed-nicknames-toggle',
         'transactions-show-hex-data-toggle',
         'transactions-settings-hex-data-toggle',
       ];

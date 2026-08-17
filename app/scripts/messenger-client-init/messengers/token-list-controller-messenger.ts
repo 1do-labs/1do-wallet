@@ -1,9 +1,19 @@
 import { Messenger } from '@metamask/messenger';
 import type {
+  ControllerGetStateAction,
+  ControllerStateChangeEvent,
+} from '@metamask/base-controller';
+import type {
+  AccountsControllerGetSelectedAccountAction,
+  AccountsControllerSelectedEvmAccountChangeEvent,
+} from '@metamask/accounts-controller';
+import type {
+  NetworkControllerFindNetworkClientIdByChainIdAction,
   NetworkControllerGetNetworkClientByIdAction,
   NetworkControllerGetStateAction,
   NetworkControllerStateChangeEvent,
 } from '@metamask/network-controller';
+import type { TokenListState } from '@metamask/assets-controllers';
 import {
   StorageServiceGetAllKeysAction,
   StorageServiceGetItemAction,
@@ -16,12 +26,18 @@ import {
 import { RootMessenger } from '../../lib/messenger';
 
 type AllowedActions =
+  | ControllerGetStateAction<'TokenListController', TokenListState>
+  | AccountsControllerGetSelectedAccountAction
+  | NetworkControllerFindNetworkClientIdByChainIdAction
   | NetworkControllerGetNetworkClientByIdAction
   | StorageServiceGetAllKeysAction
   | StorageServiceSetItemAction
   | StorageServiceGetItemAction;
 
-type AllowedEvents = NetworkControllerStateChangeEvent;
+type AllowedEvents =
+  | AccountsControllerSelectedEvmAccountChangeEvent
+  | NetworkControllerStateChangeEvent
+  | ControllerStateChangeEvent<'TokenListController', TokenListState>;
 
 export type TokenListControllerMessenger = ReturnType<
   typeof getTokenListControllerMessenger
@@ -49,12 +65,17 @@ export function getTokenListControllerMessenger(
   messenger.delegate({
     messenger: controllerMessenger,
     actions: [
+      'AccountsController:getSelectedAccount',
+      'NetworkController:findNetworkClientIdByChainId',
       'NetworkController:getNetworkClientById',
       'StorageService:getAllKeys',
       'StorageService:setItem',
       'StorageService:getItem',
     ],
-    events: ['NetworkController:stateChange'],
+    events: [
+      'AccountsController:selectedEvmAccountChange',
+      'NetworkController:stateChange',
+    ],
   });
   return controllerMessenger;
 }

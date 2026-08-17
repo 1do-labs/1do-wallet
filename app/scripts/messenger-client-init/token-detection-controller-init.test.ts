@@ -1,5 +1,5 @@
-import { TokenDetectionController } from '@metamask/assets-controllers';
 import { getRootMessenger } from '../lib/messenger';
+import { AlchemyTokenDetectionController } from '../controllers/alchemy-token-detection-controller';
 import { MessengerClientInitRequest } from './types';
 import { buildControllerInitRequestMock } from './test/utils';
 import {
@@ -9,8 +9,6 @@ import {
   TokenDetectionControllerMessenger,
 } from './messengers';
 import { TokenDetectionControllerInit } from './token-detection-controller-init';
-
-jest.mock('@metamask/assets-controllers');
 
 function getInitRequestMock(): jest.Mocked<
   MessengerClientInitRequest<
@@ -33,21 +31,25 @@ describe('TokenDetectionControllerInit', () => {
   it('initializes the controller', () => {
     const { messengerClient } =
       TokenDetectionControllerInit(getInitRequestMock());
-    expect(messengerClient).toBeInstanceOf(TokenDetectionController);
+    expect(messengerClient).toBeInstanceOf(AlchemyTokenDetectionController);
   });
 
-  it('passes the proper arguments to the controller', () => {
-    TokenDetectionControllerInit(getInitRequestMock());
+  it('does not persist remote token-detection state', () => {
+    const { messengerClient } =
+      TokenDetectionControllerInit(getInitRequestMock());
 
-    const controllerMock = jest.mocked(TokenDetectionController);
-    expect(controllerMock).toHaveBeenCalledWith({
-      messenger: expect.any(Object),
-      state: undefined,
-      disabled: false,
-      getBalancesInSingleCall: expect.any(Function),
-      trackMetaMetricsEvent: expect.any(Function),
-      useExternalServices: expect.any(Function),
-      useTokenDetection: expect.any(Function),
-    });
+    expect(messengerClient.state).toStrictEqual({});
+  });
+
+  it('exposes the polling API expected by the background API', () => {
+    const { messengerClient } =
+      TokenDetectionControllerInit(getInitRequestMock());
+
+    expect(() =>
+      messengerClient.startPolling.bind(messengerClient),
+    ).not.toThrow();
+    expect(() =>
+      messengerClient.stopPollingByPollingToken.bind(messengerClient),
+    ).not.toThrow();
   });
 });

@@ -426,7 +426,11 @@ describe('ManifestPlugin', () => {
           compilation.assets[`${browser}/manifest.json`].source().toString(),
         );
 
-        assert.strictEqual(manifest.build_id, 'test-full-hash');
+        if (browser === 'firefox') {
+          assert.strictEqual(manifest.build_id, 'test-full-hash');
+        } else {
+          assert.strictEqual(manifest.build_id, undefined);
+        }
       }
     });
   });

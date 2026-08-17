@@ -2,7 +2,6 @@ import { Messenger } from '@metamask/messenger';
 import { KeyringController } from '@metamask/keyring-controller';
 import { wordlist } from '@metamask/scure-bip39/dist/wordlists/english';
 import { cloneDeep } from 'lodash';
-import { hexToDecimal } from '../../../shared/lib/conversion.utils';
 import { UI_NOTIFICATIONS } from '../../../shared/notifications';
 import { E2E_SRP, WALLET_PASSWORD } from '../../../test/e2e/constants';
 import defaultFixtureJson from '../../../test/e2e/fixtures/default-fixture.json';
@@ -254,15 +253,8 @@ function generateTokensControllerState(account) {
     // Must cloneDeep to avoid a crash with the benchmarks and browserLoads > 1
     const tokens = cloneDeep(FIXTURES_ERC20_TOKENS);
 
-    for (const [chainId, data] of Object.entries(tokens.allTokens)) {
-      const chainIdDec = hexToDecimal(chainId);
-
-      // Add automatic token images if missing
+    for (const data of Object.values(tokens.allTokens)) {
       for (const token of data.myAccount) {
-        if (!token.image) {
-          token.image = `https://static.cx.metamask.io/api/v1/tokenIcons/${chainIdDec}/${token.address}.png`;
-        }
-
         // Token addresses are only accepted in the checksum format
         token.address = normalizeSafeAddress(token.address);
       }

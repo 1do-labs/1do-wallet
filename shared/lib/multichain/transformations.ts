@@ -6,9 +6,9 @@ import {
   TransactionType,
   TransactionStatus,
 } from '@metamask/transaction-controller';
-import {
+import type {
   V1TransactionByHashResponse,
-  type V4MultiAccountTransactionsResponse,
+  V4MultiAccountTransactionsResponse,
 } from '@metamask/core-backend';
 import { CHAIN_ID_TO_CURRENCY_SYMBOL_MAP } from '../../constants/network';
 import { NATIVE_TOKEN_ADDRESS } from '../../constants/transaction';

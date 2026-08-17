@@ -1,7 +1,7 @@
 import { useCallback, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { useInfiniteQuery, useQueryClient } from '@tanstack/react-query';
-import type { CaipChainId } from '@metamask/utils';
+import type { CaipChainId, Hex } from '@metamask/utils';
 import { TransactionType } from '@metamask/transaction-controller';
 import { useI18nContext } from '../../../hooks/useI18nContext';
 import type {
@@ -10,30 +10,33 @@ import type {
 } from '../../../../shared/lib/multichain/types';
 import { selectMarketRates } from '../../../selectors/activity';
 import { selectEvmAddress } from '../../../selectors/accounts';
-import { getUseExternalServices } from '../../../selectors';
+import { getUseIndexedActivity } from '../../../selectors';
 import { parseApprovalTransactionData } from '../../../../shared/lib/transaction.utils';
-import { selectTransactions } from '../../../../shared/lib/multichain/transformations';
 import { SET_APPROVAL_FOR_ALL } from '../../../../shared/constants/transaction';
 import { MINUTE } from '../../../../shared/constants/time';
 import { selectEnabledNetworksAsCaipChainIds } from '../../../selectors/multichain/networks';
+import { getNetworkConfigurationsByChainId } from '../../../../shared/lib/selectors/networks';
+import { convertCaipToHexChainId } from '../../../../shared/lib/network.utils';
+import {
+  ALCHEMY_API_KEY_PLACEHOLDER,
+  alchemyApiKey,
+} from '../../../../shared/constants/network';
 import { getIsTransactionLabelsEnabled } from '../../../selectors/multichain/feature-flags';
-import { selectRequiredTransactionHashes } from '../../../selectors/transactionController';
-import { getIntlLocale } from '../../../ducks/locale/locale';
-import { apiClient } from '../../../helpers/api-client';
 import {
   calculateFiatFromMarketRates,
   resolveTransactionType,
 } from './helpers';
 import type { ActivityListFilter } from './helpers';
-
-function getTransactionApiLanguage(locale: string) {
-  return locale.split('-')[0];
-}
+import {
+  fetchAlchemyActivityPage,
+  type ActivityNetwork,
+  type ActivityPageCursor,
+} from './alchemy-activity-service';
 
 function useTransactionParams(caipChainId?: CaipChainId) {
   const evmAddress = (useSelector(selectEvmAddress) || '').toLowerCase();
-  const locale = useSelector(getIntlLocale);
   const enabledNetworks = useSelector(selectEnabledNetworksAsCaipChainIds);
+  const networkConfigurations = useSelector(getNetworkConfigurationsByChainId);
 
   const evmNetworks = useMemo(() => {
     if (caipChainId) {
@@ -42,86 +45,92 @@ function useTransactionParams(caipChainId?: CaipChainId) {
     return enabledNetworks.filter((id: string) => id.startsWith('eip155:'));
   }, [enabledNetworks, caipChainId]);
 
-  const accountAddresses = useMemo(
-    () => (evmAddress ? [`eip155:0:${evmAddress}`] : []),
-    [evmAddress],
+  const activityNetworks = useMemo(
+    () =>
+      evmNetworks.flatMap((networkId): ActivityNetwork[] => {
+        const chainId = convertCaipToHexChainId(networkId);
+        const network = networkConfigurations[chainId];
+        if (!network) {
+          return [];
+        }
+        const rpcUrl = network.rpcEndpoints
+          .map(({ url }) =>
+            url.replace(
+              ALCHEMY_API_KEY_PLACEHOLDER,
+              alchemyApiKey ?? ALCHEMY_API_KEY_PLACEHOLDER,
+            ),
+          )
+          .find((url) =>
+            /^https:\/\/[^/]+\.g\.alchemy\.com\/v2\/[^/?#]+$/u.test(url),
+          );
+        if (!rpcUrl || rpcUrl.includes(ALCHEMY_API_KEY_PLACEHOLDER)) {
+          return [];
+        }
+        return [
+          {
+            chainId,
+            nativeCurrency: network.nativeCurrency,
+            rpcUrl,
+          },
+        ];
+      }),
+    [evmNetworks, networkConfigurations],
   );
 
   return useMemo(
     () => ({
       evmAddress,
-      accountAddresses,
-      lang: getTransactionApiLanguage(locale),
+      activityNetworks,
       networks: evmNetworks,
     }),
-    [evmAddress, accountAddresses, locale, evmNetworks],
+    [evmAddress, activityNetworks, evmNetworks],
   );
 }
 
 export function useTransactionsQuery(filter?: ActivityListFilter) {
-  const useExternalServices = useSelector(getUseExternalServices);
-  const { evmAddress, accountAddresses, lang, networks } = useTransactionParams(
+  const useIndexedActivity = useSelector(getUseIndexedActivity);
+  const { evmAddress, activityNetworks, networks } = useTransactionParams(
     filter?.chainId,
   );
-  const internalTxHashes = useSelector(selectRequiredTransactionHashes);
 
-  const selectFn = useMemo(
-    () =>
-      selectTransactions({
-        address: evmAddress,
-        excludedTxHashes: internalTxHashes,
-      }),
-    [evmAddress, internalTxHashes],
-  );
-
-  const queryOptions =
-    apiClient.accounts.getV4MultiAccountTransactionsInfiniteQueryOptions({
-      accountAddresses,
-      networks,
-      includeTxMetadata: true,
-      lang,
-    });
-
-  // @ts-expect-error apiClient returns v5 types, repo still in v4
   return useInfiniteQuery({
-    ...queryOptions,
-    select: selectFn,
+    queryKey: ['alchemy-activity', evmAddress, activityNetworks],
+    queryFn: async ({ pageParam }: { pageParam?: ActivityPageCursor }) => {
+      return await fetchAlchemyActivityPage({
+        address: evmAddress as Hex,
+        networks: activityNetworks,
+        pageCursor: pageParam,
+      });
+    },
+    getNextPageParam: (lastPage) => lastPage.nextPageCursor,
     enabled:
-      Boolean(useExternalServices) &&
+      Boolean(useIndexedActivity) &&
       networks.length > 0 &&
-      accountAddresses.length > 0,
+      activityNetworks.length > 0 &&
+      Boolean(evmAddress),
     retry: false,
     keepPreviousData: true,
-    staleTime: 5 * MINUTE,
+    staleTime: 10 * MINUTE,
     refetchOnMount: true,
-    refetchOnWindowFocus: true,
+    refetchOnWindowFocus: false,
   });
 }
 
 export function usePrefetchTransactions() {
   const queryClient = useQueryClient();
-  const useExternalServices = useSelector(getUseExternalServices);
-  const { evmAddress, accountAddresses, lang, networks } =
-    useTransactionParams();
-
-  const queryOptions = useMemo(
-    () =>
-      apiClient.accounts.getV4MultiAccountTransactionsInfiniteQueryOptions({
-        accountAddresses,
-        networks,
-        includeTxMetadata: true,
-        lang,
-      }),
-    [accountAddresses, lang, networks],
+  const useIndexedActivity = useSelector(getUseIndexedActivity);
+  const { evmAddress, activityNetworks } = useTransactionParams();
+  const queryKey = useMemo(
+    () => ['alchemy-activity', evmAddress, activityNetworks],
+    [activityNetworks, evmAddress],
   );
 
   return useCallback(() => {
-    if (!useExternalServices || !evmAddress) {
+    if (!useIndexedActivity || !evmAddress) {
       return;
     }
 
-    const { queryKey } = queryOptions;
-    if (!queryKey || queryClient.getQueryData(queryKey)) {
+    if (queryClient.getQueryData(queryKey)) {
       return;
     }
 
@@ -130,16 +139,22 @@ export function usePrefetchTransactions() {
     }
 
     queryClient
-      // @ts-expect-error apiClient returns v5 types, repo still in v4
       .prefetchInfiniteQuery({
-        ...queryOptions,
+        queryKey,
+        queryFn: ({ pageParam }: { pageParam?: ActivityPageCursor }) =>
+          fetchAlchemyActivityPage({
+            address: evmAddress as Hex,
+            networks: activityNetworks,
+            pageCursor: pageParam,
+          }),
+        getNextPageParam: (lastPage) => lastPage.nextPageCursor,
         retry: false,
-        staleTime: 5 * MINUTE,
+        staleTime: 10 * MINUTE,
       })
       .catch(() => {
         // Prefetch is opportunistic
       });
-  }, [evmAddress, queryOptions, queryClient, useExternalServices]);
+  }, [activityNetworks, evmAddress, queryClient, queryKey, useIndexedActivity]);
 }
 
 function classifyNft(

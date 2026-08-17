@@ -62,17 +62,15 @@ describe('SettingsV2', () => {
       expect(
         screen.getByTestId('settings-v2-tab-bar-grouped'),
       ).toBeInTheDocument();
-      expect(screen.getByText(messages.general.message)).toBeInTheDocument();
+      expect(screen.getByText(messages.wallet.message)).toBeInTheDocument();
       expect(screen.queryByTestId('settings-v2-root')).not.toBeInTheDocument();
       expect(
-        await screen.findByText(messages.theme.message),
+        await screen.findByText(messages.manageAccounts.message),
       ).toBeInTheDocument();
       expect(
-        screen.getByText(messages.securityAndPrivacy.message),
+        screen.getByText(messages.dataAndPrivacy.message),
       ).toBeInTheDocument();
-      expect(
-        screen.getByText(messages.transactionsAndAssets.message),
-      ).toBeInTheDocument();
+      expect(screen.getByText(messages.security.message)).toBeInTheDocument();
     });
 
     it('treats trailing-slash fullscreen settings route as the root route', async () => {
@@ -86,7 +84,7 @@ describe('SettingsV2', () => {
       ).toBeInTheDocument();
       expect(screen.queryByTestId('settings-v2-root')).not.toBeInTheDocument();
       expect(
-        await screen.findByText(messages.theme.message),
+        await screen.findByText(messages.manageAccounts.message),
       ).toBeInTheDocument();
     });
 

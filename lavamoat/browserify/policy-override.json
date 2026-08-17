@@ -1,5 +1,33 @@
 {
   "resources": {
+    "@metamask/gas-fee-controller": {
+      "packages": {
+        "@metamask/controller-utils": true
+      }
+    },
+    "@metamask/controller-utils": {
+      "packages": {
+        "@ethersproject/abi": true
+      }
+    },
+    "@metamask/core-backend": {
+      "packages": {
+        "@metamask/controller-utils": true,
+        "@metamask/core-backend>@metamask/controller-utils": true
+      }
+    },
+    "@metamask/address-book-controller": {
+      "packages": {
+        "@metamask/controller-utils": true,
+        "@metamask/address-book-controller>@metamask/controller-utils": true
+      }
+    },
+    "@metamask/assets-controller>@metamask/snaps-utils>@metamask/permission-controller": {
+      "packages": {
+        "@metamask/controller-utils": true,
+        "@metamask/assets-controller>@metamask/snaps-utils>@metamask/permission-controller>@metamask/controller-utils": true
+      }
+    },
     "react-router-dom": {
       "globals": {
         "history": true

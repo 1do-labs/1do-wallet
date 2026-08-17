@@ -1,0 +1,230 @@
+diff --git a/dist/api/ApiPlatformClient.cjs b/dist/api/ApiPlatformClient.cjs
+index 205bf21495795a2b753a1433963812657b864b05..1ab6097edf127b90c8fbd950b9029565043d9c79 100644
+--- a/dist/api/ApiPlatformClient.cjs
++++ b/dist/api/ApiPlatformClient.cjs
+@@ -8,9 +8,7 @@
+  * - Automatic retries with exponential backoff
+  *
+  * Provides unified access to all MetaMask backend APIs:
+- * - Accounts API (accounts.api.cx.metamask.io)
+- * - Price API (price.api.cx.metamask.io)
+- * - Token API (token.api.cx.metamask.io)
++ * - Accounts, price, and token APIs (disabled in 1Do)
+  * - Tokens API (tokens.api.cx.metamask.io)
+  *
+  * @example
+diff --git a/dist/api/ApiPlatformClient.mjs b/dist/api/ApiPlatformClient.mjs
+index ff2090dd1b4d0d612ea256154b35a6ac7685e635..2aeea7903d0601178fa5b2ea0a60e1cbbd80c529 100644
+--- a/dist/api/ApiPlatformClient.mjs
++++ b/dist/api/ApiPlatformClient.mjs
+@@ -7,9 +7,7 @@
+  * - Automatic retries with exponential backoff
+  *
+  * Provides unified access to all MetaMask backend APIs:
+- * - Accounts API (accounts.api.cx.metamask.io)
+- * - Price API (price.api.cx.metamask.io)
+- * - Token API (token.api.cx.metamask.io)
++ * - Accounts, price, and token APIs (disabled in 1Do)
+  * - Tokens API (tokens.api.cx.metamask.io)
+  *
+  * @example
+diff --git a/dist/api/accounts/client.cjs b/dist/api/accounts/client.cjs
+index 3b70343493788c8cf659b4dca650d73202a4da38..dc20f80f9d100a7c17dce25076bbdfa10d3e3709 100644
+--- a/dist/api/accounts/client.cjs
++++ b/dist/api/accounts/client.cjs
+@@ -1,6 +1,6 @@
+ "use strict";
+ /**
+- * Accounts API Client - accounts.api.cx.metamask.io
++ * Accounts API Client (disabled in 1Do)
+  *
+  * Handles all account-related API calls including:
+  * - Supported networks
+diff --git a/dist/api/accounts/client.mjs b/dist/api/accounts/client.mjs
+index 5d55e86f3f9b050546000c9e291f8da43b0fbd75..a3f8f3520689e5f7896e6a67016b033269520373 100644
+--- a/dist/api/accounts/client.mjs
++++ b/dist/api/accounts/client.mjs
+@@ -1,5 +1,5 @@
+ /**
+- * Accounts API Client - accounts.api.cx.metamask.io
++ * Accounts API Client (disabled in 1Do)
+  *
+  * Handles all account-related API calls including:
+  * - Supported networks
+diff --git a/dist/api/accounts/types.cjs b/dist/api/accounts/types.cjs
+index c7f653e92ebce9390a20957fb1431f812fdc8ea4..ea90ca0af22e99aced209489bb9d0d842fdbf6f3 100644
+--- a/dist/api/accounts/types.cjs
++++ b/dist/api/accounts/types.cjs
+@@ -1,7 +1,7 @@
+ "use strict";
+ /**
+  * Accounts API types for the API Platform Client.
+- * API: accounts.api.cx.metamask.io
++ * API: disabled in 1Do
+  */
+ Object.defineProperty(exports, "__esModule", { value: true });
+ //# sourceMappingURL=types.cjs.map
+diff --git a/dist/api/accounts/types.mjs b/dist/api/accounts/types.mjs
+index 060470fcda456c16f05e04e787209d4b7cf126d3..26f5434167a2713cd302e278fdd71b1e90ea95da 100644
+--- a/dist/api/accounts/types.mjs
++++ b/dist/api/accounts/types.mjs
+@@ -1,6 +1,6 @@
+ /**
+  * Accounts API types for the API Platform Client.
+- * API: accounts.api.cx.metamask.io
++ * API: disabled in 1Do
+  */
+ export {};
+ //# sourceMappingURL=types.mjs.map
+diff --git a/dist/api/prices/client.cjs b/dist/api/prices/client.cjs
+index 5f160fc51b9666ecc3e3583aeee820cb6a77fc0f..b41707ea4e7383809bf595c985383788b78b3d89 100644
+--- a/dist/api/prices/client.cjs
++++ b/dist/api/prices/client.cjs
+@@ -1,6 +1,6 @@
+ "use strict";
+ /**
+- * Prices API Client - price.api.cx.metamask.io
++ * Prices API Client (disabled in 1Do)
+  *
+  * Handles all price-related API calls including:
+  * - Supported networks
+diff --git a/dist/api/prices/client.mjs b/dist/api/prices/client.mjs
+index 3e7431dd824171658791b4743bd191cf20f5e275..9ba7eec19d7f80b63a22e351c18f80a2ac8b3276 100644
+--- a/dist/api/prices/client.mjs
++++ b/dist/api/prices/client.mjs
+@@ -1,5 +1,5 @@
+ /**
+- * Prices API Client - price.api.cx.metamask.io
++ * Prices API Client (disabled in 1Do)
+  *
+  * Handles all price-related API calls including:
+  * - Supported networks
+diff --git a/dist/api/prices/types.cjs b/dist/api/prices/types.cjs
+index d41ca3f974dd269860bee05e02b912ddb96d0332..356353194396e49de9b253c103513f05d5113f22 100644
+--- a/dist/api/prices/types.cjs
++++ b/dist/api/prices/types.cjs
+@@ -1,7 +1,7 @@
+ "use strict";
+ /**
+  * Prices API types for the API Platform Client.
+- * API: price.api.cx.metamask.io
++ * API: disabled in 1Do
+  */
+ Object.defineProperty(exports, "__esModule", { value: true });
+ //# sourceMappingURL=types.cjs.map
+diff --git a/dist/api/prices/types.mjs b/dist/api/prices/types.mjs
+index 329a6dfd75d4324fa02ca476d8a620a316ad32ca..16b25b0dbf3b3b6be9162bb1f64a9d11ef6d5fcc 100644
+--- a/dist/api/prices/types.mjs
++++ b/dist/api/prices/types.mjs
+@@ -1,6 +1,6 @@
+ /**
+  * Prices API types for the API Platform Client.
+- * API: price.api.cx.metamask.io
++ * API: disabled in 1Do
+  */
+ export {};
+ //# sourceMappingURL=types.mjs.map
+diff --git a/dist/api/shared-types.cjs b/dist/api/shared-types.cjs
+index 731306ca396e84be961ab27dab63e5c00a979c6e..f65e2defd852fa8756ff83c6f8f075fb2ccaa41f 100644
+--- a/dist/api/shared-types.cjs
++++ b/dist/api/shared-types.cjs
+@@ -26,10 +26,10 @@ exports.getQueryOptionsOverrides = getQueryOptionsOverrides;
+ // ============================================================================
+ /** API Base URLs */
+ exports.API_URLS = {
+-    ACCOUNTS: 'https://accounts.api.cx.metamask.io',
+-    PRICES: 'https://price.api.cx.metamask.io',
+-    TOKEN: 'https://token.api.cx.metamask.io',
+-    TOKENS: 'https://tokens.api.cx.metamask.io',
++    ACCOUNTS: '',
++    PRICES: '',
++    TOKEN: '',
++    TOKENS: '',
+ };
+ /** Stale times for different data types (ms) */
+ exports.STALE_TIMES = {
+diff --git a/dist/api/shared-types.mjs b/dist/api/shared-types.mjs
+index 5642144cc63a14c597271eccf7007ac0b92aad2b..535a0b56f0982279f25652205baf0bfc5a31dd31 100644
+--- a/dist/api/shared-types.mjs
++++ b/dist/api/shared-types.mjs
+@@ -22,10 +22,10 @@ export function getQueryOptionsOverrides(options) {
+ // ============================================================================
+ /** API Base URLs */
+ export const API_URLS = {
+-    ACCOUNTS: 'https://accounts.api.cx.metamask.io',
+-    PRICES: 'https://price.api.cx.metamask.io',
+-    TOKEN: 'https://token.api.cx.metamask.io',
+-    TOKENS: 'https://tokens.api.cx.metamask.io',
++    ACCOUNTS: '',
++    PRICES: '',
++    TOKEN: '',
++    TOKENS: '',
+ };
+ /** Stale times for different data types (ms) */
+ export const STALE_TIMES = {
+diff --git a/dist/api/token/client.cjs b/dist/api/token/client.cjs
+index 6bb28530abce00fe290e828e10743875b9e0517e..38da69d52aac0bcb66c862adeb3c37cea1f6e588 100644
+--- a/dist/api/token/client.cjs
++++ b/dist/api/token/client.cjs
+@@ -1,6 +1,6 @@
+ "use strict";
+ /**
+- * Token API Client - token.api.cx.metamask.io
++ * Token API Client (disabled in 1Do)
+  *
+  * Handles all token-related API calls including:
+  * - Networks
+@@ -26,7 +26,7 @@ class TokenApiClient extends base_client_1.BaseApiClient {
+     // ==========================================================================
+     /**
+      * Invalidate all token API queries.
+-     * Note: This only invalidates queries from token.api.cx.metamask.io,
++     * Note: This only invalidates queries from the disabled token service,
+      * not from tokens.api.cx.metamask.io (use TokensApiClient.invalidateTokens() for that).
+      */
+     async invalidateToken() {
+diff --git a/dist/api/token/client.mjs b/dist/api/token/client.mjs
+index 16127fafd05374a7ddfceca2705516881bc58631..6d5a0db015a8df649a1959fd9602245d125c06ce 100644
+--- a/dist/api/token/client.mjs
++++ b/dist/api/token/client.mjs
+@@ -1,5 +1,5 @@
+ /**
+- * Token API Client - token.api.cx.metamask.io
++ * Token API Client (disabled in 1Do)
+  *
+  * Handles all token-related API calls including:
+  * - Networks
+@@ -23,7 +23,7 @@ export class TokenApiClient extends BaseApiClient {
+     // ==========================================================================
+     /**
+      * Invalidate all token API queries.
+-     * Note: This only invalidates queries from token.api.cx.metamask.io,
++     * Note: This only invalidates queries from the disabled token service,
+      * not from tokens.api.cx.metamask.io (use TokensApiClient.invalidateTokens() for that).
+      */
+     async invalidateToken() {
+diff --git a/dist/api/token/types.cjs b/dist/api/token/types.cjs
+index 276e3d486f4124edf563adaf8ca725bae6507fd5..30dab55b717cbf814e45d53a811e4c7b6f985a22 100644
+--- a/dist/api/token/types.cjs
++++ b/dist/api/token/types.cjs
+@@ -1,7 +1,7 @@
+ "use strict";
+ /**
+  * Token API types for the API Platform Client.
+- * API: token.api.cx.metamask.io
++ * API: disabled in 1Do
+  */
+ Object.defineProperty(exports, "__esModule", { value: true });
+ //# sourceMappingURL=types.cjs.map
+diff --git a/dist/api/token/types.mjs b/dist/api/token/types.mjs
+index 9c0e8420246cbc4a4ddeb6fbc5fb5a0141487640..944e2c4ce0ef421e9c810e7e89dcc65bc472239b 100644
+--- a/dist/api/token/types.mjs
++++ b/dist/api/token/types.mjs
+@@ -1,6 +1,6 @@
+ /**
+  * Token API types for the API Platform Client.
+- * API: token.api.cx.metamask.io
++ * API: disabled in 1Do
+  */
+ export {};
+ //# sourceMappingURL=types.mjs.map

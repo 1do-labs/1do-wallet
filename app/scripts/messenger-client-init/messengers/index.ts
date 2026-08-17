@@ -93,23 +93,11 @@ import { getLoggingControllerMessenger } from './logging-controller-messenger';
 import { getAppMetadataControllerMessenger } from './app-metadata-controller-messenger';
 import { getApprovalControllerMessenger } from './approval-controller-messenger';
 import { getAddressBookControllerMessenger } from './address-book-controller-messenger';
-import { getDecryptMessageManagerMessenger } from './decrypt-message-manager-messenger';
-import {
-  getDecryptMessageControllerInitMessenger,
-  getDecryptMessageControllerMessenger,
-} from './decrypt-message-controller-messenger';
-import {
-  getEncryptionPublicKeyControllerInitMessenger,
-  getEncryptionPublicKeyControllerMessenger,
-} from './encryption-public-key-controller-messenger';
-import { getEncryptionPublicKeyManagerMessenger } from './encryption-public-key-manager-messenger';
 import {
   getSignatureControllerInitMessenger,
   getSignatureControllerMessenger,
 } from './signature-controller-messenger';
 import { getStorageServiceMessenger } from './storage-service-messenger';
-import { getGeolocationApiServiceMessenger } from './geolocation-api-service-messenger';
-import { getGeolocationControllerMessenger } from './geolocation-controller-messenger';
 import { getLegacyBackgroundApiServiceMessenger } from './legacy-background-api-service-messenger';
 
 export { getAccountOrderControllerMessenger } from './account-order-controller-messenger';
@@ -138,19 +126,6 @@ export {
   getCurrencyRateControllerMessenger,
   getCurrencyRateControllerInitMessenger,
 } from './currency-rate-controller-messenger';
-export {
-  getDecryptMessageControllerMessenger,
-  getDecryptMessageControllerInitMessenger,
-} from './decrypt-message-controller-messenger';
-export type { DecryptMessageManagerMessenger } from './decrypt-message-manager-messenger';
-export { getDecryptMessageManagerMessenger } from './decrypt-message-manager-messenger';
-export type { EncryptionPublicKeyControllerInitMessenger } from './encryption-public-key-controller-messenger';
-export {
-  getEncryptionPublicKeyControllerMessenger,
-  getEncryptionPublicKeyControllerInitMessenger,
-} from './encryption-public-key-controller-messenger';
-export type { EncryptionPublicKeyManagerMessenger } from './encryption-public-key-manager-messenger';
-export { getEncryptionPublicKeyManagerMessenger } from './encryption-public-key-manager-messenger';
 export type {
   EnsControllerMessenger,
   EnsControllerInitMessenger,
@@ -204,8 +179,6 @@ export {
 } from './permission-controller-messenger';
 export type { PermissionLogControllerMessenger } from './permission-log-controller-messenger';
 export { getPermissionLogControllerMessenger } from './permission-log-controller-messenger';
-export { getGeolocationApiServiceMessenger } from './geolocation-api-service-messenger';
-export { getGeolocationControllerMessenger } from './geolocation-controller-messenger';
 export type { SelectedNetworkControllerMessenger } from './selected-network-controller-messenger';
 export { getSelectedNetworkControllerMessenger } from './selected-network-controller-messenger';
 export type {
@@ -302,22 +275,6 @@ export const MESSENGER_FACTORIES = {
     getMessenger: getCurrencyRateControllerMessenger,
     getInitMessenger: getCurrencyRateControllerInitMessenger,
   },
-  DecryptMessageController: {
-    getMessenger: getDecryptMessageControllerMessenger,
-    getInitMessenger: getDecryptMessageControllerInitMessenger,
-  },
-  DecryptMessageManager: {
-    getMessenger: getDecryptMessageManagerMessenger,
-    getInitMessenger: noop,
-  },
-  EncryptionPublicKeyController: {
-    getMessenger: getEncryptionPublicKeyControllerMessenger,
-    getInitMessenger: getEncryptionPublicKeyControllerInitMessenger,
-  },
-  EncryptionPublicKeyManager: {
-    getMessenger: getEncryptionPublicKeyManagerMessenger,
-    getInitMessenger: noop,
-  },
   EnsController: {
     getMessenger: getEnsControllerMessenger,
     getInitMessenger: getEnsControllerInitMessenger,
@@ -329,14 +286,6 @@ export const MESSENGER_FACTORIES = {
   GasFeeController: {
     getMessenger: getGasFeeControllerMessenger,
     getInitMessenger: getGasFeeControllerInitMessenger,
-  },
-  GeolocationApiService: {
-    getMessenger: getGeolocationApiServiceMessenger,
-    getInitMessenger: noop,
-  },
-  GeolocationController: {
-    getMessenger: getGeolocationControllerMessenger,
-    getInitMessenger: noop,
   },
   KeyringController: {
     getMessenger: getKeyringControllerMessenger,

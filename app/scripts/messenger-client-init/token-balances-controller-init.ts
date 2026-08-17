@@ -22,7 +22,9 @@ export const TokenBalancesControllerInit: MessengerClientInitFunction<
     messenger: controllerMessenger,
     state: persistedState.TokenBalancesController,
     queryMultipleAccounts: Boolean(useMultiAccountBalanceChecker),
-    interval: 30_000,
+    // Balances are refreshed immediately by the UI after transactions; a
+    // slower background poll avoids spending RPC quota while idle.
+    interval: 60_000,
     allowExternalServices: () =>
       Boolean(getRetypedPrefState().useExternalServices),
     accountsApiChainIds: () => [],

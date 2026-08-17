@@ -1,5 +1,9 @@
 import { Messenger } from '@metamask/messenger';
 import type {
+  ControllerGetStateAction,
+  ControllerStateChangeEvent,
+} from '@metamask/base-controller';
+import type {
   NetworkControllerFindNetworkClientIdByChainIdAction,
   NetworkControllerGetNetworkClientByIdAction,
   NetworkControllerGetNetworkConfigurationByNetworkClientId,
@@ -32,6 +36,7 @@ import type {
 import { RootMessenger } from '../../lib/messenger';
 
 type AllowedActions =
+  | ControllerGetStateAction<'TokenDetectionController', Record<string, never>>
   | AccountsControllerGetSelectedAccountAction
   | AccountsControllerGetAccountAction
   | NetworkControllerGetNetworkClientByIdAction
@@ -46,6 +51,10 @@ type AllowedActions =
   | NetworkControllerFindNetworkClientIdByChainIdAction;
 
 type AllowedEvents =
+  | ControllerStateChangeEvent<
+      'TokenDetectionController',
+      Record<string, never>
+    >
   | AccountsControllerSelectedEvmAccountChangeEvent
   | NetworkControllerNetworkDidChangeEvent
   | TokenListStateChange

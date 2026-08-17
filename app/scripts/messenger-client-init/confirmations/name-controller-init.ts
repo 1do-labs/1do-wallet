@@ -3,7 +3,6 @@ import {
   EtherscanNameProvider,
   LensNameProvider,
   NameController,
-  TokenNameProvider,
 } from '@metamask/name-controller';
 import {
   NameControllerInitMessenger,
@@ -49,7 +48,6 @@ export const NameControllerInit: MessengerClientInitFunction<
         reverseLookup: ensController.reverseResolveAddress.bind(ensController),
       }),
       new EtherscanNameProvider({ isEnabled: isExternalNameSourcesEnabled }),
-      new TokenNameProvider({ isEnabled: isExternalNameSourcesEnabled }),
       new LensNameProvider({ isEnabled: isExternalNameSourcesEnabled }),
     ],
   });

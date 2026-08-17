@@ -193,8 +193,7 @@ Alchemy `alchemy_simulateAssetChanges` 已验证存在网络差异：Ethereum Ma
 
 1. Runtime Core Manifest 和内置接口；
 2. Sourcify；
-3. Etherscan、Lens、Alchemy Token Metadata；
-4. 4byte 仅作为最后兜底，并明确标记 `Unverified`。
+3. 4byte 仅作为最后兜底，并明确标记 `Unverified`。
 
 无可信 ABI 时显示：
 
@@ -237,17 +236,22 @@ raw calldata
 
 隐私设置只展示实际存在的服务：
 
-- Asset Discovery / Alchemy；
+- Token and NFT Discovery / Alchemy；
 - Indexed Activity / Alchemy；
 - Fiat Prices / Alchemy；
-- Transaction Simulation / Tx Sentinel；
+- Transaction Simulation / Alchemy；
 - Verified Contract Decoding / Sourcify；
 - Unverified Function Lookup / 4byte；
-- External Address Labels / Etherscan、Lens、Alchemy；
+- External Address Labels / ENS、Etherscan、Lens；
 - NFT Media；
 - Network Metadata Updates / chainid.network。
 
 提供 `Disable all optional remote services`。RPC 是钱包运行所必需的网络连接，不伪装成可关闭的可选服务。
+
+不再调用 MetaMask 的 Accounts、Token、NFT、Price、Gas、Geolocation、
+Feature Flags、Metrics 或错误监控服务。Alchemy Token/NFT 发现直接使用用户
+配置的 Alchemy RPC/API Key；非 Alchemy 自定义 RPC 不提供索引型自动发现，
+但链上余额、手动导入和交易功能仍可使用。
 
 删除 Metrics、Profile、Security Alerts、旧 ENS 网站解析设置和所有 `trackEvent` 数据上报路径。
 
@@ -274,16 +278,16 @@ About 1Do
 
 ## 12. 验证记录
 
-本轮收尾验证结果：
+当前实现验证结果：
 
-- 全量 TypeScript 检查通过：`yarn lint:tsc --pretty false`；
-- changed lint 通过：`yarn lint:changed:fix`，0 errors、32 个既有 React Hook warnings；
-- Runtime/EIP-7702 核心测试通过：7 个 suite、50 个测试、7 个 snapshot；
-- 旧入口清理后的 `ui/index.test.js` 通过，扩展核心收尾测试合计 8 个 suite、51 个测试；
-- lockfile 去重、allow-scripts、LavaMoat policy 和 attribution 已按依赖删减重新生成；
-- 带 LavaMoat 的 Chromium MV3 `build:test` 通过，并生成 `dist/chrome` 测试包（约 50 MB）；
-- 修复了 policy-only 构建中复用已结束空写入流导致的 contentscript `write after end`；
-- 归属清单已按生成器输出更新；其许可证原文包含少量行尾空格，因此 `git diff --check` 会仅提示 attribution 文本格式，不影响构建或许可证内容。
+- `yarn lint:changed:fix` 通过；
+- `yarn lint:tsc` 通过；
+- Activity Alchemy 服务、Preferences、交易解码、设置注册表及迁移器相关单测通过；
+- 真实 Alchemy RPC 已确认 `alchemy_getAssetTransfers` 的 transfer、decimal 和 timestamp 返回格式；
+- 带 LavaMoat 的 Chromium MV3 `yarn build:test` 通过，生成 `dist/chrome` 测试包；
+- 已删除 Firefox MV3 manifest、MetaMask 加密消息 Controller/确认入口及 2.x 不再支持的历史状态迁移文件。
+
+以下项目仍需在 Chrome 测试环境中执行并留存截图/网络日志后，才能作为发布前验收结论：新建/导入钱包、Runtime 激活与停用、硬件钱包激活、Runtime App 开关、真实 Activity 页面、交易模拟余额变化，以及 Chrome Web Store 最终压缩包人工检查。
 
 Runtime 部署验证器的可信、未部署、不可信和 RPC 不可用路径均由 mock RPC 单测覆盖；可信部署事实来源仍是 `1do-core` 的部署 Manifest。
 

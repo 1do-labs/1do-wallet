@@ -46,8 +46,6 @@ import {
   MULTICHAIN_ACCOUNT_DETAILS_PAGE_ROUTE,
   MULTICHAIN_WALLET_DETAILS_PAGE_ROUTE,
   MULTICHAIN_SMART_ACCOUNT_PAGE_ROUTE,
-  DECRYPT_MESSAGE_REQUEST_PATH,
-  ENCRYPTION_PUBLIC_KEY_REQUEST_PATH,
   CONTACTS_ROUTE,
   SETTINGS_V2_ROUTE,
 } from '../../helpers/constants/routes';
@@ -122,12 +120,6 @@ const RevealSeedConfirmation = mmLazy(
   () => import('../keychains/reveal-seed.tsx'),
 );
 const SettingsV2 = mmLazy(() => import('../settings-v2/index.ts'));
-const ConfirmEncryptionPublicKey = mmLazy(
-  () => import('../confirm-encryption-public-key/index.js'),
-);
-const ConfirmDecryptMessage = mmLazy(
-  () => import('../confirm-decrypt-message/index.js'),
-);
 const Confirm = mmLazy(() => import('../confirmations/confirm/confirm.tsx'));
 const SendPage = mmLazy(() => import('../confirmations/send/index.ts'));
 const PermissionsConnect = mmLazy(
@@ -239,14 +231,6 @@ export const routeConfig = [
       {
         path: `${SEND_ROUTE}/:page?`,
         element: <SendPage />,
-      },
-      {
-        path: `${CONFIRM_TRANSACTION_ROUTE}/:id?${DECRYPT_MESSAGE_REQUEST_PATH}`,
-        element: <ConfirmDecryptMessage />,
-      },
-      {
-        path: `${CONFIRM_TRANSACTION_ROUTE}/:id?${ENCRYPTION_PUBLIC_KEY_REQUEST_PATH}`,
-        element: <ConfirmEncryptionPublicKey />,
       },
       {
         path: `${CONFIRM_TRANSACTION_ROUTE}/:id?/*`,

@@ -13,8 +13,6 @@ import {
   CONFIRM_TRANSACTION_ROUTE,
   CONFIRMATION_V_NEXT_ROUTE,
   CONNECT_ROUTE,
-  DECRYPT_MESSAGE_REQUEST_PATH,
-  ENCRYPTION_PUBLIC_KEY_REQUEST_PATH,
   SIGNATURE_REQUEST_PATH,
 } from '../../../helpers/constants/routes';
 import { isSignatureTransactionType } from '../utils';
@@ -166,14 +164,6 @@ export function getConfirmationRoute(
 
   if (type === ApprovalType.AddEthereumChain) {
     return `${CONFIRM_TRANSACTION_ROUTE}/${confirmationId}`;
-  }
-
-  if (type === ApprovalType.EthDecrypt) {
-    return `${CONFIRM_TRANSACTION_ROUTE}/${confirmationId}${DECRYPT_MESSAGE_REQUEST_PATH}`;
-  }
-
-  if (type === ApprovalType.EthGetEncryptionPublicKey) {
-    return `${CONFIRM_TRANSACTION_ROUTE}/${confirmationId}${ENCRYPTION_PUBLIC_KEY_REQUEST_PATH}`;
   }
 
   if (CONNECT_APPROVAL_TYPES.includes(type)) {

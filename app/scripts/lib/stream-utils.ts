@@ -23,6 +23,9 @@ type StreamLike = {
  */
 export function setupMultiplex(connectionStream: Duplex): ObjectMultiplex {
   const mux = new ObjectMultiplex();
+  // The pipeline and each expected substream add lifecycle listeners to the
+  // mux, so the default EventEmitter limit of 10 is too low for this topology.
+  mux.setMaxListeners(25);
   pipeline(connectionStream, mux, connectionStream, (err: Error | null) => {
     // For context and todos related to the error message match, see https://github.com/MetaMask/metamask-extension/issues/26337
     if (err && !err.message?.match('Premature close')) {

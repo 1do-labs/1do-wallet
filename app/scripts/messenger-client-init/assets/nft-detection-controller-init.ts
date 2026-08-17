@@ -1,6 +1,6 @@
-import { NftDetectionController } from '@metamask/assets-controllers';
 import { MessengerClientInitFunction } from '../types';
 import { NftDetectionControllerMessenger } from '../messengers/assets';
+import { AlchemyNftDetectionController } from '../../controllers/alchemy-nft-detection-controller';
 
 /**
  * Initialize the NFT detection controller.
@@ -11,7 +11,7 @@ import { NftDetectionControllerMessenger } from '../messengers/assets';
  * @returns The initialized controller.
  */
 export const NftDetectionControllerInit: MessengerClientInitFunction<
-  NftDetectionController,
+  AlchemyNftDetectionController,
   NftDetectionControllerMessenger
 > = (request) => {
   const { controllerMessenger, getMessengerClient } = request;
@@ -20,7 +20,7 @@ export const NftDetectionControllerInit: MessengerClientInitFunction<
     getMessengerClient('PreferencesController');
   const nftController = () => getMessengerClient('NftController');
 
-  const messengerClient = new NftDetectionController({
+  const messengerClient = new AlchemyNftDetectionController({
     messenger: controllerMessenger,
     addNfts: (...args) => nftController().addNfts(...args),
     getNftState: () => nftController().state,

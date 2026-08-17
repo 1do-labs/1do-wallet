@@ -39,8 +39,6 @@ import {
   selectTransactionMetadata,
   selectTransactionSender,
   unapprovedPersonalMsgsSelector,
-  unapprovedDecryptMsgsSelector,
-  unapprovedEncryptionPublicKeyMsgsSelector,
   unapprovedTypedMessagesSelector,
 } from './transactions';
 
@@ -49,42 +47,27 @@ const unapprovedTxsSelector = (state) => getUnapprovedTransactions(state);
 export const unconfirmedTransactionsListSelector = createSelector(
   unapprovedTxsSelector,
   unapprovedPersonalMsgsSelector,
-  unapprovedDecryptMsgsSelector,
-  unapprovedEncryptionPublicKeyMsgsSelector,
   unapprovedTypedMessagesSelector,
   (
     unapprovedTxs = {},
     unapprovedPersonalMsgs = {},
-    unapprovedDecryptMsgs = {},
-    unapprovedEncryptionPublicKeyMsgs = {},
     unapprovedTypedMessages = {},
   ) =>
-    txHelper(
-      unapprovedTxs,
-      unapprovedPersonalMsgs,
-      unapprovedDecryptMsgs,
-      unapprovedEncryptionPublicKeyMsgs,
-      unapprovedTypedMessages,
-    ) || [],
+    txHelper(unapprovedTxs, unapprovedPersonalMsgs, unapprovedTypedMessages) ||
+    [],
 );
 
 export const unconfirmedTransactionsHashSelector = createSelector(
   unapprovedTxsSelector,
   unapprovedPersonalMsgsSelector,
-  unapprovedDecryptMsgsSelector,
-  unapprovedEncryptionPublicKeyMsgsSelector,
   unapprovedTypedMessagesSelector,
   (
     unapprovedTxs = {},
     unapprovedPersonalMsgs = {},
-    unapprovedDecryptMsgs = {},
-    unapprovedEncryptionPublicKeyMsgs = {},
     unapprovedTypedMessages = {},
   ) => ({
     ...unapprovedTxs,
     ...unapprovedPersonalMsgs,
-    ...unapprovedDecryptMsgs,
-    ...unapprovedEncryptionPublicKeyMsgs,
     ...unapprovedTypedMessages,
   }),
 );

@@ -44,14 +44,19 @@ init().then(() => {
     });
   }
 
-  chrome.runtime.sendMessage({
-    target: OffscreenCommunicationTarget.extensionMain,
-    isBooted: true,
+  try {
+    const result = chrome.runtime.sendMessage({
+      target: OffscreenCommunicationTarget.extensionMain,
+      isBooted: true,
 
-    // This message is being sent from the Offscreen Document to the Service Worker.
-    // The Service Worker has no way to query `navigator.webdriver`, so we send it here.
-    webdriverPresent: navigator.webdriver === true,
-  });
+      // This message is being sent from the Offscreen Document to the Service Worker.
+      // The Service Worker has no way to query `navigator.webdriver`, so we send it here.
+      webdriverPresent: navigator.webdriver === true,
+    });
+    Promise.resolve(result).catch(() => undefined);
+  } catch {
+    // The service worker may be unavailable while it is starting or reloading.
+  }
 
   initConnectivityDetection();
 });

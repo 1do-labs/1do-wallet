@@ -116,6 +116,546 @@ exports[`PrivacyTab snapshot matches snapshot 1`] = `
           <p
             class="text-default text-s-body-md leading-s-body-md tracking-s-body-md md:text-l-body-md md:leading-l-body-md md:tracking-l-body-md font-medium font-default"
           >
+            Indexed activity
+          </p>
+          <div>
+            <label
+              class="toggle-button toggle-button--off"
+              tabindex="0"
+            >
+              <div
+                style="display: flex; width: 40px; align-items: center; justify-content: flex-start; position: relative; cursor: pointer; background-color: transparent; border: 0px; padding: 0px; user-select: none;"
+              >
+                <div
+                  style="width: 40px; height: 24px; padding: 0px; border-radius: 26px; display: flex; align-items: center; justify-content: center; background-color: rgb(186, 187, 190);"
+                >
+                  <div
+                    style="font-size: 11px; display: flex; align-items: center; justify-content: center; font-family: 'Helvetica Neue', Helvetica, sans-serif; position: relative; color: rgb(250, 250, 250); margin-top: auto; margin-bottom: auto; line-height: 0; opacity: 0; width: 26px; height: 20px; left: 4px;"
+                  />
+                  <div
+                    style="font-size: 11px; display: flex; align-items: center; justify-content: center; font-family: 'Helvetica Neue', Helvetica, sans-serif; position: relative; color: rgba(255, 255, 255, 0.6); bottom: 0px; margin-top: auto; margin-bottom: auto; padding-right: 5px; line-height: 0; width: 26px; height: 20px; opacity: 1;"
+                  />
+                </div>
+                <div
+                  style="position: absolute; height: 100%; top: 0px; left: 0px; display: flex; flex: 1; align-self: stretch; align-items: center; justify-content: flex-start;"
+                >
+                  <div
+                    style="width: 18px; height: 18px; display: flex; align-self: center; box-shadow: var(--shadow-size-xs) var(--color-shadow-default); border-radius: 50%; box-sizing: border-box; position: relative; background-color: rgb(255, 255, 255); left: 3px;"
+                  />
+                </div>
+                <input
+                  data-testid="indexed-activity-toggle"
+                  style="border: 0px; height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: absolute; width: 1px;"
+                  type="checkbox"
+                  value="false"
+                />
+              </div>
+            </label>
+          </div>
+        </div>
+        <p
+          class="text-alternative text-s-body-md leading-s-body-md tracking-s-body-md md:text-l-body-md md:leading-l-body-md md:tracking-l-body-md font-regular font-default"
+        >
+          Send your account address and selected networks to your configured Alchemy RPC endpoints to load complete activity history.
+        </p>
+      </div>
+    </div>
+    <div>
+      <div
+        class="flex flex-col gap-1 px-4 py-3"
+      >
+        <div
+          class="flex flex-row items-center justify-between"
+        >
+          <p
+            class="text-default text-s-body-md leading-s-body-md tracking-s-body-md md:text-l-body-md md:leading-l-body-md md:tracking-l-body-md font-medium font-default"
+          >
+            Fiat prices
+          </p>
+          <div>
+            <label
+              class="toggle-button toggle-button--on"
+              tabindex="0"
+            >
+              <div
+                style="display: flex; width: 40px; align-items: center; justify-content: flex-start; position: relative; cursor: pointer; background-color: transparent; border: 0px; padding: 0px; user-select: none;"
+              >
+                <div
+                  style="width: 40px; height: 24px; padding: 0px; border-radius: 26px; display: flex; align-items: center; justify-content: center; background-color: rgb(68, 89, 255);"
+                >
+                  <div
+                    style="font-size: 11px; display: flex; align-items: center; justify-content: center; font-family: 'Helvetica Neue', Helvetica, sans-serif; position: relative; color: rgb(250, 250, 250); margin-top: auto; margin-bottom: auto; line-height: 0; opacity: 1; width: 26px; height: 20px; left: 4px;"
+                  />
+                  <div
+                    style="font-size: 11px; display: flex; align-items: center; justify-content: center; font-family: 'Helvetica Neue', Helvetica, sans-serif; position: relative; color: rgba(255, 255, 255, 0.6); bottom: 0px; margin-top: auto; margin-bottom: auto; padding-right: 5px; line-height: 0; width: 26px; height: 20px; opacity: 0;"
+                  />
+                </div>
+                <div
+                  style="position: absolute; height: 100%; top: 0px; left: 0px; display: flex; flex: 1; align-self: stretch; align-items: center; justify-content: flex-start;"
+                >
+                  <div
+                    style="width: 18px; height: 18px; display: flex; align-self: center; box-shadow: var(--shadow-size-xs) var(--color-shadow-default); border-radius: 50%; box-sizing: border-box; position: relative; background-color: rgb(255, 255, 255); left: 18px;"
+                  />
+                </div>
+                <input
+                  data-testid="fiat-prices-toggle"
+                  style="border: 0px; height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: absolute; width: 1px;"
+                  type="checkbox"
+                  value="true"
+                />
+              </div>
+            </label>
+          </div>
+        </div>
+        <p
+          class="text-alternative text-s-body-md leading-s-body-md tracking-s-body-md md:text-l-body-md md:leading-l-body-md md:tracking-l-body-md font-regular font-default"
+        >
+          Fetch token exchange rates from Alchemy so 1Do can show fiat values.
+        </p>
+      </div>
+    </div>
+    <div>
+      <div
+        class="flex flex-col gap-1 px-4 py-3"
+      >
+        <div
+          class="flex flex-row items-center justify-between"
+        >
+          <p
+            class="text-default text-s-body-md leading-s-body-md tracking-s-body-md md:text-l-body-md md:leading-l-body-md md:tracking-l-body-md font-medium font-default"
+          >
+            Transaction simulation
+          </p>
+          <div>
+            <label
+              class="toggle-button toggle-button--off"
+              tabindex="0"
+            >
+              <div
+                style="display: flex; width: 40px; align-items: center; justify-content: flex-start; position: relative; cursor: pointer; background-color: transparent; border: 0px; padding: 0px; user-select: none;"
+              >
+                <div
+                  style="width: 40px; height: 24px; padding: 0px; border-radius: 26px; display: flex; align-items: center; justify-content: center; background-color: rgb(186, 187, 190);"
+                >
+                  <div
+                    style="font-size: 11px; display: flex; align-items: center; justify-content: center; font-family: 'Helvetica Neue', Helvetica, sans-serif; position: relative; color: rgb(250, 250, 250); margin-top: auto; margin-bottom: auto; line-height: 0; opacity: 0; width: 26px; height: 20px; left: 4px;"
+                  />
+                  <div
+                    style="font-size: 11px; display: flex; align-items: center; justify-content: center; font-family: 'Helvetica Neue', Helvetica, sans-serif; position: relative; color: rgba(255, 255, 255, 0.6); bottom: 0px; margin-top: auto; margin-bottom: auto; padding-right: 5px; line-height: 0; width: 26px; height: 20px; opacity: 1;"
+                  />
+                </div>
+                <div
+                  style="position: absolute; height: 100%; top: 0px; left: 0px; display: flex; flex: 1; align-self: stretch; align-items: center; justify-content: flex-start;"
+                >
+                  <div
+                    style="width: 18px; height: 18px; display: flex; align-self: center; box-shadow: var(--shadow-size-xs) var(--color-shadow-default); border-radius: 50%; box-sizing: border-box; position: relative; background-color: rgb(255, 255, 255); left: 3px;"
+                  />
+                </div>
+                <input
+                  data-testid="transaction-simulation-toggle"
+                  style="border: 0px; height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: absolute; width: 1px;"
+                  type="checkbox"
+                  value="false"
+                />
+              </div>
+            </label>
+          </div>
+        </div>
+        <p
+          class="text-alternative text-s-body-md leading-s-body-md tracking-s-body-md md:text-l-body-md md:leading-l-body-md md:tracking-l-body-md font-regular font-default"
+        >
+          Send unsigned transaction details to Alchemy to estimate balance changes before confirmation.
+        </p>
+      </div>
+    </div>
+    <div>
+      <div
+        class="flex flex-col gap-1 px-4 py-3"
+      >
+        <div
+          class="flex flex-row items-center justify-between"
+        >
+          <p
+            class="text-default text-s-body-md leading-s-body-md tracking-s-body-md md:text-l-body-md md:leading-l-body-md md:tracking-l-body-md font-medium font-default"
+          >
+            Verified contract decoding
+          </p>
+          <div>
+            <label
+              class="toggle-button toggle-button--off"
+              tabindex="0"
+            >
+              <div
+                style="display: flex; width: 40px; align-items: center; justify-content: flex-start; position: relative; cursor: pointer; background-color: transparent; border: 0px; padding: 0px; user-select: none;"
+              >
+                <div
+                  style="width: 40px; height: 24px; padding: 0px; border-radius: 26px; display: flex; align-items: center; justify-content: center; background-color: rgb(186, 187, 190);"
+                >
+                  <div
+                    style="font-size: 11px; display: flex; align-items: center; justify-content: center; font-family: 'Helvetica Neue', Helvetica, sans-serif; position: relative; color: rgb(250, 250, 250); margin-top: auto; margin-bottom: auto; line-height: 0; opacity: 0; width: 26px; height: 20px; left: 4px;"
+                  />
+                  <div
+                    style="font-size: 11px; display: flex; align-items: center; justify-content: center; font-family: 'Helvetica Neue', Helvetica, sans-serif; position: relative; color: rgba(255, 255, 255, 0.6); bottom: 0px; margin-top: auto; margin-bottom: auto; padding-right: 5px; line-height: 0; width: 26px; height: 20px; opacity: 1;"
+                  />
+                </div>
+                <div
+                  style="position: absolute; height: 100%; top: 0px; left: 0px; display: flex; flex: 1; align-self: stretch; align-items: center; justify-content: flex-start;"
+                >
+                  <div
+                    style="width: 18px; height: 18px; display: flex; align-self: center; box-shadow: var(--shadow-size-xs) var(--color-shadow-default); border-radius: 50%; box-sizing: border-box; position: relative; background-color: rgb(255, 255, 255); left: 3px;"
+                  />
+                </div>
+                <input
+                  data-testid="verified-contract-decoding-toggle"
+                  style="border: 0px; height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: absolute; width: 1px;"
+                  type="checkbox"
+                  value="false"
+                />
+              </div>
+            </label>
+          </div>
+        </div>
+        <p
+          class="text-alternative text-s-body-md leading-s-body-md tracking-s-body-md md:text-l-body-md md:leading-l-body-md md:tracking-l-body-md font-regular font-default"
+        >
+          Send contract addresses, chain IDs, and function data to Sourcify to decode verified contracts.
+        </p>
+      </div>
+    </div>
+    <div>
+      <div
+        class="flex flex-col gap-1 px-4 py-3"
+      >
+        <div
+          class="flex flex-row items-center justify-between"
+        >
+          <p
+            class="text-default text-s-body-md leading-s-body-md tracking-s-body-md md:text-l-body-md md:leading-l-body-md md:tracking-l-body-md font-medium font-default"
+          >
+            Unverified function lookup
+          </p>
+          <div>
+            <label
+              class="toggle-button toggle-button--on"
+              tabindex="0"
+            >
+              <div
+                style="display: flex; width: 40px; align-items: center; justify-content: flex-start; position: relative; cursor: pointer; background-color: transparent; border: 0px; padding: 0px; user-select: none;"
+              >
+                <div
+                  style="width: 40px; height: 24px; padding: 0px; border-radius: 26px; display: flex; align-items: center; justify-content: center; background-color: rgb(68, 89, 255);"
+                >
+                  <div
+                    style="font-size: 11px; display: flex; align-items: center; justify-content: center; font-family: 'Helvetica Neue', Helvetica, sans-serif; position: relative; color: rgb(250, 250, 250); margin-top: auto; margin-bottom: auto; line-height: 0; opacity: 1; width: 26px; height: 20px; left: 4px;"
+                  />
+                  <div
+                    style="font-size: 11px; display: flex; align-items: center; justify-content: center; font-family: 'Helvetica Neue', Helvetica, sans-serif; position: relative; color: rgba(255, 255, 255, 0.6); bottom: 0px; margin-top: auto; margin-bottom: auto; padding-right: 5px; line-height: 0; width: 26px; height: 20px; opacity: 0;"
+                  />
+                </div>
+                <div
+                  style="position: absolute; height: 100%; top: 0px; left: 0px; display: flex; flex: 1; align-self: stretch; align-items: center; justify-content: flex-start;"
+                >
+                  <div
+                    style="width: 18px; height: 18px; display: flex; align-self: center; box-shadow: var(--shadow-size-xs) var(--color-shadow-default); border-radius: 50%; box-sizing: border-box; position: relative; background-color: rgb(255, 255, 255); left: 18px;"
+                  />
+                </div>
+                <input
+                  data-testid="function-signature-lookup-toggle"
+                  style="border: 0px; height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: absolute; width: 1px;"
+                  type="checkbox"
+                  value="true"
+                />
+              </div>
+            </label>
+          </div>
+        </div>
+        <p
+          class="text-alternative text-s-body-md leading-s-body-md tracking-s-body-md md:text-l-body-md md:leading-l-body-md md:tracking-l-body-md font-regular font-default"
+        >
+          Send unknown function selectors to 4byte.directory only when verified and built-in decoding cannot identify them.
+        </p>
+      </div>
+    </div>
+    <div>
+      <div
+        class="flex flex-col gap-1 px-4 py-3"
+      >
+        <div
+          class="flex flex-row items-center justify-between"
+        >
+          <p
+            class="text-default text-s-body-md leading-s-body-md tracking-s-body-md md:text-l-body-md md:leading-l-body-md md:tracking-l-body-md font-medium font-default"
+          >
+            External address labels
+          </p>
+          <div>
+            <label
+              class="toggle-button toggle-button--off"
+              tabindex="0"
+            >
+              <div
+                style="display: flex; width: 40px; align-items: center; justify-content: flex-start; position: relative; cursor: pointer; background-color: transparent; border: 0px; padding: 0px; user-select: none;"
+              >
+                <div
+                  style="width: 40px; height: 24px; padding: 0px; border-radius: 26px; display: flex; align-items: center; justify-content: center; background-color: rgb(186, 187, 190);"
+                >
+                  <div
+                    style="font-size: 11px; display: flex; align-items: center; justify-content: center; font-family: 'Helvetica Neue', Helvetica, sans-serif; position: relative; color: rgb(250, 250, 250); margin-top: auto; margin-bottom: auto; line-height: 0; opacity: 0; width: 26px; height: 20px; left: 4px;"
+                  />
+                  <div
+                    style="font-size: 11px; display: flex; align-items: center; justify-content: center; font-family: 'Helvetica Neue', Helvetica, sans-serif; position: relative; color: rgba(255, 255, 255, 0.6); bottom: 0px; margin-top: auto; margin-bottom: auto; padding-right: 5px; line-height: 0; width: 26px; height: 20px; opacity: 1;"
+                  />
+                </div>
+                <div
+                  style="position: absolute; height: 100%; top: 0px; left: 0px; display: flex; flex: 1; align-self: stretch; align-items: center; justify-content: flex-start;"
+                >
+                  <div
+                    style="width: 18px; height: 18px; display: flex; align-self: center; box-shadow: var(--shadow-size-xs) var(--color-shadow-default); border-radius: 50%; box-sizing: border-box; position: relative; background-color: rgb(255, 255, 255); left: 3px;"
+                  />
+                </div>
+                <input
+                  data-testid="external-address-labels-toggle"
+                  style="border: 0px; height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: absolute; width: 1px;"
+                  type="checkbox"
+                  value="false"
+                />
+              </div>
+            </label>
+          </div>
+        </div>
+        <p
+          class="text-alternative text-s-body-md leading-s-body-md tracking-s-body-md md:text-l-body-md md:leading-l-body-md md:tracking-l-body-md font-regular font-default"
+        >
+          Use external name sources to suggest human-readable labels for contract and account addresses.
+        </p>
+      </div>
+    </div>
+    <div>
+      <div
+        class="flex flex-col gap-1 px-4 py-3"
+      >
+        <div
+          class="flex flex-row items-center justify-between"
+        >
+          <p
+            class="text-default text-s-body-md leading-s-body-md tracking-s-body-md md:text-l-body-md md:leading-l-body-md md:tracking-l-body-md font-medium font-default"
+          >
+            Network metadata
+          </p>
+          <div>
+            <label
+              class="toggle-button toggle-button--off"
+              tabindex="0"
+            >
+              <div
+                style="display: flex; width: 40px; align-items: center; justify-content: flex-start; position: relative; cursor: pointer; background-color: transparent; border: 0px; padding: 0px; user-select: none;"
+              >
+                <div
+                  style="width: 40px; height: 24px; padding: 0px; border-radius: 26px; display: flex; align-items: center; justify-content: center; background-color: rgb(186, 187, 190);"
+                >
+                  <div
+                    style="font-size: 11px; display: flex; align-items: center; justify-content: center; font-family: 'Helvetica Neue', Helvetica, sans-serif; position: relative; color: rgb(250, 250, 250); margin-top: auto; margin-bottom: auto; line-height: 0; opacity: 0; width: 26px; height: 20px; left: 4px;"
+                  />
+                  <div
+                    style="font-size: 11px; display: flex; align-items: center; justify-content: center; font-family: 'Helvetica Neue', Helvetica, sans-serif; position: relative; color: rgba(255, 255, 255, 0.6); bottom: 0px; margin-top: auto; margin-bottom: auto; padding-right: 5px; line-height: 0; width: 26px; height: 20px; opacity: 1;"
+                  />
+                </div>
+                <div
+                  style="position: absolute; height: 100%; top: 0px; left: 0px; display: flex; flex: 1; align-self: stretch; align-items: center; justify-content: flex-start;"
+                >
+                  <div
+                    style="width: 18px; height: 18px; display: flex; align-self: center; box-shadow: var(--shadow-size-xs) var(--color-shadow-default); border-radius: 50%; box-sizing: border-box; position: relative; background-color: rgb(255, 255, 255); left: 3px;"
+                  />
+                </div>
+                <input
+                  data-testid="network-metadata-toggle"
+                  style="border: 0px; height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: absolute; width: 1px;"
+                  type="checkbox"
+                  value="false"
+                />
+              </div>
+            </label>
+          </div>
+        </div>
+        <p
+          class="text-alternative text-s-body-md leading-s-body-md tracking-s-body-md md:text-l-body-md md:leading-l-body-md md:tracking-l-body-md font-regular font-default"
+        >
+          Check network names, symbols, and explorer details against the community chain registry when adding a network.
+        </p>
+      </div>
+    </div>
+    <div>
+      <div
+        class="flex flex-col gap-1 px-4 py-3"
+      >
+        <div
+          class="flex flex-row items-center justify-between"
+        >
+          <p
+            class="text-default text-s-body-md leading-s-body-md tracking-s-body-md md:text-l-body-md md:leading-l-body-md md:tracking-l-body-md font-medium font-default"
+          >
+            Autodetect tokens
+          </p>
+          <div>
+            <label
+              class="toggle-button toggle-button--on"
+              tabindex="0"
+            >
+              <div
+                style="display: flex; width: 40px; align-items: center; justify-content: flex-start; position: relative; cursor: pointer; background-color: transparent; border: 0px; padding: 0px; user-select: none;"
+              >
+                <div
+                  style="width: 40px; height: 24px; padding: 0px; border-radius: 26px; display: flex; align-items: center; justify-content: center; background-color: rgb(68, 89, 255);"
+                >
+                  <div
+                    style="font-size: 11px; display: flex; align-items: center; justify-content: center; font-family: 'Helvetica Neue', Helvetica, sans-serif; position: relative; color: rgb(250, 250, 250); margin-top: auto; margin-bottom: auto; line-height: 0; opacity: 1; width: 26px; height: 20px; left: 4px;"
+                  />
+                  <div
+                    style="font-size: 11px; display: flex; align-items: center; justify-content: center; font-family: 'Helvetica Neue', Helvetica, sans-serif; position: relative; color: rgba(255, 255, 255, 0.6); bottom: 0px; margin-top: auto; margin-bottom: auto; padding-right: 5px; line-height: 0; width: 26px; height: 20px; opacity: 0;"
+                  />
+                </div>
+                <div
+                  style="position: absolute; height: 100%; top: 0px; left: 0px; display: flex; flex: 1; align-self: stretch; align-items: center; justify-content: flex-start;"
+                >
+                  <div
+                    style="width: 18px; height: 18px; display: flex; align-self: center; box-shadow: var(--shadow-size-xs) var(--color-shadow-default); border-radius: 50%; box-sizing: border-box; position: relative; background-color: rgb(255, 255, 255); left: 18px;"
+                  />
+                </div>
+                <input
+                  data-testid="token-detection-toggle"
+                  style="border: 0px; height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: absolute; width: 1px;"
+                  type="checkbox"
+                  value="true"
+                />
+              </div>
+            </label>
+          </div>
+        </div>
+        <p
+          class="text-alternative text-s-body-md leading-s-body-md tracking-s-body-md md:text-l-body-md md:leading-l-body-md md:tracking-l-body-md font-regular font-default"
+        >
+          Detects tokens with non-zero balances through your configured Alchemy endpoint, which receives your IP and account address.
+        </p>
+      </div>
+    </div>
+    <div>
+      <div
+        class="flex flex-col gap-1 px-4 py-3"
+      >
+        <div
+          class="flex flex-row items-center justify-between"
+        >
+          <p
+            class="text-default text-s-body-md leading-s-body-md tracking-s-body-md md:text-l-body-md md:leading-l-body-md md:tracking-l-body-md font-medium font-default"
+          >
+            Autodetect NFTs
+          </p>
+          <div>
+            <label
+              class="toggle-button toggle-button--on"
+              tabindex="0"
+            >
+              <div
+                style="display: flex; width: 40px; align-items: center; justify-content: flex-start; position: relative; cursor: pointer; background-color: transparent; border: 0px; padding: 0px; user-select: none;"
+              >
+                <div
+                  style="width: 40px; height: 24px; padding: 0px; border-radius: 26px; display: flex; align-items: center; justify-content: center; background-color: rgb(68, 89, 255);"
+                >
+                  <div
+                    style="font-size: 11px; display: flex; align-items: center; justify-content: center; font-family: 'Helvetica Neue', Helvetica, sans-serif; position: relative; color: rgb(250, 250, 250); margin-top: auto; margin-bottom: auto; line-height: 0; opacity: 1; width: 26px; height: 20px; left: 4px;"
+                  />
+                  <div
+                    style="font-size: 11px; display: flex; align-items: center; justify-content: center; font-family: 'Helvetica Neue', Helvetica, sans-serif; position: relative; color: rgba(255, 255, 255, 0.6); bottom: 0px; margin-top: auto; margin-bottom: auto; padding-right: 5px; line-height: 0; width: 26px; height: 20px; opacity: 0;"
+                  />
+                </div>
+                <div
+                  style="position: absolute; height: 100%; top: 0px; left: 0px; display: flex; flex: 1; align-self: stretch; align-items: center; justify-content: flex-start;"
+                >
+                  <div
+                    style="width: 18px; height: 18px; display: flex; align-self: center; box-shadow: var(--shadow-size-xs) var(--color-shadow-default); border-radius: 50%; box-sizing: border-box; position: relative; background-color: rgb(255, 255, 255); left: 18px;"
+                  />
+                </div>
+                <input
+                  data-testid="nft-detection-toggle"
+                  style="border: 0px; height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: absolute; width: 1px;"
+                  type="checkbox"
+                  value="true"
+                />
+              </div>
+            </label>
+          </div>
+        </div>
+        <p
+          class="text-alternative text-s-body-md leading-s-body-md tracking-s-body-md md:text-l-body-md md:leading-l-body-md md:tracking-l-body-md font-regular font-default"
+        >
+          Detects NFTs through your configured Alchemy endpoint, which receives your IP and account address.
+        </p>
+      </div>
+    </div>
+    <div>
+      <div
+        class="flex flex-col gap-1 px-4 py-3"
+      >
+        <div
+          class="flex flex-row items-center justify-between"
+        >
+          <p
+            class="text-default text-s-body-md leading-s-body-md tracking-s-body-md md:text-l-body-md md:leading-l-body-md md:tracking-l-body-md font-medium font-default"
+          >
+            Display NFT media
+          </p>
+          <div>
+            <label
+              class="toggle-button toggle-button--on"
+              tabindex="0"
+            >
+              <div
+                style="display: flex; width: 40px; align-items: center; justify-content: flex-start; position: relative; cursor: pointer; background-color: transparent; border: 0px; padding: 0px; user-select: none;"
+              >
+                <div
+                  style="width: 40px; height: 24px; padding: 0px; border-radius: 26px; display: flex; align-items: center; justify-content: center; background-color: rgb(68, 89, 255);"
+                >
+                  <div
+                    style="font-size: 11px; display: flex; align-items: center; justify-content: center; font-family: 'Helvetica Neue', Helvetica, sans-serif; position: relative; color: rgb(250, 250, 250); margin-top: auto; margin-bottom: auto; line-height: 0; opacity: 1; width: 26px; height: 20px; left: 4px;"
+                  />
+                  <div
+                    style="font-size: 11px; display: flex; align-items: center; justify-content: center; font-family: 'Helvetica Neue', Helvetica, sans-serif; position: relative; color: rgba(255, 255, 255, 0.6); bottom: 0px; margin-top: auto; margin-bottom: auto; padding-right: 5px; line-height: 0; width: 26px; height: 20px; opacity: 0;"
+                  />
+                </div>
+                <div
+                  style="position: absolute; height: 100%; top: 0px; left: 0px; display: flex; flex: 1; align-self: stretch; align-items: center; justify-content: flex-start;"
+                >
+                  <div
+                    style="width: 18px; height: 18px; display: flex; align-self: center; box-shadow: var(--shadow-size-xs) var(--color-shadow-default); border-radius: 50%; box-sizing: border-box; position: relative; background-color: rgb(255, 255, 255); left: 18px;"
+                  />
+                </div>
+                <input
+                  data-testid="nft-media-toggle"
+                  style="border: 0px; height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: absolute; width: 1px;"
+                  type="checkbox"
+                  value="true"
+                />
+              </div>
+            </label>
+          </div>
+        </div>
+        <p
+          class="text-alternative text-s-body-md leading-s-body-md tracking-s-body-md md:text-l-body-md md:leading-l-body-md md:tracking-l-body-md font-regular font-default"
+        >
+          NFT autodetection relies on this feature.
+        </p>
+      </div>
+    </div>
+    <div>
+      <div
+        class="flex flex-col gap-1 px-4 py-3"
+      >
+        <div
+          class="flex flex-row items-center justify-between"
+        >
+          <p
+            class="text-default text-s-body-md leading-s-body-md tracking-s-body-md md:text-l-body-md md:leading-l-body-md md:tracking-l-body-md font-medium font-default"
+          >
             Batch account balance requests
           </p>
           <div>

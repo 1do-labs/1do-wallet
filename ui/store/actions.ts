@@ -729,96 +729,6 @@ export function setCurrentCurrency(
   };
 }
 
-export function decryptMsgInline(
-  decryptedMsgData: TemporaryMessageDataType['msgParams'],
-): ThunkAction<
-  Promise<TemporaryMessageDataType>,
-  MetaMaskReduxState,
-  unknown,
-  AnyAction
-> {
-  log.debug('action - decryptMsgInline');
-  return async (dispatch: MetaMaskReduxDispatch) => {
-    log.debug(`actions calling background.decryptMessageInline`);
-
-    try {
-      await submitRequestToBackground('decryptMessageInline', [
-        decryptedMsgData,
-      ]);
-    } catch (error) {
-      logErrorWithMessage(error);
-      dispatch(displayWarning(error));
-      throw error;
-    }
-
-    const newState = await forceUpdateMetamaskState(dispatch);
-    return newState.unapprovedDecryptMsgs[decryptedMsgData.metamaskId];
-  };
-}
-
-export function decryptMsg(
-  decryptedMsgData: TemporaryMessageDataType['msgParams'],
-): ThunkAction<
-  Promise<TemporaryMessageDataType['msgParams']>,
-  MetaMaskReduxState,
-  unknown,
-  AnyAction
-> {
-  log.debug('action - decryptMsg');
-  return async (dispatch: MetaMaskReduxDispatch) => {
-    dispatch(showLoadingIndication());
-    log.debug(`actions calling background.decryptMessage`);
-
-    try {
-      await submitRequestToBackground('decryptMessage', [decryptedMsgData]);
-    } catch (error) {
-      logErrorWithMessage(error);
-      dispatch(displayWarning(error));
-      throw error;
-    } finally {
-      dispatch(hideLoadingIndication());
-    }
-
-    await forceUpdateMetamaskState(dispatch);
-    dispatch(completedTx(decryptedMsgData.metamaskId));
-    dispatch(closeCurrentNotificationWindow());
-    return decryptedMsgData;
-  };
-}
-
-export function encryptionPublicKeyMsg(
-  msgData: TemporaryMessageDataType['msgParams'],
-): ThunkAction<
-  Promise<TemporaryMessageDataType['msgParams']>,
-  MetaMaskReduxState,
-  unknown,
-  AnyAction
-> {
-  log.debug('action - encryptionPublicKeyMsg');
-  return async (dispatch: MetaMaskReduxDispatch) => {
-    dispatch(showLoadingIndication());
-    log.debug(`actions calling background.encryptionPublicKey`);
-
-    try {
-      await submitRequestToBackground<MetaMaskReduxState['metamask']>(
-        'encryptionPublicKey',
-        [msgData],
-      );
-    } catch (error) {
-      logErrorWithMessage(error);
-      dispatch(displayWarning(error));
-      throw error;
-    } finally {
-      dispatch(hideLoadingIndication());
-    }
-
-    await forceUpdateMetamaskState(dispatch);
-    dispatch(completedTx(msgData.metamaskId));
-    dispatch(closeCurrentNotificationWindow());
-    return msgData;
-  };
-}
-
 export function updateCustomNonce(value: string) {
   return {
     type: actionConstants.UPDATE_CUSTOM_NONCE,
@@ -3702,6 +3612,14 @@ export function setUseCurrencyRateCheck(
       dispatch(hideLoadingIndication());
     }
   };
+}
+
+export function setUseIndexedActivity(val: boolean): void {
+  submitRequestToBackground('setUseIndexedActivity', [val]);
+}
+
+export function setUseVerifiedContractDecoding(val: boolean): void {
+  submitRequestToBackground('setUseVerifiedContractDecoding', [val]);
 }
 
 // MultichainAssetsRatesController

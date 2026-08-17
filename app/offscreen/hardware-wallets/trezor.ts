@@ -38,14 +38,19 @@ export default function init() {
             }
 
             if (event.payload.features?.model) {
-              chrome.runtime.sendMessage({
-                target: OffscreenCommunicationTarget.extension,
-                event: OffscreenCommunicationEvents.trezorDeviceConnect,
-                payload: {
-                  model: event.payload.features.model,
-                  minorVersion: event.payload.features.minor_version,
-                },
-              });
+              try {
+                const result = chrome.runtime.sendMessage({
+                  target: OffscreenCommunicationTarget.extension,
+                  event: OffscreenCommunicationEvents.trezorDeviceConnect,
+                  payload: {
+                    model: event.payload.features.model,
+                    minorVersion: event.payload.features.minor_version,
+                  },
+                });
+                Promise.resolve(result).catch(() => undefined);
+              } catch {
+                // The service worker may be unavailable while it is starting or reloading.
+              }
             }
           });
 

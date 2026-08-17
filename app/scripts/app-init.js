@@ -8,6 +8,17 @@ import { ExtensionLazyListener } from './lib/extension-lazy-listener/extension-l
 
 const { chrome } = globalThis;
 
+// React's scheduler can be loaded by the service-worker bundle, where browser
+// animation APIs are unavailable. Provide a timer-backed implementation before
+// any bundled modules are imported to avoid noisy compatibility warnings.
+if (typeof globalThis.requestAnimationFrame !== 'function') {
+  globalThis.requestAnimationFrame = (callback) =>
+    setTimeout(() => callback(Date.now()), 16);
+}
+if (typeof globalThis.cancelAnimationFrame !== 'function') {
+  globalThis.cancelAnimationFrame = (handle) => clearTimeout(handle);
+}
+
 // this needs to be run early so we can begin listening to these browser events
 // as soon as possible
 const lazyListener = new ExtensionLazyListener(chrome, {

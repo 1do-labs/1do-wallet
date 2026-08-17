@@ -1,5 +1,5 @@
-import { TokenDetectionController } from '@metamask/assets-controllers';
 import type { PreferencesControllerState } from '../controllers/preferences-controller';
+import { AlchemyTokenDetectionController } from '../controllers/alchemy-token-detection-controller';
 import { MessengerClientInitFunction } from './types';
 import {
   TokenDetectionControllerMessenger,
@@ -7,7 +7,7 @@ import {
 } from './messengers';
 
 export const TokenDetectionControllerInit: MessengerClientInitFunction<
-  TokenDetectionController,
+  AlchemyTokenDetectionController,
   TokenDetectionControllerMessenger,
   TokenDetectionControllerInitMessenger
 > = ({ controllerMessenger, initMessenger }) => {
@@ -17,18 +17,10 @@ export const TokenDetectionControllerInit: MessengerClientInitFunction<
       'PreferencesController:getState',
     ) as unknown as PreferencesControllerState;
 
-  const messengerClient = new TokenDetectionController({
+  const messengerClient = new AlchemyTokenDetectionController({
     messenger: controllerMessenger,
     disabled: false,
-    getBalancesInSingleCall: (...args) =>
-      initMessenger.call(
-        'AssetsContractController:getBalancesInSingleCall',
-        ...args,
-      ),
-    trackMetaMetricsEvent: () => undefined,
     useTokenDetection: () => Boolean(getRetypedPrefState().useTokenDetection),
-    useExternalServices: () =>
-      Boolean(getRetypedPrefState().useExternalServices),
   });
 
   return {

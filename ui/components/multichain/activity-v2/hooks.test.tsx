@@ -14,20 +14,15 @@ import {
 
 const mockUseInfiniteQuery = jest.fn();
 const mockUseQueryClient = jest.fn();
-const mockGetV4MultiAccountTransactionsInfiniteQueryOptions = jest.fn();
+const mockGetManifestFlags = jest.fn(() => ({ remoteFeatureFlags: {} }));
 
 jest.mock('@tanstack/react-query', () => ({
   useInfiniteQuery: (...args: unknown[]) => mockUseInfiniteQuery(...args),
   useQueryClient: () => mockUseQueryClient(),
 }));
 
-jest.mock('../../../helpers/api-client', () => ({
-  apiClient: {
-    accounts: {
-      getV4MultiAccountTransactionsInfiniteQueryOptions: (...args: unknown[]) =>
-        mockGetV4MultiAccountTransactionsInfiniteQueryOptions(...args),
-    },
-  },
+jest.mock('../../../../shared/lib/manifestFlags', () => ({
+  getManifestFlags: () => mockGetManifestFlags(),
 }));
 
 const mockUseNavigate = jest.fn();
@@ -70,6 +65,9 @@ function renderHook<Result>(callback: () => Result) {
 
 describe('useGetTitle', () => {
   it('uses the API readable label when extensionTransactionLabels is enabled', () => {
+    mockGetManifestFlags.mockReturnValue({
+      remoteFeatureFlags: { extensionTransactionLabels: true },
+    });
     const flaggedStore = configureMockStore()({
       metamask: {
         internalAccounts: {
@@ -127,6 +125,7 @@ describe('useGetTitle', () => {
   });
 
   it('falls back to legacy title logic when extensionTransactionLabels is disabled', () => {
+    mockGetManifestFlags.mockReturnValue({ remoteFeatureFlags: {} });
     const tx = {
       readable: 'Contract call',
       amounts: {
@@ -514,20 +513,28 @@ describe('useGetTitle', () => {
 });
 
 describe('Query hooks', () => {
-  const expectedEvmAddress = selectedAddress;
-  const expectedNetworks = ['eip155:1'];
+  const rpcUrl = 'https://eth-mainnet.g.alchemy.com/v2/test-key';
   const mockStore = configureMockStore()({
     localeMessages: {
       currentLocale: 'en_GB',
     },
     metamask: {
-      useExternalServices: true,
+      useIndexedActivity: true,
       enabledNetworkMap: {
         eip155: {
           '0x1': true,
         },
       },
       transactions: [],
+      networkConfigurationsByChainId: {
+        '0x1': {
+          chainId: '0x1',
+          name: 'Ethereum Mainnet',
+          nativeCurrency: 'ETH',
+          defaultRpcEndpointIndex: 0,
+          rpcEndpoints: [{ type: 'custom', url: rpcUrl }],
+        },
+      },
       internalAccounts: {
         selectedAccount: '1',
         accounts: {
@@ -550,12 +557,6 @@ describe('Query hooks', () => {
 
   beforeEach(() => {
     mockUseInfiniteQuery.mockReturnValue({ data: undefined });
-    mockGetV4MultiAccountTransactionsInfiniteQueryOptions.mockReturnValue({
-      queryKey: ['transactions'],
-      queryFn: jest.fn(),
-      getNextPageParam: jest.fn(),
-      enabled: true,
-    });
     mockUseQueryClient.mockReturnValue({
       getQueryData: jest.fn().mockReturnValue(undefined),
       isFetching: jest.fn().mockReturnValue(0),
@@ -570,19 +571,17 @@ describe('Query hooks', () => {
   it('useTransactionsQuery composes query options and delegates to useInfiniteQuery', () => {
     renderQueryHook(() => useTransactionsQuery());
 
-    expect(
-      mockGetV4MultiAccountTransactionsInfiniteQueryOptions,
-    ).toHaveBeenCalledWith({
-      accountAddresses: [`eip155:0:${expectedEvmAddress}`],
-      networks: expectedNetworks,
-      includeTxMetadata: true,
-      lang: 'en',
-    });
     expect(mockUseInfiniteQuery).toHaveBeenCalledWith(
       expect.objectContaining({
-        select: expect.any(Function),
+        queryKey: [
+          'alchemy-activity',
+          selectedAddress,
+          [{ chainId: '0x1', nativeCurrency: 'ETH', rpcUrl }],
+        ],
+        queryFn: expect.any(Function),
         enabled: true,
-        staleTime: 300000,
+        staleTime: 600000,
+        refetchOnWindowFocus: false,
       }),
     );
   });
@@ -593,17 +592,7 @@ describe('Query hooks', () => {
       isFetching: jest.fn().mockReturnValue(0),
       prefetchInfiniteQuery: jest.fn().mockResolvedValue(undefined),
     };
-    const queryOptions = {
-      queryKey: ['transactions'],
-      queryFn: jest.fn(),
-      getNextPageParam: jest.fn(),
-      enabled: true,
-    };
-
     mockUseQueryClient.mockReturnValue(mockQueryClient);
-    mockGetV4MultiAccountTransactionsInfiniteQueryOptions.mockReturnValue(
-      queryOptions,
-    );
 
     const { result } = renderQueryHook(() => usePrefetchTransactions());
 
@@ -612,7 +601,16 @@ describe('Query hooks', () => {
     });
 
     expect(mockQueryClient.prefetchInfiniteQuery).toHaveBeenCalledWith(
-      expect.objectContaining({ ...queryOptions, staleTime: 300000 }),
+      expect.objectContaining({
+        queryKey: [
+          'alchemy-activity',
+          selectedAddress,
+          [{ chainId: '0x1', nativeCurrency: 'ETH', rpcUrl }],
+        ],
+        queryFn: expect.any(Function),
+        getNextPageParam: expect.any(Function),
+        staleTime: 600000,
+      }),
     );
   });
 });

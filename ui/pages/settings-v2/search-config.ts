@@ -95,12 +95,13 @@ export const ABOUT_ITEMS = {
 // ── Registry (auto-derived) ─────────────────────────────────────────────
 
 export const SETTINGS_V2_SEARCH_CONFIG: TabSearchConfig[] = [
-  { tabId: 'assets', items: createSearchItemMeta(ASSET_ITEMS) },
-  { tabId: 'transactions', items: createSearchItemMeta(TRANSACTION_ITEMS) },
   {
-    tabId: 'preferences-and-display',
+    tabId: 'accounts',
     items: createSearchItemMeta(PREFERENCES_ITEMS),
   },
+  { tabId: 'networks', items: [] },
+  { tabId: 'runtime', items: [] },
+  { tabId: 'assets', items: createSearchItemMeta(ASSET_ITEMS) },
   {
     tabId: 'privacy',
     items: createSearchItemMeta(PRIVACY_ITEMS),
@@ -115,9 +116,6 @@ export const SETTINGS_V2_SEARCH_CONFIG: TabSearchConfig[] = [
     tabId: 'security-and-password',
     items: createSearchItemMeta(SECURITY_ITEMS),
   },
-  {
-    tabId: 'developer-tools',
-    items: createSearchItemMeta(DEVELOPER_TOOLS_ITEMS),
-  },
+  { tabId: 'hardware-wallets', items: [] },
   { tabId: 'about-us', items: createSearchItemMeta(ABOUT_ITEMS) },
 ];

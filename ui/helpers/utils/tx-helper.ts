@@ -12,14 +12,6 @@ export default function txHelper(
 
   // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31973
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  decryptMsgs: Record<string, any> | null,
-
-  // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31973
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  encryptionPublicKeyMsgs: Record<string, any> | null,
-
-  // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31973
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   typedMessages: Record<string, any> | null,
   chainId?: string,
 
@@ -30,8 +22,6 @@ export default function txHelper(
   log.debug({
     unapprovedTxs,
     personalMsgs,
-    decryptMsgs,
-    encryptionPublicKeyMsgs,
     typedMessages,
     chainId,
   });
@@ -41,14 +31,10 @@ export default function txHelper(
     : valuesFor(unapprovedTxs);
 
   const personalValues = valuesFor(personalMsgs);
-  const decryptValues = valuesFor(decryptMsgs);
-  const encryptionPublicKeyValues = valuesFor(encryptionPublicKeyMsgs);
   const typedValues = valuesFor(typedMessages);
 
   const allValues = txValues
     .concat(personalValues)
-    .concat(decryptValues)
-    .concat(encryptionPublicKeyValues)
     .concat(typedValues)
     .sort((a, b) => {
       return a.time - b.time;
@@ -57,10 +43,6 @@ export default function txHelper(
   log.debug(`tx helper found ${txValues.length} unapproved txs`);
   log.debug(
     `tx helper found ${personalValues.length} unsigned personal messages`,
-  );
-  log.debug(`tx helper found ${decryptValues.length} decrypt requests`);
-  log.debug(
-    `tx helper found ${encryptionPublicKeyValues.length} encryptionPublicKey requests`,
   );
   log.debug(`tx helper found ${typedValues.length} unsigned typed messages`);
 

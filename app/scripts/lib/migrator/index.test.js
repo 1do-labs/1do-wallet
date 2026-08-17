@@ -1,5 +1,4 @@
 /* eslint-disable jest/no-conditional-expect */
-import fs from 'fs';
 import { cloneDeep } from 'lodash';
 import liveMigrations from '../../migrations';
 import data from '../../first-time-state';
@@ -34,56 +33,7 @@ const stubMigrations = [
 ];
 const versionedData = { meta: { version: 0 }, data: { hello: 'world' } };
 
-const firstTimeState = {
-  meta: { version: 0 },
-  data,
-};
-
 describe('migrations', () => {
-  describe('liveMigrations require list', () => {
-    let migrationNumbers;
-
-    beforeAll(() => {
-      const fileNames = fs.readdirSync('./app/scripts/migrations/');
-      migrationNumbers = fileNames
-        .reduce((acc, filename) => {
-          const name = filename.split('.')[0];
-          if (/^\d+$/u.test(name)) {
-            acc.push(name);
-          }
-          return acc;
-        }, [])
-        .map((num) => parseInt(num, 10));
-    });
-
-    it('should include all migrations', () => {
-      migrationNumbers.forEach((num) => {
-        const migration = liveMigrations.find((m) => m.version === num);
-        expect(migration.version).toStrictEqual(num);
-      });
-    });
-
-    it('should have tests for all migrations', () => {
-      const fileNames = fs.readdirSync('./app/scripts/migrations/');
-      const testNumbers = fileNames
-        .reduce((acc, filename) => {
-          const name = filename.split('.test.')[0];
-          // eslint-disable-next-line jest/no-if
-          if (/^\d+$/u.test(name)) {
-            acc.push(name);
-          }
-          return acc;
-        }, [])
-        .map((num) => parseInt(num, 10));
-
-      migrationNumbers.forEach((num) => {
-        if (num >= 33) {
-          expect(testNumbers).toContain(num);
-        }
-      });
-    });
-  });
-
   describe('Migrator', () => {
     it('migratedData version should be version 3', async () => {
       const migrator = new Migrator({ migrations: stubMigrations });
@@ -93,14 +43,15 @@ describe('migrations', () => {
       );
     });
 
-    it('should match the last version in live migrations', async () => {
+    it('starts new 1Do state without legacy migrations', async () => {
       const migrator = new Migrator({ migrations: liveMigrations });
-      const migratedData = await migrator.migrateData(firstTimeState);
-      const last = liveMigrations.length - 1;
+      const migratedData = await migrator.migrateData({
+        meta: { version: 0 },
+        data,
+      });
 
-      expect(migratedData.state.meta.version).toStrictEqual(
-        liveMigrations[last].version,
-      );
+      expect(liveMigrations).toStrictEqual([]);
+      expect(migratedData.state.meta.version).toStrictEqual(0);
     });
 
     it('should emit an error', async () => {

@@ -9,11 +9,16 @@ import {
  * @param isOnline - Whether the device is online.
  */
 function sendConnectivityStatus(isOnline: boolean): void {
-  chrome.runtime.sendMessage({
-    target: OffscreenCommunicationTarget.extensionMain,
-    event: OffscreenCommunicationEvents.connectivityChange,
-    isOnline,
-  });
+  try {
+    const result = chrome.runtime.sendMessage({
+      target: OffscreenCommunicationTarget.extensionMain,
+      event: OffscreenCommunicationEvents.connectivityChange,
+      isOnline,
+    });
+    Promise.resolve(result).catch(() => undefined);
+  } catch {
+    // The service worker may be unavailable while it is starting or reloading.
+  }
 }
 
 /**

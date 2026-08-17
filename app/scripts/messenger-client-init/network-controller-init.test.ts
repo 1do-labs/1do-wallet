@@ -129,6 +129,24 @@ describe('NetworkControllerInit', () => {
               },
             ],
           },
+          "0x10e6": {
+            "blockExplorerUrls": [
+              "https://megaeth.blockscout.com",
+            ],
+            "chainId": "0x10e6",
+            "defaultBlockExplorerUrlIndex": 0,
+            "defaultRpcEndpointIndex": 0,
+            "name": "MegaETH Mainnet",
+            "nativeCurrency": "ETH",
+            "rpcEndpoints": [
+              {
+                "failoverUrls": [],
+                "networkClientId": "megaeth-mainnet",
+                "type": "infura",
+                "url": "https://megaeth-mainnet.infura.io/v3/{infuraProjectId}",
+              },
+            ],
+          },
           "0x14a34": {
             "blockExplorerUrls": [
               "https://sepolia.basescan.org",
@@ -183,24 +201,6 @@ describe('NetworkControllerInit', () => {
               },
             ],
           },
-          "0x279f": {
-            "blockExplorerUrls": [
-              "https://testnet.monadexplorer.com",
-            ],
-            "chainId": "0x279f",
-            "defaultBlockExplorerUrlIndex": 0,
-            "defaultRpcEndpointIndex": 0,
-            "name": "Monad Testnet",
-            "nativeCurrency": "MON",
-            "rpcEndpoints": [
-              {
-                "failoverUrls": [],
-                "networkClientId": "monad-testnet",
-                "type": "custom",
-                "url": "https://testnet-rpc.monad.xyz",
-              },
-            ],
-          },
           "0x38": {
             "blockExplorerUrls": [
               "https://bscscan.com",
@@ -216,21 +216,6 @@ describe('NetworkControllerInit', () => {
                 "networkClientId": "bsc-mainnet-alchemy",
                 "type": "custom",
                 "url": "https://bnb-mainnet.g.alchemy.com/v2/{alchemyApiKey}",
-              },
-            ],
-          },
-          "0x539": {
-            "blockExplorerUrls": [],
-            "chainId": "0x539",
-            "defaultRpcEndpointIndex": 0,
-            "name": "Localhost 8545",
-            "nativeCurrency": "ETH",
-            "rpcEndpoints": [
-              {
-                "failoverUrls": [],
-                "networkClientId": "networkConfigurationId",
-                "type": "custom",
-                "url": "http://localhost:8545",
               },
             ],
           },
@@ -344,7 +329,7 @@ describe('NetworkControllerInit', () => {
           },
         },
         "networksMetadata": {},
-        "selectedNetworkClientId": "networkConfigurationId",
+        "selectedNetworkClientId": "sepolia-alchemy",
       }
     `);
   });
@@ -381,6 +366,73 @@ describe('NetworkControllerInit', () => {
         process.env.METAMASK_ENVIRONMENT = originalMetamaskEnvironment;
       }
     }
+  });
+
+  it('replaces a persisted localhost selection with Sepolia', () => {
+    const request = getInitRequestMock();
+    request.persistedState = {
+      NetworkController: {
+        selectedNetworkClientId: 'local-rpc',
+        networksMetadata: {},
+        networkConfigurationsByChainId: {
+          '0x1': {
+            chainId: '0x1',
+            name: 'Ethereum',
+            nativeCurrency: 'ETH',
+            blockExplorerUrls: ['https://etherscan.io'],
+            defaultBlockExplorerUrlIndex: 0,
+            defaultRpcEndpointIndex: 0,
+            rpcEndpoints: [
+              {
+                networkClientId: 'mainnet',
+                url: 'https://mainnet.infura.io/v3/{infuraProjectId}',
+                type: RpcEndpointType.Custom,
+                failoverUrls: [],
+              },
+            ],
+          },
+          '0x539': {
+            chainId: '0x539',
+            name: 'Localhost 8545',
+            nativeCurrency: 'ETH',
+            blockExplorerUrls: [],
+            defaultBlockExplorerUrlIndex: 0,
+            defaultRpcEndpointIndex: 0,
+            rpcEndpoints: [
+              {
+                networkClientId: 'local-rpc',
+                url: 'http://localhost:8545',
+                type: RpcEndpointType.Custom,
+                failoverUrls: [],
+              },
+            ],
+          },
+          '0xaa36a7': {
+            chainId: '0xaa36a7',
+            name: 'Sepolia',
+            nativeCurrency: 'SepoliaETH',
+            blockExplorerUrls: ['https://sepolia.etherscan.io'],
+            defaultBlockExplorerUrlIndex: 0,
+            defaultRpcEndpointIndex: 0,
+            rpcEndpoints: [
+              {
+                networkClientId: 'sepolia',
+                url: 'https://sepolia.infura.io/v3/{infuraProjectId}',
+                type: RpcEndpointType.Custom,
+                failoverUrls: [],
+              },
+            ],
+          },
+        },
+      },
+    };
+
+    NetworkControllerInit(request);
+
+    const controllerMock = jest.mocked(NetworkController);
+    expect(
+      controllerMock.mock.calls[0]?.[0].state?.selectedNetworkClientId,
+    ).toBe('sepolia-alchemy');
   });
 
   it('normalizes persisted Sepolia custom RPC state to a non-Infura network client ID', () => {

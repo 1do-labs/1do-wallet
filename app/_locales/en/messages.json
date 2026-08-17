@@ -148,9 +148,6 @@
   "addAUrl": {
     "message": "Add a URL"
   },
-  "addBitcoinAccountLabel": {
-    "message": "Bitcoin account"
-  },
   "addBlockExplorer": {
     "message": "Add a block explorer"
   },
@@ -239,12 +236,6 @@
   },
   "addNewEthereumAccountLabel": {
     "message": "Ethereum account"
-  },
-  "addNewSolanaAccountLabel": {
-    "message": "Solana account"
-  },
-  "addNewTronAccountLabel": {
-    "message": "Tron account"
   },
   "addNft": {
     "message": "Add NFT"
@@ -655,7 +646,7 @@
     "description": "$1 is a link to a support article"
   },
   "autoDetectTokensDescriptionV2": {
-    "message": "Detects new tokens through your configured RPC and token data providers, which may receive your IP and account address."
+    "message": "Detects tokens with non-zero balances through your configured Alchemy endpoint, which receives your IP and account address."
   },
   "autoLock": {
     "message": "Auto lock"
@@ -1434,9 +1425,6 @@
   "createPasswordMarketing": {
     "message": "1Do does not send marketing emails from this extension."
   },
-  "createSolanaAccount": {
-    "message": "Create Solana account"
-  },
   "creatorAddress": {
     "message": "Creator address"
   },
@@ -1601,26 +1589,6 @@
   },
   "decimalsMustZerotoTen": {
     "message": "Decimals must be at least 0, and not over 36."
-  },
-  "decrypt": {
-    "message": "Decrypt"
-  },
-  "decryptCopy": {
-    "message": "Copy encrypted message"
-  },
-  "decryptInlineError": {
-    "message": "This message cannot be decrypted due to error: $1",
-    "description": "$1 is error message"
-  },
-  "decryptMessageNotice": {
-    "message": "$1 would like to read this message to complete your action",
-    "description": "$1 is the web3 site name"
-  },
-  "decryptMetamask": {
-    "message": "Decrypt message"
-  },
-  "decryptRequest": {
-    "message": "Decrypt request"
   },
   "deepLink_Caution": {
     "message": "Proceed with caution"
@@ -2059,13 +2027,6 @@
   "enableToken": {
     "message": "enable $1",
     "description": "$1 is a token symbol, e.g. ETH"
-  },
-  "encryptionPublicKeyNotice": {
-    "message": "$1 would like your public encryption key. By consenting, this site will be able to compose encrypted messages to you.",
-    "description": "$1 is the web3 site name"
-  },
-  "encryptionPublicKeyRequest": {
-    "message": "Request encryption public key"
   },
   "endpointReturnedDifferentChainId": {
     "message": "The RPC URL you have entered returned a different chain ID ($1).",
@@ -3568,12 +3529,6 @@
   "networkName": {
     "message": "Network name"
   },
-  "networkNameBitcoin": {
-    "message": "Bitcoin"
-  },
-  "networkNameBitcoinSegwit": {
-    "message": "Bitcoin Native SegWit"
-  },
   "networkNameDefinition": {
     "message": "The name associated with this network."
   },
@@ -3585,12 +3540,6 @@
   },
   "networkNamePolygon": {
     "message": "Polygon"
-  },
-  "networkNameSolana": {
-    "message": "Solana"
-  },
-  "networkNameTron": {
-    "message": "Tron"
   },
   "networkOptions": {
     "message": "Network options"
@@ -5532,12 +5481,6 @@
   "smartTransactionSuccess": {
     "message": "Your transaction is complete"
   },
-  "solanaAccountRequested": {
-    "message": "This site is requesting a Solana account."
-  },
-  "solanaAccountRequired": {
-    "message": "A Solana account is required to connect to this site."
-  },
   "someNetworks": {
     "message": "$1 networks"
   },
@@ -6490,10 +6433,10 @@
     "message": "Autodetect NFTs"
   },
   "useNftDetectionDescription": {
-    "message": "Displays all NFTs, including fake ones airdropped by scammers."
+    "message": "Detects NFTs through your configured Alchemy endpoint, which receives your IP and account address."
   },
   "useNftDetectionDescriptionText": {
-    "message": "Let 1do add NFTs you own using third-party services. Autodetecting NFTs exposes your IP and account address to these services. Enabling this feature could associate your IP address with your Ethereum address and display fake NFTs airdropped by scammers. You can add tokens manually to avoid this risk."
+    "message": "Let 1Do add NFTs you own using your configured Alchemy endpoint. Autodetecting NFTs exposes your IP and account address to Alchemy and can display fake NFTs airdropped by scammers. You can add NFTs manually to avoid this request."
   },
   "usePhishingDetection": {
     "message": "Use phishing detection"
@@ -6718,5 +6661,80 @@
   },
   "suggestedGasSettingToolTipMessage": {
     "message": "This is a complex and time sensitive transaction. We recommend this gas fee for a good balance between cost and confidence."
+  },
+  "indexedActivity": {
+    "message": "Indexed activity"
+  },
+  "indexedActivityDescription": {
+    "message": "Send your account address and selected networks to your configured Alchemy RPC endpoints to load complete activity history."
+  },
+  "fiatPrices": {
+    "message": "Fiat prices"
+  },
+  "fiatPricesDescription": {
+    "message": "Fetch token exchange rates from Alchemy so 1Do can show fiat values."
+  },
+  "transactionSimulation": {
+    "message": "Transaction simulation"
+  },
+  "transactionSimulationPrivacyDescription": {
+    "message": "Send unsigned transaction details to Alchemy to estimate balance changes before confirmation."
+  },
+  "verifiedContractDecoding": {
+    "message": "Verified contract decoding"
+  },
+  "verifiedContractDecodingDescription": {
+    "message": "Send contract addresses, chain IDs, and function data to Sourcify to decode verified contracts."
+  },
+  "functionSignatureLookup": {
+    "message": "Unverified function lookup"
+  },
+  "functionSignatureLookupDescription": {
+    "message": "Send unknown function selectors to 4byte.directory only when verified and built-in decoding cannot identify them."
+  },
+  "externalAddressLabels": {
+    "message": "External address labels"
+  },
+  "externalAddressLabelsDescription": {
+    "message": "Use external name sources to suggest human-readable labels for contract and account addresses."
+  },
+  "networkMetadata": {
+    "message": "Network metadata"
+  },
+  "networkMetadataDescription": {
+    "message": "Check network names, symbols, and explorer details against the community chain registry when adding a network."
+  },
+  "assetsAndActivity": {
+    "message": "Assets & Activity"
+  },
+  "privacyAndRemoteServices": {
+    "message": "Privacy & Remote Services"
+  },
+  "securityAndBackup": {
+    "message": "Security & Backup"
+  },
+  "about1Do": {
+    "message": "About 1Do"
+  },
+  "onedoNetworksSettingsDescription": {
+    "message": "Manage EVM networks and RPC endpoints used by your wallet and Runtime account."
+  },
+  "onedoRuntimeSettingsDescription": {
+    "message": "Activate and manage the EIP-7702 Runtime account for the selected EVM account and network."
+  },
+  "onedoHardwareWalletsDescription": {
+    "message": "Connect a supported hardware EVM account. Runtime activation requires the device to approve and sign the transaction."
+  },
+  "dataAndPrivacy": {
+    "message": "Data & Privacy"
+  },
+  "manageAccounts": {
+    "message": "Manage accounts"
+  },
+  "importWallet": {
+    "message": "Import wallet"
+  },
+  "connectHardwareWallet": {
+    "message": "Connect hardware wallet"
   }
 }

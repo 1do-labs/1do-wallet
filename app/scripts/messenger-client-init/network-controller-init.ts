@@ -22,10 +22,7 @@ import { captureException } from '../../../shared/lib/local-error-log';
 import { MessengerClientInitFunction } from './types';
 import { NetworkControllerInitMessenger } from './messengers';
 
-export const ADDITIONAL_DEFAULT_NETWORKS = [
-  ChainId['monad-testnet'],
-  ChainId['megaeth-testnet-v2'],
-];
+export const ADDITIONAL_DEFAULT_NETWORKS = [ChainId['megaeth-testnet-v2']];
 
 const ALCHEMY_NETWORKS = {
   [CHAIN_IDS.MAINNET]: {
@@ -135,6 +132,30 @@ function normalizeAlchemyRpcEndpoints(
   return normalizedSelectedNetworkClientId;
 }
 
+function normalizeSelectedNetworkClientId(
+  selectedNetworkClientId: string | undefined,
+  networks: NetworkController['state']['networkConfigurationsByChainId'],
+): string | undefined {
+  // Older test builds selected the synthetic localhost endpoint by default.
+  // Do not carry that accidental selection into a normal wallet session.
+  const selectedEndpointIsLocalhost = Object.values(networks ?? {}).some(
+    ({ rpcEndpoints }) =>
+      rpcEndpoints.some(
+        ({ networkClientId, url }) =>
+          networkClientId === selectedNetworkClientId &&
+          url === 'http://localhost:8545',
+      ),
+  );
+  if (
+    selectedNetworkClientId === 'networkConfigurationId' ||
+    selectedEndpointIsLocalhost
+  ) {
+    return `${ALCHEMY_NETWORKS[CHAIN_IDS.SEPOLIA].legacyNetworkClientId}-alchemy`;
+  }
+
+  return selectedNetworkClientId;
+}
+
 function getInitialState(initialState?: Partial<NetworkController['state']>) {
   let initialNetworkControllerState = initialState;
 
@@ -147,6 +168,11 @@ function getInitialState(initialState?: Partial<NetworkController['state']>) {
       normalizeAlchemyRpcEndpoints(
         networks,
         initialNetworkControllerState.selectedNetworkClientId,
+      );
+    initialNetworkControllerState.selectedNetworkClientId =
+      normalizeSelectedNetworkClientId(
+        initialNetworkControllerState.selectedNetworkClientId,
+        networks,
       );
   } else {
     initialNetworkControllerState = getDefaultNetworkControllerState(
@@ -205,31 +231,20 @@ function getInitialState(initialState?: Partial<NetworkController['state']>) {
     networks[CHAIN_IDS.OPTIMISM].name = 'OP';
     networks[CHAIN_IDS.POLYGON].name = 'Polygon';
 
-    // Remove Sei from initial state so it appears in Additional Networks section
-    // Users can add it manually, and it will be available in FEATURED_RPCS
+    // Keep the initial network set limited to the core supported networks.
+    // These networks remain available only when explicitly configured by the
+    // user, rather than being presented by default.
+    delete networks[CHAIN_IDS.AVALANCHE];
+    delete networks[CHAIN_IDS.ZKSYNC_ERA];
     delete networks[CHAIN_IDS.SEI];
+    delete networks[CHAIN_IDS.MONAD];
+    delete networks[CHAIN_IDS.HYPE];
 
     let network: NetworkConfiguration;
-    if (process.env.IN_TEST) {
-      network = {
-        chainId: CHAIN_IDS.LOCALHOST,
-        name: 'Localhost 8545',
-        nativeCurrency: 'ETH',
-        blockExplorerUrls: [],
-        defaultRpcEndpointIndex: 0,
-        rpcEndpoints: [
-          {
-            networkClientId: 'networkConfigurationId',
-            url: 'http://localhost:8545',
-            type: RpcEndpointType.Custom,
-            failoverUrls: [],
-          },
-        ],
-      };
-      networks[CHAIN_IDS.LOCALHOST] = network;
-    } else if (
+    if (
       process.env.METAMASK_DEBUG ||
-      process.env.METAMASK_ENVIRONMENT === 'test'
+      process.env.METAMASK_ENVIRONMENT === 'test' ||
+      process.env.IN_TEST
     ) {
       network = networks[CHAIN_IDS.SEPOLIA];
     } else {

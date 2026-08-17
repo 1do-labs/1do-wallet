@@ -1538,21 +1538,6 @@ export const FEATURED_RPCS: AddNetworkFields[] = [
     defaultBlockExplorerUrlIndex: 0,
   },
   {
-    chainId: CHAIN_IDS.AVALANCHE,
-    name: AVALANCHE_DISPLAY_NAME,
-    nativeCurrency: CURRENCY_SYMBOLS.AVALANCHE,
-    rpcEndpoints: [
-      {
-        url: getRpcUrl({ network: 'avalanche-mainnet' }),
-        failoverUrls: getFailoverUrlsForNetwork('avalanche-mainnet'),
-        type: RpcEndpointType.Custom,
-      },
-    ],
-    defaultRpcEndpointIndex: 0,
-    blockExplorerUrls: ['https://snowtrace.io/'],
-    defaultBlockExplorerUrlIndex: 0,
-  },
-  {
     chainId: CHAIN_IDS.BSC,
     name: BSC_DISPLAY_NAME,
     nativeCurrency: CURRENCY_SYMBOLS.BNB,
@@ -1595,66 +1580,6 @@ export const FEATURED_RPCS: AddNetworkFields[] = [
     ],
     defaultRpcEndpointIndex: 0,
     blockExplorerUrls: ['https://polygonscan.com/'],
-    defaultBlockExplorerUrlIndex: 0,
-  },
-  {
-    chainId: CHAIN_IDS.ZKSYNC_ERA,
-    name: ZK_SYNC_ERA_DISPLAY_NAME,
-    nativeCurrency: CURRENCY_SYMBOLS.ETH,
-    rpcEndpoints: [
-      {
-        url: `https://mainnet.era.zksync.io`,
-        failoverUrls: [],
-        type: RpcEndpointType.Custom,
-      },
-    ],
-    defaultRpcEndpointIndex: 0,
-    blockExplorerUrls: ['https://explorer.zksync.io/'],
-    defaultBlockExplorerUrlIndex: 0,
-  },
-  {
-    chainId: CHAIN_IDS.SEI,
-    name: SEI_DISPLAY_NAME,
-    nativeCurrency: CURRENCY_SYMBOLS.SEI,
-    rpcEndpoints: [
-      {
-        url: getRpcUrl({ network: 'sei-mainnet' }),
-        failoverUrls: getFailoverUrlsForNetwork('sei-mainnet'),
-        type: RpcEndpointType.Custom,
-      },
-    ],
-    defaultRpcEndpointIndex: 0,
-    blockExplorerUrls: ['https://seitrace.com/'],
-    defaultBlockExplorerUrlIndex: 0,
-  },
-  {
-    chainId: CHAIN_IDS.MONAD,
-    name: MONAD_DISPLAY_NAME,
-    nativeCurrency: CURRENCY_SYMBOLS.MONAD,
-    rpcEndpoints: [
-      {
-        url: getRpcUrl({ network: 'monad-mainnet' }),
-        failoverUrls: getFailoverUrlsForNetwork('monad-mainnet'),
-        type: RpcEndpointType.Custom,
-      },
-    ],
-    defaultRpcEndpointIndex: 0,
-    blockExplorerUrls: ['https://monadscan.com/'],
-    defaultBlockExplorerUrlIndex: 0,
-  },
-  {
-    chainId: CHAIN_IDS.HYPE,
-    name: HYPEREVM_DISPLAY_NAME,
-    nativeCurrency: CURRENCY_SYMBOLS.HYPE,
-    rpcEndpoints: [
-      {
-        url: getRpcUrl({ network: 'hyperevm-mainnet' }),
-        failoverUrls: getFailoverUrlsForNetwork('hyperevm-mainnet'),
-        type: RpcEndpointType.Custom,
-      },
-    ],
-    defaultRpcEndpointIndex: 0,
-    blockExplorerUrls: ['https://hyperevmscan.io/'],
     defaultBlockExplorerUrlIndex: 0,
   },
   {

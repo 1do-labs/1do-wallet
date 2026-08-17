@@ -137,6 +137,8 @@ export type PreferencesControllerState = Omit<
   useCurrencyRateCheck: boolean;
   useExternalNameSources: boolean;
   useExternalServices: boolean;
+  useIndexedActivity: boolean;
+  useVerifiedContractDecoding: boolean;
   isMultiAccountBalancesEnabled: boolean;
   useMultiAccountBalanceChecker: boolean;
   usePhishDetect: boolean;
@@ -200,6 +202,8 @@ export const getDefaultPreferencesControllerState =
     // Default this fork to local-first behavior. Remote-backed features stay
     // off unless the user explicitly re-enables them.
     useExternalServices: false,
+    useIndexedActivity: true,
+    useVerifiedContractDecoding: true,
     // from core PreferencesController
     isMultiAccountBalancesEnabled: true,
     useMultiAccountBalanceChecker: true,
@@ -351,6 +355,18 @@ const controllerMetadata: StateMetadata<PreferencesControllerState> = {
     includeInDebugSnapshot: false,
     usedInUi: true,
   },
+  useIndexedActivity: {
+    includeInStateLogs: true,
+    persist: true,
+    includeInDebugSnapshot: false,
+    usedInUi: true,
+  },
+  useVerifiedContractDecoding: {
+    includeInStateLogs: true,
+    persist: true,
+    includeInDebugSnapshot: true,
+    usedInUi: true,
+  },
   isMultiAccountBalancesEnabled: {
     includeInStateLogs: true,
     persist: true,
@@ -413,6 +429,8 @@ const MESSENGER_EXPOSED_METHODS = [
   'setUseCurrencyRateCheck',
   'setOpenSeaEnabled',
   'setUseExternalNameSources',
+  'setUseIndexedActivity',
+  'setUseVerifiedContractDecoding',
   'setUseTransactionSimulations',
   'setAdvancedGasFee',
   'setTheme',
@@ -549,6 +567,8 @@ export class PreferencesController extends BaseController<
     this.setOpenSeaEnabled(nextValue);
     this.setUseNftDetection(nextValue);
     this.setUseSafeChainsListValidation(nextValue);
+    this.setUseIndexedActivity(nextValue);
+    this.setUseVerifiedContractDecoding(nextValue);
   }
 
   /**
@@ -614,6 +634,26 @@ export class PreferencesController extends BaseController<
   setUseExternalNameSources(useExternalNameSources: boolean): void {
     this.update((state) => {
       state.useExternalNameSources = useExternalNameSources;
+    });
+  }
+
+  /**
+   * Enables indexed Activity requests to configured Alchemy RPC endpoints.
+   * @param useIndexedActivity
+   */
+  setUseIndexedActivity(useIndexedActivity: boolean): void {
+    this.update((state) => {
+      state.useIndexedActivity = useIndexedActivity;
+    });
+  }
+
+  /**
+   * Enables verified ABI lookups through Sourcify.
+   * @param useVerifiedContractDecoding
+   */
+  setUseVerifiedContractDecoding(useVerifiedContractDecoding: boolean): void {
+    this.update((state) => {
+      state.useVerifiedContractDecoding = useVerifiedContractDecoding;
     });
   }
 

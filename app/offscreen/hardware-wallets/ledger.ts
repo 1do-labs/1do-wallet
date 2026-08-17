@@ -379,11 +379,16 @@ export class LedgerOffscreenHandler {
 
     navigator.hid.addEventListener('connect', ({ device }) => {
       if (device.vendorId === Number(LEDGER_USB_VENDOR_ID)) {
-        chrome.runtime.sendMessage({
-          target: OffscreenCommunicationTarget.extension,
-          event: OffscreenCommunicationEvents.ledgerDeviceConnect,
-          payload: true,
-        });
+        try {
+          const result = chrome.runtime.sendMessage({
+            target: OffscreenCommunicationTarget.extension,
+            event: OffscreenCommunicationEvents.ledgerDeviceConnect,
+            payload: true,
+          });
+          Promise.resolve(result).catch(() => undefined);
+        } catch {
+          // The service worker may be unavailable while it is starting or reloading.
+        }
       }
     });
 
@@ -392,11 +397,16 @@ export class LedgerOffscreenHandler {
         // Clean up transport state on disconnect
         this.closeTransport();
 
-        chrome.runtime.sendMessage({
-          target: OffscreenCommunicationTarget.extension,
-          event: OffscreenCommunicationEvents.ledgerDeviceConnect,
-          payload: false,
-        });
+        try {
+          const result = chrome.runtime.sendMessage({
+            target: OffscreenCommunicationTarget.extension,
+            event: OffscreenCommunicationEvents.ledgerDeviceConnect,
+            payload: false,
+          });
+          Promise.resolve(result).catch(() => undefined);
+        } catch {
+          // The service worker may be unavailable while it is starting or reloading.
+        }
       }
     });
   }
@@ -570,11 +580,16 @@ export class LedgerOffscreenHandler {
 
       if (hasLedger) {
         // Notify extension that a Ledger device is available
-        chrome.runtime.sendMessage({
-          target: OffscreenCommunicationTarget.extension,
-          event: OffscreenCommunicationEvents.ledgerDeviceConnect,
-          payload: true,
-        });
+        try {
+          const result = chrome.runtime.sendMessage({
+            target: OffscreenCommunicationTarget.extension,
+            event: OffscreenCommunicationEvents.ledgerDeviceConnect,
+            payload: true,
+          });
+          Promise.resolve(result).catch(() => undefined);
+        } catch {
+          // The service worker may be unavailable while it is starting or reloading.
+        }
       }
     } catch (error) {
       console.error('Error checking for permitted Ledger devices:', error);

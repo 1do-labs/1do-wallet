@@ -2,19 +2,13 @@ import React from 'react';
 import { SettingItemConfig } from '../types';
 import { SettingsTab, createToggleItem } from '../shared';
 import {
-  getUseTokenDetection,
-  getUseCurrencyRateCheck,
   getShouldHideZeroBalanceTokens,
   getShowNativeTokenAsMainBalance,
 } from '../../../selectors';
 import {
-  setUseTokenDetection,
-  setUseCurrencyRateCheck,
   setHideZeroBalanceTokens,
   setShowNativeTokenAsMainBalancePreference,
 } from '../../../store/actions';
-import { DisplayNftMediaToggleItem } from '../shared/display-nft-media-item';
-import { AutodetectNftsToggleItem } from '../shared/autodetect-nfts-item';
 import { ASSET_ITEMS } from '../search-config';
 import { LocalCurrencyItem } from './local-currency-item';
 
@@ -35,45 +29,15 @@ const HideZeroBalanceTokensToggleItem = createToggleItem({
   dataTestId: 'toggle-zero-balance-button',
 });
 
-const AutodetectTokensToggleItem = createToggleItem({
-  name: 'AutodetectTokensToggleItem',
-  titleKey: ASSET_ITEMS['autodetect-tokens'],
-  descriptionKey: 'autoDetectTokensDescriptionV2',
-  selector: getUseTokenDetection,
-  action: setUseTokenDetection,
-  dataTestId: 'autodetect-tokens',
-  containerDataTestId: 'autodetect-tokens',
-});
-
-const ShowBalanceAndTokenPricesToggleItem = createToggleItem({
-  name: 'ShowBalanceAndTokenPricesToggleItem',
-  titleKey: ASSET_ITEMS['show-balance-and-token-prices'],
-  descriptionKey: 'currencyRateCheckToggleDescriptionV2',
-  selector: getUseCurrencyRateCheck,
-  action: setUseCurrencyRateCheck,
-  dataTestId: 'currency-rate-check-toggle',
-});
-
 /** Registry of setting items for the Assets page. Add new items here */
 const ASSET_SETTING_ITEMS: SettingItemConfig[] = [
   { id: 'local-currency', component: LocalCurrencyItem },
-  {
-    id: 'show-balance-and-token-prices',
-    component: ShowBalanceAndTokenPricesToggleItem,
-  },
   { id: 'show-network-token', component: ShowNetworkTokenToggleItem },
   {
     id: 'hide-zero-balance-tokens',
     component: HideZeroBalanceTokensToggleItem,
     hasDividerBefore: true,
   },
-  {
-    id: 'display-nft-media',
-    component: DisplayNftMediaToggleItem,
-    hasDividerBefore: true,
-  },
-  { id: 'autodetect-nfts', component: AutodetectNftsToggleItem },
-  { id: 'autodetect-tokens', component: AutodetectTokensToggleItem },
 ];
 
 const AssetsTab = () => {

@@ -1,15 +1,11 @@
-import {
-  NftDetectionController,
-  NftDetectionControllerMessenger,
-} from '@metamask/assets-controllers';
+import { NftDetectionControllerMessenger } from '@metamask/assets-controllers';
 import { PreferencesController } from '@metamask/preferences-controller';
 import { buildControllerInitRequestMock } from '../test/utils';
 import { MessengerClientInitRequest } from '../types';
 import { getNftDetectionControllerMessenger } from '../messengers/assets';
 import { getRootMessenger } from '../../lib/messenger';
+import { AlchemyNftDetectionController } from '../../controllers/alchemy-nft-detection-controller';
 import { NftDetectionControllerInit } from './nft-detection-controller-init';
-
-jest.mock('@metamask/assets-controllers');
 
 /**
  * Build a mock PreferencesController.
@@ -51,8 +47,6 @@ function buildInitRequestMock(): jest.Mocked<
 }
 
 describe('NftDetectionControllerInit', () => {
-  const nftDetectionControllerClassMock = jest.mocked(NftDetectionController);
-
   beforeEach(() => {
     jest.resetAllMocks();
   });
@@ -61,13 +55,15 @@ describe('NftDetectionControllerInit', () => {
     const requestMock = buildInitRequestMock();
     expect(
       NftDetectionControllerInit(requestMock).messengerClient,
-    ).toBeInstanceOf(NftDetectionController);
+    ).toBeInstanceOf(AlchemyNftDetectionController);
   });
 
-  it('initializes with correct messenger and state', () => {
+  it('gets the NFT detection preference', () => {
     const requestMock = buildInitRequestMock();
     NftDetectionControllerInit(requestMock);
 
-    expect(nftDetectionControllerClassMock).toHaveBeenCalled();
+    expect(requestMock.getMessengerClient).toHaveBeenCalledWith(
+      'PreferencesController',
+    );
   });
 });

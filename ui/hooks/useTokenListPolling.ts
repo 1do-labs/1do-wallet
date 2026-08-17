@@ -1,6 +1,5 @@
 import { useSelector } from 'react-redux';
 import {
-  getUseExternalServices,
   getUseTokenDetection,
   getUseTransactionSimulations,
 } from '../selectors';
@@ -20,13 +19,11 @@ const useTokenListPolling = () => {
   const useTransactionSimulations = useSelector(getUseTransactionSimulations);
   const completedOnboarding = useSelector(getCompletedOnboarding);
   const isUnlocked = useSelector(getIsUnlocked);
-  const useExternalServices = useSelector(getUseExternalServices);
   const enabledChainIds = useSelector(getEnabledChainIds);
 
   const enabled =
     completedOnboarding &&
     isUnlocked &&
-    useExternalServices &&
     (useTokenDetection || useTransactionSimulations);
 
   useMultiPolling({

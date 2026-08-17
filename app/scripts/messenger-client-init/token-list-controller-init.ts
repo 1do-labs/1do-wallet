@@ -1,22 +1,18 @@
-import { TokenListController } from '@metamask/assets-controllers';
+import { AlchemyTokenListController } from '../controllers/alchemy-token-list-controller';
 import { MessengerClientInitFunction } from './types';
 import {
-  TokenListControllerMessenger,
   TokenListControllerInitMessenger,
+  TokenListControllerMessenger,
 } from './messengers';
-import { getGlobalChainId } from './init-utils';
 
 export const TokenListControllerInit: MessengerClientInitFunction<
-  TokenListController,
+  AlchemyTokenListController,
   TokenListControllerMessenger,
   TokenListControllerInitMessenger
-> = ({ controllerMessenger, initMessenger, persistedState }) => {
-  // TODO: Fix TokenListControllerMessenger type - add TokenListControllerActions & TokenListControllerEvents
-  // TODO: Bump @metamask/network-controller to match assets-controllers
-  const messengerClient = new TokenListController({
+> = ({ controllerMessenger, persistedState }) => {
+  const messengerClient = new AlchemyTokenListController({
     messenger: controllerMessenger,
     state: persistedState.TokenListController,
-    chainId: getGlobalChainId(initMessenger),
   });
 
   // Initialize the controller to load cached token lists from storage.

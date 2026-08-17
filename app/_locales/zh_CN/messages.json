@@ -148,9 +148,6 @@
   "addAUrl": {
     "message": "添加 URL"
   },
-  "addBitcoinAccountLabel": {
-    "message": "比特币账户"
-  },
   "addBlockExplorer": {
     "message": "添加区块浏览器"
   },
@@ -239,12 +236,6 @@
   },
   "addNewEthereumAccountLabel": {
     "message": "以太坊账户"
-  },
-  "addNewSolanaAccountLabel": {
-    "message": "Solana 账户"
-  },
-  "addNewTronAccountLabel": {
-    "message": "Tron 账户"
   },
   "addNft": {
     "message": "添加NFT"
@@ -655,7 +646,7 @@
     "description": "$1 is a link to a support article"
   },
   "autoDetectTokensDescriptionV2": {
-    "message": "通过配置的 RPC 和代币数据提供商检测新代币，提供商可能收到您的 IP 地址和账户地址。"
+    "message": "通过配置的 Alchemy 节点检测余额不为零的代币；Alchemy 会收到您的 IP 地址和账户地址。"
   },
   "autoLock": {
     "message": "自动锁定"
@@ -1434,9 +1425,6 @@
   "createPasswordMarketing": {
     "message": "获取产品更新、提示和新闻（包括电子邮件推送）。我们可能会利用您的互动信息来优化我们分享的内容。"
   },
-  "createSolanaAccount": {
-    "message": "创建 Solana 账户"
-  },
   "creatorAddress": {
     "message": "创建者地址"
   },
@@ -1601,26 +1589,6 @@
   },
   "decimalsMustZerotoTen": {
     "message": "小数位至少为0，且不得超过36。"
-  },
-  "decrypt": {
-    "message": "解密"
-  },
-  "decryptCopy": {
-    "message": "复制加密消息"
-  },
-  "decryptInlineError": {
-    "message": "由于错误：$1，无法解密此消息",
-    "description": "$1 is error message"
-  },
-  "decryptMessageNotice": {
-    "message": "$1 希望阅读此消息来完成您的操作",
-    "description": "$1 is the web3 site name"
-  },
-  "decryptMetamask": {
-    "message": "解密消息"
-  },
-  "decryptRequest": {
-    "message": "解密请求"
   },
   "deepLink_Caution": {
     "message": "请谨慎行事"
@@ -2059,13 +2027,6 @@
   "enableToken": {
     "message": "启用 $1",
     "description": "$1 is a token symbol, e.g. ETH"
-  },
-  "encryptionPublicKeyNotice": {
-    "message": "$1 想要您的加密公钥。同意后，该网站将可以向您发送加密消息。",
-    "description": "$1 is the web3 site name"
-  },
-  "encryptionPublicKeyRequest": {
-    "message": "申请加密公钥"
   },
   "endpointReturnedDifferentChainId": {
     "message": "您输入的 RPC（远程过程调用）URL 返回了不同的链 ID（$1）。",
@@ -3393,10 +3354,6 @@
     "message": "查看账户",
     "description": "Button text to view accounts from the intro modal"
   },
-  "multichainAccountIntroWhatDescription": {
-    "message": "多链账户是由 1do 支持的、在多个网络上拥有地址的账户。现在，您无需切换账户，即可使用以太坊、Solana 等多个网络。",
-    "description": "Description explaining what multichain accounts are"
-  },
   "multichainAccountIntroWhatTitle": {
     "message": "什么是多链账户？",
     "description": "Title for the first section of the multichain account intro modal"
@@ -3597,12 +3554,6 @@
   "networkName": {
     "message": "网络名称"
   },
-  "networkNameBitcoin": {
-    "message": "比特币"
-  },
-  "networkNameBitcoinSegwit": {
-    "message": "比特币原生隔离见证"
-  },
   "networkNameDefinition": {
     "message": "与此网络关联的名称。"
   },
@@ -3614,12 +3565,6 @@
   },
   "networkNamePolygon": {
     "message": "Polygon"
-  },
-  "networkNameSolana": {
-    "message": "Solana"
-  },
-  "networkNameTron": {
-    "message": "Tron"
   },
   "networkOptions": {
     "message": "网络选项"
@@ -5561,12 +5506,6 @@
   "smartTransactionSuccess": {
     "message": "您的交易已完成"
   },
-  "solanaAccountRequested": {
-    "message": "此网站正在请求 Solana 账户。"
-  },
-  "solanaAccountRequired": {
-    "message": "连接到此网站需要 Solana 账户。"
-  },
   "someNetworks": {
     "message": "$1 网络"
   },
@@ -6519,10 +6458,10 @@
     "message": "自动检测NFT"
   },
   "useNftDetectionDescription": {
-    "message": "显示所有 NFT，包括诈骗者空投的伪造 NFT。"
+    "message": "通过配置的 Alchemy 节点检测 NFT；Alchemy 会收到您的 IP 地址和账户地址。"
   },
   "useNftDetectionDescriptionText": {
-    "message": "让 1do 使用第三方服务来添加您所拥有的 NFT。打开自动检测 NFT 功能后，这些服务就可以看到您的 IP 地址和账户地址。启用此功能可能会将您的 IP 地址与以太坊地址关联起来，并显示骗子空投的虚假 NFT。您可以手动添加代币以避免此风险。"
+    "message": "让 1Do 通过您配置的 Alchemy 节点添加您持有的 NFT。自动检测会向 Alchemy 暴露您的 IP 地址和账户地址，也可能显示骗子空投的虚假 NFT。您可以手动添加 NFT 以避免这项请求。"
   },
   "usePhishingDetection": {
     "message": "使用网络钓鱼检测"
@@ -6747,5 +6686,80 @@
   },
   "suggestedGasSettingToolTipMessage": {
     "message": "这是一笔复杂且对时间敏感的交易。我们建议使用此燃料费，以便在成本和成功率之间取得平衡。"
+  },
+  "indexedActivity": {
+    "message": "索引活动记录"
+  },
+  "indexedActivityDescription": {
+    "message": "将账户地址和已选网络发送到您配置的 Alchemy RPC，以加载完整的链上活动记录。"
+  },
+  "fiatPrices": {
+    "message": "法币价格"
+  },
+  "fiatPricesDescription": {
+    "message": "从 Alchemy 获取代币汇率，以显示法币价值。"
+  },
+  "transactionSimulation": {
+    "message": "交易模拟"
+  },
+  "transactionSimulationPrivacyDescription": {
+    "message": "将未签名的交易信息发送到 Alchemy，在确认前估算余额变化。"
+  },
+  "verifiedContractDecoding": {
+    "message": "已验证合约解码"
+  },
+  "verifiedContractDecodingDescription": {
+    "message": "将合约地址、链 ID 和函数数据发送到 Sourcify，以解码已验证合约。"
+  },
+  "functionSignatureLookup": {
+    "message": "未验证函数查询"
+  },
+  "functionSignatureLookupDescription": {
+    "message": "仅当内置解码和已验证合约解码均无法识别时，才将未知函数选择器发送到 4byte.directory。"
+  },
+  "externalAddressLabels": {
+    "message": "外部地址标签"
+  },
+  "externalAddressLabelsDescription": {
+    "message": "使用外部名称来源，为合约和账户地址建议便于识别的标签。"
+  },
+  "networkMetadata": {
+    "message": "网络元数据"
+  },
+  "networkMetadataDescription": {
+    "message": "添加网络时，使用社区链注册表核对网络名称、代币符号和区块浏览器信息。"
+  },
+  "assetsAndActivity": {
+    "message": "资产与活动"
+  },
+  "privacyAndRemoteServices": {
+    "message": "隐私与远程服务"
+  },
+  "securityAndBackup": {
+    "message": "安全与备份"
+  },
+  "about1Do": {
+    "message": "关于 1Do"
+  },
+  "onedoNetworksSettingsDescription": {
+    "message": "管理钱包与 Runtime 智能合约账户使用的 EVM 网络和 RPC 节点。"
+  },
+  "onedoRuntimeSettingsDescription": {
+    "message": "为当前 EVM 账户和网络激活及管理 EIP-7702 Runtime 智能合约账户。"
+  },
+  "onedoHardwareWalletsDescription": {
+    "message": "连接支持的 EVM 硬件账户。激活 Runtime 时需要在硬件设备上确认并签名交易。"
+  },
+  "dataAndPrivacy": {
+    "message": "数据与隐私"
+  },
+  "manageAccounts": {
+    "message": "管理账户"
+  },
+  "importWallet": {
+    "message": "导入钱包"
+  },
+  "connectHardwareWallet": {
+    "message": "连接硬件钱包"
   }
 }

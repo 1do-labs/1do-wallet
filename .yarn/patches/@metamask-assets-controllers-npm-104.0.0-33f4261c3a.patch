@@ -1,0 +1,134 @@
+diff --git a/dist/DeFiPositionsController/fetch-positions.cjs b/dist/DeFiPositionsController/fetch-positions.cjs
+index 9eb44df22341978f0eec6945b9f009ec0a7d82c6..ead5bc0db9ff310575b77c7e43fce93cacb43e3e 100644
+--- a/dist/DeFiPositionsController/fetch-positions.cjs
++++ b/dist/DeFiPositionsController/fetch-positions.cjs
+@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
+ exports.buildPositionFetcher = exports.DEFI_POSITIONS_API_URL = void 0;
+ const timeout_with_retry_1 = require("../utils/timeout-with-retry.cjs");
+ // TODO: Update with prod API URL when available
+-exports.DEFI_POSITIONS_API_URL = 'https://defiadapters.api.cx.metamask.io';
++exports.DEFI_POSITIONS_API_URL = '';
+ const EIGHT_SECONDS_IN_MS = 8000;
+ const MAX_RETRIES = 1;
+ /**
+diff --git a/dist/DeFiPositionsController/fetch-positions.mjs b/dist/DeFiPositionsController/fetch-positions.mjs
+index 4be0b2e569810a8fa2c1676251b5e0d2b90c5cfb..ee1c46a0c63c30fac3b3565091bf9c30766d5882 100644
+--- a/dist/DeFiPositionsController/fetch-positions.mjs
++++ b/dist/DeFiPositionsController/fetch-positions.mjs
+@@ -1,6 +1,6 @@
+ import { timeoutWithRetry } from "../utils/timeout-with-retry.mjs";
+ // TODO: Update with prod API URL when available
+-export const DEFI_POSITIONS_API_URL = 'https://defiadapters.api.cx.metamask.io';
++export const DEFI_POSITIONS_API_URL = '';
+ const EIGHT_SECONDS_IN_MS = 8000;
+ const MAX_RETRIES = 1;
+ /**
+diff --git a/dist/assetsUtil.cjs b/dist/assetsUtil.cjs
+index ed31a3ff483b0e8a2b6e699dd92aefc7b34a5462..8094341dee492dd1ecf431be9783a94d657f58d6 100644
+--- a/dist/assetsUtil.cjs
++++ b/dist/assetsUtil.cjs
+@@ -107,7 +107,7 @@ exports.formatAggregatorNames = formatAggregatorNames;
+  */
+ const formatIconUrlWithProxy = ({ chainId, tokenAddress, }) => {
+     const chainIdDecimal = (0, controller_utils_1.convertHexToDecimal)(chainId).toString();
+-    return `https://static.cx.metamask.io/api/v1/tokenIcons/${chainIdDecimal}/${tokenAddress.toLowerCase()}.png`;
++    return '';
+ };
+ exports.formatIconUrlWithProxy = formatIconUrlWithProxy;
+ /**
+diff --git a/dist/assetsUtil.mjs b/dist/assetsUtil.mjs
+index 55ae5943397f76bc0d8752eac5149f50537b94f1..90e497ceceb292a2dd5ee33a391a16b404309488 100644
+--- a/dist/assetsUtil.mjs
++++ b/dist/assetsUtil.mjs
+@@ -105,7 +105,7 @@ export const formatAggregatorNames = (aggregators) => {
+  */
+ export const formatIconUrlWithProxy = ({ chainId, tokenAddress, }) => {
+     const chainIdDecimal = convertHexToDecimal(chainId).toString();
+-    return `https://static.cx.metamask.io/api/v1/tokenIcons/${chainIdDecimal}/${tokenAddress.toLowerCase()}.png`;
++    return '';
+ };
+ /**
+  * Networks where token detection is supported - Values are in hex format
+diff --git a/dist/multi-chain-accounts-service/multi-chain-accounts.cjs b/dist/multi-chain-accounts-service/multi-chain-accounts.cjs
+index bd520d4563b9f249f30e1d8eb05f2c51f0d2ac28..4b68c9c03dc3b979889fe5e4988c2cdea44db9b3 100644
+--- a/dist/multi-chain-accounts-service/multi-chain-accounts.cjs
++++ b/dist/multi-chain-accounts-service/multi-chain-accounts.cjs
+@@ -2,7 +2,7 @@
+ Object.defineProperty(exports, "__esModule", { value: true });
+ exports.fetchMultiChainBalancesV4 = exports.fetchMultiChainBalances = exports.fetchSupportedNetworks = exports.MULTICHAIN_ACCOUNTS_DOMAIN = void 0;
+ const controller_utils_1 = require("@metamask/controller-utils");
+-exports.MULTICHAIN_ACCOUNTS_DOMAIN = 'https://accounts.api.cx.metamask.io';
++exports.MULTICHAIN_ACCOUNTS_DOMAIN = '';
+ const getBalancesUrl = (address, queryParams) => {
+     const url = new URL(`${exports.MULTICHAIN_ACCOUNTS_DOMAIN}/v2/accounts/${address}/balances`);
+     if (queryParams?.networks !== undefined) {
+diff --git a/dist/multi-chain-accounts-service/multi-chain-accounts.mjs b/dist/multi-chain-accounts-service/multi-chain-accounts.mjs
+index f3e201a87cb0fa427803a11706039fc11415bb2c..ffedddc898b49618e953f66ed62dbf41586f5e15 100644
+--- a/dist/multi-chain-accounts-service/multi-chain-accounts.mjs
++++ b/dist/multi-chain-accounts-service/multi-chain-accounts.mjs
+@@ -1,5 +1,5 @@
+ import { handleFetch } from "@metamask/controller-utils";
+-export const MULTICHAIN_ACCOUNTS_DOMAIN = 'https://accounts.api.cx.metamask.io';
++export const MULTICHAIN_ACCOUNTS_DOMAIN = '';
+ const getBalancesUrl = (address, queryParams) => {
+     const url = new URL(`${MULTICHAIN_ACCOUNTS_DOMAIN}/v2/accounts/${address}/balances`);
+     if (queryParams?.networks !== undefined) {
+diff --git a/dist/token-prices-service/codefi-v2.cjs b/dist/token-prices-service/codefi-v2.cjs
+index fb009f4652bd0eb4d2a702054f3346d6e82f6c88..ea8150365e981f4a5ba358ca8ba45b6cb9a24a47 100644
+--- a/dist/token-prices-service/codefi-v2.cjs
++++ b/dist/token-prices-service/codefi-v2.cjs
+@@ -311,9 +311,9 @@ exports.SPOT_PRICES_SUPPORT_INFO = {
+  * @see Used by {@link CodefiTokenPricesServiceV2} to validate that a given chain ID is supported by V2 of the Codefi Price API.
+  */
+ exports.SUPPORTED_CHAIN_IDS = Object.keys(exports.SPOT_PRICES_SUPPORT_INFO);
+-const BASE_URL_V1 = 'https://price.api.cx.metamask.io/v1';
+-const BASE_URL_V2 = 'https://price.api.cx.metamask.io/v2';
+-const BASE_URL_V3 = 'https://price.api.cx.metamask.io/v3';
++const BASE_URL_V1 = '';
++const BASE_URL_V2 = '';
++const BASE_URL_V3 = '';
+ /**
+  * In-memory store for the last successfully fetched supported networks.
+  */
+diff --git a/dist/token-prices-service/codefi-v2.mjs b/dist/token-prices-service/codefi-v2.mjs
+index 5e93103b71f521105207d8f96f0d1088e82d3eb2..85c110aa5d0ea892fb50699890d527452fded101 100644
+--- a/dist/token-prices-service/codefi-v2.mjs
++++ b/dist/token-prices-service/codefi-v2.mjs
+@@ -307,9 +307,9 @@ export const SPOT_PRICES_SUPPORT_INFO = {
+  * @see Used by {@link CodefiTokenPricesServiceV2} to validate that a given chain ID is supported by V2 of the Codefi Price API.
+  */
+ export const SUPPORTED_CHAIN_IDS = Object.keys(SPOT_PRICES_SUPPORT_INFO);
+-const BASE_URL_V1 = 'https://price.api.cx.metamask.io/v1';
+-const BASE_URL_V2 = 'https://price.api.cx.metamask.io/v2';
+-const BASE_URL_V3 = 'https://price.api.cx.metamask.io/v3';
++const BASE_URL_V1 = '';
++const BASE_URL_V2 = '';
++const BASE_URL_V3 = '';
+ /**
+  * In-memory store for the last successfully fetched supported networks.
+  */
+diff --git a/dist/token-service.cjs b/dist/token-service.cjs
+index e420ea7b8ba28eae8efcec239e2fbe54caaa3916..d81801e263a16920c96a4fa209d07dadbcd7fac4 100644
+--- a/dist/token-service.cjs
++++ b/dist/token-service.cjs
+@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
+ exports.fetchTokenMetadata = exports.fetchTokenAssets = exports.getTrendingTokens = exports.searchTokens = exports.fetchTokenListByChainId = exports.TOKEN_METADATA_NO_SUPPORT_ERROR = exports.TOKEN_END_POINT_API = void 0;
+ const controller_utils_1 = require("@metamask/controller-utils");
+ const assetsUtil_1 = require("./assetsUtil.cjs");
+-exports.TOKEN_END_POINT_API = 'https://token.api.cx.metamask.io';
++exports.TOKEN_END_POINT_API = '';
+ exports.TOKEN_METADATA_NO_SUPPORT_ERROR = 'TokenService Error: Network does not support fetchTokenMetadata';
+ /**
+  * Get the tokens URL for a specific network.
+diff --git a/dist/token-service.mjs b/dist/token-service.mjs
+index c58ae4f626c6361d28c106ca3473b3e495d28dff..aa67484615f5892bbee8e8b7ce8bab8942f24994 100644
+--- a/dist/token-service.mjs
++++ b/dist/token-service.mjs
+@@ -1,6 +1,6 @@
+ import { ChainId, convertHexToDecimal, handleFetch, timeoutFetch } from "@metamask/controller-utils";
+ import { isTokenListSupportedForNetwork } from "./assetsUtil.mjs";
+-export const TOKEN_END_POINT_API = 'https://token.api.cx.metamask.io';
++export const TOKEN_END_POINT_API = '';
+ export const TOKEN_METADATA_NO_SUPPORT_ERROR = 'TokenService Error: Network does not support fetchTokenMetadata';
+ /**
+  * Get the tokens URL for a specific network.

@@ -13,23 +13,6 @@ import { traceAsControllerCallback } from '../../../../shared/lib/trace';
 import type { OnboardingControllerState } from '../../controllers/onboarding';
 
 /**
- * Cached API client instance.
- */
-let apiClient: AssetsControllerOptions['queryApiClient'] | null = null;
-
-/**
- * Safely retrieves the bearer token for API authentication.
- *
- * @param _initMessenger - The initialization messenger.
- * @returns The bearer token or undefined if retrieval fails.
- */
-async function safeGetBearerToken(
-  _initMessenger: AssetsControllerInitMessenger,
-): Promise<string | undefined> {
-  return undefined;
-}
-
-/**
  * Safely retrieves the token detection preference.
  *
  * @param initMessenger - The initialization messenger.
@@ -78,12 +61,21 @@ function getIsBasicFunctionality(
   };
 }
 
+/** Cached API client instance. */
+let apiClient: AssetsControllerOptions['queryApiClient'] | null = null;
+
 /**
- * Gets or creates the API platform client.
- *
- * @param initMessenger - The initialization messenger.
- * @returns The API platform client.
+ * Retrieve the optional bearer token without allowing authentication failures
+ * to break extension startup. 1Do currently does not provide a bearer token.
+ * @param _initMessenger
  */
+async function safeGetBearerToken(
+  _initMessenger: AssetsControllerInitMessenger,
+): Promise<string | undefined> {
+  // 1Do does not currently expose an authentication bearer token.
+  return undefined;
+}
+
 function getApiClient(
   initMessenger: AssetsControllerInitMessenger,
 ): AssetsControllerOptions['queryApiClient'] {
@@ -162,11 +154,11 @@ export const AssetsControllerInit: MessengerClientInitFunction<
     queryApiClient: getApiClient(initMessenger),
     rpcDataSourceConfig: {
       tokenDetectionEnabled: () => tokenDetectionEnabled,
-      balanceInterval: 30_000,
-      detectionInterval: 180_000,
+      balanceInterval: 60_000,
+      detectionInterval: 600_000,
     },
     priceDataSourceConfig: {
-      pollInterval: 180_000,
+      pollInterval: 300_000,
     },
     stakedBalanceDataSourceConfig: {
       pollInterval: 30_000,

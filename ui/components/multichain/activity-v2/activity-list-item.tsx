@@ -1,6 +1,11 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { Box, Text, TextVariant } from '@metamask/design-system-react';
+import {
+  Box,
+  Text,
+  TextVariant,
+  FontWeight,
+} from '@metamask/design-system-react';
 import { TransactionStatus } from '@metamask/transaction-controller';
 import TransactionStatusLabel from '../../app/transaction-status-label/transaction-status-label';
 import { useFormatters } from '../../../hooks/useFormatters';
@@ -45,7 +50,9 @@ export const ActivityListItem = ({ transaction, onClick }: Props) => {
         {/* Left side - Action and Details */}
         <div className="flex-1 min-w-0">
           <Text
-            className="font-medium truncate"
+            variant={TextVariant.BodyMd}
+            fontWeight={FontWeight.Bold}
+            className="truncate"
             data-testid="activity-list-item-action"
           >
             {title}
@@ -59,7 +66,8 @@ export const ActivityListItem = ({ transaction, onClick }: Props) => {
         <div className="flex flex-col items-end">
           {amount && token && (
             <Text
-              className="font-medium"
+              variant={TextVariant.BodyMd}
+              fontWeight={FontWeight.Bold}
               data-testid="transaction-list-item-primary-currency"
             >
               {formatTokenAmount(amount, token.symbol)}

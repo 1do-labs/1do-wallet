@@ -65,11 +65,16 @@ export function filterLocalNotInApi(
   apiTransactions: TransactionViewModel[],
   pendingStatusHash: Record<string, boolean>,
 ): TransactionGroup[] {
-  // Build a set of transaction hashes from API for deduplication
-  const apiHashes = new Set(
+  // A hash can theoretically exist on multiple EVM chains. Deduplicate only
+  // when both the chain and hash identify the same transaction.
+  const apiTransactionKeys = new Set(
     apiTransactions
-      .map((tx) => tx.hash?.toLowerCase())
-      .filter((hash): hash is string => Boolean(hash)),
+      .map((tx) =>
+        tx.hash && tx.chainId
+          ? `${tx.chainId.toLowerCase()}:${tx.hash.toLowerCase()}`
+          : undefined,
+      )
+      .filter((key): key is string => Boolean(key)),
   );
 
   return localGroups.filter((group) => {
@@ -82,7 +87,9 @@ export function filterLocalNotInApi(
     // Completed transactions: only include if NOT already in API
     // Transactions without a hash (e.g. failed relay transactions) are always included
     const hash = tx.hash?.toLowerCase();
-    const inApi = hash && apiHashes.has(hash);
+    const chainId = tx.chainId?.toLowerCase();
+    const inApi =
+      hash && chainId && apiTransactionKeys.has(`${chainId}:${hash}`);
     return !hash || !inApi;
   });
 }

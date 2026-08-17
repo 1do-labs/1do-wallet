@@ -27,16 +27,11 @@ describe('NetworkConstants', () => {
     it('should have correct chainIds for all popular network', () => {
       const expectedChainIds: { [key: string]: string } = {
         Arbitrum: CHAIN_IDS.ARBITRUM,
-        Avalanche: CHAIN_IDS.AVALANCHE,
         'BNB Chain': CHAIN_IDS.BSC,
         OP: CHAIN_IDS.OPTIMISM,
         Polygon: CHAIN_IDS.POLYGON,
-        'zkSync Era': CHAIN_IDS.ZKSYNC_ERA,
         Base: CHAIN_IDS.BASE,
         Linea: CHAIN_IDS.LINEA_MAINNET,
-        Sei: CHAIN_IDS.SEI,
-        Monad: CHAIN_IDS.MONAD,
-        HyperEVM: CHAIN_IDS.HYPE,
         MegaETH: CHAIN_IDS.MEGAETH_MAINNET,
       };
 
@@ -49,7 +44,6 @@ describe('NetworkConstants', () => {
   describe('FEATURED_RPCS provider usage', () => {
     const alchemyChainIds = [
       CHAIN_IDS.ARBITRUM,
-      CHAIN_IDS.AVALANCHE,
       CHAIN_IDS.BSC,
       CHAIN_IDS.OPTIMISM,
       CHAIN_IDS.POLYGON,
@@ -61,15 +55,6 @@ describe('NetworkConstants', () => {
         const rpc = FEATURED_RPCS.find((entry) => entry.chainId === chainId);
         expect(rpc?.rpcEndpoints[0].url).toContain('.g.alchemy.com/v2/');
       });
-    });
-
-    it('uses the official zkSync Era RPC', () => {
-      const [zksyncEraRpc] = FEATURED_RPCS.filter(
-        (rpc) => rpc.chainId === CHAIN_IDS.ZKSYNC_ERA,
-      );
-      expect(zksyncEraRpc.rpcEndpoints[0].url).toBe(
-        'https://mainnet.era.zksync.io',
-      );
     });
   });
 });

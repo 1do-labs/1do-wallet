@@ -18,10 +18,7 @@ import {
   MultichainAssetsRatesController,
   MultichainBalancesController,
   NftController,
-  NftDetectionController,
   TokenBalancesController,
-  TokenDetectionController,
-  TokenListController,
   TokenRatesController,
   TokensController,
 } from '@metamask/assets-controllers';
@@ -38,17 +35,9 @@ import { PermissionLogController } from '@metamask/permission-log-controller';
 import { LoggingController } from '@metamask/logging-controller';
 import { StorageService } from '@metamask/storage-service';
 import { AddressBookController } from '@metamask/address-book-controller';
-import {
-  DecryptMessageManager,
-  EncryptionPublicKeyManager,
-} from '@metamask/message-manager';
 import { SignatureController } from '@metamask/signature-controller';
 import { ClientController } from '@metamask/client-controller';
 import { ConnectivityController } from '@metamask/connectivity-controller';
-import {
-  GeolocationApiService,
-  GeolocationController,
-} from '@metamask/geolocation-controller';
 import { OnboardingController } from '../controllers/onboarding';
 import { PreferencesController } from '../controllers/preferences-controller';
 import { NetworkOrderController } from '../controllers/network-order';
@@ -56,10 +45,11 @@ import { AppStateController } from '../controllers/app-state-controller';
 import { AccountOrderController } from '../controllers/account-order';
 import { AlertController } from '../controllers/alert-controller';
 import { AppMetadataController } from '../controllers/app-metadata';
-import { DecryptMessageController } from '../controllers/decrypt-message';
-import { EncryptionPublicKeyController } from '../controllers/encryption-public-key';
 import { StaticAssetsController } from '../controllers/static-assets-controller';
 import { LegacyBackgroundApiService } from '../services/legacy-background-api-service';
+import { AlchemyNftDetectionController } from '../controllers/alchemy-nft-detection-controller';
+import { AlchemyTokenListController } from '../controllers/alchemy-token-list-controller';
+import { AlchemyTokenDetectionController } from '../controllers/alchemy-token-detection-controller';
 
 /**
  * Union of all messenger clients (controllers and services) supporting or required by modular initialization.
@@ -75,15 +65,9 @@ export type MessengerClient =
   | AppStateController
   | AssetsController
   | CurrencyRateController
-  | DecryptMessageController
-  | DecryptMessageManager
-  | EncryptionPublicKeyController
-  | EncryptionPublicKeyManager
   | EnsController
   | StorageService
   | GasFeeController
-  | GeolocationApiService
-  | GeolocationController
   | KeyringController
   | LegacyBackgroundApiService
   | LoggingController
@@ -105,13 +89,13 @@ export type MessengerClient =
   | SignatureController
   | SubjectMetadataController
   | TokenBalancesController
-  | TokenDetectionController
-  | TokenListController
+  | AlchemyTokenDetectionController
+  | AlchemyTokenListController
   | TokensController
   | TransactionController
   | TokenRatesController
   | NftController
-  | NftDetectionController
+  | AlchemyNftDetectionController
   | AssetsContractController
   | AccountTreeController
   | MultichainAccountService
@@ -137,7 +121,6 @@ export type MessengerClientFlatState = AccountOrderController['state'] &
   CurrencyRateController['state'] &
   EnsController['state'] &
   GasFeeController['state'] &
-  GeolocationController['state'] &
   KeyringController['state'] &
   LoggingController['state'] &
   MultichainAssetsController['state'] &
@@ -157,13 +140,13 @@ export type MessengerClientFlatState = AccountOrderController['state'] &
   SelectedNetworkController['state'] &
   SignatureController['state'] &
   TokenBalancesController['state'] &
-  TokenDetectionController['state'] &
-  TokenListController['state'] &
+  AlchemyTokenDetectionController['state'] &
+  AlchemyTokenListController['state'] &
   TokensController['state'] &
   StaticAssetsController['state'] &
   TransactionController['state'] &
   TokenRatesController['state'] &
   NftController['state'] &
-  NftDetectionController['state'] &
+  AlchemyNftDetectionController['state'] &
   NetworkEnablementController['state'] &
   AccountTrackerController['state'];

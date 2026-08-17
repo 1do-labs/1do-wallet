@@ -1,0 +1,26 @@
+diff --git a/dist/api/accounts-api.cjs b/dist/api/accounts-api.cjs
+index 8e251bcc5fd3ab45d94ec59f93af377cc97da412..4d7b4ca6f263b6daabd2ff81bb5c470cdcf9059a 100644
+--- a/dist/api/accounts-api.cjs
++++ b/dist/api/accounts-api.cjs
+@@ -10,7 +10,7 @@ exports.ActiveNetworksResponseStruct = (0, superstruct_1.object)({
+ /**
+  * The domain for multichain accounts API.
+  */
+-exports.MULTICHAIN_ACCOUNTS_BASE_URL = 'https://accounts.api.cx.metamask.io';
++exports.MULTICHAIN_ACCOUNTS_BASE_URL = '';
+ /**
+  * The client header for the multichain accounts API.
+  */
+diff --git a/dist/api/accounts-api.mjs b/dist/api/accounts-api.mjs
+index 3ad93ba920ff34777c9bdbbfb0e1c274b5512cf6..b9a2bb9920c136a5b5db2bf73c682d51895bd11c 100644
+--- a/dist/api/accounts-api.mjs
++++ b/dist/api/accounts-api.mjs
+@@ -7,7 +7,7 @@ export const ActiveNetworksResponseStruct = object({
+ /**
+  * The domain for multichain accounts API.
+  */
+-export const MULTICHAIN_ACCOUNTS_BASE_URL = 'https://accounts.api.cx.metamask.io';
++export const MULTICHAIN_ACCOUNTS_BASE_URL = '';
+ /**
+  * The client header for the multichain accounts API.
+  */

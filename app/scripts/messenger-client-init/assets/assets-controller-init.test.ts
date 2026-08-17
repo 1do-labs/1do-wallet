@@ -124,10 +124,10 @@ describe('AssetsControllerInit', () => {
       queryApiClient: expect.any(Object),
       rpcDataSourceConfig: {
         tokenDetectionEnabled: expect.any(Function),
-        balanceInterval: 30_000,
-        detectionInterval: 180_000,
+        balanceInterval: 60_000,
+        detectionInterval: 600_000,
       },
-      priceDataSourceConfig: { pollInterval: 180_000 },
+      priceDataSourceConfig: { pollInterval: 300_000 },
       stakedBalanceDataSourceConfig: {
         pollInterval: 30_000,
         enabled: false,
@@ -160,10 +160,10 @@ describe('AssetsControllerInit', () => {
       queryApiClient: expect.any(Object),
       rpcDataSourceConfig: {
         tokenDetectionEnabled: expect.any(Function),
-        balanceInterval: 30_000,
-        detectionInterval: 180_000,
+        balanceInterval: 60_000,
+        detectionInterval: 600_000,
       },
-      priceDataSourceConfig: { pollInterval: 180_000 },
+      priceDataSourceConfig: { pollInterval: 300_000 },
       stakedBalanceDataSourceConfig: {
         pollInterval: 30_000,
         enabled: false,
@@ -444,45 +444,11 @@ describe('AssetsControllerInit', () => {
       expect(createApiPlatformClient).toHaveBeenCalledTimes(1);
     });
 
-    it('getBearerToken resolves with the bearer token on success', async () => {
+    it('getBearerToken returns undefined when authentication is unavailable', async () => {
       jest.isolateModules(() => {
         // eslint-disable-next-line @typescript-eslint/no-require-imports, @typescript-eslint/no-explicit-any
         const freshModule = require('./assets-controller-init') as any;
         freshModule.AssetsControllerInit(getInitRequestMock());
-      });
-
-      const callArgs = jest.mocked(createApiPlatformClient).mock.calls[0];
-      if (!callArgs) {
-        throw new Error('Expected createApiPlatformClient to have been called');
-      }
-      const { getBearerToken } = callArgs[0];
-      if (!getBearerToken) {
-        throw new Error('Expected getBearerToken to be defined');
-      }
-      expect(await getBearerToken()).toBe('mock-bearer-token');
-    });
-
-    it('getBearerToken returns undefined when authentication throws', async () => {
-      const requestMock = getInitRequestMock();
-      requestMock.initMessenger.call = jest
-        .fn()
-        .mockImplementation((action) => {
-          if (action === 'OnboardingController:getState') {
-            return { completedOnboarding: true };
-          }
-          if (action === 'PreferencesController:getState') {
-            return { useTokenDetection: true };
-          }
-          if (action === 'AuthenticationController:getBearerToken') {
-            return Promise.reject(new Error('Auth failed'));
-          }
-          throw new Error(`Unexpected action: ${action}`);
-        });
-
-      jest.isolateModules(() => {
-        // eslint-disable-next-line @typescript-eslint/no-require-imports, @typescript-eslint/no-explicit-any
-        const freshModule = require('./assets-controller-init') as any;
-        freshModule.AssetsControllerInit(requestMock);
       });
 
       const callArgs = jest.mocked(createApiPlatformClient).mock.calls[0];
