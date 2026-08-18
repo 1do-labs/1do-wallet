@@ -144,7 +144,7 @@ jobs:
       # Keep this list synchronized with:
       # * The environment variables exported by `.github/scripts/bundle.sh`
       # * The environment variables used by the `run-build` step in `.github/workflows/run-build.yml`.
-      ALCHEMY_PROD_API_KEY: ${{ secrets.ALCHEMY_PROD_API_KEY }}
+      ALCHEMY_PROD_API_KEY: ${{ secrets.ALCHEMY_API_KEY }}
       CONTENTFUL_ACCESS_SPACE_ID: ${{ secrets.CONTENTFUL_ACCESS_SPACE_ID }}
       CONTENTFUL_ACCESS_TOKEN: ${{ secrets.CONTENTFUL_ACCESS_TOKEN }}
       ETHERSCAN_API_KEY: ${{ secrets.ETHERSCAN_API_KEY }}

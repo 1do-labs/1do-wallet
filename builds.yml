@@ -93,13 +93,8 @@ env:
   # Variables that are modified with hardcoded code
   ###
 
-  # URL of the decoding API used to provide additional data from signature requests
-  - DECODING_API_URL: 'https://signature-insights.api.cx.metamask.io/v1'
   # Determines if feature flagged Settings Page - Developer Options should be used
   - ENABLE_SETTINGS_PAGE_DEV_OPTIONS: false
-  # Used for debugging changes to the phishing warning page.
-  # Modified in <root>/development/build/scripts.js:@getPhishingWarningPageUrl
-  - PHISHING_WARNING_PAGE_URL: null
   # Modified in <root>/development/build/scripts.js:@getAlchemyApiKey
   - ALCHEMY_API_KEY
   # Modified in <root>/development/build/scripts.js:@getSegmentWriteKey

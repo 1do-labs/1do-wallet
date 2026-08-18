@@ -47,7 +47,6 @@ describe('SignatureControllerInit', () => {
     const controllerMock = jest.mocked(SignatureController);
     expect(controllerMock).toHaveBeenCalledWith({
       messenger: expect.any(Object),
-      decodingApiUrl: process.env.DECODING_API_URL,
       isDecodeSignatureRequestEnabled: expect.any(Function),
       trace: expect.any(Function),
     });

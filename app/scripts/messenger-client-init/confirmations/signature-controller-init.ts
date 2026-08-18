@@ -21,7 +21,6 @@ export const SignatureControllerInit: MessengerClientInitFunction<
 > = ({ controllerMessenger, initMessenger }) => {
   const messengerClient = new SignatureController({
     messenger: controllerMessenger,
-    decodingApiUrl: process.env.DECODING_API_URL,
     isDecodeSignatureRequestEnabled: () => {
       const state = initMessenger.call('PreferencesController:getState');
       return state.useTransactionSimulations;

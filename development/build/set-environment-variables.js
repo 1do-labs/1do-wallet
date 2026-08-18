@@ -46,10 +46,6 @@ function setEnvironmentVariables({
     METAMASK_VERSION: version,
     METAMASK_BUILD_TYPE: buildType,
     NODE_ENV: isDevBuild ? ENVIRONMENT.DEVELOPMENT : ENVIRONMENT.PRODUCTION,
-    PHISHING_WARNING_PAGE_URL: getPhishingWarningPageUrl({
-      variables,
-      testing: isTestBuild,
-    }),
     SEGMENT_WRITE_KEY: getSegmentWriteKey({
       variables,
       environment,
@@ -174,52 +170,6 @@ function getSegmentWriteKey({ variables, environment }) {
     `Segment Write Key environmental variable "${segmentKeyReference}" is set improperly.`,
   );
   return segmentWriteKey;
-}
-
-/**
- * Get the URL for the phishing warning page, if it has been set.
- *
- * @param {object} options - The phishing warning page options.
- * @param {boolean} options.testing - Whether this is a test build or not.
- * @param {import('../lib/variables').Variables} options.variables - Object containing all variables that modify the build pipeline
- * @returns {string} The URL for the phishing warning page, or `undefined` if no URL is set.
- */
-function getPhishingWarningPageUrl({ variables, testing }) {
-  let phishingWarningPageUrl = variables.get('PHISHING_WARNING_PAGE_URL');
-
-  assert(
-    phishingWarningPageUrl === null ||
-      typeof phishingWarningPageUrl === 'string',
-  );
-  if (phishingWarningPageUrl === null) {
-    phishingWarningPageUrl = testing
-      ? 'http://localhost:9999/'
-      : `https://metamask.github.io/phishing-warning/v${
-          // eslint-disable-next-line n/global-require
-          require('@metamask/phishing-warning/package.json').version
-        }/`;
-  }
-
-  let phishingWarningPageUrlObject;
-  try {
-    // eslint-disable-next-line no-new
-    phishingWarningPageUrlObject = new URL(phishingWarningPageUrl);
-  } catch (error) {
-    throw new Error(
-      `Invalid phishing warning page URL: '${phishingWarningPageUrl}'`,
-      error,
-    );
-  }
-  if (phishingWarningPageUrlObject.hash) {
-    // The URL fragment must be set dynamically
-    throw new Error(
-      `URL fragment not allowed in phishing warning page URL: '${phishingWarningPageUrl}'`,
-    );
-  }
-
-  // return a normalized version of the URL; a `/` will be appended to the end
-  // of the domain if it is missing
-  return phishingWarningPageUrlObject.toString();
 }
 
 module.exports = {
