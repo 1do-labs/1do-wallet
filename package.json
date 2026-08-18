@@ -4,7 +4,7 @@
   "private": true,
   "repository": {
     "type": "git",
-    "url": "https://github.com/MetaMask/metamask-extension.git"
+    "url": "https://github.com/1do-labs/1do-wallet.git"
   },
   "scripts": {
     "webpack": "tsx ./development/webpack/launch.ts",
