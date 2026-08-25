@@ -20,13 +20,6 @@ jest.mock('readable-stream', () => {
   };
 });
 
-// Mock phishing-stream to avoid URL parsing issue at module load
-jest.mock('./phishing-stream', () => ({
-  connectPhishingChannelToWarningSystem: () => {
-    // empty on purpose
-  },
-}));
-
 jest.mock('@metamask/object-multiplex', () => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return function mockObjectMultiplex(this: any) {

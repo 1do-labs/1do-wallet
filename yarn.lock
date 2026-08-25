@@ -5350,7 +5350,7 @@ __metadata:
 
 "@metamask/controller-utils@patch:@metamask/controller-utils@npm%3A12.2.0#~/.yarn/patches/@metamask-controller-utils-npm-12.2.0-7f24057488.patch":
   version: 12.2.0
-  resolution: "@metamask/controller-utils@patch:@metamask/controller-utils@npm%3A12.2.0#~/.yarn/patches/@metamask-controller-utils-npm-12.2.0-7f24057488.patch::version=12.2.0&hash=a05431"
+  resolution: "@metamask/controller-utils@patch:@metamask/controller-utils@npm%3A12.2.0#~/.yarn/patches/@metamask-controller-utils-npm-12.2.0-7f24057488.patch::version=12.2.0&hash=a23ee0"
   dependencies:
     "@ethersproject/abi": "npm:^5.7.0"
     "@metamask/eth-query": "npm:^4.0.0"
@@ -5366,7 +5366,7 @@ __metadata:
     lodash: "npm:^4.17.21"
   peerDependencies:
     "@babel/runtime": ^7.0.0
-  checksum: 10/2e7471937682b33ae0de401c8a699d6f102874420ba84f662709a140a2332df0914ae5430033f364bc57a28bad29b62edf91bad36e351660b7513e6110cd2f29
+  checksum: 10/75d002ac4f4a77c07f642b95b1a3572fa7490d03757b1fa7a83ec1a2e909ac1e357ff0c84abc8d1f514b58e228583be03c31feb423574cb3ad799b5fa34de450
   languageName: node
   linkType: hard
 

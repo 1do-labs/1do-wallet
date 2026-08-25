@@ -6,16 +6,8 @@ import {
   onDisconnectDestroyStreams,
   setupExtensionStreams,
 } from './streams/provider-stream';
-import {
-  initializeCookieHandlerSteam,
-  isDetectedCookieMarketingSite,
-} from './streams/cookie-handler-stream';
 
 const start = () => {
-  if (isDetectedCookieMarketingSite) {
-    initializeCookieHandlerSteam();
-  }
-
   if (shouldInjectProvider()) {
     initStreams();
 

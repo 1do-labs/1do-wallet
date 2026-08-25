@@ -13,7 +13,6 @@ import {
   LEGACY_PROVIDER,
   LEGACY_PUBLIC_CONFIG,
   METAMASK_CAIP_MULTICHAIN_PROVIDER,
-  METAMASK_COOKIE_HANDLER,
   METAMASK_INPAGE,
   METAMASK_EIP_1193_PROVIDER,
 } from '../constants/stream';
@@ -97,7 +96,6 @@ const setupPageStreams = () => {
   pageChannel = pageMux.createStream(METAMASK_EIP_1193_PROVIDER);
   caipChannel = pageMux.createStream(METAMASK_CAIP_MULTICHAIN_PROVIDER);
 
-  pageMux.ignoreStream(METAMASK_COOKIE_HANDLER);
   pageMux.ignoreStream(LEGACY_PROVIDER);
   pageMux.ignoreStream(LEGACY_PUBLIC_CONFIG);
 };
@@ -203,7 +201,6 @@ const setupLegacyPageStreams = () => {
   legacyPagePublicConfigChannel =
     legacyPageMux.createStream(LEGACY_PUBLIC_CONFIG);
 
-  legacyPageMux.ignoreStream(METAMASK_COOKIE_HANDLER);
   legacyPageMux.ignoreStream(METAMASK_EIP_1193_PROVIDER);
   legacyPageMux.ignoreStream(METAMASK_CAIP_MULTICHAIN_PROVIDER);
 };
@@ -250,7 +247,6 @@ const setupLegacyExtensionStreams = () => {
       ),
   );
   legacyExtMux.ignoreStream(METAMASK_CAIP_MULTICHAIN_PROVIDER);
-  legacyExtMux.ignoreStream(METAMASK_COOKIE_HANDLER);
   legacyExtMux.ignoreStream(LEGACY_PROVIDER);
 };
 

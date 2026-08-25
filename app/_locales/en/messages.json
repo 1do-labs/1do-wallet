@@ -563,7 +563,7 @@
     "message": "Annual"
   },
   "appDescription": {
-    "message": "A self-custody smart contract wallet runtime for payments and asset apps.",
+    "message": "Self-custody smart contract wallet for payments and asset apps. No affiliate links, referral codes, or commissions.",
     "description": "The description of the application"
   },
   "apply": {
@@ -624,10 +624,6 @@
   },
   "assets": {
     "message": "Assets"
-  },
-  "asterdexReferralSubtitle": {
-    "message": "Review this transaction before continuing.",
-    "description": "The subtitle of the AsterDEX referral confirmation screen"
   },
   "attributes": {
     "message": "Attributes"
@@ -1635,9 +1631,6 @@
   "deepLink_theAssetPage": {
     "message": "the asset page"
   },
-  "deepLink_theBuyPage": {
-    "message": "the buy page"
-  },
   "deepLink_theCardOnboardingPage": {
     "message": "the 1do Card onboarding page"
   },
@@ -1655,9 +1648,6 @@
   },
   "deepLink_thePredictPage": {
     "message": "the prediction markets page"
-  },
-  "deepLink_theSellPage": {
-    "message": "the sell page"
   },
   "deepLink_ThirdPartyDescription": {
     "message": "You were sent here by a third party, not 1do. $1",
@@ -1680,14 +1670,6 @@
   },
   "defiEmptyDescription": {
     "message": "No supported account apps to show yet."
-  },
-  "defiReferralCheckboxLabel": {
-    "message": "Review this request before continuing.",
-    "description": "The text for the checkbox label in the DeFi referral confirmation screen"
-  },
-  "defiReferralTitle": {
-    "message": "1do x $1",
-    "description": "The title of the DeFi referral confirmation screen. $1 is the name of the partner"
   },
   "defiTabErrorContent": {
     "message": "Try visiting again later."
@@ -2475,10 +2457,6 @@
     "message": "Get your wallet ready to use web3",
     "description": "Subtitle text for the balance empty state component explaining the purpose of adding funds"
   },
-  "gmxReferralSubtitle": {
-    "message": "Review this transaction before continuing.",
-    "description": "The subtitle of the GMX referral confirmation screen"
-  },
   "goerli": {
     "message": "Goerli test network"
   },
@@ -2700,10 +2678,6 @@
   },
   "honeypotTitle": {
     "message": "Honey pot"
-  },
-  "hyperliquidReferralSubtitle": {
-    "message": "Review this transaction before continuing.",
-    "description": "The subtitle of the Hyperliquid referral confirmation screen"
   },
   "id": {
     "message": "ID"

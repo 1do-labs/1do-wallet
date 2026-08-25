@@ -2,7 +2,6 @@ import {
   AccountsControllerGetAccountByAddressAction,
   AccountsControllerSetAccountNameAction,
 } from '@metamask/accounts-controller';
-import { Hex } from '@metamask/utils';
 import {
   BaseController,
   ControllerGetStateAction,
@@ -18,18 +17,8 @@ import {
   ThemeType,
 } from '../../../shared/constants/preferences';
 import { type DefaultAddressScope } from '../../../shared/constants/default-address';
-import { DefiReferralPartner } from '../../../shared/constants/defi-referrals';
 import { FALLBACK_LOCALE } from '../../../shared/lib/i18n';
 import { PreferencesControllerMethodActions } from './preferences-controller-method-action-types';
-
-/**
- * Referral status for an account
- */
-export enum ReferralStatus {
-  Approved = 'approved',
-  Passed = 'passed',
-  Declined = 'declined',
-}
 
 const controllerName = 'PreferencesController';
 
@@ -142,7 +131,6 @@ export type PreferencesControllerState = Omit<
   isMultiAccountBalancesEnabled: boolean;
   useMultiAccountBalanceChecker: boolean;
   usePhishDetect: boolean;
-  referrals: Record<DefiReferralPartner, Record<Hex, ReferralStatus>>;
   showSidePanelMigrationToast: boolean;
 };
 
@@ -214,11 +202,6 @@ export const getDefaultPreferencesControllerState =
     // set to false will be using the static list from contract-metadata
     useTokenDetection: true,
     useTransactionSimulations: true,
-    referrals: {
-      [DefiReferralPartner.AsterDEX]: {},
-      [DefiReferralPartner.GMX]: {},
-      [DefiReferralPartner.Hyperliquid]: {},
-    },
   });
 
 /**
@@ -409,12 +392,6 @@ const controllerMetadata: StateMetadata<PreferencesControllerState> = {
     includeInDebugSnapshot: true,
     usedInUi: true,
   },
-  referrals: {
-    includeInStateLogs: true,
-    persist: true,
-    includeInDebugSnapshot: false,
-    usedInUi: true,
-  },
 };
 
 const MESSENGER_EXPOSED_METHODS = [
@@ -452,11 +429,6 @@ const MESSENGER_EXPOSED_METHODS = [
   'setShowDefaultAddress',
   'setDefaultAddressScope',
   'resetState',
-  'addReferralApprovedAccount',
-  'addReferralPassedAccount',
-  'addReferralDeclinedAccount',
-  'removeReferralDeclinedAccount',
-  'setAccountsReferralApproved',
 ] as const;
 
 export class PreferencesController extends BaseController<
@@ -480,10 +452,6 @@ export class PreferencesController extends BaseController<
       preferences: {
         ...defaultState.preferences,
         ...state?.preferences,
-      },
-      referrals: {
-        ...defaultState.referrals,
-        ...state?.referrals,
       },
       // TODO - These two properties are the same, we only need isMultiAccountBalancesEnabled to keep it compatible with core PreferencesController
       // At some point we should completely remove all references and methods for useMultiAccountBalanceChecker and use isMultiAccountBalancesEnabled instead.
@@ -971,50 +939,5 @@ export class PreferencesController extends BaseController<
       },
     };
     this.update(() => resetState);
-  }
-
-  // Defi Referral methods
-  addReferralApprovedAccount(
-    partner: DefiReferralPartner,
-    accountAddress: Hex,
-  ) {
-    this.update((state) => {
-      state.referrals[partner][accountAddress] = ReferralStatus.Approved;
-    });
-  }
-
-  addReferralPassedAccount(partner: DefiReferralPartner, accountAddress: Hex) {
-    this.update((state) => {
-      state.referrals[partner][accountAddress] = ReferralStatus.Passed;
-    });
-  }
-
-  addReferralDeclinedAccount(
-    partner: DefiReferralPartner,
-    accountAddress: Hex,
-  ) {
-    this.update((state) => {
-      state.referrals[partner][accountAddress] = ReferralStatus.Declined;
-    });
-  }
-
-  removeReferralDeclinedAccount(
-    partner: DefiReferralPartner,
-    accountAddress: Hex,
-  ) {
-    this.update((state) => {
-      delete state.referrals[partner][accountAddress];
-    });
-  }
-
-  setAccountsReferralApproved(
-    partner: DefiReferralPartner,
-    accountAddresses: Hex[],
-  ) {
-    this.update((state) => {
-      accountAddresses.forEach((address) => {
-        state.referrals[partner][address] = ReferralStatus.Approved;
-      });
-    });
   }
 }

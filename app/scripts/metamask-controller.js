@@ -1,6 +1,5 @@
 import EventEmitter from 'events';
 import { pipeline } from 'readable-stream';
-import browser from 'webextension-polyfill';
 import {
   createAsyncMiddleware,
   createScaffoldMiddleware,
@@ -14,12 +13,7 @@ import { debounce, uniq } from 'lodash';
 import { KeyringTypes } from '@metamask/keyring-controller';
 import createFilterMiddleware from '@metamask/eth-json-rpc-filters';
 import createSubscriptionManager from '@metamask/eth-json-rpc-filters/subscriptionManager';
-import {
-  errorCodes,
-  JsonRpcError,
-  providerErrors,
-  rpcErrors,
-} from '@metamask/rpc-errors';
+import { JsonRpcError, providerErrors, rpcErrors } from '@metamask/rpc-errors';
 import { Mutex } from 'await-semaphore';
 import log from 'loglevel';
 import { OneKeyKeyring, TrezorKeyring } from '@metamask/eth-trezor-keyring';
@@ -180,7 +174,6 @@ import createTabIdMiddleware from './lib/createTabIdMiddleware';
 import createFrameIdMiddleware from './lib/createFrameIdMiddleware';
 import createOnboardingMiddleware from './lib/createOnboardingMiddleware';
 import { isStreamWritable, setupMultiplex } from './lib/stream-utils';
-import { ReferralStatus } from './controllers/preferences-controller';
 import Backup from './lib/backup';
 import createMetaRPCHandler from './lib/createMetaRPCHandler';
 import {
@@ -189,10 +182,6 @@ import {
   isPublicEndpointUrl,
 } from './lib/util';
 import createMetamaskMiddleware from './lib/createMetamaskMiddleware';
-import {
-  createDefiReferralMiddleware,
-  ReferralTriggerType,
-} from './lib/createDefiReferralMiddleware';
 
 import {
   diffMap,
@@ -3262,191 +3251,6 @@ export default class MetamaskController extends EventEmitter {
   }
 
   /**
-   * Handles DeFi referral approval flow for a partner.
-   * Shows approval confirmation screen if needed and manages referral URL redirection.
-   * This can be triggered by connection permission grants or existing connections.
-   *
-   * @param {import('../../../shared/constants/defi-referrals').DefiReferralPartnerConfig} partner - The partner configuration.
-   * @param {number} tabId - The browser tab ID to update.
-   * @param {ReferralTriggerType} triggerType - The trigger type.
-   */
-  async handleDefiReferral(partner, tabId, triggerType) {
-    const isReferralEnabled = false;
-
-    if (!isReferralEnabled) {
-      return;
-    }
-
-    // Only continue if the partner has permitted accounts
-    const permittedAccounts = this.getPermittedAccounts(partner.origin);
-    if (permittedAccounts.length === 0) {
-      return;
-    }
-
-    // Only continue if there is no pending approval
-    const hasPendingApproval = this.approvalController.hasRequest({
-      origin: partner.origin,
-      type: partner.approvalType,
-    });
-
-    if (hasPendingApproval) {
-      return;
-    }
-
-    // First account is the active permitted account for this partner
-    const activePermittedAccount = permittedAccounts[0];
-
-    const referralStatusByAccount =
-      this.preferencesController.state.referrals[partner.id];
-    const permittedAccountStatus =
-      referralStatusByAccount[activePermittedAccount];
-    const declinedAccounts = Object.keys(referralStatusByAccount).filter(
-      (account) => referralStatusByAccount[account] === ReferralStatus.Declined,
-    );
-
-    // We should show approval screen if the account does not have a status
-    const shouldShowApproval = permittedAccountStatus === undefined;
-
-    // We should redirect to the referral url if the account is approved
-    const shouldRedirect = permittedAccountStatus === ReferralStatus.Approved;
-
-    if (shouldShowApproval) {
-      try {
-        const approvalResponse = await this.approvalController.add({
-          origin: partner.origin,
-          type: partner.approvalType,
-          requestData: {
-            selectedAddress: activePermittedAccount,
-            partnerId: partner.id,
-            partnerName: partner.name,
-            learnMoreUrl: partner.learnMoreUrl,
-          },
-          shouldShowRequest: triggerType === ReferralTriggerType.NewConnection,
-        });
-
-        if (approvalResponse?.approved) {
-          this._handleDefiReferralApprovedAccount(
-            partner,
-            activePermittedAccount,
-            permittedAccounts,
-            declinedAccounts,
-          );
-          await this._handleDefiReferralRedirect(
-            partner,
-            tabId,
-            activePermittedAccount,
-          );
-        } else {
-          this.preferencesController.addReferralDeclinedAccount(
-            partner.id,
-            activePermittedAccount,
-          );
-        }
-      } catch (error) {
-        // Do nothing if the user rejects the request
-        if (error.code === errorCodes.provider.userRejectedRequest) {
-          return;
-        }
-        throw error;
-      }
-    }
-
-    if (shouldRedirect) {
-      await this._handleDefiReferralRedirect(
-        partner,
-        tabId,
-        activePermittedAccount,
-      );
-    }
-  }
-
-  /**
-   * Handles redirection to the DeFi partner's referral page.
-   *
-   * @param {import('../../../shared/constants/defi-referrals').DefiReferralPartnerConfig} partner - The partner configuration.
-   * @param {number} tabId - The browser tab ID to update.
-   * @param {string} permittedAccount - The permitted account.
-   */
-  async _handleDefiReferralRedirect(partner, tabId, permittedAccount) {
-    await this._updateDefiReferralUrl(partner, tabId);
-    // Mark this account as having been shown the referral page
-    this.preferencesController.addReferralPassedAccount(
-      partner.id,
-      permittedAccount,
-    );
-  }
-
-  /**
-   * Handles referral states for permitted accounts after user approval.
-   *
-   * @param {import('../../../shared/constants/defi-referrals').DefiReferralPartnerConfig} partner - The partner configuration.
-   * @param {string} activePermittedAccount - The active permitted account.
-   * @param {string[]} permittedAccounts - The permitted accounts.
-   * @param {string[]} declinedAccounts - The previously declined permitted accounts.
-   */
-  _handleDefiReferralApprovedAccount(
-    partner,
-    activePermittedAccount,
-    permittedAccounts,
-    declinedAccounts,
-  ) {
-    if (declinedAccounts.length === 0) {
-      // If there are no previously declined permitted accounts then
-      // we approve all permitted accounts so that the user is not
-      // shown the approval screen unnecessarily when switching
-      this.preferencesController.setAccountsReferralApproved(
-        partner.id,
-        permittedAccounts,
-      );
-    } else {
-      this.preferencesController.addReferralApprovedAccount(
-        partner.id,
-        activePermittedAccount,
-      );
-      // If there are any previously declined accounts then
-      // we do not approve them, but instead remove them from the declined list
-      // so they have the option to participate again in future
-      permittedAccounts.forEach((account) => {
-        if (declinedAccounts.includes(account)) {
-          this.preferencesController.removeReferralDeclinedAccount(
-            partner.id,
-            account,
-          );
-        }
-      });
-    }
-  }
-
-  /**
-   * Updates the browser tab URL to the DeFi partner's referral page.
-   *
-   * @param {import('../../../shared/constants/defi-referrals').DefiReferralPartnerConfig} partner - The partner configuration.
-   * @param {number} tabId - The browser tab ID to update.
-   */
-  async _updateDefiReferralUrl(partner, tabId) {
-    try {
-      const { url } = await browser.tabs.get(tabId);
-      const currentUrl = new URL(url || '');
-      const referralUrl = new URL(partner.referralUrl);
-
-      // Preserve (or update) existing params and add referral params
-      const mergedParams = new URLSearchParams(currentUrl.search);
-      for (const [key, value] of referralUrl.searchParams) {
-        mergedParams.set(key, value);
-      }
-
-      // Apply merged params to the referral URL
-      referralUrl.search = mergedParams.toString();
-      await browser.tabs.update(tabId, { url: referralUrl.toString() });
-    } catch (error) {
-      log.error(
-        `Failed to update URL to ${partner.name} referral page: `,
-        error,
-      );
-    }
-  }
-
-  /**
    * Stops exposing the specified scope to all third parties.
    *
    * @param {string} scopeString - The scope to stop exposing
@@ -4502,13 +4306,6 @@ export default class MetamaskController extends EventEmitter {
         this.permissionController.createPermissionMiddleware({
           origin,
         }),
-      );
-
-      // Add Defi referral partner permission monitoring middleware
-      engine.push(
-        createDefiReferralMiddleware((partner, referralTabId, triggerType) =>
-          this.handleDefiReferral(partner, referralTabId, triggerType),
-        ),
       );
     }
 

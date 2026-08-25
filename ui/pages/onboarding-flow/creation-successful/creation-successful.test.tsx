@@ -410,7 +410,7 @@ describe('Wallet Ready Page', () => {
           ...mockState.metamask,
           deferredDeepLink: {
             createdAt: Date.now(),
-            referringLink: 'https://link.1do.io/buy',
+            referringLink: 'https://link.1do.io/card-onboarding',
           },
         },
       });

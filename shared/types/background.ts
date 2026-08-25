@@ -169,7 +169,6 @@ export type ControllerStatePropertiesEnumerated = {
   currentLocale: PreferencesControllerState['currentLocale'];
   forgottenPassword: PreferencesControllerState['forgottenPassword'];
   preferences: PreferencesControllerState['preferences'];
-  referrals: PreferencesControllerState['referrals'];
   useAddressBarEnsResolution: PreferencesControllerState['useAddressBarEnsResolution'];
   ledgerTransportType: PreferencesControllerState['ledgerTransportType'];
   theme: PreferencesControllerState['theme'];

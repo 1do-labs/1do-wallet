@@ -151,18 +151,9 @@ export const MESSAGE_TYPE = {
   WALLET_SESSION_CHANGED: 'wallet_sessionChanged',
   WATCH_ASSET: 'wallet_watchAsset',
   WATCH_ASSET_LEGACY: 'metamask_watchAsset',
-  HYPERLIQUID_REFERRAL_CONSENT: 'hyperliquid_referral_consent',
-  ASTERDEX_REFERRAL_CONSENT: 'asterdex_referral_consent',
-  GMX_REFERRAL_CONSENT: 'gmx_referral_consent',
 } as const;
 
 export type MessageType = (typeof MESSAGE_TYPE)[keyof typeof MESSAGE_TYPE];
-
-// Custom ApprovalTypes for DeFi referral consent
-export const HYPERLIQUID_APPROVAL_TYPE =
-  MESSAGE_TYPE.HYPERLIQUID_REFERRAL_CONSENT;
-export const ASTERDEX_APPROVAL_TYPE = MESSAGE_TYPE.ASTERDEX_REFERRAL_CONSENT;
-export const GMX_APPROVAL_TYPE = MESSAGE_TYPE.GMX_REFERRAL_CONSENT;
 
 export const POLLING_TOKEN_ENVIRONMENT_TYPES = {
   [ENVIRONMENT_TYPE_POPUP]: 'popupGasPollTokens',

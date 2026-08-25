@@ -28,7 +28,6 @@ import {
 } from '../confirm/info/row';
 import MetaMaskTranslation from '../metamask-translation';
 import { Skeleton } from '../../component-library/skeleton';
-import { DefiReferralConsent } from '../../../pages/core/defi-referral-consent';
 import { Delineator } from '../../ui/delineator';
 
 export const safeComponentList = {
@@ -45,7 +44,6 @@ export const safeComponentList = {
   ConfirmInfoRow,
   ConfirmInfoRowAddress,
   ConfirmInfoRowValueDouble,
-  DefiReferralConsent,
   DefinitionList,
   div: 'div',
   FormTextField,

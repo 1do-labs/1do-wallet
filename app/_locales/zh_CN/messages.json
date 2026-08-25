@@ -563,7 +563,7 @@
     "message": "年度"
   },
   "appDescription": {
-    "message": "用于支付和资产 app 的自托管智能合约钱包 runtime。",
+    "message": "用于支付和资产应用的自托管智能合约钱包。无联属链接、推荐码或佣金。",
     "description": "The description of the application"
   },
   "apply": {
@@ -624,10 +624,6 @@
   },
   "assets": {
     "message": "资产"
-  },
-  "asterdexReferralSubtitle": {
-    "message": "使用 1do 推荐码，交易可获得 4% 的返现。",
-    "description": "The subtitle of the AsterDEX referral confirmation screen"
   },
   "attributes": {
     "message": "属性"
@@ -1635,9 +1631,6 @@
   "deepLink_theAssetPage": {
     "message": "资产页面"
   },
-  "deepLink_theBuyPage": {
-    "message": "购买页面"
-  },
   "deepLink_theCardOnboardingPage": {
     "message": "1do 卡开通页面"
   },
@@ -1655,9 +1648,6 @@
   },
   "deepLink_thePredictPage": {
     "message": "预测市场页面"
-  },
-  "deepLink_theSellPage": {
-    "message": "出售页面"
   },
   "deepLink_ThirdPartyDescription": {
     "message": "您由第三方（而非 1do）引导至此。$1",
@@ -1680,14 +1670,6 @@
   },
   "defiEmptyDescription": {
     "message": "借出、借入与交易，均可在您的钱包中轻松完成。"
-  },
-  "defiReferralCheckboxLabel": {
-    "message": "允许 1do 添加推荐码。此设置为永久有效。相关网站将根据其条款提供折扣。1do 将从中收取费用。",
-    "description": "The text for the checkbox label in the DeFi referral confirmation screen"
-  },
-  "defiReferralTitle": {
-    "message": "1do x $1",
-    "description": "The title of the DeFi referral confirmation screen. $1 is the name of the partner"
   },
   "defiTabErrorContent": {
     "message": "请稍后再次尝试访问。"
@@ -2472,10 +2454,6 @@
     "message": "准备好钱包以便使用 Web3",
     "description": "Subtitle text for the balance empty state component explaining the purpose of adding funds"
   },
-  "gmxReferralSubtitle": {
-    "message": "使用 1do 推荐码交易费用最高可节省 5%。",
-    "description": "The subtitle of the GMX referral confirmation screen"
-  },
   "goerli": {
     "message": "Goerli 测试网络"
   },
@@ -2697,10 +2675,6 @@
   },
   "honeypotTitle": {
     "message": "蜜罐"
-  },
-  "hyperliquidReferralSubtitle": {
-    "message": "使用 1do 推荐码交易费用最高可节省 4%。",
-    "description": "The subtitle of the Hyperliquid referral confirmation screen"
   },
   "id": {
     "message": "ID"

@@ -2,9 +2,9 @@ import React from 'react';
 import { fireEvent, screen } from '@testing-library/react';
 import { enLocale as messages } from '../../../../test/lib/i18n-helpers';
 import {
-  HardwareAffiliateLinks,
-  HardwareAffiliateTutorialLinks,
   HardwareDeviceNames,
+  HardwareWalletLinks,
+  HardwareWalletTutorialLinks,
 } from '../../../../shared/constants/hardware-wallets';
 import { renderWithProvider } from '../../../../test/lib/render-helpers-navigate';
 import { openWindow } from '../../../helpers/utils/window';
@@ -98,7 +98,7 @@ describe('SelectHardware', () => {
     );
   });
 
-  it('opens ledger marketing links when ledger is selected', () => {
+  it('opens Ledger product and tutorial links when Ledger is selected', () => {
     render();
 
     fireEvent.click(screen.getByLabelText(messages.ledger.message));
@@ -109,15 +109,18 @@ describe('SelectHardware', () => {
       screen.getByRole('button', { name: messages.tutorial.message }),
     );
 
-    expect(openWindow).toHaveBeenNthCalledWith(
-      1,
-      HardwareAffiliateLinks.Ledger,
-    );
+    expect(openWindow).toHaveBeenNthCalledWith(1, 'https://shop.ledger.com/');
     expect(openWindow).toHaveBeenNthCalledWith(
       2,
-      HardwareAffiliateTutorialLinks.Ledger,
+      HardwareWalletTutorialLinks.Ledger,
     );
     expect(openWindow).toHaveBeenCalledTimes(2);
+  });
+
+  it('uses hardware wallet links without tracking parameters', () => {
+    Object.values(HardwareWalletLinks).forEach((link) => {
+      expect(new URL(link).search).toBe('');
+    });
   });
 
   it('renders Ledger Live setup step for live transport', () => {
@@ -148,17 +151,14 @@ describe('SelectHardware', () => {
     });
   });
 
-  it('opens Ngrave marketing links when QR device is selected', () => {
+  it('opens Ngrave product and help links when QR device is selected', () => {
     render();
 
     fireEvent.click(screen.getByLabelText('QRCode'));
     fireEvent.click(screen.getByTestId('ngrave-brand-buy-now-btn'));
     fireEvent.click(screen.getByTestId('ngrave-brand-learn-more-btn'));
 
-    expect(openWindow).toHaveBeenNthCalledWith(
-      1,
-      HardwareAffiliateLinks.Ngrave,
-    );
+    expect(openWindow).toHaveBeenNthCalledWith(1, HardwareWalletLinks.Ngrave);
     expect(openWindow).toHaveBeenCalledTimes(2);
   });
 });

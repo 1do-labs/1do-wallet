@@ -204,7 +204,6 @@ app/scripts/lib/createRPCMethodTrackingMiddleware.js                  @MetaMask/
 app/scripts/lib/createMetamaskMiddleware.ts                           @MetaMask/wallet-integrations
 app/scripts/lib/createOnboardingMiddleware.js                         @MetaMask/wallet-integrations
 app/scripts/lib/createEvmMethodsToNonEvmAccountReqFilterMiddleware.ts @MetaMask/wallet-integrations
-app/scripts/lib/createDefiReferralMiddleware.ts                @MetaMask/wallet-integrations
 app/scripts/lib/middleware/                                           @MetaMask/wallet-integrations
 app/scripts/lib/createOriginThrottlingMiddleware.ts                   @MetaMask/wallet-integrations
 app/scripts/lib/createMainFrameOriginMiddleware.ts                    @MetaMask/wallet-integrations

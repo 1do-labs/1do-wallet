@@ -1,8 +1,12 @@
-1do Wallet is an extension for accessing Ethereum enabled distributed applications, or "Dapps" in your normal browser!
+1Do is a self-custody EVM wallet focused on verified EIP-7702 account runtimes and their on-chain app permissions.
 
-The extension injects the Ethereum web3 API into every website's javascript context, so that dapps can read from the blockchain.
+Use 1Do to create or import EVM accounts, connect supported hardware wallets, review and sign transactions, manage tokens and NFTs, connect to decentralized applications, and activate a verified 1Do Runtime on supported networks.
 
-1do Wallet also lets the user create and manage their own identities, so when a Dapp wants to perform a transaction and write to the blockchain, the user gets a secure interface to review the transaction, before approving or rejecting it.
+1Do injects a standard EIP-1193 Ethereum provider into websites so that decentralized applications can request account access and transactions. Every sensitive request is presented in the wallet for user review and approval.
 
-Because it adds functionality to the normal browser context, 1do Wallet requires the permission to read and write to any webpage. You can learn more about 1do Wallet and review our official product information here:
+Runtime features are available only on EVM networks where verified 1Do Core contracts are deployed.
+
+1Do does not use affiliate links or referral codes and does not receive commissions from hardware-wallet links.
+
+Because the wallet provider must be available to decentralized applications, the extension requests permission to run on websites. Learn more about 1Do at:
 https://www.1do.io/

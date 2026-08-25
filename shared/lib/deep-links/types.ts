@@ -49,7 +49,7 @@ export type DeferredDeepLinkRoute =
       type: DeferredDeepLinkRouteType.Interstitial;
       /**
        * The URL path and query to pass to the interstitial page.
-       * Format: /path?query (e.g., /buy?address=0x...)
+       * Format: /path?query (e.g., /home?utm_source=example)
        */
       urlPathAndQuery: string;
     }

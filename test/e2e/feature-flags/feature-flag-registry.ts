@@ -1664,26 +1664,6 @@ export const FEATURE_FLAG_REGISTRY: Record<string, FeatureFlagRegistryEntry> = {
     status: FeatureFlagStatus.Active,
   },
 
-  extensionUxDefiReferral: {
-    name: 'extensionUxDefiReferral',
-    type: FeatureFlagType.Remote,
-    inProd: true,
-    productionDefault: true,
-    status: FeatureFlagStatus.Active,
-  },
-
-  extensionUxDefiReferralPartners: {
-    name: 'extensionUxDefiReferralPartners',
-    type: FeatureFlagType.Remote,
-    inProd: true,
-    productionDefault: {
-      asterdex: true,
-      gmx: true,
-      hyperliquid: true,
-    },
-    status: FeatureFlagStatus.Active,
-  },
-
   extensionUxPna25: {
     name: 'extensionUxPna25',
     type: FeatureFlagType.Remote,

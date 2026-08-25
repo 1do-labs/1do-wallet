@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.0.1] - 2026-08-25
+
+### Changed
+
+- Replaced hardware-wallet vendor links with direct official URLs that contain no affiliate or tracking parameters.
+- Removed inherited DeFi referral codes, URL rewriting, approval UI, and persisted referral state.
+- Removed legacy marketing-cookie communication and obsolete Buy/Sell deep-link routes.
+
+### Fixed
+
+- Updated Chrome Web Store product information and release notes after the `Grey Titanium` affiliate-marketing policy rejection.
+
 ## [13.27.0]
 
 ### Added

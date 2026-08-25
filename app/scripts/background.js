@@ -47,7 +47,6 @@ import { isStateCorruptionError } from '../../shared/constants/errors';
 import getFirstPreferredLangCode from '../../shared/lib/get-first-preferred-lang-code';
 import { getManifestFlags } from '../../shared/lib/manifestFlags';
 import { DISPLAY_GENERAL_STARTUP_ERROR } from '../../shared/constants/start-up-errors';
-import { getPartnerByOrigin } from '../../shared/constants/defi-referrals';
 import { backedUpStateKeys } from '../../shared/lib/stores/persistence-manager';
 import {
   CorruptionHandler,
@@ -82,7 +81,6 @@ import { ExtensionLazyListener } from './lib/extension-lazy-listener/extension-l
 import { DeepLinkRouter } from './lib/deep-links/deep-link-router';
 import { getRequestSafeReload } from './lib/safe-reload';
 import { tryPostMessage } from './lib/start-up-errors/start-up-errors';
-import { ReferralTriggerType } from './lib/createDefiReferralMiddleware';
 
 /**
  * @typedef {import('../../shared/lib/stores/persistence-manager').Backup} Backup
@@ -163,7 +161,6 @@ const seenFailedNonces = new Set();
 const openMetamaskTabsIDs = {};
 const requestAccountTabIds = {};
 let controller;
-const tabOriginMapping = {};
 
 if (inTest || process.env.METAMASK_DEBUG) {
   global.stateHooks.metamaskGetState = persistenceManager.get.bind(
@@ -870,28 +867,6 @@ export async function loadStateFromPersistence(backup) {
 }
 
 /**
- * Remember the top-level origin for referral handling.
- *
- * @param {chrome.runtime.Port} remotePort - The port provided by a new context.
- */
-function trackDappView(remotePort) {
-  if (
-    !remotePort.sender?.tab ||
-    !remotePort.sender?.url ||
-    !remotePort.sender?.tab?.url
-  ) {
-    return;
-  }
-  const tabId = remotePort.sender.tab.id;
-  const tabUrl = new URL(remotePort.sender.tab.url);
-  const { origin: tabOrigin } = tabUrl;
-
-  if (!(tabId in tabOriginMapping)) {
-    tabOriginMapping[tabId] = tabOrigin;
-  }
-}
-
-/**
  * Helper function to refresh appActiveTab by querying the current active tab.
  * This is used when the sidepanel opens to ensure it has the current tab info,
  * and when the focused window changes to keep appActiveTab in sync.
@@ -1263,8 +1238,6 @@ export function setupController(
         const url = new URL(remotePort.sender.url);
         const { origin } = url;
 
-        trackDappView(remotePort);
-
         remotePort.onMessage.addListener((msg) => {
           if (
             msg.data &&
@@ -1307,9 +1280,6 @@ export function setupController(
       if (metamaskBlockedPorts.includes(remotePort.name)) {
         return;
       }
-
-      // this is triggered when a new tab is opened, or origin(url) is changed
-      trackDappView(remotePort);
 
       connectCaipMultichain(createCaipStream(portStream), remotePort.sender);
     } else {
@@ -1593,37 +1563,6 @@ async function onUpdateAvailable(details) {
 
 browser.runtime.onUpdateAvailable.addListener(onUpdateAvailable);
 
-function onNavigateToTab() {
-  browser.tabs.onActivated.addListener((onActivatedTab) => {
-    if (controller) {
-      const { tabId } = onActivatedTab;
-      const currentTabOrigin = tabOriginMapping[tabId];
-      // If the connected dApp is a referral partner, trigger the referral flow
-      const partner = getPartnerByOrigin(currentTabOrigin);
-      if (partner) {
-        const connectSitePermissions =
-          controller.permissionController.state.subjects[currentTabOrigin];
-        // when the dapp is not connected, connectSitePermissions is undefined
-        const isConnectedToDapp = connectSitePermissions !== undefined;
-        if (isConnectedToDapp) {
-          controller
-            .handleDefiReferral(
-              partner,
-              tabId,
-              ReferralTriggerType.OnNavigateConnectedTab,
-            )
-            .catch((error) => {
-              log.error(
-                `Failed to handle ${partner.name} referral after navigation to connected tab: `,
-                error,
-              );
-            });
-        }
-      }
-    }
-  });
-}
-
 // Sidepanel-specific functionality
 async function applyToolbarSidePanelBehavior() {
   if (!browser?.sidePanel?.setPanelBehavior) {
@@ -1854,7 +1793,6 @@ browser.windows.onFocusChanged.addListener(async (windowId) => {
  * @param {Backup | null} backup
  */
 async function initBackground(backup) {
-  onNavigateToTab();
   try {
     await initialize(backup);
     if (process.env.IN_TEST) {

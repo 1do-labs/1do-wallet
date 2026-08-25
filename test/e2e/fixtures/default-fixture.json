@@ -708,11 +708,6 @@
         "useNativeCurrencyAsPrimaryCurrency": true,
         "useSidePanelAsDefault": true
       },
-      "referrals": {
-        "asterdex": {},
-        "gmx": {},
-        "hyperliquid": {}
-      },
       "showSidePanelMigrationToast": false,
       "theme": "os",
       "use4ByteResolution": true,
@@ -820,6 +815,6 @@
   },
   "meta": {
     "storageKind": "split",
-    "version": 206
+    "version": 207
   }
 }

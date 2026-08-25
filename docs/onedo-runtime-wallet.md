@@ -215,7 +215,7 @@ raw calldata
 
 ## 9. Manifest、构建与发布
 
-当前公开版本：`2.0.0`。
+当前公开版本：`2.0.1`。
 
 构建边界：
 
@@ -225,6 +225,8 @@ raw calldata
 - 删除旧版本并行构建脚本；
 - Manifest 保留 `webRequest`，删除 `activeTab`、`scripting`、`externally_connectable`；
 - 继续保留 Provider、自定义 RPC、硬件钱包 offscreen、sidePanel 和 ENS/IPFS 地址栏导航所需权限。
+- 所有硬件钱包厂商链接均为不带跟踪参数的官方直达链接；产品不使用联属链接、推荐码或返佣 Cookie。
+- 删除上游遗留的 DeFi 推荐跳转、推荐码、同意界面、偏好状态和构建资源。
 
 商店描述应突出：
 

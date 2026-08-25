@@ -50,8 +50,9 @@ describe('migrations', () => {
         data,
       });
 
-      expect(liveMigrations).toStrictEqual([]);
-      expect(migratedData.state.meta.version).toStrictEqual(0);
+      expect(liveMigrations).toHaveLength(1);
+      expect(liveMigrations[0].version).toStrictEqual(207);
+      expect(migratedData.state.meta.version).toStrictEqual(207);
     });
 
     it('should emit an error', async () => {

@@ -1,12 +1,10 @@
 import { asset } from './asset';
-import { buy } from './buy';
 import { card } from './card';
 import { home } from './home';
 import { nfts } from './nfts';
 import { onboarding } from './onboarding';
 import { predict } from './predict';
 import type { Route } from './route';
-import { sell } from './sell';
 import { trending } from './trending';
 
 export type { Route } from './route';
@@ -37,8 +35,6 @@ if (process.env.ENABLE_SETTINGS_PAGE_DEV_OPTIONS || process.env.IN_TEST) {
   addRoute(require('./test-route').test);
 }
 
-addRoute(buy);
-addRoute(sell);
 addRoute(card);
 addRoute(home);
 addRoute(nfts);

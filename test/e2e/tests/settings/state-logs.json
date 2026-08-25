@@ -794,11 +794,6 @@
     },
     "recoveryPhraseReminderHasBeenShown": "boolean",
     "recoveryPhraseReminderLastShown": "number",
-    "referrals": {
-      "asterdex": {},
-      "gmx": {},
-      "hyperliquid": {}
-    },
     "remoteFeatureFlags": {
       "feature1": "boolean",
       "feature2": "boolean",

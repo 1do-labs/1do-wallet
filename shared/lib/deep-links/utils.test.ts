@@ -10,8 +10,7 @@ const mockParse = parseModule.parse as jest.MockedFunction<
   typeof parseModule.parse
 >;
 
-const mockBuyLink =
-  'https://link.1do.io/buy?address=0xacA92E438df0B2401fF60dA7E4337B687a2435DA&amount=100&chainId=1&sig=aagQN9osZ1tfoYIEKvU6t5i8FVaW4Gi6EGimMcZ0VTDmAlPDk800-Nx3131QlDTmO3UF2JCmR2Y2RAJhceNOYw';
+const mockCardLink = 'https://link.1do.io/card-onboarding?sig=valid';
 const mockHomeLink = 'https://link.1do.io/home?utm_source=test';
 
 describe('Deep link utils', () => {
@@ -28,10 +27,10 @@ describe('Deep link utils', () => {
 
     it('handles complex query parameters', () => {
       const result = buildInterstitialRoute(
-        '/buy?address=0xacA92E438df0B2401fF60dA7E4337B687a2435DA&amount=100&chainId=1',
+        '/home?utm_source=example&utm_campaign=launch',
       );
       expect(result).toBe(
-        '/link?u=%2Fbuy%3Faddress%3D0xacA92E438df0B2401fF60dA7E4337B687a2435DA%26amount%3D100%26chainId%3D1',
+        '/link?u=%2Fhome%3Futm_source%3Dexample%26utm_campaign%3Dlaunch',
       );
     });
   });
@@ -51,19 +50,19 @@ describe('Deep link utils', () => {
         jest.setSystemTime(createdAt + 60 * 1000);
 
         mockParse.mockResolvedValue({
-          destination: { redirectTo: new URL('https://app.metamask.io/buy') },
+          destination: { redirectTo: new URL('https://metamask.io/card') },
           signature: VALID,
           route: {} as never,
         });
 
         const result = await getDeferredDeepLinkRoute({
           createdAt,
-          referringLink: mockBuyLink,
+          referringLink: mockCardLink,
         });
 
         expect(result).toStrictEqual({
           type: DeferredDeepLinkRouteType.Redirect,
-          url: 'https://app.metamask.io/buy',
+          url: 'https://metamask.io/card',
         });
       });
 
@@ -98,19 +97,19 @@ describe('Deep link utils', () => {
         jest.setSystemTime(createdAt + oneHourMs);
 
         mockParse.mockResolvedValue({
-          destination: { redirectTo: new URL('https://app.metamask.io/buy') },
+          destination: { redirectTo: new URL('https://metamask.io/card') },
           signature: VALID,
           route: {} as never,
         });
 
         const result = await getDeferredDeepLinkRoute({
           createdAt,
-          referringLink: mockBuyLink,
+          referringLink: mockCardLink,
         });
 
         expect(result).toStrictEqual({
           type: DeferredDeepLinkRouteType.Redirect,
-          url: 'https://app.metamask.io/buy',
+          url: 'https://metamask.io/card',
         });
       });
 
@@ -193,19 +192,19 @@ describe('Deep link utils', () => {
         jest.setSystemTime(createdAt + 60 * 1000);
 
         mockParse.mockResolvedValue({
-          destination: { redirectTo: new URL('https://app.metamask.io/buy') },
+          destination: { redirectTo: new URL('https://metamask.io/card') },
           signature: MISSING,
           route: {} as never,
         });
 
         const result = await getDeferredDeepLinkRoute({
           createdAt,
-          referringLink: mockBuyLink,
+          referringLink: mockCardLink,
         });
 
         expect(result).toStrictEqual({
           type: DeferredDeepLinkRouteType.Redirect,
-          url: 'https://app.metamask.io/buy',
+          url: 'https://metamask.io/card',
         });
       });
     });

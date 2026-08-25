@@ -24,3 +24,25 @@ index 4da458bf43a0cb71acde3feddc8f673e5b567fc2..d25cbffbd4326ada1427c0f6870c66c7
  export const NFT_API_VERSION = '1';
  export const NFT_API_TIMEOUT = 15000;
  // Default origin for controllers
+diff --git a/dist/util.cjs b/dist/util.cjs
+--- a/dist/util.cjs
++++ b/dist/util.cjs
+@@ -124,6 +124,6 @@ function getBuyURL(networkCode = '1', address, amount = 5) {
+     switch (networkCode) {
+         case '1':
+-            return `https://buy.coinbase.com/?code=9ec56d01-7e81-5017-930c-513daa27bb6a&amount=${amount}&address=${address}&crypto_currency=ETH`;
++            return 'https://www.coinbase.com/buy';
+         case '5':
+             return 'https://goerli-faucet.slock.it/';
+         case '11155111':
+diff --git a/dist/util.mjs b/dist/util.mjs
+--- a/dist/util.mjs
++++ b/dist/util.mjs
+@@ -122,6 +122,6 @@ export function getBuyURL(networkCode = '1', address, amount = 5) {
+     switch (networkCode) {
+         case '1':
+-            return `https://buy.coinbase.com/?code=9ec56d01-7e81-5017-930c-513daa27bb6a&amount=${amount}&address=${address}&crypto_currency=ETH`;
++            return 'https://www.coinbase.com/buy';
+         case '5':
+             return 'https://goerli-faucet.slock.it/';
+         case '11155111':

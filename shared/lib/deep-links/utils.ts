@@ -14,7 +14,7 @@ import { DEEP_LINK_ROUTE } from './routes/route';
  * unsigned or invalidly signed deferred deep links.
  *
  * @param urlPathAndQuery - The URL path and query to pass to the interstitial page.
- * @returns The interstitial page route (e.g., /link?u=/buy?address=0x...)
+ * @returns The interstitial page route (e.g., /link?u=/home?utm_source=example)
  */
 export function buildInterstitialRoute(urlPathAndQuery: string): string {
   const params = new URLSearchParams({ u: urlPathAndQuery });

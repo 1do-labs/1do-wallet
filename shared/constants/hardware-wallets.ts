@@ -82,11 +82,11 @@ export enum HardwareTransportStates {
   unknownFailure = 'UNKNOWN_FAILURE',
 }
 
-export enum HardwareAffiliateLinks {
-  Ledger = 'https://shop.ledger.com/?r=17c4991a03fa',
-  GridPlus = 'https://gridplus.io/?afmc=7p',
-  Trezor = 'https://shop.trezor.io/product/trezor-one-black?offer_id=35&aff_id=11009',
-  Keystone = 'https://keyst.one/metamask?rfsn=6088257.656b3e9&utm_source=refersion&utm_medium=affiliate&utm_campaign=6088257.656b3e9',
+export enum HardwareWalletLinks {
+  Ledger = 'https://shop.ledger.com/',
+  GridPlus = 'https://gridplus.io/',
+  Trezor = 'https://trezor.io/',
+  Keystone = 'https://keyst.one/',
   AirGap = 'https://airgap.it/',
   CoolWallet = 'https://www.coolwallet.io/',
   DCent = 'https://dcentwallet.com/',
@@ -96,7 +96,7 @@ export enum HardwareAffiliateLinks {
   KShell = 'https://get.keycard.tech/pages/keycard-shell',
 }
 
-export enum HardwareAffiliateTutorialLinks {
+export enum HardwareWalletTutorialLinks {
   Ledger = 'https://support.ledger.com/article/4404366864657-zd',
   GridPlus = 'https://docs.gridplus.io/setup/metamask',
   Trezor = 'https://wiki.trezor.io/Apps:MetaMask',
