@@ -6,7 +6,5 @@ Use 1Do to create or import EVM accounts, connect supported hardware wallets, re
 
 Runtime features are available only on EVM networks where verified 1Do Core contracts are deployed.
 
-1Do does not use affiliate links or referral codes and does not receive commissions from hardware-wallet links.
-
 Because the wallet provider must be available to decentralized applications, the extension requests permission to run on websites. Learn more about 1Do at:
 https://www.1do.io/

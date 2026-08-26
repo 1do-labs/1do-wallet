@@ -563,7 +563,7 @@
     "message": "Annual"
   },
   "appDescription": {
-    "message": "Self-custody smart contract wallet for payments and asset apps. No affiliate links, referral codes, or commissions.",
+    "message": "Self-custody EVM wallet for verified EIP-7702 account runtimes, payments, and asset apps.",
     "description": "The description of the application"
   },
   "apply": {

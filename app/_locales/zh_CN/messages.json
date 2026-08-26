@@ -563,7 +563,7 @@
     "message": "年度"
   },
   "appDescription": {
-    "message": "用于支付和资产应用的自托管智能合约钱包。无联属链接、推荐码或佣金。",
+    "message": "用于管理经过验证的 EIP-7702 账户 Runtime、支付和资产应用的自托管 EVM 钱包。",
     "description": "The description of the application"
   },
   "apply": {
