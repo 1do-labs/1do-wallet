@@ -48,6 +48,13 @@ export const CHAIN_ID_DEFAULT_NATIVE_TOKEN_MAP = {
     decimals: 18,
     iconUrl: BNB_TOKEN_IMAGE_URL,
   },
+  [CHAIN_IDS.BSC_TESTNET]: {
+    symbol: CURRENCY_SYMBOLS.BNB,
+    name: 'BNB Smart Chain Testnet',
+    address: DEFAULT_NATIVE_TOKEN_ADDRESS,
+    decimals: 18,
+    iconUrl: BNB_TOKEN_IMAGE_URL,
+  },
   [CHAIN_IDS.POLYGON]: {
     symbol: CURRENCY_SYMBOLS.POL,
     name: 'Polygon',
