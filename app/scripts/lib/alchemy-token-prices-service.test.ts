@@ -24,7 +24,7 @@ describe('AlchemyTokenPricesService', () => {
             {
               network: 'eth-mainnet',
               address: '0x0000000000000000000000000000000000000001',
-              prices: [{ currency: 'usd', value: '12.5' }],
+              prices: [{ currency: 'USD', value: '12.5' }],
             },
           ],
         }),
@@ -47,6 +47,7 @@ describe('AlchemyTokenPricesService', () => {
           tokenAddress: '0x0000000000000000000000000000000000000001',
           currency: 'usd',
           price: 12.5,
+          pricePercentChange1d: undefined,
         }),
       ]);
       expect(fetchMock).toHaveBeenCalledWith(
@@ -115,7 +116,7 @@ describe('AlchemyTokenPricesService', () => {
             data: [
               {
                 symbol: 'ETH',
-                prices: [{ currency: 'usd', value: '2000' }],
+                prices: [{ currency: 'USD', value: '2000' }],
               },
             ],
           }),
@@ -132,9 +133,9 @@ describe('AlchemyTokenPricesService', () => {
         eth: {
           name: 'ETH',
           ticker: 'ETH',
-          value: 14000,
+          value: 1 / 14000,
           currencyType: 'crypto',
-          usd: 2000,
+          usd: 1 / 2000,
         },
       });
     });
@@ -147,11 +148,11 @@ describe('AlchemyTokenPricesService', () => {
             data: [
               {
                 symbol: 'ETH',
-                prices: [{ currency: 'usd', value: '2000' }],
+                prices: [{ currency: 'USD', value: '2000' }],
               },
               {
                 symbol: 'BTC',
-                prices: [{ currency: 'usd', value: '50000' }],
+                prices: [{ currency: 'USD', value: '50000' }],
               },
             ],
           }),
@@ -164,8 +165,36 @@ describe('AlchemyTokenPricesService', () => {
         cryptocurrencies: ['ETH'],
       });
 
-      expect(result.eth.value).toBe(0.04);
+      expect(result.eth.value).toBe(25);
       expect(result.eth.usd).toBeUndefined();
+    });
+
+    it('returns reciprocal native asset prices when the display currency is USD', async () => {
+      fetchMock.mockResolvedValueOnce(
+        jsonResponse({
+          data: [
+            {
+              symbol: 'ETH',
+              prices: [{ currency: 'USD', value: '2000' }],
+            },
+          ],
+        }),
+      );
+      const service = new AlchemyTokenPricesService('test-key');
+
+      const result = await service.fetchExchangeRates({
+        baseCurrency: 'usd',
+        includeUsdRate: true,
+        cryptocurrencies: ['ETH'],
+      });
+
+      expect(result.eth).toEqual({
+        name: 'ETH',
+        ticker: 'ETH',
+        value: 1 / 2000,
+        currencyType: 'crypto',
+        usd: 1 / 2000,
+      });
     });
   });
 

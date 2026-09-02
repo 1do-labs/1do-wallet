@@ -187,26 +187,36 @@ export class AlchemyTokenPricesService {
         getUsdPrice(symbolPrices),
       ]),
     );
-    let conversionRate: number;
-    if (baseIsFiat) {
-      conversionRate = baseSymbol === 'USD' ? 1 : fiatRates[baseSymbol];
-    } else {
-      conversionRate =
-        1 / requireFinitePrice(usdPriceBySymbol.get(baseSymbol), baseSymbol);
-    }
+    const baseUsdPrice = baseIsFiat
+      ? 1
+      : requireFinitePrice(usdPriceBySymbol.get(baseSymbol), baseSymbol);
+    const baseFiatRate = baseIsFiat
+      ? requireFinitePrice(
+          baseSymbol === 'USD' ? 1 : fiatRates[baseSymbol],
+          baseSymbol,
+        )
+      : 1;
 
     return Object.fromEntries(
       symbols.flatMap((symbol) => {
         const usdPrice = usdPriceBySymbol.get(symbol);
-        if (usdPrice === undefined) {
+        if (usdPrice === undefined || usdPrice <= 0) {
           return [];
         }
+
+        // CurrencyRateController inverts `value` and `usd` before storing
+        // them. Return reciprocal prices here so its resulting rates are in
+        // the expected units (display currency per crypto asset and USD per
+        // crypto asset respectively).
+        const value = baseIsFiat
+          ? 1 / (usdPrice * baseFiatRate)
+          : baseUsdPrice / usdPrice;
         const rate: ExchangeRate = {
           name: symbol,
           ticker: symbol,
-          value: usdPrice * conversionRate,
+          value,
           currencyType: 'crypto',
-          ...(includeUsdRate ? { usd: usdPrice } : {}),
+          ...(includeUsdRate ? { usd: 1 / usdPrice } : {}),
         };
         return [[symbol.toLowerCase(), rate]];
       }),
@@ -421,7 +431,10 @@ function getHistoricalPeriodDays(timePeriod: string): number {
 }
 
 function getUsdPrice(prices: AlchemyPrice[]): number | undefined {
-  const value = prices.find(({ currency }) => currency === 'usd')?.value;
+  const value = prices.find(
+    ({ currency }) =>
+      typeof currency === 'string' && currency.toLowerCase() === 'usd',
+  )?.value;
   if (value === undefined) {
     return undefined;
   }
@@ -430,7 +443,7 @@ function getUsdPrice(prices: AlchemyPrice[]): number | undefined {
 }
 
 function requireFinitePrice(price: number | undefined, symbol: string): number {
-  if (price === undefined || price <= 0) {
+  if (price === undefined || !Number.isFinite(price) || price <= 0) {
     throw new Error(`Price unavailable for ${symbol}`);
   }
   return price;
@@ -441,6 +454,13 @@ function createMarketData<Currency extends string>(
   currency: Currency,
   price: number,
 ): AssetMarketData<Currency> {
+  // The Alchemy address-price endpoint only supplies a spot price. Keep
+  // unavailable change metrics as undefined at runtime instead of reporting a
+  // misleading zero-percent change. MarketDataDetails currently types these
+  // fields as numbers, so the cast preserves compatibility with the upstream
+  // controller until its type allows nullable metrics.
+  const unavailableChange = undefined as unknown as number;
+
   return {
     ...asset,
     currency,
@@ -452,15 +472,15 @@ function createMarketData<Currency extends string>(
     high1d: 0,
     low1d: 0,
     marketCap: 0,
-    marketCapPercentChange1d: 0,
-    priceChange1d: 0,
-    pricePercentChange1d: 0,
-    pricePercentChange1h: 0,
-    pricePercentChange1y: 0,
-    pricePercentChange7d: 0,
-    pricePercentChange14d: 0,
-    pricePercentChange30d: 0,
-    pricePercentChange200d: 0,
+    marketCapPercentChange1d: unavailableChange,
+    priceChange1d: unavailableChange,
+    pricePercentChange1d: unavailableChange,
+    pricePercentChange1h: unavailableChange,
+    pricePercentChange1y: unavailableChange,
+    pricePercentChange7d: unavailableChange,
+    pricePercentChange14d: unavailableChange,
+    pricePercentChange30d: unavailableChange,
+    pricePercentChange200d: unavailableChange,
     totalVolume: 0,
   };
 }

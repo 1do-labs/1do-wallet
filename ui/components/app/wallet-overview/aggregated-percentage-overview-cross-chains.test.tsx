@@ -602,4 +602,45 @@ describe('AggregatedPercentageOverviewCrossChains', () => {
     expect(percentageElement).toBeInTheDocument();
     expect(numberElement).toBeInTheDocument();
   });
+
+  it('displays dashes when a non-zero asset has no 1d market change', () => {
+    (useAccountTotalCrossChainFiatBalance as jest.Mock).mockReturnValue({
+      tokenFiatBalancesCrossChains: [
+        {
+          chainId: '0x1',
+          tokensWithBalances: [
+            {
+              address: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
+              symbol: 'USDC',
+              decimals: 6,
+            },
+          ],
+          tokenFiatBalances: ['70'],
+          nativeFiatValue: '0',
+        },
+      ],
+      totalFiatBalance: 70,
+    });
+    mockGetMarketData.mockReturnValue({
+      '0x1': {
+        '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48': {
+          tokenAddress: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
+          currency: 'USD',
+          id: 'usd-coin',
+          price: 1,
+        },
+      },
+    });
+
+    render(
+      <AggregatedPercentageOverviewCrossChains trailingChild={() => null} />,
+    );
+
+    expect(screen.getByTestId('aggregated-value-change')).toHaveTextContent(
+      '-',
+    );
+    expect(
+      screen.getByTestId('aggregated-percentage-change'),
+    ).toHaveTextContent('-');
+  });
 });

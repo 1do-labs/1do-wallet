@@ -537,13 +537,18 @@ describe('AggregatedPercentageOverview', () => {
         dilutedMarketCap: 14849047.51464122,
         marketCapPercentChange1d: 0.25951,
         priceChange1d: -0.000469409459860959,
+        pricePercentChange1d: undefined,
       },
     });
-    const expectedAmountChange = '-$0.39';
-    const expectedPercentageChange = '(-1.08%)';
+    const expectedAmountChange = '-';
+    const expectedPercentageChange = '-';
     render(<AggregatedPercentageOverview trailingChild={() => null} />);
-    const percentageElement = screen.getByText(expectedPercentageChange);
-    const numberElement = screen.getByText(expectedAmountChange);
+    const percentageElement = screen.getByTestId(
+      'aggregated-percentage-change',
+    );
+    const numberElement = screen.getByTestId('aggregated-value-change');
+    expect(percentageElement).toHaveTextContent(expectedPercentageChange);
+    expect(numberElement).toHaveTextContent(expectedAmountChange);
     expect(percentageElement).toBeInTheDocument();
     expect(numberElement).toBeInTheDocument();
   });
@@ -635,15 +640,48 @@ describe('AggregatedPercentageOverview', () => {
         dilutedMarketCap: 14849047.51464122,
         marketCapPercentChange1d: 0.25951,
         priceChange1d: -0.000469409459860959,
+        pricePercentChange1d: undefined,
       },
     });
-    const expectedAmountChange = '-$0.01';
-    const expectedPercentageChange = '(-0.03%)';
+    const expectedAmountChange = '-';
+    const expectedPercentageChange = '-';
     render(<AggregatedPercentageOverview trailingChild={() => null} />);
-    const percentageElement = screen.getByText(expectedPercentageChange);
-    const numberElement = screen.getByText(expectedAmountChange);
+    const percentageElement = screen.getByTestId(
+      'aggregated-percentage-change',
+    );
+    const numberElement = screen.getByTestId('aggregated-value-change');
+    expect(percentageElement).toHaveTextContent(expectedPercentageChange);
+    expect(numberElement).toHaveTextContent(expectedAmountChange);
     expect(percentageElement).toBeInTheDocument();
     expect(numberElement).toBeInTheDocument();
+  });
+
+  it('displays dashes when a non-zero token has no 1d market change', () => {
+    (useAccountTotalFiatBalance as jest.Mock).mockReturnValue({
+      orderedTokenList: [
+        {
+          address: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
+          symbol: 'USDC',
+          fiatBalance: '70',
+        },
+      ],
+      totalFiatBalance: 70,
+    });
+    mockGetTokensMarketData.mockReturnValue({
+      '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48': {
+        tokenAddress: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
+        price: 1,
+      },
+    });
+
+    render(<AggregatedPercentageOverview trailingChild={() => null} />);
+
+    expect(screen.getByTestId('aggregated-value-change')).toHaveTextContent(
+      '-',
+    );
+    expect(
+      screen.getByTestId('aggregated-percentage-change'),
+    ).toHaveTextContent('-');
   });
 });
 

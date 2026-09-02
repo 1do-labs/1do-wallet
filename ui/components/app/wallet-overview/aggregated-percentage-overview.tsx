@@ -34,7 +34,12 @@ import { Skeleton } from '../../component-library/skeleton';
 // todo remove this and use core type once available
 type MarketDataDetails = {
   tokenAddress: string;
-  pricePercentChange1d: number;
+  pricePercentChange1d?: number;
+};
+
+const hasNonZeroFiatBalance = (fiatBalance: string | undefined): boolean => {
+  const numericBalance = Number(fiatBalance ?? 0);
+  return Number.isFinite(numericBalance) && numericBalance !== 0;
 };
 
 export const AggregatedPercentageOverview = ({
@@ -63,30 +68,40 @@ export const AggregatedPercentageOverview = ({
   );
 
   // Memoize the calculation to avoid recalculating unless orderedTokenList or tokensMarketData changes
-  const totalFiat1dAgo = useMemo(() => {
-    return orderedTokenList.reduce((total1dAgo, item) => {
-      if (item.address) {
-        // This is a regular ERC20 token
-        // find the relevant pricePercentChange1d in tokensMarketData
-        // Find the corresponding market data for the token by filtering the values of the tokensMarketData object
-        const found = tokensMarketData?.[toChecksumAddress(item.address)];
+  const { totalFiat1dAgo, isHistoricalDataAvailable } = useMemo(() => {
+    return orderedTokenList.reduce(
+      (result, item) => {
+        let pricePercentChange1d: number | undefined;
+
+        if (item.address) {
+          // This is a regular ERC20 token
+          // find the relevant pricePercentChange1d in tokensMarketData
+          // Find the corresponding market data for the token by filtering the values of the tokensMarketData object
+          const found = tokensMarketData?.[toChecksumAddress(item.address)];
+          pricePercentChange1d = found?.pricePercentChange1d;
+        } else {
+          // native token
+          pricePercentChange1d =
+            tokensMarketData?.[getNativeTokenAddress(currentChainId)]
+              ?.pricePercentChange1d;
+        }
 
         const tokenFiat1dAgo = getCalculatedTokenAmount1dAgo(
           item.fiatBalance,
-          found?.pricePercentChange1d,
+          pricePercentChange1d,
         );
-        return total1dAgo + Number(tokenFiat1dAgo);
-      }
-      // native token
-      const nativePricePercentChange1d =
-        tokensMarketData?.[getNativeTokenAddress(currentChainId)]
-          ?.pricePercentChange1d;
-      const nativeFiat1dAgo = getCalculatedTokenAmount1dAgo(
-        item.fiatBalance,
-        nativePricePercentChange1d,
-      );
-      return total1dAgo + Number(nativeFiat1dAgo);
-    }, 0); // Initial total1dAgo is 0
+        const hasRequiredHistoricalData =
+          !hasNonZeroFiatBalance(item.fiatBalance) ||
+          Number.isFinite(pricePercentChange1d);
+
+        return {
+          totalFiat1dAgo: result.totalFiat1dAgo + Number(tokenFiat1dAgo),
+          isHistoricalDataAvailable:
+            result.isHistoricalDataAvailable && hasRequiredHistoricalData,
+        };
+      },
+      { totalFiat1dAgo: 0, isHistoricalDataAvailable: true },
+    );
   }, [orderedTokenList, tokensMarketData, currentChainId]); // Dependencies: recalculate if orderedTokenList or tokensMarketData changes
 
   const totalBalance: number = Number(totalFiatBalance);
@@ -95,13 +110,12 @@ export const AggregatedPercentageOverview = ({
   const amountChange = totalBalance - totalBalance1dAgo;
   const percentageChange = (amountChange / totalBalance1dAgo) * 100 || 0;
 
-  const formattedPercentChange = formatValue(
-    amountChange === 0 ? 0 : percentageChange,
-    true,
-  );
+  const formattedPercentChange = isHistoricalDataAvailable
+    ? formatValue(amountChange === 0 ? 0 : percentageChange, true)
+    : '-';
 
-  let formattedAmountChange = '';
-  if (isValidAmount(amountChange)) {
+  let formattedAmountChange = '-';
+  if (isHistoricalDataAvailable && isValidAmount(amountChange)) {
     formattedAmountChange = (amountChange as number) >= 0 ? '+' : '';
 
     formattedAmountChange += formatCurrencyCompact(amountChange, fiatCurrency);
@@ -109,7 +123,11 @@ export const AggregatedPercentageOverview = ({
 
   let color = TextColor.textAlternative;
 
-  if (!privacyMode && isValidAmount(amountChange)) {
+  if (
+    isHistoricalDataAvailable &&
+    !privacyMode &&
+    isValidAmount(amountChange)
+  ) {
     if ((amountChange as number) === 0) {
       color = TextColor.textAlternative;
     } else if ((amountChange as number) > 0) {

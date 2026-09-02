@@ -30,6 +30,14 @@ const AccountGroupBalanceChangeComponent: React.FC<
   const anyEnabledNetworksAreAvailable = useSelector(
     selectAnyEnabledNetworksAreAvailable,
   );
+  const formattedAmountChange =
+    amountChange === undefined
+      ? '-'
+      : formatCurrency(amountChange, currency, { signDisplay: 'always' });
+  const formattedPercentChange =
+    percentChange === undefined
+      ? '-'
+      : `(${formatPercentWithMinThreshold(percentChange, { signDisplay: 'always' })})`;
 
   return (
     <Skeleton
@@ -45,7 +53,7 @@ const AccountGroupBalanceChangeComponent: React.FC<
           ellipsis
           length="10"
         >
-          {formatCurrency(amountChange, currency, { signDisplay: 'always' })}
+          {formattedAmountChange}
         </SensitiveText>
         <SensitiveText
           variant={TextVariant.bodyMdMedium}
@@ -55,7 +63,7 @@ const AccountGroupBalanceChangeComponent: React.FC<
           ellipsis
           length="10"
         >
-          {`(${formatPercentWithMinThreshold(percentChange, { signDisplay: 'always' })})`}
+          {formattedPercentChange}
         </SensitiveText>
       </Box>
       {trailingChild()}

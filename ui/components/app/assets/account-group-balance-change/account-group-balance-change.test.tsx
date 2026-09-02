@@ -70,4 +70,15 @@ describe('AccountGroupBalanceChange', () => {
       percent: '••••••••••',
     });
   });
+
+  it('renders dashes when historical change data is unavailable', () => {
+    const mocks = arrange();
+    mocks.mockUseAccountGroupBalanceDisplay.mockReturnValue({
+      ...createBalanceDisplayData(),
+      amountChange: undefined,
+      percentChange: undefined,
+    });
+
+    actAssertTextContent({ value: '-', percent: '-' });
+  });
 });

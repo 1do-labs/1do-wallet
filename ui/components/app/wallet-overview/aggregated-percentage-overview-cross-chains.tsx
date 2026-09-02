@@ -31,6 +31,11 @@ import { Skeleton } from '../../component-library/skeleton';
 import { isZeroAmount } from '../../../helpers/utils/number-utils';
 import { TokenWithBalance } from '../../multichain/asset-picker-amount/asset-picker-modal/types';
 
+const hasNonZeroFiatBalance = (fiatBalance: string | undefined): boolean => {
+  const numericBalance = Number(fiatBalance ?? 0);
+  return Number.isFinite(numericBalance) && numericBalance !== 0;
+};
+
 export const AggregatedPercentageOverviewCrossChains = ({
   trailingChild,
 }: {
@@ -62,34 +67,50 @@ export const AggregatedPercentageOverviewCrossChains = ({
     selectAnyEnabledNetworksAreAvailable,
   );
 
-  const getPerChainTotalFiat1dAgo = (
-    chainId: string,
-    tokenFiatBalances: (string | undefined)[],
-    tokensWithBalances: TokenWithBalance[],
-  ) => {
-    const totalPerChain1dAgoERC20 = tokensWithBalances.reduce(
-      (total1dAgo: number, item: { address: string }, idx: number) => {
-        const found =
-          crossChainMarketData?.[chainId as Hex]?.[
-            toChecksumAddress(item.address) as Hex
-          ];
+  const {
+    totalFiat1dAgo: totalFiat1dAgoCrossChains,
+    isHistoricalDataAvailable,
+  } = useMemo(() => {
+    const getPerChainTotalFiat1dAgo = (
+      chainId: string,
+      tokenFiatBalances: (string | undefined)[],
+      tokensWithBalances: TokenWithBalance[],
+    ) =>
+      tokensWithBalances.reduce(
+        (
+          result,
+          item: { address: string },
+          idx: number,
+        ): { totalFiat1dAgo: number; isHistoricalDataAvailable: boolean } => {
+          const found =
+            crossChainMarketData?.[chainId as Hex]?.[
+              toChecksumAddress(item.address) as Hex
+            ];
+          const pricePercentChange1d = found?.pricePercentChange1d;
 
-        const tokenFiat1dAgo = getCalculatedTokenAmount1dAgo(
-          tokenFiatBalances[idx],
-          found?.pricePercentChange1d,
-        );
-        return total1dAgo + Number(tokenFiat1dAgo);
-      },
-      0,
-    );
+          const tokenFiat1dAgo = getCalculatedTokenAmount1dAgo(
+            tokenFiatBalances[idx],
+            pricePercentChange1d,
+          );
+          const hasRequiredHistoricalData =
+            !hasNonZeroFiatBalance(tokenFiatBalances[idx]) ||
+            Number.isFinite(pricePercentChange1d);
 
-    return totalPerChain1dAgoERC20;
-  };
+          return {
+            totalFiat1dAgo: result.totalFiat1dAgo + Number(tokenFiat1dAgo),
+            isHistoricalDataAvailable:
+              result.isHistoricalDataAvailable && hasRequiredHistoricalData,
+          };
+        },
+        { totalFiat1dAgo: 0, isHistoricalDataAvailable: true },
+      );
 
-  const totalFiat1dAgoCrossChains = useMemo(() => {
     return tokenFiatBalancesCrossChains.reduce(
       (
-        total1dAgoCrossChains: number,
+        result: {
+          totalFiat1dAgo: number;
+          isHistoricalDataAvailable: boolean;
+        },
         item: {
           chainId: string;
           nativeFiatValue: string;
@@ -97,7 +118,7 @@ export const AggregatedPercentageOverviewCrossChains = ({
           tokensWithBalances: TokenWithBalance[];
         },
       ) => {
-        const perChainERC20Total = getPerChainTotalFiat1dAgo(
+        const perChainERC20 = getPerChainTotalFiat1dAgo(
           item.chainId,
           item.tokenFiatBalances,
           item.tokensWithBalances,
@@ -111,11 +132,22 @@ export const AggregatedPercentageOverviewCrossChains = ({
           item.nativeFiatValue,
           nativePricePercentChange1d,
         );
-        return (
-          total1dAgoCrossChains + perChainERC20Total + Number(nativeFiat1dAgo)
-        );
+        const hasNativeHistoricalData =
+          !hasNonZeroFiatBalance(item.nativeFiatValue) ||
+          Number.isFinite(nativePricePercentChange1d);
+
+        return {
+          totalFiat1dAgo:
+            result.totalFiat1dAgo +
+            perChainERC20.totalFiat1dAgo +
+            Number(nativeFiat1dAgo),
+          isHistoricalDataAvailable:
+            result.isHistoricalDataAvailable &&
+            perChainERC20.isHistoricalDataAvailable &&
+            hasNativeHistoricalData,
+        };
       },
-      0,
+      { totalFiat1dAgo: 0, isHistoricalDataAvailable: true },
     ); // Initial total1dAgo is 0
   }, [tokenFiatBalancesCrossChains, crossChainMarketData]);
 
@@ -129,13 +161,15 @@ export const AggregatedPercentageOverviewCrossChains = ({
       ? 0
       : (amountChangeCrossChains / crossChainTotalBalance1dAgo) * 100;
 
-  const formattedPercentChangeCrossChains = formatValue(
-    amountChangeCrossChains === 0 ? 0 : percentageChangeCrossChains,
-    true,
-  );
+  const formattedPercentChangeCrossChains = isHistoricalDataAvailable
+    ? formatValue(
+        amountChangeCrossChains === 0 ? 0 : percentageChangeCrossChains,
+        true,
+      )
+    : '-';
 
-  let formattedAmountChangeCrossChains = '';
-  if (isValidAmount(amountChangeCrossChains)) {
+  let formattedAmountChangeCrossChains = '-';
+  if (isHistoricalDataAvailable && isValidAmount(amountChangeCrossChains)) {
     formattedAmountChangeCrossChains =
       (amountChangeCrossChains as number) >= 0 ? '+' : '';
 
@@ -147,7 +181,11 @@ export const AggregatedPercentageOverviewCrossChains = ({
 
   let color = TextColor.textDefault;
 
-  if (!privacyMode && isValidAmount(amountChangeCrossChains)) {
+  if (
+    isHistoricalDataAvailable &&
+    !privacyMode &&
+    isValidAmount(amountChangeCrossChains)
+  ) {
     if ((amountChangeCrossChains as number) === 0) {
       color = TextColor.textDefault;
     } else if ((amountChangeCrossChains as number) > 0) {
