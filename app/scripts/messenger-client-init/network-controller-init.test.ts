@@ -136,14 +136,14 @@ describe('NetworkControllerInit', () => {
             "chainId": "0x10e6",
             "defaultBlockExplorerUrlIndex": 0,
             "defaultRpcEndpointIndex": 0,
-            "name": "MegaETH Mainnet",
+            "name": "MegaETH",
             "nativeCurrency": "ETH",
             "rpcEndpoints": [
               {
                 "failoverUrls": [],
-                "networkClientId": "megaeth-mainnet",
-                "type": "infura",
-                "url": "https://megaeth-mainnet.infura.io/v3/{infuraProjectId}",
+                "networkClientId": "megaeth-mainnet-alchemy",
+                "type": "custom",
+                "url": "https://megaeth-mainnet.g.alchemy.com/v2/{alchemyApiKey}",
               },
             ],
           },
@@ -177,9 +177,9 @@ describe('NetworkControllerInit', () => {
             "rpcEndpoints": [
               {
                 "failoverUrls": [],
-                "networkClientId": "megaeth-testnet-v2",
+                "networkClientId": "megaeth-testnet-alchemy",
                 "type": "custom",
-                "url": "https://carrot.megaeth.com/rpc",
+                "url": "https://megaeth-testnet.g.alchemy.com/v2/{alchemyApiKey}",
               },
             ],
           },
@@ -208,7 +208,7 @@ describe('NetworkControllerInit', () => {
             "chainId": "0x38",
             "defaultBlockExplorerUrlIndex": 0,
             "defaultRpcEndpointIndex": 0,
-            "name": "BNB Chain",
+            "name": "BNB",
             "nativeCurrency": "BNB",
             "rpcEndpoints": [
               {
@@ -216,6 +216,24 @@ describe('NetworkControllerInit', () => {
                 "networkClientId": "bsc-mainnet-alchemy",
                 "type": "custom",
                 "url": "https://bnb-mainnet.g.alchemy.com/v2/{alchemyApiKey}",
+              },
+            ],
+          },
+          "0x61": {
+            "blockExplorerUrls": [
+              "https://testnet.bscscan.com/",
+            ],
+            "chainId": "0x61",
+            "defaultBlockExplorerUrlIndex": 0,
+            "defaultRpcEndpointIndex": 0,
+            "name": "BNB Testnet",
+            "nativeCurrency": "tBNB",
+            "rpcEndpoints": [
+              {
+                "failoverUrls": [],
+                "networkClientId": "bsc-testnet",
+                "type": "custom",
+                "url": "https://bnb-testnet.g.alchemy.com/v2/{alchemyApiKey}",
               },
             ],
           },

@@ -15,6 +15,10 @@ import { hasProperty } from '@metamask/utils';
 import { SECOND } from '../../../shared/constants/time';
 import {
   CHAIN_IDS,
+  BSC_TESTNET_DISPLAY_NAME,
+  BSC_TESTNET_RPC_URL,
+  MEGAETH_MAINNET_DISPLAY_NAME,
+  MEGAETH_TESTNET_DISPLAY_NAME,
   getRpcUrl,
   getFailoverUrlsForNetwork,
 } from '../../../shared/constants/network';
@@ -74,6 +78,40 @@ const ALCHEMY_NETWORKS = {
 const NETWORK_CONTROLLER_PROJECT_ID_COMPATIBILITY_PLACEHOLDER =
   '1do-alchemy-rpc-only';
 
+const MEGAETH_MAINNET_NETWORK_CLIENT_ID = 'megaeth-mainnet-alchemy';
+
+function normalizeMegaethRpcEndpoint(
+  networks: NetworkController['state']['networkConfigurationsByChainId'],
+) {
+  const endpoint = networks?.[CHAIN_IDS.MEGAETH_MAINNET]?.rpcEndpoints?.[0];
+  if (endpoint) {
+    const previousNetworkClientId = endpoint.networkClientId;
+    endpoint.networkClientId = MEGAETH_MAINNET_NETWORK_CLIENT_ID;
+    endpoint.url = getRpcUrl({ network: 'megaeth-mainnet' });
+    endpoint.type = RpcEndpointType.Custom;
+    endpoint.failoverUrls = [];
+    return previousNetworkClientId;
+  }
+  return undefined;
+}
+
+function normalizeMegaethTestnetRpcEndpoints(
+  networks: NetworkController['state']['networkConfigurationsByChainId'],
+) {
+  for (const chainId of [
+    CHAIN_IDS.MEGAETH_TESTNET,
+    CHAIN_IDS.MEGAETH_TESTNET_V2,
+  ]) {
+    const endpoint = networks?.[chainId]?.rpcEndpoints?.[0];
+    if (endpoint) {
+      endpoint.networkClientId = 'megaeth-testnet-alchemy';
+      endpoint.url = getRpcUrl({ network: 'megaeth-testnet' });
+      endpoint.type = RpcEndpointType.Custom;
+      endpoint.failoverUrls = [];
+    }
+  }
+}
+
 function addBaseSepoliaNetwork(
   networks: NetworkController['state']['networkConfigurationsByChainId'],
 ) {
@@ -92,6 +130,31 @@ function addBaseSepoliaNetwork(
       {
         networkClientId: 'base-sepolia',
         url: getRpcUrl({ network: 'base-sepolia' }),
+        type: RpcEndpointType.Custom,
+        failoverUrls: [],
+      },
+    ],
+  };
+}
+
+function addBscTestnetNetwork(
+  networks: NetworkController['state']['networkConfigurationsByChainId'],
+) {
+  if (networks?.[CHAIN_IDS.BSC_TESTNET]) {
+    return;
+  }
+
+  networks[CHAIN_IDS.BSC_TESTNET] = {
+    chainId: CHAIN_IDS.BSC_TESTNET,
+    name: BSC_TESTNET_DISPLAY_NAME,
+    nativeCurrency: 'tBNB',
+    blockExplorerUrls: ['https://testnet.bscscan.com/'],
+    defaultBlockExplorerUrlIndex: 0,
+    defaultRpcEndpointIndex: 0,
+    rpcEndpoints: [
+      {
+        networkClientId: 'bsc-testnet',
+        url: BSC_TESTNET_RPC_URL,
         type: RpcEndpointType.Custom,
         failoverUrls: [],
       },
@@ -164,11 +227,22 @@ function getInitialState(initialState?: Partial<NetworkController['state']>) {
       initialNetworkControllerState.networkConfigurationsByChainId ?? {};
     initialNetworkControllerState.networkConfigurationsByChainId = networks;
     addBaseSepoliaNetwork(networks);
+    addBscTestnetNetwork(networks);
     initialNetworkControllerState.selectedNetworkClientId =
       normalizeAlchemyRpcEndpoints(
         networks,
         initialNetworkControllerState.selectedNetworkClientId,
       );
+    const previousMegaethNetworkClientId =
+      normalizeMegaethRpcEndpoint(networks);
+    normalizeMegaethTestnetRpcEndpoints(networks);
+    if (
+      initialNetworkControllerState.selectedNetworkClientId ===
+      previousMegaethNetworkClientId
+    ) {
+      initialNetworkControllerState.selectedNetworkClientId =
+        MEGAETH_MAINNET_NETWORK_CLIENT_ID;
+    }
     initialNetworkControllerState.selectedNetworkClientId =
       normalizeSelectedNetworkClientId(
         initialNetworkControllerState.selectedNetworkClientId,
@@ -183,6 +257,7 @@ function getInitialState(initialState?: Partial<NetworkController['state']>) {
       initialNetworkControllerState.networkConfigurationsByChainId ?? {};
 
     addBaseSepoliaNetwork(networks);
+    addBscTestnetNetwork(networks);
 
     // TODO: Consider changing `getDefaultNetworkControllerState` on the
     // controller side to include some of these tweaks.
@@ -221,13 +296,29 @@ function getInitialState(initialState?: Partial<NetworkController['state']>) {
         getFailoverUrlsForNetwork('polygon-mainnet');
     }
     normalizeAlchemyRpcEndpoints(networks);
+    normalizeMegaethRpcEndpoint(networks);
+    normalizeMegaethTestnetRpcEndpoints(networks);
+    if (networks[CHAIN_IDS.MEGAETH_MAINNET]) {
+      networks[CHAIN_IDS.MEGAETH_MAINNET].name = MEGAETH_MAINNET_DISPLAY_NAME;
+    }
+    if (networks[CHAIN_IDS.MEGAETH_TESTNET]) {
+      networks[CHAIN_IDS.MEGAETH_TESTNET].name = MEGAETH_TESTNET_DISPLAY_NAME;
+    }
+    if (networks[CHAIN_IDS.MEGAETH_TESTNET_V2]) {
+      networks[CHAIN_IDS.MEGAETH_TESTNET_V2].name =
+        MEGAETH_TESTNET_DISPLAY_NAME;
+    }
+    if (networks[CHAIN_IDS.BSC_TESTNET]) {
+      networks[CHAIN_IDS.BSC_TESTNET].name = BSC_TESTNET_DISPLAY_NAME;
+    }
 
     // Update default popular network names.
     networks[CHAIN_IDS.MAINNET].name = 'Ethereum';
     networks[CHAIN_IDS.LINEA_MAINNET].name = 'Linea';
     networks[CHAIN_IDS.BASE].name = 'Base';
     networks[CHAIN_IDS.ARBITRUM].name = 'Arbitrum';
-    networks[CHAIN_IDS.BSC].name = 'BNB Chain';
+    networks[CHAIN_IDS.BSC].name = 'BNB';
+    networks[CHAIN_IDS.BSC_TESTNET].name = BSC_TESTNET_DISPLAY_NAME;
     networks[CHAIN_IDS.OPTIMISM].name = 'OP';
     networks[CHAIN_IDS.POLYGON].name = 'Polygon';
 
@@ -238,6 +329,7 @@ function getInitialState(initialState?: Partial<NetworkController['state']>) {
     delete networks[CHAIN_IDS.ZKSYNC_ERA];
     delete networks[CHAIN_IDS.SEI];
     delete networks[CHAIN_IDS.MONAD];
+    delete networks[CHAIN_IDS.MONAD_TESTNET];
     delete networks[CHAIN_IDS.HYPE];
 
     let network: NetworkConfiguration;

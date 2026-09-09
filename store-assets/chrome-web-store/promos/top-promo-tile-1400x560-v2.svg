@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="560" viewBox="0 0 1400 560">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#130a1b"/>
+      <stop offset=".58" stop-color="#32102f"/>
+      <stop offset="1" stop-color="#7c2b68"/>
+    </linearGradient>
+    <radialGradient id="orb"><stop stop-color="#ff9fc3" stop-opacity=".8"/><stop offset="1" stop-color="#ff9fc3" stop-opacity="0"/></radialGradient>
+  </defs>
+  <rect width="1400" height="560" fill="url(#bg)"/>
+  <circle cx="1170" cy="-40" r="390" fill="url(#orb)" opacity=".5"/>
+  <circle cx="80" cy="610" r="330" fill="#8a5dff" opacity=".13"/>
+  <path d="M0 420 C240 320 370 500 610 400 S1020 300 1400 420 V560 H0Z" fill="#ff8fb8" opacity=".08"/>
+  <g transform="translate(92 82)">
+    <rect width="64" height="64" rx="14" fill="#08070a" stroke="#d8d2db" stroke-width="4"/>
+    <circle cx="21" cy="21" r="10" fill="#fff"/>
+  </g>
+  <text x="180" y="132" fill="#fff" font-family="Arial, sans-serif" font-size="52" font-weight="700">1Do</text>
+  <text x="92" y="258" fill="#fff" font-family="Arial, sans-serif" font-size="68" font-weight="700">Your address.</text>
+  <text x="92" y="338" fill="#ffb4cf" font-family="Arial, sans-serif" font-size="68" font-weight="700">Your runtime.</text>
+  <text x="96" y="394" fill="#f0e8f1" font-family="Arial, sans-serif" font-size="26">A self-custody EVM wallet for verified EIP-7702 applications.</text>
+  <rect x="96" y="438" width="272" height="44" rx="22" fill="#fff"/>
+  <text x="232" y="467" text-anchor="middle" fill="#241226" font-family="Arial, sans-serif" font-size="16" font-weight="700">SMART ACCOUNT • EVM ONLY</text>
+  <g transform="translate(890 82)">
+    <rect width="380" height="430" rx="34" fill="#fff" opacity=".97"/>
+    <rect x="0" y="0" width="380" height="72" rx="34" fill="#f8eff7"/>
+    <rect x="28" y="22" width="30" height="30" rx="7" fill="#08070a"/>
+    <circle cx="38" cy="32" r="5" fill="#fff"/>
+    <text x="76" y="45" fill="#241226" font-family="Arial, sans-serif" font-size="25" font-weight="700">1Do</text>
+    <rect x="274" y="23" width="78" height="28" rx="14" fill="#e8f8ef"/>
+    <circle cx="291" cy="37" r="5" fill="#1ea45b"/>
+    <text x="303" y="42" fill="#17663b" font-family="Arial, sans-serif" font-size="12" font-weight="700">ACTIVE</text>
+    <text x="30" y="127" fill="#806d80" font-family="Arial, sans-serif" font-size="15">Account</text>
+    <text x="30" y="158" fill="#241226" font-family="Arial, sans-serif" font-size="24" font-weight="700">0x4F2A...91cD</text>
+    <rect x="30" y="188" width="320" height="110" rx="22" fill="#32132e"/>
+    <text x="55" y="224" fill="#d7b9d2" font-family="Arial, sans-serif" font-size="14">Total balance</text>
+    <text x="55" y="268" fill="#fff" font-family="Arial, sans-serif" font-size="31" font-weight="700">0.1268 ETH</text>
+    <rect x="30" y="330" width="92" height="40" rx="20" fill="#f8eff7"/>
+    <rect x="144" y="330" width="108" height="40" rx="20" fill="#f8eff7"/>
+    <rect x="274" y="330" width="76" height="40" rx="20" fill="#f8eff7"/>
+    <text x="76" y="355" text-anchor="middle" fill="#241226" font-family="Arial, sans-serif" font-size="14" font-weight="700">SEND</text>
+    <text x="198" y="355" text-anchor="middle" fill="#241226" font-family="Arial, sans-serif" font-size="14" font-weight="700">RECEIVE</text>
+    <text x="312" y="355" text-anchor="middle" fill="#241226" font-family="Arial, sans-serif" font-size="14" font-weight="700">APPS</text>
+  </g>
+</svg>

@@ -154,6 +154,8 @@ async function defineAndRunBuildTasks() {
       'ResizeObserver',
       'setTimeout',
       'clearTimeout',
+      // Offscreen documents use the Chrome extension APIs directly.
+      'chrome',
     ];
 
     if (

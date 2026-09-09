@@ -17,7 +17,7 @@ describe('NetworkConstants', () => {
   it('returns network name for chain ids', () => {
     expect(NETWORK_TO_NAME_MAP[CHAIN_IDS.ARBITRUM]).toBe('Arbitrum');
     expect(NETWORK_TO_NAME_MAP[CHAIN_IDS.AVALANCHE]).toBe('Avalanche');
-    expect(NETWORK_TO_NAME_MAP[CHAIN_IDS.BSC]).toBe('BNB Chain');
+    expect(NETWORK_TO_NAME_MAP[CHAIN_IDS.BSC]).toBe('BNB');
     expect(NETWORK_TO_NAME_MAP[CHAIN_IDS.MAINNET]).toBe('Ethereum');
     expect(NETWORK_TO_NAME_MAP[CHAIN_IDS.LINEA_MAINNET]).toBe('Linea');
     expect(NETWORK_TO_NAME_MAP[CHAIN_IDS.OPTIMISM]).toBe('OP');
@@ -27,12 +27,13 @@ describe('NetworkConstants', () => {
     it('should have correct chainIds for all popular network', () => {
       const expectedChainIds: { [key: string]: string } = {
         Arbitrum: CHAIN_IDS.ARBITRUM,
-        'BNB Chain': CHAIN_IDS.BSC,
+        BNB: CHAIN_IDS.BSC,
         OP: CHAIN_IDS.OPTIMISM,
         Polygon: CHAIN_IDS.POLYGON,
         Base: CHAIN_IDS.BASE,
         Linea: CHAIN_IDS.LINEA_MAINNET,
         MegaETH: CHAIN_IDS.MEGAETH_MAINNET,
+        'BNB Smart Chain Testnet': CHAIN_IDS.BSC_TESTNET,
       };
 
       FEATURED_RPCS.forEach((rpc) => {

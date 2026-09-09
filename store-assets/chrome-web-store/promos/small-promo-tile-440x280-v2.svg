@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="440" height="280" viewBox="0 0 440 280">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#160d1d"/>
+      <stop offset="1" stop-color="#4d1746"/>
+    </linearGradient>
+    <linearGradient id="glow" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ff8fb8" stop-opacity=".9"/>
+      <stop offset="1" stop-color="#a96cff" stop-opacity=".1"/>
+    </linearGradient>
+  </defs>
+  <rect width="440" height="280" rx="20" fill="url(#bg)"/>
+  <circle cx="390" cy="18" r="130" fill="url(#glow)" opacity=".35"/>
+  <circle cx="42" cy="262" r="100" fill="#ffb3c8" opacity=".1"/>
+  <g transform="translate(32 30)">
+    <rect width="42" height="42" rx="10" fill="#08070a" stroke="#d8d2db" stroke-width="3"/>
+    <circle cx="14" cy="14" r="7" fill="#fff"/>
+  </g>
+  <text x="88" y="61" fill="#fff" font-family="Arial, sans-serif" font-size="28" font-weight="700">1Do</text>
+  <text x="32" y="120" fill="#fff" font-family="Arial, sans-serif" font-size="28" font-weight="700">Smart account,</text>
+  <text x="32" y="153" fill="#ffb4cf" font-family="Arial, sans-serif" font-size="28" font-weight="700">your way.</text>
+  <text x="32" y="190" fill="#eee7ef" font-family="Arial, sans-serif" font-size="14">Self-custody EVM wallet</text>
+  <text x="32" y="211" fill="#eee7ef" font-family="Arial, sans-serif" font-size="14">with verified EIP-7702 Runtime.</text>
+  <rect x="32" y="232" width="148" height="30" rx="15" fill="#fff"/>
+  <text x="106" y="252" text-anchor="middle" fill="#241226" font-family="Arial, sans-serif" font-size="12" font-weight="700">EVM • VERIFIED • SECURE</text>
+  <g transform="translate(300 105) rotate(-8)">
+    <rect width="108" height="70" rx="14" fill="#fff" opacity=".96"/>
+    <rect x="10" y="12" width="45" height="7" rx="3" fill="#8d728a"/>
+    <rect x="10" y="29" width="72" height="10" rx="5" fill="#281329"/>
+    <rect x="10" y="50" width="38" height="6" rx="3" fill="#ff8fb8"/>
+    <circle cx="88" cy="53" r="9" fill="#371830"/>
+  </g>
+</svg>

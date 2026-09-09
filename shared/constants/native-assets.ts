@@ -49,7 +49,7 @@ export const CHAIN_ID_DEFAULT_NATIVE_TOKEN_MAP = {
     iconUrl: BNB_TOKEN_IMAGE_URL,
   },
   [CHAIN_IDS.BSC_TESTNET]: {
-    symbol: CURRENCY_SYMBOLS.BNB,
+    symbol: 'tBNB',
     name: 'BNB Smart Chain Testnet',
     address: DEFAULT_NATIVE_TOKEN_ADDRESS,
     decimals: 18,

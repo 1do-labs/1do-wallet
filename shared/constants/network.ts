@@ -324,11 +324,12 @@ export const LINEA_GOERLI_DISPLAY_NAME = 'Linea Goerli';
 export const LINEA_SEPOLIA_DISPLAY_NAME = 'Linea Sepolia';
 export const LINEA_MAINNET_DISPLAY_NAME = 'Linea';
 export const LOCALHOST_DISPLAY_NAME = 'Localhost 8545';
-export const BSC_DISPLAY_NAME = 'BNB Chain';
+export const BSC_DISPLAY_NAME = 'BNB';
+export const BSC_TESTNET_DISPLAY_NAME = 'BNB Testnet';
 export const POLYGON_DISPLAY_NAME = 'Polygon';
 export const AVALANCHE_DISPLAY_NAME = 'Avalanche';
 export const ARBITRUM_DISPLAY_NAME = 'Arbitrum';
-export const BNB_DISPLAY_NAME = 'BNB Chain';
+export const BNB_DISPLAY_NAME = 'BNB';
 export const OPTIMISM_DISPLAY_NAME = 'OP';
 export const FANTOM_DISPLAY_NAME = 'Fantom Opera';
 export const HARMONY_DISPLAY_NAME = 'Harmony Mainnet Shard 0';
@@ -347,7 +348,7 @@ export const SCROLL_SEPOLIA_DISPLAY_NAME = 'Scroll Sepolia';
 export const OP_BNB_DISPLAY_NAME = 'opBNB';
 export const BERACHAIN_DISPLAY_NAME = 'Berachain';
 export const METACHAIN_ONE_DISPLAY_NAME = 'Metachain One Mainnet';
-export const MEGAETH_TESTNET_DISPLAY_NAME = 'Mega Testnet';
+export const MEGAETH_TESTNET_DISPLAY_NAME = 'MegaETH Testnet';
 export const MEGAETH_TESTNET_V2_DISPLAY_NAME = 'MegaETH Testnet';
 export const MEGAETH_MAINNET_DISPLAY_NAME = 'MegaETH';
 export const LISK_DISPLAY_NAME = 'Lisk';
@@ -414,6 +415,9 @@ const ALCHEMY_NETWORK_SLUGS = {
   'arbitrum-mainnet': 'arb-mainnet',
   'avalanche-mainnet': 'avax-mainnet',
   'bsc-mainnet': 'bnb-mainnet',
+  'bsc-testnet': 'bnb-testnet',
+  'megaeth-mainnet': 'megaeth-mainnet',
+  'megaeth-testnet': 'megaeth-testnet',
   'optimism-mainnet': 'opt-mainnet',
   'polygon-mainnet': 'polygon-mainnet',
   'base-mainnet': 'base-mainnet',
@@ -421,7 +425,6 @@ const ALCHEMY_NETWORK_SLUGS = {
   'sei-mainnet': 'sei-mainnet',
   'monad-mainnet': 'monad-mainnet',
   'hyperevm-mainnet': 'hyperliquid-mainnet',
-  'megaeth-mainnet': 'megaeth-mainnet',
 } as const;
 
 export const getRpcUrl = ({
@@ -450,9 +453,13 @@ export const LINEA_MAINNET_RPC_URL = getRpcUrl({
   network: NETWORK_TYPES.LINEA_MAINNET,
 });
 export const LOCALHOST_RPC_URL = 'http://localhost:8545';
-export const MEGAETH_TESTNET_RPC_URL = 'https://carrot.megaeth.com/rpc';
-export const MEGAETH_TESTNET_V2_RPC_URL = 'https://carrot.megaeth.com/rpc';
-export const MONAD_TESTNET_RPC_URL = 'https://testnet-rpc.monad.xyz';
+export const MEGAETH_TESTNET_RPC_URL = getRpcUrl({
+  network: 'megaeth-testnet',
+});
+export const MEGAETH_TESTNET_V2_RPC_URL = getRpcUrl({
+  network: 'megaeth-testnet',
+});
+export const BSC_TESTNET_RPC_URL = getRpcUrl({ network: 'bsc-testnet' });
 
 /**
  * An object containing the token symbols for various tokens that are either
@@ -749,11 +756,11 @@ export const DEFAULT_PROVIDER_TYPES = [
 export const TEST_CHAINS: Hex[] = [
   CHAIN_IDS.SEPOLIA,
   CHAIN_IDS.BASE_SEPOLIA,
+  CHAIN_IDS.BSC_TESTNET,
   CHAIN_IDS.LINEA_SEPOLIA,
   CHAIN_IDS.LOCALHOST,
   CHAIN_IDS.MEGAETH_TESTNET,
   CHAIN_IDS.MEGAETH_TESTNET_V2,
-  CHAIN_IDS.MONAD_TESTNET,
   CHAIN_IDS.TEMPO_TESTNET,
 ];
 
@@ -1061,8 +1068,6 @@ export const CHAIN_ID_TO_CURRENCY_SYMBOL_MAP = {
   [CHAIN_IDS.MATCHAIN]: CURRENCY_SYMBOLS.BNB,
   [CHAIN_IDS.FLOW]: CURRENCY_SYMBOLS.FLOW,
   [CHAIN_IDS.KATANA]: CURRENCY_SYMBOLS.KATANA,
-  [CHAIN_IDS.MONAD_TESTNET]:
-    TEST_NETWORK_TICKER_MAP[NETWORK_TYPES.MONAD_TESTNET],
   [CHAIN_IDS.SOPHON]: CURRENCY_SYMBOLS.SOPHON,
   [CHAIN_IDS.SOPHON_TESTNET]: CURRENCY_SYMBOLS.SOPHON,
   [CHAIN_IDS.BERACHAIN]: CURRENCY_SYMBOLS.BERACHAIN,
@@ -1128,7 +1133,6 @@ export const CHAIN_ID_TO_TYPE_MAP = {
   [CHAIN_IDS.LOCALHOST]: NETWORK_TYPES.LOCALHOST,
   [CHAIN_IDS.MEGAETH_TESTNET]: NETWORK_TYPES.MEGAETH_TESTNET,
   [CHAIN_IDS.MEGAETH_TESTNET_V2]: NETWORK_TYPES.MEGAETH_TESTNET_V2,
-  [CHAIN_IDS.MONAD_TESTNET]: NETWORK_TYPES.MONAD_TESTNET,
 } as const;
 
 export const CHAIN_ID_TO_RPC_URL_MAP = {
@@ -1141,7 +1145,6 @@ export const CHAIN_ID_TO_RPC_URL_MAP = {
   [CHAIN_IDS.LOCALHOST]: LOCALHOST_RPC_URL,
   [CHAIN_IDS.MEGAETH_TESTNET]: MEGAETH_TESTNET_RPC_URL,
   [CHAIN_IDS.MEGAETH_TESTNET_V2]: MEGAETH_TESTNET_V2_RPC_URL,
-  [CHAIN_IDS.MONAD_TESTNET]: MONAD_TESTNET_RPC_URL,
 } as const;
 
 export const CHAIN_ID_TO_NETWORK_IMAGE_URL_MAP: Record<string, string> = {

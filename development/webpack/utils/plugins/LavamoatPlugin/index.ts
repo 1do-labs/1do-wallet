@@ -139,6 +139,8 @@ export const lavamoatPlugin = (args: Args) =>
         'ResizeObserver',
         'setTimeout',
         'clearTimeout',
+        // Offscreen documents use the Chrome extension APIs directly.
+        'chrome',
         // globals used by e2e
         ...(args.test ? ['ret_nodes', 'browser', 'chrome', 'indexedDB'] : []),
       ],
