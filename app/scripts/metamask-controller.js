@@ -5225,7 +5225,7 @@ export default class MetamaskController extends EventEmitter {
 
     return await provider.request({
       method: 'eth_getCode',
-      params: [address],
+      params: [address, 'latest'],
     });
   }
 
