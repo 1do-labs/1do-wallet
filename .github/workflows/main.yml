@@ -287,7 +287,7 @@ jobs:
     uses: ./.github/workflows/run-build.yml
     with:
       build-name: build-dist-mv2-webpack
-      build-command: yarn webpack:lavamoat:build --zip
+      build-command: yarn webpack:lavamoat:build:mv2 --zip
       builds-from-run: ${{ needs.get-requirements.outputs.builds-from-run }}
     secrets: inherit
 
@@ -309,7 +309,7 @@ jobs:
     uses: ./.github/workflows/run-build.yml
     with:
       build-name: build-beta-mv2-webpack
-      build-command: yarn webpack:lavamoat:build --zip
+      build-command: yarn webpack:lavamoat:build:mv2 --zip
       builds-from-run: ${{ needs.get-requirements.outputs.builds-from-run }}
     secrets: inherit
 
@@ -331,7 +331,7 @@ jobs:
     uses: ./.github/workflows/run-build.yml
     with:
       build-name: build-flask-mv2-webpack
-      build-command: yarn webpack:lavamoat:build --zip
+      build-command: yarn webpack:lavamoat:build:mv2 --zip
       builds-from-run: ${{ needs.get-requirements.outputs.builds-from-run }}
     secrets: inherit
 
@@ -353,7 +353,7 @@ jobs:
     uses: ./.github/workflows/run-build.yml
     with:
       build-name: build-test-mv2-webpack
-      build-command: yarn build:test:webpack --zip
+      build-command: yarn build:test:webpack:mv2 --zip
       builds-from-run: ${{ needs.get-requirements.outputs.builds-from-run }}
     secrets: inherit
 
@@ -375,7 +375,7 @@ jobs:
     uses: ./.github/workflows/run-build.yml
     with:
       build-name: build-test-flask-mv2-webpack
-      build-command: yarn build:test:webpack --zip
+      build-command: yarn build:test:webpack:mv2 --zip
       builds-from-run: ${{ needs.get-requirements.outputs.builds-from-run }}
     secrets: inherit
 

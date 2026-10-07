@@ -337,7 +337,7 @@ ${Object.entries(env)
     const manifestDirectory = join(tempDirectory.path, 'manifest', 'v3');
     const sourceFilePath = join(tempDirectory.path, 'index.js');
     const outputPath = join(tempDirectory.path, 'dist');
-    const manifestPath = join(outputPath, 'chrome', 'manifest.json');
+    const manifestPath = join(outputPath, 'firefox', 'manifest.json');
 
     const readBuildId = () =>
       (
@@ -362,7 +362,7 @@ ${Object.entries(env)
         output: { path: outputPath },
         plugins: [
           new ManifestPlugin({
-            browsers: ['chrome'],
+            browsers: ['firefox'],
             manifest_version: 3,
             version: '1.0.0.0',
             versionName: '1.0.0',

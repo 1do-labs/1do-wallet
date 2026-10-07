@@ -94,19 +94,10 @@
             "suggestedMaxFeePerGas": "100"
           },
           "estimatedBaseFee": "50",
-          "historicalBaseFeeRange": [
-            "28.533098435",
-            "70.351148354"
-          ],
+          "historicalBaseFeeRange": ["28.533098435", "70.351148354"],
           "baseFeeTrend": "up",
-          "latestPriorityFeeRange": [
-            "1",
-            "40"
-          ],
-          "historicalPriorityFeeRange": [
-            "0.1458417",
-            "700.156384646"
-          ],
+          "latestPriorityFeeRange": ["1", "40"],
+          "historicalPriorityFeeRange": ["0.1458417", "700.156384646"],
           "priorityFeeTrend": "down",
           "networkCongestion": 0.90625
         }
@@ -132,19 +123,10 @@
         "suggestedMaxFeePerGas": "100"
       },
       "estimatedBaseFee": "50",
-      "historicalBaseFeeRange": [
-        "28.533098435",
-        "70.351148354"
-      ],
+      "historicalBaseFeeRange": ["28.533098435", "70.351148354"],
       "baseFeeTrend": "up",
-      "latestPriorityFeeRange": [
-        "1",
-        "40"
-      ],
-      "historicalPriorityFeeRange": [
-        "0.1458417",
-        "700.156384646"
-      ],
+      "latestPriorityFeeRange": ["1", "40"],
+      "historicalPriorityFeeRange": ["0.1458417", "700.156384646"],
       "priorityFeeTrend": "down",
       "networkCongestion": 0.90625
     },
@@ -498,9 +480,7 @@
         "blockExplorerUrls": []
       },
       "0x38": {
-        "blockExplorerUrls": [
-          "https://bscscan.com/"
-        ],
+        "blockExplorerUrls": ["https://bscscan.com/"],
         "chainId": "0x38",
         "defaultBlockExplorerUrlIndex": 0,
         "defaultRpcEndpointIndex": 0,
@@ -516,9 +496,7 @@
         ]
       },
       "0x89": {
-        "blockExplorerUrls": [
-          "https://polygonscan.com/"
-        ],
+        "blockExplorerUrls": ["https://polygonscan.com/"],
         "chainId": "0x89",
         "defaultBlockExplorerUrlIndex": 0,
         "defaultRpcEndpointIndex": 0,
@@ -534,9 +512,7 @@
         ]
       },
       "0xa4b1": {
-        "blockExplorerUrls": [
-          "https://explorer.arbitrum.io"
-        ],
+        "blockExplorerUrls": ["https://explorer.arbitrum.io"],
         "chainId": "0xa4b1",
         "defaultBlockExplorerUrlIndex": 0,
         "defaultRpcEndpointIndex": 0,
@@ -591,9 +567,7 @@
             "entropy:01JKAF3PJ247KAM6C03G5Q0NP8/0": {
               "id": "entropy:01JKAF3PJ247KAM6C03G5Q0NP8/0",
               "type": "multichain-account",
-              "accounts": [
-                "784225f4-d30b-4e77-a900-c8bbce735b88"
-              ],
+              "accounts": ["784225f4-d30b-4e77-a900-c8bbce735b88"],
               "metadata": {
                 "name": "Account 2",
                 "hidden": false,
@@ -619,9 +593,7 @@
             "keyring:Ledger Hardware/0xc42edfcc21ed14dda456aa0756c153f7985d8813": {
               "id": "keyring:Ledger Hardware/0xc42edfcc21ed14dda456aa0756c153f7985d8813",
               "type": "single-account",
-              "accounts": [
-                "15e69915-2a1a-4019-93b3-916e11fd432f"
-              ],
+              "accounts": ["15e69915-2a1a-4019-93b3-916e11fd432f"],
               "metadata": {
                 "name": "Ledger Account 1",
                 "hidden": false,
@@ -644,9 +616,7 @@
             "snap:local:custody:test/0xca8f1F0245530118D0cf14a06b01Daf8f76Cf281": {
               "id": "snap:local:custody:test/0xca8f1F0245530118D0cf14a06b01Daf8f76Cf281",
               "type": "single-account",
-              "accounts": [
-                "694225f4-d30b-4e77-a900-c8bbce735b42"
-              ],
+              "accounts": ["694225f4-d30b-4e77-a900-c8bbce735b42"],
               "metadata": {
                 "name": "Another Snap Account 1",
                 "hidden": false,
@@ -669,9 +639,7 @@
             "snap:local:snap-id/0xb552685e3d2790efd64a175b00d51f02cdafee5d": {
               "id": "snap:local:snap-id/0xb552685e3d2790efd64a175b00d51f02cdafee5d",
               "type": "single-account",
-              "accounts": [
-                "c3deeb99-ba0d-4a4e-a0aa-033fc1f79ae3"
-              ],
+              "accounts": ["c3deeb99-ba0d-4a4e-a0aa-033fc1f79ae3"],
               "metadata": {
                 "name": "Snap Account 1",
                 "hidden": false,
@@ -715,9 +683,7 @@
             "eth_signTypedData_v3",
             "eth_signTypedData_v4"
           ],
-          "scopes": [
-            "eip155:0"
-          ],
+          "scopes": ["eip155:0"],
           "type": "eip155:eoa"
         },
         "07c2cfec-36c9-46c4-8115-3836d3ac9047": {
@@ -740,9 +706,7 @@
             "eth_signTypedData_v3",
             "eth_signTypedData_v4"
           ],
-          "scopes": [
-            "eip155:0"
-          ],
+          "scopes": ["eip155:0"],
           "type": "eip155:eoa"
         },
         "15e69915-2a1a-4019-93b3-916e11fd432f": {
@@ -763,9 +727,7 @@
             "eth_signTypedData_v3",
             "eth_signTypedData_v4"
           ],
-          "scopes": [
-            "eip155:0"
-          ],
+          "scopes": ["eip155:0"],
           "type": "eip155:eoa"
         },
         "784225f4-d30b-4e77-a900-c8bbce735b88": {
@@ -788,9 +750,7 @@
             "eth_signTypedData_v3",
             "eth_signTypedData_v4"
           ],
-          "scopes": [
-            "eip155:0"
-          ],
+          "scopes": ["eip155:0"],
           "type": "eip155:eoa"
         },
         "694225f4-d30b-4e77-a900-c8bbce735b42": {
@@ -811,9 +771,7 @@
             "eth_signTypedData_v3",
             "eth_signTypedData_v4"
           ],
-          "scopes": [
-            "eip155:0"
-          ],
+          "scopes": ["eip155:0"],
           "type": "eip155:eoa"
         },
         "c3deeb99-ba0d-4a4e-a0aa-033fc1f79ae3": {
@@ -839,9 +797,7 @@
             "eth_signTypedData_v3",
             "eth_signTypedData_v4"
           ],
-          "scopes": [
-            "eip155:0"
-          ],
+          "scopes": ["eip155:0"],
           "type": "eip155:eoa"
         }
       },
@@ -870,9 +826,7 @@
       },
       {
         "type": "Ledger Hardware",
-        "accounts": [
-          "0xc42edfcc21ed14dda456aa0756c153f7985d8813"
-        ],
+        "accounts": ["0xc42edfcc21ed14dda456aa0756c153f7985d8813"],
         "metadata": {
           "id": "01JKAF3KP7VPAG0YXEDTDRB6ZV",
           "name": ""
@@ -880,9 +834,7 @@
       },
       {
         "type": "Simple Key Pair",
-        "accounts": [
-          "0xeb9e64b93097bc15f01f13eae97015c57ab64823"
-        ],
+        "accounts": ["0xeb9e64b93097bc15f01f13eae97015c57ab64823"],
         "metadata": {
           "id": "01JKAF3PJ247KAM6C03G5Q0NP8",
           "name": ""
@@ -890,9 +842,7 @@
       },
       {
         "type": "Snap Keyring",
-        "accounts": [
-          "0xb552685e3d2790efd64a175b00d51f02cdafee5d"
-        ],
+        "accounts": ["0xb552685e3d2790efd64a175b00d51f02cdafee5d"],
         "metadata": {
           "id": "01JKAF3SSWRQK818R830GE8PHX",
           "name": ""
@@ -900,9 +850,7 @@
       },
       {
         "type": "Custody test",
-        "accounts": [
-          "0xca8f1F0245530118D0cf14a06b01Daf8f76Cf281"
-        ],
+        "accounts": ["0xca8f1F0245530118D0cf14a06b01Daf8f76Cf281"],
         "metadata": {
           "id": "01JKAF3WYGWF7JX6PC4YYVSK2Q",
           "name": ""
@@ -922,9 +870,7 @@
     "networksWithTransactionActivity": {
       "0x0dcd5d886577d5081b0c52e242ef29e70be3e7bc": {
         "namespace": "eip155",
-        "activeChain": [
-          "0x5"
-        ]
+        "activeChain": ["0x5"]
       }
     },
     "selectedMultichainNetworkChainId": "eip155:5",
@@ -1606,9 +1552,7 @@
               {
                 "type": "rpcOrigin",
                 "value": {
-                  "allowedOrigins": [
-                    "npm:@metamask/json-rpc-example-snap"
-                  ],
+                  "allowedOrigins": ["npm:@metamask/json-rpc-example-snap"],
                   "dapps": true
                 }
               }

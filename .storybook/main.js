@@ -30,6 +30,10 @@ module.exports = {
   }),
   webpackFinal: async (config) => {
     config.context = process.cwd();
+    // Storybook's default Terser plugin passes `extractComments` to SWC,
+    // which rejects that option with the repository's current SWC version.
+    // Storybook output is a development artifact, so skip this optimization.
+    config.optimization.minimize = false;
     config.node = {
       __filename: true,
     };

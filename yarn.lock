@@ -7292,6 +7292,7 @@ __metadata:
   peerDependencies:
     "@babel/runtime": ^7.0.0
     "@metamask/eth-block-tracker": ">=9"
+  checksum: 10/f1a5961a2c9035025ac1736c3604ea14df3be9b1532e0329c529dd52fbfa9cadc51b1db83fa9279c643c9a0a539f950eb13bccc3fd85e6cce591ac4873a9878f
   languageName: node
   linkType: hard
 

@@ -382,6 +382,7 @@ Each of these actions requires first [locating](#locators) the web element you w
 > **Example**
 >
 > ```jsx
+>
 > ```
 
 </details>
@@ -847,8 +848,7 @@ A representation of any pointer device for interacting with a web page.
 > **Example**
 >
 > ```jsx
-> const removeButton = await driver.findElement(
-> );
+> const removeButton = await driver.findElement();
 > await driver.scrollToElement(removeButton);
 > ```
 

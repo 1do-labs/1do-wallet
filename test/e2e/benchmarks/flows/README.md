@@ -23,18 +23,18 @@ yarn test:e2e:benchmark --preset userJourneyOnboardingNew --out results.json
 
 ### Available Presets
 
-| Preset                         | Description                     | Benchmarks                                                       |
-| ------------------------------ | ------------------------------- | ---------------------------------------------------------------- |
-| `startupStandardHome`          | Standard user cold-start        | `standard-home.ts`                                               |
-| `startupPowerUserHome`         | Power user cold-start           | `power-user-home.ts`                                             |
-| `interactionUserActions`       | Single-action interaction times | `load-new-account.ts`, `confirm-tx.ts`                           |
-| `userJourneyOnboardingImport`  | Import wallet onboarding        | `onboarding-import-wallet.ts`                                    |
-| `userJourneyOnboardingNew`     | New wallet onboarding           | `onboarding-new-wallet.ts`                                       |
-| `userJourneyAssets`            | Asset detail page loads         | `asset-details.ts`                                                |
-| `userJourneyAccountManagement` | Login from home (import SRP)    | `import-srp-home.ts`                                             |
-| `userJourneyTransactions`      | Send transaction flows          | `send-transactions.ts`                                            |
-| `pageLoadBenchmark`            | Dapp page load (Playwright)     | `dapp-page-load/`                                                |
-| `all`                          | All benchmarks                  | Everything above                                                 |
+| Preset                         | Description                     | Benchmarks                             |
+| ------------------------------ | ------------------------------- | -------------------------------------- |
+| `startupStandardHome`          | Standard user cold-start        | `standard-home.ts`                     |
+| `startupPowerUserHome`         | Power user cold-start           | `power-user-home.ts`                   |
+| `interactionUserActions`       | Single-action interaction times | `load-new-account.ts`, `confirm-tx.ts` |
+| `userJourneyOnboardingImport`  | Import wallet onboarding        | `onboarding-import-wallet.ts`          |
+| `userJourneyOnboardingNew`     | New wallet onboarding           | `onboarding-new-wallet.ts`             |
+| `userJourneyAssets`            | Asset detail page loads         | `asset-details.ts`                     |
+| `userJourneyAccountManagement` | Login from home (import SRP)    | `import-srp-home.ts`                   |
+| `userJourneyTransactions`      | Send transaction flows          | `send-transactions.ts`                 |
+| `pageLoadBenchmark`            | Dapp page load (Playwright)     | `dapp-page-load/`                      |
+| `all`                          | All benchmarks                  | Everything above                       |
 
 ### User journey benchmarks: browserify vs webpack
 

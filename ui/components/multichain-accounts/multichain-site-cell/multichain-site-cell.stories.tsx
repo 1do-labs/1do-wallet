@@ -17,7 +17,6 @@ const createMockNetwork = (
   nativeCurrency: string,
   networkClientId: string,
   mockUrl?: string,
-): EvmAndMultichainNetworkConfigurationsWithCaipChainId => {
 ): EvmNetworkConfigurationWithCaipChainId => {
   const url = mockUrl || `mock-${networkClientId}-url`;
   return {
@@ -254,35 +253,33 @@ const mockAccountGroups: AccountGroupWithInternalAccounts[] = [
   createMockAccountGroup(1, 'Account 2'),
 ];
 
-const mockNonTestNetworks: EvmNetworkConfigurationWithCaipChainId[] =
-  [
-    createMockNetwork(
-      'Ethereum Mainnet',
-      '0x1' as Hex,
-      'eip155:1' as CaipChainId,
-      'ETH',
-      'mainnet',
-    ),
-    createMockNetwork(
-      'Polygon',
-      '0x89' as Hex,
-      'eip155:137' as CaipChainId,
-      'MATIC',
-      'polygon-mainnet',
-      'mock-polygon-url',
-    ),
-  ];
+const mockNonTestNetworks: EvmNetworkConfigurationWithCaipChainId[] = [
+  createMockNetwork(
+    'Ethereum Mainnet',
+    '0x1' as Hex,
+    'eip155:1' as CaipChainId,
+    'ETH',
+    'mainnet',
+  ),
+  createMockNetwork(
+    'Polygon',
+    '0x89' as Hex,
+    'eip155:137' as CaipChainId,
+    'MATIC',
+    'polygon-mainnet',
+    'mock-polygon-url',
+  ),
+];
 
-const mockTestNetworks: EvmNetworkConfigurationWithCaipChainId[] =
-  [
-    createMockNetwork(
-      'Sepolia',
-      '0xaa36a7' as Hex,
-      'eip155:11155111' as CaipChainId,
-      'SEP',
-      'sepolia',
-    ),
-  ];
+const mockTestNetworks: EvmNetworkConfigurationWithCaipChainId[] = [
+  createMockNetwork(
+    'Sepolia',
+    '0xaa36a7' as Hex,
+    'eip155:11155111' as CaipChainId,
+    'SEP',
+    'sepolia',
+  ),
+];
 
 const Template: StoryFn<typeof MultichainSiteCell> = (args) => (
   <div

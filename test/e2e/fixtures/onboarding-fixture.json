@@ -228,9 +228,7 @@
     "NetworkController": {
       "networkConfigurationsByChainId": {
         "0x1": {
-          "blockExplorerUrls": [
-            "https://etherscan.io"
-          ],
+          "blockExplorerUrls": ["https://etherscan.io"],
           "chainId": "0x1",
           "defaultBlockExplorerUrlIndex": 0,
           "defaultRpcEndpointIndex": 0,
@@ -248,9 +246,7 @@
           ]
         },
         "0x18c7": {
-          "blockExplorerUrls": [
-            "https://megaeth-testnet-v2.blockscout.com"
-          ],
+          "blockExplorerUrls": ["https://megaeth-testnet-v2.blockscout.com"],
           "chainId": "0x18c7",
           "defaultBlockExplorerUrlIndex": 0,
           "defaultRpcEndpointIndex": 0,
@@ -266,9 +262,7 @@
           ]
         },
         "0x2105": {
-          "blockExplorerUrls": [
-            "https://basescan.org"
-          ],
+          "blockExplorerUrls": ["https://basescan.org"],
           "chainId": "0x2105",
           "defaultBlockExplorerUrlIndex": 0,
           "defaultRpcEndpointIndex": 0,
@@ -286,9 +280,7 @@
           ]
         },
         "0x279f": {
-          "blockExplorerUrls": [
-            "https://testnet.monadexplorer.com"
-          ],
+          "blockExplorerUrls": ["https://testnet.monadexplorer.com"],
           "chainId": "0x279f",
           "defaultBlockExplorerUrlIndex": 0,
           "defaultRpcEndpointIndex": 0,
@@ -304,9 +296,7 @@
           ]
         },
         "0x38": {
-          "blockExplorerUrls": [
-            "https://bscscan.com"
-          ],
+          "blockExplorerUrls": ["https://bscscan.com"],
           "chainId": "0x38",
           "defaultBlockExplorerUrlIndex": 0,
           "defaultRpcEndpointIndex": 0,
@@ -322,9 +312,7 @@
           ]
         },
         "0x89": {
-          "blockExplorerUrls": [
-            "https://polygonscan.com"
-          ],
+          "blockExplorerUrls": ["https://polygonscan.com"],
           "chainId": "0x89",
           "defaultBlockExplorerUrlIndex": 0,
           "defaultRpcEndpointIndex": 0,
@@ -342,9 +330,7 @@
           ]
         },
         "0xa": {
-          "blockExplorerUrls": [
-            "https://optimistic.etherscan.io"
-          ],
+          "blockExplorerUrls": ["https://optimistic.etherscan.io"],
           "chainId": "0xa",
           "defaultBlockExplorerUrlIndex": 0,
           "defaultRpcEndpointIndex": 0,
@@ -362,9 +348,7 @@
           ]
         },
         "0xa4b1": {
-          "blockExplorerUrls": [
-            "https://arbiscan.io"
-          ],
+          "blockExplorerUrls": ["https://arbiscan.io"],
           "chainId": "0xa4b1",
           "defaultBlockExplorerUrlIndex": 0,
           "defaultRpcEndpointIndex": 0,
@@ -382,9 +366,7 @@
           ]
         },
         "0xaa36a7": {
-          "blockExplorerUrls": [
-            "https://sepolia.etherscan.io"
-          ],
+          "blockExplorerUrls": ["https://sepolia.etherscan.io"],
           "chainId": "0xaa36a7",
           "defaultBlockExplorerUrlIndex": 0,
           "defaultRpcEndpointIndex": 0,
@@ -400,9 +382,7 @@
           ]
         },
         "0xe705": {
-          "blockExplorerUrls": [
-            "https://sepolia.lineascan.build"
-          ],
+          "blockExplorerUrls": ["https://sepolia.lineascan.build"],
           "chainId": "0xe705",
           "defaultBlockExplorerUrlIndex": 0,
           "defaultRpcEndpointIndex": 0,
@@ -418,9 +398,7 @@
           ]
         },
         "0xe708": {
-          "blockExplorerUrls": [
-            "https://lineascan.build"
-          ],
+          "blockExplorerUrls": ["https://lineascan.build"],
           "chainId": "0xe708",
           "defaultBlockExplorerUrlIndex": 0,
           "defaultRpcEndpointIndex": 0,

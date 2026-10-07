@@ -93,6 +93,8 @@ export function getMinimizers() {
     new TerserPlugin({
       // use SWC to minify (about 7x faster than Terser)
       minify: TerserPlugin.swcMinify,
+      // TerserPlugin passes this option to SWC, which does not accept it.
+      extractComments: false,
       // do not minify snow.
       exclude: /snow\.prod/u,
     }),

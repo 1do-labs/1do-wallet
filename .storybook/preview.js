@@ -14,7 +14,6 @@ import testData from './test-data.js';
 import { MemoryRouter, Routes, Route } from 'react-router-dom';
 import { setBackgroundConnection } from '../ui/store/background-connection';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { AlertMetricsProvider } from '../ui/components/app/alert-system/contexts/alertMetricsContext';
 import './index.css';
 
 const queryClient = new QueryClient({
@@ -130,25 +129,17 @@ const metamaskDecorator = (story, context) => {
     <Provider store={store}>
       <QueryClientProvider client={queryClient}>
         <MemoryRouter initialEntries={initialEntries}>
-          <AlertMetricsProvider
-            metrics={{
-              trackAlertActionClicked: () => undefined,
-              trackAlertRender: () => undefined,
-              trackInlineAlertClicked: () => undefined,
-            }}
+          <I18nProvider
+            currentLocale={currentLocale}
+            current={current}
+            en={allLocales.en}
           >
-            <I18nProvider
-              currentLocale={currentLocale}
-              current={current}
-              en={allLocales.en}
-            >
-              <LegacyI18nProvider>
-                <Routes>
-                  <Route path={path} element={<StoryComponent />} />
-                </Routes>
-              </LegacyI18nProvider>
-            </I18nProvider>
-          </AlertMetricsProvider>
+            <LegacyI18nProvider>
+              <Routes>
+                <Route path={path} element={<StoryComponent />} />
+              </Routes>
+            </LegacyI18nProvider>
+          </I18nProvider>
         </MemoryRouter>
       </QueryClientProvider>
     </Provider>
