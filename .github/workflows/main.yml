@@ -517,7 +517,8 @@ jobs:
       - build-test-flask-mv2-webpack
     uses: ./.github/workflows/e2e-firefox.yml
     # Without this `if`, when builds-from-run is activated, the build jobs are considered skipped, and the downstream E2E tests won't run
-    if: ${{ false }}
+    # Keep Firefox E2E disabled until explicitly re-enabled for a dedicated ref.
+    if: ${{ github.ref == 'refs/heads/__disabled_firefox_e2e__' }}
     with:
       builds-from-run: ${{ needs.get-requirements.outputs.builds-from-run }}
       use-matrix: ${{ needs.prep-e2e.outputs.use-matrix }}
