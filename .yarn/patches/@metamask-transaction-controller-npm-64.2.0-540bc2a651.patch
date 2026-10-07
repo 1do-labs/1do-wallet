@@ -1,5 +1,29 @@
+diff --git a/dist/TransactionController.cjs b/dist/TransactionController.cjs
+index 0bdf736..6f1d207 100644
+--- a/dist/TransactionController.cjs
++++ b/dist/TransactionController.cjs
+@@ -416,8 +416,10 @@ class TransactionController extends base_controller_1.BaseController {
+             ? undefined
+             : await __classPrivateFieldGet(this, _TransactionController_getPermittedAccounts, "f")?.call(this, origin);
+         const internalAccounts = __classPrivateFieldGet(this, _TransactionController_instances, "m", _TransactionController_getInternalAccounts).call(this);
++        const delegationAddress = await (0, eip7702_1.getDelegationAddress)(txParams.to, this.messenger, networkClientId).catch(() => undefined);
+         await (0, validation_1.validateTransactionOrigin)({
+             data: txParams.data,
++            delegationAddress,
+             from: txParams.from,
+             internalAccounts,
+             origin,
+@@ -425,7 +427,7 @@ class TransactionController extends base_controller_1.BaseController {
+             txParams,
+             type,
+         });
+-        const delegationAddressPromise = (0, eip7702_1.getDelegationAddress)(txParams.from, this.messenger, networkClientId).catch(() => undefined);
++        const delegationAddressPromise = Promise.resolve(delegationAddress);
+         const isEIP1559Compatible = await __classPrivateFieldGet(this, _TransactionController_instances, "m", _TransactionController_getEIP1559Compatibility).call(this, networkClientId);
+         (0, validation_1.validateTxParams)(txParams, isEIP1559Compatible, chainId);
+         if (!txParams.type) {
 diff --git a/dist/TransactionController.d.cts b/dist/TransactionController.d.cts
-index c0da68a14d9ca7e143b09fe177714af93b1f0687..9cf012c459368a22040a52ad5dc1377a5a808c15 100644
+index c0da68a..694d4ba 100644
 --- a/dist/TransactionController.d.cts
 +++ b/dist/TransactionController.d.cts
 @@ -10,7 +10,6 @@ import type { KeyringControllerSignEip7702AuthorizationAction } from "@metamask/
@@ -20,7 +44,7 @@ index c0da68a14d9ca7e143b09fe177714af93b1f0687..9cf012c459368a22040a52ad5dc1377a
   * The external events available to the {@link TransactionController}.
   */
 diff --git a/dist/TransactionController.d.mts b/dist/TransactionController.d.mts
-index 749a7c272482bcc3ed460a03910a814cf1f9159f..015364a960367d35066a3d4f27a1e74fa0feb957 100644
+index 749a7c2..85068aa 100644
 --- a/dist/TransactionController.d.mts
 +++ b/dist/TransactionController.d.mts
 @@ -10,7 +10,6 @@ import type { KeyringControllerSignEip7702AuthorizationAction } from "@metamask/
@@ -40,8 +64,32 @@ index 749a7c272482bcc3ed460a03910a814cf1f9159f..015364a960367d35066a3d4f27a1e74f
  /**
   * The external events available to the {@link TransactionController}.
   */
+diff --git a/dist/TransactionController.mjs b/dist/TransactionController.mjs
+index 71bdaf9..275498f 100644
+--- a/dist/TransactionController.mjs
++++ b/dist/TransactionController.mjs
+@@ -414,8 +414,10 @@ export class TransactionController extends BaseController {
+             ? undefined
+             : await __classPrivateFieldGet(this, _TransactionController_getPermittedAccounts, "f")?.call(this, origin);
+         const internalAccounts = __classPrivateFieldGet(this, _TransactionController_instances, "m", _TransactionController_getInternalAccounts).call(this);
++        const delegationAddress = await getDelegationAddress(txParams.to, this.messenger, networkClientId).catch(() => undefined);
+         await validateTransactionOrigin({
+             data: txParams.data,
++            delegationAddress,
+             from: txParams.from,
+             internalAccounts,
+             origin,
+@@ -423,7 +425,7 @@ export class TransactionController extends BaseController {
+             txParams,
+             type,
+         });
+-        const delegationAddressPromise = getDelegationAddress(txParams.from, this.messenger, networkClientId).catch(() => undefined);
++        const delegationAddressPromise = Promise.resolve(delegationAddress);
+         const isEIP1559Compatible = await __classPrivateFieldGet(this, _TransactionController_instances, "m", _TransactionController_getEIP1559Compatibility).call(this, networkClientId);
+         validateTxParams(txParams, isEIP1559Compatible, chainId);
+         if (!txParams.type) {
 diff --git a/dist/api/simulation-api.cjs b/dist/api/simulation-api.cjs
-index e902c6bd4701aff2eddd10e8f5e15126352e2654..b9ffda220ef4d3127d90043eb787e5a7aad26982 100644
+index e902c6b..3d3198a 100644
 --- a/dist/api/simulation-api.cjs
 +++ b/dist/api/simulation-api.cjs
 @@ -1,16 +1,13 @@
@@ -135,7 +183,7 @@ index e902c6bd4701aff2eddd10e8f5e15126352e2654..b9ffda220ef4d3127d90043eb787e5a7
   * Finalize the simulation request.
   * Overrides the DelegationManager code to remove signature errors.
 diff --git a/dist/api/simulation-api.mjs b/dist/api/simulation-api.mjs
-index a098d54d4e4888cb405a4478b11fa2f44e42064e..a767e074e960da702a59cfb94454dbbc27185ab8 100644
+index a098d54..f8406d0 100644
 --- a/dist/api/simulation-api.mjs
 +++ b/dist/api/simulation-api.mjs
 @@ -1,14 +1,11 @@
@@ -228,7 +276,7 @@ index a098d54d4e4888cb405a4478b11fa2f44e42064e..a767e074e960da702a59cfb94454dbbc
   * Finalize the simulation request.
   * Overrides the DelegationManager code to remove signature errors.
 diff --git a/dist/utils/balance-changes.cjs b/dist/utils/balance-changes.cjs
-index 96e0fb1c0f64b886596ee5bfe9dab44646c67839..4af3eb56123b686d988b5810294d2a82452244e6 100644
+index 96e0fb1..f1dce25 100644
 --- a/dist/utils/balance-changes.cjs
 +++ b/dist/utils/balance-changes.cjs
 @@ -79,6 +79,12 @@ async function getBalanceChanges(request) {
@@ -285,7 +333,7 @@ index 96e0fb1c0f64b886596ee5bfe9dab44646c67839..4af3eb56123b686d988b5810294d2a82
   * Extract the native balance change from a simulation response.
   *
 diff --git a/dist/utils/balance-changes.mjs b/dist/utils/balance-changes.mjs
-index 4a0e382abcf56f9aab71dd75153912d7698c98cc..2a8590509ba1c97bcebb03b72bd5308aee32c1dc 100644
+index 4a0e382..61ac04f 100644
 --- a/dist/utils/balance-changes.mjs
 +++ b/dist/utils/balance-changes.mjs
 @@ -80,6 +80,12 @@ export async function getBalanceChanges(request) {
@@ -342,7 +390,7 @@ index 4a0e382abcf56f9aab71dd75153912d7698c98cc..2a8590509ba1c97bcebb03b72bd5308a
   * Extract the native balance change from a simulation response.
   *
 diff --git a/dist/utils/feature-flags.cjs b/dist/utils/feature-flags.cjs
-index 7442346c72e46835bc339a4f69d6f8cef350063a..2f02da0dcdcfadd3dab626dcc5649e089781604d 100644
+index 7442346..787c2c0 100644
 --- a/dist/utils/feature-flags.cjs
 +++ b/dist/utils/feature-flags.cjs
 @@ -236,8 +236,6 @@ exports.isIncomingTransactionsUseBackendWebSocketServiceEnabled = isIncomingTran
@@ -355,8 +403,9 @@ index 7442346c72e46835bc339a4f69d6f8cef350063a..2f02da0dcdcfadd3dab626dcc5649e08
 +    return {};
  }
  //# sourceMappingURL=feature-flags.cjs.map
+\ No newline at end of file
 diff --git a/dist/utils/feature-flags.mjs b/dist/utils/feature-flags.mjs
-index 90cd2c2a6452a076fd02ed95cf282111af4ea9df..ec461a2524d452faa8d4c9d239d96ae97754ec00 100644
+index 90cd2c2..dddd1b0 100644
 --- a/dist/utils/feature-flags.mjs
 +++ b/dist/utils/feature-flags.mjs
 @@ -220,8 +220,6 @@ export function isIncomingTransactionsUseBackendWebSocketServiceEnabled(messenge
@@ -369,8 +418,55 @@ index 90cd2c2a6452a076fd02ed95cf282111af4ea9df..ec461a2524d452faa8d4c9d239d96ae9
 +    return {};
  }
  //# sourceMappingURL=feature-flags.mjs.map
+\ No newline at end of file
+diff --git a/dist/utils/validation.cjs b/dist/utils/validation.cjs
+index e1ad589..37b13b8 100644
+--- a/dist/utils/validation.cjs
++++ b/dist/utils/validation.cjs
+@@ -32,7 +32,7 @@ const TRANSACTION_ENVELOPE_TYPES_FEE_MARKET = [
+  * @param options.type - The transaction type.
+  * @throws Throws an error if the transaction is not permitted.
+  */
+-async function validateTransactionOrigin({ data, from, internalAccounts, origin, permittedAddresses, txParams, type, }) {
++async function validateTransactionOrigin({ data, delegationAddress, from, internalAccounts, origin, permittedAddresses, txParams, type, }) {
+     const isInternal = !origin || origin === controller_utils_1.ORIGIN_METAMASK;
+     if (isInternal) {
+         return;
+@@ -48,7 +48,8 @@ async function validateTransactionOrigin({ data, from, internalAccounts, origin,
+         throw rpc_errors_1.rpcErrors.invalidParams('External EIP-7702 transactions are not supported');
+     }
+     const hasData = Boolean(data && data !== '0x');
+-    if (hasData &&
++    const isRuntimeSelfCall = Boolean(delegationAddress);
++    if (hasData && !isRuntimeSelfCall &&
+         internalAccounts?.some((account) => account.toLowerCase() === to?.toLowerCase())) {
+         throw rpc_errors_1.rpcErrors.invalidParams('External transactions to internal accounts cannot include data');
+     }
+diff --git a/dist/utils/validation.mjs b/dist/utils/validation.mjs
+index e61c079..1f512f7 100644
+--- a/dist/utils/validation.mjs
++++ b/dist/utils/validation.mjs
+@@ -29,7 +29,7 @@ const TRANSACTION_ENVELOPE_TYPES_FEE_MARKET = [
+  * @param options.type - The transaction type.
+  * @throws Throws an error if the transaction is not permitted.
+  */
+-export async function validateTransactionOrigin({ data, from, internalAccounts, origin, permittedAddresses, txParams, type, }) {
++export async function validateTransactionOrigin({ data, delegationAddress, from, internalAccounts, origin, permittedAddresses, txParams, type, }) {
+     const isInternal = !origin || origin === ORIGIN_METAMASK;
+     if (isInternal) {
+         return;
+@@ -45,7 +45,8 @@ export async function validateTransactionOrigin({ data, from, internalAccounts,
+         throw rpcErrors.invalidParams('External EIP-7702 transactions are not supported');
+     }
+     const hasData = Boolean(data && data !== '0x');
+-    if (hasData &&
++    const isRuntimeSelfCall = Boolean(delegationAddress);
++    if (hasData && !isRuntimeSelfCall &&
+         internalAccounts?.some((account) => account.toLowerCase() === to?.toLowerCase())) {
+         throw rpcErrors.invalidParams('External transactions to internal accounts cannot include data');
+     }
 diff --git a/package.json b/package.json
-index 708fce325ca73253e11c31eb2f448746407630c5..a4b57f6c3b1d59cbdadad60b1f70854b9d3c5d0b 100644
+index 708fce3..e61190d 100644
 --- a/package.json
 +++ b/package.json
 @@ -70,7 +70,6 @@
@@ -381,87 +477,3 @@ index 708fce325ca73253e11c31eb2f448746407630c5..a4b57f6c3b1d59cbdadad60b1f70854b
      "@metamask/rpc-errors": "^7.0.2",
      "@metamask/utils": "^11.9.0",
      "async-mutex": "^0.5.0",
---- a/dist/TransactionController.mjs
-+++ b/dist/TransactionController.mjs
-@@ -414,8 +414,10 @@
-             ? undefined
-             : await __classPrivateFieldGet(this, _TransactionController_getPermittedAccounts, "f")?.call(this, origin);
-         const internalAccounts = __classPrivateFieldGet(this, _TransactionController_instances, "m", _TransactionController_getInternalAccounts).call(this);
-+        const delegationAddress = await getDelegationAddress(txParams.to, this.messenger, networkClientId).catch(() => undefined);
-         await validateTransactionOrigin({
-             data: txParams.data,
-+            delegationAddress,
-             from: txParams.from,
-             internalAccounts,
-             origin,
-@@ -423,7 +425,7 @@
-             txParams,
-             type,
-         });
--        const delegationAddressPromise = getDelegationAddress(txParams.from, this.messenger, networkClientId).catch(() => undefined);
-+        const delegationAddressPromise = Promise.resolve(delegationAddress);
-         const isEIP1559Compatible = await __classPrivateFieldGet(this, _TransactionController_instances, "m", _TransactionController_getEIP1559Compatibility).call(this, networkClientId);
-         validateTxParams(txParams, isEIP1559Compatible, chainId);
-         if (!txParams.type) {
---- a/dist/TransactionController.cjs
-+++ b/dist/TransactionController.cjs
-@@ -416,8 +416,10 @@
-             ? undefined
-             : await __classPrivateFieldGet(this, _TransactionController_getPermittedAccounts, "f")?.call(this, origin);
-         const internalAccounts = __classPrivateFieldGet(this, _TransactionController_instances, "m", _TransactionController_getInternalAccounts).call(this);
-+        const delegationAddress = await (0, eip7702_1.getDelegationAddress)(txParams.to, this.messenger, networkClientId).catch(() => undefined);
-         await (0, validation_1.validateTransactionOrigin)({
-             data: txParams.data,
-+            delegationAddress,
-             from: txParams.from,
-             internalAccounts,
-             origin,
-@@ -425,7 +427,7 @@
-             txParams,
-             type,
-         });
--        const delegationAddressPromise = (0, eip7702_1.getDelegationAddress)(txParams.from, this.messenger, networkClientId).catch(() => undefined);
-+        const delegationAddressPromise = Promise.resolve(delegationAddress);
-         const isEIP1559Compatible = await __classPrivateFieldGet(this, _TransactionController_instances, "m", _TransactionController_getEIP1559Compatibility).call(this, networkClientId);
-         (0, validation_1.validateTxParams)(txParams, isEIP1559Compatible, chainId);
-         if (!txParams.type) {
---- a/dist/utils/validation.mjs
-+++ b/dist/utils/validation.mjs
-@@ -29,7 +29,7 @@
-  * @param options.type - The transaction type.
-  * @throws Throws an error if the transaction is not permitted.
-  */
--export async function validateTransactionOrigin({ data, from, internalAccounts, origin, permittedAddresses, txParams, type, }) {
-+export async function validateTransactionOrigin({ data, delegationAddress, from, internalAccounts, origin, permittedAddresses, txParams, type, }) {
-     const isInternal = !origin || origin === ORIGIN_METAMASK;
-     if (isInternal) {
-         return;
-@@ -45,7 +45,7 @@
-         throw rpcErrors.invalidParams('External EIP-7702 transactions are not supported');
-     }
-     const hasData = Boolean(data && data !== '0x');
--    const isRuntimeSelfCall = from?.toLowerCase() === to?.toLowerCase();
-+    const isRuntimeSelfCall = Boolean(delegationAddress);
-     if (hasData && !isRuntimeSelfCall &&
-         internalAccounts?.some((account) => account.toLowerCase() === to?.toLowerCase())) {
-         throw rpcErrors.invalidParams('External transactions to internal accounts cannot include data');
---- a/dist/utils/validation.cjs
-+++ b/dist/utils/validation.cjs
-@@ -32,7 +32,7 @@
-  * @param options.type - The transaction type.
-  * @throws Throws an error if the transaction is not permitted.
-  */
--async function validateTransactionOrigin({ data, from, internalAccounts, origin, permittedAddresses, txParams, type, }) {
-+async function validateTransactionOrigin({ data, delegationAddress, from, internalAccounts, origin, permittedAddresses, txParams, type, }) {
-     const isInternal = !origin || origin === controller_utils_1.ORIGIN_METAMASK;
-     if (isInternal) {
-         return;
-@@ -48,7 +48,7 @@
-         throw rpc_errors_1.rpcErrors.invalidParams('External EIP-7702 transactions are not supported');
-     }
-     const hasData = Boolean(data && data !== '0x');
--    const isRuntimeSelfCall = from?.toLowerCase() === to?.toLowerCase();
-+    const isRuntimeSelfCall = Boolean(delegationAddress);
-     if (hasData && !isRuntimeSelfCall &&
-         internalAccounts?.some((account) => account.toLowerCase() === to?.toLowerCase())) {
-         throw rpc_errors_1.rpcErrors.invalidParams('External transactions to internal accounts cannot include data');
