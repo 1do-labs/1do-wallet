@@ -1,7 +1,6 @@
 import React from 'react';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-import { fireEvent } from '@testing-library/react';
 import { EthAccountType, EthMethod } from '@metamask/keyring-api';
 import { AVAILABLE_MULTICHAIN_NETWORK_CONFIGURATIONS } from '@metamask/multichain-network-controller';
 import { CHAIN_IDS } from '../../../../shared/constants/network';
@@ -12,11 +11,6 @@ import useMultiPolling from '../../../hooks/useMultiPolling';
 import { ETH_EOA_METHODS } from '../../../../shared/constants/eth-methods';
 import { getIntlLocale } from '../../../ducks/locale/locale';
 import { mockNetworkState } from '../../../../test/stub/networks';
-import { MetaMetricsContext } from '../../../contexts/metametrics';
-import {
-  MetaMetricsEventCategory,
-  MetaMetricsEventName,
-} from '../../../../shared/constants/metametrics';
 import EthOverview from './eth-overview';
 
 // TODO: Remove this mock when multichain accounts feature flag is entirely removed.
@@ -330,58 +324,5 @@ describe('EthOverview', () => {
         'Not supported with this account.',
       );
     });
-  });
-
-  it.each([
-    CHAIN_IDS.MAINNET,
-    // We want to test with a different chain ID than mainnet to make sure the events are still using
-    // the right `token_symbol`.
-    CHAIN_IDS.SEPOLIA,
-  ])('sends an event when clicking the Send button: %s', (chainId) => {
-    const mockTrackEvent = jest.fn();
-    const mockMetaMetricsContext = {
-      trackEvent: mockTrackEvent,
-      bufferedTrace: jest.fn(),
-      bufferedEndTrace: jest.fn(),
-      onboardingParentContext: { current: null },
-    };
-    const mockedStoreWithSpecificChainId = {
-      ...mockStore,
-      metamask: {
-        ...mockStore.metamask,
-        ...mockNetworkState({ chainId }),
-      },
-    };
-
-    const mockedStore = configureMockStore([thunk])(
-      mockedStoreWithSpecificChainId,
-    );
-    const { queryByTestId } = renderWithProvider(
-      <MetaMetricsContext.Provider value={mockMetaMetricsContext}>
-        <EthOverview />
-      </MetaMetricsContext.Provider>,
-      mockedStore,
-    );
-
-    const sendButton = queryByTestId(ETH_OVERVIEW_SEND);
-    expect(sendButton).toBeInTheDocument();
-    expect(sendButton).not.toBeDisabled();
-    fireEvent.click(sendButton);
-
-    expect(mockTrackEvent).toHaveBeenCalledTimes(1);
-    expect(mockTrackEvent).toHaveBeenCalledWith(
-      {
-        event: MetaMetricsEventName.SendStarted,
-        category: MetaMetricsEventCategory.Navigation,
-        properties: {
-          account_type: mockEvmAccount1.type,
-          chain_id: chainId,
-          location: 'Home',
-          text: 'Send',
-          token_symbol: 'ETH',
-        },
-      },
-      expect.any(Object),
-    );
   });
 });

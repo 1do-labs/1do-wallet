@@ -9,6 +9,7 @@ import {
 import switchEthereumChain from './switch-ethereum-chain';
 import success from './success';
 import error from './error';
+import { TEMPLATED_CONFIRMATION_APPROVAL_TYPES } from './types';
 
 const APPROVAL_TEMPLATES = {
   [ApprovalType.SwitchEthereumChain]: switchEthereumChain,
@@ -17,8 +18,7 @@ const APPROVAL_TEMPLATES = {
   [ApprovalType.ResultError]: error,
 };
 
-export const TEMPLATED_CONFIRMATION_APPROVAL_TYPES =
-  Object.keys(APPROVAL_TEMPLATES);
+export { TEMPLATED_CONFIRMATION_APPROVAL_TYPES };
 
 const ALLOWED_TEMPLATE_KEYS = [
   'cancelText',

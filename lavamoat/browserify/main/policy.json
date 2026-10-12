@@ -321,7 +321,7 @@
         "@ethersproject/bytes": true,
         "ethers>@ethersproject/logger": true,
         "ethers>@ethersproject/properties": true,
-        "@toruslabs/eccrypto>elliptic": true
+        "ethers>@ethersproject/signing-key>elliptic": true
       }
     },
     "ethers>@ethersproject/solidity": {
@@ -494,7 +494,7 @@
     "@ledgerhq/hw-app-eth>@ledgerhq/domain-service": {
       "packages": {
         "@ledgerhq/hw-app-eth>@ledgerhq/logs": true,
-        "axios": true
+        "@slack/webhook>axios": true
       }
     },
     "@ledgerhq/errors": {
@@ -508,7 +508,7 @@
         "ethers>@ethersproject/hash": true,
         "@ledgerhq/hw-app-eth>@ledgerhq/cryptoassets-evm-signatures": true,
         "@ledgerhq/hw-app-eth>@ledgerhq/evm-tools>@ledgerhq/live-env": true,
-        "axios": true,
+        "@slack/webhook>axios": true,
         "@ledgerhq/hw-app-eth>@ledgerhq/evm-tools>crypto-js": true
       }
     },
@@ -525,7 +525,7 @@
         "@ledgerhq/errors": true,
         "@ledgerhq/hw-app-eth>@ledgerhq/evm-tools": true,
         "@ledgerhq/hw-app-eth>@ledgerhq/logs": true,
-        "axios": true,
+        "@slack/webhook>axios": true,
         "@ledgerhq/hw-app-eth>bignumber.js": true,
         "browserify>buffer": true,
         "semver": true
@@ -729,7 +729,7 @@
         "@metamask/controller-utils": true,
         "@metamask/core-backend": true,
         "@metamask/assets-controller>@metamask/keyring-snap-client": true,
-        "@metamask/assets-controller>@metamask/phishing-controller": true,
+        "@metamask/phishing-controller": true,
         "@metamask/polling-controller": true,
         "@metamask/assets-controller>@metamask/snaps-utils": true,
         "@metamask/utils": true,
@@ -768,7 +768,7 @@
         "@metamask/keyring-api": true,
         "@metamask/assets-controller>@metamask/keyring-snap-client": true,
         "@metamask/metamask-eth-abis": true,
-        "@metamask/assets-controller>@metamask/phishing-controller": true,
+        "@metamask/phishing-controller": true,
         "@metamask/polling-controller": true,
         "@metamask/rpc-errors": true,
         "@metamask/assets-controller>@metamask/snaps-utils": true,
@@ -846,7 +846,7 @@
         "@metamask/controller-utils>@spruceid/siwe-parser": true,
         "ethereumjs-util>bn.js": true,
         "browserify>buffer": true,
-        "cockatiel": true,
+        "@metamask/controller-utils>cockatiel": true,
         "eth-ens-namehash": true,
         "eslint>fast-deep-equal": true,
         "lodash": true
@@ -1255,9 +1255,9 @@
       "packages": {
         "@metamask/scure-bip39": true,
         "@metamask/utils": true,
-        "@noble/curves": true,
-        "@noble/hashes": true,
-        "@scure/base": true
+        "viem>@scure/bip32>@noble/curves": true,
+        "viem>@noble/hashes": true,
+        "@metamask/utils>@scure/base": true
       }
     },
     "@metamask/keyring-api": {
@@ -1268,7 +1268,7 @@
         "@metamask/superstruct": true,
         "@metamask/utils": true,
         "mockttp>async-mutex": true,
-        "bitcoin-address-validation": true,
+        "@metamask/keyring-api>bitcoin-address-validation": true,
         "@metamask/keyring-api>uuid": true
       }
     },
@@ -1277,7 +1277,7 @@
         "@metamask/keyring-utils": true,
         "@metamask/superstruct": true,
         "@metamask/utils": true,
-        "bitcoin-address-validation": true
+        "@metamask/keyring-api>bitcoin-address-validation": true
       }
     },
     "@metamask/eth-ledger-bridge-keyring>@metamask/keyring-api": {
@@ -1285,7 +1285,7 @@
         "@metamask/keyring-utils": true,
         "@metamask/superstruct": true,
         "@metamask/utils": true,
-        "bitcoin-address-validation": true
+        "@metamask/keyring-api>bitcoin-address-validation": true
       }
     },
     "@metamask/core-backend>@metamask/keyring-controller>@metamask/eth-simple-keyring>@metamask/keyring-api": {
@@ -1293,7 +1293,7 @@
         "@metamask/keyring-utils": true,
         "@metamask/superstruct": true,
         "@metamask/utils": true,
-        "bitcoin-address-validation": true
+        "@metamask/keyring-api>bitcoin-address-validation": true
       }
     },
     "@metamask/accounts-controller>@metamask/eth-snap-keyring>@metamask/keyring-internal-snap-client>@metamask/keyring-api": {
@@ -1301,7 +1301,7 @@
         "@metamask/keyring-utils": true,
         "@metamask/superstruct": true,
         "@metamask/utils": true,
-        "bitcoin-address-validation": true
+        "@metamask/keyring-api>bitcoin-address-validation": true
       }
     },
     "@metamask/core-backend>@metamask/accounts-controller>@metamask/keyring-sdk>@metamask/keyring-api": {
@@ -1309,7 +1309,7 @@
         "@metamask/keyring-utils": true,
         "@metamask/superstruct": true,
         "@metamask/utils": true,
-        "bitcoin-address-validation": true
+        "@metamask/keyring-api>bitcoin-address-validation": true
       }
     },
     "@metamask/assets-controller>@metamask/keyring-snap-client>@metamask/keyring-api": {
@@ -1317,7 +1317,7 @@
         "@metamask/keyring-utils": true,
         "@metamask/superstruct": true,
         "@metamask/utils": true,
-        "bitcoin-address-validation": true
+        "@metamask/keyring-api>bitcoin-address-validation": true
       }
     },
     "@metamask/keyring-controller": {
@@ -1420,7 +1420,7 @@
       "packages": {
         "@metamask/superstruct": true,
         "@metamask/utils": true,
-        "bitcoin-address-validation": true
+        "@metamask/keyring-api>bitcoin-address-validation": true
       }
     },
     "@metamask/logging-controller": {
@@ -1519,7 +1519,7 @@
         "@metamask/rpc-errors": true,
         "@metamask/network-controller>@metamask/swappable-obj-proxy": true,
         "@metamask/utils": true,
-        "cockatiel": true,
+        "@metamask/controller-utils>cockatiel": true,
         "addons-linter>deepmerge": true,
         "eslint>fast-deep-equal": true,
         "immer": true,
@@ -1606,7 +1606,7 @@
         "@metamask/utils": true
       }
     },
-    "@metamask/assets-controller>@metamask/phishing-controller": {
+    "@metamask/phishing-controller": {
       "globals": {
         "TextEncoder": true,
         "URL": true,
@@ -1617,8 +1617,8 @@
       "packages": {
         "@metamask/base-controller": true,
         "@metamask/controller-utils": true,
-        "@noble/hashes": true,
-        "@metamask/assets-controller>@metamask/phishing-controller>ethereum-cryptography": true,
+        "viem>@noble/hashes": true,
+        "@metamask/phishing-controller>ethereum-cryptography": true,
         "webpack-cli>fastest-levenshtein": true,
         "punycode": true
       }
@@ -1655,8 +1655,8 @@
       "packages": {
         "@metamask/base-controller": true,
         "@metamask/profile-sync-controller>@metamask/keyring-controller": true,
-        "@noble/ciphers": true,
-        "@noble/hashes": true,
+        "ethereum-cryptography>@noble/ciphers": true,
+        "viem>@noble/hashes": true,
         "browserify>buffer": true,
         "@metamask/profile-sync-controller>siwe": true
       }
@@ -1792,9 +1792,9 @@
         "@metamask/assets-controllers>@metamask/snaps-sdk": true,
         "@metamask/superstruct": true,
         "@metamask/utils": true,
-        "@scure/base": true,
+        "@metamask/utils>@scure/base": true,
         "chalk": true,
-        "cron-parser": true,
+        "@metamask/assets-controller>@metamask/snaps-utils>cron-parser": true,
         "fast-json-stable-stringify": true,
         "@metamask/assets-controller>@metamask/snaps-utils>fast-xml-parser": true,
         "luxon": true,
@@ -1855,8 +1855,8 @@
       },
       "packages": {
         "@metamask/superstruct": true,
-        "@noble/hashes": true,
-        "@scure/base": true,
+        "viem>@noble/hashes": true,
+        "@metamask/utils>@scure/base": true,
         "browserify>buffer": true,
         "nock>debug": true,
         "lodash": true,
@@ -1871,8 +1871,8 @@
       },
       "packages": {
         "@metamask/superstruct": true,
-        "@noble/hashes": true,
-        "@scure/base": true,
+        "viem>@noble/hashes": true,
+        "@metamask/utils>@scure/base": true,
         "browserify>buffer": true,
         "nock>debug": true,
         "@metamask/utils>pony-cause": true,
@@ -1891,16 +1891,16 @@
         "@ngraveio/bc-ur>sha.js": true
       }
     },
-    "@noble/ciphers": {
+    "ethereum-cryptography>@noble/ciphers": {
       "globals": {
         "TextDecoder": true,
         "TextEncoder": true,
         "crypto": true
       }
     },
-    "@noble/curves": {
+    "viem>@scure/bip32>@noble/curves": {
       "packages": {
-        "@noble/hashes": true
+        "viem>@noble/hashes": true
       }
     },
     "ethereum-cryptography>@noble/curves": {
@@ -1961,7 +1961,7 @@
         "TextEncoder": true
       },
       "packages": {
-        "@noble/hashes": true
+        "viem>@noble/hashes": true
       }
     },
     "viem>@noble/curves": {
@@ -1969,14 +1969,7 @@
         "TextEncoder": true
       },
       "packages": {
-        "@noble/hashes": true
-      }
-    },
-    "@noble/hashes": {
-      "globals": {
-        "TextDecoder": true,
-        "TextEncoder": true,
-        "crypto": true
+        "viem>@noble/hashes": true
       }
     },
     "@metamask/scure-bip39>@noble/hashes": {
@@ -2051,8 +2044,15 @@
         "crypto": true
       }
     },
-    "@metamask/assets-controller>@metamask/phishing-controller>ethereum-cryptography>@noble/hashes": {
+    "@metamask/phishing-controller>ethereum-cryptography>@noble/hashes": {
       "globals": {
+        "TextEncoder": true,
+        "crypto": true
+      }
+    },
+    "viem>@noble/hashes": {
+      "globals": {
+        "TextDecoder": true,
         "TextEncoder": true,
         "crypto": true
       }
@@ -2198,12 +2198,6 @@
         "react": true
       }
     },
-    "@scure/base": {
-      "globals": {
-        "TextDecoder": true,
-        "TextEncoder": true
-      }
-    },
     "@metamask/eth-sig-util>@scure/base": {
       "globals": {
         "TextDecoder": true,
@@ -2211,6 +2205,12 @@
       }
     },
     "@metamask/scure-bip39>@scure/base": {
+      "globals": {
+        "TextDecoder": true,
+        "TextEncoder": true
+      }
+    },
+    "@metamask/utils>@scure/base": {
       "globals": {
         "TextDecoder": true,
         "TextEncoder": true
@@ -2244,15 +2244,15 @@
     },
     "viem>@scure/bip32": {
       "packages": {
-        "@noble/curves": true,
-        "@noble/hashes": true,
-        "@scure/base": true
+        "viem>@scure/bip32>@noble/curves": true,
+        "viem>@noble/hashes": true,
+        "@metamask/utils>@scure/base": true
       }
     },
     "viem>@scure/bip39": {
       "packages": {
-        "@noble/hashes": true,
-        "@scure/base": true
+        "viem>@noble/hashes": true,
+        "@metamask/utils>@scure/base": true
       }
     },
     "@metamask/controller-utils>@spruceid/siwe-parser": {
@@ -2261,7 +2261,7 @@
         "console.log": true
       },
       "packages": {
-        "@noble/hashes": true,
+        "viem>@noble/hashes": true,
         "@metamask/controller-utils>@spruceid/siwe-parser>apg-js": true
       }
     },
@@ -2271,7 +2271,7 @@
         "console.log": true
       },
       "packages": {
-        "@noble/hashes": true,
+        "viem>@noble/hashes": true,
         "@metamask/controller-utils>@spruceid/siwe-parser>apg-js": true
       }
     },
@@ -2622,7 +2622,7 @@
         "ethereumjs-util>bn.js": true,
         "browserify>buffer": true,
         "pumpify>inherits": true,
-        "@toruslabs/eccrypto>elliptic>minimalistic-assert": true,
+        "ethers>@ethersproject/sha2>hash.js>minimalistic-assert": true,
         "browserify>vm-browserify": true
       }
     },
@@ -2664,7 +2664,7 @@
         "browserify>timers-browserify": true
       }
     },
-    "axios": {
+    "@slack/webhook>axios": {
       "globals": {
         "AbortController": true,
         "Blob": true,
@@ -2761,7 +2761,7 @@
         "define": true
       }
     },
-    "@toruslabs/eccrypto>elliptic>brorand": {
+    "ethers>@ethersproject/signing-key>elliptic>brorand": {
       "globals": {
         "crypto": true,
         "msCrypto": true
@@ -2808,7 +2808,7 @@
         "crypto-browserify>public-encrypt>browserify-rsa": true,
         "ethereumjs-util>create-hash": true,
         "crypto-browserify>create-hmac": true,
-        "@toruslabs/eccrypto>elliptic": true,
+        "ethers>@ethersproject/signing-key>elliptic": true,
         "pumpify>inherits": true,
         "crypto-browserify>public-encrypt>parse-asn1": true,
         "crypto-browserify>browserify-sign>readable-stream": true,
@@ -2844,7 +2844,7 @@
     },
     "eth-lattice-keyring>gridplus-sdk>bs58check": {
       "packages": {
-        "@noble/hashes": true,
+        "viem>@noble/hashes": true,
         "bs58": true
       }
     },
@@ -2972,7 +2972,7 @@
         "browserify>buffer": true
       }
     },
-    "cockatiel": {
+    "@metamask/controller-utils>cockatiel": {
       "globals": {
         "AbortController": true,
         "AbortSignal": true,
@@ -3045,7 +3045,7 @@
       "packages": {
         "ethereumjs-util>bn.js": true,
         "browserify>buffer": true,
-        "@toruslabs/eccrypto>elliptic": true
+        "ethers>@ethersproject/signing-key>elliptic": true
       }
     },
     "ethereumjs-util>create-hash": {
@@ -3072,7 +3072,7 @@
         "@ngraveio/bc-ur>sha.js": true
       }
     },
-    "cron-parser": {
+    "@metamask/assets-controller>@metamask/snaps-utils>cron-parser": {
       "packages": {
         "browserify>browser-resolve": true,
         "luxon": true
@@ -3182,7 +3182,7 @@
     "crypto-browserify>browserify-cipher>browserify-des>des.js": {
       "packages": {
         "pumpify>inherits": true,
-        "@toruslabs/eccrypto>elliptic>minimalistic-assert": true
+        "ethers>@ethersproject/sha2>hash.js>minimalistic-assert": true
       }
     },
     "@metamask/providers>detect-browser": {
@@ -3213,15 +3213,15 @@
         "string.prototype.matchall>gopd": true
       }
     },
-    "@toruslabs/eccrypto>elliptic": {
+    "ethers>@ethersproject/signing-key>elliptic": {
       "packages": {
         "ethereumjs-util>bn.js": true,
-        "@toruslabs/eccrypto>elliptic>brorand": true,
+        "ethers>@ethersproject/signing-key>elliptic>brorand": true,
         "ethers>@ethersproject/sha2>hash.js": true,
-        "@toruslabs/eccrypto>elliptic>hmac-drbg": true,
+        "ethers>@ethersproject/signing-key>elliptic>hmac-drbg": true,
         "pumpify>inherits": true,
-        "@toruslabs/eccrypto>elliptic>minimalistic-assert": true,
-        "@toruslabs/eccrypto>elliptic>minimalistic-crypto-utils": true
+        "ethers>@ethersproject/sha2>hash.js>minimalistic-assert": true,
+        "ethers>@ethersproject/signing-key>elliptic>minimalistic-crypto-utils": true
       }
     },
     "@metamask/eth-token-tracker>deep-equal>es-get-iterator": {
@@ -3279,7 +3279,7 @@
       },
       "packages": {
         "ethereum-cryptography>@noble/curves": true,
-        "@noble/hashes": true
+        "viem>@noble/hashes": true
       }
     },
     "@ethereumjs/tx>ethereum-cryptography": {
@@ -3387,13 +3387,13 @@
         "@metamask/eth-ledger-bridge-keyring>@metamask/keyring-sdk>ethereum-cryptography>@noble/hashes": true
       }
     },
-    "@metamask/assets-controller>@metamask/phishing-controller>ethereum-cryptography": {
+    "@metamask/phishing-controller>ethereum-cryptography": {
       "globals": {
         "TextDecoder": true,
         "crypto": true
       },
       "packages": {
-        "@metamask/assets-controller>@metamask/phishing-controller>ethereum-cryptography>@noble/hashes": true
+        "@metamask/phishing-controller>ethereum-cryptography>@noble/hashes": true
       }
     },
     "ethereumjs-util>ethereum-cryptography": {
@@ -3610,7 +3610,7 @@
         "eth-lattice-keyring>gridplus-sdk>@ethereumjs/rlp": true,
         "@metamask/eth-sig-util": true,
         "eth-lattice-keyring>gridplus-sdk>aes-js": true,
-        "bitcoin-address-validation>bech32": true,
+        "eth-lattice-keyring>gridplus-sdk>bech32": true,
         "eth-lattice-keyring>gridplus-sdk>bignumber.js": true,
         "ethereumjs-util>bn.js": true,
         "eth-lattice-keyring>gridplus-sdk>bs58check": true,
@@ -3618,7 +3618,7 @@
         "eth-lattice-keyring>gridplus-sdk>cbor-bigdecimal": true,
         "eth-lattice-keyring>gridplus-sdk>cbor": true,
         "eth-lattice-keyring>gridplus-sdk>crc-32": true,
-        "@toruslabs/eccrypto>elliptic": true,
+        "ethers>@ethersproject/signing-key>elliptic": true,
         "ethers>@ethersproject/sha2>hash.js": true,
         "lodash": true,
         "eth-lattice-keyring>gridplus-sdk>ox": true,
@@ -3634,7 +3634,7 @@
         "string.prototype.matchall>call-bind>es-define-property": true
       }
     },
-    "axios>form-data>es-set-tostringtag>has-tostringtag": {
+    "jsdom>form-data>es-set-tostringtag>has-tostringtag": {
       "packages": {
         "string.prototype.matchall>has-symbols": true
       }
@@ -3663,7 +3663,7 @@
     "ethers>@ethersproject/sha2>hash.js": {
       "packages": {
         "pumpify>inherits": true,
-        "@toruslabs/eccrypto>elliptic>minimalistic-assert": true
+        "ethers>@ethersproject/sha2>hash.js>minimalistic-assert": true
       }
     },
     "eslint-plugin-react>hasown": {
@@ -3681,11 +3681,11 @@
         "ganache>secp256k1": true
       }
     },
-    "@toruslabs/eccrypto>elliptic>hmac-drbg": {
+    "ethers>@ethersproject/signing-key>elliptic>hmac-drbg": {
       "packages": {
         "ethers>@ethersproject/sha2>hash.js": true,
-        "@toruslabs/eccrypto>elliptic>minimalistic-assert": true,
-        "@toruslabs/eccrypto>elliptic>minimalistic-crypto-utils": true
+        "ethers>@ethersproject/sha2>hash.js>minimalistic-assert": true,
+        "ethers>@ethersproject/signing-key>elliptic>minimalistic-crypto-utils": true
       }
     },
     "react-redux>hoist-non-react-statics": {
@@ -3722,7 +3722,7 @@
     "browserify>util>is-arguments": {
       "packages": {
         "string.prototype.matchall>call-bind": true,
-        "axios>form-data>es-set-tostringtag>has-tostringtag": true
+        "jsdom>form-data>es-set-tostringtag>has-tostringtag": true
       }
     },
     "string.prototype.matchall>es-abstract>is-array-buffer": {
@@ -3740,7 +3740,7 @@
     "@metamask/eth-token-tracker>deep-equal>which-boxed-primitive>is-boolean-object": {
       "packages": {
         "string.prototype.matchall>call-bound": true,
-        "axios>form-data>es-set-tostringtag>has-tostringtag": true
+        "jsdom>form-data>es-set-tostringtag>has-tostringtag": true
       }
     },
     "string.prototype.matchall>es-abstract>is-callable": {
@@ -3751,7 +3751,7 @@
     "@metamask/eth-token-tracker>deep-equal>is-date-object": {
       "packages": {
         "string.prototype.matchall>call-bound": true,
-        "axios>form-data>es-set-tostringtag>has-tostringtag": true
+        "jsdom>form-data>es-set-tostringtag>has-tostringtag": true
       }
     },
     "browserify>util>is-generator-function": {
@@ -3759,7 +3759,7 @@
         "string.prototype.matchall>call-bound": true,
         "string.prototype.matchall>get-intrinsic>generator-function": true,
         "string.prototype.matchall>es-abstract>get-proto": true,
-        "axios>form-data>es-set-tostringtag>has-tostringtag": true,
+        "jsdom>form-data>es-set-tostringtag>has-tostringtag": true,
         "string.prototype.matchall>es-abstract>safe-regex-test": true
       }
     },
@@ -3771,14 +3771,14 @@
     "@metamask/eth-token-tracker>deep-equal>which-boxed-primitive>is-number-object": {
       "packages": {
         "string.prototype.matchall>call-bound": true,
-        "axios>form-data>es-set-tostringtag>has-tostringtag": true
+        "jsdom>form-data>es-set-tostringtag>has-tostringtag": true
       }
     },
     "string.prototype.matchall>es-abstract>is-regex": {
       "packages": {
         "string.prototype.matchall>call-bound": true,
         "string.prototype.matchall>gopd": true,
-        "axios>form-data>es-set-tostringtag>has-tostringtag": true,
+        "jsdom>form-data>es-set-tostringtag>has-tostringtag": true,
         "eslint-plugin-react>hasown": true
       }
     },
@@ -3790,7 +3790,7 @@
     "eslint-plugin-react>array-includes>is-string": {
       "packages": {
         "string.prototype.matchall>call-bound": true,
-        "axios>form-data>es-set-tostringtag>has-tostringtag": true
+        "jsdom>form-data>es-set-tostringtag>has-tostringtag": true
       }
     },
     "string.prototype.matchall>es-abstract>es-to-primitive>is-symbol": {
@@ -4019,7 +4019,7 @@
     "crypto-browserify>diffie-hellman>miller-rabin": {
       "packages": {
         "ethereumjs-util>bn.js": true,
-        "@toruslabs/eccrypto>elliptic>brorand": true
+        "ethers>@ethersproject/signing-key>elliptic>brorand": true
       }
     },
     "@ensdomains/content-hash>cids>multibase": {
@@ -4152,9 +4152,10 @@
       },
       "packages": {
         "viem>ox>@adraffy/ens-normalize": true,
-        "@noble/ciphers": true,
+        "ethereum-cryptography>@noble/ciphers": true,
         "eth-lattice-keyring>gridplus-sdk>ox>@noble/curves": true,
         "@noble/hashes": true,
+        "viem>@noble/hashes": true,
         "viem>@scure/bip32": true,
         "viem>@scure/bip39": true,
         "eth-lattice-keyring>gridplus-sdk>ox>abitype": true,
@@ -4171,7 +4172,7 @@
       },
       "packages": {
         "viem>@noble/curves": true,
-        "@noble/hashes": true,
+        "viem>@noble/hashes": true,
         "viem>abitype": true
       }
     },
@@ -4890,12 +4891,12 @@
     },
     "ganache>secp256k1": {
       "packages": {
-        "@toruslabs/eccrypto>elliptic": true
+        "ethers>@ethersproject/signing-key>elliptic": true
       }
     },
     "eth-lattice-keyring>gridplus-sdk>secp256k1": {
       "packages": {
-        "@toruslabs/eccrypto>elliptic": true
+        "ethers>@ethersproject/signing-key>elliptic": true
       }
     },
     "semver": {
@@ -5276,7 +5277,7 @@
       },
       "packages": {
         "viem>@noble/curves": true,
-        "@noble/hashes": true,
+        "viem>@noble/hashes": true,
         "viem>abitype": true,
         "viem>isows": true,
         "viem>ox": true
@@ -5367,7 +5368,7 @@
         "browserify>util>which-typed-array>for-each": true,
         "string.prototype.matchall>es-abstract>get-proto": true,
         "string.prototype.matchall>gopd": true,
-        "axios>form-data>es-set-tostringtag>has-tostringtag": true
+        "jsdom>form-data>es-set-tostringtag>has-tostringtag": true
       }
     },
     "openai>zod": {

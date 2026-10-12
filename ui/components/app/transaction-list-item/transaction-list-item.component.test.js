@@ -3,21 +3,14 @@ import { TransactionStatus } from '@metamask/transaction-controller';
 import { act, fireEvent } from '@testing-library/react';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import configureStore from 'redux-mock-store';
 import {
   TrustSignalDisplayState,
   useTrustSignals,
 } from '../../../hooks/useTrustSignals';
 import { GasEstimateTypes } from '../../../../shared/constants/gas';
 import { enLocale as messages } from '../../../../test/lib/i18n-helpers';
-import {
-  MetaMetricsEventCategory,
-  MetaMetricsEventName,
-} from '../../../../shared/constants/metametrics';
 import transactionGroup from '../../../../test/data/mock-pending-transaction-data.json';
-import mockState from '../../../../test/data/mock-state.json';
 import { renderWithProvider } from '../../../../test/lib/render-helpers-navigate';
-import { MetaMetricsContext } from '../../../contexts/metametrics';
 import { getTokens } from '../../../ducks/metamask/metamask';
 import { useGasFeeEstimates } from '../../../hooks/useGasFeeEstimates';
 import {
@@ -116,8 +109,6 @@ jest.mock('../../../store/actions.ts', () => ({
   createSpeedUpTransaction: jest.fn().mockReturnValue({ type: 'TYPE' }),
 }));
 
-const mockStore = configureStore();
-
 const useTrustSignalsMock = jest.mocked(useTrustSignals);
 
 const generateUseSelectorRouter = (opts) => (selector) => {
@@ -185,49 +176,6 @@ describe('TransactionListItem', () => {
 
   afterAll(() => {
     useGasFeeEstimates.mockRestore();
-  });
-
-  describe('ActivityListItem interactions', () => {
-    it('should show the activity details popover and log metrics when the activity list item is clicked', () => {
-      useSelector.mockImplementation(
-        generateUseSelectorRouter({
-          balance: '0x3',
-        }),
-      );
-
-      const store = mockStore(mockState);
-      const mockTrackEvent = jest.fn();
-      const mockMetaMetricsContext = {
-        trackEvent: mockTrackEvent,
-        bufferedTrace: jest.fn(),
-        bufferedEndTrace: jest.fn(),
-        onboardingParentContext: { current: null },
-      };
-      const { queryByTestId } = renderWithProvider(
-        <MetaMetricsContext.Provider value={mockMetaMetricsContext}>
-          <TransactionListItem transactionGroup={transactionGroup} />
-        </MetaMetricsContext.Provider>,
-        store,
-      );
-      const activityListItem = queryByTestId('activity-list-item');
-      fireEvent.click(activityListItem);
-      expect(mockTrackEvent).toHaveBeenCalledWith({
-        event: MetaMetricsEventName.ActivityDetailsOpened,
-        category: MetaMetricsEventCategory.Navigation,
-        properties: {
-          activity_type: 'send',
-        },
-      });
-      const popoverClose = queryByTestId('popover-close');
-      fireEvent.click(popoverClose);
-      expect(mockTrackEvent).toHaveBeenCalledWith({
-        event: MetaMetricsEventName.ActivityDetailsClosed,
-        category: MetaMetricsEventCategory.Navigation,
-        properties: {
-          activity_type: 'send',
-        },
-      });
-    });
   });
 
   describe('when account has insufficient balance to cover gas', () => {

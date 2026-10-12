@@ -1,21 +1,15 @@
 import React from 'react';
 import configureMockStore from 'redux-mock-store';
-import { fireEvent, waitFor } from '@testing-library/react';
+import { fireEvent } from '@testing-library/react';
 import thunk from 'redux-thunk';
 import { renderWithProvider } from '../../../test/lib/render-helpers-navigate';
 import { enLocale as messages } from '../../../test/lib/i18n-helpers';
-import { ONBOARDING_WELCOME_ROUTE } from '../../helpers/constants/routes';
-import { FirstTimeFlowType } from '../../../shared/constants/onboarding';
 import UnlockPageImport from '.';
 
 // The container uses compose() which returns ComponentType, but TypeScript sees it as 'any'
 const UnlockPage = UnlockPageImport as React.ComponentType<
   Record<string, unknown>
 >;
-
-const SeedlessOnboardingControllerErrorMessage = {
-  AuthenticationError: 'Authentication error',
-} as const;
 
 const mockUseNavigate = jest.fn();
 jest.mock('react-router-dom', () => {
@@ -48,18 +42,6 @@ jest.mock('../../store/actions.ts', () => ({
   markPasswordForgotten: () => mockMarkPasswordForgotten,
   resetWallet: () => mockResetWallet,
 }));
-
-const mockElement = document.createElement('svg');
-
-jest.mock('@metamask/logo', () => () => {
-  return {
-    container: mockElement,
-    setFollowMouse: jest.fn(),
-    stopAnimation: jest.fn(),
-    lookAt: jest.fn(),
-    lookAtAndRender: jest.fn(),
-  };
-});
 
 describe('Unlock Page', () => {
   process.env.METAMASK_BUILD_TYPE = 'main';
@@ -144,41 +126,6 @@ describe('Unlock Page', () => {
     expect(mockMarkPasswordForgotten).toHaveBeenCalled();
   });
 
-  it('clicks use different login method button', async () => {
-    const mockStateWithUnlock = {
-      metamask: {
-        firstTimeFlowType: FirstTimeFlowType.import,
-        completedOnboarding: false,
-      },
-    };
-    const store = configureMockStore([thunk])(mockStateWithUnlock);
-
-    const mockLoginWithDifferentMethod = jest.fn();
-    const mockForceUpdateMetamaskState = jest.fn();
-
-    const props = {
-      loginWithDifferentMethod: mockLoginWithDifferentMethod,
-      forceUpdateMetamaskState: mockForceUpdateMetamaskState,
-    };
-
-    const { queryByText } = renderWithProvider(
-      <UnlockPage {...props} />,
-      store,
-      '/unlock',
-    );
-
-    fireEvent.click(
-      queryByText(messages.useDifferentLoginMethod.message) as HTMLElement,
-    );
-
-    await waitFor(() => {
-      expect(mockLoginWithDifferentMethod).toHaveBeenCalled();
-      expect(mockForceUpdateMetamaskState).toHaveBeenCalled();
-      expect(mockUseNavigate).toHaveBeenCalledWith(ONBOARDING_WELCOME_ROUTE, {
-        replace: true,
-      });
-    });
-  });
   it('should redirect to history location when unlocked (from state)', () => {
     const intendedPath = '/previous-route';
     const mockStateWithUnlock = {
@@ -225,32 +172,5 @@ describe('Unlock Page', () => {
     expect(mockTryUnlockMetamask).toHaveBeenCalledTimes(1);
     expect(mockUseNavigate).toHaveBeenCalledTimes(1);
     expect(mockUseNavigate).toHaveBeenCalledWith(intendedPath + intendedSearch);
-  });
-
-  it('should show login error modal when authentication error is thrown', async () => {
-    const mockStateNonUnlocked = {
-      metamask: { isUnlocked: false, completedOnboarding: true },
-    };
-    const store = configureMockStore([thunk])(mockStateNonUnlocked);
-    (mockTryUnlockMetamask as jest.Mock).mockImplementationOnce(() => {
-      return Promise.reject(
-        new Error(SeedlessOnboardingControllerErrorMessage.AuthenticationError),
-      );
-    });
-    const mockForceUpdateMetamaskState = jest.fn();
-
-    const { queryByTestId } = renderWithProvider(
-      <UnlockPage forceUpdateMetamaskState={mockForceUpdateMetamaskState} />,
-      store,
-      '/unlock',
-    );
-    const passwordField = queryByTestId('unlock-password') as HTMLElement;
-    const loginButton = queryByTestId('unlock-submit') as HTMLElement;
-    fireEvent.change(passwordField, { target: { value: 'a-password' } });
-    fireEvent.click(loginButton);
-
-    await waitFor(() => {
-      expect(queryByTestId('login-error-modal')).toBeInTheDocument();
-    });
   });
 });

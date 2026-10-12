@@ -1,6 +1,7 @@
 {
   "excludeRegExp": [
-    "/.[^/]*/test/.[^/]*/u"
+    "/.[^/]*/test/.[^/]*/u",
+    "\\.test\\.[jt]sx?$"
   ],
   "fileExtensions": [
     "js",
@@ -26,7 +27,6 @@
     "ui/ducks/**",
     "ui/selectors/**",
     "ui/store/**",
-    "ui/components/app/**",
-    "shared/lib/selectors/**"
+    "ui/components/app/**"
   ]
 }

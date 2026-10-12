@@ -46,15 +46,6 @@ const createMockStore = (
     DNS: DNS_STATE,
   });
 
-jest.mock(
-  '../../../../../../../components/app/alert-system/contexts/alertMetricsContext',
-  () => ({
-    useAlertMetrics: jest.fn(() => ({
-      trackAlertMetrics: jest.fn(),
-    })),
-  }),
-);
-
 describe('Transaction Details', () => {
   const middleware = [thunk];
 

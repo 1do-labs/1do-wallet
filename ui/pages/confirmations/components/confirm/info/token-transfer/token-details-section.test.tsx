@@ -5,15 +5,6 @@ import { renderWithConfirmContextProvider } from '../../../../../../../test/lib/
 import { enLocale as messages } from '../../../../../../../test/lib/i18n-helpers';
 import { TokenDetailsSection } from './token-details-section';
 
-jest.mock(
-  '../../../../../../components/app/alert-system/contexts/alertMetricsContext',
-  () => ({
-    useAlertMetrics: jest.fn(() => ({
-      trackAlertMetrics: jest.fn(),
-    })),
-  }),
-);
-
 describe('TokenDetailsSection', () => {
   it('renders correctly', () => {
     const state = getMockTokenTransferConfirmState({});

@@ -205,7 +205,11 @@ exports[`<SetApprovalForAllInfo /> renders component for approve request 1`] = `
           class="mm-box mm-text mm-avatar-base mm-avatar-base--size-xs mm-avatar-network mm-text--body-xs mm-text--text-transform-uppercase mm-box--display-flex mm-box--justify-content-center mm-box--align-items-center mm-box--color-text-default mm-box--background-color-background-alternative mm-box--rounded-md mm-box--border-color-background-default mm-box--border-width-1 box--border-style-solid"
           style="border-width: 0px;"
         >
-          G
+          <img
+            alt="Goerli logo"
+            class="mm-avatar-network__network-image"
+            src="./images/eth_logo.svg"
+          />
         </div>
         <p
           class="mm-box mm-text mm-text--body-md mm-box--color-text-default"
@@ -383,7 +387,7 @@ exports[`<SetApprovalForAllInfo /> renders component for approve request 1`] = `
             class="mm-box mm-text mm-text--body-md"
             data-testid="native-currency"
           >
-            $0.08
+            $1.26
           </p>
           <div
             class="mm-box mm-box--margin-left-1 mm-box--padding-inline-start-1 mm-box--display-inline-flex mm-box--gap-1 mm-box--align-items-center mm-box--background-color-transparent mm-box--rounded-pill"

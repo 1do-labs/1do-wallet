@@ -1663,7 +1663,7 @@
         "mockttp>body-parser>unpipe": true
       }
     },
-    "axios>follow-redirects": {
+    "wait-on>axios>follow-redirects": {
       "builtin": {
         "assert": true,
         "http": true,
@@ -1773,7 +1773,7 @@
         "browserify>has>function-bind": true
       }
     },
-    "he": {
+    "mocha>he": {
       "globals": {
         "define": true
       }
@@ -1839,7 +1839,7 @@
       },
       "packages": {
         "html-bundler-webpack-plugin>html-minifier-terser>clean-css": true,
-        "he": true,
+        "mocha>he": true,
         "html-bundler-webpack-plugin>html-minifier-terser>relateurl": true,
         "terser": true
       }
@@ -1905,7 +1905,7 @@
       },
       "packages": {
         "@viem/anvil>http-proxy>eventemitter3": true,
-        "axios>follow-redirects": true,
+        "wait-on>axios>follow-redirects": true,
         "@viem/anvil>http-proxy>requires-port": true
       }
     },

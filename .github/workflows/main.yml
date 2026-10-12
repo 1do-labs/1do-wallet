@@ -465,7 +465,7 @@ jobs:
         run: yarn tsx test/e2e/mv3-perf-stats/bundle-size.ts --out test-artifacts/chrome
 
       - name: Record bundle size at commit
-        if: ${{ env.BRANCH == 'main' && env.IS_FORK == 'false'}}
+        if: ${{ env.BRANCH == 'main' && env.IS_FORK == 'false' && env.EXTENSION_BUNDLESIZE_STATS_TOKEN != '' }}
         run: ./.github/scripts/bundle-stats-commit.sh
 
       - name: Upload 'bundle-size' to S3

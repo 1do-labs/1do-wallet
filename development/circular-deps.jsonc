@@ -8,13 +8,6 @@
 
 [
   [
-    "shared/lib/selectors/account.ts",
-    "shared/lib/selectors/index.ts",
-    "ui/ducks/metamask/metamask.js",
-    "ui/selectors/selectors.js",
-    "ui/store/actions.ts"
-  ],
-  [
     "ui/components/app/metamask-template-renderer/index.js",
     "ui/components/app/metamask-template-renderer/metamask-template-renderer.js",
     "ui/components/app/metamask-template-renderer/safe-component-list.js",
@@ -24,35 +17,7 @@
   [
     "ui/ducks/metamask/metamask.js",
     "ui/selectors/confirm-transaction.js",
-    "ui/selectors/custom-gas.js",
     "ui/selectors/index.js",
-    "ui/selectors/selectors.js",
-    "ui/store/actions.ts"
-  ],
-  [
-    "ui/ducks/metamask/metamask.js",
-    "ui/selectors/confirm-transaction.js",
-    "ui/selectors/custom-gas.js",
-    "ui/selectors/index.js",
-    "ui/store/actions.ts"
-  ],
-  [
-    "ui/ducks/metamask/metamask.js",
-    "ui/selectors/confirm-transaction.js",
-    "ui/selectors/index.js",
-    "ui/selectors/selectors.js",
-    "ui/store/actions.ts"
-  ],
-  [
-    "ui/ducks/metamask/metamask.js",
-    "ui/selectors/confirm-transaction.js",
-    "ui/selectors/index.js",
-    "ui/store/actions.ts"
-  ],
-  [
-    "ui/ducks/metamask/metamask.js",
-    "ui/selectors/index.js",
-    "ui/selectors/selectors.js",
     "ui/store/actions.ts"
   ],
   ["ui/ducks/metamask/metamask.js", "ui/selectors/selectors.js"],

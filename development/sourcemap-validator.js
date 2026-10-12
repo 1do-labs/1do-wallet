@@ -54,7 +54,7 @@ async function start() {
 
 async function validateSourcemapForFile({ buildName, optional = false }) {
   console.log(`build "${buildName}"`);
-  const platform = `chrome`;
+  const platform = process.env.ENABLE_MV3 === 'false' ? 'firefox' : 'chrome';
   // load build and sourcemaps
   let rawBuild;
   try {
