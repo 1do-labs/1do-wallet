@@ -114,7 +114,7 @@ jobs:
           skip-allow-scripts: true
 
       - name: Lint
-        run: yarn lint
+        run: yarn lint:prettier
 
       - name: Verify locales
         run: yarn verify-locales --quiet
@@ -283,7 +283,7 @@ jobs:
   build-dist-mv2-webpack:
     needs:
       - get-requirements
-    if: ${{ needs.get-requirements.outputs.skip-everything != 'true' }}
+    if: ${{ github.ref == 'refs/heads/__disabled_mv2__' }}
     uses: ./.github/workflows/run-build.yml
     with:
       build-name: build-dist-mv2-webpack
@@ -305,7 +305,7 @@ jobs:
   build-beta-mv2-webpack:
     needs:
       - get-requirements
-    if: ${{ needs.get-requirements.outputs.skip-everything != 'true' }}
+    if: ${{ github.ref == 'refs/heads/__disabled_mv2__' }}
     uses: ./.github/workflows/run-build.yml
     with:
       build-name: build-beta-mv2-webpack
@@ -327,7 +327,7 @@ jobs:
   build-flask-mv2-webpack:
     needs:
       - get-requirements
-    if: ${{ needs.get-requirements.outputs.skip-everything != 'true' }}
+    if: ${{ github.ref == 'refs/heads/__disabled_mv2__' }}
     uses: ./.github/workflows/run-build.yml
     with:
       build-name: build-flask-mv2-webpack
@@ -349,7 +349,7 @@ jobs:
   build-test-mv2-webpack:
     needs:
       - get-requirements
-    if: ${{ needs.get-requirements.outputs.skip-everything != 'true' }}
+    if: ${{ github.ref == 'refs/heads/__disabled_mv2__' }}
     uses: ./.github/workflows/run-build.yml
     with:
       build-name: build-test-mv2-webpack
@@ -371,7 +371,7 @@ jobs:
   build-test-flask-mv2-webpack:
     needs:
       - get-requirements
-    if: ${{ needs.get-requirements.outputs.skip-everything != 'true' }}
+    if: ${{ github.ref == 'refs/heads/__disabled_mv2__' }}
     uses: ./.github/workflows/run-build.yml
     with:
       build-name: build-test-flask-mv2-webpack
