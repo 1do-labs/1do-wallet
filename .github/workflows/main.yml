@@ -176,7 +176,7 @@ jobs:
     uses: ./.github/workflows/run-build.yml
     with:
       build-name: build-dist-mv2-browserify
-      build-command: yarn build dist
+      build-command: yarn build dist --platform firefox
       builds-from-run: ${{ needs.get-requirements.outputs.builds-from-run }}
     secrets: inherit
 
@@ -198,7 +198,7 @@ jobs:
     uses: ./.github/workflows/run-build.yml
     with:
       build-name: build-beta-mv2-browserify
-      build-command: yarn build dist
+      build-command: yarn build dist --platform firefox
       builds-from-run: ${{ needs.get-requirements.outputs.builds-from-run }}
     secrets: inherit
 
@@ -220,7 +220,7 @@ jobs:
     uses: ./.github/workflows/run-build.yml
     with:
       build-name: build-flask-mv2-browserify
-      build-command: yarn build dist
+      build-command: yarn build dist --platform firefox
       builds-from-run: ${{ needs.get-requirements.outputs.builds-from-run }}
     secrets: inherit
 
@@ -242,7 +242,7 @@ jobs:
     uses: ./.github/workflows/run-build.yml
     with:
       build-name: build-test-mv2-browserify
-      build-command: yarn build:test
+      build-command: yarn build:test --platform firefox
       builds-from-run: ${{ needs.get-requirements.outputs.builds-from-run }}
     secrets: inherit
 
@@ -264,7 +264,7 @@ jobs:
     uses: ./.github/workflows/run-build.yml
     with:
       build-name: build-test-flask-mv2-browserify
-      build-command: yarn build:test
+      build-command: yarn build:test --platform firefox
       builds-from-run: ${{ needs.get-requirements.outputs.builds-from-run }}
     secrets: inherit
 
