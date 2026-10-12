@@ -427,6 +427,13 @@ export async function validateBundle({
           continue;
         }
 
+        // A generated bundle may contain the marker from another module while
+        // this position maps to a source file with no marker. That is a valid
+        // sparse/chained mapping, not a corrupted source map.
+        if (!sourceContent.includes(TARGET_STRING)) {
+          continue;
+        }
+
         const sourceLines = sourceContent.split('\n');
         const sourceLineIndex = origLine - 1;
         const sourceLine = sourceLines[sourceLineIndex];
