@@ -289,23 +289,6 @@ jest.mock('@metamask/core-backend', () => ({
   createApiPlatformClient: jest.fn().mockReturnValue({ mockApiClient: true }),
 }));
 
-jest.mock('../../shared/lib/selectors/smart-transactions', () => {
-  const actual = jest.requireActual(
-    '../../shared/lib/selectors/smart-transactions',
-  );
-  return {
-    ...actual,
-    // Plain implementation avoids Reselect identity-function console warnings when
-    // getTransactionMetricsRequest tests call through MetaMaskController.
-    getSmartTransactionsPreferenceEnabled: (state) => {
-      const preferences = state?.metamask?.preferences ?? {};
-      const optIn = preferences.smartTransactionsOptInStatus;
-      const DEFAULT_SMART_TRANSACTIONS_ENABLED = true;
-      return optIn ?? DEFAULT_SMART_TRANSACTIONS_ENABLED;
-    },
-  };
-});
-
 const TEST_SEED =
   'debris dizzy just program just float decrease vacant alarm reduce speak stadium';
 const TEST_ADDRESS = '0x0dcd5d886577d5081b0c52e242ef29e70be3e7bc';

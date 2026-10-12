@@ -14,10 +14,12 @@ export type RemoteFeatureFlagsState = {
  * Manifest flags take precedence and will override any duplicate flags from state.
  * This allows for both static (manifest) and dynamic (state) feature flag configuration.
  *
- * @param _state - The MetaMask state object (ignored; remote state is disabled)
+ * @param state - The MetaMask state object.
  * @returns Combined feature flags object with manifest flags taking precedence over state flags
  */
 export const getRemoteFeatureFlags = (
-  _state?: RemoteFeatureFlagsState,
-): ManifestFlags['remoteFeatureFlags'] =>
-  getManifestFlags().remoteFeatureFlags ?? {};
+  state?: RemoteFeatureFlagsState,
+): ManifestFlags['remoteFeatureFlags'] => ({
+  ...state?.metamask?.remoteFeatureFlags,
+  ...getManifestFlags().remoteFeatureFlags,
+});

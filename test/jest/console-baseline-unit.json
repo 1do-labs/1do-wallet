@@ -1,8 +1,5 @@
 {
   "files": {
-    "app/scripts/detect-multiple-instances.test.js": {
-      "MetaMask: Multiple instances warning": 1
-    },
     "app/scripts/lib/ComposableObservableStore.test.js": {
       "error: Error: No metadata found for": 1
     },

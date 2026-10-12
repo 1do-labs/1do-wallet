@@ -608,7 +608,7 @@ describe('Selectors', () => {
           "nickname": "Sepolia",
           "rpcPrefs": {
             "blockExplorerUrl": "https://localhost/blockExplorer/0xaa36a7",
-            "imageUrl": undefined,
+            "imageUrl": "./images/eth_logo.svg",
           },
           "rpcUrl": "https://localhost/rpc/0xaa36a7",
           "ticker": "SepoliaETH",
@@ -2378,7 +2378,10 @@ describe('#getConnectedSitesList', () => {
       const result = selectors.getAccountsWithLabels(state);
 
       // Name should be truncated to TRUNCATED_NAME_CHAR_LIMIT - 1 chars + '...'
-      const truncatedName = `${longName.slice(0, TRUNCATED_NAME_CHAR_LIMIT - 1)}...`;
+      const truncatedName = `${longName.slice(
+        0,
+        TRUNCATED_NAME_CHAR_LIMIT - 1,
+      )}...`;
       expect(result[0].addressLabel).toContain(truncatedName);
       expect(result[0].label).toBe(longName); // Full name in label
     });
