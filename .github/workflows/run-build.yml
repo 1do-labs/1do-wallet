@@ -95,7 +95,11 @@ jobs:
         run: ${{ contains(inputs.build-name, 'webpack') && 'yarn validate-source-maps:webpack' || 'yarn validate-source-maps' }}
 
       - name: Run mozilla-lint
-        if: ${{ contains(inputs.build-name, 'mv2') }}
+        if: >-
+          ${{
+            contains(inputs.build-name, 'mv2') &&
+            github.repository == 'MetaMask/metamask-extension'
+          }}
         run: yarn mozilla-lint
 
       - name: Upload bundle analyzer report to S3
