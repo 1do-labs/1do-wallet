@@ -217,6 +217,8 @@ function createScriptTasks({
         shouldIncludeSnow,
         applyLavaMoat,
         buildType,
+        platform:
+          browserPlatforms.length === 1 ? browserPlatforms[0] : undefined,
         isLavaMoat,
         policyOnly,
         shouldLintFenceFiles,

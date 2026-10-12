@@ -180,7 +180,6 @@ async function verifyEnglishLocale() {
     'ui/pages/confirmation/templates/*.js',
     'ui/pages/confirmation/templates/*.ts',
   ];
-  const testGlob = '**/*.test.js';
   const javascriptFiles = await glob(
     [
       'ui/**/*.js',
@@ -197,12 +196,10 @@ async function verifyEnglishLocale() {
       'app/scripts/controllers/**/*.ts',
     ],
     {
-      ignore: [...globsToStrictSearch, testGlob],
+      ignore: globsToStrictSearch,
     },
   );
-  const javascriptFilesToStrictSearch = await glob(globsToStrictSearch, {
-    ignore: [testGlob],
-  });
+  const javascriptFilesToStrictSearch = await glob(globsToStrictSearch);
 
   const strictSearchRegex =
     /\bt\(\s*'(\w+)'\s*\)|\btranslationKey:\s*'(\w+)'/gu;
@@ -214,10 +211,16 @@ async function verifyEnglishLocale() {
 
   // match the keys from the locale file
   const keyRegex = /'(\w+)'|"(\w+)"/gu;
+  // Tests and fixtures also access locale entries through the messages object.
+  // Keep those keys even when the production UI no longer references them.
+  const messagePropertyRegex = /\bmessages\.([A-Za-z_]\w*)\b/gu;
   const usedMessages = new Set();
   for await (const fileContents of getFileContents(javascriptFiles)) {
     for (const match of matchAll.call(fileContents, keyRegex)) {
       usedMessages.add(match[1] || match[2]);
+    }
+    for (const match of matchAll.call(fileContents, messagePropertyRegex)) {
+      usedMessages.add(match[1]);
     }
     const templateMatches = fileContents.match(templateStringRegex);
     if (templateMatches) {

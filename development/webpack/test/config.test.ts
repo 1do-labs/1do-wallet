@@ -62,9 +62,13 @@ describe('./utils/config.ts', () => {
     });
 
     it('should return valid build variables for a non-default build', () => {
-      // required by the `beta` build type
       mockRc({ SEGMENT_BETA_WRITE_KEY: '.' });
       const buildTypes = loadBuildTypesConfig();
+      buildTypes.buildTypes.beta = {
+        ...buildTypes.buildTypes.main,
+        id: 11,
+        isPrerelease: true,
+      };
       const { args } = parseArgv(
         ['--type', 'beta', '--test', '--mode', 'production'],
         buildTypes,
@@ -157,17 +161,22 @@ describe('./utils/config.ts', () => {
         buildTypes,
       );
 
-      assert.throws(
-        () => config.getVariables(args, buildTypes),
-        (error: Error) => {
-          assert.ok(
-            error.message.includes(
-              'Some variables required to build production target are not defined',
-            ),
-          );
-          return true;
-        },
-      );
+      VARIABLES_REQUIRED_IN_PRODUCTION.main.push('MISSING_TEST_VAR');
+      try {
+        assert.throws(
+          () => config.getVariables(args, buildTypes),
+          (error: Error) => {
+            assert.ok(
+              error.message.includes(
+                'Some variables required to build production target are not defined',
+              ),
+            );
+            return true;
+          },
+        );
+      } finally {
+        VARIABLES_REQUIRED_IN_PRODUCTION.main.pop();
+      }
     });
 
     it('should not throw when production environment is missing required variables if --validateEnv is false', () => {

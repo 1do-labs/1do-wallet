@@ -195,13 +195,13 @@ export function lookupDomainName(domainName, chainId, signal) {
 }
 
 export function getDomainResolutions(state) {
-  return state[name].resolutions;
+  return state[name]?.resolutions ?? null;
 }
 
 export function getDomainError(state) {
-  return state[name].error;
+  return state[name]?.error ?? null;
 }
 
 export function getDomainWarning(state) {
-  return state[name].warning;
+  return state[name]?.warning ?? null;
 }
