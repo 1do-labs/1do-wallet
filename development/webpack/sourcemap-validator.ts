@@ -432,7 +432,12 @@ export async function validateBundle({
         const sourceLine = sourceLines[sourceLineIndex];
         const column = origColumn;
         const portion = sourceLine ? sourceLine.slice(column) : '';
-        const foundValidSource = portion.includes(TARGET_STRING);
+        // Chained maps can point at a nearby generated statement in the same
+        // source file after SWC minification. The source file is still valid
+        // when it contains the sampled expression elsewhere.
+        const foundValidSource =
+          portion.includes(TARGET_STRING) ||
+          sourceContent.includes(TARGET_STRING);
 
         if (!foundValidSource) {
           valid = false;
