@@ -1,6 +1,6 @@
-# AGENTS.md — E2E Testing Directory
+# AGENTS.md — 1do Wallet E2E Testing Directory
 
-Instructions for AI coding agents working on E2E tests in the MetaMask Browser Extension. All patterns, commands, and rules are in the canonical docs below — read those, do not duplicate.
+Instructions for AI coding agents working on E2E tests in 1do Wallet. The extension is independent from the MetaMask product repository, even though it reuses parts of the extension codebase. All patterns, commands, and rules are in the canonical docs below — read those, do not duplicate.
 
 ---
 
