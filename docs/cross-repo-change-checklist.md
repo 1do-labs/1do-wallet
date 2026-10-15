@@ -36,7 +36,10 @@
 - [ ] 同时检查 Core SDK、Web、clear-signing manifest 和 Wallet 调用方。
 - [ ] 确认 wallet RPC payload 显式包含 `EIP712Domain`。
 - [ ] 确认本地 digest 使用与链上相同的 domain、types 和 message。
+- [ ] 同步 Core `packages/sdk/src/sdk/wallet-native-transfer-vectors.json` 与 Wallet `ui/pages/confirmations/utils/wallet-native-transfer-vectors.json`；修改 ERC-8112/8114 时运行两边的向量测试。
 - [ ] 添加错误边界、签名回归和跨仓库测试。
+
+本地执行 `npm run wallet:core:check` 会比较两边的固定向量、Account ABI 和 7702 委托地址；缺少 Wallet checkout 时检查失败。Core CI 使用 `npm run core:artifacts:check` 验证 Core 自身产物，不能替代双仓库检查。
 
 ## 发布
 

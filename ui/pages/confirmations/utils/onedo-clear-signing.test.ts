@@ -14,6 +14,7 @@ import {
   ONE_DO_7702_DELEGATE,
   ONEDO_CLEAR_SIGNING_TRUST_POLICY,
 } from './onedo-clear-signing';
+import walletNativeTransferVectors from './wallet-native-transfer-vectors.json';
 
 const WALLET_ADDRESS = '0x1111111111111111111111111111111111111111';
 const MAKER_WALLET_ADDRESS = '0x2222222222222222222222222222222222222222';
@@ -79,6 +80,47 @@ const flashmanInterface = new Interface([
 ]);
 
 describe('1Do clear signing utilities', () => {
+  for (const vector of walletNativeTransferVectors) {
+    it(`matches the ${vector.primaryType} protocol vector and clear signing view`, () => {
+      const digestTypes = Object.fromEntries(
+        Object.entries(vector.types).filter(
+          ([name]) => name !== 'EIP712Domain',
+        ),
+      );
+      expect(vector.types.EIP712Domain.map((field) => field.name)).toEqual([
+        'name',
+        'version',
+        'chainId',
+        'verifyingContract',
+      ]);
+      expect(
+        ethersUtils._TypedDataEncoder.hash(
+          vector.domain,
+          digestTypes,
+          vector.message,
+        ),
+      ).toBe(vector.digest);
+      expect(
+        walletNativeTransferInterface.getFunction(vector.abiSignature),
+      ).toBeDefined();
+
+      const confirmation = {
+        msgParams: {
+          from: vector.message.wallet,
+          data: JSON.stringify({
+            domain: vector.domain,
+            types: vector.types,
+            primaryType: vector.primaryType,
+            message: vector.message,
+          }),
+        },
+      } as SignatureRequestType;
+      expect(getOneDoTypedDataClearSigning(confirmation)).toMatchObject({
+        descriptorId: 'wallet-native-transfers',
+      });
+    });
+  }
+
   it('uses a trusted registry mirror with pinned descriptor cache', () => {
     expect(ONEDO_CLEAR_SIGNING_TRUST_POLICY).toMatchObject({
       version: 'erc7730-v2',
@@ -1267,7 +1309,7 @@ describe('1Do clear signing utilities', () => {
       descriptorId: 'execute-with-sig',
       descriptorSha256:
         '2abeba646958ee6fcdc091c2a1e89103c425f20e8bd6f6ad35b7f198d3046470',
-      title: '1Do gasless signed execution',
+      title: '1Do signed execution',
       rows: expect.arrayContaining([
         expect.objectContaining({
           label: 'You receive',
