@@ -24,6 +24,7 @@
     "dist": "yarn build dist",
     "build": "yarn lavamoat:build",
     "build:dev": "node development/build/index.js",
+    "agent:check": "node development/agent-release-check.mjs",
     "circular-deps:check": "tsx development/circular-deps.ts check",
     "circular-deps:update": "tsx development/circular-deps.ts update",
     "start:test": "yarn env:e2e build:dev testDev --apply-lavamoat=false",

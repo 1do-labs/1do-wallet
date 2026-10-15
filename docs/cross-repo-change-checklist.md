@@ -1,5 +1,12 @@
 # 1do Wallet/Core Cross-Repository Checklist
 
+## Change risk levels
+
+- **L0**: documentation, copy, isolated styles, pure formatting. Run focused lint/checks.
+- **L1**: isolated UI, Controller, SDK or pure utility behavior. Run focused tests and lint.
+- **L2**: signatures, accounts, networks, ABI callers or shared runtime behavior. Run both repository checks and related tests.
+- **L3**: contracts, deployments, migrations, production configuration or chain writes. Run full pre-release checks and require explicit authorization for writes.
+
 涉及合约、ABI、部署地址、网络、签名协议或钱包运行时的改动，需要同时检查：
 
 ```text
