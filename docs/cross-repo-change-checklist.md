@@ -41,6 +41,8 @@
 
 本地执行 `npm run wallet:core:check` 会比较两边的固定向量、Account ABI 和 7702 委托地址；缺少 Wallet checkout 时检查失败。Core CI 使用 `npm run core:artifacts:check` 验证 Core 自身产物，不能替代双仓库检查。
 
+日常改动可先运行 `yarn change:check --plan` 查看按文件路径选出的检查，再运行 `yarn change:check`。提交钩子只运行 `--staged --quick`，完整协议检查仍需手动执行；CI 会输出变更影响计划，原有 CI 测试继续负责最终门禁。
+
 ## 发布
 
 - [ ] 完成 dry-run、测试和 diff 检查。
