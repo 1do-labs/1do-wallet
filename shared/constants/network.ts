@@ -94,6 +94,7 @@ export const NETWORK_TYPES = {
   MEGAETH_TESTNET: 'megaeth-testnet',
   MEGAETH_TESTNET_V2: 'megaeth-testnet-v2',
   MONAD_TESTNET: 'monad-testnet',
+  ROBINHOOD_TESTNET: 'robinhood-testnet',
 } as const;
 
 export type NetworkTypes = (typeof NETWORK_TYPES)[keyof typeof NETWORK_TYPES];
@@ -222,6 +223,7 @@ export const CHAIN_IDS = {
   ROOTSTOCK_TESTNET: '0x1f',
   TEMPO_TESTNET: '0xa5bf',
   TEMPO_MAINNET: '0x1079',
+  ROBINHOOD_TESTNET: '0xb5e6',
   STABLE_MAINNET: '0x3dc',
   MANTLE: '0x1388',
 } as const;
@@ -326,6 +328,7 @@ export const LINEA_MAINNET_DISPLAY_NAME = 'Linea';
 export const LOCALHOST_DISPLAY_NAME = 'Localhost 8545';
 export const BSC_DISPLAY_NAME = 'BNB';
 export const BSC_TESTNET_DISPLAY_NAME = 'BNB Testnet';
+export const ROBINHOOD_TESTNET_DISPLAY_NAME = 'Robinhood Chain Testnet';
 export const POLYGON_DISPLAY_NAME = 'Polygon';
 export const AVALANCHE_DISPLAY_NAME = 'Avalanche';
 export const ARBITRUM_DISPLAY_NAME = 'Arbitrum';
@@ -422,6 +425,7 @@ const ALCHEMY_NETWORK_SLUGS = {
   'polygon-mainnet': 'polygon-mainnet',
   'base-mainnet': 'base-mainnet',
   'base-sepolia': 'base-sepolia',
+  'robinhood-testnet': 'robinhood-testnet',
   'sei-mainnet': 'sei-mainnet',
   'monad-mainnet': 'monad-mainnet',
   'hyperevm-mainnet': 'hyperliquid-mainnet',
@@ -460,6 +464,9 @@ export const MEGAETH_TESTNET_V2_RPC_URL = getRpcUrl({
   network: 'megaeth-testnet',
 });
 export const BSC_TESTNET_RPC_URL = getRpcUrl({ network: 'bsc-testnet' });
+export const ROBINHOOD_TESTNET_RPC_URL = getRpcUrl({
+  network: 'robinhood-testnet',
+});
 
 /**
  * An object containing the token symbols for various tokens that are either
@@ -797,6 +804,7 @@ export const TEST_NETWORK_TICKER_MAP: {
   [NETWORK_TYPES.MEGAETH_TESTNET]: 'MegaETH',
   [NETWORK_TYPES.MEGAETH_TESTNET_V2]: 'MegaETH',
   [NETWORK_TYPES.MONAD_TESTNET]: 'MON',
+  [NETWORK_TYPES.ROBINHOOD_TESTNET]: 'ETH',
 };
 
 /**
@@ -840,6 +848,11 @@ export const BUILT_IN_NETWORKS = {
     chainId: CHAIN_IDS.MONAD_TESTNET,
     ticker: TEST_NETWORK_TICKER_MAP[NETWORK_TYPES.MONAD_TESTNET],
     blockExplorerUrl: 'https://testnet.monadexplorer.com',
+  },
+  [NETWORK_TYPES.ROBINHOOD_TESTNET]: {
+    chainId: CHAIN_IDS.ROBINHOOD_TESTNET,
+    ticker: TEST_NETWORK_TICKER_MAP[NETWORK_TYPES.ROBINHOOD_TESTNET],
+    blockExplorerUrl: 'https://explorer.testnet.chain.robinhood.com',
   },
 } as const;
 
@@ -899,6 +912,7 @@ export const NETWORK_TO_NAME_MAP = {
   [CHAIN_IDS.FLOW]: FLOW_DISPLAY_NAME,
   [CHAIN_IDS.KATANA]: KATANA_DISPLAY_NAME,
   [CHAIN_IDS.MONAD_TESTNET]: MONAD_TESTNET_DISPLAY_NAME,
+  [CHAIN_IDS.ROBINHOOD_TESTNET]: ROBINHOOD_TESTNET_DISPLAY_NAME,
   [CHAIN_IDS.SOPHON]: SOPHON_DISPLAY_NAME,
   [CHAIN_IDS.SOPHON_TESTNET]: SOPHON_TESTNET_DISPLAY_NAME,
   [CHAIN_IDS.EDUCHAIN]: EDUCHAIN_DISPLAY_NAME,
@@ -1731,6 +1745,7 @@ export const TEST_NETWORK_IDS = [
   CHAIN_IDS.MEGAETH_TESTNET_V2,
   CHAIN_IDS.MONAD_TESTNET,
   CHAIN_IDS.TEMPO_TESTNET,
+  CHAIN_IDS.ROBINHOOD_TESTNET,
 ];
 
 // default minimum number of `occurrences` per token

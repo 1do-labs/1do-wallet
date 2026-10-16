@@ -309,6 +309,24 @@ describe('NetworkControllerInit', () => {
               },
             ],
           },
+          "0xb5e6": {
+            "blockExplorerUrls": [
+              "https://explorer.testnet.chain.robinhood.com/",
+            ],
+            "chainId": "0xb5e6",
+            "defaultBlockExplorerUrlIndex": 0,
+            "defaultRpcEndpointIndex": 0,
+            "name": "Robinhood Chain Testnet",
+            "nativeCurrency": "ETH",
+            "rpcEndpoints": [
+              {
+                "failoverUrls": [],
+                "networkClientId": "robinhood-testnet",
+                "type": "custom",
+                "url": "https://robinhood-testnet.g.alchemy.com/v2/{alchemyApiKey}",
+              },
+            ],
+          },
           "0xe705": {
             "blockExplorerUrls": [
               "https://sepolia.lineascan.build",

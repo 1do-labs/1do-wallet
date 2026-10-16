@@ -55,6 +55,13 @@ export const CHAIN_ID_DEFAULT_NATIVE_TOKEN_MAP = {
     decimals: 18,
     iconUrl: BNB_TOKEN_IMAGE_URL,
   },
+  [CHAIN_IDS.ROBINHOOD_TESTNET]: {
+    symbol: CURRENCY_SYMBOLS.ETH,
+    name: 'Ether',
+    address: DEFAULT_NATIVE_TOKEN_ADDRESS,
+    decimals: 18,
+    iconUrl: TEST_ETH_TOKEN_IMAGE_URL,
+  },
   [CHAIN_IDS.POLYGON]: {
     symbol: CURRENCY_SYMBOLS.POL,
     name: 'Polygon',

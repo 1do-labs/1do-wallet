@@ -17,6 +17,8 @@ import {
   CHAIN_IDS,
   BSC_TESTNET_DISPLAY_NAME,
   BSC_TESTNET_RPC_URL,
+  ROBINHOOD_TESTNET_DISPLAY_NAME,
+  ROBINHOOD_TESTNET_RPC_URL,
   MEGAETH_MAINNET_DISPLAY_NAME,
   MEGAETH_TESTNET_DISPLAY_NAME,
   getRpcUrl,
@@ -162,6 +164,31 @@ function addBscTestnetNetwork(
   };
 }
 
+function addRobinhoodTestnetNetwork(
+  networks: NetworkController['state']['networkConfigurationsByChainId'],
+) {
+  if (networks?.[CHAIN_IDS.ROBINHOOD_TESTNET]) {
+    return;
+  }
+
+  networks[CHAIN_IDS.ROBINHOOD_TESTNET] = {
+    chainId: CHAIN_IDS.ROBINHOOD_TESTNET,
+    name: ROBINHOOD_TESTNET_DISPLAY_NAME,
+    nativeCurrency: 'ETH',
+    blockExplorerUrls: ['https://explorer.testnet.chain.robinhood.com/'],
+    defaultBlockExplorerUrlIndex: 0,
+    defaultRpcEndpointIndex: 0,
+    rpcEndpoints: [
+      {
+        networkClientId: 'robinhood-testnet',
+        url: ROBINHOOD_TESTNET_RPC_URL,
+        type: RpcEndpointType.Custom,
+        failoverUrls: [],
+      },
+    ],
+  };
+}
+
 function normalizeAlchemyRpcEndpoints(
   networks: NetworkController['state']['networkConfigurationsByChainId'],
   selectedNetworkClientId?: string,
@@ -228,6 +255,7 @@ function getInitialState(initialState?: Partial<NetworkController['state']>) {
     initialNetworkControllerState.networkConfigurationsByChainId = networks;
     addBaseSepoliaNetwork(networks);
     addBscTestnetNetwork(networks);
+    addRobinhoodTestnetNetwork(networks);
     initialNetworkControllerState.selectedNetworkClientId =
       normalizeAlchemyRpcEndpoints(
         networks,
@@ -258,6 +286,7 @@ function getInitialState(initialState?: Partial<NetworkController['state']>) {
 
     addBaseSepoliaNetwork(networks);
     addBscTestnetNetwork(networks);
+    addRobinhoodTestnetNetwork(networks);
 
     // TODO: Consider changing `getDefaultNetworkControllerState` on the
     // controller side to include some of these tweaks.
@@ -310,6 +339,10 @@ function getInitialState(initialState?: Partial<NetworkController['state']>) {
     }
     if (networks[CHAIN_IDS.BSC_TESTNET]) {
       networks[CHAIN_IDS.BSC_TESTNET].name = BSC_TESTNET_DISPLAY_NAME;
+    }
+    if (networks[CHAIN_IDS.ROBINHOOD_TESTNET]) {
+      networks[CHAIN_IDS.ROBINHOOD_TESTNET].name =
+        ROBINHOOD_TESTNET_DISPLAY_NAME;
     }
 
     // Update default popular network names.
