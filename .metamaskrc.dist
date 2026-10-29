@@ -4,6 +4,10 @@
 ; This variable is required
 ALCHEMY_API_KEY=
 
+; 1Do Runtime MCP 的统一链配置。钱包仍通过当前 provider 读取链状态；
+; 该变量用于让 Wallet 构建与 Core/Vercel 使用同一组 Runtime 链清单。
+RUNTIME_NETWORKS_JSON='[{"chainId":97,"name":"BNB Smart Chain Testnet","rpcUrl":"https://data-seed-prebsc-1-s1.bnbchain.org:8545","explorerUrl":"https://testnet.bscscan.com"},{"chainId":46630,"name":"Robinhood Chain Testnet","rpcUrl":"https://rpc.testnet.chain.robinhood.com","explorerUrl":"https://explorer.testnet.chain.robinhood.com"},{"chainId":84532,"name":"Base Sepolia","rpcUrl":"https://sepolia.base.org","explorerUrl":"https://sepolia.basescan.org"},{"chainId":11155111,"name":"Sepolia","rpcUrl":"https://ethereum-sepolia-rpc.publicnode.com","explorerUrl":"https://sepolia.etherscan.io"}]'
+
 ; Set to `true` to enable AssetsController unified state population.
 ; When false, AssetsController is still instantiated but state remains empty.
 ASSETS_UNIFIED_STATE_ENABLED='false'

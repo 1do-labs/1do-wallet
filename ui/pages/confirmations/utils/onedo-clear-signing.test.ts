@@ -333,7 +333,7 @@ describe('1Do clear signing utilities', () => {
     expect(info).toMatchObject({
       descriptorId: 'account-runtime',
       descriptorSha256:
-        'b01b5f1cc8261d085cb2856054a1750bd8b323c7c1e4a4e68e1e98f2e94cfa21',
+        'ee61e1bcdbc274f39ad5b7b30d210692a1056aca9bb346beb1124de7ff2b6a1c',
       title: 'Enable Session Pay',
       rows: expect.arrayContaining([
         expect.objectContaining({ label: 'Action', value: 'Enable app' }),
@@ -381,7 +381,7 @@ describe('1Do clear signing utilities', () => {
     expect(info).toMatchObject({
       descriptorId: 'account-runtime',
       descriptorSha256:
-        'b01b5f1cc8261d085cb2856054a1750bd8b323c7c1e4a4e68e1e98f2e94cfa21',
+        'ee61e1bcdbc274f39ad5b7b30d210692a1056aca9bb346beb1124de7ff2b6a1c',
       title: 'Disable Dex',
       rows: expect.arrayContaining([
         expect.objectContaining({
@@ -662,7 +662,7 @@ describe('1Do clear signing utilities', () => {
     expect(info).toMatchObject({
       descriptorId: 'account-runtime',
       descriptorSha256:
-        'b01b5f1cc8261d085cb2856054a1750bd8b323c7c1e4a4e68e1e98f2e94cfa21',
+        'ee61e1bcdbc274f39ad5b7b30d210692a1056aca9bb346beb1124de7ff2b6a1c',
       title: 'Fill Dex order',
       rows: expect.arrayContaining([
         expect.objectContaining({

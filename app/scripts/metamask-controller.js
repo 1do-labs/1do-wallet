@@ -156,6 +156,7 @@ import {
   // eslint-disable-next-line import-x/no-restricted-paths
 } from '../../ui/contexts/hardware-wallets';
 import { onStreamClosed } from '../../shared/lib/stream-utils';
+import { OneDoRuntimeMcpInit } from './messenger-client-init/onedo-runtime-mcp-init';
 
 import { AddressBookPetnamesBridge } from './lib/AddressBookPetnamesBridge';
 import ComposableObservableStore from './lib/ComposableObservableStore';
@@ -536,7 +537,6 @@ export default class MetamaskController extends EventEmitter {
       this.networkController.getProviderAndBlockTracker().provider;
     this.blockTracker =
       this.networkController.getProviderAndBlockTracker().blockTracker;
-
     this.controllerMessenger.subscribe('KeyringController:unlock', () =>
       this._onUnlock(),
     );
@@ -721,6 +721,23 @@ export default class MetamaskController extends EventEmitter {
           (meta) =>
             meta.hash === hash && meta.status === TransactionStatus.submitted,
         ),
+    });
+
+    // Use the same internal EIP-1193 middleware as the wallet UI. This keeps
+    // reads on the selected network while routing signing and transactions
+    // through the existing confirmation flow.
+    const runtimeMcpEngine = this.setupProviderEngineEip1193({
+      origin: ORIGIN_METAMASK,
+      subjectType: SubjectType.Internal,
+      sender: { url: ORIGIN_METAMASK },
+    });
+    this.oneDoRuntimeMcpController = OneDoRuntimeMcpInit({
+      controllerMessenger: this.controllerMessenger,
+      provider: {
+        request: (args) => runtimeMcpEngine.handle(args),
+        requestErc7702Activation: ({ address, implementation, chainId }) =>
+          this.upgradeAccount(address, implementation, chainId),
+      },
     });
 
     // ensure isClientOpenAndUnlocked is updated when memState updates

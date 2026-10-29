@@ -34,6 +34,7 @@ function setEnvironmentVariables({
       environment,
       testing: isTestBuild,
     }),
+    RUNTIME_NETWORKS_JSON: variables.getMaybe('RUNTIME_NETWORKS_JSON'),
     METAMASK_DEBUG: isDevBuild || variables.getMaybe('METAMASK_DEBUG') === true,
     METAMASK_BUILD_NAME: '1Do',
     METAMASK_BUILD_APP_ID: getBuildAppId({
