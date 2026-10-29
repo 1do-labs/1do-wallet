@@ -66,6 +66,9 @@ lavamoat/                    构建安全策略
 - 本地配置使用 `.metamaskrc` 或仓库现有的环境配置文件；不要提交本地配置。
 - 需要与 `1do-core` 同步的链和合约配置，必须同时检查 `1do-core` 的部署 JSON、`.env` 示例和相关 Web 配置。
 - 新增或修改配置时，更新实际使用该配置的测试和文档。
+- Runtime MCP 的多链清单统一使用 `RUNTIME_NETWORKS_JSON`，与 `1do-core`
+  的 `apps/web/.env.local` 和 Vercel 配置保持一致；扩展通过构建环境注入该
+  变量，链上读写仍以当前 provider 为准。旧的单链 RPC 变量只作为兼容配置。
 
 ## Controller 规则
 
