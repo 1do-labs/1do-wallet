@@ -1,18 +1,32 @@
-# MetaMask Browser Extension
+# 1Do Wallet Browser Extension
 
-You can find the latest version of MetaMask on [our official website](https://metamask.io/). For help using MetaMask, visit our [User Support Site](https://support.metamask.io/).
+1Do Wallet 是 1Do Runtime 的浏览器钱包实现，支持 ERC-7702 账户激活、Runtime App 授权和钱包签名确认。
 
-For [general questions](https://community.metamask.io/c/learn/26), [feature requests](https://community.metamask.io/c/feature-requests-ideas/13), or [developer questions](https://community.metamask.io/c/developer-questions/11), visit our [Community Forum](https://community.metamask.io/).
+## Runtime MCP 新手接入
 
-MetaMask supports Firefox, Google Chrome, and Chromium-based browsers. We recommend using the latest available browser version.
+想让钱包 Agent 使用 1Do Runtime，请先阅读 Core 仓库的
+[Runtime MCP 新手接入指南](https://github.com/1do-labs/1do-core/blob/main/docs/runtime-mcp-getting-started.zh.md)。
 
-For up to the minute news, follow us on [X](https://x.com/MetaMask).
+Runtime MCP 可以连接任意兼容 EIP-1193、EIP-712 和相应 Runtime 接口的 Agent 钱包，不限定 1Do Wallet。MCP 负责读取状态、模拟交易、准备 typed data 和校验请求；钱包 Agent 负责私钥保管、签名和最终确认。
 
-To learn how to develop MetaMask-compatible applications, visit our [Developer Docs](https://docs.metamask.io/).
+### 新人测试流程
 
-To learn how to contribute to the MetaMask codebase, visit our [Contributor Docs](https://github.com/MetaMask/contributor-docs).
+1. 使用 Node.js 24 和本仓库构建 1Do Wallet：`yarn install && yarn build:test`。
+2. 在浏览器中安装测试构建，并连接测试钱包。
+3. 切换到 Sepolia，先领取少量测试 ETH 作为 Gas。
+4. 连接本地 stdio MCP，或使用 Core 部署的 Streamable HTTP MCP。
+5. 让 Agent 调用 `testnet.faucet.list_assets` 和 `testnet.faucet.check_eligibility`，再调用 `testnet.faucet.claim` 领取测试 USDC、USDT、1DO 或 NFT。
+6. 调用 `activation.get_status`；未激活时准备并确认 ERC-7702 authorization。
+7. 对 Runtime App 调用对应的 `prepare`、`verify` 和 `submit` 工具，逐笔确认钱包展示的目标、资产、金额、nonce 和 chain ID。
 
-To learn how to contribute to the MetaMask Extension project itself, visit our [Extension Docs](https://github.com/MetaMask/metamask-extension/tree/main/docs).
+MCP 不接收私钥，也不会代替钱包签名。测试网 Faucet 只支持固定部署地址和固定额度，不能用于主网资产或任意 mint。
+
+1Do Wallet 网站：[1do.io](https://www.1do.io/)。Runtime MCP 的完整工具清单、云端 HTTP 配置和测试网流程见上面的接入指南。
+
+1Do Wallet 支持 Firefox、Google Chrome 和 Chromium 浏览器。开发 Runtime MCP 或钱包集成时，请以
+[1Do Runtime MCP 接入指南](https://github.com/1do-labs/1do-core/blob/main/docs/runtime-mcp-getting-started.zh.md) 为准。
+
+本仓库沿用了部分 MetaMask Extension 的开发工具和目录结构；产品行为、1Do Runtime 协议和发布配置以 1Do 文档及当前代码为准。
 
 ## GitHub Codespaces quickstart
 
@@ -20,7 +34,7 @@ As an alternative to building on your local machine, there is a new option to ge
 
 _Note: You are billed for both time spent running, and for storage used_
 
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/MetaMask/metamask-extension?quickstart=1)
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/1do-labs/1do-wallet?quickstart=1)
 
 1. Start by clicking the button above
 2. A new browser tab will open with a remote version of Visual Studio Code (this will take a few minutes to load)
@@ -29,7 +43,7 @@ _Note: You are billed for both time spent running, and for storage used_
      - Click the button at the upper-right of the Simple Browser tab to open the noVNC window in its own tab
      - Open the noVNC sidebar on the left, click the gear icon, change the Scaling Mode to Remote Resizing
 4. Wait about 20 extra seconds on the first launch, for the scripts to finish
-5. Right-click on the noVNC desktop to launch Chrome or Firefox with MetaMask pre-installed
+5. Right-click on the noVNC desktop to launch Chrome or Firefox with 1Do Wallet pre-installed
 6. Change some code, then run `yarn start` to build in dev mode
 7. After a minute or two, it will finish building, and you can see your changes in the noVNC desktop
 
