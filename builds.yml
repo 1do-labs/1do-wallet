@@ -97,6 +97,9 @@ env:
   - ENABLE_SETTINGS_PAGE_DEV_OPTIONS: false
   # Modified in <root>/development/build/scripts.js:@getAlchemyApiKey
   - ALCHEMY_API_KEY
+  # Runtime MCP network configuration injected into the extension build.
+  # Keep this optional so builds without Runtime configuration still work.
+  - RUNTIME_NETWORKS_JSON: null
   # Modified in <root>/development/build/scripts.js:@getSegmentWriteKey
   - SEGMENT_WRITE_KEY: ''
   # Modified in <root>/development/build/scripts.js:@getAnalyticsDataDeletionSourceId
