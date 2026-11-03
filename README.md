@@ -5,11 +5,14 @@
 ## Runtime MCP 新手接入
 
 想让钱包 Agent 使用 1Do Runtime，请先阅读 Core 仓库的
-[Runtime MCP 新手接入指南](https://github.com/1do-labs/1do-core/blob/main/docs/runtime-mcp-getting-started.zh.md)。
+[Runtime MCP Agent 接入指南](https://github.com/1do-labs/1do-core/blob/main/docs/runtime-mcp-agent-setup.zh.md)。
 
 Runtime MCP 可以连接任意兼容 EIP-1193、EIP-712 和相应 Runtime 接口的外部钱包 MCP，不限定 1Do Wallet。上层 Agent 同时调用钱包 MCP 和 1Do Runtime MCP：钱包 MCP 负责账户、签名、确认和广播，Runtime MCP 负责 Runtime 状态、ERC-7702 准备、Faucet、App 和 Relayer。
 
 ### 新人测试流程
+
+正常使用时只需在 Agent 的 MCP 设置中添加 Runtime MCP 地址；curl、JSON-RPC
+和 session 调试命令只用于开发者排查连接问题。
 
 1. 使用 Node.js 24 和本仓库构建 1Do Wallet：`yarn install && yarn build:test`。
 2. 在浏览器中安装测试构建，并连接测试钱包。
