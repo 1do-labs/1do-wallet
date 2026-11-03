@@ -7,19 +7,20 @@
 想让钱包 Agent 使用 1Do Runtime，请先阅读 Core 仓库的
 [Runtime MCP 新手接入指南](https://github.com/1do-labs/1do-core/blob/main/docs/runtime-mcp-getting-started.zh.md)。
 
-Runtime MCP 可以连接任意兼容 EIP-1193、EIP-712 和相应 Runtime 接口的 Agent 钱包，不限定 1Do Wallet。MCP 负责读取状态、模拟交易、准备 typed data 和校验请求；钱包 Agent 负责私钥保管、签名和最终确认。
+Runtime MCP 可以连接任意兼容 EIP-1193、EIP-712 和相应 Runtime 接口的外部钱包 MCP，不限定 1Do Wallet。上层 Agent 同时调用钱包 MCP 和 1Do Runtime MCP：钱包 MCP 负责账户、签名、确认和广播，Runtime MCP 负责 Runtime 状态、ERC-7702 准备、Faucet、App 和 Relayer。
 
 ### 新人测试流程
 
 1. 使用 Node.js 24 和本仓库构建 1Do Wallet：`yarn install && yarn build:test`。
 2. 在浏览器中安装测试构建，并连接测试钱包。
 3. 切换到 Sepolia，先领取少量测试 ETH 作为 Gas。
-4. 连接本地 stdio MCP，或使用 Core 部署的 Streamable HTTP MCP。
-5. 让 Agent 调用 `testnet.faucet.list_assets` 和 `testnet.faucet.check_eligibility`，再调用 `testnet.faucet.claim` 领取测试 USDC、USDT、1DO 或 NFT。
-6. 调用 `activation.get_status`；未激活时准备并确认 ERC-7702 authorization。
-7. 对 Runtime App 调用对应的 `prepare`、`verify` 和 `submit` 工具，逐笔确认钱包展示的目标、资产、金额、nonce 和 chain ID。
+4. 在同一个上层 Agent 中添加钱包 MCP 和 1Do Runtime MCP。
+5. 让 Agent 调用 `wallet.get_account`、`wallet.get_code` 和 `runtime_app.list` 检查会话。
+6. 让 Agent 调用 `testnet.faucet.list_assets`、`testnet.faucet.check_eligibility` 和 `testnet.faucet.claim`；交易由钱包 MCP 确认并广播。
+7. 未激活时调用 `wallet.prepare_7702_authorization` 或 `activation.prepare`，交给钱包 MCP 签名，再调用 `activation.verify` 或 `relayer.submit`。
+8. 对 Runtime App 调用对应的 `prepare`、`verify` 和 `submit` 工具，逐笔确认钱包展示的目标、资产、金额、nonce 和 chain ID。
 
-MCP 不接收私钥，也不会代替钱包签名。测试网 Faucet 只支持固定部署地址和固定额度，不能用于主网资产或任意 mint。
+1Do Runtime MCP 不接收私钥，也不会代替钱包 MCP 签名。测试网 Faucet 只支持固定部署地址和固定额度，不能用于主网资产或任意 mint。
 
 1Do Wallet 网站：[1do.io](https://www.1do.io/)。Runtime MCP 的完整工具清单、云端 HTTP 配置和测试网流程见上面的接入指南。
 
