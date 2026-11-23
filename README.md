@@ -27,6 +27,9 @@ Runtime MCP 可以连接任意兼容 EIP-1193、EIP-712 和相应 Runtime 接口
 
 1Do Wallet 网站：[1do.io](https://www.1do.io/)。Runtime MCP 的完整工具清单、云端 HTTP 配置和测试网流程见上面的接入指南。
 
+Windows 开发和 Chrome Playwright 验证请参考 Core 仓库的
+[Windows 开发与验证流程](https://github.com/1do-labs/1do-core/blob/main/docs/windows-development.zh.md)。
+
 1Do Wallet 支持 Firefox、Google Chrome 和 Chromium 浏览器。开发 Runtime MCP 或钱包集成时，请以
 [1Do Runtime MCP 接入指南](https://github.com/1do-labs/1do-core/blob/main/docs/runtime-mcp-getting-started.zh.md) 为准。
 
@@ -64,6 +67,21 @@ _Note: You are billed for both time spent running, and for storage used_
 If you are not a MetaMask Internal Developer, or are otherwise developing on a fork, the default Infura key will be on the Free Plan and have very limited requests per second. If you want to use your own Infura key, follow the `.metamaskrc` and `INFURA_PROJECT_ID` instructions in the section [Building on your local machine](#building-on-your-local-machine).
 
 ## Building on your local machine
+
+### Windows Chrome extension development
+
+For Wallet MCP and Chrome Playwright validation, use Windows Codex directly. Install
+Node.js 24, Git for Windows, Google Chrome, and Corepack, then run:
+
+```powershell
+corepack enable
+yarn install
+yarn build:test:dev
+yarn test:e2e:wallet-mcp
+```
+
+The Wallet MCP Playwright project uses the installed Google Chrome. WSL is not
+required for this browser workflow.
 
 - Install [Node.js](https://nodejs.org) version 24
   - If you are using [nvm](https://github.com/nvm-sh/nvm#installing-and-updating) (recommended) running `nvm use` will automatically choose the right node version for you.

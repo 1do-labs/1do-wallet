@@ -1,0 +1,9 @@
+{
+  "name": "com.1do.wallet.mcp",
+  "description": "1Do Wallet MCP Native Messaging host",
+  "path": "/ABSOLUTE/PATH/TO/1do-runtime-mcp-host",
+  "type": "stdio",
+  "allowed_origins": [
+    "chrome-extension://REPLACE_WITH_1DO_WALLET_EXTENSION_ID/"
+  ]
+}

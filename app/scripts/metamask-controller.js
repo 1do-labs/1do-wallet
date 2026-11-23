@@ -157,6 +157,7 @@ import {
 } from '../../ui/contexts/hardware-wallets';
 import { onStreamClosed } from '../../shared/lib/stream-utils';
 import { OneDoRuntimeMcpInit } from './messenger-client-init/onedo-runtime-mcp-init';
+import { connectOneDoRuntimeMcpNativeHost } from './controllers/onedo-runtime-mcp-native';
 
 import { AddressBookPetnamesBridge } from './lib/AddressBookPetnamesBridge';
 import ComposableObservableStore from './lib/ComposableObservableStore';
@@ -739,6 +740,16 @@ export default class MetamaskController extends EventEmitter {
           this.upgradeAccount(address, implementation, chainId),
       },
     });
+    // The native host is optional. When installed, it exposes the same
+    // controller through Chrome Native Messaging without bypassing wallet
+    // confirmation or keyring boundaries.
+    try {
+      this.oneDoRuntimeMcpNativePort = connectOneDoRuntimeMcpNativeHost({
+        controller: this.oneDoRuntimeMcpController,
+      });
+    } catch (error) {
+      if (error?.message !== 'native_messaging_unavailable') throw error;
+    }
 
     // ensure isClientOpenAndUnlocked is updated when memState updates
     this.on('update', (memState) => this._onStateUpdate(memState));

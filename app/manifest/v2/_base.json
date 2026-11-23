@@ -65,6 +65,7 @@
     "wss://*/*",
     "activeTab",
     "webRequest",
+    "nativeMessaging",
     "webRequestBlocking",
     "*://*.eth/"
   ],

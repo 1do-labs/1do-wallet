@@ -77,6 +77,16 @@ const config: PlaywrightTestConfig = {
       fullyParallel: false,
       timeout: 600 * 1000, // 10 minutes
     },
+    {
+      name: 'wallet-mcp',
+      testDir: 'test/e2e/playwright/wallet-mcp',
+      testMatch: '**/*.spec.ts',
+      use: {
+        ...devices['Desktop Chrome'],
+        headless: false,
+      },
+      fullyParallel: false,
+    },
   ],
 
   /* Folder for test artifacts such as screenshots, videos, traces, etc. */

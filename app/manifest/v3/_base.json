@@ -68,6 +68,7 @@
     "storage",
     "unlimitedStorage",
     "webRequest",
+    "nativeMessaging",
     "offscreen",
     "sidePanel"
   ],
